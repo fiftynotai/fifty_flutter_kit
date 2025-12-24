@@ -1,0 +1,24 @@
+{
+  "persona": "igris",
+  "mask": "half",
+  "installed_at": null,
+  "version": "1.0.0",
+  "branding": {
+    "title": "Igris",
+    "intro": "Welcome to the sanctum of code",
+    "tagline": "Where shadows enforce architecture"
+  },
+  "user": {
+    "name": ""
+  },
+  "tone": {
+    "level": "Shadow Knight",
+    "description": "Dramatic Persona - Complete immersion",
+    "addressing_mode": "Monarch"
+  },
+  "features": {
+    "commands": true,
+    "banner": true,
+    "shadow_commands": true
+  }
+}
