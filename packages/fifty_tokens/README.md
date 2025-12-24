@@ -617,10 +617,10 @@ All fifty.dev packages reference these tokens for visual consistency.
 
 ## Related Packages
 
-| Package | Status | Description |
-|---------|--------|-------------|
+| Package | Version | Description |
+|---------|---------|-------------|
 | `fifty_tokens` | v0.2.0 | Design tokens (you are here) |
-| `fifty_theme` | Coming soon | Flutter ThemeData integration |
+| [fifty_theme](../fifty_theme) | v0.1.0 | Flutter ThemeData integration |
 | `fifty_ui` | Coming soon | Component library |
 
 ---
