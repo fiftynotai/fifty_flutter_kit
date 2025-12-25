@@ -67,8 +67,19 @@
 /// - [FiftyDialog] - Modal dialog
 /// - [FiftyTooltip] - Hover tooltip
 ///
+/// ### Organisms
+/// - [FiftyNavBar] - Floating navigation bar with glassmorphism
+/// - [FiftyHero] - Dramatic headline text with Monument Extended font
+///
+/// ### Molecules
+/// - [FiftyCodeBlock] - Terminal-style code display with syntax highlighting
+///
 /// ### Utils
 /// - [GlowContainer] - Reusable glow animation wrapper
+/// - [KineticEffect] - Hover/press scale animation wrapper
+/// - [GlitchEffect] - RGB chromatic aberration effect
+/// - [HalftonePainter] - CustomPainter for halftone dot patterns
+/// - [HalftoneOverlay] - Widget wrapper for halftone textures
 library;
 
 // Buttons
@@ -95,5 +106,15 @@ export 'src/feedback/fifty_dialog.dart';
 export 'src/feedback/fifty_snackbar.dart';
 export 'src/feedback/fifty_tooltip.dart';
 
+// Organisms
+export 'src/organisms/fifty_hero.dart';
+export 'src/organisms/fifty_nav_bar.dart';
+
+// Molecules
+export 'src/molecules/fifty_code_block.dart';
+
 // Utils
+export 'src/utils/glitch_effect.dart';
 export 'src/utils/glow_container.dart';
+export 'src/utils/halftone_painter.dart';
+export 'src/utils/kinetic_effect.dart';
