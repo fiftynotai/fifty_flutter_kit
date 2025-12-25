@@ -59,5 +59,54 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(FiftyBadge), findsOneWidget);
     });
+
+    group('factory constructors', () {
+      testWidgets('FiftyBadge.tech creates neutral badge', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyBadge.tech('FLUTTER'),
+        ));
+
+        expect(find.text('FLUTTER'), findsOneWidget);
+        expect(find.byType(FiftyBadge), findsOneWidget);
+      });
+
+      testWidgets('FiftyBadge.status creates success badge with glow',
+          (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyBadge.status('ONLINE'),
+        ));
+
+        expect(find.text('ONLINE'), findsOneWidget);
+        expect(find.byType(FiftyBadge), findsOneWidget);
+
+        // Let animation run
+        await tester.pump(const Duration(milliseconds: 500));
+        expect(find.byType(FiftyBadge), findsOneWidget);
+      });
+
+      testWidgets('FiftyBadge.ai creates igris green badge with glow',
+          (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyBadge.ai('IGRIS'),
+        ));
+
+        expect(find.text('IGRIS'), findsOneWidget);
+        expect(find.byType(FiftyBadge), findsOneWidget);
+
+        // Let animation run
+        await tester.pump(const Duration(milliseconds: 500));
+        expect(find.byType(FiftyBadge), findsOneWidget);
+      });
+
+      testWidgets('factory constructors convert label to uppercase',
+          (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyBadge.tech('flutter'),
+        ));
+
+        // All labels are uppercase
+        expect(find.text('FLUTTER'), findsOneWidget);
+      });
+    });
   });
 }

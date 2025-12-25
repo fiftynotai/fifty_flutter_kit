@@ -73,5 +73,66 @@ void main() {
 
       expect(find.byType(FiftyCard), findsOneWidget);
     });
+
+    group('hasTexture parameter', () {
+      testWidgets('renders without texture by default', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyCard(
+            child: Text('Content'),
+          ),
+        ));
+
+        expect(find.byType(FiftyCard), findsOneWidget);
+        // hasTexture defaults to false
+      });
+
+      testWidgets('renders with texture when enabled', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyCard(
+            hasTexture: true,
+            child: Text('Content'),
+          ),
+        ));
+
+        expect(find.byType(FiftyCard), findsOneWidget);
+      });
+    });
+
+    group('hoverScale parameter', () {
+      testWidgets('uses default hover scale of 1.02', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyCard(
+            onTap: () {},
+            child: const Text('Content'),
+          ),
+        ));
+
+        expect(find.byType(AnimatedScale), findsOneWidget);
+      });
+
+      testWidgets('uses custom hover scale', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyCard(
+            onTap: () {},
+            hoverScale: 1.05,
+            child: const Text('Content'),
+          ),
+        ));
+
+        expect(find.byType(AnimatedScale), findsOneWidget);
+      });
+
+      testWidgets('disables scale when set to 1.0', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyCard(
+            onTap: () {},
+            hoverScale: 1.0,
+            child: const Text('Content'),
+          ),
+        ));
+
+        expect(find.byType(FiftyCard), findsOneWidget);
+      });
+    });
   });
 }

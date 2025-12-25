@@ -26,6 +26,7 @@ enum FiftyBadgeVariant {
 /// - Five variants matching semantic colors
 /// - Optional glow pulse animation
 /// - Compact pill shape
+/// - Factory constructors for common use cases
 ///
 /// Example:
 /// ```dart
@@ -35,6 +36,13 @@ enum FiftyBadgeVariant {
 ///   showGlow: true,
 /// )
 /// ```
+///
+/// Factory constructor examples:
+/// ```dart
+/// FiftyBadge.tech('FLUTTER'),  // Gray/hyperChrome tech label
+/// FiftyBadge.status('ONLINE'), // Green status with glow
+/// FiftyBadge.ai('IGRIS'),      // IgrisGreen AI indicator
+/// ```
 class FiftyBadge extends StatefulWidget {
   /// Creates a Fifty-styled badge.
   const FiftyBadge({
@@ -42,7 +50,41 @@ class FiftyBadge extends StatefulWidget {
     required this.label,
     this.variant = FiftyBadgeVariant.primary,
     this.showGlow = false,
+    this.customColor,
   });
+
+  /// Creates a tech-style badge with gray/hyperChrome border.
+  ///
+  /// Suitable for technology labels like 'FLUTTER', 'DART', 'REACT'.
+  factory FiftyBadge.tech(String label) {
+    return FiftyBadge(
+      label: label,
+      variant: FiftyBadgeVariant.neutral,
+      customColor: FiftyColors.hyperChrome,
+    );
+  }
+
+  /// Creates a status badge with green border and subtle glow.
+  ///
+  /// Suitable for status indicators like 'ONLINE', 'ACTIVE', 'CONNECTED'.
+  factory FiftyBadge.status(String label) {
+    return FiftyBadge(
+      label: label,
+      variant: FiftyBadgeVariant.success,
+      showGlow: true,
+    );
+  }
+
+  /// Creates an AI indicator badge with IgrisGreen border.
+  ///
+  /// Suitable for AI-related labels like 'IGRIS', 'AI', 'AGENT'.
+  factory FiftyBadge.ai(String label) {
+    return FiftyBadge(
+      label: label,
+      customColor: FiftyColors.igrisGreen,
+      showGlow: true,
+    );
+  }
 
   /// The badge label text.
   final String label;
@@ -52,6 +94,12 @@ class FiftyBadge extends StatefulWidget {
 
   /// Whether to show a pulsing glow animation.
   final bool showGlow;
+
+  /// Custom accent color for the badge.
+  ///
+  /// When set, overrides the variant-based color.
+  /// Used by factory constructors for specific styling.
+  final Color? customColor;
 
   @override
   State<FiftyBadge> createState() => _FiftyBadgeState();
@@ -144,6 +192,11 @@ class _FiftyBadgeState extends State<FiftyBadge>
   }
 
   Color _getAccentColor(FiftyThemeExtension fifty, ColorScheme colorScheme) {
+    // Custom color takes precedence
+    if (widget.customColor != null) {
+      return widget.customColor!;
+    }
+
     switch (widget.variant) {
       case FiftyBadgeVariant.primary:
         return colorScheme.primary;

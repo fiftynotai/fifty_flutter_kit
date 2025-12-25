@@ -2,6 +2,8 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/halftone_painter.dart';
+
 /// A card container with FDL styling.
 ///
 /// Features:
@@ -9,6 +11,8 @@ import 'package:flutter/material.dart';
 /// - Optional tap interaction with ripple effect
 /// - Selected state with crimson border and subtle glow
 /// - Scanline effect on hover (FDL: "Cards: Hovering triggers a scanline effect")
+/// - Optional halftone texture overlay
+/// - Configurable hover scale animation
 ///
 /// Example:
 /// ```dart
@@ -16,6 +20,8 @@ import 'package:flutter/material.dart';
 ///   onTap: () => selectItem(),
 ///   selected: isSelected,
 ///   scanlineOnHover: true,
+///   hasTexture: true,
+///   hoverScale: 1.02,
 ///   child: CardContent(),
 /// )
 /// ```
@@ -31,6 +37,8 @@ class FiftyCard extends StatefulWidget {
     this.borderRadius,
     this.backgroundColor,
     this.scanlineOnHover = true,
+    this.hasTexture = false,
+    this.hoverScale = 1.02,
   });
 
   /// The content of the card.
@@ -70,6 +78,19 @@ class FiftyCard extends StatefulWidget {
   /// Defaults to true.
   final bool scanlineOnHover;
 
+  /// Whether to show a halftone texture overlay.
+  ///
+  /// When true, adds a subtle dot pattern texture to the card surface.
+  /// Defaults to false.
+  final bool hasTexture;
+
+  /// Scale factor when the card is hovered.
+  ///
+  /// Applied as an AnimatedScale on hover for kinetic feedback.
+  /// Set to 1.0 to disable hover scaling.
+  /// Defaults to 1.02 (2% larger).
+  final double hoverScale;
+
   @override
   State<FiftyCard> createState() => _FiftyCardState();
 }
@@ -87,6 +108,8 @@ class _FiftyCardState extends State<FiftyCard>
       widget.scanlineOnHover && _isHovered && !_reduceMotion;
   bool get _reduceMotion =>
       MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+  double get _currentScale =>
+      _isHovered && _isInteractive && !_reduceMotion ? widget.hoverScale : 1.0;
 
   @override
   void initState() {
@@ -158,43 +181,59 @@ class _FiftyCardState extends State<FiftyCard>
       child: MouseRegion(
         onEnter: _isInteractive ? (_) => _onHoverStart() : null,
         onExit: _isInteractive ? (_) => _onHoverEnd() : null,
-        child: AnimatedContainer(
+        child: AnimatedScale(
+          scale: _currentScale,
           duration: fifty.fast,
           curve: fifty.standardCurve,
-          margin: widget.margin,
-          decoration: BoxDecoration(
-            color: effectiveBackgroundColor,
-            borderRadius: effectiveBorderRadius,
-            border: Border.all(
-              color: borderColor,
-              width: borderWidth,
+          child: AnimatedContainer(
+            duration: fifty.fast,
+            curve: fifty.standardCurve,
+            margin: widget.margin,
+            decoration: BoxDecoration(
+              color: effectiveBackgroundColor,
+              borderRadius: effectiveBorderRadius,
+              border: Border.all(
+                color: borderColor,
+                width: borderWidth,
+              ),
+              boxShadow: _showGlow ? fifty.focusGlow : null,
             ),
-            boxShadow: _showGlow ? fifty.focusGlow : null,
-          ),
-          child: ClipRRect(
-            borderRadius: effectiveBorderRadius,
-            child: Stack(
-              children: [
-                cardContent,
-                // FDL Rule: "Cards: Hovering triggers a scanline effect"
-                if (widget.scanlineOnHover)
-                  Positioned.fill(
-                    child: AnimatedBuilder(
-                      animation: _scanlineController,
-                      builder: (context, child) {
-                        if (!_showScanline && _scanlineController.value == 0) {
-                          return const SizedBox.shrink();
-                        }
-                        return CustomPaint(
-                          painter: _ScanlinePainter(
-                            progress: _scanlineController.value,
-                            color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
-                          ),
-                        );
-                      },
+            child: ClipRRect(
+              borderRadius: effectiveBorderRadius,
+              child: Stack(
+                children: [
+                  cardContent,
+                  // FDL Rule: "Cards: Hovering triggers a scanline effect"
+                  if (widget.scanlineOnHover)
+                    Positioned.fill(
+                      child: AnimatedBuilder(
+                        animation: _scanlineController,
+                        builder: (context, child) {
+                          if (!_showScanline && _scanlineController.value == 0) {
+                            return const SizedBox.shrink();
+                          }
+                          return CustomPaint(
+                            painter: _ScanlinePainter(
+                              progress: _scanlineController.value,
+                              color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-              ],
+                  // Halftone texture overlay
+                  if (widget.hasTexture)
+                    const Positioned.fill(
+                      child: IgnorePointer(
+                        child: HalftoneOverlay(
+                          opacity: 0.05,
+                          dotRadius: 1.0,
+                          spacing: 8.0,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),

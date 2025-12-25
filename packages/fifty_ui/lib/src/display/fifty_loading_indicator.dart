@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 /// - [dots]: Animated dots sequence "> LOADING..."
 /// - [pulse]: Pulsing text opacity effect
 /// - [static]: No animation (for reduced motion)
+/// - [sequence]: Cycles through text sequences
 enum FiftyLoadingStyle {
   /// Animated dots: "." -> ".." -> "..."
   dots,
@@ -15,6 +16,11 @@ enum FiftyLoadingStyle {
 
   /// Static text with no animation.
   static,
+
+  /// Cycles through text sequences.
+  ///
+  /// Use [FiftyLoadingIndicator.sequences] to provide custom sequence list.
+  sequence,
 }
 
 /// Loading indicator sizes.
@@ -44,6 +50,18 @@ enum FiftyLoadingSize {
 ///   size: FiftyLoadingSize.medium,
 /// )
 /// ```
+///
+/// Sequence mode example:
+/// ```dart
+/// FiftyLoadingIndicator(
+///   style: FiftyLoadingStyle.sequence,
+///   sequences: [
+///     '> INITIALIZING...',
+///     '> LOADING ASSETS...',
+///     '> COMPILING...',
+///   ],
+/// )
+/// ```
 class FiftyLoadingIndicator extends StatefulWidget {
   /// Creates a Fifty-styled loading indicator.
   const FiftyLoadingIndicator({
@@ -52,6 +70,7 @@ class FiftyLoadingIndicator extends StatefulWidget {
     this.style = FiftyLoadingStyle.dots,
     this.size = FiftyLoadingSize.medium,
     this.color,
+    this.sequences,
     @Deprecated('Use size parameter instead. Will be removed in v1.0.0')
     // ignore: unused_element
     double? legacySize,
@@ -80,6 +99,24 @@ class FiftyLoadingIndicator extends StatefulWidget {
   /// Defaults to [FiftyColors.crimsonPulse].
   final Color? color;
 
+  /// Custom sequence list for [FiftyLoadingStyle.sequence] mode.
+  ///
+  /// Each string in the list is displayed in order, cycling continuously.
+  /// If null, defaults to:
+  /// - '> INITIALIZING...'
+  /// - '> MOUNTING...'
+  /// - '> SYNCING...'
+  /// - '> COMPILING...'
+  final List<String>? sequences;
+
+  /// Default sequences used when [sequences] is null.
+  static const List<String> defaultSequences = [
+    '> INITIALIZING...',
+    '> MOUNTING...',
+    '> SYNCING...',
+    '> COMPILING...',
+  ];
+
   @override
   State<FiftyLoadingIndicator> createState() => _FiftyLoadingIndicatorState();
 }
@@ -88,14 +125,24 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   int _dotCount = 0;
+  int _sequenceIndex = 0;
+
+  List<String> get _effectiveSequences =>
+      widget.sequences ?? FiftyLoadingIndicator.defaultSequences;
 
   @override
   void initState() {
     super.initState();
+
+    // Different durations based on style
+    final duration = widget.style == FiftyLoadingStyle.sequence
+        ? const Duration(milliseconds: 1000) // 1 second per sequence item
+        : const Duration(milliseconds: 450); // 3 dots * 150ms
+
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 450), // 3 dots * 150ms
-    )..addListener(_updateDots);
+      duration: duration,
+    )..addListener(_updateAnimation);
 
     // Start animation if not static
     if (widget.style != FiftyLoadingStyle.static) {
@@ -103,12 +150,19 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
     }
   }
 
-  void _updateDots() {
+  void _updateAnimation() {
     if (widget.style == FiftyLoadingStyle.dots) {
       final newDotCount = (_controller.value * 3).floor() + 1;
       if (newDotCount != _dotCount) {
         setState(() {
           _dotCount = newDotCount.clamp(1, 3);
+        });
+      }
+    } else if (widget.style == FiftyLoadingStyle.sequence) {
+      // Update sequence index when animation completes a cycle
+      if (_controller.value >= 1.0) {
+        setState(() {
+          _sequenceIndex = (_sequenceIndex + 1) % _effectiveSequences.length;
         });
       }
     }
@@ -120,8 +174,14 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
     if (widget.style != oldWidget.style) {
       if (widget.style == FiftyLoadingStyle.static) {
         _controller.stop();
-      } else if (!_controller.isAnimating) {
-        _controller.repeat();
+      } else {
+        // Update duration based on new style
+        _controller.duration = widget.style == FiftyLoadingStyle.sequence
+            ? const Duration(milliseconds: 1000)
+            : const Duration(milliseconds: 450);
+        if (!_controller.isAnimating) {
+          _controller.repeat();
+        }
       }
     }
   }
@@ -170,6 +230,8 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
         return _buildPulseIndicator(textStyle);
       case FiftyLoadingStyle.static:
         return _buildStaticIndicator(textStyle);
+      case FiftyLoadingStyle.sequence:
+        return _buildSequenceIndicator(textStyle);
     }
   }
 
@@ -214,6 +276,20 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
     return Text(
       '> ${widget.text.toUpperCase()}...',
       style: style,
+    );
+  }
+
+  Widget _buildSequenceIndicator(TextStyle style) {
+    final sequences = _effectiveSequences;
+    final currentSequence = sequences[_sequenceIndex % sequences.length];
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 150),
+      child: Text(
+        currentSequence,
+        key: ValueKey(_sequenceIndex),
+        style: style,
+      ),
     );
   }
 }

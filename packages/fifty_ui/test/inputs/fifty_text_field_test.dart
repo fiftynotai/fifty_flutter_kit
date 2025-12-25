@@ -103,5 +103,133 @@ void main() {
       final textField = tester.widget<TextField>(find.byType(TextField));
       expect(textField.enabled, isFalse);
     });
+
+    group('borderStyle parameter', () {
+      testWidgets('renders with full border by default', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(),
+        ));
+
+        expect(find.byType(FiftyTextField), findsOneWidget);
+      });
+
+      testWidgets('renders with full border style', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            borderStyle: FiftyBorderStyle.full,
+          ),
+        ));
+
+        expect(find.byType(FiftyTextField), findsOneWidget);
+      });
+
+      testWidgets('renders with bottom border style', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            borderStyle: FiftyBorderStyle.bottom,
+          ),
+        ));
+
+        expect(find.byType(FiftyTextField), findsOneWidget);
+      });
+
+      testWidgets('renders with no border style', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            borderStyle: FiftyBorderStyle.none,
+          ),
+        ));
+
+        expect(find.byType(FiftyTextField), findsOneWidget);
+      });
+
+      testWidgets('renders all border styles', (tester) async {
+        for (final style in FiftyBorderStyle.values) {
+          await tester.pumpWidget(wrapWithTheme(
+            FiftyTextField(
+              borderStyle: style,
+            ),
+          ));
+
+          expect(find.byType(FiftyTextField), findsOneWidget);
+        }
+      });
+    });
+
+    group('prefixStyle parameter', () {
+      testWidgets('renders with chevron prefix', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            prefixStyle: FiftyPrefixStyle.chevron,
+          ),
+        ));
+
+        expect(find.text('>'), findsOneWidget);
+      });
+
+      testWidgets('renders with comment prefix', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            prefixStyle: FiftyPrefixStyle.comment,
+          ),
+        ));
+
+        expect(find.text('//'), findsOneWidget);
+      });
+
+      testWidgets('renders with no prefix', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            prefixStyle: FiftyPrefixStyle.none,
+          ),
+        ));
+
+        expect(find.text('>'), findsNothing);
+        expect(find.text('//'), findsNothing);
+      });
+
+      testWidgets('renders with custom prefix', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            prefixStyle: FiftyPrefixStyle.custom,
+            customPrefix: '\$',
+          ),
+        ));
+
+        expect(find.text('\$'), findsOneWidget);
+      });
+
+      testWidgets('terminalStyle shows chevron prefix', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            terminalStyle: true,
+          ),
+        ));
+
+        expect(find.text('>'), findsOneWidget);
+      });
+    });
+
+    group('cursorStyle parameter', () {
+      testWidgets('renders with line cursor by default', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(),
+        ));
+
+        expect(find.byType(FiftyTextField), findsOneWidget);
+      });
+
+      testWidgets('renders all cursor styles', (tester) async {
+        for (final style in FiftyCursorStyle.values) {
+          await tester.pumpWidget(wrapWithTheme(
+            FiftyTextField(
+              cursorStyle: style,
+            ),
+          ));
+
+          expect(find.byType(FiftyTextField), findsOneWidget);
+        }
+      });
+    });
   });
 }

@@ -138,5 +138,97 @@ void main() {
       );
       expect(container.constraints?.maxWidth, double.infinity);
     });
+
+    group('isGlitch parameter', () {
+      testWidgets('renders without glitch effect by default', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Test',
+            onPressed: () {},
+          ),
+        ));
+
+        expect(find.byType(FiftyButton), findsOneWidget);
+        // isGlitch defaults to false
+      });
+
+      testWidgets('renders with isGlitch enabled', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Test',
+            onPressed: () {},
+            isGlitch: true,
+          ),
+        ));
+
+        expect(find.byType(FiftyButton), findsOneWidget);
+      });
+    });
+
+    group('shape parameter', () {
+      testWidgets('renders with sharp shape by default', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Test',
+            onPressed: () {},
+          ),
+        ));
+
+        expect(find.byType(FiftyButton), findsOneWidget);
+        // shape defaults to sharp
+      });
+
+      testWidgets('renders with sharp shape', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Test',
+            onPressed: () {},
+            shape: FiftyButtonShape.sharp,
+          ),
+        ));
+
+        expect(find.byType(FiftyButton), findsOneWidget);
+      });
+
+      testWidgets('renders with pill shape', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Test',
+            onPressed: () {},
+            shape: FiftyButtonShape.pill,
+          ),
+        ));
+
+        expect(find.byType(FiftyButton), findsOneWidget);
+      });
+
+      testWidgets('renders all shapes', (tester) async {
+        for (final shape in FiftyButtonShape.values) {
+          await tester.pumpWidget(wrapWithTheme(
+            FiftyButton(
+              label: 'Test',
+              onPressed: () {},
+              shape: shape,
+            ),
+          ));
+
+          expect(find.byType(FiftyButton), findsOneWidget);
+        }
+      });
+    });
+
+    group('press animation', () {
+      testWidgets('scales on press', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Test',
+            onPressed: () {},
+          ),
+        ));
+
+        // Find the AnimatedScale widget
+        expect(find.byType(AnimatedScale), findsOneWidget);
+      });
+    });
   });
 }

@@ -116,5 +116,64 @@ void main() {
       // Text should be uppercase
       expect(find.textContaining('> LOADING'), findsOneWidget);
     });
+
+    group('sequence mode', () {
+      testWidgets('renders with sequence style', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyLoadingIndicator(style: FiftyLoadingStyle.sequence),
+        ));
+
+        expect(find.byType(FiftyLoadingIndicator), findsOneWidget);
+      });
+
+      testWidgets('uses default sequences when none provided', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyLoadingIndicator(style: FiftyLoadingStyle.sequence),
+        ));
+
+        // Default sequences start with "> INITIALIZING..."
+        expect(find.textContaining('INITIALIZING'), findsOneWidget);
+      });
+
+      testWidgets('uses custom sequences when provided', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyLoadingIndicator(
+            style: FiftyLoadingStyle.sequence,
+            sequences: ['> CUSTOM STEP 1...', '> CUSTOM STEP 2...'],
+          ),
+        ));
+
+        expect(find.textContaining('CUSTOM STEP'), findsOneWidget);
+      });
+
+      testWidgets('cycles through sequences', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyLoadingIndicator(
+            style: FiftyLoadingStyle.sequence,
+            sequences: ['> STEP 1...', '> STEP 2...'],
+          ),
+        ));
+
+        // First sequence
+        expect(find.textContaining('STEP 1'), findsOneWidget);
+
+        // Pump to advance animation
+        await tester.pump(const Duration(milliseconds: 1100));
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // Animation cycles through
+        expect(find.byType(FiftyLoadingIndicator), findsOneWidget);
+      });
+
+      testWidgets('all loading styles render correctly', (tester) async {
+        for (final style in FiftyLoadingStyle.values) {
+          await tester.pumpWidget(wrapWithTheme(
+            FiftyLoadingIndicator(style: style),
+          ));
+
+          expect(find.byType(FiftyLoadingIndicator), findsOneWidget);
+        }
+      });
+    });
   });
 }

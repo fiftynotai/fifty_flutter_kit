@@ -2,6 +2,8 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/glitch_effect.dart';
+
 /// Button variants following the Fifty Design Language.
 ///
 /// Each variant has a distinct visual style:
@@ -35,14 +37,29 @@ enum FiftyButtonSize {
   large,
 }
 
+/// Button shape options for border radius.
+///
+/// - [sharp]: 4px border radius for a more angular look
+/// - [pill]: 100px border radius for a fully rounded pill shape
+enum FiftyButtonShape {
+  /// Sharp corners with 4px border radius.
+  sharp,
+
+  /// Fully rounded pill shape with 100px border radius.
+  pill,
+}
+
 /// A styled button following the Fifty Design Language.
 ///
 /// Features:
 /// - Four variants: primary, secondary, ghost, danger
 /// - Three sizes: small, medium, large
+/// - Two shapes: sharp (4px radius), pill (100px radius)
 /// - Crimson glow on focus/hover
 /// - Loading state with indicator
 /// - Optional leading icon
+/// - Glitch effect on hover when enabled
+/// - Press animation with scale effect
 ///
 /// Example:
 /// ```dart
@@ -51,6 +68,8 @@ enum FiftyButtonSize {
 ///   onPressed: () => handleDeploy(),
 ///   variant: FiftyButtonVariant.primary,
 ///   icon: Icons.rocket_launch,
+///   isGlitch: true,
+///   shape: FiftyButtonShape.sharp,
 /// )
 /// ```
 class FiftyButton extends StatefulWidget {
@@ -62,9 +81,11 @@ class FiftyButton extends StatefulWidget {
     this.icon,
     this.variant = FiftyButtonVariant.primary,
     this.size = FiftyButtonSize.medium,
+    this.shape = FiftyButtonShape.sharp,
     this.loading = false,
     this.disabled = false,
     this.expanded = false,
+    this.isGlitch = false,
   });
 
   /// The button label text.
@@ -86,6 +107,13 @@ class FiftyButton extends StatefulWidget {
   /// The size of the button.
   final FiftyButtonSize size;
 
+  /// The shape of the button.
+  ///
+  /// Determines the border radius:
+  /// - [FiftyButtonShape.sharp]: 4px radius
+  /// - [FiftyButtonShape.pill]: 100px radius (fully rounded)
+  final FiftyButtonShape shape;
+
   /// Whether the button shows a loading indicator.
   ///
   /// When true, the button is disabled and shows a spinner.
@@ -97,6 +125,12 @@ class FiftyButton extends StatefulWidget {
   /// Whether the button expands to fill available width.
   final bool expanded;
 
+  /// Whether to apply glitch effect on hover.
+  ///
+  /// When true, the button text will show RGB chromatic aberration
+  /// on hover. Respects reduced-motion accessibility settings.
+  final bool isGlitch;
+
   @override
   State<FiftyButton> createState() => _FiftyButtonState();
 }
@@ -105,11 +139,13 @@ class _FiftyButtonState extends State<FiftyButton>
     with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   bool _isFocused = false;
+  bool _isPressed = false;
   late AnimationController _loadingController;
   int _dotCount = 1;
 
   bool get _isDisabled => widget.disabled || widget.loading || widget.onPressed == null;
   bool get _showGlow => (_isHovered || _isFocused) && !_isDisabled;
+  bool get _reduceMotion => MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 
   @override
   void initState() {
@@ -152,6 +188,17 @@ class _FiftyButtonState extends State<FiftyButton>
     super.dispose();
   }
 
+  BorderRadius get _borderRadius {
+    switch (widget.shape) {
+      case FiftyButtonShape.sharp:
+        return BorderRadius.circular(4);
+      case FiftyButtonShape.pill:
+        return BorderRadius.circular(100);
+    }
+  }
+
+  double get _pressScale => _isPressed && !_reduceMotion ? 0.95 : 1.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -171,33 +218,43 @@ class _FiftyButtonState extends State<FiftyButton>
       child: MouseRegion(
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
-        child: AnimatedContainer(
-          duration: fifty.fast,
-          curve: fifty.standardCurve,
-          height: height,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: FiftyRadii.standardRadius,
-            border: borderColor != null
-                ? Border.all(
-                    color: borderColor,
-                    width: _showGlow ? 2 : 1,
-                  )
-                : null,
-            boxShadow: _showGlow ? fifty.focusGlow : null,
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: _isDisabled ? null : widget.onPressed,
-              borderRadius: FiftyRadii.standardRadius,
-              splashColor: colorScheme.primary.withValues(alpha: 0.2),
-              highlightColor: Colors.transparent,
-              child: Container(
-                width: widget.expanded ? double.infinity : null,
-                padding: padding,
-                alignment: Alignment.center,
-                child: _buildContent(foregroundColor, fontSize),
+        child: GestureDetector(
+          onTapDown: _isDisabled ? null : (_) => setState(() => _isPressed = true),
+          onTapUp: _isDisabled ? null : (_) => setState(() => _isPressed = false),
+          onTapCancel: _isDisabled ? null : () => setState(() => _isPressed = false),
+          child: AnimatedScale(
+            scale: _pressScale,
+            duration: fifty.fast,
+            curve: fifty.standardCurve,
+            child: AnimatedContainer(
+              duration: fifty.fast,
+              curve: fifty.standardCurve,
+              height: height,
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: _borderRadius,
+                border: borderColor != null
+                    ? Border.all(
+                        color: borderColor,
+                        width: _showGlow ? 2 : 1,
+                      )
+                    : null,
+                boxShadow: _showGlow ? fifty.focusGlow : null,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: _isDisabled ? null : widget.onPressed,
+                  borderRadius: _borderRadius,
+                  splashColor: colorScheme.primary.withValues(alpha: 0.2),
+                  highlightColor: Colors.transparent,
+                  child: Container(
+                    width: widget.expanded ? double.infinity : null,
+                    padding: padding,
+                    alignment: Alignment.center,
+                    child: _buildContent(foregroundColor, fontSize),
+                  ),
+                ),
               ),
             ),
           ),
@@ -241,7 +298,7 @@ class _FiftyButtonState extends State<FiftyButton>
       );
     }
 
-    final textWidget = Text(
+    Widget textWidget = Text(
       widget.label.toUpperCase(),
       style: TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
@@ -251,6 +308,15 @@ class _FiftyButtonState extends State<FiftyButton>
         letterSpacing: FiftyTypography.tight * fontSize,
       ),
     );
+
+    // Wrap text in GlitchEffect if enabled and hovered
+    if (widget.isGlitch && _isHovered && !_isDisabled) {
+      textWidget = GlitchEffect(
+        triggerOnHover: true,
+        intensity: 0.8,
+        child: textWidget,
+      );
+    }
 
     if (widget.icon != null) {
       return Row(

@@ -2,6 +2,58 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
+/// Border style options for FiftyTextField.
+///
+/// - [full]: Full border around the entire field
+/// - [bottom]: Only bottom border (underline style)
+/// - [none]: No border
+enum FiftyBorderStyle {
+  /// Full border around the entire field.
+  full,
+
+  /// Only bottom border (underline style).
+  bottom,
+
+  /// No border.
+  none,
+}
+
+/// Prefix style options for FiftyTextField.
+///
+/// - [chevron]: Shows ">" prefix
+/// - [comment]: Shows "//" prefix
+/// - [none]: No prefix
+/// - [custom]: Custom prefix string
+enum FiftyPrefixStyle {
+  /// Shows ">" prefix for terminal-like appearance.
+  chevron,
+
+  /// Shows "//" prefix for comment-like appearance.
+  comment,
+
+  /// No prefix.
+  none,
+
+  /// Custom prefix string (use customPrefix parameter).
+  custom,
+}
+
+/// Cursor style options for FiftyTextField.
+///
+/// - [line]: Standard thin line cursor
+/// - [block]: Block cursor (terminal style)
+/// - [underscore]: Underscore cursor
+enum FiftyCursorStyle {
+  /// Standard thin line cursor.
+  line,
+
+  /// Block cursor (terminal style).
+  block,
+
+  /// Underscore cursor.
+  underscore,
+}
+
 /// A text field with FDL styling and crimson focus glow.
 ///
 /// Features:
@@ -10,6 +62,9 @@ import 'package:flutter/material.dart';
 /// - JetBrains Mono typography
 /// - Error state styling
 /// - Optional prefix/suffix icons
+/// - Configurable border styles (full, bottom, none)
+/// - Configurable prefix styles (chevron, comment, none, custom)
+/// - Configurable cursor styles (line, block, underscore)
 /// - Terminal mode with "> " prefix (FDL: "Inputs look like terminal command lines")
 ///
 /// Example:
@@ -28,6 +83,16 @@ import 'package:flutter/material.dart';
 ///   controller: _commandController,
 ///   terminalStyle: true,
 ///   hint: 'Enter command',
+/// )
+/// ```
+///
+/// Custom styling example:
+/// ```dart
+/// FiftyTextField(
+///   controller: _controller,
+///   borderStyle: FiftyBorderStyle.bottom,
+///   prefixStyle: FiftyPrefixStyle.comment,
+///   cursorStyle: FiftyCursorStyle.block,
 /// )
 /// ```
 class FiftyTextField extends StatefulWidget {
@@ -51,6 +116,10 @@ class FiftyTextField extends StatefulWidget {
     this.textInputAction,
     this.focusNode,
     this.terminalStyle = false,
+    this.borderStyle = FiftyBorderStyle.full,
+    this.prefixStyle,
+    this.customPrefix,
+    this.cursorStyle = FiftyCursorStyle.line,
   });
 
   /// Controller for the text field.
@@ -109,27 +178,86 @@ class FiftyTextField extends StatefulWidget {
   ///
   /// FDL Rule: "Inputs look like terminal command lines (_blinking cursor)"
   /// When true, shows "> " prefix before input.
+  /// Note: This is a legacy parameter. For more control, use [prefixStyle].
   final bool terminalStyle;
+
+  /// The border style of the text field.
+  ///
+  /// Controls how the border is rendered:
+  /// - [FiftyBorderStyle.full]: Full border around the field (default)
+  /// - [FiftyBorderStyle.bottom]: Only bottom border (underline)
+  /// - [FiftyBorderStyle.none]: No border
+  final FiftyBorderStyle borderStyle;
+
+  /// The prefix style for the text field.
+  ///
+  /// Controls the prefix shown before input:
+  /// - [FiftyPrefixStyle.chevron]: Shows ">"
+  /// - [FiftyPrefixStyle.comment]: Shows "//"
+  /// - [FiftyPrefixStyle.none]: No prefix
+  /// - [FiftyPrefixStyle.custom]: Uses [customPrefix] value
+  ///
+  /// When null, defaults to chevron if [terminalStyle] is true, otherwise none.
+  final FiftyPrefixStyle? prefixStyle;
+
+  /// Custom prefix string when [prefixStyle] is [FiftyPrefixStyle.custom].
+  final String? customPrefix;
+
+  /// The cursor style for the text field.
+  ///
+  /// Controls how the cursor is rendered:
+  /// - [FiftyCursorStyle.line]: Standard thin line cursor (default)
+  /// - [FiftyCursorStyle.block]: Block cursor (terminal style)
+  /// - [FiftyCursorStyle.underscore]: Underscore cursor
+  final FiftyCursorStyle cursorStyle;
 
   @override
   State<FiftyTextField> createState() => _FiftyTextFieldState();
 }
 
-class _FiftyTextFieldState extends State<FiftyTextField> {
+class _FiftyTextFieldState extends State<FiftyTextField>
+    with SingleTickerProviderStateMixin {
   late FocusNode _focusNode;
   bool _isFocused = false;
+  late AnimationController _cursorController;
 
   bool get _hasError => widget.errorText != null;
+
+  /// Determines the effective prefix style, considering legacy terminalStyle.
+  FiftyPrefixStyle get _effectivePrefixStyle {
+    if (widget.prefixStyle != null) return widget.prefixStyle!;
+    if (widget.terminalStyle) return FiftyPrefixStyle.chevron;
+    return FiftyPrefixStyle.none;
+  }
+
+  /// Gets the prefix text based on the prefix style.
+  String? get _prefixText {
+    switch (_effectivePrefixStyle) {
+      case FiftyPrefixStyle.chevron:
+        return '>';
+      case FiftyPrefixStyle.comment:
+        return '//';
+      case FiftyPrefixStyle.custom:
+        return widget.customPrefix;
+      case FiftyPrefixStyle.none:
+        return null;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_handleFocusChange);
+    _cursorController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..repeat(reverse: true);
   }
 
   @override
   void dispose() {
+    _cursorController.dispose();
     if (widget.focusNode == null) {
       _focusNode.dispose();
     } else {
@@ -144,11 +272,81 @@ class _FiftyTextFieldState extends State<FiftyTextField> {
     });
   }
 
+  /// Builds the border based on [widget.borderStyle].
+  InputBorder _buildBorder(Color color, {double width = 1}) {
+    switch (widget.borderStyle) {
+      case FiftyBorderStyle.full:
+        return OutlineInputBorder(
+          borderRadius: FiftyRadii.standardRadius,
+          borderSide: BorderSide(color: color, width: width),
+        );
+      case FiftyBorderStyle.bottom:
+        return UnderlineInputBorder(
+          borderSide: BorderSide(color: color, width: width),
+        );
+      case FiftyBorderStyle.none:
+        return InputBorder.none;
+    }
+  }
+
+  /// Builds the prefix icon widget.
+  Widget? _buildPrefixIcon(ColorScheme colorScheme) {
+    final prefixText = _prefixText;
+    if (prefixText != null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: FiftySpacing.lg),
+        child: Text(
+          prefixText,
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamilyMono,
+            fontSize: FiftyTypography.body,
+            fontWeight: FiftyTypography.medium,
+            color: _isFocused ? colorScheme.primary : FiftyColors.hyperChrome,
+          ),
+        ),
+      );
+    }
+    return widget.prefix;
+  }
+
+  /// Builds the suffix widget with custom cursor if needed.
+  Widget? _buildSuffixIcon(ColorScheme colorScheme) {
+    // For block or underscore cursor, we add a custom cursor widget
+    if (widget.cursorStyle != FiftyCursorStyle.line && _isFocused) {
+      final cursorChar = widget.cursorStyle == FiftyCursorStyle.block
+          ? '\u2588' // Full block character
+          : '_';
+      return Padding(
+        padding: const EdgeInsets.only(right: FiftySpacing.sm),
+        child: AnimatedBuilder(
+          animation: _cursorController,
+          builder: (context, child) {
+            return Opacity(
+              opacity: _cursorController.value,
+              child: Text(
+                cursorChar,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamilyMono,
+                  fontSize: FiftyTypography.body,
+                  fontWeight: FiftyTypography.medium,
+                  color: colorScheme.primary,
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
+    return widget.suffix;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+
+    final hasPrefixText = _prefixText != null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +371,9 @@ class _FiftyTextFieldState extends State<FiftyTextField> {
           duration: fifty.fast,
           curve: fifty.standardCurve,
           decoration: BoxDecoration(
-            borderRadius: FiftyRadii.standardRadius,
+            borderRadius: widget.borderStyle == FiftyBorderStyle.full
+                ? FiftyRadii.standardRadius
+                : null,
             boxShadow: _isFocused && !_hasError ? fifty.focusGlow : null,
           ),
           child: TextField(
@@ -196,7 +396,9 @@ class _FiftyTextFieldState extends State<FiftyTextField> {
                   ? colorScheme.onSurface
                   : colorScheme.onSurface.withValues(alpha: 0.5),
             ),
-            cursorColor: colorScheme.primary,
+            cursorColor: widget.cursorStyle == FiftyCursorStyle.line
+                ? colorScheme.primary
+                : Colors.transparent, // Hide default cursor for custom styles
             decoration: InputDecoration(
               hintText: widget.hint,
               hintStyle: const TextStyle(
@@ -205,30 +407,14 @@ class _FiftyTextFieldState extends State<FiftyTextField> {
                 fontWeight: FiftyTypography.regular,
                 color: FiftyColors.hyperChrome,
               ),
-              // FDL Rule: "Inputs look like terminal command lines"
-              prefixIcon: widget.terminalStyle
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: FiftySpacing.lg),
-                      child: Text(
-                        '>',
-                        style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.body,
-                          fontWeight: FiftyTypography.medium,
-                          color: _isFocused
-                              ? colorScheme.primary
-                              : FiftyColors.hyperChrome,
-                        ),
-                      ),
-                    )
-                  : widget.prefix,
-              prefixIconConstraints: widget.terminalStyle
+              prefixIcon: _buildPrefixIcon(colorScheme),
+              prefixIconConstraints: hasPrefixText
                   ? const BoxConstraints(minWidth: 24, minHeight: 0)
                   : null,
               prefixIconColor: _isFocused
                   ? colorScheme.primary
                   : FiftyColors.hyperChrome,
-              suffixIcon: widget.suffix,
+              suffixIcon: _buildSuffixIcon(colorScheme),
               suffixIconColor: FiftyColors.hyperChrome,
               filled: true,
               fillColor: FiftyColors.gunmetal,
@@ -236,37 +422,13 @@ class _FiftyTextFieldState extends State<FiftyTextField> {
                 horizontal: FiftySpacing.lg,
                 vertical: FiftySpacing.md,
               ),
-              border: OutlineInputBorder(
-                borderRadius: FiftyRadii.standardRadius,
-                borderSide: const BorderSide(color: FiftyColors.border),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: FiftyRadii.standardRadius,
-                borderSide: const BorderSide(color: FiftyColors.border),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: FiftyRadii.standardRadius,
-                borderSide: BorderSide(
-                  color: colorScheme.primary,
-                  width: 2,
-                ),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: FiftyRadii.standardRadius,
-                borderSide: BorderSide(color: colorScheme.error),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: FiftyRadii.standardRadius,
-                borderSide: BorderSide(
-                  color: colorScheme.error,
-                  width: 2,
-                ),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: FiftyRadii.standardRadius,
-                borderSide: BorderSide(
-                  color: FiftyColors.border.withValues(alpha: 0.5),
-                ),
+              border: _buildBorder(FiftyColors.border),
+              enabledBorder: _buildBorder(FiftyColors.border),
+              focusedBorder: _buildBorder(colorScheme.primary, width: 2),
+              errorBorder: _buildBorder(colorScheme.error),
+              focusedErrorBorder: _buildBorder(colorScheme.error, width: 2),
+              disabledBorder: _buildBorder(
+                FiftyColors.border.withValues(alpha: 0.5),
               ),
             ),
           ),
