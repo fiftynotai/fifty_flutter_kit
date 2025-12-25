@@ -24,7 +24,7 @@ class FiftyTextTheme {
   /// - `bodyLarge`: Body (16px) - JetBrains Mono
   /// - `bodySmall`: Mono (12px) - JetBrains Mono
   static TextTheme textTheme() {
-    return TextTheme(
+    return const TextTheme(
       // Display styles - Monument Extended (Hype)
       displayLarge: TextStyle(
         fontFamily: FiftyTypography.fontFamilyHeadline,

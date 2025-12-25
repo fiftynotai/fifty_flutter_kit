@@ -36,8 +36,8 @@ void main() {
         expect(theme.cardColor, FiftyColors.gunmetal);
       });
 
-      test('dialogBackgroundColor is gunmetal', () {
-        expect(theme.dialogBackgroundColor, FiftyColors.gunmetal);
+      test('dialogTheme backgroundColor is gunmetal', () {
+        expect(theme.dialogTheme.backgroundColor, FiftyColors.gunmetal);
       });
 
       test('shadowColor is transparent', () {

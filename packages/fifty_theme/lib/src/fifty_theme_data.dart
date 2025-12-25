@@ -54,7 +54,6 @@ class FiftyTheme {
       scaffoldBackgroundColor: FiftyColors.voidBlack,
       canvasColor: FiftyColors.voidBlack,
       cardColor: FiftyColors.gunmetal,
-      dialogBackgroundColor: FiftyColors.gunmetal,
 
       // Typography
       textTheme: textTheme,
@@ -125,7 +124,6 @@ class FiftyTheme {
       scaffoldBackgroundColor: FiftyColors.terminalWhite,
       canvasColor: FiftyColors.terminalWhite,
       cardColor: Colors.white,
-      dialogBackgroundColor: Colors.white,
 
       // Typography
       textTheme: textTheme,
@@ -136,7 +134,7 @@ class FiftyTheme {
       shadowColor: Colors.transparent,
 
       // Component themes (reuse dark themes - they adapt via colorScheme)
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: FiftyColors.terminalWhite,
         foregroundColor: FiftyColors.voidBlack,
         elevation: 0,
@@ -149,7 +147,7 @@ class FiftyTheme {
           fontWeight: FiftyTypography.medium,
           color: FiftyColors.voidBlack,
         ),
-        iconTheme: const IconThemeData(
+        iconTheme: IconThemeData(
           color: FiftyColors.voidBlack,
           size: 24,
         ),
@@ -170,7 +168,7 @@ class FiftyTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: FiftyColors.hyperChrome.withValues(alpha: 0.1),
-        contentPadding: EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
@@ -194,19 +192,19 @@ class FiftyTheme {
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
           borderSide: const BorderSide(color: FiftyColors.error, width: 2),
         ),
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.regular,
           color: FiftyColors.hyperChrome,
         ),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.regular,
           color: FiftyColors.hyperChrome,
         ),
-        floatingLabelStyle: TextStyle(
+        floatingLabelStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.medium,
@@ -221,13 +219,13 @@ class FiftyTheme {
           borderRadius: BorderRadius.circular(FiftyRadii.smooth),
           side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
         ),
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyHeadline,
           fontSize: 20,
           fontWeight: FiftyTypography.ultrabold,
           color: FiftyColors.voidBlack,
         ),
-        contentTextStyle: TextStyle(
+        contentTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.body,
           fontWeight: FiftyTypography.regular,
@@ -236,7 +234,7 @@ class FiftyTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: FiftyColors.voidBlack,
-        contentTextStyle: TextStyle(
+        contentTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.regular,
@@ -256,7 +254,7 @@ class FiftyTheme {
       checkboxTheme: FiftyComponentThemes.checkboxTheme(colorScheme),
       radioTheme: FiftyComponentThemes.radioTheme(colorScheme),
       switchTheme: FiftyComponentThemes.switchTheme(colorScheme),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: FiftyColors.terminalWhite,
         selectedItemColor: FiftyColors.crimsonPulse,
         unselectedItemColor: FiftyColors.hyperChrome,
@@ -277,13 +275,13 @@ class FiftyTheme {
         backgroundColor: Colors.white,
         selectedIconTheme: const IconThemeData(color: FiftyColors.crimsonPulse),
         unselectedIconTheme: const IconThemeData(color: FiftyColors.hyperChrome),
-        selectedLabelTextStyle: TextStyle(
+        selectedLabelTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.mono,
           fontWeight: FiftyTypography.medium,
           color: FiftyColors.crimsonPulse,
         ),
-        unselectedLabelTextStyle: TextStyle(
+        unselectedLabelTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.mono,
           fontWeight: FiftyTypography.regular,
@@ -299,19 +297,19 @@ class FiftyTheme {
         backgroundColor: FiftyColors.hyperChrome.withValues(alpha: 0.1),
         selectedColor: FiftyColors.crimsonPulse.withValues(alpha: 0.15),
         disabledColor: FiftyColors.hyperChrome.withValues(alpha: 0.05),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.mono,
           fontWeight: FiftyTypography.regular,
           color: FiftyColors.voidBlack,
         ),
-        secondaryLabelStyle: TextStyle(
+        secondaryLabelStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.mono,
           fontWeight: FiftyTypography.regular,
           color: FiftyColors.hyperChrome,
         ),
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.xs,
         ),
@@ -331,13 +329,13 @@ class FiftyTheme {
           color: FiftyColors.voidBlack,
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.mono,
           fontWeight: FiftyTypography.regular,
           color: FiftyColors.terminalWhite,
         ),
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.sm,
         ),
@@ -350,7 +348,7 @@ class FiftyTheme {
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
           side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.regular,
@@ -370,7 +368,7 @@ class FiftyTheme {
           ),
         ),
       ),
-      bottomSheetTheme: BottomSheetThemeData(
+      bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.white,
         elevation: 0,
         shadowColor: Colors.transparent,
@@ -382,11 +380,11 @@ class FiftyTheme {
         modalBackgroundColor: Colors.white,
         modalElevation: 0,
       ),
-      drawerTheme: DrawerThemeData(
+      drawerTheme: const DrawerThemeData(
         backgroundColor: Colors.white,
         elevation: 0,
         shadowColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(),
+        shape: RoundedRectangleBorder(),
       ),
       listTileTheme: ListTileThemeData(
         tileColor: Colors.transparent,
@@ -394,20 +392,20 @@ class FiftyTheme {
         iconColor: FiftyColors.hyperChrome,
         selectedColor: FiftyColors.crimsonPulse,
         textColor: FiftyColors.voidBlack,
-        contentPadding: EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.sm,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
         ),
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.body,
           fontWeight: FiftyTypography.regular,
           color: FiftyColors.voidBlack,
         ),
-        subtitleTextStyle: TextStyle(
+        subtitleTextStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: FiftyTypography.mono,
           fontWeight: FiftyTypography.regular,

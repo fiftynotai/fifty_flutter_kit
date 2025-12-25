@@ -155,14 +155,14 @@ void main() {
 
       setUp(() {
         extensionA = FiftyThemeExtension.standard();
-        extensionB = FiftyThemeExtension(
+        extensionB = const FiftyThemeExtension(
           igrisGreen: Colors.blue,
-          focusGlow: const [],
-          strongFocusGlow: const [],
+          focusGlow: [],
+          strongFocusGlow: [],
           instant: Duration.zero,
-          fast: const Duration(milliseconds: 200),
-          compiling: const Duration(milliseconds: 400),
-          systemLoad: const Duration(milliseconds: 1000),
+          fast: Duration(milliseconds: 200),
+          compiling: Duration(milliseconds: 400),
+          systemLoad: Duration(milliseconds: 1000),
           standardCurve: Curves.linear,
           enterCurve: Curves.bounceIn,
           exitCurve: Curves.bounceOut,

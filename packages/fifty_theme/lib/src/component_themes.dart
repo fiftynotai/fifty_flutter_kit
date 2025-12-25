@@ -22,14 +22,14 @@ class FiftyComponentThemes {
         foregroundColor: FiftyColors.terminalWhite,
         elevation: 0,
         shadowColor: Colors.transparent,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.medium,
@@ -57,15 +57,15 @@ class FiftyComponentThemes {
         foregroundColor: FiftyColors.terminalWhite,
         elevation: 0,
         shadowColor: Colors.transparent,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
         ),
-        side: BorderSide(color: FiftyColors.border),
-        textStyle: TextStyle(
+        side: const BorderSide(color: FiftyColors.border),
+        textStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.medium,
@@ -76,7 +76,7 @@ class FiftyComponentThemes {
               states.contains(WidgetState.focused)) {
             return const BorderSide(color: FiftyColors.crimsonPulse);
           }
-          return BorderSide(color: FiftyColors.border);
+          return const BorderSide(color: FiftyColors.border);
         }),
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
@@ -100,14 +100,14 @@ class FiftyComponentThemes {
         foregroundColor: FiftyColors.crimsonPulse,
         elevation: 0,
         shadowColor: Colors.transparent,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.sm,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FiftyRadii.standard),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontFamily: FiftyTypography.fontFamilyMono,
           fontSize: 14,
           fontWeight: FiftyTypography.medium,
@@ -136,7 +136,7 @@ class FiftyComponentThemes {
       shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        side: BorderSide(color: FiftyColors.border),
+        side: const BorderSide(color: FiftyColors.border),
       ),
       margin: EdgeInsets.zero,
     );
@@ -149,17 +149,17 @@ class FiftyComponentThemes {
     return InputDecorationTheme(
       filled: true,
       fillColor: FiftyColors.gunmetal,
-      contentPadding: EdgeInsets.symmetric(
+      contentPadding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.md,
       ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: BorderSide(color: FiftyColors.border),
+        borderSide: const BorderSide(color: FiftyColors.border),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: BorderSide(color: FiftyColors.border),
+        borderSide: const BorderSide(color: FiftyColors.border),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
@@ -173,19 +173,19 @@ class FiftyComponentThemes {
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
         borderSide: const BorderSide(color: FiftyColors.error, width: 2),
       ),
-      hintStyle: TextStyle(
+      hintStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.regular,
         color: FiftyColors.hyperChrome,
       ),
-      labelStyle: TextStyle(
+      labelStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.regular,
         color: FiftyColors.hyperChrome,
       ),
-      floatingLabelStyle: TextStyle(
+      floatingLabelStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.medium,
@@ -198,7 +198,7 @@ class FiftyComponentThemes {
   ///
   /// Maintains deep background for immersive feel.
   static AppBarTheme appBarTheme(ColorScheme colorScheme) {
-    return AppBarTheme(
+    return const AppBarTheme(
       backgroundColor: FiftyColors.voidBlack,
       foregroundColor: FiftyColors.terminalWhite,
       elevation: 0,
@@ -211,7 +211,7 @@ class FiftyComponentThemes {
         fontWeight: FiftyTypography.medium,
         color: FiftyColors.terminalWhite,
       ),
-      iconTheme: const IconThemeData(
+      iconTheme: IconThemeData(
         color: FiftyColors.terminalWhite,
         size: 24,
       ),
@@ -228,15 +228,15 @@ class FiftyComponentThemes {
       shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.smooth),
-        side: BorderSide(color: FiftyColors.border),
+        side: const BorderSide(color: FiftyColors.border),
       ),
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyHeadline,
         fontSize: 20,
         fontWeight: FiftyTypography.ultrabold,
         color: FiftyColors.terminalWhite,
       ),
-      contentTextStyle: TextStyle(
+      contentTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.body,
         fontWeight: FiftyTypography.regular,
@@ -251,7 +251,7 @@ class FiftyComponentThemes {
   static SnackBarThemeData snackBarTheme(ColorScheme colorScheme) {
     return SnackBarThemeData(
       backgroundColor: FiftyColors.gunmetal,
-      contentTextStyle: TextStyle(
+      contentTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.regular,
@@ -259,7 +259,7 @@ class FiftyComponentThemes {
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        side: BorderSide(color: FiftyColors.border),
+        side: const BorderSide(color: FiftyColors.border),
       ),
       behavior: SnackBarBehavior.floating,
       elevation: 0,
@@ -270,7 +270,7 @@ class FiftyComponentThemes {
   ///
   /// Uses standard border color for subtle separation.
   static DividerThemeData dividerTheme(ColorScheme colorScheme) {
-    return DividerThemeData(
+    return const DividerThemeData(
       color: FiftyColors.border,
       thickness: 1,
       space: FiftySpacing.lg,
@@ -289,7 +289,7 @@ class FiftyComponentThemes {
         return Colors.transparent;
       }),
       checkColor: WidgetStateProperty.all(FiftyColors.terminalWhite),
-      side: BorderSide(color: FiftyColors.border, width: 2),
+      side: const BorderSide(color: FiftyColors.border, width: 2),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
       ),
@@ -342,7 +342,7 @@ class FiftyComponentThemes {
   static BottomNavigationBarThemeData bottomNavigationBarTheme(
     ColorScheme colorScheme,
   ) {
-    return BottomNavigationBarThemeData(
+    return const BottomNavigationBarThemeData(
       backgroundColor: FiftyColors.voidBlack,
       selectedItemColor: FiftyColors.crimsonPulse,
       unselectedItemColor: FiftyColors.hyperChrome,
@@ -369,13 +369,13 @@ class FiftyComponentThemes {
       backgroundColor: FiftyColors.gunmetal,
       selectedIconTheme: const IconThemeData(color: FiftyColors.crimsonPulse),
       unselectedIconTheme: const IconThemeData(color: FiftyColors.hyperChrome),
-      selectedLabelTextStyle: TextStyle(
+      selectedLabelTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.medium,
         color: FiftyColors.crimsonPulse,
       ),
-      unselectedLabelTextStyle: TextStyle(
+      unselectedLabelTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.regular,
@@ -390,17 +390,17 @@ class FiftyComponentThemes {
   ///
   /// Uses Crimson Pulse for selected tab indicator.
   static TabBarThemeData tabBarTheme(ColorScheme colorScheme) {
-    return TabBarThemeData(
+    return const TabBarThemeData(
       indicatorColor: FiftyColors.crimsonPulse,
       labelColor: FiftyColors.terminalWhite,
       unselectedLabelColor: FiftyColors.hyperChrome,
       indicatorSize: TabBarIndicatorSize.tab,
-      labelStyle: const TextStyle(
+      labelStyle: TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.medium,
       ),
-      unselectedLabelStyle: const TextStyle(
+      unselectedLabelStyle: TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.regular,
@@ -435,23 +435,23 @@ class FiftyComponentThemes {
       backgroundColor: FiftyColors.gunmetal,
       selectedColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
       disabledColor: FiftyColors.gunmetal.withValues(alpha: 0.5),
-      labelStyle: TextStyle(
+      labelStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.regular,
         color: FiftyColors.terminalWhite,
       ),
-      secondaryLabelStyle: TextStyle(
+      secondaryLabelStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.regular,
         color: FiftyColors.hyperChrome,
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.xs,
       ),
-      side: BorderSide(color: FiftyColors.border),
+      side: const BorderSide(color: FiftyColors.border),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.full),
       ),
@@ -464,7 +464,7 @@ class FiftyComponentThemes {
   static ProgressIndicatorThemeData progressIndicatorTheme(
     ColorScheme colorScheme,
   ) {
-    return ProgressIndicatorThemeData(
+    return const ProgressIndicatorThemeData(
       color: FiftyColors.crimsonPulse,
       linearTrackColor: FiftyColors.gunmetal,
       circularTrackColor: FiftyColors.gunmetal,
@@ -481,7 +481,7 @@ class FiftyComponentThemes {
       thumbColor: FiftyColors.crimsonPulse,
       overlayColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
       valueIndicatorColor: FiftyColors.crimsonPulse,
-      valueIndicatorTextStyle: TextStyle(
+      valueIndicatorTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.medium,
@@ -500,13 +500,13 @@ class FiftyComponentThemes {
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
         border: Border.all(color: FiftyColors.border),
       ),
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.regular,
         color: FiftyColors.terminalWhite,
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
@@ -523,9 +523,9 @@ class FiftyComponentThemes {
       shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        side: BorderSide(color: FiftyColors.border),
+        side: const BorderSide(color: FiftyColors.border),
       ),
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: 14,
         fontWeight: FiftyTypography.regular,
@@ -547,7 +547,7 @@ class FiftyComponentThemes {
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(FiftyRadii.standard),
-            side: BorderSide(color: FiftyColors.border),
+            side: const BorderSide(color: FiftyColors.border),
           ),
         ),
       ),
@@ -558,7 +558,7 @@ class FiftyComponentThemes {
   ///
   /// Uses Gunmetal background with smooth radius at top.
   static BottomSheetThemeData bottomSheetTheme(ColorScheme colorScheme) {
-    return BottomSheetThemeData(
+    return const BottomSheetThemeData(
       backgroundColor: FiftyColors.gunmetal,
       elevation: 0,
       shadowColor: Colors.transparent,
@@ -576,11 +576,11 @@ class FiftyComponentThemes {
   ///
   /// Uses Gunmetal background.
   static DrawerThemeData drawerTheme(ColorScheme colorScheme) {
-    return DrawerThemeData(
+    return const DrawerThemeData(
       backgroundColor: FiftyColors.gunmetal,
       elevation: 0,
       shadowColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(),
+      shape: RoundedRectangleBorder(),
     );
   }
 
@@ -594,20 +594,20 @@ class FiftyComponentThemes {
       iconColor: FiftyColors.hyperChrome,
       selectedColor: FiftyColors.crimsonPulse,
       textColor: FiftyColors.terminalWhite,
-      contentPadding: EdgeInsets.symmetric(
+      contentPadding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.sm,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(FiftyRadii.standard),
       ),
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.body,
         fontWeight: FiftyTypography.regular,
         color: FiftyColors.terminalWhite,
       ),
-      subtitleTextStyle: TextStyle(
+      subtitleTextStyle: const TextStyle(
         fontFamily: FiftyTypography.fontFamilyMono,
         fontSize: FiftyTypography.mono,
         fontWeight: FiftyTypography.regular,
