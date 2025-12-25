@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 /// - JetBrains Mono typography
 /// - Error state styling
 /// - Optional prefix/suffix icons
+/// - Terminal mode with "> " prefix (FDL: "Inputs look like terminal command lines")
 ///
 /// Example:
 /// ```dart
@@ -18,6 +19,15 @@ import 'package:flutter/material.dart';
 ///   label: 'Email',
 ///   hint: 'Enter your email',
 ///   prefix: Icon(Icons.email),
+/// )
+/// ```
+///
+/// Terminal mode example:
+/// ```dart
+/// FiftyTextField(
+///   controller: _commandController,
+///   terminalStyle: true,
+///   hint: 'Enter command',
 /// )
 /// ```
 class FiftyTextField extends StatefulWidget {
@@ -40,6 +50,7 @@ class FiftyTextField extends StatefulWidget {
     this.keyboardType,
     this.textInputAction,
     this.focusNode,
+    this.terminalStyle = false,
   });
 
   /// Controller for the text field.
@@ -93,6 +104,12 @@ class FiftyTextField extends StatefulWidget {
 
   /// Focus node for the field.
   final FocusNode? focusNode;
+
+  /// Whether to display in terminal style.
+  ///
+  /// FDL Rule: "Inputs look like terminal command lines (_blinking cursor)"
+  /// When true, shows "> " prefix before input.
+  final bool terminalStyle;
 
   @override
   State<FiftyTextField> createState() => _FiftyTextFieldState();
@@ -188,7 +205,26 @@ class _FiftyTextFieldState extends State<FiftyTextField> {
                 fontWeight: FiftyTypography.regular,
                 color: FiftyColors.hyperChrome,
               ),
-              prefixIcon: widget.prefix,
+              // FDL Rule: "Inputs look like terminal command lines"
+              prefixIcon: widget.terminalStyle
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: FiftySpacing.lg),
+                      child: Text(
+                        '>',
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamilyMono,
+                          fontSize: FiftyTypography.body,
+                          fontWeight: FiftyTypography.medium,
+                          color: _isFocused
+                              ? colorScheme.primary
+                              : FiftyColors.hyperChrome,
+                        ),
+                      ),
+                    )
+                  : widget.prefix,
+              prefixIconConstraints: widget.terminalStyle
+                  ? const BoxConstraints(minWidth: 24, minHeight: 0)
+                  : null,
               prefixIconColor: _isFocused
                   ? colorScheme.primary
                   : FiftyColors.hyperChrome,

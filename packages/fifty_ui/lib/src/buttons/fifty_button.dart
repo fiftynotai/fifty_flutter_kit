@@ -101,12 +101,56 @@ class FiftyButton extends StatefulWidget {
   State<FiftyButton> createState() => _FiftyButtonState();
 }
 
-class _FiftyButtonState extends State<FiftyButton> {
+class _FiftyButtonState extends State<FiftyButton>
+    with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   bool _isFocused = false;
+  late AnimationController _loadingController;
+  int _dotCount = 1;
 
   bool get _isDisabled => widget.disabled || widget.loading || widget.onPressed == null;
   bool get _showGlow => (_isHovered || _isFocused) && !_isDisabled;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadingController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 450), // 3 dots * 150ms
+    )..addListener(_updateDots);
+
+    if (widget.loading) {
+      _loadingController.repeat();
+    }
+  }
+
+  void _updateDots() {
+    final newDotCount = (_loadingController.value * 3).floor() + 1;
+    if (newDotCount != _dotCount) {
+      setState(() {
+        _dotCount = newDotCount.clamp(1, 3);
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(FiftyButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.loading != oldWidget.loading) {
+      if (widget.loading) {
+        _loadingController.repeat();
+      } else {
+        _loadingController.stop();
+        _dotCount = 1;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _loadingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,12 +208,35 @@ class _FiftyButtonState extends State<FiftyButton> {
 
   Widget _buildContent(Color foregroundColor, double fontSize) {
     if (widget.loading) {
-      return SizedBox(
-        width: fontSize,
-        height: fontSize,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation(foregroundColor),
+      // FDL Rule: "Loading: Never use a spinner. Use text sequences."
+      // Check for reduced motion preference
+      final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+      final dots = reduceMotion ? '...' : ('.' * _dotCount);
+      final padding = reduceMotion ? '' : ('.' * (3 - _dotCount));
+
+      return Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: dots),
+            // Invisible padding to prevent layout shift
+            TextSpan(
+              text: padding,
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamilyMono,
+                fontSize: fontSize,
+                fontWeight: FiftyTypography.medium,
+                color: Colors.transparent,
+                letterSpacing: FiftyTypography.tight * fontSize,
+              ),
+            ),
+          ],
+        ),
+        style: TextStyle(
+          fontFamily: FiftyTypography.fontFamilyMono,
+          fontSize: fontSize,
+          fontWeight: FiftyTypography.medium,
+          color: foregroundColor,
+          letterSpacing: FiftyTypography.tight * fontSize,
         ),
       );
     }

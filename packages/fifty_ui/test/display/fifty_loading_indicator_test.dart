@@ -6,52 +6,115 @@ import '../test_helpers.dart';
 
 void main() {
   group('FiftyLoadingIndicator', () {
-    testWidgets('renders', (tester) async {
+    testWidgets('renders with default text', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
         const FiftyLoadingIndicator(),
       ));
 
       expect(find.byType(FiftyLoadingIndicator), findsOneWidget);
+      // Default text is "LOADING" with "> " prefix
+      expect(find.textContaining('> LOADING'), findsOneWidget);
     });
 
-    testWidgets('renders with custom size', (tester) async {
+    testWidgets('renders with custom text', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
-        const FiftyLoadingIndicator(size: 48),
+        const FiftyLoadingIndicator(text: 'PROCESSING'),
       ));
 
-      final sizedBox = tester.widget<SizedBox>(
-        find.descendant(
-          of: find.byType(FiftyLoadingIndicator),
-          matching: find.byType(SizedBox),
-        ),
-      );
-      expect(sizedBox.width, 48);
-      expect(sizedBox.height, 48);
+      expect(find.textContaining('> PROCESSING'), findsOneWidget);
     });
 
-    testWidgets('renders with custom stroke width', (tester) async {
+    testWidgets('renders with dots style by default', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
-        const FiftyLoadingIndicator(strokeWidth: 4),
+        const FiftyLoadingIndicator(),
       ));
 
-      expect(find.byType(FiftyLoadingIndicator), findsOneWidget);
+      // Should contain dots
+      await tester.pump(const Duration(milliseconds: 150));
+      expect(find.textContaining('.'), findsOneWidget);
     });
 
-    testWidgets('renders with custom color', (tester) async {
+    testWidgets('renders with static style', (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        const FiftyLoadingIndicator(style: FiftyLoadingStyle.static),
+      ));
+
+      // Static always shows "..."
+      expect(find.textContaining('...'), findsOneWidget);
+    });
+
+    testWidgets('respects size parameter - small', (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        const FiftyLoadingIndicator(size: FiftyLoadingSize.small),
+      ));
+
+      final text = tester.widget<RichText>(find.byType(RichText).first);
+      final span = text.text as TextSpan;
+      expect(span.style?.fontSize, 12);
+    });
+
+    testWidgets('respects size parameter - medium', (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        const FiftyLoadingIndicator(size: FiftyLoadingSize.medium),
+      ));
+
+      final text = tester.widget<RichText>(find.byType(RichText).first);
+      final span = text.text as TextSpan;
+      expect(span.style?.fontSize, 14);
+    });
+
+    testWidgets('respects size parameter - large', (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        const FiftyLoadingIndicator(size: FiftyLoadingSize.large),
+      ));
+
+      final text = tester.widget<RichText>(find.byType(RichText).first);
+      final span = text.text as TextSpan;
+      expect(span.style?.fontSize, 16);
+    });
+
+    testWidgets('respects custom color', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
         const FiftyLoadingIndicator(color: Colors.blue),
       ));
 
+      final text = tester.widget<RichText>(find.byType(RichText).first);
+      final span = text.text as TextSpan;
+      expect(span.style?.color, Colors.blue);
+    });
+
+    testWidgets('animates dots over time', (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        const FiftyLoadingIndicator(style: FiftyLoadingStyle.dots),
+      ));
+
+      // Animation should change the dot count
+      await tester.pump(const Duration(milliseconds: 0));
+      await tester.pump(const Duration(milliseconds: 150));
+      await tester.pump(const Duration(milliseconds: 150));
+      await tester.pump(const Duration(milliseconds: 150));
+
+      // Just verify it's still rendering
       expect(find.byType(FiftyLoadingIndicator), findsOneWidget);
     });
 
-    testWidgets('animates', (tester) async {
+    testWidgets('does NOT use CircularProgressIndicator (FDL compliance)',
+        (tester) async {
       await tester.pumpWidget(wrapWithTheme(
         const FiftyLoadingIndicator(),
       ));
 
-      await tester.pump(const Duration(milliseconds: 500));
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      // FDL Rule: "Loading: Never use a spinner. Use text sequences."
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+    });
+
+    testWidgets('uppercase text is enforced', (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        const FiftyLoadingIndicator(text: 'loading'),
+      ));
+
+      // Text should be uppercase
+      expect(find.textContaining('> LOADING'), findsOneWidget);
     });
   });
 }

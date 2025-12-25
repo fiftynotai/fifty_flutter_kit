@@ -186,17 +186,24 @@ Future<T?> showFiftyDialog<T>({
     barrierColor: FiftyColors.voidBlack.withValues(alpha: 0.8),
     transitionDuration: FiftyMotion.compiling,
     pageBuilder: (context, animation, secondaryAnimation) => builder(context),
+    // FDL Rule: "NO FADES. Use slides, wipes, reveals."
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       return SlideTransition(
         position: Tween<Offset>(
-          begin: const Offset(0, -0.1),
+          begin: const Offset(0, -0.15),
           end: Offset.zero,
         ).animate(CurvedAnimation(
           parent: animation,
           curve: FiftyMotion.enter,
         )),
-        child: FadeTransition(
-          opacity: animation,
+        child: ScaleTransition(
+          scale: Tween<double>(
+            begin: 0.95,
+            end: 1.0,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: FiftyMotion.enter,
+          )),
           child: child,
         ),
       );

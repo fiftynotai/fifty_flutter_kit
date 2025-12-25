@@ -300,6 +300,12 @@ class _InputsPageState extends State<InputsPage> {
             hint: 'Enter a longer message...',
             maxLines: 4,
           ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            label: 'Terminal Style',
+            hint: 'Enter command',
+            terminalStyle: true,
+          ),
         ],
       ),
     );
@@ -394,13 +400,27 @@ class _DisplayPageState extends State<DisplayPage> {
           ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Loading Indicator'),
-          const Row(
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FiftyLoadingIndicator(size: 20),
-              SizedBox(width: FiftySpacing.lg),
-              FiftyLoadingIndicator(size: 32),
-              SizedBox(width: FiftySpacing.lg),
-              FiftyLoadingIndicator(size: 48, color: FiftyColors.igrisGreen),
+              // FDL-compliant text-based loading indicators
+              FiftyLoadingIndicator(size: FiftyLoadingSize.small),
+              SizedBox(height: FiftySpacing.md),
+              FiftyLoadingIndicator(size: FiftyLoadingSize.medium),
+              SizedBox(height: FiftySpacing.md),
+              FiftyLoadingIndicator(
+                size: FiftyLoadingSize.large,
+                color: FiftyColors.igrisGreen,
+              ),
+              SizedBox(height: FiftySpacing.md),
+              // Custom loading text
+              FiftyLoadingIndicator(text: 'PROCESSING'),
+              SizedBox(height: FiftySpacing.md),
+              // Static style (no animation)
+              FiftyLoadingIndicator(
+                text: 'UPLOADING',
+                style: FiftyLoadingStyle.static,
+              ),
             ],
           ),
           const SizedBox(height: FiftySpacing.xl),

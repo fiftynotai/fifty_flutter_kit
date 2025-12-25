@@ -60,7 +60,7 @@
 /// - [FiftyBadge] - Status indicator
 /// - [FiftyAvatar] - User avatar
 /// - [FiftyProgressBar] - Linear progress indicator
-/// - [FiftyLoadingIndicator] - Circular loading spinner
+/// - [FiftyLoadingIndicator] - FDL-compliant text-based loading indicator
 ///
 /// ### Feedback
 /// - [FiftySnackbar] - Toast notification

@@ -55,8 +55,26 @@ void main() {
         ),
       ));
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      // FDL Rule: "Loading: Never use a spinner. Use text sequences."
+      // Loading state shows animated dots instead of CircularProgressIndicator
+      expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.text('TEST'), findsNothing);
+      // Should contain dots (animated loading indicator)
+      expect(find.byType(RichText), findsOneWidget);
+    });
+
+    testWidgets('loading state uses FDL-compliant dots (no spinner)',
+        (tester) async {
+      await tester.pumpWidget(wrapWithTheme(
+        FiftyButton(
+          label: 'Test',
+          onPressed: () {},
+          loading: true,
+        ),
+      ));
+
+      // FDL compliance check - no spinners allowed
+      expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
     testWidgets('renders with icon', (tester) async {

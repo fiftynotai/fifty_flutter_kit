@@ -8,12 +8,14 @@ import 'package:flutter/material.dart';
 /// - Gunmetal background with border outline (no shadow)
 /// - Optional tap interaction with ripple effect
 /// - Selected state with crimson border and subtle glow
+/// - Scanline effect on hover (FDL: "Cards: Hovering triggers a scanline effect")
 ///
 /// Example:
 /// ```dart
 /// FiftyCard(
 ///   onTap: () => selectItem(),
 ///   selected: isSelected,
+///   scanlineOnHover: true,
 ///   child: CardContent(),
 /// )
 /// ```
@@ -28,6 +30,7 @@ class FiftyCard extends StatefulWidget {
     this.selected = false,
     this.borderRadius,
     this.backgroundColor,
+    this.scanlineOnHover = true,
   });
 
   /// The content of the card.
@@ -61,17 +64,56 @@ class FiftyCard extends StatefulWidget {
   /// Defaults to [FiftyColors.gunmetal].
   final Color? backgroundColor;
 
+  /// Whether to show the scanline effect on hover.
+  ///
+  /// FDL Rule: "Cards: Hovering triggers a scanline effect"
+  /// Defaults to true.
+  final bool scanlineOnHover;
+
   @override
   State<FiftyCard> createState() => _FiftyCardState();
 }
 
-class _FiftyCardState extends State<FiftyCard> {
+class _FiftyCardState extends State<FiftyCard>
+    with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   bool _isFocused = false;
+  late AnimationController _scanlineController;
 
   bool get _isInteractive => widget.onTap != null;
   bool get _showGlow =>
       widget.selected || ((_isHovered || _isFocused) && _isInteractive);
+  bool get _showScanline =>
+      widget.scanlineOnHover && _isHovered && !_reduceMotion;
+  bool get _reduceMotion =>
+      MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scanlineController = AnimationController(
+      vsync: this,
+      duration: FiftyMotion.compiling, // 300ms
+    );
+  }
+
+  @override
+  void dispose() {
+    _scanlineController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverStart() {
+    setState(() => _isHovered = true);
+    if (widget.scanlineOnHover && !_reduceMotion) {
+      _scanlineController.forward(from: 0);
+    }
+  }
+
+  void _onHoverEnd() {
+    setState(() => _isHovered = false);
+    _scanlineController.reset();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +156,8 @@ class _FiftyCardState extends State<FiftyCard> {
           ? (focused) => setState(() => _isFocused = focused)
           : null,
       child: MouseRegion(
-        onEnter: _isInteractive ? (_) => setState(() => _isHovered = true) : null,
-        onExit: _isInteractive ? (_) => setState(() => _isHovered = false) : null,
+        onEnter: _isInteractive ? (_) => _onHoverStart() : null,
+        onExit: _isInteractive ? (_) => _onHoverEnd() : null,
         child: AnimatedContainer(
           duration: fifty.fast,
           curve: fifty.standardCurve,
@@ -131,10 +173,86 @@ class _FiftyCardState extends State<FiftyCard> {
           ),
           child: ClipRRect(
             borderRadius: effectiveBorderRadius,
-            child: cardContent,
+            child: Stack(
+              children: [
+                cardContent,
+                // FDL Rule: "Cards: Hovering triggers a scanline effect"
+                if (widget.scanlineOnHover)
+                  Positioned.fill(
+                    child: AnimatedBuilder(
+                      animation: _scanlineController,
+                      builder: (context, child) {
+                        if (!_showScanline && _scanlineController.value == 0) {
+                          return const SizedBox.shrink();
+                        }
+                        return CustomPaint(
+                          painter: _ScanlinePainter(
+                            progress: _scanlineController.value,
+                            color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+/// Paints a horizontal scanline that sweeps from top to bottom.
+class _ScanlinePainter extends CustomPainter {
+  _ScanlinePainter({
+    required this.progress,
+    required this.color,
+  });
+
+  final double progress;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0 || progress >= 1) return;
+
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    final y = size.height * progress;
+
+    // Draw the scanline
+    canvas.drawLine(
+      Offset(0, y),
+      Offset(size.width, y),
+      paint,
+    );
+
+    // Draw a subtle glow above the line
+    final glowPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.transparent,
+          color.withValues(alpha: 0.1),
+          color.withValues(alpha: 0.2),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.4, 0.6, 1.0],
+      ).createShader(Rect.fromLTWH(0, y - 10, size.width, 20));
+
+    canvas.drawRect(
+      Rect.fromLTWH(0, y - 10, size.width, 20),
+      glowPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _ScanlinePainter oldDelegate) {
+    return oldDelegate.progress != progress || oldDelegate.color != color;
   }
 }
