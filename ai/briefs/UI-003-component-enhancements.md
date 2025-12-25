@@ -5,7 +5,7 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2025-12-25
 **Completed:** —
 
@@ -160,7 +160,7 @@ _(None yet)_
 **Blockers:** None (UI-002 complete)
 
 ### Workflow State
-- **Phase:** COMMITTING
+- **Phase:** COMPLETE
 - **Active Agent:** none
 - **Retry Count:** 0
 
@@ -174,6 +174,7 @@ _(None yet)_
 - [2025-12-25 REVIEWING] Invoking WATCHER (reviewer)...
 - [2025-12-25 REVIEWING] APPROVE - 9/10, ready for commit
 - [2025-12-25 COMMITTING] Creating commit...
+- [2025-12-25 COMPLETE] Committed: f9e199f - Brief Done
 
 ---
 
