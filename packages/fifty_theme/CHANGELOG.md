@@ -7,36 +7,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.0] - 2025-12-25
 
+Initial release of the fifty_theme package - the theming layer for the Fifty Design Language (FDL).
+
 ### Added
 
-- Initial release of fifty_theme package
-- `FiftyTheme` class with `dark()` and `light()` static methods
-- `FiftyColorScheme` class mapping tokens to Material ColorScheme
-- `FiftyTextTheme` class with complete text style definitions
-- `FiftyComponentThemes` class with 25+ component theme configurations:
-  - Button themes (elevated, outlined, text)
-  - Card and surface themes
-  - Input decoration theme
-  - AppBar and navigation themes
-  - Dialog and bottom sheet themes
-  - Selection controls (checkbox, radio, switch)
-  - Progress indicators and sliders
-  - And more...
-- `FiftyThemeExtension` for custom Fifty properties:
-  - Igris Green (AI terminal color)
-  - Focus glow effects
-  - Motion durations (instant, fast, compiling, systemLoad)
-  - Animation curves (standard, enter, exit)
-  - Semantic colors (success, warning)
-- Material 3 support enabled by default
-- Compact visual density for tight layouts
-- Zero elevation throughout (no drop shadows)
-- Full dartdoc documentation on all public APIs
+- **FiftyTheme** - Main entry point with `dark()` and `light()` factory methods
+  - Material 3 enabled by default
+  - Compact visual density for information-dense interfaces
+  - Zero elevation throughout (no drop shadows)
+  - Complete component theme configuration
 
-### Design Principles Implemented
+- **FiftyColorScheme** - Token-to-ColorScheme mapping
+  - Dark mode: "Mecha Cockpit" aesthetic with OLED-optimized blacks
+  - Light mode: Inverted palette maintaining brand identity
+  - Crimson Pulse primary, Hyper Chrome secondary, Igris Green tertiary
 
-- Dark mode as primary theme
-- Crimson glow for focus states instead of shadows
-- Border outlines for depth perception
-- Monument Extended for headlines (Hype)
-- JetBrains Mono for body and code (Logic)
+- **FiftyTextTheme** - Binary type system implementation
+  - Monument Extended for headlines (Hype) - bold, extended, impactful
+  - JetBrains Mono for body text (Logic) - functional, readable, precise
+  - Complete Material text scale mapping
+
+- **FiftyComponentThemes** - 25+ pre-configured component themes
+  - Button themes (elevated, outlined, text, FAB)
+  - Card and surface themes (cards, dialogs, bottom sheets, drawers)
+  - Input themes (text fields, checkboxes, radios, switches, sliders)
+  - Navigation themes (app bar, bottom nav, navigation rail, tabs)
+  - Feedback themes (snackbars, tooltips, progress indicators)
+  - Menu themes (popup, dropdown)
+  - List and divider themes
+
+- **FiftyThemeExtension** - Custom Fifty properties
+  - `igrisGreen` - AI terminal color (#00FF41)
+  - `success` and `warning` - Semantic state colors
+  - `focusGlow` and `strongFocusGlow` - Crimson glow effects
+  - Motion durations: `instant` (0ms), `fast` (150ms), `compiling` (300ms), `systemLoad` (800ms)
+  - Animation curves: `standardCurve`, `enterCurve`, `exitCurve`
+
+- **Comprehensive documentation** - Full dartdoc on all public APIs
+
+### Design Principles
+
+- **Dark mode is PRIMARY** - Optimized for OLED, reduced eye strain
+- **No drop shadows** - Depth via surface hierarchy and crimson glow
+- **Border outlines** - Subtle borders replace elevation for depth
+- **Compact density** - Tight spacing for bento-grid layouts
+- **Zero elevation** - All components configured with elevation: 0
+
+### Performance
+
+- Const constructors throughout for compile-time optimization
+- Efficient color scheme generation
+- Minimal runtime overhead
+
+### Dependencies
+
+- `flutter` SDK >=3.0.0
+- `fifty_tokens` ^0.2.0 (design token foundation)
+
+### Notes
+
+- Dark mode is the canonical FDL experience; light mode provided for accessibility
+- Requires Monument Extended and JetBrains Mono fonts in project
+- Path dependency on fifty_tokens during development; update to pub.dev reference for publishing
