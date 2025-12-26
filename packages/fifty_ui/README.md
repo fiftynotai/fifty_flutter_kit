@@ -203,6 +203,182 @@ FiftyTextField(
 
 ---
 
+### Form Components (v0.4.0)
+
+#### FiftySwitch
+
+Kinetic toggle switch with snap animation.
+
+```dart
+// Basic switch
+FiftySwitch(
+  value: _isEnabled,
+  onChanged: (value) => setState(() => _isEnabled = value),
+)
+
+// With label
+FiftySwitch(
+  value: _notifications,
+  onChanged: (value) => setState(() => _notifications = value),
+  label: 'Enable notifications',
+)
+
+// Size variants
+FiftySwitch(
+  value: _compact,
+  onChanged: (value) => setState(() => _compact = value),
+  size: FiftySwitchSize.small,
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `value` | bool | required | Current switch state |
+| `onChanged` | ValueChanged<bool>? | required | Toggle callback |
+| `label` | String? | null | Label displayed next to switch |
+| `enabled` | bool | true | Enable/disable interaction |
+| `size` | FiftySwitchSize | medium | Switch size variant |
+
+**Sizes:**
+
+| Size | Dimensions | Thumb Size |
+|------|------------|------------|
+| `small` | 36x20 | 16 |
+| `medium` | 48x24 | 20 |
+| `large` | 60x32 | 28 |
+
+**Features:**
+- 150ms snap animation with overshoot curve
+- Crimson thumb when active, HyperChrome when inactive
+- Focus glow on hover
+- Gunmetal track with subtle border
+
+---
+
+#### FiftySlider
+
+Brutalist range selector with square thumb.
+
+```dart
+// Basic slider
+FiftySlider(
+  value: _volume,
+  onChanged: (value) => setState(() => _volume = value),
+)
+
+// With label and value display
+FiftySlider(
+  value: _brightness,
+  onChanged: (value) => setState(() => _brightness = value),
+  min: 0,
+  max: 100,
+  label: 'Brightness',
+  showLabel: true,
+)
+
+// Discrete divisions with custom formatter
+FiftySlider(
+  value: _level,
+  onChanged: (value) => setState(() => _level = value),
+  min: 1,
+  max: 10,
+  divisions: 9,
+  showLabel: true,
+  labelBuilder: (value) => 'Level ${value.round()}',
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `value` | double | required | Current slider value |
+| `onChanged` | ValueChanged<double>? | required | Value change callback |
+| `min` | double | 0.0 | Minimum value |
+| `max` | double | 1.0 | Maximum value |
+| `divisions` | int? | null | Discrete steps (null = continuous) |
+| `label` | String? | null | Label above slider |
+| `showLabel` | bool | false | Show value label above thumb |
+| `labelBuilder` | String Function(double)? | null | Custom value formatter |
+| `enabled` | bool | true | Enable/disable interaction |
+
+**Features:**
+- Square thumb with rounded corners (brutalist aesthetic)
+- Crimson active track fill
+- Value label appears on hover/drag
+- Kinetic scale animation on drag
+- Focus glow on interaction
+
+---
+
+#### FiftyDropdown
+
+Terminal-styled dropdown selector.
+
+```dart
+// Basic dropdown
+FiftyDropdown<String>(
+  value: _selectedLanguage,
+  onChanged: (value) => setState(() => _selectedLanguage = value),
+  items: [
+    FiftyDropdownItem(value: 'dart', label: 'Dart'),
+    FiftyDropdownItem(value: 'kotlin', label: 'Kotlin'),
+    FiftyDropdownItem(value: 'swift', label: 'Swift'),
+  ],
+)
+
+// With label and hint
+FiftyDropdown<String>(
+  value: _selected,
+  onChanged: (value) => setState(() => _selected = value),
+  items: languages,
+  label: 'Language',
+  hint: 'Select a language',
+)
+
+// With icons
+FiftyDropdown<String>(
+  value: _status,
+  onChanged: (value) => setState(() => _status = value),
+  items: [
+    FiftyDropdownItem(value: 'active', label: 'Active', icon: Icons.check_circle),
+    FiftyDropdownItem(value: 'paused', label: 'Paused', icon: Icons.pause_circle),
+    FiftyDropdownItem(value: 'stopped', label: 'Stopped', icon: Icons.stop_circle),
+  ],
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `items` | List<FiftyDropdownItem<T>> | required | Selectable items |
+| `value` | T? | null | Currently selected value |
+| `onChanged` | ValueChanged<T?>? | required | Selection callback |
+| `label` | String? | null | Label above dropdown |
+| `hint` | String? | null | Placeholder when no selection |
+| `enabled` | bool | true | Enable/disable interaction |
+
+**FiftyDropdownItem Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | T | Item value |
+| `label` | String | Display text |
+| `icon` | IconData? | Optional leading icon |
+
+**Features:**
+- Terminal-styled appearance matching FiftyTextField
+- Animated chevron rotation on open
+- Fast slide-down menu animation (150ms)
+- Crimson highlight on hover
+- Check icon for selected item
+- Max height constraint with scroll
+
+---
+
 ### Containers
 
 #### FiftyCard
