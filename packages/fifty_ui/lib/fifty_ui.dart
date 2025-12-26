@@ -49,6 +49,9 @@
 ///
 /// ### Inputs
 /// - [FiftyTextField] - Text input with focus glow
+/// - [FiftySwitch] - Kinetic toggle switch
+/// - [FiftySlider] - Brutalist range slider
+/// - [FiftyDropdown] - Terminal-styled dropdown selector
 ///
 /// ### Containers
 /// - [FiftyCard] - Card container with optional tap interaction
@@ -87,6 +90,9 @@ export 'src/buttons/fifty_button.dart';
 export 'src/buttons/fifty_icon_button.dart';
 
 // Inputs
+export 'src/inputs/fifty_dropdown.dart';
+export 'src/inputs/fifty_slider.dart';
+export 'src/inputs/fifty_switch.dart';
 export 'src/inputs/fifty_text_field.dart';
 
 // Containers

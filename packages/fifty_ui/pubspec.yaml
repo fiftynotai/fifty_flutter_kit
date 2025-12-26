@@ -1,6 +1,6 @@
 name: fifty_ui
 description: FDL-styled Flutter components for the fifty.dev ecosystem.
-version: 0.3.0
+version: 0.4.0
 publish_to: none
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_eco_system
