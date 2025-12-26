@@ -16,12 +16,27 @@ Completed UI-004: Form components added to fifty_ui v0.4.0.
 **UI-004: Form Components**
 - Status: Done
 - Completed: 2025-12-26
+- Commit: 9b0b9a9
 
 **Components Added:**
 - FiftySwitch - Kinetic toggle switch (3 sizes)
 - FiftySlider - Brutalist range selector
 - FiftyDropdown - Terminal-styled selector
 - 50 new input tests added
+
+---
+
+**fifty_ui v0.4.0 Release**
+- Status: Released
+- Completed: 2025-12-26
+- Tag: fifty_ui-v0.4.0
+- Release: https://github.com/fiftynotai/fifty_eco_system/releases/tag/fifty_ui-v0.4.0
+
+**Release Includes:**
+- Form components (Switch, Slider, Dropdown)
+- Example app updated with demos
+- README documentation updated
+- 50 new tests (total passing)
 
 ---
 
