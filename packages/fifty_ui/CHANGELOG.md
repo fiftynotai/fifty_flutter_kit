@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-12-26
+
+### Added
+
+#### FiftyButton Enhancements
+- `isGlitch` property - Enables RGB chromatic aberration effect on hover
+- `shape` property - Choose between `FiftyButtonShape.sharp` (4px radius) or `FiftyButtonShape.pill` (100px radius)
+
+#### FiftyTextField Enhancements
+- `borderStyle` property - Control border rendering: `full`, `bottom`, or `none`
+- `prefixStyle` property - Terminal prefix options: `chevron` (">"), `comment` ("//"), `custom`, or `none`
+- `customPrefix` property - Custom prefix string when using `FiftyPrefixStyle.custom`
+- `cursorStyle` property - Cursor appearance: `line`, `block`, or `underscore`
+
+#### FiftyCard Enhancements
+- `hasTexture` property - Enable halftone dot pattern overlay
+- `hoverScale` property - Configurable scale factor on hover (default 1.02)
+
+#### FiftyBadge Enhancements
+- `FiftyBadge.tech()` factory - Gray/hyperChrome tech labels
+- `FiftyBadge.status()` factory - Green status indicator with glow
+- `FiftyBadge.ai()` factory - IgrisGreen AI indicator with glow
+- `customColor` property - Override variant color
+
+#### FiftyLoadingIndicator Enhancements
+- `FiftyLoadingStyle.sequence` - Cycle through custom text sequences
+- `sequences` property - Custom sequence list for sequence mode
+- Default sequences: INITIALIZING, MOUNTING, SYNCING, COMPILING
+
+### Changed
+- All components now fully respect `MediaQuery.disableAnimations` for accessibility
+
+## [0.2.0] - 2025-12-25
+
+### Added
+
+#### Organisms
+- `FiftyNavBar` - Floating "Dynamic Island" style navigation bar
+  - Glassmorphism: 20px blur + 50% black opacity
+  - Pill or standard shape options
+  - Crimson underbar for selected item
+  - `FiftyNavItem` data class for navigation items
+
+- `FiftyHero` - Monument Extended headline text
+  - Three sizes: display (64px), h1 (48px), h2 (32px)
+  - Optional glitch effect on mount
+  - Optional gradient fill
+  - `FiftyHeroSection` convenience widget with subtitle support
+
+#### Molecules
+- `FiftyCodeBlock` - Terminal-style code display
+  - Syntax highlighting (keywords, strings, comments, numbers)
+  - Line numbers (optional)
+  - Copy button with feedback
+  - Languages: dart, javascript, json, plain
+
+#### Utils
+- `KineticEffect` - Reusable hover/press scale animation wrapper
+  - Configurable hover scale (default 1.02)
+  - Configurable press scale (default 0.95)
+  - Respects reduced-motion settings
+
+- `GlitchEffect` - RGB chromatic aberration effect
+  - Trigger on hover or mount
+  - Configurable intensity (0.0-1.0)
+  - Configurable pixel offset
+
+- `HalftonePainter` - CustomPainter for halftone dot patterns
+- `HalftoneOverlay` - Widget wrapper for halftone textures
+
+### Changed
+- Updated library documentation with comprehensive component catalog
+
 ## [0.1.0] - 2025-12-25
 
 ### Added
@@ -26,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `FiftyBadge` - Small status indicator with optional glow pulse animation
 - `FiftyAvatar` - Circular avatar with image or fallback initials
 - `FiftyProgressBar` - Linear progress indicator with crimson fill
-- `FiftyLoadingIndicator` - Pulsing circular loading indicator
+- `FiftyLoadingIndicator` - Text-based loading indicator (dots, pulse, static styles)
 
 #### Feedback
 - `FiftySnackbar` - Toast notification with variants (info, success, warning, error)
