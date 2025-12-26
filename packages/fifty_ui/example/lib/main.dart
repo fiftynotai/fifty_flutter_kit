@@ -225,6 +225,46 @@ class _ButtonsPageState extends State<ButtonsPage> {
               ),
             ],
           ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Kinetic Brutalism'),
+          const Text(
+            'Hover over buttons to see effects',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Wrap(
+            spacing: FiftySpacing.md,
+            runSpacing: FiftySpacing.md,
+            children: [
+              FiftyButton(
+                label: 'GLITCH EFFECT',
+                onPressed: () {},
+                isGlitch: true,
+              ),
+              FiftyButton(
+                label: 'SHARP',
+                onPressed: () {},
+                shape: FiftyButtonShape.sharp,
+                variant: FiftyButtonVariant.secondary,
+              ),
+              FiftyButton(
+                label: 'PILL',
+                onPressed: () {},
+                shape: FiftyButtonShape.pill,
+              ),
+              FiftyButton(
+                label: 'GLITCH + PILL',
+                onPressed: () {},
+                isGlitch: true,
+                shape: FiftyButtonShape.pill,
+                variant: FiftyButtonVariant.danger,
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -306,6 +346,55 @@ class _InputsPageState extends State<InputsPage> {
             hint: 'Enter command',
             terminalStyle: true,
           ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Terminal Styles'),
+          const Text(
+            'Advanced styling for terminal-like inputs',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyTextField(
+            label: 'Bottom Border Only',
+            hint: 'Enter value',
+            borderStyle: FiftyBorderStyle.bottom,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            label: 'No Border',
+            hint: 'Enter text',
+            borderStyle: FiftyBorderStyle.none,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            label: 'Chevron Prefix',
+            hint: 'command',
+            borderStyle: FiftyBorderStyle.bottom,
+            prefixStyle: FiftyPrefixStyle.chevron,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            label: 'Comment Prefix',
+            hint: 'your comment',
+            prefixStyle: FiftyPrefixStyle.comment,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            label: 'Block Cursor',
+            hint: 'Focus to see block cursor',
+            borderStyle: FiftyBorderStyle.bottom,
+            prefixStyle: FiftyPrefixStyle.chevron,
+            cursorStyle: FiftyCursorStyle.block,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            label: 'Underscore Cursor',
+            hint: 'Focus to see underscore cursor',
+            cursorStyle: FiftyCursorStyle.underscore,
+          ),
         ],
       ),
     );
@@ -340,6 +429,60 @@ class _DisplayPageState extends State<DisplayPage> {
             selected: _selectedCard,
             child: const Text('Tap to select this card'),
           ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyCard(
+            hasTexture: true,
+            hoverScale: 1.05,
+            onTap: () {},
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'HALFTONE TEXTURE',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.body,
+                    fontWeight: FiftyTypography.medium,
+                  ),
+                ),
+                SizedBox(height: FiftySpacing.xs),
+                Text(
+                  'Card with halftone overlay and 5% hover scale',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.mono,
+                    color: FiftyColors.hyperChrome,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyCard(
+            hasTexture: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'NON-INTERACTIVE TEXTURE',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.body,
+                    fontWeight: FiftyTypography.medium,
+                  ),
+                ),
+                SizedBox(height: FiftySpacing.xs),
+                Text(
+                  'Static card with halftone texture (no hover)',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.mono,
+                    color: FiftyColors.hyperChrome,
+                  ),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Chips'),
           Wrap(
@@ -373,6 +516,28 @@ class _DisplayPageState extends State<DisplayPage> {
               FiftyBadge(label: 'Warning', variant: FiftyBadgeVariant.warning),
               FiftyBadge(label: 'Error', variant: FiftyBadgeVariant.error),
               FiftyBadge(label: 'Neutral', variant: FiftyBadgeVariant.neutral),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const Text(
+            'Factory Constructors',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          Wrap(
+            spacing: FiftySpacing.sm,
+            runSpacing: FiftySpacing.sm,
+            children: [
+              FiftyBadge.tech('FLUTTER'),
+              FiftyBadge.tech('DART'),
+              FiftyBadge.status('ONLINE'),
+              FiftyBadge.status('CONNECTED'),
+              FiftyBadge.ai('IGRIS'),
+              FiftyBadge.ai('AGENT'),
             ],
           ),
           const SizedBox(height: FiftySpacing.xl),
@@ -420,6 +585,37 @@ class _DisplayPageState extends State<DisplayPage> {
               FiftyLoadingIndicator(
                 text: 'UPLOADING',
                 style: FiftyLoadingStyle.static,
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const Text(
+            'Sequence Mode',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Default sequence (uses built-in messages)
+              FiftyLoadingIndicator(
+                style: FiftyLoadingStyle.sequence,
+              ),
+              SizedBox(height: FiftySpacing.md),
+              // Custom sequence list
+              FiftyLoadingIndicator(
+                style: FiftyLoadingStyle.sequence,
+                color: FiftyColors.igrisGreen,
+                sequences: [
+                  '> BOOTING SYSTEM...',
+                  '> LOADING MODULES...',
+                  '> CONNECTING TO API...',
+                  '> READY',
+                ],
               ),
             ],
           ),
