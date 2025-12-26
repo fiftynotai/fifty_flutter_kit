@@ -2,13 +2,13 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'app/audio_demo_app.dart';
-import 'services/mock_audio_engine.dart';
+import 'services/audio_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize mock audio engine
-  await MockAudioEngine.instance.initialize();
+  // Initialize audio service
+  await AudioService.instance.initialize();
 
   runApp(const AudioEngineExampleApp());
 }

@@ -1,4 +1,4 @@
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 
 /// Actions for BGM (Background Music) feature.
 ///
@@ -7,51 +7,51 @@ import '../../services/mock_audio_engine.dart';
 class BgmActions {
   BgmActions();
 
-  final MockBgmChannel _bgm = MockAudioEngine.instance.bgm;
+  final AudioService _audio = AudioService.instance;
 
   /// Toggles play/pause state.
-  void onPlayPressed() {
-    if (_bgm.isPlaying) {
-      _bgm.pause();
-    } else if (_bgm.isPaused) {
-      _bgm.resume();
+  Future<void> onPlayPressed() async {
+    if (_audio.bgmPlaying) {
+      await _audio.pauseBgm();
+    } else if (_audio.bgmPaused) {
+      await _audio.resumeBgm();
     } else {
-      _bgm.play();
+      await _audio.playBgm();
     }
   }
 
   /// Stops playback.
-  void onStopPressed() {
-    _bgm.stop();
+  Future<void> onStopPressed() async {
+    await _audio.stopBgm();
   }
 
   /// Plays next track.
-  void onNextPressed() {
-    _bgm.next();
+  Future<void> onNextPressed() async {
+    await _audio.playNextBgm();
   }
 
   /// Plays previous track.
-  void onPreviousPressed() {
-    _bgm.previous();
+  Future<void> onPreviousPressed() async {
+    await _audio.playPreviousBgm();
   }
 
   /// Plays track at specific index.
-  void onTrackSelected(int index) {
-    _bgm.playAtIndex(index);
+  Future<void> onTrackSelected(int index) async {
+    await _audio.playBgmAtIndex(index);
   }
 
   /// Updates volume level.
-  void onVolumeChanged(double value) {
-    _bgm.setVolume(value);
+  Future<void> onVolumeChanged(double value) async {
+    await _audio.setBgmVolume(value);
   }
 
   /// Toggles mute state.
-  void onMuteToggled() {
-    _bgm.toggleMute();
+  Future<void> onMuteToggled() async {
+    await _audio.toggleBgmMute();
   }
 
   /// Toggles shuffle mode.
   void onShuffleToggled() {
-    _bgm.toggleShuffle();
+    _audio.toggleBgmShuffle();
   }
 }

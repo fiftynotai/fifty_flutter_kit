@@ -2,7 +2,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 import '../../widgets/channel_card.dart';
 import 'global_actions.dart';
 import 'global_view_model.dart';
@@ -114,7 +114,7 @@ class _GlobalViewState extends State<GlobalView> {
   }
 
   Widget _buildFadeControls() {
-    final fadeItems = FadePreset.values
+    final fadeItems = DemoFadePreset.values
         .map((p) => FiftyDropdownItem(value: p, label: p.label))
         .toList();
 
@@ -125,7 +125,7 @@ class _GlobalViewState extends State<GlobalView> {
       child: Column(
         children: [
           // Fade preset dropdown
-          FiftyDropdown<FadePreset>(
+          FiftyDropdown<DemoFadePreset>(
             items: fadeItems,
             value: _viewModel.fadePreset,
             onChanged: (preset) {
@@ -205,17 +205,17 @@ class _GlobalViewState extends State<GlobalView> {
     );
   }
 
-  String _getPresetUseCase(FadePreset preset) {
+  String _getPresetUseCase(DemoFadePreset preset) {
     switch (preset) {
-      case FadePreset.fast:
+      case DemoFadePreset.fast:
         return 'UI feedback';
-      case FadePreset.panel:
+      case DemoFadePreset.panel:
         return 'Panel transitions';
-      case FadePreset.normal:
+      case DemoFadePreset.normal:
         return 'Standard crossfade';
-      case FadePreset.cinematic:
+      case DemoFadePreset.cinematic:
         return 'Scene transitions';
-      case FadePreset.ambient:
+      case DemoFadePreset.ambient:
         return 'Atmospheric changes';
     }
   }

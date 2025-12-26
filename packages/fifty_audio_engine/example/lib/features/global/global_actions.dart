@@ -1,4 +1,4 @@
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 
 /// Actions for Global audio controls.
 ///
@@ -6,30 +6,30 @@ import '../../services/mock_audio_engine.dart';
 class GlobalActions {
   GlobalActions();
 
-  final MockAudioEngine _engine = MockAudioEngine.instance;
+  final AudioService _audio = AudioService.instance;
 
   /// Toggles mute all state.
-  void onMuteAllToggled() {
-    _engine.toggleMuteAll();
+  Future<void> onMuteAllToggled() async {
+    await _audio.toggleMuteAll();
   }
 
   /// Stops all audio playback.
-  void onStopAll() {
-    _engine.stopAll();
+  Future<void> onStopAll() async {
+    await _audio.stopAll();
   }
 
   /// Changes the fade preset.
-  void onFadePresetChanged(FadePreset preset) {
-    _engine.setFadePreset(preset);
+  void onFadePresetChanged(DemoFadePreset preset) {
+    _audio.setFadePreset(preset);
   }
 
   /// Fades all audio out using current preset.
   Future<void> onFadeOut() async {
-    await _engine.fadeAllOut();
+    await _audio.fadeAllOut();
   }
 
   /// Fades all audio in using current preset.
   Future<void> onFadeIn() async {
-    await _engine.fadeAllIn();
+    await _audio.fadeAllIn();
   }
 }

@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  audioplayers: ^6.0.0
+  fifty_audio_engine:
+    path: ../
   fifty_ui:
     path: ../../fifty_ui
   fifty_theme:
@@ -23,3 +26,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/bgm/
+    - assets/sfx/
+    - assets/voice/

@@ -1,40 +1,43 @@
 import 'package:flutter/foundation.dart';
 
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 
 /// ViewModel for Voice feature.
 ///
 /// Exposes Voice channel state for the view to observe.
 class VoiceViewModel extends ChangeNotifier {
   VoiceViewModel() {
-    _voice = MockAudioEngine.instance.voice;
-    _voice.addListener(_onVoiceChanged);
+    _audio = AudioService.instance;
+    _audio.addListener(_onAudioChanged);
   }
 
-  late final MockVoiceChannel _voice;
+  late final AudioService _audio;
 
   /// Whether voice is currently playing.
-  bool get isPlaying => _voice.isPlaying;
+  bool get isPlaying => _audio.voicePlaying;
 
   /// Whether voice channel is muted.
-  bool get isMuted => _voice.isMuted;
+  bool get isMuted => _audio.voiceMuted;
 
   /// Whether BGM ducking is enabled.
-  bool get duckingEnabled => _voice.duckingEnabled;
+  bool get duckingEnabled => _audio.voiceDuckingEnabled;
 
   /// Current volume level (0.0 to 1.0).
-  double get volume => _voice.volume;
+  double get volume => _audio.voiceVolume;
 
-  /// Currently playing voice ID.
-  String? get currentVoice => _voice.currentVoice;
+  /// List of available voice lines.
+  List<VoiceInfo> get voiceLines => _audio.voiceLines;
 
-  void _onVoiceChanged() {
+  /// Currently playing voice ID (null if not playing).
+  String? get currentVoice => _audio.voicePlaying ? 'greeting' : null;
+
+  void _onAudioChanged() {
     notifyListeners();
   }
 
   @override
   void dispose() {
-    _voice.removeListener(_onVoiceChanged);
+    _audio.removeListener(_onAudioChanged);
     super.dispose();
   }
 }

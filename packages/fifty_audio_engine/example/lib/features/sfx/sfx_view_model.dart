@@ -1,46 +1,49 @@
 import 'package:flutter/foundation.dart';
 
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 
 /// ViewModel for SFX (Sound Effects) feature.
 ///
 /// Exposes SFX channel state for the view to observe.
 class SfxViewModel extends ChangeNotifier {
   SfxViewModel() {
-    _sfx = MockAudioEngine.instance.sfx;
-    _sfx.addListener(_onSfxChanged);
+    _audio = AudioService.instance;
+    _audio.addListener(_onAudioChanged);
   }
 
-  late final MockSfxChannel _sfx;
+  late final AudioService _audio;
 
   /// Whether SFX channel is muted.
-  bool get isMuted => _sfx.isMuted;
+  bool get isMuted => _audio.sfxMuted;
 
   /// Current volume level (0.0 to 1.0).
-  double get volume => _sfx.volume;
+  double get volume => _audio.sfxVolume;
 
   /// List of available SFX sounds.
-  List<SfxSound> get sounds => _sfx.sounds;
+  List<SfxInfo> get sounds => _audio.sfxSounds;
 
   /// ID of last played sound.
-  String? get lastPlayed => _sfx.lastPlayed;
+  String? get lastPlayed => _audio.lastSfxPlayed;
 
-  /// Timestamp of last played sound.
-  DateTime? get lastPlayedAt => _sfx.lastPlayedAt;
+  /// Timestamp for tracking recently played state.
+  DateTime? _lastPlayedAt;
 
   /// Whether a sound was recently played (within 500ms).
   bool get isRecentlyPlayed {
-    if (_sfx.lastPlayedAt == null) return false;
-    return DateTime.now().difference(_sfx.lastPlayedAt!).inMilliseconds < 500;
+    if (_lastPlayedAt == null) return false;
+    return DateTime.now().difference(_lastPlayedAt!).inMilliseconds < 500;
   }
 
-  void _onSfxChanged() {
+  void _onAudioChanged() {
+    if (_audio.lastSfxPlayed != null) {
+      _lastPlayedAt = DateTime.now();
+    }
     notifyListeners();
   }
 
   @override
   void dispose() {
-    _sfx.removeListener(_onSfxChanged);
+    _audio.removeListener(_onAudioChanged);
     super.dispose();
   }
 }

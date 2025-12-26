@@ -1,4 +1,4 @@
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 
 /// Actions for SFX (Sound Effects) feature.
 ///
@@ -6,20 +6,20 @@ import '../../services/mock_audio_engine.dart';
 class SfxActions {
   SfxActions();
 
-  final MockSfxChannel _sfx = MockAudioEngine.instance.sfx;
+  final AudioService _audio = AudioService.instance;
 
   /// Plays a sound effect by ID.
-  void onPlaySound(String soundId) {
-    _sfx.play(soundId);
+  Future<void> onPlaySound(String soundId) async {
+    await _audio.playSfx(soundId);
   }
 
   /// Updates volume level.
-  void onVolumeChanged(double value) {
-    _sfx.setVolume(value);
+  Future<void> onVolumeChanged(double value) async {
+    await _audio.setSfxVolume(value);
   }
 
   /// Toggles mute state.
-  void onMuteToggled() {
-    _sfx.toggleMute();
+  Future<void> onMuteToggled() async {
+    await _audio.toggleSfxMute();
   }
 }

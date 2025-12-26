@@ -1,4 +1,4 @@
-import '../../services/mock_audio_engine.dart';
+import '../../services/audio_service.dart';
 
 /// Actions for Voice feature.
 ///
@@ -6,30 +6,30 @@ import '../../services/mock_audio_engine.dart';
 class VoiceActions {
   VoiceActions();
 
-  final MockVoiceChannel _voice = MockAudioEngine.instance.voice;
+  final AudioService _audio = AudioService.instance;
 
   /// Plays a voice line.
-  void onPlayVoice(String voiceId) {
-    _voice.playVoice(voiceId, withDucking: _voice.duckingEnabled);
+  Future<void> onPlayVoice(String voiceId) async {
+    await _audio.playVoice(voiceId);
   }
 
   /// Stops voice playback.
-  void onStopPressed() {
-    _voice.stop();
+  Future<void> onStopPressed() async {
+    await _audio.stopVoice();
   }
 
   /// Updates volume level.
-  void onVolumeChanged(double value) {
-    _voice.setVolume(value);
+  Future<void> onVolumeChanged(double value) async {
+    await _audio.setVoiceVolume(value);
   }
 
   /// Toggles mute state.
-  void onMuteToggled() {
-    _voice.toggleMute();
+  Future<void> onMuteToggled() async {
+    await _audio.toggleVoiceMute();
   }
 
   /// Toggles BGM ducking.
   void onDuckingToggled() {
-    _voice.toggleDucking();
+    _audio.toggleVoiceDucking();
   }
 }
