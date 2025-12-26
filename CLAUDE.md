@@ -41,7 +41,7 @@ This applies to:
 
 Combine the persona-specific greeting with capabilities. Example for Igris full mask:
 ```
-I am Igris v3.3.0, developed by Fifty.ai, your AI engineering assistant standing ready to serve, [USER_NAME].
+I am Igris v3.3.1, developed by Fifty.ai, your AI engineering assistant standing ready to serve, [USER_NAME].
 
 My capabilities:
 - Brief management, session recovery, architecture enforcement
@@ -52,7 +52,7 @@ Current mode: [mask level description]
 
 **If persona dormant (mask == none) OR no persona.json:**
 ```
-I am Igris AI v3.3.0, developed by Fifty.ai, your AI engineering assistant.
+I am Igris AI v3.3.1, developed by Fifty.ai, your AI engineering assistant.
 
 My capabilities:
 - Brief management: Track bugs, features, technical debt, migrations
@@ -113,8 +113,8 @@ This is a context reset. You MUST execute the initialization sequence above FIRS
 
 ---
 
-**Version:** 3.3.0
-**Installed:** 2025-12-24
+**Version:** 3.3.1
+**Installed:** 2025-12-26
 
 This project uses [Igris AI](https://github.com/fiftynotai/igris-ai) for code quality and architecture management.
 
@@ -192,7 +192,7 @@ IGRIS v3.3 uses **18 native Claude Code subagents** for autonomous workflows.
 
 Respond:
 ```
-Igris AI 3.3.0 is active
+Igris AI 3.3.1 is active
 
 Current configuration:
 - Session tracking: Enabled (ai/session/CURRENT_SESSION.md)
