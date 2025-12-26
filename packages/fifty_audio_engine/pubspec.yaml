@@ -1,0 +1,44 @@
+name: fifty_audio_engine
+description: "Fifty ecosystem audio engine - modular and reactive audio system for Flutter"
+version: 0.7.0
+homepage: https://github.com/fiftynotai/fifty_eco_system
+repository: https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_audio_engine
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayers: ^6.4.0
+  get_storage: ^2.1.1
+  fifty_tokens:
+    path: ../fifty_tokens
+  flutter_web_plugins:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  web: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: dev.fifty.audio_engine
+        pluginClass: FiftyAudioEnginePlugin
+      ios:
+        pluginClass: FiftyAudioEnginePlugin
+      linux:
+        pluginClass: FiftyAudioEnginePlugin
+      macos:
+        pluginClass: FiftyAudioEnginePlugin
+      windows:
+        pluginClass: FiftyAudioEnginePluginCApi
+      web:
+        pluginClass: FiftyAudioEngineWeb
+        fileName: fifty_audio_engine_web.dart
