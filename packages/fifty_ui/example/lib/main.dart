@@ -286,6 +286,29 @@ class _InputsPageState extends State<InputsPage> {
   final _emailController = TextEditingController();
   String? _emailError;
 
+  // Form component states
+  bool _switchValue = false;
+  bool _notificationsEnabled = true;
+  bool _darkMode = true;
+  double _sliderValue = 50;
+  double _volumeValue = 75;
+  String? _selectedLanguage;
+  String? _selectedPriority;
+
+  final _languages = [
+    const FiftyDropdownItem(value: 'dart', label: 'Dart', icon: Icons.code),
+    const FiftyDropdownItem(value: 'kotlin', label: 'Kotlin', icon: Icons.android),
+    const FiftyDropdownItem(value: 'swift', label: 'Swift', icon: Icons.apple),
+    const FiftyDropdownItem(value: 'rust', label: 'Rust', icon: Icons.memory),
+  ];
+
+  final _priorities = [
+    const FiftyDropdownItem(value: 'p0', label: 'P0 - Critical'),
+    const FiftyDropdownItem(value: 'p1', label: 'P1 - High'),
+    const FiftyDropdownItem(value: 'p2', label: 'P2 - Medium'),
+    const FiftyDropdownItem(value: 'p3', label: 'P3 - Low'),
+  ];
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -395,6 +418,154 @@ class _InputsPageState extends State<InputsPage> {
             hint: 'Focus to see underscore cursor',
             cursorStyle: FiftyCursorStyle.underscore,
           ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Switches'),
+          const Text(
+            'Kinetic toggle switches with snap animation',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySwitch(
+            value: _switchValue,
+            onChanged: (value) => setState(() => _switchValue = value),
+            label: 'Basic Switch',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySwitch(
+            value: _notificationsEnabled,
+            onChanged: (value) => setState(() => _notificationsEnabled = value),
+            label: 'Enable Notifications',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySwitch(
+            value: _darkMode,
+            onChanged: (value) => setState(() => _darkMode = value),
+            label: 'Dark Mode',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const Text(
+            'Switch Sizes',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          Wrap(
+            spacing: FiftySpacing.lg,
+            runSpacing: FiftySpacing.md,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              FiftySwitch(
+                value: _switchValue,
+                onChanged: (value) => setState(() => _switchValue = value),
+                size: FiftySwitchSize.small,
+              ),
+              FiftySwitch(
+                value: _switchValue,
+                onChanged: (value) => setState(() => _switchValue = value),
+                size: FiftySwitchSize.medium,
+              ),
+              FiftySwitch(
+                value: _switchValue,
+                onChanged: (value) => setState(() => _switchValue = value),
+                size: FiftySwitchSize.large,
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftySwitch(
+            value: false,
+            onChanged: null,
+            label: 'Disabled Switch',
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Sliders'),
+          const Text(
+            'Brutalist range selectors with square thumb',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySlider(
+            value: _sliderValue,
+            min: 0,
+            max: 100,
+            onChanged: (value) => setState(() => _sliderValue = value),
+            label: 'Value',
+            showLabel: true,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          FiftySlider(
+            value: _volumeValue,
+            min: 0,
+            max: 100,
+            onChanged: (value) => setState(() => _volumeValue = value),
+            label: 'Volume',
+            showLabel: true,
+            labelBuilder: (value) => '${value.round()}%',
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          FiftySlider(
+            value: _sliderValue,
+            min: 0,
+            max: 100,
+            divisions: 10,
+            onChanged: (value) => setState(() => _sliderValue = value),
+            label: 'With Divisions (steps of 10)',
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftySlider(
+            value: 50,
+            min: 0,
+            max: 100,
+            onChanged: null,
+            label: 'Disabled',
+            enabled: false,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Dropdowns'),
+          const Text(
+            'Terminal-styled dropdown selectors',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.hyperChrome,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyDropdown<String>(
+            items: _languages,
+            value: _selectedLanguage,
+            onChanged: (value) => setState(() => _selectedLanguage = value),
+            label: 'Language',
+            hint: 'Select a language',
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          FiftyDropdown<String>(
+            items: _priorities,
+            value: _selectedPriority,
+            onChanged: (value) => setState(() => _selectedPriority = value),
+            label: 'Priority',
+            hint: 'Select priority level',
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          FiftyDropdown<String>(
+            items: _languages,
+            value: 'dart',
+            onChanged: null,
+            label: 'Disabled',
+            enabled: false,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
         ],
       ),
     );
