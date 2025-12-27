@@ -43,9 +43,12 @@ class AudioService extends ChangeNotifier {
   static final AudioService instance = AudioService._();
 
   /// Audio players for each channel.
-  final AudioPlayer _bgmPlayer = AudioPlayer();
-  final AudioPlayer _sfxPlayer = AudioPlayer();
-  final AudioPlayer _voicePlayer = AudioPlayer();
+  late final AudioPlayer _bgmPlayer;
+  late final AudioPlayer _sfxPlayer;
+  late final AudioPlayer _voicePlayer;
+
+  /// Whether players are created.
+  bool _playersCreated = false;
 
   /// State.
   bool _initialized = false;
@@ -177,19 +180,31 @@ class AudioService extends ChangeNotifier {
     ),
   ];
 
-  /// Voice lines using MP3 format.
+  /// Voice lines using reliable MP3 sources.
   final List<VoiceInfo> voiceLines = const [
     VoiceInfo(
       id: 'greeting',
       label: 'GREETING',
-      url: 'https://www.soundjay.com/communication/sounds/telephone-ring-04.mp3',
-      duration: Duration(seconds: 3),
+      // Using a short segment from SoundHelix (known working source)
+      url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+      duration: Duration(seconds: 5),
     ),
   ];
 
   /// Initialize the audio service.
   Future<void> initialize() async {
     if (_initialized) return;
+
+    debugPrint('AudioService: Initializing...');
+
+    // Create audio players
+    if (!_playersCreated) {
+      _bgmPlayer = AudioPlayer()..setPlayerMode(PlayerMode.mediaPlayer);
+      _sfxPlayer = AudioPlayer()..setPlayerMode(PlayerMode.lowLatency);
+      _voicePlayer = AudioPlayer()..setPlayerMode(PlayerMode.mediaPlayer);
+      _playersCreated = true;
+      debugPrint('AudioService: Players created');
+    }
 
     // Set up position tracking for BGM
     _positionSub = _bgmPlayer.onPositionChanged.listen((pos) {
@@ -198,13 +213,20 @@ class AudioService extends ChangeNotifier {
     });
 
     _stateSub = _bgmPlayer.onPlayerStateChanged.listen((state) {
+      debugPrint('AudioService: BGM state changed to $state');
       if (state == PlayerState.completed) {
         // Auto-advance to next track
         playNextBgm();
       }
     });
 
+    // Listen for voice player state
+    _voicePlayer.onPlayerStateChanged.listen((state) {
+      debugPrint('AudioService: Voice state changed to $state');
+    });
+
     _initialized = true;
+    debugPrint('AudioService: Initialized successfully');
     notifyListeners();
   }
 
@@ -331,8 +353,12 @@ class AudioService extends ChangeNotifier {
       orElse: () => voiceLines.first,
     );
 
+    debugPrint('Voice: Playing ${voice.id} from ${voice.url}');
+    debugPrint('Voice: muted=$_voiceMuted, volume=$_voiceVolume');
+
     // Duck BGM if enabled
     if (_voiceDuckingEnabled && _bgmPlaying) {
+      debugPrint('Voice: Ducking BGM');
       await _bgmPlayer.setVolume(_bgmVolume * 0.3);
     }
 
@@ -341,11 +367,14 @@ class AudioService extends ChangeNotifier {
 
     if (!_voiceMuted) {
       try {
+        debugPrint('Voice: Setting volume and playing...');
         await _voicePlayer.setVolume(_voiceVolume);
         await _voicePlayer.play(UrlSource(voice.url));
+        debugPrint('Voice: Play command sent successfully');
 
         // Restore BGM after voice completes
         _voicePlayer.onPlayerComplete.first.then((_) async {
+          debugPrint('Voice: Playback completed');
           _voicePlaying = false;
           if (_voiceDuckingEnabled && _bgmPlaying && !_bgmMuted) {
             await _bgmPlayer.setVolume(_bgmVolume);
@@ -360,6 +389,8 @@ class AudioService extends ChangeNotifier {
         }
         notifyListeners();
       }
+    } else {
+      debugPrint('Voice: Skipped (muted)');
     }
   }
 
