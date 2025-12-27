@@ -13,12 +13,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integration with fifty_tokens motion system
 - New `FadePreset.panel` preset using FiftyMotion.compiling (300ms)
 
+### Example App
+- Comprehensive example app demonstrating all audio engine capabilities
+- MVVM + Actions architecture following FDL guidelines
+- BGM controls: playlist, volume, mute, shuffle, track selection
+- SFX controls: sound groups, single play, volume, rapid-fire demo
+- Voice controls: playback with ducking toggle
+- Global controls: master mute, fade presets (5 levels), stop all
+- Real audio playback via URL streaming (royalty-free samples)
+- iOS-compatible MP3 audio sources
+- 12+ fifty_ui components integrated
+
+### Documentation
+- Comprehensive package README (441 lines)
+- Full API reference for all public classes
+- FadePreset and GlobalFadePresets documentation
+- Platform support matrix and persistence keys
+- Advanced usage guides: source swapping, audio contexts, lifecycle
+- Example app README with architecture diagram and troubleshooting
+
 ### Changed
 - Main class renamed from `SoundEngine` to `FiftyAudioEngine`
 - Platform plugins rebranded to `FiftyAudioEnginePlugin`
 - Storage keys prefixed with `fifty_audio_*` for namespace isolation
 - Android package namespace changed to `dev.fifty.audio_engine`
-- Updated documentation for Fifty ecosystem consistency
 
 ### Architecture
 - FiftyAudioEngine singleton for global audio management
