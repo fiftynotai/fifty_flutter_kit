@@ -136,59 +136,53 @@ class AudioService extends ChangeNotifier {
     ),
   ];
 
-  /// SFX sounds using sample URLs.
+  /// SFX sounds using sample MP3 URLs (iOS compatible).
+  /// Using SoundHelix samples which are reliable and MP3 format.
   final List<SfxInfo> sfxSounds = const [
     SfxInfo(
       id: 'click',
       label: 'CLICK',
       icon: 0xe1e8,
-      url:
-          'https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg',
+      url: 'https://www.soundjay.com/buttons/sounds/button-09a.mp3',
     ),
     SfxInfo(
       id: 'hover',
       label: 'HOVER',
       icon: 0xe5ca,
-      url:
-          'https://actions.google.com/sounds/v1/cartoon/pop.ogg',
+      url: 'https://www.soundjay.com/buttons/sounds/button-16.mp3',
     ),
     SfxInfo(
       id: 'success',
       label: 'SUCCESS',
       icon: 0xe876,
-      url:
-          'https://actions.google.com/sounds/v1/cartoon/siren_whistle.ogg',
+      url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3',
     ),
     SfxInfo(
       id: 'error',
       label: 'ERROR',
       icon: 0xe000,
-      url:
-          'https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg',
+      url: 'https://www.soundjay.com/buttons/sounds/button-10.mp3',
     ),
     SfxInfo(
       id: 'notification',
       label: 'NOTIFY',
       icon: 0xe7f4,
-      url:
-          'https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg',
+      url: 'https://www.soundjay.com/buttons/sounds/button-35.mp3',
     ),
     SfxInfo(
       id: 'toggle',
       label: 'TOGGLE',
       icon: 0xe9f6,
-      url:
-          'https://actions.google.com/sounds/v1/cartoon/slide_whistle.ogg',
+      url: 'https://www.soundjay.com/buttons/sounds/button-21.mp3',
     ),
   ];
 
-  /// Voice lines.
+  /// Voice lines using MP3 format.
   final List<VoiceInfo> voiceLines = const [
     VoiceInfo(
       id: 'greeting',
       label: 'GREETING',
-      url:
-          'https://actions.google.com/sounds/v1/science_fiction/robot_code.ogg',
+      url: 'https://www.soundjay.com/communication/sounds/telephone-ring-04.mp3',
       duration: Duration(seconds: 3),
     ),
   ];
@@ -220,10 +214,14 @@ class AudioService extends ChangeNotifier {
 
   Future<void> playBgm() async {
     final track = bgmTracks[_bgmTrackIndex];
-    await _bgmPlayer.play(UrlSource(track.url));
-    await _bgmPlayer.setVolume(_bgmMuted ? 0 : _bgmVolume);
-    _bgmPlaying = true;
-    _bgmPaused = false;
+    try {
+      await _bgmPlayer.play(UrlSource(track.url));
+      await _bgmPlayer.setVolume(_bgmMuted ? 0 : _bgmVolume);
+      _bgmPlaying = true;
+      _bgmPaused = false;
+    } catch (e) {
+      debugPrint('BGM playback error: $e');
+    }
     notifyListeners();
   }
 
@@ -302,8 +300,12 @@ class AudioService extends ChangeNotifier {
       orElse: () => sfxSounds.first,
     );
     if (!_sfxMuted) {
-      await _sfxPlayer.setVolume(_sfxVolume);
-      await _sfxPlayer.play(UrlSource(sound.url));
+      try {
+        await _sfxPlayer.setVolume(_sfxVolume);
+        await _sfxPlayer.play(UrlSource(sound.url));
+      } catch (e) {
+        debugPrint('SFX playback error: $e');
+      }
     }
     _lastSfxPlayed = soundId;
     notifyListeners();
@@ -338,18 +340,27 @@ class AudioService extends ChangeNotifier {
     notifyListeners();
 
     if (!_voiceMuted) {
-      await _voicePlayer.setVolume(_voiceVolume);
-      await _voicePlayer.play(UrlSource(voice.url));
-    }
+      try {
+        await _voicePlayer.setVolume(_voiceVolume);
+        await _voicePlayer.play(UrlSource(voice.url));
 
-    // Restore BGM after voice completes
-    _voicePlayer.onPlayerComplete.first.then((_) async {
-      _voicePlaying = false;
-      if (_voiceDuckingEnabled && _bgmPlaying && !_bgmMuted) {
-        await _bgmPlayer.setVolume(_bgmVolume);
+        // Restore BGM after voice completes
+        _voicePlayer.onPlayerComplete.first.then((_) async {
+          _voicePlaying = false;
+          if (_voiceDuckingEnabled && _bgmPlaying && !_bgmMuted) {
+            await _bgmPlayer.setVolume(_bgmVolume);
+          }
+          notifyListeners();
+        });
+      } catch (e) {
+        debugPrint('Voice playback error: $e');
+        _voicePlaying = false;
+        if (_voiceDuckingEnabled && _bgmPlaying && !_bgmMuted) {
+          await _bgmPlayer.setVolume(_bgmVolume);
+        }
+        notifyListeners();
       }
-      notifyListeners();
-    });
+    }
   }
 
   Future<void> stopVoice() async {
