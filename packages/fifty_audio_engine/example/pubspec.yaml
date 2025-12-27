@@ -1,0 +1,32 @@
+name: fifty_audio_engine_example
+description: Example app demonstrating fifty_audio_engine capabilities.
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayers: ^6.0.0
+  fifty_audio_engine:
+    path: ../
+  fifty_ui:
+    path: ../../fifty_ui
+  fifty_theme:
+    path: ../../fifty_theme
+  fifty_tokens:
+    path: ../../fifty_tokens
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/bgm/
+    - assets/sfx/
+    - assets/voice/
