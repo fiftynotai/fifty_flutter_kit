@@ -25,30 +25,6 @@ class _VoiceViewState extends State<VoiceView> {
   late final VoiceViewModel _viewModel;
   late final VoiceActions _actions;
 
-  // Sample voice lines
-  static const _voiceLines = [
-    _VoiceLine(
-      id: 'greeting',
-      label: 'GREETING',
-      description: 'Welcome message',
-    ),
-    _VoiceLine(
-      id: 'confirmation',
-      label: 'CONFIRMATION',
-      description: 'Action confirmed',
-    ),
-    _VoiceLine(
-      id: 'warning',
-      label: 'WARNING',
-      description: 'Alert notification',
-    ),
-    _VoiceLine(
-      id: 'farewell',
-      label: 'FAREWELL',
-      description: 'Goodbye message',
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -82,15 +58,19 @@ class _VoiceViewState extends State<VoiceView> {
   }
 
   Widget _buildVoiceLines() {
+    final voiceLines = _viewModel.voiceLines;
+
     return ChannelCard(
       title: 'Voice Lines',
       statusLabel: _viewModel.isPlaying ? 'PLAYING' : null,
       statusActive: _viewModel.isPlaying,
       child: Column(
         children: [
-          for (final voice in _voiceLines)
+          for (final voice in voiceLines)
             _VoiceLineButton(
-              voiceLine: voice,
+              id: voice.id,
+              label: voice.label,
+              description: 'Duration: ${voice.duration.inSeconds}s',
               isPlaying:
                   _viewModel.isPlaying && _viewModel.currentVoice == voice.id,
               onPressed: () => _actions.onPlayVoice(voice.id),
@@ -168,26 +148,18 @@ class _VoiceViewState extends State<VoiceView> {
   }
 }
 
-class _VoiceLine {
-  const _VoiceLine({
+class _VoiceLineButton extends StatelessWidget {
+  const _VoiceLineButton({
     required this.id,
     required this.label,
     required this.description,
+    required this.isPlaying,
+    required this.onPressed,
   });
 
   final String id;
   final String label;
   final String description;
-}
-
-class _VoiceLineButton extends StatelessWidget {
-  const _VoiceLineButton({
-    required this.voiceLine,
-    required this.isPlaying,
-    required this.onPressed,
-  });
-
-  final _VoiceLine voiceLine;
   final bool isPlaying;
   final VoidCallback onPressed;
 
@@ -246,7 +218,7 @@ class _VoiceLineButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        voiceLine.label,
+                        label,
                         style: TextStyle(
                           fontFamily: FiftyTypography.fontFamilyMono,
                           fontSize: FiftyTypography.body,
@@ -257,7 +229,7 @@ class _VoiceLineButton extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        voiceLine.description,
+                        description,
                         style: const TextStyle(
                           fontFamily: FiftyTypography.fontFamilyMono,
                           fontSize: FiftyTypography.mono,
