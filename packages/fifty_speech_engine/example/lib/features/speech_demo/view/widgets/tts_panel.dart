@@ -84,28 +84,27 @@ class _TtsPanelState extends State<TtsPanel> {
           children: [
             // Header
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.volume_up_rounded,
-                      color: colorScheme.primary,
-                      size: 24,
-                    ),
-                    const SizedBox(width: FiftySpacing.sm),
-                    const Text(
-                      'TEXT-TO-SPEECH',
-                      style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyHeadline,
-                        fontSize: FiftyTypography.section,
-                        fontWeight: FiftyTypography.ultrabold,
-                        color: FiftyColors.terminalWhite,
-                        letterSpacing: 2.0,
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.volume_up_rounded,
+                  color: colorScheme.primary,
+                  size: 24,
                 ),
+                const SizedBox(width: FiftySpacing.sm),
+                const Expanded(
+                  child: Text(
+                    'TEXT-TO-SPEECH',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyHeadline,
+                      fontSize: FiftyTypography.section,
+                      fontWeight: FiftyTypography.ultrabold,
+                      color: FiftyColors.terminalWhite,
+                      letterSpacing: 2.0,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: FiftySpacing.sm),
                 StatusIndicator(
                   label: widget.statusLabel,
                   isActive: widget.isSpeaking,

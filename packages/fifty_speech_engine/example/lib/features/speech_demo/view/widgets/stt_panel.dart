@@ -72,28 +72,27 @@ class SttPanel extends StatelessWidget {
           children: [
             // Header
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.mic_rounded,
-                      color: colorScheme.primary,
-                      size: 24,
-                    ),
-                    const SizedBox(width: FiftySpacing.sm),
-                    const Text(
-                      'SPEECH-TO-TEXT',
-                      style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyHeadline,
-                        fontSize: FiftyTypography.section,
-                        fontWeight: FiftyTypography.ultrabold,
-                        color: FiftyColors.terminalWhite,
-                        letterSpacing: 2.0,
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.mic_rounded,
+                  color: colorScheme.primary,
+                  size: 24,
                 ),
+                const SizedBox(width: FiftySpacing.sm),
+                const Expanded(
+                  child: Text(
+                    'SPEECH-TO-TEXT',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyHeadline,
+                      fontSize: FiftyTypography.section,
+                      fontWeight: FiftyTypography.ultrabold,
+                      color: FiftyColors.terminalWhite,
+                      letterSpacing: 2.0,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: FiftySpacing.sm),
                 StatusIndicator(
                   label: statusLabel,
                   isActive: isListening || isProcessing,
