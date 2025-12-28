@@ -1,0 +1,29 @@
+name: fifty_speech_engine_example
+description: Example app demonstrating fifty_speech_engine TTS and STT capabilities.
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fifty_speech_engine:
+    path: ../
+  fifty_ui:
+    path: ../../fifty_ui
+  fifty_theme:
+    path: ../../fifty_theme
+  fifty_tokens:
+    path: ../../fifty_tokens
+  get_it: ^8.0.3
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
