@@ -147,6 +147,162 @@ class SentencesService extends ChangeNotifier {
     _addToQueue(sentence);
   }
 
+  /// Loads a complete demo story with multiple instruction types.
+  ///
+  /// This creates an immersive dialogue flow demonstrating how the
+  /// sentence engine can be used for game narratives.
+  void loadDemoStory() {
+    clearAll();
+    _sentenceCounter = 0;
+
+    final story = <DemoSentence>[
+      // Opening narration (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: 'The ancient temple stands before you, shrouded in mist.',
+        order: 1,
+      ),
+
+      // Narrator speaks (READ + WRITE)
+      DemoSentence(
+        id: _nextId(),
+        text: 'A voice echoes from within the darkness...',
+        instruction: 'read + write',
+        order: 2,
+      ),
+
+      // Dramatic pause (WAIT)
+      DemoSentence.wait(
+        id: _nextId(),
+        text: '...',
+        order: 3,
+      ),
+
+      // Character dialogue (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: '"Traveler... you have come seeking answers."',
+        order: 4,
+      ),
+
+      // Narration with voice (READ + WRITE)
+      DemoSentence(
+        id: _nextId(),
+        text: '"But first, you must prove your worth."',
+        instruction: 'read + write',
+        order: 5,
+      ),
+
+      // Pause for effect (WAIT)
+      DemoSentence.wait(
+        id: _nextId(),
+        text: 'Tap to continue...',
+        order: 6,
+      ),
+
+      // Scene description (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: 'Three paths emerge from the shadows.',
+        order: 7,
+      ),
+
+      // First choice (ASK)
+      DemoSentence.ask(
+        id: _nextId(),
+        text: 'Which path do you choose?',
+        choices: ['Path of Wisdom', 'Path of Courage', 'Path of Mystery'],
+        order: 8,
+      ),
+
+      // Response to choice (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: 'You step forward with determination.',
+        order: 9,
+      ),
+
+      // Narration (READ + WRITE)
+      DemoSentence(
+        id: _nextId(),
+        text: 'The path illuminates before you, revealing ancient symbols.',
+        instruction: 'read + write',
+        order: 10,
+      ),
+
+      // Discovery (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: 'A glowing artifact hovers at the end of the corridor.',
+        order: 11,
+      ),
+
+      // Dramatic moment (WAIT)
+      DemoSentence.wait(
+        id: _nextId(),
+        text: 'Tap to approach...',
+        order: 12,
+      ),
+
+      // Character speaks (READ + WRITE)
+      DemoSentence(
+        id: _nextId(),
+        text: '"The Orb of Igris... it has chosen you."',
+        instruction: 'read + write',
+        order: 13,
+      ),
+
+      // Second choice (ASK)
+      DemoSentence.ask(
+        id: _nextId(),
+        text: 'Do you accept the orb\'s power?',
+        choices: ['Accept the power', 'Refuse and leave', 'Ask for more information'],
+        order: 14,
+      ),
+
+      // Response (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: 'Energy surges through your body as you make your choice.',
+        order: 15,
+      ),
+
+      // Narration (READ)
+      DemoSentence.read(
+        id: _nextId(),
+        text: 'Your destiny has been forever altered.',
+        order: 16,
+      ),
+
+      // Final message (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: 'The temple begins to rumble...',
+        order: 17,
+      ),
+
+      // Closing (WAIT)
+      DemoSentence.wait(
+        id: _nextId(),
+        text: 'To be continued... (Tap to finish)',
+        order: 18,
+      ),
+
+      // End (WRITE)
+      DemoSentence.write(
+        id: _nextId(),
+        text: '--- Demo Complete ---',
+        order: 19,
+      ),
+    ];
+
+    for (final sentence in story) {
+      _addToQueue(sentence);
+    }
+
+    debugPrint('SentencesService: Loaded demo story with ${story.length} sentences');
+  }
+
   void _addToQueue(DemoSentence sentence) {
     _queue.add(sentence);
     debugPrint('SentencesService: Added sentence - ${sentence.instruction}: ${sentence.text}');

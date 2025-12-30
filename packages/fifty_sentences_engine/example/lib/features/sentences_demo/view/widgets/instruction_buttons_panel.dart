@@ -26,6 +26,7 @@ class InstructionButtonsPanel extends StatelessWidget {
     required this.onResumeTapped,
     required this.onClearQueueTapped,
     required this.onClearAllTapped,
+    required this.onLoadDemoStoryTapped,
   });
 
   /// Whether processing can be started.
@@ -70,6 +71,9 @@ class InstructionButtonsPanel extends StatelessWidget {
   /// Callback when "Clear All" is tapped.
   final VoidCallback onClearAllTapped;
 
+  /// Callback when "Load Demo Story" is tapped.
+  final VoidCallback onLoadDemoStoryTapped;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -88,6 +92,13 @@ class InstructionButtonsPanel extends StatelessWidget {
           _buildSectionHeader('ADD INSTRUCTIONS'),
           const SizedBox(height: FiftySpacing.sm),
           _buildAddInstructionButtons(),
+
+          const SizedBox(height: FiftySpacing.lg),
+
+          // Demo Story Section
+          _buildSectionHeader('DEMO STORY'),
+          const SizedBox(height: FiftySpacing.sm),
+          _buildDemoStoryButton(),
 
           const SizedBox(height: FiftySpacing.lg),
 
@@ -176,6 +187,64 @@ class InstructionButtonsPanel extends StatelessWidget {
             color: isEnabled ? color : FiftyColors.hyperChrome.withValues(alpha: 0.5),
             letterSpacing: 1.0,
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDemoStoryButton() {
+    return GestureDetector(
+      onTap: isActive ? null : onLoadDemoStoryTapped,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(
+          horizontal: FiftySpacing.lg,
+          vertical: FiftySpacing.md,
+        ),
+        decoration: BoxDecoration(
+          gradient: isActive
+              ? null
+              : const LinearGradient(
+                  colors: [
+                    FiftyColors.crimsonPulse,
+                    FiftyColors.igrisGreen,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+          color: isActive ? FiftyColors.gunmetal.withValues(alpha: 0.3) : null,
+          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          border: Border.all(
+            color: isActive
+                ? FiftyColors.hyperChrome.withValues(alpha: 0.3)
+                : FiftyColors.crimsonPulse,
+            width: 1.5,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.auto_stories_rounded,
+              color: isActive
+                  ? FiftyColors.hyperChrome.withValues(alpha: 0.5)
+                  : FiftyColors.terminalWhite,
+              size: 20,
+            ),
+            const SizedBox(width: FiftySpacing.sm),
+            Text(
+              'LOAD DEMO STORY',
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamilyMono,
+                fontSize: FiftyTypography.mono,
+                fontWeight: FiftyTypography.medium,
+                color: isActive
+                    ? FiftyColors.hyperChrome.withValues(alpha: 0.5)
+                    : FiftyColors.terminalWhite,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -125,6 +125,7 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
           onResumeTapped: _actions.onResumeTapped,
           onClearQueueTapped: _actions.onClearQueueTapped,
           onClearAllTapped: _actions.onClearAllTapped,
+          onLoadDemoStoryTapped: _actions.onLoadDemoStoryTapped,
         ),
 
         const SizedBox(height: FiftySpacing.xl),

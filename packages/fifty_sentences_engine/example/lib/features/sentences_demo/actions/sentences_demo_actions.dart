@@ -59,6 +59,11 @@ class SentencesDemoActions {
     _sentencesService.clearAll();
   }
 
+  /// Called when the "Load Demo Story" button is tapped.
+  void onLoadDemoStoryTapped() {
+    _sentencesService.loadDemoStory();
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // Processing Actions
   // ─────────────────────────────────────────────────────────────────────────
