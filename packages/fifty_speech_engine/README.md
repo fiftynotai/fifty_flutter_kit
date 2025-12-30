@@ -300,7 +300,8 @@ await engine.speak('Welcome back!');
 |----------|-----|-----|-------|
 | Android | Yes | Yes | Requires RECORD_AUDIO permission |
 | iOS | Yes | Yes | Requires microphone usage description |
-| Linux | Yes | Limited | STT via speech_to_text |
+| macOS | Yes | Yes | Requires audio-input entitlement |
+| Linux | Yes | Limited | STT requires libspeechd |
 | Web | Yes | Yes | Browser-dependent |
 
 ### Required Permissions
@@ -317,6 +318,30 @@ await engine.speak('Welcome back!');
 <string>Required for voice commands</string>
 <key>NSSpeechRecognitionUsageDescription</key>
 <string>Required for speech recognition</string>
+```
+
+**macOS** (`*.entitlements`):
+```xml
+<key>com.apple.security.device.audio-input</key>
+<true/>
+```
+
+---
+
+## Example App
+
+See the [example directory](example/) for a complete demo app showcasing:
+
+- MVVM + Actions architecture pattern
+- TTS panel with text input and controls
+- STT panel with continuous/single-phrase modes
+- Language selection (9 languages)
+- FDL styling with fifty_ui components
+
+```bash
+cd example
+flutter pub get
+flutter run
 ```
 
 ---

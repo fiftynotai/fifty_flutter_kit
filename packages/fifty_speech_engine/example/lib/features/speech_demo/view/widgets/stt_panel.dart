@@ -79,19 +79,17 @@ class SttPanel extends StatelessWidget {
                   size: 24,
                 ),
                 const SizedBox(width: FiftySpacing.sm),
-                const Expanded(
-                  child: Text(
-                    'SPEECH-TO-TEXT',
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
-                      fontSize: FiftyTypography.section,
-                      fontWeight: FiftyTypography.ultrabold,
-                      color: FiftyColors.terminalWhite,
-                      letterSpacing: 2.0,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                const Text(
+                  'SPEECH-TO-TEXT',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyHeadline,
+                    fontSize: FiftyTypography.body,
+                    fontWeight: FiftyTypography.ultrabold,
+                    color: FiftyColors.terminalWhite,
+                    letterSpacing: 1.5,
                   ),
                 ),
+                const Spacer(),
                 const SizedBox(width: FiftySpacing.sm),
                 StatusIndicator(
                   label: statusLabel,
@@ -135,21 +133,17 @@ class SttPanel extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: FiftyButton(
-                    label: isListening ? 'STOP LISTENING' : 'START LISTENING',
-                    icon: isListening
-                        ? Icons.mic_off_rounded
-                        : Icons.mic_rounded,
+                    label: isListening ? 'STOP' : 'LISTEN',
                     variant: isListening
                         ? FiftyButtonVariant.danger
                         : FiftyButtonVariant.primary,
                     onPressed: isProcessing ? null : onListenToggle,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                const SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: FiftyButton(
                     label: 'CLEAR',
-                    icon: Icons.clear_rounded,
                     variant: FiftyButtonVariant.secondary,
                     onPressed: recognizedText.isEmpty ? null : onClear,
                   ),

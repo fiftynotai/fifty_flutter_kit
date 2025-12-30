@@ -91,19 +91,17 @@ class _TtsPanelState extends State<TtsPanel> {
                   size: 24,
                 ),
                 const SizedBox(width: FiftySpacing.sm),
-                const Expanded(
-                  child: Text(
-                    'TEXT-TO-SPEECH',
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
-                      fontSize: FiftyTypography.section,
-                      fontWeight: FiftyTypography.ultrabold,
-                      color: FiftyColors.terminalWhite,
-                      letterSpacing: 2.0,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                const Text(
+                  'TEXT-TO-SPEECH',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyHeadline,
+                    fontSize: FiftyTypography.body,
+                    fontWeight: FiftyTypography.ultrabold,
+                    color: FiftyColors.terminalWhite,
+                    letterSpacing: 1.5,
                   ),
                 ),
+                const Spacer(),
                 const SizedBox(width: FiftySpacing.sm),
                 StatusIndicator(
                   label: widget.statusLabel,
@@ -151,18 +149,16 @@ class _TtsPanelState extends State<TtsPanel> {
                 Expanded(
                   child: FiftyButton(
                     label: 'SPEAK',
-                    icon: Icons.play_arrow_rounded,
                     variant: FiftyButtonVariant.primary,
                     onPressed: widget.isSpeaking
                         ? null
                         : () => widget.onSpeak(_textController.text),
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                const SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: FiftyButton(
                     label: 'STOP',
-                    icon: Icons.stop_rounded,
                     variant: FiftyButtonVariant.secondary,
                     onPressed: widget.isSpeaking ? widget.onStop : null,
                   ),

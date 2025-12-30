@@ -16,7 +16,7 @@ Integrate fifty_speech_engine into the Fifty ecosystem (rebrand from erune_speec
 | Brief | Title | Phase | Agent |
 |-------|-------|-------|-------|
 | BR-013 | Fifty Speech Engine Package | COMPLETE | - |
-| BR-014 | Fifty Speech Engine Example | PENDING | - |
+| BR-014 | Fifty Speech Engine Example | COMPLETE | - |
 
 ---
 
@@ -31,6 +31,7 @@ Implementing fifty_speech_engine - rebrand of erune_speech_engine with TTS/STT c
 **BR-013: Fifty Speech Engine Package**
 - Status: Done
 - Completed: 2025-12-27
+- Commit: 895f129
 
 **Package Includes:**
 - FiftySpeechEngine - Unified TTS/STT interface
@@ -38,18 +39,22 @@ Implementing fifty_speech_engine - rebrand of erune_speech_engine with TTS/STT c
 - SttManager - Speech-to-Text handler with queue support
 - SpeechResultModel - Result container
 - Multi-platform support (Android, iOS, Linux, Web)
-- 232-line README with full API reference
+- 355-line README with full API reference
 
-**Files Created:**
-- lib/fifty_speech_engine.dart
-- lib/fifty_speech_engine_platform_interface.dart
-- lib/fifty_speech_engine_method_channel.dart
-- lib/fifty_speech_engine_web.dart
-- lib/tts/tts_manager.dart
-- lib/stt/stt_manager.dart
-- lib/data/models/speech_result_model.dart
-- Android/iOS/Linux platform files
-- README.md, CHANGELOG.md, LICENSE
+---
+
+**BR-014: Fifty Speech Engine Example**
+- Status: Done
+- Completed: 2025-12-27
+- Commit: 895f129
+
+**Example Includes:**
+- MVVM + Actions architecture
+- TTS panel with text input, speak/stop controls
+- STT panel with continuous/single-phrase modes
+- Language selection (9 languages)
+- FDL styling (fifty_theme, fifty_ui, fifty_tokens)
+- Animated status indicators
 
 ---
 
@@ -141,16 +146,17 @@ Implementing fifty_speech_engine - rebrand of erune_speech_engine with TTS/STT c
 | BR-011 | Fifty Audio Engine | 2025-12-27 |
 | BR-012 | Audio Engine Example | 2025-12-27 |
 | BR-013 | Fifty Speech Engine Package | 2025-12-27 |
+| BR-014 | Fifty Speech Engine Example | 2025-12-27 |
 
 ---
 
 ## Next Steps When Resuming
 
-BR-014 ready for implementation (fifty_speech_engine example app).
+System at rest. Awaiting new commands.
 
 **Suggested next tasks:**
-- Implement BR-014: fifty_speech_engine example app
-- Release fifty_speech_engine v0.1.0
+- Release fifty_speech_engine v0.1.0 (git tag + GitHub release)
 - Publish packages to pub.dev
+- Create new briefs for additional ecosystem packages
 
 ---

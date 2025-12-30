@@ -30,10 +30,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Platform support:
   - Android (with RECORD_AUDIO permission)
   - iOS (with microphone usage description)
+  - macOS (with audio-input entitlement)
   - Linux (TTS full, STT limited)
   - Web (browser-dependent)
 - Comprehensive README documentation
 - MIT License
+
+### Example App
+- Complete demo application showcasing package capabilities
+- **Architecture:** MVVM + Actions pattern (Kalvad)
+  - `SpeechDemoActions` - User interaction handlers
+  - `SpeechDemoViewModel` - State management
+  - `SpeechService` - Engine wrapper with notifications
+- **Features:**
+  - TTS panel with text input and speak/stop controls
+  - STT panel with continuous/single-phrase modes
+  - Language selection (9 languages)
+  - Real-time transcription display
+  - Status indicators
+- **Styling:** FDL integration (fifty_ui, fifty_theme, fifty_tokens)
+- **Dependencies:**
+  - get_it for dependency injection
+  - provider for state management
 
 ### Changed
 - Package name: erune_speech_engine -> fifty_speech_engine
