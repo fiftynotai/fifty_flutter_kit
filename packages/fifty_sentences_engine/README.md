@@ -189,6 +189,9 @@ class SentenceEngine {
   void addSentenceToWritten(BaseSentenceModel sentence);
   void clearProcessedSentences();
 
+  // Registration
+  void registerInterpreter(SentenceInterpreter interpreter);
+
   // Cleanup
   void dispose();
 }
@@ -229,11 +232,14 @@ class SentenceInterpreter {
 ```
 
 **Supported Instructions:**
-- `read` - Triggers TTS via `onRead`
-- `write` - Displays text via `onWrite`
-- `ask` - Shows choices via `onAsk`
-- `wait` - Pauses for input via `onWait`
-- `navigate` - Changes phase via `onNavigate`
+
+| Instruction | Handler | Purpose |
+|-------------|---------|---------|
+| `read` | `onRead` | Text-to-speech output |
+| `write` | `onWrite` | Display text on screen |
+| `ask` | `onAsk` | Show choices, wait for selection |
+| `wait` | `onWait` | Pause until user tap |
+| `navigate` | `onNavigate` | Phase-based navigation |
 
 Instructions can be combined: `read + write`
 
@@ -378,6 +384,23 @@ final interpreter = SentenceInterpreter(
 );
 ```
 
+### Order-Based Processing
+
+```dart
+final queue = SentenceQueue();
+
+// Sentences added out of order
+queue.pushOrdered(GameSentence(text: 'Third', order: 3));
+queue.pushOrdered(GameSentence(text: 'First', order: 1));
+queue.pushOrdered(GameSentence(text: 'Second', order: 2));
+
+// Will process: First, Second, Third
+while (queue.isNotEmpty) {
+  final sentence = queue.pop();
+  print(sentence.text);
+}
+```
+
 ## Integration with Fifty Ecosystem
 
 ### With fifty_speech_engine
@@ -456,6 +479,19 @@ void main() {
     expect(queue.pop().text, 'A');
     expect(queue.pop().text, 'B');
     expect(queue.pop().text, 'C');
+  });
+
+  test('SafeSentenceWriter prevents duplicates', () async {
+    final written = <String>[];
+    final writer = SafeSentenceWriter(
+      (s) async => written.add(s.text),
+    );
+
+    final sentence = TestSentence(text: 'Hello');
+    await writer.write(sentence);
+    await writer.write(sentence); // Duplicate, should be ignored
+
+    expect(written, ['Hello']);
   });
 }
 ```
