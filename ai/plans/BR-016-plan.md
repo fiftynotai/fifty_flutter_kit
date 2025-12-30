@@ -1,4 +1,4 @@
-exa# Implementation Plan: BR-016
+# Implementation Plan: BR-016
 
 **Complexity:** L (Large)
 **Estimated Duration:** 4-6 hours
