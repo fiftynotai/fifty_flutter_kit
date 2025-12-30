@@ -7,7 +7,7 @@
 
 ## Session Goal
 
-Release fifty_speech_engine v0.1.0 to complete the package integration.
+Implement BR-015: fifty_sentences_engine package (rebrand from erune_sentences_engine).
 
 ---
 
@@ -15,7 +15,7 @@ Release fifty_speech_engine v0.1.0 to complete the package integration.
 
 | Brief | Title | Phase | Agent |
 |-------|-------|-------|-------|
-| - | - | - | - |
+| BR-015 | Fifty Sentences Engine | PLANNING | planner |
 
 ---
 

@@ -1,0 +1,25 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_single_quotes
+    - sort_constructors_first
+    - sort_unnamed_constructors_first
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - avoid_unnecessary_containers
+    - sized_box_for_whitespace
+    - use_key_in_widget_constructors
+    - prefer_final_locals
+    - annotate_overrides
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - avoid_init_to_null
+    - prefer_adjacent_string_concatenation
+    - prefer_collection_literals
+    - prefer_conditional_assignment
+    - prefer_for_elements_to_map_fromIterable
+    - unnecessary_new
+    - unnecessary_const
+    - unnecessary_this
