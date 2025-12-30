@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2024-12-30
+## [0.1.0] - 2025-12-30
 
 ### Added
 
@@ -20,22 +20,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Entity System
 
-- `FiftyMapEntity` - Data model for map entities
-- `FiftyMapEvent` - Event marker model
+- `FiftyMapEntity` - Data model for map entities with JSON serialization
+- `FiftyMapEvent` - Event marker model with alignment options
 - `FiftyBlockSize` - Tile-based size wrapper
-- `FiftyEntityType` - Entity type enumeration
-- `FiftyEventType` - Event type enumeration
-- `FiftyEventAlignment` - Event alignment enumeration
+- `FiftyEntityType` - Entity type enumeration (room, monster, character, door, furniture, event)
+- `FiftyEventType` - Event type enumeration (basic, npc, masterOfShadow)
+- `FiftyEventAlignment` - Event alignment enumeration (9 positions)
 
 ### Component Classes
 
 - `FiftyBaseComponent` - Abstract base for all entity components
 - `FiftyStaticComponent` - Static entities (furniture, doors)
-- `FiftyMovableComponent` - Movable entities (characters, monsters)
-- `FiftyRoomComponent` - Room containers with children
+- `FiftyMovableComponent` - Movable entities with animation support
+  - Movement: `moveTo`, `moveUp`, `moveDown`, `moveLeft`, `moveRight`
+  - Effects: `attack` (bounce), `die` (fade out)
+  - Sprite swap at runtime
+- `FiftyRoomComponent` - Room containers with child spawning
 - `FiftyEventComponent` - Event markers and overlays
 - `FiftyTextComponent` - Text overlays
-- `FiftyEntitySpawner` - Factory for spawning components
+- `FiftyEntitySpawner` - Factory for spawning components with custom type registration
 
 ### Services
 
@@ -46,14 +49,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Utilities
 
 - `FiftyMapUtils` - Position and rotation calculations
-- `FiftyMapConfig` - Grid configuration constants
-- `FiftyRenderPriority` - Render layer priorities
+- `FiftyMapConfig` - Grid configuration constants (64px block size)
+- `FiftyRenderPriority` - Render layer priorities (background through uiOverlay)
 
 ### Extensions
 
-- `FiftyMapEntityExtension` - Entity cloning and type checks
+- `FiftyMapEntityExtension` - Entity cloning, position changes, type checks
 - `FiftyEventTypeExtension` - Event type parsing
 - `FiftyEventAlignmentExtension` - Alignment parsing
+
+### Camera Controls
+
+- Smooth pan with single finger drag
+- Pinch-to-zoom anchored at midpoint (0.3x - 3.0x)
+- Programmatic zoom in/out/reset
+- Center on all entities or specific entity
 
 ### Platform Support
 
