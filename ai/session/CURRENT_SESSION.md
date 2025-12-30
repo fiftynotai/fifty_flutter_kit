@@ -1,6 +1,6 @@
 # Current Session
 
-**Status:** ACTIVE
+**Status:** REST MODE
 **Last Updated:** 2025-12-30
 
 ---
@@ -183,9 +183,12 @@ Released fifty_map_engine v0.1.0 - Flame-based interactive grid map rendering fo
 
 All engine packages released. Ecosystem complete.
 
+**Pending briefs:**
+- BR-018: Fifty Composite Demo App (Ready, P2, L-Large)
+
 **Suggested next tasks:**
+- `HUNT BR-018` - Create composite demo app using all engines
 - Publish packages to pub.dev
 - Integrate engines into game projects
-- Create composite demo app using all engines
 
 ---
