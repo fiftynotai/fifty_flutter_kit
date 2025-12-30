@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2025-12-30
-**Completed:** _(pending)_
+**Completed:** 2025-12-30
 
 ---
 
@@ -74,12 +74,26 @@ example/lib/
 
 ## Acceptance Criteria
 
-1. [ ] Example app runs on iOS/Android
-2. [ ] Sentence queue displayed with FDL styling
-3. [ ] Demo buttons for each instruction type
-4. [ ] Status indicator shows processing state
-5. [ ] MVVM + Actions architecture
-6. [ ] `flutter analyze` passes
+1. [x] Example app runs on iOS/Android
+2. [x] Sentence queue displayed with FDL styling
+3. [x] Demo buttons for each instruction type
+4. [x] Status indicator shows processing state
+5. [x] MVVM + Actions architecture
+6. [x] `flutter analyze` passes
+
+---
+
+## Workflow State
+
+**Phase:** COMPLETE
+**Active Agent:** none
+**Retry Count:** 0
+
+### Agent Log
+- 2025-12-30: coder - Example app created (MVVM + Actions)
+- 2025-12-30: coder - Demo story feature added (19 sentences)
+- 2025-12-30: documenter - Example README updated
+- 2025-12-30: releaser - Released with v0.1.0
 
 ---
 
