@@ -7,7 +7,7 @@
 
 ## Session Goal
 
-Implement BR-015: fifty_sentences_engine package (rebrand from erune_sentences_engine).
+Release fifty_sentences_engine v0.1.0 - Queue-based sentence/dialogue processing engine.
 
 ---
 
@@ -15,17 +15,39 @@ Implement BR-015: fifty_sentences_engine package (rebrand from erune_sentences_e
 
 | Brief | Title | Phase | Agent |
 |-------|-------|-------|-------|
-| BR-015 | Fifty Sentences Engine | PLANNING | planner |
+| - | - | - | - |
 
 ---
 
 ## Session Summary
 
-Released fifty_speech_engine v0.1.0 - unified speech interface for Flutter games and applications.
+Released fifty_sentences_engine v0.1.0 - queue-based sentence and dialogue processing engine for games and interactive applications.
 
 ---
 
 ## Completed This Session
+
+**fifty_sentences_engine v0.1.0 Release**
+- Status: Released
+- Completed: 2025-12-30
+- Tag: fifty_sentences_engine-v0.1.0
+- Release: https://github.com/fiftynotai/fifty_eco_system/releases/tag/fifty_sentences_engine-v0.1.0
+
+**Release Includes:**
+- SentenceEngine - Core queue-based processor with status tracking
+- SentenceInterpreter - Instruction handler (read, write, ask, wait, navigate)
+- SentenceQueue - Optimized queue with front/back/ordered operations
+- SafeSentenceWriter - Deduplication for idempotent rendering
+- BaseSentenceModel - Abstract interface for custom sentence models
+- Multi-platform support (Android, iOS, macOS, Linux, Windows, Web)
+- Comprehensive example app with MVVM + Actions and FDL styling
+- 19-sentence interactive demo story
+
+**Briefs Completed:**
+- BR-015: fifty_sentences_engine package (rebranded from erune_sentences_engine)
+- BR-017: Example app with demo story
+
+---
 
 **fifty_speech_engine v0.1.0 Release**
 - Status: Released
@@ -99,6 +121,7 @@ Released fifty_speech_engine v0.1.0 - unified speech interface for Flutter games
 | fifty_ui | v0.4.0 | Released |
 | fifty_audio_engine | v0.7.0 | Released |
 | fifty_speech_engine | v0.1.0 | Released |
+| fifty_sentences_engine | v0.1.0 | Released |
 
 ---
 
@@ -124,6 +147,8 @@ Released fifty_speech_engine v0.1.0 - unified speech interface for Flutter games
 | BR-012 | Audio Engine Example | 2025-12-27 |
 | BR-013 | Fifty Speech Engine Package | 2025-12-30 |
 | BR-014 | Fifty Speech Engine Example | 2025-12-30 |
+| BR-015 | Fifty Sentences Engine Package | 2025-12-30 |
+| BR-017 | Fifty Sentences Engine Example | 2025-12-30 |
 
 ---
 
@@ -134,6 +159,6 @@ System at rest. Awaiting new commands.
 **Suggested next tasks:**
 - Publish packages to pub.dev
 - Create new briefs for additional ecosystem packages
-- Integrate speech/audio engines into game projects
+- Integrate speech/audio/sentences engines into game projects
 
 ---
