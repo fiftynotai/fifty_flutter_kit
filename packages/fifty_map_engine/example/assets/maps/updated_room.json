@@ -1,0 +1,103 @@
+[
+  {
+    "id": "a4240259-9bb2-48f8-8fbb-814ecfbde945",
+    "type": "room",
+    "asset": "rooms/medium_room.png",
+    "grid_position": {
+      "x": 0.0,
+      "y": 4.0
+    },
+    "zIndex": 0,
+    "quarter_turns": 1,
+    "event": null,
+    "components": [
+      {
+        "id": "a9459115-26c8-44c1-9da8-0c36eb94e6bd",
+        "parent_id": "a4240259-9bb2-48f8-8fbb-814ecfbde945",
+        "type": "furniture",
+        "asset": "furniture/table.png",
+        "grid_position": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "zIndex": 0,
+        "quarter_turns": 1,
+        "event": {
+          "event_text": "3",
+          "event_type": "basic",
+          "alignment": "center"
+        },
+        "metadata": null,
+        "size": {
+          "width": 3,
+          "height": 2
+        }
+      },
+      {
+        "id": "d27d5f18-6d7a-402d-bc99-f2cea731086d",
+        "parent_id": "a4240259-9bb2-48f8-8fbb-814ecfbde945",
+        "type": "monster",
+        "asset": "monsters/m-2.png",
+        "grid_position": {
+          "x": 4.0,
+          "y": 1.0
+        },
+        "zIndex": 0,
+        "quarter_turns": 0,
+        "event": {
+          "event_text": "2",
+          "event_type": "masterOfShadow"
+        },
+        "components": [],
+        "metadata": null,
+        "size": {
+          "width": 1,
+          "height": 1
+        }
+      },
+      {
+        "id": "a29852cf-4f6e-4ae0-a99e-3ea008829f51",
+        "parent_id": "a4240259-9bb2-48f8-8fbb-814ecfbde945",
+        "type": "monster",
+        "asset": "monsters/m-4.png",
+        "grid_position": {
+          "x": 5.0,
+          "y": 0.0
+        },
+        "zIndex": 0,
+        "quarter_turns": 0,
+        "event": null,
+        "components": [],
+        "metadata": null,
+        "size": {
+          "width": 1,
+          "height": 1
+        }
+      },
+      {
+        "id": "204a3254-d962-4470-9959-54fd8e8e0e1b",
+        "parent_id": "a4240259-9bb2-48f8-8fbb-814ecfbde945",
+        "type": "furniture",
+        "asset": "furniture/token.png",
+        "grid_position": {
+          "x": 7.0,
+          "y": 3.0
+        },
+        "zIndex": 0,
+        "quarter_turns": 0,
+        "event": null,
+        "components": [],
+        "metadata": null,
+        "size": {
+          "width": 1,
+          "height": 1
+        }
+      }
+    ],
+    "metadata": null,
+    "size": {
+      "width": 4,
+      "height": 8
+    }
+  }
+]
