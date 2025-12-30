@@ -1,0 +1,42 @@
+name: fifty_map_engine
+description: "Fifty ecosystem map engine - Flame-based interactive grid map rendering for Flutter games"
+version: 0.1.0
+homepage: https://github.com/fiftynotai/fifty_eco_system
+repository: https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_map_engine
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flame: ^1.30.1
+  logging: ^1.3.0
+  plugin_platform_interface: ^2.0.2
+  web: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.fifty.map_engine
+        pluginClass: FiftyMapEnginePlugin
+      ios:
+        pluginClass: FiftyMapEnginePlugin
+      linux:
+        pluginClass: FiftyMapEnginePlugin
+      macos:
+        pluginClass: FiftyMapEnginePlugin
+      windows:
+        pluginClass: FiftyMapEnginePluginCApi
+      web:
+        pluginClass: FiftyMapEngineWeb
+        fileName: fifty_map_engine_web.dart

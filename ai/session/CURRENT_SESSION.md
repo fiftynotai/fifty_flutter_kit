@@ -7,7 +7,7 @@
 
 ## Session Goal
 
-Release fifty_sentences_engine v0.1.0 - Queue-based sentence/dialogue processing engine.
+Implement BR-016: Rebrand erune_map_engine → fifty_map_engine for the Fifty ecosystem.
 
 ---
 
@@ -15,7 +15,7 @@ Release fifty_sentences_engine v0.1.0 - Queue-based sentence/dialogue processing
 
 | Brief | Title | Phase | Agent |
 |-------|-------|-------|-------|
-| - | - | - | - |
+| BR-016 | Fifty Map Engine Package | COMMITTING | - |
 
 ---
 
@@ -156,9 +156,12 @@ Released fifty_sentences_engine v0.1.0 - queue-based sentence and dialogue proce
 
 System at rest. Awaiting new commands.
 
+**Pending briefs:**
+- BR-016: Fifty Map Engine Package (Ready)
+
 **Suggested next tasks:**
+- Implement BR-016 (fifty_map_engine rebrand from erune_map_engine)
 - Publish packages to pub.dev
-- Create new briefs for additional ecosystem packages
 - Integrate speech/audio/sentences engines into game projects
 
 ---
