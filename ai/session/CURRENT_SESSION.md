@@ -7,7 +7,7 @@
 
 ## Session Goal
 
-Implement BR-016: Rebrand erune_map_engine → fifty_map_engine for the Fifty ecosystem.
+Session complete. fifty_map_engine v0.1.0 implemented.
 
 ---
 
@@ -15,7 +15,7 @@ Implement BR-016: Rebrand erune_map_engine → fifty_map_engine for the Fifty ec
 
 | Brief | Title | Phase | Agent |
 |-------|-------|-------|-------|
-| BR-016 | Fifty Map Engine Package | COMMITTING | - |
+| - | - | - | - |
 
 ---
 
@@ -122,6 +122,7 @@ Released fifty_sentences_engine v0.1.0 - queue-based sentence and dialogue proce
 | fifty_audio_engine | v0.7.0 | Released |
 | fifty_speech_engine | v0.1.0 | Released |
 | fifty_sentences_engine | v0.1.0 | Released |
+| fifty_map_engine | v0.1.0 | Implemented |
 
 ---
 
@@ -156,12 +157,10 @@ Released fifty_sentences_engine v0.1.0 - queue-based sentence and dialogue proce
 
 System at rest. Awaiting new commands.
 
-**Pending briefs:**
-- BR-016: Fifty Map Engine Package (Ready)
-
 **Suggested next tasks:**
-- Implement BR-016 (fifty_map_engine rebrand from erune_map_engine)
+- Create fifty_map_engine example app (BR-018)
+- Tag and release fifty_map_engine v0.1.0
 - Publish packages to pub.dev
-- Integrate speech/audio/sentences engines into game projects
+- Integrate engines into game projects
 
 ---

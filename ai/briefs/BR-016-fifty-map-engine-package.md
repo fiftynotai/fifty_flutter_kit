@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2025-12-30
-**Completed:** _(pending)_
+**Completed:** 2025-12-30
 
 ---
 
@@ -158,7 +158,7 @@ _(None)_
 
 ## Workflow State
 
-**Phase:** COMMITTING
+**Phase:** COMPLETE
 **Active Agent:** none
 **Retry Count:** 0
 
@@ -168,6 +168,7 @@ _(None)_
 - [2025-12-30 BUILDING] coder: Implementation complete (43 files, 31 tests)
 - [2025-12-30 TESTING] tester: PASS (31/31 tests, zero lint issues, no legacy refs)
 - [2025-12-30 REVIEWING] reviewer: APPROVE (4.5/5, 4 minor suggestions, ready for release)
+- [2025-12-30 COMMITTING] Committed b251c4f (48 files, 4424 insertions)
 
 ---
 
