@@ -7,7 +7,7 @@
 
 ## Session Goal
 
-fifty_map_engine example app created with FDL styling.
+fifty_map_engine v0.1.0 released.
 
 ---
 
@@ -21,41 +21,34 @@ fifty_map_engine example app created with FDL styling.
 
 ## Session Summary
 
-Created fifty_map_engine example app with full FDL styling, MVVM + Actions architecture, and comprehensive control panel.
+Released fifty_map_engine v0.1.0 - Flame-based interactive grid map rendering for Flutter games.
 
 ---
 
 ## Completed This Session
 
-**fifty_map_engine Example App**
-- Status: Complete
+**fifty_map_engine v0.1.0 Release**
+- Status: Released
 - Completed: 2025-12-30
+- Tag: fifty_map_engine-v0.1.0
+- Release: https://github.com/fiftynotai/fifty_eco_system/releases/tag/fifty_map_engine-v0.1.0
 
-**Implementation Includes:**
-- MVVM + Actions architecture pattern
-- FDL-styled UI (FiftyCard, FiftyIconButton, status bar)
-- Interactive map with pan/zoom controls
-- Entity manipulation (add, remove, move)
-- Camera controls (zoom in/out, center)
-- D-pad movement controls
-- Status bar with state indicators
-- Dependency injection with GetIt
-- Provider state management
+**Release Includes:**
+- FiftyMapController - UI-friendly facade for map manipulation
+- FiftyMapBuilder - FlameGame implementation with pan/zoom gestures
+- FiftyMapWidget - Flutter widget embedding the map
+- FiftyMapEntity - Data model with JSON serialization
+- FiftyEntitySpawner - Factory for spawning components
+- FiftyAssetLoader - Asset registration and bulk loading
+- FiftyMapLoader - JSON map data loading
+- FiftyBaseComponent, FiftyStaticComponent, FiftyMovableComponent
+- FiftyRoomComponent, FiftyEventComponent, FiftyTextComponent
+- FiftyRenderPriority - Z-ordering for render layers
+- Multi-platform support (Android, iOS, macOS, Linux, Windows, Web)
+- Comprehensive example app with MVVM + Actions and FDL styling
 
-**Files Created:**
-- lib/main.dart - Entry point, asset registration
-- lib/app/map_demo_app.dart - App shell with providers
-- lib/core/di/service_locator.dart - Dependency injection
-- lib/features/map_demo/service/map_service.dart - Business logic
-- lib/features/map_demo/viewmodel/map_viewmodel.dart - State exposure
-- lib/features/map_demo/actions/map_actions.dart - UI event handlers
-- lib/features/map_demo/view/map_demo_page.dart - Main page
-- lib/features/map_demo/view/widgets/control_panel.dart - Control buttons
-- lib/features/map_demo/view/widgets/status_bar.dart - Status display
-- pubspec.yaml - Dependencies
-- analysis_options.yaml - Lint rules
-- README.md - Documentation
-- assets/ - Copied from source reference
+**Briefs Completed:**
+- BR-016: fifty_map_engine package (rebranded from erune_map_engine)
 
 ---
 
@@ -154,7 +147,7 @@ Created fifty_map_engine example app with full FDL styling, MVVM + Actions archi
 | fifty_audio_engine | v0.7.0 | Released |
 | fifty_speech_engine | v0.1.0 | Released |
 | fifty_sentences_engine | v0.1.0 | Released |
-| fifty_map_engine | v0.1.0 | Example Complete |
+| fifty_map_engine | v0.1.0 | Released |
 
 ---
 
@@ -181,17 +174,18 @@ Created fifty_map_engine example app with full FDL styling, MVVM + Actions archi
 | BR-013 | Fifty Speech Engine Package | 2025-12-30 |
 | BR-014 | Fifty Speech Engine Example | 2025-12-30 |
 | BR-015 | Fifty Sentences Engine Package | 2025-12-30 |
+| BR-016 | Fifty Map Engine Package | 2025-12-30 |
 | BR-017 | Fifty Sentences Engine Example | 2025-12-30 |
 
 ---
 
 ## Next Steps When Resuming
 
-fifty_map_engine example app complete. Ready for release.
+All engine packages released. Ecosystem complete.
 
 **Suggested next tasks:**
-- Tag and release fifty_map_engine v0.1.0
 - Publish packages to pub.dev
 - Integrate engines into game projects
+- Create composite demo app using all engines
 
 ---
