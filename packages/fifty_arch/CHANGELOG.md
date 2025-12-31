@@ -4,6 +4,23 @@ All notable changes to this project template will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres loosely to Semantic Versioning for the template itself.
 
+## [0.7.0] - 2025-12-31
+
+### Changed
+
+- **Extracted connectivity to fifty_connectivity package**: Network connectivity monitoring extracted for better modularity and standalone usage.
+  - Moved: `ReachabilityService`, `ConnectionViewModel`, `ConnectionActions`
+  - Moved: `ConnectionOverlay`, `ConnectionHandler`, `ConnectivityCheckerSplash`
+  - Moved: `ConnectionBindings`
+  - fifty_arch now depends on fifty_connectivity v0.1.0
+  - ConnectivityConfig configured with RouteManager for navigation
+
+### Migration Notes
+
+- No API changes required - imports are re-exported from fifty_arch
+- If you were importing connectivity classes directly from `modules/connections/`, update to use exports from fifty_connectivity or the main barrel file
+- ConnectivityConfig.navigateOff is pre-configured to use RouteManager.off()
+
 ## [0.6.0] - 2025-12-31
 
 ### Changed

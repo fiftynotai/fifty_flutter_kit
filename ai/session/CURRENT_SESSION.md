@@ -24,11 +24,10 @@ Completed BR-025: Extract connectivity module from fifty_arch into standalone fi
 - Release: fifty_utils v0.1.0
 - Tests: 111 passing
 
-**fifty_arch v0.6.0**
-- Added fifty_storage dependency
-- Added fifty_utils dependency
-- Added fifty_connectivity dependency
-- Re-exports for backwards compatibility
+**fifty_arch v0.7.0**
+- Added fifty_connectivity dependency (extracted from internal module)
+- Re-exports connectivity APIs for backwards compatibility
+- ConnectivityConfig pre-configured with RouteManager
 
 **Documentation**
 - Root README.md: Complete ecosystem documentation with 12 packages
@@ -48,7 +47,7 @@ Completed BR-025: Extract connectivity module from fifty_arch into standalone fi
 | fifty_storage | v0.1.0 | Released |
 | fifty_utils | v0.1.0 | Released |
 | fifty_connectivity | v0.1.0 | Released |
-| fifty_arch | v0.6.0 | Released |
+| fifty_arch | v0.7.0 | Released |
 | fifty_audio_engine | v0.7.0 | Released |
 | fifty_speech_engine | v0.1.0 | Released |
 | fifty_sentences_engine | v0.1.0 | Released |
