@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '/src/utils/responsive_utils.dart';
+import 'package:fifty_utils/fifty_utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 /// **CustomDateText**

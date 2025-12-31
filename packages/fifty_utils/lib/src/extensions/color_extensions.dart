@@ -1,6 +1,17 @@
 import 'dart:ui';
 
+/// **HexColor Extension**
+///
 /// Extension to convert between hex color strings and `Color` objects.
+///
+/// **Usage**:
+/// ```dart
+/// // From hex string to Color
+/// Color color = HexColor.fromHex("#aabbcc");
+///
+/// // From Color to hex string
+/// String hex = color.toHex(); // "#ffaabbcc"
+/// ```
 extension HexColor on Color {
   /// Converts a hex string to a [Color] object.
   ///
@@ -10,6 +21,7 @@ extension HexColor on Color {
   /// Example:
   /// ```dart
   /// Color color = HexColor.fromHex("#aabbcc");
+  /// Color withAlpha = HexColor.fromHex("#80aabbcc");
   /// ```
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
@@ -26,7 +38,8 @@ extension HexColor on Color {
   ///
   /// Example:
   /// ```dart
-  /// String hex = color.toHex(); // Outputs "#ffaabbcc".
+  /// String hex = color.toHex(); // "#ffaabbcc"
+  /// String noHash = color.toHex(leadingHashSign: false); // "ffaabbcc"
   /// ```
   String toHex({bool leadingHashSign = true}) {
     return '${leadingHashSign ? '#' : ''}'

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/src/utils/responsive_utils.dart';
+import 'package:fifty_utils/fifty_utils.dart';
 
 /// **CustomFormField**
 ///

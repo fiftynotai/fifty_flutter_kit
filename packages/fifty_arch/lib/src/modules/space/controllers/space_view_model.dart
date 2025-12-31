@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '/src/core/presentation/api_response.dart';
+import 'package:fifty_utils/fifty_utils.dart';
 import '/src/modules/space/data/models/apod_model.dart';
 import '/src/modules/space/data/models/neo_model.dart';
 import '/src/modules/space/data/models/mars_photo_model.dart';

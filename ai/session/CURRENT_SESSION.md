@@ -2,43 +2,39 @@
 
 **Status:** REST MODE
 **Last Updated:** 2025-12-31
-**Last Completed:** BR-024 (fifty_storage v0.1.0)
+**Last Completed:** BR-023 (fifty_utils v0.1.0)
 
 ---
 
 ## Session Summary
 
-Completed BR-021: Theme-aware components for light/dark mode support across fifty_ui and fifty_arch.
+Completed BR-023: Extract utility functions from fifty_arch into standalone fifty_utils package.
 
 ---
 
 ## Completed This Session
 
-**BR-021: Theme-Aware Components**
+**BR-023: Extract fifty_utils Package**
 - Status: Complete
 - Completed: 2025-12-31
-- Releases: fifty_ui v0.5.0, fifty_arch v0.4.0
+- Release: fifty_utils v0.1.0
 
-**fifty_ui v0.5.0 - Theme Fixes:**
-- FiftyCard: gunmetal → colorScheme.surfaceContainerHighest
-- FiftyChip: gunmetal → colorScheme.surfaceContainerHighest
-- FiftyDataSlate: gunmetal → colorScheme.surfaceContainerHighest
-- FiftyBadge: Colors.amber → FiftyColors.warning
-- FiftySwitch: drop shadow → FDL glow
-- FiftyDropdown: drop shadow → FDL shadow
-- FiftyNavBar: Colors.black → FiftyColors.voidBlack
-- HalftonePainter: Colors.white → FiftyColors.terminalWhite
+**Package Contents:**
+- DateTime extensions (isToday, isYesterday, isTomorrow, format, timeAgo)
+- Duration extensions (format, formatCompact)
+- Color extensions (HexColor.fromHex, toHex)
+- ResponsiveUtils (breakpoints, device detection, valueByDevice)
+- ApiResponse<T> (idle, loading, success, error states)
+- apiFetch() stream helper
+- PaginationResponse<T>
 
-**fifty_arch v0.4.0 - Theme Fixes:**
-- Scaffold/AppBar backgrounds use colorScheme.surface
-- Auth screens (login, register, splash) theme-aware
-- Connection overlays use theme colors
-- Menu/drawer components use theme colors
-- Space module widgets use theme colors
+**Test Coverage:** 111 tests
 
-**Tags Pushed:**
-- fifty_ui-v0.5.0
-- fifty_arch-v0.4.0
+**fifty_arch Integration:**
+- Added fifty_utils as dependency
+- Updated 5 files with direct imports
+- Removed 4 extracted source files
+- All 104+ existing tests passing
 
 ---
 
@@ -50,12 +46,13 @@ Completed BR-021: Theme-aware components for light/dark mode support across fift
 | fifty_theme | v0.1.0 | Released |
 | fifty_ui | v0.5.0 | Released |
 | fifty_cache | v0.1.0 | Released |
-| **fifty_storage** | **v0.1.0** | **NEW** |
+| fifty_storage | v0.1.0 | Released |
+| **fifty_utils** | **v0.1.0** | **NEW** |
 | fifty_audio_engine | v0.7.0 | Released |
 | fifty_speech_engine | v0.1.0 | Released |
 | fifty_sentences_engine | v0.1.0 | Released |
 | fifty_map_engine | v0.1.0 | Released |
-| fifty_arch | v0.5.0 | Updated (uses fifty_cache) |
+| fifty_arch | v0.6.0 | Updated (uses fifty_utils) |
 
 ---
 
@@ -88,29 +85,22 @@ Completed BR-021: Theme-aware components for light/dark mode support across fift
 | BR-020 | Orbital Command Example | 2025-12-30 |
 | BR-021 | Theme-Aware Components | 2025-12-31 |
 | BR-022 | fifty_cache extraction | 2025-12-31 |
-| **BR-024** | **fifty_storage extraction** | **2025-12-31** |
+| BR-024 | fifty_storage extraction | 2025-12-31 |
+| **BR-023** | **fifty_utils extraction** | **2025-12-31** |
 
 ---
 
 ## Next Steps When Resuming
 
-All packages complete with full theme support. Ecosystem ready for production.
-
-**Pending briefs (Package Extraction Queue):**
+**Remaining briefs (Package Extraction Queue):**
 | Brief | Title | Priority | Effort | Dependencies |
 |-------|-------|----------|--------|--------------|
-| ~~BR-022~~ | ~~fifty_cache extraction~~ | ~~P2~~ | ~~S~~ | ~~Done~~ |
-| BR-023 | fifty_utils extraction | P2 | S | None |
-| ~~BR-024~~ | ~~fifty_storage extraction~~ | ~~P2~~ | ~~S~~ | ~~Done~~ |
-| BR-025 | fifty_connectivity extraction | P2 | M | BR-023 (optional) |
+| BR-025 | fifty_connectivity extraction | P2 | M | None |
 | BR-018 | Fifty Composite Demo App | P2 | L | All engines |
 
 **Recommended execution order:**
-1. ~~`HUNT BR-022` - fifty_cache~~ COMPLETE
-2. `HUNT BR-023` - fifty_utils (provides Duration extensions)
-3. ~~`HUNT BR-024` - fifty_storage~~ COMPLETE
-4. `HUNT BR-025` - fifty_connectivity (depends on BR-023 for Duration.format)
-5. `HUNT BR-018` - Composite demo app (after all extractions)
+1. `HUNT BR-025` - fifty_connectivity (connection monitoring, overlays)
+2. `HUNT BR-018` - Composite demo app (after all extractions)
 
 **Alternative tasks:**
 - Publish packages to pub.dev

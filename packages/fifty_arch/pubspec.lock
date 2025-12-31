@@ -164,6 +164,13 @@ packages:
       relative: true
     source: path
     version: "0.5.0"
+  fifty_utils:
+    dependency: "direct main"
+    description:
+      path: "../fifty_utils"
+      relative: true
+    source: path
+    version: "0.1.0"
   file:
     dependency: transitive
     description:
