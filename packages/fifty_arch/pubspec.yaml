@@ -25,8 +25,6 @@ dependencies:
   connectivity_plus: ^6.1.0
 
   # Storage
-  get_storage: ^2.1.1
-  flutter_secure_storage: ^9.2.2
   path_provider: ^2.1.5
 
   # Utilities
@@ -43,6 +41,8 @@ dependencies:
     path: ../fifty_ui
   fifty_cache:
     path: ../fifty_cache
+  fifty_storage:
+    path: ../fifty_storage
 
   # Network Images
   cached_network_image: ^3.3.1

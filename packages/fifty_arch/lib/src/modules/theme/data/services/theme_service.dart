@@ -1,4 +1,4 @@
-import '/src/infrastructure/storage/preferences_storage.dart';
+import 'package:fifty_storage/fifty_storage.dart';
 
 /// **ThemeService**
 ///

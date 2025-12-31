@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:fifty_cache/fifty_cache.dart';
 import '/src/core/errors/app_exception.dart';
 import '../../config/api_config.dart';
-import '/src/infrastructure/storage/app_storage_service.dart';
+import 'package:fifty_storage/fifty_storage.dart';
 
 /// **ApiService**
 ///

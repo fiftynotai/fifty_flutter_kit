@@ -10,12 +10,16 @@ import 'package:get_storage/get_storage.dart';
 /// - Centralize container name and keys to avoid drift.
 ///
 /// **Key Features**
+/// - Configurable container name via [configure] (call before [initialize]).
 /// - Async initialization with a dedicated container name.
 /// - Simple getters/setters for common preferences.
 /// - Utility to clear all preferences.
 ///
 /// **Example**
 /// ```dart
+/// // Optional: configure container name before initialization
+/// PreferencesStorage.configure(containerName: 'my_app');
+///
 /// await PreferencesStorage.instance.initialize();
 /// PreferencesStorage.instance.languageCode = 'en';
 /// ```
@@ -27,8 +31,34 @@ class PreferencesStorage {
   static final PreferencesStorage _instance = PreferencesStorage._internal();
   static PreferencesStorage get instance => _instance;
 
-  /// Single place to control the underlying GetStorage container name.
-  static const String container = 'appName-app';
+  /// The container name used by GetStorage.
+  ///
+  /// Configure this before calling [initialize] using [configure].
+  /// Defaults to 'fifty_storage'.
+  static String _containerName = 'fifty_storage';
+
+  /// Returns the current container name.
+  static String get containerName => _containerName;
+
+  /// **configure**
+  ///
+  /// Configure the container name before calling [initialize].
+  ///
+  /// This allows multiple apps using this package to have isolated storage.
+  /// Must be called before [initialize] - calling after has no effect.
+  ///
+  /// **Parameters**
+  /// - [containerName]: The GetStorage container name to use.
+  ///
+  /// **Example**
+  /// ```dart
+  /// PreferencesStorage.configure(containerName: 'my_app_preferences');
+  /// await PreferencesStorage.instance.initialize();
+  /// ```
+  // ────────────────────────────────────────────────
+  static void configure({required String containerName}) {
+    _containerName = containerName;
+  }
 
   // Keys
   static const String _kThemeMode = 'themeMode';
@@ -42,11 +72,11 @@ class PreferencesStorage {
   /// Initialize the GetStorage container for preferences.
   ///
   /// **Side Effects**
-  /// - Opens/creates the container named [container].
+  /// - Opens/creates the container named [containerName].
   // ────────────────────────────────────────────────
   Future<void> initialize() async {
-    await GetStorage.init(container);
-    _box = GetStorage(container);
+    await GetStorage.init(_containerName);
+    _box = GetStorage(_containerName);
   }
 
   // ---------- Theme Mode ----------

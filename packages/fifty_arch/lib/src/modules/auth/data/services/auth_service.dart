@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import '/src/infrastructure/storage/app_storage_service.dart';
+import 'package:fifty_storage/fifty_storage.dart';
 import '/src/modules/auth/data/models/user.dart';
 import '/src/core/errors/app_exception.dart';
-import '/src/infrastructure/storage/secure_token_storage.dart';
 import '/src/config/api_config.dart';
 import '/src/infrastructure/http/api_service.dart';
 

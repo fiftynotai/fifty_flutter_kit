@@ -1,5 +1,5 @@
-import '/src/infrastructure/storage/preferences_storage.dart';
-import '/src/infrastructure/storage/secure_token_storage.dart';
+import 'preferences_storage.dart';
+import 'secure_token_storage.dart';
 
 /// **AppStorageService**
 ///
@@ -17,6 +17,9 @@ import '/src/infrastructure/storage/secure_token_storage.dart';
 ///
 /// **Example**
 /// ```dart
+/// // Optional: configure container name before initialization
+/// PreferencesStorage.configure(containerName: 'my_app');
+///
 /// await AppStorageService.instance.initialize();
 /// AppStorageService.instance.languageCode = 'en';
 /// await AppStorageService.instance.setAccessToken('jwt');
@@ -43,7 +46,7 @@ class AppStorageService {
   // ---------- Container / namespacing ----------
 
   /// Central container name for preferences/caching stores.
-  static String get container => PreferencesStorage.container;
+  static String get containerName => PreferencesStorage.containerName;
 
   // ---------- Preferences (GetStorage-backed) ----------
 
@@ -53,7 +56,8 @@ class AppStorageService {
 
   /// Current language code (e.g., 'en', 'ar').
   String? get languageCode => PreferencesStorage.instance.languageCode;
-  set languageCode(String? value) => PreferencesStorage.instance.languageCode = value;
+  set languageCode(String? value) =>
+      PreferencesStorage.instance.languageCode = value;
 
   /// Optional user identifier tied to the local session/profile.
   String? get userId => PreferencesStorage.instance.userId;

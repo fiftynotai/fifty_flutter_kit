@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fifty_cache/fifty_cache.dart';
-import '/src/infrastructure/storage/app_storage_service.dart';
+import 'package:fifty_storage/fifty_storage.dart';
 import 'core/routing/route_manager.dart';
 import 'app.dart';
 import 'modules/connections/connections_bindings.dart';
@@ -20,7 +20,7 @@ Future<void> main() async {
   ThemeBindings().dependencies();
   // 1) Create a CacheStore backed by GetStorage (async factory ensures init)
   final CacheStore store = await GetStorageCacheStore.create(
-    container: AppStorageService.container, // aligned with preferences container
+    container: AppStorageService.containerName, // aligned with preferences container
   );
 
   // 2) Choose key strategy and policy (defaults: cache GET only, 2xx, fixed TTL)

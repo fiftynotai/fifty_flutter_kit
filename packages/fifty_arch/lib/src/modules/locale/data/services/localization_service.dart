@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:get/get.dart';
-import '/src/infrastructure/storage/preferences_storage.dart';
+import 'package:fifty_storage/fifty_storage.dart';
 import '/src/modules/locale/data/lang/lang.dart';
 
 /// **LocalizationService**

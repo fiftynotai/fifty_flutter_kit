@@ -1,0 +1,21 @@
+name: fifty_storage
+description: Secure token storage and preferences management for Flutter apps. Part of the Fifty ecosystem.
+version: 0.1.0
+repository: https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_storage
+homepage: https://fifty.dev
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^9.2.2
+  get_storage: ^2.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mocktail: ^1.0.4
