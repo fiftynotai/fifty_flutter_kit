@@ -3,7 +3,7 @@ import 'package:fifty_cache/fifty_cache.dart';
 import 'package:fifty_storage/fifty_storage.dart';
 import 'core/routing/route_manager.dart';
 import 'app.dart';
-import 'modules/connections/connections_bindings.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 import 'modules/locale/data/services/localization_service.dart';
 import 'infrastructure/http/api_service.dart';
 import 'modules/theme/theme.dart';
@@ -15,8 +15,12 @@ Future<void> main() async {
   // Initialize localization with saved preference
   LocalizationService.init();
 
+  // Configure connectivity navigation to use RouteManager
+  ConnectivityConfig.navigateOff = (route) async => RouteManager.off(route);
+  ConnectivityConfig.defaultNextRoute = RouteManager.authRoute;
+
   // Ensure connectivity VM is available before building the app/overlay.
-  ConnectionsBindings().dependencies();
+  ConnectionBindings().dependencies();
   ThemeBindings().dependencies();
   // 1) Create a CacheStore backed by GetStorage (async factory ensures init)
   final CacheStore store = await GetStorageCacheStore.create(

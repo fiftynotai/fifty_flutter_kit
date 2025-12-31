@@ -2,8 +2,9 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/src/modules/locale/data/keys.dart';
-import '../connection.dart';
+import '../config/connectivity_config.dart';
+import '../controllers/connection_view_model.dart';
+import '../actions/connection_actions.dart';
 
 /// **ConnectionOverlay**
 ///
@@ -13,11 +14,11 @@ import '../connection.dart';
 /// Styled with FDL (Fifty Design Language) Kinetic Brutalism aesthetic
 /// using the Orbital Command space theme.
 ///
-/// Why
+/// ## Why
 /// - Provide ambient feedback without blocking the entire screen.
 /// - Keep feature UIs responsive while connection issues resolve.
 ///
-/// Usage
+/// ## Usage
 /// ```dart
 /// ConnectionOverlay(child: YourPage())
 /// ```
@@ -28,7 +29,7 @@ class ConnectionOverlay extends GetWidget<ConnectionViewModel> {
   /// The alignment of the overlay.
   final Alignment? alignment;
 
-  /// Constructor for the `ConnectionOverlay` widget.
+  /// Constructor for the [ConnectionOverlay] widget.
   const ConnectionOverlay({
     super.key,
     required this.child,
@@ -77,7 +78,7 @@ class UplinkStatusBar extends StatelessWidget {
   /// The current uplink status.
   final UplinkStatus status;
 
-  /// Constructor for the `UplinkStatusBar` widget.
+  /// Constructor for the [UplinkStatusBar] widget.
   const UplinkStatusBar({
     super.key,
     required this.status,
@@ -99,16 +100,16 @@ class UplinkStatusBar extends StatelessWidget {
   Widget _buildStatusBadge() {
     switch (status) {
       case UplinkStatus.online:
-        return FiftyBadge.status('UPLINK ACTIVE');
+        return FiftyBadge.status(ConnectivityConfig.labelUplinkActive);
       case UplinkStatus.offline:
-        return const FiftyBadge(
-          label: 'SIGNAL LOST',
+        return FiftyBadge(
+          label: ConnectivityConfig.labelSignalLost,
           variant: FiftyBadgeVariant.error,
           showGlow: true,
         );
       case UplinkStatus.connecting:
-        return const FiftyBadge(
-          label: 'ESTABLISHING UPLINK',
+        return FiftyBadge(
+          label: ConnectivityConfig.labelEstablishingUplink,
           variant: FiftyBadgeVariant.neutral,
           showGlow: true,
           customColor: FiftyColors.hyperChrome,
@@ -122,11 +123,11 @@ class UplinkStatusBar extends StatelessWidget {
 /// Full-screen modal card shown when the app determines there is no internet
 /// connectivity. Styled with FDL Kinetic Brutalism aesthetic.
 ///
-/// **Why**
+/// ## Why
 /// - Provide clear, blocking feedback when connectivity is lost.
 /// - Show user how long they've been offline with a live timer.
 ///
-/// **Key Features**
+/// ## Key Features
 /// - Full-screen overlay with voidBlack background (85% opacity).
 /// - Central FiftyCard with gunmetal background.
 /// - Pulsing WiFi-off icon in crimsonPulse.
@@ -134,9 +135,8 @@ class UplinkStatusBar extends StatelessWidget {
 /// - Live offline duration timer via ConnectionViewModel.
 /// - Retry button with FDL styling.
 /// - Auto-dismisses when connectivity is restored.
-///
-// ────────────────────────────────────────────────
 class OfflineStatusCard extends StatefulWidget {
+  /// Constructor for the [OfflineStatusCard] widget.
   const OfflineStatusCard({super.key});
 
   @override
@@ -194,7 +194,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                 children: [
                   // Pulsing WiFi-off icon
                   Semantics(
-                    label: tkNoInternetMsg.tr,
+                    label: ConnectivityConfig.labelNoInternetSemantics,
                     child: AnimatedBuilder(
                       animation: _pulseAnimation,
                       builder: (context, child) {
@@ -213,7 +213,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
 
                   // Title: SIGNAL LOST
                   Text(
-                    'SIGNAL LOST',
+                    ConnectivityConfig.labelSignalLost,
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamilyHeadline,
                       fontSize: FiftyTypography.section,
@@ -226,7 +226,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
 
                   // Subtitle: Attempting to restore uplink...
                   Text(
-                    'Attempting to restore uplink...',
+                    ConnectivityConfig.labelAttemptingRestore,
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamilyMono,
                       fontSize: FiftyTypography.body,
@@ -239,19 +239,20 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
 
                   // Offline duration timer
                   Obx(() => Text(
-                        'Offline for: ${Get.find<ConnectionViewModel>().dialogTimer.value}',
+                        '${ConnectivityConfig.labelOfflineFor} ${Get.find<ConnectionViewModel>().dialogTimer.value}',
                         style: TextStyle(
                           fontFamily: FiftyTypography.fontFamilyMono,
                           fontSize: FiftyTypography.mono,
                           fontWeight: FiftyTypography.regular,
-                          color: FiftyColors.hyperChrome.withValues(alpha: 0.7),
+                          color:
+                              FiftyColors.hyperChrome.withValues(alpha: 0.7),
                         ),
                       )),
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Loading indicator
-                  const FiftyLoadingIndicator(
-                    text: 'RECONNECTING',
+                  FiftyLoadingIndicator(
+                    text: ConnectivityConfig.labelReconnecting,
                     style: FiftyLoadingStyle.dots,
                     size: FiftyLoadingSize.medium,
                     color: FiftyColors.hyperChrome,
@@ -260,7 +261,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
 
                   // Retry button
                   FiftyButton(
-                    label: 'RETRY CONNECTION',
+                    label: ConnectivityConfig.labelRetryConnection,
                     onPressed: _refresh,
                     variant: FiftyButtonVariant.secondary,
                     icon: Icons.refresh,

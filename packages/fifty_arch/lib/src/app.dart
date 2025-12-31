@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:fifty_theme/fifty_theme.dart';
 import 'core/core.dart';
 import 'modules/locale/data/services/localization_service.dart';
-import 'modules/connections/connection.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 import 'modules/theme/theme.dart';
 
 class App extends StatelessWidget {

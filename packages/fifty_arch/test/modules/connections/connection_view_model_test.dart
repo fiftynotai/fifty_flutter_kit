@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fifty_arch/src/modules/connections/controllers/connection_view_model.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 
 void main() {
   group('ConnectionViewModel basics', () {

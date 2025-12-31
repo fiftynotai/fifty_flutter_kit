@@ -2,66 +2,102 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '/src/utils/utils.dart';
-import '../data/services/reachability_service.dart';
+import 'package:fifty_utils/fifty_utils.dart';
+import '../services/reachability_service.dart';
 
-/// The `ConnectionViewModel` class is responsible for monitoring network connectivity changes
-/// and managing the app's response to different network states.
-///
-/// It uses `Connectivity` from the `connectivity_plus` package to detect changes in WiFi,
-/// mobile data, or disconnection. This class also tracks how long the connection is lost,
-/// updates a timer to display this duration, and handles switching between different
-/// connectivity states. Additionally, it verifies active internet access and manages timers
-/// related to connection loss or restoration.
-/// **ConnectivityType**
-///
 /// High-level connectivity states consumed by connection-aware widgets.
 ///
-/// - `mobileData`: Connected via cellular data.
-/// - `wifi`: Connected via Wi‑Fi.
-/// - `disconnected`: No network transport reported.
-/// - `noInternet`: Transport present but internet not reachable (DNS/route failure).
-/// - `connecting`: Transitional state used while probing.
-// ────────────────────────────────────────────────
-enum ConnectivityType { mobileData, wifi, disconnected, noInternet, connecting }
+/// - [mobileData]: Connected via cellular data.
+/// - [wifi]: Connected via Wi-Fi.
+/// - [disconnected]: No network transport reported.
+/// - [noInternet]: Transport present but internet not reachable (DNS/route failure).
+/// - [connecting]: Transitional state used while probing.
+enum ConnectivityType {
+  /// Connected via cellular/mobile data.
+  mobileData,
+
+  /// Connected via Wi-Fi.
+  wifi,
+
+  /// No network transport reported.
+  disconnected,
+
+  /// Transport present but internet not reachable.
+  noInternet,
+
+  /// Transitional state while probing connectivity.
+  connecting,
+}
 
 /// **ConnectionViewModel**
 ///
 /// GetX controller that monitors device connectivity using `connectivity_plus`
-/// and exposes a reactive `connectionType`. It also tracks how long the app has
+/// and exposes a reactive [connectionType]. It also tracks how long the app has
 /// been offline and formats a timer string for UI overlays.
 ///
-/// Why
+/// ## Why
 /// - Provide a single source of truth for connection state across the app.
 /// - Avoid throwing from stream callbacks; instead drive UI from state.
 ///
-/// Key Features
+/// ## Key Features
 /// - Subscribes to connectivity changes and performs a lightweight reachability
 ///   check (DNS lookup) to detect captive portals or offline routers.
 /// - Emits granular states: transports vs. internet reachability.
 /// - Tracks disconnection duration and exposes a formatted timer string.
 ///
-/// Notes
+/// ## Notes
 /// - DNS lookup is a pragmatic reachability probe; adjust for your backend as needed.
 /// - On Web, reachability probing is skipped as sockets/DNS are not available.
-// ────────────────────────────────────────────────
-
+///
+/// ## Usage
+/// ```dart
+/// // Register in bindings
+/// Get.put(ConnectionViewModel(), permanent: true);
+///
+/// // Access in widgets
+/// final vm = Get.find<ConnectionViewModel>();
+/// Obx(() => Text(vm.connectionType.value.name));
+/// ```
 class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
+  /// Creates a new [ConnectionViewModel].
+  ///
+  /// - [reachability]: Custom reachability service (optional).
+  /// - [debounceDuration]: Debounce for connectivity changes (default: 250ms).
+  /// - [onWentOfflineCallback]: Called when connection is lost.
+  /// - [onBackOnlineCallback]: Called when connection is restored (with offline duration).
+  /// - [autoInit]: Whether to start monitoring immediately (default: true).
+  ConnectionViewModel({
+    ReachabilityService? reachability,
+    Duration debounceDuration = const Duration(milliseconds: 250),
+    this.onWentOfflineCallback,
+    this.onBackOnlineCallback,
+    bool autoInit = true,
+  })  : _reachability = reachability ?? ReachabilityService(),
+        _debounceDuration = debounceDuration {
+    _connectivity = Connectivity();
+    if (autoInit) {
+      getConnectivity(); // Check the initial connectivity state.
+      _listenToConnectivity(); // Start listening to connectivity changes.
+    }
+  }
+
   /// Observable to track the current connection type.
   Rx<ConnectivityType> connectionType = ConnectivityType.connecting.obs;
 
-  /// Instance of `Connectivity` to monitor network changes.
+  /// Instance of [Connectivity] to monitor network changes.
   late final Connectivity _connectivity;
 
   /// Reachability probe service (DNS/HTTP), injectable.
   late final ReachabilityService _reachability;
 
-  /// Telemetry callbacks (optional).
+  /// Telemetry callback when device goes offline.
   final VoidCallback? onWentOfflineCallback;
+
+  /// Telemetry callback when device comes back online (with offline duration).
   final void Function(Duration offlineDuration)? onBackOnlineCallback;
 
   /// Subscription to listen to connectivity changes.
-  StreamSubscription? _streamSubscription;
+  StreamSubscription<dynamic>? _streamSubscription;
 
   /// Debounce timer to prevent rapid flapping updates.
   Timer? _debounce;
@@ -85,29 +121,15 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
   /// Formatted string to display the lost connection duration (reactive).
   final RxString dialogTimer = '00:00:00'.obs;
 
-  /// Constructor to initialize the connectivity listener and dependencies.
-  ConnectionViewModel({
-    ReachabilityService? reachability,
-    Duration debounceDuration = const Duration(milliseconds: 250),
-    this.onWentOfflineCallback,
-    this.onBackOnlineCallback,
-    bool autoInit = true,
-  })  : _reachability = reachability ?? ReachabilityService(),
-        _debounceDuration = debounceDuration {
-    _connectivity = Connectivity();
-    if (autoInit) {
-      getConnectivity(); // Check the initial connectivity state.
-      _listenToConnectivity(); // Start listening to connectivity changes.
-    }
-  }
-
   /// Starts listening to connectivity changes and updates the state accordingly.
   void _listenToConnectivity() {
-    _streamSubscription = _connectivity.onConnectivityChanged.listen((dynamic result) {
+    _streamSubscription =
+        _connectivity.onConnectivityChanged.listen((dynamic result) {
       _debounce?.cancel();
       _debounce = Timer(_debounceDuration, () {
         if (result is List<ConnectivityResult>) {
-          final ConnectivityResult first = result.isNotEmpty ? result.first : ConnectivityResult.none;
+          final ConnectivityResult first =
+              result.isNotEmpty ? result.first : ConnectivityResult.none;
           _updateState(first);
         } else if (result is ConnectivityResult) {
           _updateState(result);
@@ -126,9 +148,14 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
   Future<void> getConnectivity() async {
     final dynamic connectivityResult = await _connectivity.checkConnectivity();
     // Determine the single ConnectivityResult to evaluate
-    final ConnectivityResult result = connectivityResult is List<ConnectivityResult>
-        ? (connectivityResult.isNotEmpty ? connectivityResult.first : ConnectivityResult.none)
-        : (connectivityResult is ConnectivityResult ? connectivityResult : ConnectivityResult.none);
+    final ConnectivityResult result =
+        connectivityResult is List<ConnectivityResult>
+            ? (connectivityResult.isNotEmpty
+                ? connectivityResult.first
+                : ConnectivityResult.none)
+            : (connectivityResult is ConnectivityResult
+                ? connectivityResult
+                : ConnectivityResult.none);
 
     // First-check guard: if we haven't completed an initial check and the result is none,
     // stay in connecting and do not start the offline timer yet.
@@ -155,7 +182,6 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -175,13 +201,18 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
 
   /// Called when the connection is lost, starts a timer to track how long it's lost.
   void _onLostConnection() {
-    if (_connectionLostTimer?.isActive == true) return; // guard against duplicate timers
-    _connectionLostDate = DateTime.now(); // Store the time when the connection was lost.
+    if (_connectionLostTimer?.isActive == true) {
+      return; // guard against duplicate timers
+    }
+    _connectionLostDate =
+        DateTime.now(); // Store the time when the connection was lost.
     // Telemetry callback when first going offline
     onWentOfflineCallback?.call();
     _connectionLostTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _timerSeconds = DateTime.now().difference(_connectionLostDate!).inSeconds.toDouble();
-      dialogTimer.value = Duration(seconds: _timerSeconds.toInt()).format(); // Format the duration.
+      _timerSeconds =
+          DateTime.now().difference(_connectionLostDate!).inSeconds.toDouble();
+      dialogTimer.value = Duration(seconds: _timerSeconds.toInt())
+          .format(); // Format the duration.
     });
   }
 
@@ -195,7 +226,8 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
   Future<void> _updateState(ConnectivityResult result) async {
     switch (result) {
       case ConnectivityResult.mobile:
-        connectionType.value = ConnectivityType.connecting; // probe before confirming
+        connectionType.value =
+            ConnectivityType.connecting; // probe before confirming
         await _checkInternetConnection(mobile: true); // Verify internet access.
         break;
       case ConnectivityResult.wifi:
@@ -218,7 +250,8 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
   Future<void> _checkInternetConnection({bool mobile = false}) async {
     final ok = await _reachability.isReachable().catchError((_) => false);
     if (ok) {
-      connectionType.value = mobile ? ConnectivityType.mobileData : ConnectivityType.wifi;
+      connectionType.value =
+          mobile ? ConnectivityType.mobileData : ConnectivityType.wifi;
       _onConnected(); // Reset the timer if the internet is accessible.
     } else {
       connectionType.value = ConnectivityType.noInternet;
@@ -232,6 +265,7 @@ class ConnectionViewModel extends GetxController with WidgetsBindingObserver {
     _debounce?.cancel();
     _streamSubscription?.cancel(); // Cancel the connectivity subscription.
     _resetAndCancelTimer(); // Reset and cancel the lost connection timer.
+    WidgetsBinding.instance.removeObserver(this);
     super.onClose(); // Call the parent class's onClose method.
   }
 }

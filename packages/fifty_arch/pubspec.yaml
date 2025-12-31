@@ -45,6 +45,8 @@ dependencies:
     path: ../fifty_storage
   fifty_utils:
     path: ../fifty_utils
+  fifty_connectivity:
+    path: ../fifty_connectivity
 
   # Network Images
   cached_network_image: ^3.3.1

@@ -2,8 +2,7 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:fifty_arch/src/modules/connections/views/connection_overlay.dart';
-import 'package:fifty_arch/src/modules/connections/controllers/connection_view_model.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

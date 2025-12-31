@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '/src/modules/connections/connections_bindings.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 import '/src/modules/locale/locale_bindings.dart';
 import '/src/modules/theme/theme_bindings.dart';
 
@@ -37,8 +37,8 @@ class InitialBindings extends Bindings {
     // Core Dependencies (Permanent)
     // ═══════════════════════════════════════════════════════════════════════════
 
-    // Connectivity monitoring - permanent, app-wide
-    ConnectionsBindings().dependencies();
+    // Connectivity monitoring - permanent, app-wide (from fifty_connectivity)
+    ConnectionBindings().dependencies();
 
     // Theme management - required before app widget builds
     ThemeBindings().dependencies();

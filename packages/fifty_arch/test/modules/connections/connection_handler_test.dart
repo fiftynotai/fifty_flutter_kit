@@ -3,8 +3,7 @@ import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:fifty_arch/src/modules/connections/views/connection_handler.dart';
-import 'package:fifty_arch/src/modules/connections/controllers/connection_view_model.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 import 'package:fifty_arch/src/modules/locale/data/services/localization_service.dart';
 
 void main() {

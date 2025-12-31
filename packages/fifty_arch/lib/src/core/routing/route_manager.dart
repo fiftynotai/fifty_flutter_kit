@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import '/src/modules/auth/auth_middleware.dart';
 import '/src/modules/menu/menu.dart';
 import '/src/modules/auth/auth.dart';
-import '/src/modules/connections/connection.dart';
+import 'package:fifty_connectivity/fifty_connectivity.dart';
 
 /// **RouteManager**
 ///

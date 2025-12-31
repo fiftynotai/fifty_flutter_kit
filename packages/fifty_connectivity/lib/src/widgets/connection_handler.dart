@@ -2,30 +2,38 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/src/modules/locale/data/keys.dart';
-import '../connection.dart';
+import '../config/connectivity_config.dart';
+import '../controllers/connection_view_model.dart';
 
 /// **ConnectionHandler**
 ///
 /// Simple switcher that observes connection state via [ConnectionViewModel]
 /// and renders one of three states:
-/// - `connectedWidget` when connected,
-/// - `onConnectingWidget` while probing reachability,
+/// - [connectedWidget] when connected,
+/// - [onConnectingWidget] while probing reachability,
 /// - a retry UI when offline.
 ///
 /// Styled with FDL (Fifty Design Language) Kinetic Brutalism aesthetic
 /// using the Orbital Command space theme.
 ///
-/// Why
+/// ## Why
 /// - Centralize connection gating around a section of the UI.
 /// - Provide a consistent retry affordance when offline.
 /// - Avoid showing connected content while the app is still checking connectivity.
 ///
-/// Parameters
-/// - `connectedWidget`: Rendered when `isConnected()` is true.
-/// - `onConnectingWidget`: Optional widget while `ConnectivityType.connecting`; defaults to FDL loading indicator.
-/// - `notConnectedWidget`: Optional custom offline UI; defaults to FDL styled prompt with retry.
-/// - `tryAgainAction`: Callback invoked when user taps to retry (offline states only).
+/// ## Parameters
+/// - [connectedWidget]: Rendered when [isConnected()] is true.
+/// - [onConnectingWidget]: Optional widget while [ConnectivityType.connecting]; defaults to FDL loading indicator.
+/// - [notConnectedWidget]: Optional custom offline UI; defaults to FDL styled prompt with retry.
+/// - [tryAgainAction]: Callback invoked when user taps to retry (offline states only).
+///
+/// ## Usage
+/// ```dart
+/// ConnectionHandler(
+///   connectedWidget: YourMainContent(),
+///   tryAgainAction: () => ConnectionActions.instance.checkConnectivity(),
+/// )
+/// ```
 class ConnectionHandler extends GetWidget<ConnectionViewModel> {
   /// The widget to display when the device is connected to the internet.
   final Widget connectedWidget;
@@ -40,7 +48,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
   /// The action to perform when the user taps the retry button.
   final VoidCallback tryAgainAction;
 
-  /// Constructor to create an instance of `ConnectionHandler`.
+  /// Constructor to create an instance of [ConnectionHandler].
   const ConnectionHandler({
     super.key,
     required this.connectedWidget,
@@ -49,10 +57,10 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
     this.notConnectedWidget,
   });
 
-  /// Builds the UI based on the current connection state using an `Obx` widget.
+  /// Builds the UI based on the current connection state using an [Obx] widget.
   ///
-  /// When connected, shows `connectedWidget`. While probing, shows `onConnectingWidget`
-  /// (or a default FDL loading indicator). When offline, shows `notConnectedWidget` or a default
+  /// When connected, shows [connectedWidget]. While probing, shows [onConnectingWidget]
+  /// (or a default FDL loading indicator). When offline, shows [notConnectedWidget] or a default
   /// FDL styled UI with a retry tap handler. The retry action is only triggered by user input
   /// to avoid repeated calls on rebuilds.
   @override
@@ -78,12 +86,12 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
 
     return Container(
       color: colorScheme.surface,
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             FiftyLoadingIndicator(
-              text: 'ESTABLISHING UPLINK',
+              text: ConnectivityConfig.labelEstablishingUplink,
               style: FiftyLoadingStyle.dots,
               size: FiftyLoadingSize.large,
               color: FiftyColors.hyperChrome,
@@ -121,7 +129,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
 
                 // Title
                 Text(
-                  'SIGNAL LOST',
+                  ConnectivityConfig.labelSignalLost,
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamilyHeadline,
                     fontSize: FiftyTypography.section,
@@ -134,7 +142,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
 
                 // Subtitle
                 Text(
-                  'Connection to server lost',
+                  ConnectivityConfig.labelConnectionLost,
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamilyMono,
                     fontSize: FiftyTypography.body,
@@ -146,7 +154,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
 
                 // Retry button
                 FiftyButton(
-                  label: tkTryAgainBtn.tr,
+                  label: ConnectivityConfig.labelTryAgain,
                   onPressed: tryAgainAction,
                   variant: FiftyButtonVariant.secondary,
                   icon: Icons.refresh,

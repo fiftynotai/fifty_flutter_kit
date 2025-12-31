@@ -4,29 +4,48 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get_connect/connect.dart';
 
 /// Strategy for reachability probing.
-enum ReachabilityStrategy { dnsLookup, httpHead }
+enum ReachabilityStrategy {
+  /// Perform a DNS lookup to verify internet reachability.
+  dnsLookup,
+
+  /// Perform an HTTP HEAD request to verify internet reachability.
+  httpHead,
+}
 
 /// **ReachabilityService**
 ///
 /// Lightweight, injectable service to determine internet reachability.
 ///
-/// Why
+/// ## Why
 /// - Abstracts the probing strategy (DNS vs. HTTP) and allows configurable host/timeout.
 /// - Keeps ConnectionViewModel simple and focused on state transitions.
 ///
-/// Parameters
+/// ## Parameters
 /// - `host`: DNS host to resolve when using [ReachabilityStrategy.dnsLookup]. Defaults to `google.com`.
 /// - `timeout`: Timeout applied to probes. Defaults to 3 seconds.
 /// - `strategy`: Probe strategy (DNS lookup or HTTP HEAD/GET to a health endpoint). Defaults to DNS.
 /// - `healthEndpoint`: Endpoint used when [strategy] is HTTP-based.
 /// - `http`: Optional GetConnect instance for HTTP probing.
 ///
-/// Returns
+/// ## Returns
 /// - `Future<bool>` indicating whether internet appears reachable.
 ///
-/// Notes
-/// - On Web, DNS sockets aren’t available; we optimistically return true here to avoid false negatives.
+/// ## Notes
+/// - On Web, DNS sockets aren't available; we optimistically return true here to avoid false negatives.
+///
+/// ## Usage
+/// ```dart
+/// final service = ReachabilityService();
+/// final isOnline = await service.isReachable();
+/// ```
 class ReachabilityService {
+  /// Creates a new [ReachabilityService].
+  ///
+  /// - [host]: DNS host to resolve (default: 'google.com').
+  /// - [timeout]: Probe timeout (default: 3 seconds).
+  /// - [strategy]: Probing strategy (default: DNS lookup).
+  /// - [healthEndpoint]: HTTP endpoint for HTTP-based probing.
+  /// - [http]: Optional GetConnect instance for HTTP requests.
   ReachabilityService({
     this.host = 'google.com',
     this.timeout = const Duration(seconds: 3),
@@ -35,13 +54,24 @@ class ReachabilityService {
     GetConnect? http,
   }) : _http = http ?? GetConnect();
 
+  /// DNS host to resolve when using [ReachabilityStrategy.dnsLookup].
   final String host;
+
+  /// Timeout applied to probes.
   final Duration timeout;
+
+  /// Probe strategy (DNS lookup or HTTP HEAD).
   final ReachabilityStrategy strategy;
+
+  /// Endpoint used when [strategy] is [ReachabilityStrategy.httpHead].
   final Uri? healthEndpoint;
+
+  /// HTTP client for HTTP-based probing.
   final GetConnect _http;
 
   /// Returns true when internet appears reachable.
+  ///
+  /// On web platforms, always returns true since DNS lookups are not available.
   Future<bool> isReachable() async {
     if (kIsWeb) {
       // On web we can't perform DNS lookups; returning true avoids showing false negatives.

@@ -136,6 +136,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0"
+  fifty_connectivity:
+    dependency: "direct main"
+    description:
+      path: "../fifty_connectivity"
+      relative: true
+    source: path
+    version: "0.1.0"
   fifty_storage:
     dependency: "direct main"
     description:
