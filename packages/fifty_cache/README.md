@@ -20,7 +20,7 @@ Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_eco_system) - 
   - [CacheManager](#cachemanager)
 - [Built-in Implementations](#built-in-implementations)
 - [Custom Implementations](#custom-implementations)
-- [Integration with fifty_arch](#integration-with-fifty_arch)
+- [Integration with mvvm_actions](#integration-with-mvvm_actions)
 - [Testing](#testing)
 - [API Reference](#api-reference)
 - [Best Practices](#best-practices)
@@ -490,9 +490,9 @@ class SimpleCacheKeyStrategy implements CacheKeyStrategy {
 
 ---
 
-## Integration with fifty_arch
+## Integration with mvvm_actions
 
-When using `fifty_arch`, the cache integrates with the HTTP infrastructure:
+When using the `mvvm_actions` template, the cache integrates with the HTTP infrastructure:
 
 ```dart
 // In your service class
@@ -792,7 +792,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 | [fifty_tokens](../fifty_tokens) | Design tokens |
 | [fifty_theme](../fifty_theme) | Theme system |
 | [fifty_ui](../fifty_ui) | UI components |
-| [fifty_arch](../fifty_arch) | Architecture framework |
+| [mvvm_actions](../../templates/mvvm_actions) | Architecture template |
 | **fifty_cache** | HTTP caching (this package) |
 | [fifty_audio_engine](../fifty_audio_engine) | Audio management |
 | [fifty_speech_engine](../fifty_speech_engine) | TTS/STT |

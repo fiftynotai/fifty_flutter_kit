@@ -321,7 +321,7 @@ ResponsiveUtils.wideBreakpoint = 1440;
 
 ## Related Packages
 
-- [fifty_arch](../fifty_arch/) - Uses fifty_utils for state management
+- [mvvm_actions](../../templates/mvvm_actions/) - Template using fifty_utils for state management
 - [fifty_tokens](../fifty_tokens/) - Design tokens for consistent styling
 - [fifty_theme](../fifty_theme/) - Theme generation and management
 

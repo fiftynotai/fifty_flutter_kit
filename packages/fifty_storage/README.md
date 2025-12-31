@@ -491,7 +491,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 | [fifty_tokens](../fifty_tokens) | Design tokens |
 | [fifty_theme](../fifty_theme) | Theme system |
 | [fifty_ui](../fifty_ui) | UI components |
-| [fifty_arch](../fifty_arch) | Architecture framework |
+| [mvvm_actions](../../templates/mvvm_actions) | Architecture template |
 | [fifty_cache](../fifty_cache) | HTTP caching |
 | **fifty_storage** | Secure storage (this package) |
 | [fifty_audio_engine](../fifty_audio_engine) | Audio management |

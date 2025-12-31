@@ -9,7 +9,6 @@ A comprehensive Flutter/Dart package ecosystem providing design tokens, theming,
 | [fifty_tokens](packages/fifty_tokens/) | v0.2.0 | Design tokens (colors, typography, spacing) |
 | [fifty_theme](packages/fifty_theme/) | v0.1.0 | Theme generation and management |
 | [fifty_ui](packages/fifty_ui/) | v0.5.0 | Component library (buttons, cards, inputs) |
-| [fifty_arch](packages/fifty_arch/) | v0.6.0 | MVVM + Actions architecture framework |
 | [fifty_utils](packages/fifty_utils/) | v0.1.0 | Pure utilities (DateTime, responsive, state) |
 | [fifty_cache](packages/fifty_cache/) | v0.1.0 | Multi-tier caching with TTL support |
 | [fifty_storage](packages/fifty_storage/) | v0.1.0 | Key-value storage abstraction |
@@ -19,23 +18,34 @@ A comprehensive Flutter/Dart package ecosystem providing design tokens, theming,
 | [fifty_sentences_engine](packages/fifty_sentences_engine/) | v0.1.0 | Sentence building and word bank |
 | [fifty_map_engine](packages/fifty_map_engine/) | v0.1.0 | Cross-platform maps integration |
 
+## Templates
+
+Project scaffolds for rapid development. Clone and customize.
+
+| Template | Description | Pattern |
+|----------|-------------|---------|
+| [mvvm_actions](templates/mvvm_actions/) | Full-featured app scaffold | MVVM + Actions |
+
+Templates depend on the packages above but are meant to be forked, not imported.
+
 ## Architecture
 
 ```
 fifty_ecosystem/
   packages/
-    fifty_tokens/      # Design foundation
-    fifty_theme/       # Theme layer (depends on tokens)
-    fifty_ui/          # Components (depends on theme)
-    fifty_arch/        # Architecture (depends on utils, storage, cache, connectivity)
-    fifty_utils/       # Pure utilities (no dependencies)
-    fifty_cache/       # Caching layer
-    fifty_storage/     # Storage abstraction
+    fifty_tokens/       # Design foundation
+    fifty_theme/        # Theme layer (depends on tokens)
+    fifty_ui/           # Components (depends on theme)
+    fifty_utils/        # Pure utilities (no dependencies)
+    fifty_cache/        # Caching layer
+    fifty_storage/      # Storage abstraction
     fifty_connectivity/ # Network monitoring
     fifty_audio_engine/
     fifty_speech_engine/
     fifty_sentences_engine/
     fifty_map_engine/
+  templates/
+    mvvm_actions/       # Full app template (fork, don't import)
 ```
 
 ### Dependency Graph
@@ -49,7 +59,7 @@ fifty_ui
 
 fifty_utils (foundation)
      |
-fifty_arch <-- fifty_storage, fifty_cache, fifty_connectivity
+[mvvm_actions template] <-- fifty_storage, fifty_cache, fifty_connectivity
 ```
 
 ## Installation
@@ -134,12 +144,15 @@ apiFetch(() => api.getUser()).listen((state) {
 
 ### Architecture (MVVM + Actions)
 
-```dart
-import 'package:fifty_arch/fifty_arch.dart';
+For complete architecture patterns, see the [mvvm_actions template](templates/mvvm_actions/).
 
-// ViewModel with Notifier
-class UserViewModel extends FiftyViewModel {
-  final usersState = ApiResponse<List<User>>.idle().notifier;
+```dart
+// Example from mvvm_actions template
+import 'package:fifty_utils/fifty_utils.dart';
+
+// ViewModel with reactive state
+class UserViewModel extends GetxController {
+  final usersState = ApiResponse<List<User>>.idle().obs;
 
   void loadUsers() {
     apiFetch(() => userService.getUsers())
@@ -147,18 +160,16 @@ class UserViewModel extends FiftyViewModel {
   }
 }
 
-// View with selector
-class UserListView extends StatelessWidget {
+// View with Obx reactive binding
+class UserListView extends GetView<UserViewModel> {
   @override
   Widget build(BuildContext context) {
-    return FiftySelector<UserViewModel, ApiResponse<List<User>>>(
-      selector: (vm) => vm.usersState,
-      builder: (context, state) {
-        if (state.isLoading) return CircularProgressIndicator();
-        if (state.hasData) return UserList(users: state.data!);
-        return ErrorWidget(state.error);
-      },
-    );
+    return Obx(() {
+      final state = controller.usersState.value;
+      if (state.isLoading) return CircularProgressIndicator();
+      if (state.hasData) return UserList(users: state.data!);
+      return ErrorWidget(state.error);
+    });
   }
 }
 ```
@@ -199,14 +210,14 @@ Pure Dart/Flutter utilities with zero external dependencies (except `intl`).
 - **ApiResponse** - Immutable async state container
 - **apiFetch()** - Stream-based API fetching
 
-### fifty_arch
+### mvvm_actions (Template)
 
-MVVM + Actions architecture framework.
+Full-featured app template using MVVM + Actions architecture. **Fork this, don't import.**
 
-- **FiftyViewModel** - Base class with lifecycle management
-- **FiftySelector** - Efficient state selection widgets
-- **FiftyNotifier** - Enhanced ValueNotifier with batching
-- **Actions Pattern** - Reusable UI actions
+- **GetX Integration** - Reactive state management
+- **Pre-built Modules** - Auth, connectivity, locale, theme
+- **Actions Pattern** - Standardized UX handling
+- **Infrastructure** - HTTP client, caching, storage
 
 ### fifty_cache / fifty_storage
 
