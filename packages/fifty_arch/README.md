@@ -43,8 +43,8 @@ View -> Actions -> ViewModel -> Service -> Model
 
 ### Infrastructure
 - **HTTP Client** - API service with caching strategies
-- **Storage** - Secure token storage, preferences, in-memory cache
-- **Caching** - TTL-based cache with configurable policies
+- **Storage** - Uses [fifty_storage](../fifty_storage) for secure tokens and preferences
+- **Caching** - Uses [fifty_cache](../fifty_cache) for TTL-based HTTP response caching
 
 ---
 
@@ -79,9 +79,9 @@ lib/src/
 |   +-- routing/         # Route management
 |
 |-- infrastructure/      # Technical services
-|   |-- cache/           # Caching system
+|   |-- cache/           # Caching system (uses fifty_cache)
 |   |-- http/            # API client
-|   +-- storage/         # Storage services
+|   +-- storage/         # Storage services (uses fifty_storage)
 |
 |-- modules/             # Feature modules
 |   |-- auth/            # Authentication
@@ -108,11 +108,16 @@ lib/src/
 ### 1. Initialize App
 
 ```dart
+import 'package:fifty_storage/fifty_storage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize storage
-  await GetStorage.init();
+  // Configure storage with your app name
+  PreferencesStorage.configure(containerName: 'my_app');
+
+  // Initialize storage (preferences + secure tokens)
+  await AppStorageService.instance.initialize();
 
   runApp(const App());
 }
@@ -277,6 +282,10 @@ dependencies:
     path: ../fifty_theme
   fifty_ui:
     path: ../fifty_ui
+  fifty_cache:
+    path: ../fifty_cache
+  fifty_storage:
+    path: ../fifty_storage
 ```
 
 Use `fifty_theme` for theming:
@@ -288,6 +297,30 @@ ThemeData get darkTheme => FiftyTheme.dark();
 ThemeData get lightTheme => FiftyTheme.light();
 ```
 
+Use `fifty_storage` for secure storage:
+```dart
+import 'package:fifty_storage/fifty_storage.dart';
+
+// Access tokens
+final token = AppStorageService.instance.accessToken;
+await AppStorageService.instance.setAccessToken('jwt_token');
+
+// Preferences
+AppStorageService.instance.themeMode = 'dark';
+AppStorageService.instance.languageCode = 'en';
+```
+
+Use `fifty_cache` for HTTP caching:
+```dart
+import 'package:fifty_cache/fifty_cache.dart';
+
+// Try cache before network
+final cached = await cacheManager.tryRead('GET', url, query);
+if (cached != null) {
+  // Use cached response
+}
+```
+
 ---
 
 ## Dependencies
@@ -297,8 +330,8 @@ ThemeData get lightTheme => FiftyTheme.light();
 | get | State management |
 | loader_overlay | Loading overlays |
 | connectivity_plus | Network monitoring |
-| get_storage | Local storage |
-| flutter_secure_storage | Secure storage |
+| fifty_storage | Secure tokens and preferences |
+| fifty_cache | HTTP response caching |
 | jwt_decoder | Token handling |
 
 ---
@@ -324,8 +357,10 @@ MIT License - See LICENSE file for details.
 | [fifty_tokens](../fifty_tokens) | Design tokens |
 | [fifty_theme](../fifty_theme) | Theme system |
 | [fifty_ui](../fifty_ui) | UI components |
+| [fifty_cache](../fifty_cache) | HTTP caching |
+| [fifty_storage](../fifty_storage) | Secure storage |
 | [fifty_audio_engine](../fifty_audio_engine) | Audio management |
 | [fifty_speech_engine](../fifty_speech_engine) | TTS/STT |
 | [fifty_sentences_engine](../fifty_sentences_engine) | Dialogue system |
 | [fifty_map_engine](../fifty_map_engine) | Map rendering |
-| **fifty_arch** | Architecture framework |
+| **fifty_arch** | Architecture framework (this package) |
