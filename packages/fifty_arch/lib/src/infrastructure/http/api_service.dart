@@ -5,10 +5,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:fifty_cache/fifty_cache.dart';
 import '/src/core/errors/app_exception.dart';
 import '../../config/api_config.dart';
 import '/src/infrastructure/storage/app_storage_service.dart';
-import '/src/infrastructure/cache/cache_manager.dart';
 
 /// **ApiService**
 ///

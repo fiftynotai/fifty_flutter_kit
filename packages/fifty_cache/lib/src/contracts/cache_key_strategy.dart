@@ -16,7 +16,7 @@
 /// final key = s.buildKey('https://api/users', {'page': 1}, method: 'GET');
 /// ```
 ///
-// ────────────────────────────────────────────────
+// ------------------------------------------------
 abstract class CacheKeyStrategy {
   /// **buildKey**
   ///
@@ -31,7 +31,7 @@ abstract class CacheKeyStrategy {
   /// **Returns**
   /// - `String`: Deterministic cache key.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   String buildKey(
     String url,
     Map<String, dynamic>? query, {

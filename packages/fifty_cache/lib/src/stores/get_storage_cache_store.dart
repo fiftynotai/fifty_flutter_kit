@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 
-import 'contracts/cache_store.dart';
+import '../contracts/cache_store.dart';
 
-/// **GetStorageCacheStorage**
+/// **GetStorageCacheStore**
 ///
 /// A [CacheStore] implementation backed by `get_storage` that stores values
 /// with an expiry timestamp.
@@ -19,14 +19,14 @@ import 'contracts/cache_store.dart';
 ///
 /// **Example**
 /// ```dart
-/// final store = await GetStorageCacheStorage.create(container: 'appName-app');
+/// final store = await GetStorageCacheStore.create(container: 'appName-app');
 /// await store.put('GET https://api/users', '{"id":"u1"}', ttl: Duration(hours: 6));
 /// final value = await store.get('GET https://api/users');
 /// ```
 ///
-// ────────────────────────────────────────────────
-class GetStorageCacheStorage implements CacheStore {
-  GetStorageCacheStorage._(this._storage);
+// ------------------------------------------------
+class GetStorageCacheStore implements CacheStore {
+  GetStorageCacheStore._(this._storage);
 
   /// **_storage**
   ///
@@ -41,18 +41,20 @@ class GetStorageCacheStorage implements CacheStore {
   /// - `container`: Named container to isolate data per app/flavor.
   ///
   /// **Returns**
-  /// - `Future<GetStorageCacheStorage>`: Ready-to-use storage wrapper.
+  /// - `Future<GetStorageCacheStore>`: Ready-to-use storage wrapper.
   ///
-  // ────────────────────────────────────────────────
-  static Future<GetStorageCacheStorage> create({String container = 'appName-app'}) async {
+  // ------------------------------------------------
+  static Future<GetStorageCacheStore> create({
+    String container = 'fifty_cache',
+  }) async {
     await GetStorage.init(container);
-    return GetStorageCacheStorage._(GetStorage(container));
-    }
+    return GetStorageCacheStore._(GetStorage(container));
+  }
 
   /// **put**
   ///
   /// Store a raw string value with an expiry computed from TTL.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
   Future<void> put(String key, String value, {required Duration ttl}) async {
     final expiry = DateTime.now().add(ttl).toIso8601String();
@@ -63,7 +65,7 @@ class GetStorageCacheStorage implements CacheStore {
   /// **get**
   ///
   /// Retrieve a value when present and not expired. Removes invalid entries.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
   Future<String?> get(String key) async {
     final raw = _storage.read(key);
@@ -90,7 +92,7 @@ class GetStorageCacheStorage implements CacheStore {
   /// **remove**
   ///
   /// Delete a single entry by key.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
   Future<void> remove(String key) async {
     await _storage.remove(key);
@@ -99,7 +101,7 @@ class GetStorageCacheStorage implements CacheStore {
   /// **clear**
   ///
   /// Remove all entries from the container.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
   Future<void> clear() async {
     await _storage.erase();

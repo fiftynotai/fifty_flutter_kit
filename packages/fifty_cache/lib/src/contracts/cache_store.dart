@@ -2,7 +2,7 @@ import 'dart:async';
 
 /// **CacheStore**
 ///
-/// Minimal, time-to-live (TTL) capable key–value storage abstraction.
+/// Minimal, time-to-live (TTL) capable key-value storage abstraction.
 /// Implementations may persist to memory, disk, or any backend.
 ///
 /// **Why**
@@ -16,12 +16,12 @@ import 'dart:async';
 ///
 /// **Example**
 /// ```dart
-/// final store = await GetStorageCacheStorage.create(container: 'appName-app');
+/// final store = await GetStorageCacheStore.create(container: 'appName-app');
 /// await store.put('GET https://api/users', '{"id":"u1"}', ttl: Duration(hours: 6));
 /// final cached = await store.get('GET https://api/users');
 /// ```
 ///
-// ────────────────────────────────────────────────
+// ------------------------------------------------
 abstract class CacheStore {
   /// **put**
   ///
@@ -35,7 +35,7 @@ abstract class CacheStore {
   /// **Side Effects**
   /// - Writes to the underlying storage.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<void> put(String key, String value, {required Duration ttl});
 
   /// **get**
@@ -45,18 +45,18 @@ abstract class CacheStore {
   /// **Returns**
   /// - `String?`: Raw string payload when present and not expired; `null` otherwise.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<String?> get(String key);
 
   /// **remove**
   ///
   /// Remove a single entry by key, if present.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<void> remove(String key);
 
   /// **clear**
   ///
   /// Remove all cached entries.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<void> clear();
 }

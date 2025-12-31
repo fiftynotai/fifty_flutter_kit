@@ -17,7 +17,7 @@
 /// if (policy.canWrite('GET', url, 200)) { /* ... */ }
 /// ```
 ///
-// ────────────────────────────────────────────────
+// ------------------------------------------------
 abstract class CachePolicy {
   /// **canRead**
   ///
@@ -32,7 +32,7 @@ abstract class CachePolicy {
   /// **Returns**
   /// - `bool`: `true` to attempt reading from cache.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   bool canRead(
     String method,
     String url,
@@ -52,7 +52,7 @@ abstract class CachePolicy {
   /// **Returns**
   /// - `bool`: `true` when the response should be cached.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   bool canWrite(
     String method,
     String url,
@@ -66,7 +66,7 @@ abstract class CachePolicy {
   /// **Returns**
   /// - `Duration`: TTL window after which the entry expires.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Duration timeToLiveFor(
     String method,
     String url,

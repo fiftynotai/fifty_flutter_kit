@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'contracts/cache_store.dart';
 import 'contracts/cache_key_strategy.dart';
 import 'contracts/cache_policy.dart';
+import 'contracts/cache_store.dart';
 
 /// **CacheManager**
 ///
@@ -26,7 +26,7 @@ import 'contracts/cache_policy.dart';
 /// if (cached == null) { /* perform network, then tryWrite */ }
 /// ```
 ///
-// ────────────────────────────────────────────────
+// ------------------------------------------------
 class CacheManager {
   CacheManager(this.storage, this.keyStrategy, this.policy);
 
@@ -59,7 +59,7 @@ class CacheManager {
   /// **Returns**
   /// - `String?`: Raw cached payload or `null` when absent/expired/not allowed.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<String?> tryRead(
     String method,
     String url,
@@ -67,8 +67,11 @@ class CacheManager {
     bool forceRefresh = false,
     Map<String, String>? headers,
   }) async {
-    if (!policy.canRead(method, url, query, forceRefresh: forceRefresh)) return null;
-    final key = keyStrategy.buildKey(url, query, method: method, headers: headers);
+    if (!policy.canRead(method, url, query, forceRefresh: forceRefresh)) {
+      return null;
+    }
+    final key =
+        keyStrategy.buildKey(url, query, method: method, headers: headers);
     return storage.get(key);
   }
 
@@ -87,7 +90,7 @@ class CacheManager {
   /// **Side Effects**
   /// - Writes to [storage] if permitted.
   ///
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<void> tryWrite(
     String method,
     String url,
@@ -98,7 +101,8 @@ class CacheManager {
   }) async {
     if (!policy.canWrite(method, url, statusCode)) return;
     if (bodyString == null) return;
-    final key = keyStrategy.buildKey(url, query, method: method, headers: headers);
+    final key =
+        keyStrategy.buildKey(url, query, method: method, headers: headers);
     final ttl = policy.timeToLiveFor(method, url, statusCode);
     await storage.put(key, bodyString, ttl: ttl);
   }
@@ -106,20 +110,21 @@ class CacheManager {
   /// **invalidate**
   ///
   /// Remove a specific cache entry corresponding to a request.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<void> invalidate(
     String method,
     String url,
     Map<String, dynamic>? query, {
     Map<String, String>? headers,
   }) async {
-    final key = keyStrategy.buildKey(url, query, method: method, headers: headers);
+    final key =
+        keyStrategy.buildKey(url, query, method: method, headers: headers);
     await storage.remove(key);
   }
 
   /// **clear**
   ///
   /// Remove all entries from the cache.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   Future<void> clear() => storage.clear();
 }

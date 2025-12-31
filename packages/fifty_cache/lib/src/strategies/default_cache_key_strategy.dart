@@ -1,4 +1,4 @@
-import 'contracts/cache_key_strategy.dart';
+import '../contracts/cache_key_strategy.dart';
 
 /// **DefaultCacheKeyStrategy**
 ///
@@ -31,7 +31,7 @@ import 'contracts/cache_key_strategy.dart';
 /// // => 'GET https://api/users?page=1 | H:lang=en,auth=1'
 /// ```
 ///
-// ────────────────────────────────────────────────
+// ------------------------------------------------
 class DefaultCacheKeyStrategy implements CacheKeyStrategy {
   const DefaultCacheKeyStrategy();
 

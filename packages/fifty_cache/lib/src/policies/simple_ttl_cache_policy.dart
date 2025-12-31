@@ -1,4 +1,4 @@
-import 'contracts/cache_policy.dart';
+import '../contracts/cache_policy.dart';
 
 /// **SimpleTimeToLiveCachePolicy**
 ///
@@ -18,7 +18,7 @@ import 'contracts/cache_policy.dart';
 /// final policy = SimpleTimeToLiveCachePolicy(timeToLive: Duration(hours: 6));
 /// ```
 ///
-// ────────────────────────────────────────────────
+// ------------------------------------------------
 class SimpleTimeToLiveCachePolicy implements CachePolicy {
   SimpleTimeToLiveCachePolicy({
     Duration? timeToLive,
@@ -31,14 +31,20 @@ class SimpleTimeToLiveCachePolicy implements CachePolicy {
   /// When true (default), caching is limited to GET requests.
   final bool cacheGetRequestsOnly;
 
-  bool _isSuccessStatus(int? statusCode) => statusCode != null && statusCode >= 200 && statusCode < 300;
+  bool _isSuccessStatus(int? statusCode) =>
+      statusCode != null && statusCode >= 200 && statusCode < 300;
 
   /// **canRead**
   ///
   /// Only allow reads when not forced and when method constraints permit.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
-  bool canRead(String method, String url, Map<String, dynamic>? query, {bool forceRefresh = false}) {
+  bool canRead(
+    String method,
+    String url,
+    Map<String, dynamic>? query, {
+    bool forceRefresh = false,
+  }) {
     if (forceRefresh) return false;
     if (cacheGetRequestsOnly && method.toUpperCase() != 'GET') return false;
     return true;
@@ -47,7 +53,7 @@ class SimpleTimeToLiveCachePolicy implements CachePolicy {
   /// **canWrite**
   ///
   /// Permit cache writes for successful responses and allowed methods.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
   bool canWrite(String method, String url, int? statusCode) {
     if (cacheGetRequestsOnly && method.toUpperCase() != 'GET') return false;
@@ -57,7 +63,8 @@ class SimpleTimeToLiveCachePolicy implements CachePolicy {
   /// **timeToLiveFor**
   ///
   /// Return the configured fixed TTL regardless of inputs.
-  // ────────────────────────────────────────────────
+  // ------------------------------------------------
   @override
-  Duration timeToLiveFor(String method, String url, int? statusCode) => _timeToLive;
+  Duration timeToLiveFor(String method, String url, int? statusCode) =>
+      _timeToLive;
 }

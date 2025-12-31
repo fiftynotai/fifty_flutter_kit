@@ -4,6 +4,21 @@ All notable changes to this project template will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres loosely to Semantic Versioning for the template itself.
 
+## [0.5.0] - 2025-12-31
+
+### Changed
+
+- **Extracted HTTP caching to fifty_cache package**: The caching infrastructure has been extracted to a standalone `fifty_cache` package for better modularity and reusability.
+  - Moved: `CacheManager`, `CacheStore`, `CachePolicy`, `CacheKeyStrategy` contracts
+  - Moved: `MemoryCacheStore`, `GetStorageCacheStore` implementations
+  - Moved: `SimpleTimeToLiveCachePolicy`, `DefaultCacheKeyStrategy` implementations
+  - fifty_arch now depends on fifty_cache v0.1.0
+
+### Migration Notes
+
+- No API changes required - imports are re-exported from fifty_arch
+- If you were importing cache classes directly from `infrastructure/cache/`, update to use exports from fifty_cache or the main barrel file
+
 ## [0.4.0] - 2025-12-31
 
 ### Fixed
