@@ -220,16 +220,15 @@ class _FiftySwitchState extends State<FiftySwitch>
                                     ? colorScheme.primary
                                     : FiftyColors.hyperChrome,
                                 shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: widget.value
-                                        ? colorScheme.primary
-                                            .withValues(alpha: 0.5)
-                                        : Colors.black26,
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                                boxShadow: widget.value
+                                    ? [
+                                        BoxShadow(
+                                          color: colorScheme.primary
+                                              .withValues(alpha: 0.4),
+                                          blurRadius: 8,
+                                        ),
+                                      ]
+                                    : null,
                               ),
                             ),
                           ),

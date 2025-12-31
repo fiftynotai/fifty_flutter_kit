@@ -1,134 +1,198 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '/src/presentation/custom/customs.dart';
-import '/src/config/config.dart';
 import '/src/utils/form_validators.dart';
-import '/src/utils/responsive_utils.dart';
 import '/src/modules/auth/auth.dart';
 
 /// **LoginPage**
 ///
-/// Modern login form with Material 3 design using FloatSurfaceCard for visual
-/// elevation and consistency with the rest of the app.
+/// FDL-styled login form with Orbital Command "ESTABLISH UPLINK" theme.
+/// Kinetic Brutalism aesthetic with space-themed terminology.
 ///
-/// **Why**
-/// - Keep validation at the view level and business flow in actions/view model
-/// - Use FloatSurfaceCard for consistency with posts and other pages
-/// - Responsive design adapts to different screen sizes
+/// **FDL Aesthetic:**
+/// - Void Black background (#050505)
+/// - FiftyCard with gunmetal background and border
+/// - Monument Extended for headlines, JetBrains Mono for body
+/// - Crimson Pulse primary action button
+/// - Terminal-style text fields
 ///
-/// **Features**
-/// - AppBar for consistency with other pages
-/// - SingleChildScrollView prevents keyboard overflow issues
-/// - FloatSurfaceCard wraps form for visual elevation
-/// - Responsive padding using ResponsiveUtils
-/// - Better spacing and visual hierarchy
+/// **Features:**
+/// - Form validation at view level
+/// - Business flow delegated to AuthActions/AuthViewModel
+/// - Responsive design
 ///
-/// **Side Effects**
+/// **Side Effects:**
 /// - On submit, saves form fields into [AuthViewModel] and triggers the action
 ///   handler which shows a loader overlay and error feedback
 ///
-/// **Usage**
-/// ```dart
-/// // Presented by AuthHandler when not authenticated
-/// LoginPage()
-/// ```
-///
-/// // ────────────────────────────────────────────────
+/// // ----------------------------------------------------
 class LoginPage extends GetWidget<AuthViewModel> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _passwordVisible = false.obs;
 
   LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const CustomText(appName),
-        centerTitle: true,
-      ),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: ResponsiveUtils.valueByDevice(
-            context,
-            mobile: const EdgeInsets.all(16.0),
-            tablet: const EdgeInsets.all(24.0),
-            desktop: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiftySpacing.lg,
+            vertical: FiftySpacing.xxl,
           ),
           child: Column(
             children: [
-              // Logo (reduced size for better proportions)
-              SvgPicture.asset(
-                AssetsManager.logoPath,
-                height: MediaQuery.of(context).size.height / 6,
-                fit: BoxFit.contain,
+              SizedBox(height: screenHeight * 0.08),
+
+              // Operator Access title
+              Text(
+                'OPERATOR ACCESS',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamilyHeadline,
+                  fontSize: FiftyTypography.display,
+                  fontWeight: FiftyTypography.ultrabold,
+                  color: colorScheme.onSurface,
+                  letterSpacing: 4,
+                ),
+                textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: FiftySpacing.sm),
 
-              // Login form wrapped in FloatSurfaceCard
-              FloatSurfaceCard(
-                size: FSCSize.standard,
-                elevation: FSCElevation.resting,
-                body: Form(
+              // Establish Uplink subtitle
+              Text(
+                'ESTABLISH UPLINK',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamilyMono,
+                  fontSize: FiftyTypography.body,
+                  fontWeight: FiftyTypography.regular,
+                  color: FiftyColors.crimsonPulse,
+                  letterSpacing: 2,
+                ),
+              ),
+
+              const SizedBox(height: FiftySpacing.xxxl),
+
+              // Login form wrapped in FiftyCard
+              FiftyCard(
+                padding: const EdgeInsets.all(FiftySpacing.xxl),
+                scanlineOnHover: false,
+                child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Page Title
-                      const CustomText(
-                        tkLoginPage,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        textAlign: TextAlign.center,
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      // Username Field
-                      CustomFormField(
-                        label: tkUsername,
-                        onSaved: (value) => controller.username = value,
-                        maxLines: 1,
+                      // Username field
+                      _buildFdlFormField(
+                        context,
+                        controller: _usernameController,
+                        label: 'OPERATOR ID',
+                        hint: 'Enter operator ID',
                         validator: FormValidators.username,
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: FiftySpacing.lg),
 
-                      // Password Field
-                      PasswordFormField(
-                        label: tkPassword,
-                        onSaved: (value) => controller.password = value,
-                        maxLines: 1,
-                        validator: FormValidators.password,
-                        textInputAction: TextInputAction.done,
-                      ),
+                      // Password field with visibility toggle
+                      Obx(() => _buildFdlFormField(
+                            context,
+                            controller: _passwordController,
+                            label: 'ACCESS CODE',
+                            hint: 'Enter access code',
+                            validator: FormValidators.password,
+                            textInputAction: TextInputAction.done,
+                            obscureText: !_passwordVisible.value,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _passwordVisible.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: FiftyColors.hyperChrome,
+                                size: 20,
+                              ),
+                              onPressed: () =>
+                                  _passwordVisible.value = !_passwordVisible.value,
+                            ),
+                          )),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: FiftySpacing.xxl),
 
-                      // Login Button
-                      CustomButton(
-                        text: tkLoginBtn,
+                      // Login button
+                      FiftyButton(
+                        label: 'ESTABLISH UPLINK',
                         onPressed: () => _login(context),
+                        variant: FiftyButtonVariant.primary,
+                        size: FiftyButtonSize.large,
+                        expanded: true,
                       ),
                     ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: FiftySpacing.xxl),
 
-              // Footer (Don't have account + Register)
+              // Request Access link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CustomText(tkDontHaveAccount),
-                  TextButton(
-                    onPressed: AuthActions.instance.toRegisterPage,
-                    child: const CustomText(
-                      tkRegisterNow,
-                      fontWeight: FontWeight.bold,
+                  Text(
+                    'NO CREDENTIALS? ',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontSize: FiftyTypography.body,
+                      fontWeight: FiftyTypography.regular,
+                      color: FiftyColors.hyperChrome,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: AuthActions.instance.toRegisterPage,
+                    child: Text(
+                      'REQUEST ACCESS',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamilyMono,
+                        fontSize: FiftyTypography.body,
+                        fontWeight: FiftyTypography.medium,
+                        color: FiftyColors.crimsonPulse,
+                        decoration: TextDecoration.underline,
+                        decorationColor: FiftyColors.crimsonPulse,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: FiftySpacing.huge),
+
+              // System status indicator
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: FiftyColors.igrisGreen,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: FiftySpacing.sm),
+                  Text(
+                    'SYSTEM ONLINE',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontSize: FiftyTypography.mono,
+                      fontWeight: FiftyTypography.regular,
+                      color: FiftyColors.igrisGreen,
                     ),
                   ),
                 ],
@@ -140,6 +204,108 @@ class LoginPage extends GetWidget<AuthViewModel> {
     );
   }
 
+  /// Builds a FDL-styled form field with validation support.
+  Widget _buildFdlFormField(
+    BuildContext context, {
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required FormFieldValidator<String>? validator,
+    TextInputAction? textInputAction,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label
+        Text(
+          label,
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamilyMono,
+            fontSize: FiftyTypography.mono,
+            fontWeight: FiftyTypography.medium,
+            color: FiftyColors.hyperChrome,
+            letterSpacing: 1,
+          ),
+        ),
+        const SizedBox(height: FiftySpacing.sm),
+        // Form field
+        TextFormField(
+          controller: controller,
+          validator: validator,
+          textInputAction: textInputAction,
+          obscureText: obscureText,
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamilyMono,
+            fontSize: FiftyTypography.body,
+            fontWeight: FiftyTypography.regular,
+            color: colorScheme.onSurface,
+          ),
+          cursorColor: colorScheme.primary,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.body,
+              fontWeight: FiftyTypography.regular,
+              color: FiftyColors.hyperChrome,
+            ),
+            suffixIcon: suffixIcon,
+            filled: true,
+            fillColor: colorScheme.surfaceContainerHighest,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: FiftySpacing.lg,
+              vertical: FiftySpacing.md,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.border,
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.border,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.crimsonPulse,
+                width: 2,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.error,
+                width: 1,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.error,
+                width: 2,
+              ),
+            ),
+            errorStyle: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.error,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   /// **_login**
   ///
   /// Validates and saves the form, then triggers [AuthActions.signIn].
@@ -148,13 +314,14 @@ class LoginPage extends GetWidget<AuthViewModel> {
   /// - `context`: Build context used by the action presenter for overlay/snackbar.
   ///
   /// **Side Effects**
-  /// - Updates [AuthViewModel.username] and [AuthViewModel.password] via `onSaved`.
+  /// - Updates [AuthViewModel.username] and [AuthViewModel.password] via controllers.
   /// - Triggers the global loader overlay and error handling via [AuthActions].
   ///
-  /// // ────────────────────────────────────────────────
+  /// // ----------------------------------------------------
   void _login(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      controller.username = _usernameController.text;
+      controller.password = _passwordController.text;
       AuthActions.instance.signIn(context);
     }
   }

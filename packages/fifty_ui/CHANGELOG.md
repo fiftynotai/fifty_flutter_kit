@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-12-31
+
+### Fixed
+
+#### Theme-Aware Components
+All core components now properly support light and dark mode switching. Previously, several components had hardcoded dark theme colors that prevented proper theming.
+
+- `FiftyCard` - Background now uses `colorScheme.surfaceContainerHighest` instead of hardcoded `FiftyColors.gunmetal`
+- `FiftyChip` - Non-selected background now uses `colorScheme.surfaceContainerHighest` instead of hardcoded `FiftyColors.gunmetal`
+- `FiftyDataSlate` - Background now uses `colorScheme.surfaceContainerHighest` instead of hardcoded `FiftyColors.gunmetal`
+- `FiftyBadge` - Fixed warning color fallback to use `FiftyColors.warning` instead of `Colors.amber`
+- `FiftySwitch` - Replaced drop shadow with FDL-compliant glow (no offset) for zero-elevation design
+- `FiftyDropdown` - Replaced drop shadow with FDL-compliant shadow (no offset) for zero-elevation design
+- `FiftyNavBar` - Standardized color reference to use `FiftyColors.voidBlack` instead of `Colors.black`
+- `HalftonePainter` - Default colors now use `FiftyColors.terminalWhite` instead of `Colors.white`
+
+### Changed
+- Components now respond to system theme changes and `ThemeMode` switching
+- Light mode displays proper surface colors instead of dark-only values
+
+### Migration Notes
+- No API changes required
+- Components automatically use theme-appropriate colors
+- Custom color overrides via component parameters continue to work as expected
+
 ## [0.4.0] - 2025-12-26
 
 ### Added

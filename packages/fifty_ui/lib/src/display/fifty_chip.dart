@@ -74,7 +74,7 @@ class FiftyChip extends StatelessWidget {
     final accentColor = _getAccentColor(fifty, colorScheme);
     final backgroundColor = selected
         ? accentColor.withValues(alpha: 0.2)
-        : FiftyColors.gunmetal;
+        : colorScheme.surfaceContainerHighest;
     final borderColor = selected ? accentColor : FiftyColors.border;
 
     return Material(

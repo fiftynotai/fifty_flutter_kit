@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A CustomPainter that draws a halftone dot pattern.
@@ -19,7 +20,7 @@ import 'package:flutter/material.dart';
 class HalftonePainter extends CustomPainter {
   /// Creates a halftone pattern painter.
   const HalftonePainter({
-    this.color = Colors.white,
+    this.color = FiftyColors.terminalWhite,
     this.dotRadius = 1.0,
     this.spacing = 8.0,
     this.opacity = 0.05,
@@ -85,7 +86,7 @@ class HalftoneOverlay extends StatelessWidget {
   /// Creates a halftone overlay widget.
   const HalftoneOverlay({
     super.key,
-    this.color = Colors.white,
+    this.color = FiftyColors.terminalWhite,
     this.dotRadius = 1.0,
     this.spacing = 8.0,
     this.opacity = 0.05,

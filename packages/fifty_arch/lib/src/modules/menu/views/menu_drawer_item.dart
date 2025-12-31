@@ -1,21 +1,23 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A custom drawer item widget for the navigation menu.
 ///
-/// Displays a menu item with an icon and label, with visual feedback
-/// for the selected state.
+/// Displays a menu item with an icon and label following FDL Kinetic Brutalism
+/// aesthetic with Orbital Command space theme.
 ///
 /// ## Features:
-/// - Shows icon and label horizontally
-/// - Highlights when selected with primary color
-/// - Responds to tap gestures
-/// - Consistent styling and spacing
+/// - Gunmetal background when selected
+/// - Crimson pulse left border accent when selected
+/// - UPPERCASE text with letter spacing
+/// - hyperChrome icon color, crimsonPulse when selected
+/// - Responds to tap gestures with FDL motion
 ///
 /// ## Example:
 /// ```dart
 /// MenuDrawerItem(
-///   label: 'Home',
-///   icon: Icons.home,
+///   label: 'DASHBOARD',
+///   icon: Icons.radar,
 ///   isSelected: true,
 ///   onTap: () => controller.selectMenuItem(homeItem),
 /// )
@@ -46,36 +48,59 @@ class MenuDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.horizontal(
-            right: Radius.circular(16.0),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: colorScheme.primary.withValues(alpha: 0.2),
+        highlightColor: colorScheme.primary.withValues(alpha: 0.1),
+        child: AnimatedContainer(
+          duration: FiftyMotion.fast,
+          curve: Curves.easeOut,
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiftySpacing.lg,
+            vertical: FiftySpacing.md,
           ),
-          color: isSelected
-              ? Theme.of(context).primaryColor.withValues(alpha: 0.5)
-              : Colors.transparent,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 24.0,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            const SizedBox(width: 16.0),
-            Expanded(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+          decoration: BoxDecoration(
+            color: isSelected ? colorScheme.surfaceContainerHighest : Colors.transparent,
+            border: Border(
+              left: BorderSide(
+                color: isSelected ? FiftyColors.crimsonPulse : Colors.transparent,
+                width: 3,
               ),
             ),
-          ],
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 20.0,
+                color: isSelected ? FiftyColors.crimsonPulse : FiftyColors.hyperChrome,
+              ),
+              const SizedBox(width: FiftySpacing.md),
+              Expanded(
+                child: Text(
+                  label.toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.body - 2,
+                    fontWeight: FiftyTypography.medium,
+                    color: isSelected ? FiftyColors.crimsonPulse : colorScheme.onSurface,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ),
+              // Arrow indicator for selected item
+              if (isSelected)
+                Icon(
+                  Icons.chevron_right,
+                  size: 18,
+                  color: FiftyColors.crimsonPulse,
+                ),
+            ],
+          ),
         ),
       ),
     );

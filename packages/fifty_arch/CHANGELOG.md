@@ -4,9 +4,50 @@ All notable changes to this project template will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres loosely to Semantic Versioning for the template itself.
 
+## [0.4.0] - 2025-12-31
+
+### Fixed
+
+#### Theme-Aware App Components
+All app-level components now properly support light and dark mode switching. Previously, several screens and widgets had hardcoded dark theme colors (`FiftyColors.voidBlack`, `FiftyColors.gunmetal`) that prevented proper theming.
+
+**Scaffold and Navigation:**
+- `OrbitalCommandPage` - Scaffold and AppBar backgrounds now use `colorScheme.surface`
+- `SideMenuDrawer` - Drawer background and logo container now use theme-aware colors
+
+**Authentication Screens:**
+- `LoginPage` - Form field backgrounds and scaffolds now use theme-aware colors
+- `RegisterPage` - Form field backgrounds and scaffolds now use theme-aware colors
+- `SplashPage` - Background now uses `colorScheme.surface`
+
+**Connectivity Module:**
+- `ConnectionHandler` - Backgrounds now use theme-aware colors
+- `ConnectionOverlay` - Overlay backgrounds now use theme-aware colors
+
+**Menu Components:**
+- `MenuDrawerItem` - Dialog and item backgrounds now use theme-aware colors
+- `LogoutDrawerItem` - Dialog backgrounds now use theme-aware colors
+- `LanguageDialog` - Dialog background now uses theme-aware colors
+- `LanguageDrawerItem` - Item backgrounds now use theme-aware colors
+
+**Example Widgets:**
+- `NeoListTile` - Text and placeholder colors now use `colorScheme.onSurface`
+- `ApodCard` - Placeholder and text colors now use theme-aware values
+- `MarsPhotoCard` - Placeholder and text colors now use theme-aware values
+
+### Changed
+- App screens now respond to system theme changes and `ThemeMode` switching
+- Light mode displays proper surface colors instead of dark-only values
+- Consistent use of Material 3 color scheme tokens throughout
+
+### Migration Notes
+- No API changes required
+- All screens automatically use theme-appropriate colors
+- Theme switching via `ThemeViewModel` now properly affects all screens
+
 ## [0.3.0] - 2025-01-08
 
-### 🎯 Major Refactoring - Better Organization & Cleaner APIs
+### Major Refactoring - Better Organization & Cleaner APIs
 
 This release focuses on improving code organization, simplifying APIs, and enhancing developer experience through better separation of concerns.
 
@@ -31,27 +72,27 @@ This release focuses on improving code organization, simplifying APIs, and enhan
 
 ### Changed
 - **File relocations**:
-  - `utils/route_manager.dart` → `core/routing/route_manager.dart`
-  - `utils/binding.dart` → `core/bindings/bindings.dart`
+  - `utils/route_manager.dart` -> `core/routing/route_manager.dart`
+  - `utils/binding.dart` -> `core/bindings/bindings.dart`
 - **File renames**:
-  - `utils/validator.dart` → `utils/form_validators.dart`
-  - `utils/screen_utils.dart` → `utils/responsive_utils.dart`
-  - `utils/date_time_utils.dart` → `utils/date_time_extensions.dart`
+  - `utils/validator.dart` -> `utils/form_validators.dart`
+  - `utils/screen_utils.dart` -> `utils/responsive_utils.dart`
+  - `utils/date_time_utils.dart` -> `utils/date_time_extensions.dart`
 - **Class renames**:
-  - `InputsValidator` → `FormValidators`
-  - `ScreenUtils` → `ResponsiveUtils`
-  - `DateTimeUtils` → DateTime extensions
+  - `InputsValidator` -> `FormValidators`
+  - `ScreenUtils` -> `ResponsiveUtils`
+  - `DateTimeUtils` -> DateTime extensions
 - **API simplifications**:
   - FormValidators: Removed redundant `*Validator` methods, kept short names
-    - `emailValidator()` → `email()`
-    - `phoneValidator()` → `phone()`
-    - `passwordValidator()` → `password()`
+    - `emailValidator()` -> `email()`
+    - `phoneValidator()` -> `phone()`
+    - `passwordValidator()` -> `password()`
   - ResponsiveUtils: Improved method names
-    - `getFontSize()` → `scaledFontSize()`
-    - `getScreenHeight()` → `screenHeight()`
+    - `getFontSize()` -> `scaledFontSize()`
+    - `getScreenHeight()` -> `screenHeight()`
   - DateTime: Changed from static utils to extensions
-    - `DateTimeUtils.isToday(date)` → `date.isToday`
-    - `DateTimeUtils.formatDate(date)` → `date.format()`
+    - `DateTimeUtils.isToday(date)` -> `date.isToday`
+    - `DateTimeUtils.formatDate(date)` -> `date.format()`
 - **Binding architecture**:
   - `InitialBindings` now only registers core dependencies (Connections, Theme, Locale)
   - `AuthBindings` registers Menu and Posts modules via `onAuthenticated` callback
@@ -67,14 +108,14 @@ This release focuses on improving code organization, simplifying APIs, and enhan
 - **Documentation**: Updated inline docs to reflect new patterns
 
 ### Migration Required
-**⚠️ Breaking Changes** - See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed migration steps.
+See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed migration steps.
 
 Key changes:
-1. Update imports: `utils/route_manager.dart` → `core/core.dart`
-2. Update validators: `FormValidators.emailValidator` → `FormValidators.email`
-3. Update responsive: `ScreenUtils` → `ResponsiveUtils`
-4. Convert DateTime utils to extensions: `DateTimeUtils.isToday(date)` → `date.isToday`
-5. Update navigation: `Get.back()` → `RouteManager.back()`
+1. Update imports: `utils/route_manager.dart` -> `core/core.dart`
+2. Update validators: `FormValidators.emailValidator` -> `FormValidators.email`
+3. Update responsive: `ScreenUtils` -> `ResponsiveUtils`
+4. Convert DateTime utils to extensions: `DateTimeUtils.isToday(date)` -> `date.isToday`
+5. Update navigation: `Get.back()` -> `RouteManager.back()`
 
 ## [0.2.0] - 2025-10-02
 
@@ -103,8 +144,8 @@ Key changes:
   - Header handling: when a per-request `headers` map is provided, it is used as-is; otherwise, defaults (authorized headers) are applied. No merging.
 - Caching defaults: GET uses cache by default; POST/PUT/DELETE do not cache unless explicitly opted in. Error responses are never cached.
 - Moved shared UI utilities:
-  - `api_handler.dart` → `src/presentation/widgets/api_handler.dart`.
-  - `api_response.dart` → `src/core/presentation/api_response.dart`.
+  - `api_handler.dart` -> `src/presentation/widgets/api_handler.dart`.
+  - `api_response.dart` -> `src/core/presentation/api_response.dart`.
 - README and coding guidelines updated to reflect the new structure and APIs.
 
 - Auth module hardening:
@@ -143,7 +184,7 @@ Key changes:
 - ApiService header behavior:
   - When you pass `headers`, you must include `Authorization` and `content-type` yourself. If you pass `null`, defaults are applied.
 - UI state helpers:
-  - `ApiStatus.fail` → `ApiStatus.error`.
+  - `ApiStatus.fail` -> `ApiStatus.error`.
   - `ApiHandler` takes `successBuilder` (data-aware) and optional `loadingWidget`/`errorBuilder`; handle empty states in your success builder or parent widget.
 
 ### Security
@@ -158,7 +199,7 @@ Key changes:
 
 ### Added
 - **Posts example module**: Replaced project-specific grades module with a universal example using JSONPlaceholder public API
-  - Complete API pattern demonstration: `apiFetch() → ApiResponse<T> → ApiHandler<T>`
+  - Complete API pattern demonstration: `apiFetch() -> ApiResponse<T> -> ApiHandler<T>`
   - PostModel, PostService, PostViewModel, PostBindings, PostsPage, and view widgets
   - Fetches 100 blog posts from https://jsonplaceholder.typicode.com/posts
   - Pull-to-refresh support with RefreshIndicator
@@ -222,5 +263,5 @@ Key changes:
 
 ### Migration Notes
 - If you were using the grades module, replace it with your own custom module or adapt the posts example
-- The posts module demonstrates the same API patterns (apiFetch → ApiResponse → ApiHandler)
+- The posts module demonstrates the same API patterns (apiFetch -> ApiResponse -> ApiHandler)
 - See docs/examples/api_pattern_example.md for a complete implementation guide

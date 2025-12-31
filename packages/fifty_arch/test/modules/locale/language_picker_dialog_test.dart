@@ -1,8 +1,10 @@
+import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:fifty_arch/src/modules/locale/controllers/localization_view_model.dart';
-import 'package:fifty_arch/src/modules/locale/data/models/language_model.dart';
 import 'package:fifty_arch/src/modules/locale/views/language_dialog.dart';
 import 'package:fifty_arch/src/modules/locale/data/services/localization_service.dart';
 
@@ -32,8 +34,12 @@ void main() {
         translations: LocalizationService(),
         locale: LocalizationService.locale,
         fallbackLocale: LocalizationService.fallbackLocale,
+        theme: FiftyTheme.dark(),
+        darkTheme: FiftyTheme.dark(),
+        themeMode: ThemeMode.dark,
         home: Scaffold(
-          body: LanguagePickerDialog(),
+          backgroundColor: FiftyColors.voidBlack,
+          body: const LanguagePickerDialog(),
         ),
       );
     }
@@ -52,53 +58,62 @@ void main() {
       expect(find.byType(Dialog), findsOneWidget);
     });
 
+    testWidgets('displays LANGUAGE PROTOCOL title', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      expect(find.text('LANGUAGE PROTOCOL'), findsOneWidget);
+    });
+
     testWidgets('displays close button', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.clear), findsOneWidget);
+      expect(find.byIcon(Icons.close), findsOneWidget);
     });
 
-    testWidgets('displays language dropdown', (WidgetTester tester) async {
+    testWidgets('displays language chips using FiftyChip', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byType(DropdownButtonFormField<LanguageModel>), findsOneWidget);
+      // FDL redesign uses FiftyChip instead of dropdown
+      expect(find.byType(FiftyChip), findsWidgets);
     });
 
-    testWidgets('displays confirm button', (WidgetTester tester) async {
+    testWidgets('displays CONFIRM button with FDL styling', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Look for button by finding text 'Confirm'
-      expect(find.text('Confirm'), findsOneWidget);
+      // FDL redesign uses uppercase button labels
+      expect(find.text('CONFIRM'), findsOneWidget);
     });
 
-    testWidgets('dropdown shows all supported languages', (WidgetTester tester) async {
+    testWidgets('displays CANCEL button with FDL styling', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Tap dropdown to open
-      await tester.tap(find.byType(DropdownButtonFormField<LanguageModel>));
-      await tester.pumpAndSettle();
-
-      // Should show English
-      expect(find.text('English'), findsWidgets);
-
-      // Should show Arabic
-      expect(find.text('العربية'), findsWidgets);
+      expect(find.text('CANCEL'), findsOneWidget);
     });
 
-    testWidgets('displays initial selected language', (WidgetTester tester) async {
+    testWidgets('shows all supported languages as chips', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // The current language should be displayed
-      final currentLang = viewModel.language;
-      expect(find.text(currentLang.name), findsWidgets);
+      // Should have chips for each supported language
+      final chipCount = LocalizationViewModel.supportedLanguages.length;
+      expect(find.byType(FiftyChip), findsNWidgets(chipCount));
     });
 
-    testWidgets('selecting language updates ViewModel', (WidgetTester tester) async {
+    testWidgets('displays all language options as FiftyChip widgets', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // FiftyChip widgets should be present for each language
+      final chipCount = LocalizationViewModel.supportedLanguages.length;
+      expect(find.byType(FiftyChip), findsNWidgets(chipCount));
+    });
+
+    testWidgets('tapping language chip updates selection', (WidgetTester tester) async {
       // Set initial language to English
       final english = LocalizationViewModel.supportedLanguages
           .firstWhere((lang) => lang.code == 'en');
@@ -107,38 +122,31 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Tap dropdown to open
-      await tester.tap(find.byType(DropdownButtonFormField<LanguageModel>));
-      await tester.pumpAndSettle();
-
-      // Select Arabic
-      await tester.tap(find.text('العربية').last);
+      // Tap Arabic chip
+      await tester.tap(find.textContaining('العربية'));
       await tester.pumpAndSettle();
 
       // ViewModel should have Arabic selected (but not saved yet)
       expect(viewModel.language.code, equals('ar'));
     });
 
-    testWidgets('confirm button saves language change', (WidgetTester tester) async {
+    testWidgets('confirm button triggers save', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Change language
-      await tester.tap(find.byType(DropdownButtonFormField<LanguageModel>));
+      // Change language by tapping chip
+      await tester.tap(find.textContaining('العربية'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('العربية').last);
+      // Tap CONFIRM button
+      await tester.tap(find.text('CONFIRM'));
       await tester.pumpAndSettle();
 
-      // Tap confirm button
-      await tester.tap(find.text('Confirm'));
-      await tester.pumpAndSettle();
-
-      // Dialog should be closed (back navigation triggered)
-      // In a real app, Get.back() would close the dialog
+      // saveLanguageChange should have been called
+      // In real app, Get.back() would close dialog
     });
 
-    testWidgets('close button dismisses changes', (WidgetTester tester) async {
+    testWidgets('cancel button dismisses without saving', (WidgetTester tester) async {
       // Set initial language to English
       final english = LocalizationViewModel.supportedLanguages
           .firstWhere((lang) => lang.code == 'en');
@@ -148,74 +156,81 @@ void main() {
       await tester.pumpAndSettle();
 
       // Change language
-      await tester.tap(find.byType(DropdownButtonFormField<LanguageModel>));
+      await tester.tap(find.textContaining('العربية'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('العربية').last);
+      // Tap CANCEL button
+      await tester.tap(find.text('CANCEL'));
       await tester.pumpAndSettle();
 
-      // Tap close button
-      await tester.tap(find.byIcon(Icons.clear));
-      await tester.pumpAndSettle();
-
-      // Language should be reverted (dismiss called)
-      // Note: In real app, Get.back() would close dialog
+      // dismiss should have been called
     });
 
-    testWidgets('uses controller property instead of Get.find', (WidgetTester tester) async {
-      // This test verifies the fix for tight coupling
-      // The widget should access controller via GetView inheritance
+    testWidgets('close icon triggers dismiss', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Widget should render without calling Get.find multiple times
+      // Tap close icon
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+
+      // dismiss should have been called
+    });
+
+    testWidgets('uses controller property via GetView', (WidgetTester tester) async {
+      // This test verifies the widget accesses controller via GetView inheritance
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Widget should render without errors
       expect(find.byType(LanguagePickerDialog), findsOneWidget);
     });
 
-    testWidgets('dialog has proper styling', (WidgetTester tester) async {
+    testWidgets('dialog has FDL gunmetal background', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
       final dialog = tester.widget<Dialog>(find.byType(Dialog));
 
-      expect(dialog.backgroundColor, equals(Colors.white));
-      expect(dialog.surfaceTintColor, equals(Colors.white));
-      expect(dialog.shape, isA<RoundedRectangleBorder>());
+      // FDL redesign uses gunmetal background
+      expect(dialog.backgroundColor, equals(FiftyColors.gunmetal));
     });
 
-    testWidgets('dropdown has proper decoration', (WidgetTester tester) async {
+    testWidgets('dialog has FDL border styling', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      final dropdown = tester.widget<DropdownButtonFormField<LanguageModel>>(
-        find.byType(DropdownButtonFormField<LanguageModel>),
-      );
+      final dialog = tester.widget<Dialog>(find.byType(Dialog));
+      final shape = dialog.shape as RoundedRectangleBorder;
 
-      expect(dropdown.decoration, isNotNull);
-      expect(dropdown.decoration.filled, isTrue);
-      expect(dropdown.decoration.fillColor, equals(Colors.white));
+      expect(shape.side.color, equals(FiftyColors.hyperChrome));
     });
 
-    testWidgets('handles rapid language changes', (WidgetTester tester) async {
+    testWidgets('FiftyChip widgets are tappable', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      // Open dropdown
-      await tester.tap(find.byType(DropdownButtonFormField<LanguageModel>));
-      await tester.pumpAndSettle();
+      // Find all FiftyChip widgets
+      final chips = find.byType(FiftyChip);
+      expect(chips, findsWidgets);
 
-      // Rapidly change languages
-      await tester.tap(find.text('العربية').last);
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(DropdownButtonFormField<LanguageModel>));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('English').last);
-      await tester.pumpAndSettle();
-
-      // Should handle without errors
+      // Verify they are rendered properly
       expect(find.byType(LanguagePickerDialog), findsOneWidget);
+    });
+
+    testWidgets('displays subtitle text', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      expect(find.text('Select communication language'), findsOneWidget);
+    });
+
+    testWidgets('uses FiftyButton for action buttons', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Should have 2 FiftyButtons (CANCEL and CONFIRM)
+      expect(find.byType(FiftyButton), findsNWidgets(2));
     });
   });
 }

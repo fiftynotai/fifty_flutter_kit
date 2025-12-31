@@ -1,174 +1,372 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '/src/config/config.dart';
 import '/src/utils/form_validators.dart';
-import '/src/utils/responsive_utils.dart';
 import '/src/core/routing/route_manager.dart';
-import '/src/presentation/custom/customs.dart';
 import '/src/modules/auth/auth.dart';
 
 /// **RegisterPage**
 ///
-/// Modern registration form with Material 3 design using FloatSurfaceCard for
-/// visual elevation and consistency with the rest of the app.
+/// FDL-styled registration form with Orbital Command "REQUEST ACCESS" theme.
+/// Kinetic Brutalism aesthetic with space-themed terminology.
 ///
-/// **Why**
-/// - Keep form validation and field wiring in the view while business flow
-///   lives in actions/view model
-/// - Use FloatSurfaceCard for consistency with login and other pages
-/// - Responsive design adapts to different screen sizes
+/// **FDL Aesthetic:**
+/// - Void Black background (#050505)
+/// - FiftyCard with gunmetal background and border
+/// - Monument Extended for headlines, JetBrains Mono for body
+/// - Crimson Pulse primary action button
+/// - Terminal-style text fields
 ///
-/// **Features**
-/// - AppBar with back button for navigation
-/// - SingleChildScrollView prevents keyboard overflow issues
-/// - FloatSurfaceCard wraps form for visual elevation
-/// - Responsive padding using ResponsiveUtils
-/// - Form validation with GlobalKey
-/// - Password field properly obscured
-/// - Better spacing and visual hierarchy
+/// **Features:**
+/// - Form validation at view level
+/// - Business flow delegated to AuthActions/AuthViewModel
+/// - Responsive design with scroll support
 ///
-/// **Side Effects**
-/// - Fields save into [AuthViewModel.newUser] via onSaved callbacks
+/// **Side Effects:**
+/// - Fields save into [AuthViewModel.newUser] via controllers
 /// - On submit, triggers [AuthActions.signUp] which shows loader and error handling
 ///
-/// **Usage**
-/// ```dart
-/// // Navigated to from LoginPage via AuthActions.toRegisterPage()
-/// const RegisterPage()
-/// ```
-///
-/// // ────────────────────────────────────────────────
+/// // ----------------------------------------------------
 class RegisterPage extends GetWidget<AuthViewModel> {
   const RegisterPage({super.key});
 
   static final _formKey = GlobalKey<FormState>();
+  static final _usernameController = TextEditingController();
+  static final _phoneController = TextEditingController();
+  static final _emailController = TextEditingController();
+  static final _passwordController = TextEditingController();
+  static final _passwordVisible = false.obs;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const CustomText(tkRegisterPage),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => RouteManager.back(),
-        ),
-      ),
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: ResponsiveUtils.valueByDevice(
-            context,
-            mobile: const EdgeInsets.all(16.0),
-            tablet: const EdgeInsets.all(24.0),
-            desktop: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiftySpacing.lg,
+            vertical: FiftySpacing.lg,
           ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                // Logo (smaller size since more fields)
-                SvgPicture.asset(
-                  AssetsManager.logoPath,
-                  height: MediaQuery.of(context).size.height / 8,
-                  fit: BoxFit.contain,
+          child: Column(
+            children: [
+              // Back button row
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => RouteManager.back(),
+                    child: Container(
+                      padding: const EdgeInsets.all(FiftySpacing.sm),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: FiftyColors.border,
+                          width: 1,
+                        ),
+                        borderRadius: FiftyRadii.standardRadius,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: colorScheme.onSurface,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: FiftySpacing.xxl),
+
+              // Request Access title
+              Text(
+                'REQUEST ACCESS',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamilyHeadline,
+                  fontSize: FiftyTypography.display,
+                  fontWeight: FiftyTypography.ultrabold,
+                  color: colorScheme.onSurface,
+                  letterSpacing: 4,
                 ),
+                textAlign: TextAlign.center,
+              ),
 
-                const SizedBox(height: 24),
+              const SizedBox(height: FiftySpacing.sm),
 
-                // Registration form wrapped in FloatSurfaceCard
-                FloatSurfaceCard(
-                  size: FSCSize.standard,
-                  elevation: FSCElevation.resting,
-                  body: Column(
+              // Subtitle
+              Text(
+                'NEW OPERATOR REGISTRATION',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamilyMono,
+                  fontSize: FiftyTypography.body,
+                  fontWeight: FiftyTypography.regular,
+                  color: FiftyColors.hyperChrome,
+                  letterSpacing: 2,
+                ),
+              ),
+
+              const SizedBox(height: FiftySpacing.xxl),
+
+              // Registration form wrapped in FiftyCard
+              FiftyCard(
+                padding: const EdgeInsets.all(FiftySpacing.xxl),
+                scanlineOnHover: false,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Page Title
-                      const CustomText(
-                        tkCreateAccount,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        textAlign: TextAlign.center,
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      // Username Field
-                      CustomFormField(
-                        label: tkUsername,
-                        onSaved: (value) => controller.newUser.username = value,
-                        maxLines: 1,
+                      // Username field
+                      _buildFdlFormField(
+                        context,
+                        controller: _usernameController,
+                        label: 'OPERATOR ID',
+                        hint: 'Choose operator ID',
                         validator: FormValidators.username,
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: FiftySpacing.lg),
 
-                      // Phone Field
-                      CustomFormField(
-                        label: tkPhone,
-                        onSaved: (value) => controller.newUser.phone = value,
-                        maxLines: 1,
+                      // Phone field
+                      _buildFdlFormField(
+                        context,
+                        controller: _phoneController,
+                        label: 'COMM CHANNEL',
+                        hint: 'Enter comm channel (phone)',
                         validator: FormValidators.phone,
                         keyboardType: TextInputType.phone,
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: FiftySpacing.lg),
 
-                      // Email Field
-                      CustomFormField(
-                        label: tkEmail,
-                        onSaved: (value) => controller.newUser.email = value,
-                        maxLines: 1,
+                      // Email field
+                      _buildFdlFormField(
+                        context,
+                        controller: _emailController,
+                        label: 'DATA UPLINK',
+                        hint: 'Enter data uplink (email)',
                         validator: FormValidators.email,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: FiftySpacing.lg),
 
-                      // Password Field (properly obscured)
-                      PasswordFormField(
-                        label: tkPassword,
-                        onSaved: (value) => controller.newUser.password = value,
-                        maxLines: 1,
-                        validator: FormValidators.password,
-                        textInputAction: TextInputAction.done,
-                      ),
+                      // Password field with visibility toggle
+                      Obx(() => _buildFdlFormField(
+                            context,
+                            controller: _passwordController,
+                            label: 'ACCESS CODE',
+                            hint: 'Create access code',
+                            validator: FormValidators.password,
+                            textInputAction: TextInputAction.done,
+                            obscureText: !_passwordVisible.value,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _passwordVisible.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: FiftyColors.hyperChrome,
+                                size: 20,
+                              ),
+                              onPressed: () =>
+                                  _passwordVisible.value = !_passwordVisible.value,
+                            ),
+                          )),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: FiftySpacing.xxl),
 
-                      // Register Button
-                      CustomButton(
-                        text: tkRegisterBtn,
+                      // Register button
+                      FiftyButton(
+                        label: 'SUBMIT REQUEST',
                         onPressed: () => _register(context),
+                        variant: FiftyButtonVariant.primary,
+                        size: FiftyButtonSize.large,
+                        expanded: true,
                       ),
                     ],
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: FiftySpacing.xxl),
 
-                // Footer (Already have account + Login)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              // Back to login link
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'ALREADY REGISTERED? ',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontSize: FiftyTypography.body,
+                      fontWeight: FiftyTypography.regular,
+                      color: FiftyColors.hyperChrome,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => RouteManager.back(),
+                    child: Text(
+                      'ESTABLISH UPLINK',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamilyMono,
+                        fontSize: FiftyTypography.body,
+                        fontWeight: FiftyTypography.medium,
+                        color: FiftyColors.crimsonPulse,
+                        decoration: TextDecoration.underline,
+                        decorationColor: FiftyColors.crimsonPulse,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: FiftySpacing.lg),
+
+              // Security notice
+              Container(
+                padding: const EdgeInsets.all(FiftySpacing.md),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                  borderRadius: FiftyRadii.standardRadius,
+                ),
+                child: Row(
                   children: [
-                    const CustomText(tkAlreadyHaveAccount),
-                    TextButton(
-                      onPressed: () => RouteManager.back(),
-                      child: const CustomText(
-                        tkLoginNow,
-                        fontWeight: FontWeight.bold,
+                    const Icon(
+                      Icons.security,
+                      color: FiftyColors.igrisGreen,
+                      size: 16,
+                    ),
+                    const SizedBox(width: FiftySpacing.sm),
+                    Expanded(
+                      child: Text(
+                        'ALL DATA TRANSMISSIONS ARE ENCRYPTED',
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamilyMono,
+                          fontSize: FiftyTypography.mono,
+                          fontWeight: FiftyTypography.regular,
+                          color: FiftyColors.hyperChrome,
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: FiftySpacing.lg),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  /// Builds a FDL-styled form field with validation support.
+  Widget _buildFdlFormField(
+    BuildContext context, {
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required FormFieldValidator<String>? validator,
+    TextInputAction? textInputAction,
+    TextInputType? keyboardType,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label
+        Text(
+          label,
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamilyMono,
+            fontSize: FiftyTypography.mono,
+            fontWeight: FiftyTypography.medium,
+            color: FiftyColors.hyperChrome,
+            letterSpacing: 1,
+          ),
+        ),
+        const SizedBox(height: FiftySpacing.sm),
+        // Form field
+        TextFormField(
+          controller: controller,
+          validator: validator,
+          textInputAction: textInputAction,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamilyMono,
+            fontSize: FiftyTypography.body,
+            fontWeight: FiftyTypography.regular,
+            color: colorScheme.onSurface,
+          ),
+          cursorColor: colorScheme.primary,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.body,
+              fontWeight: FiftyTypography.regular,
+              color: FiftyColors.hyperChrome,
+            ),
+            suffixIcon: suffixIcon,
+            filled: true,
+            fillColor: colorScheme.surfaceContainerHighest,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: FiftySpacing.lg,
+              vertical: FiftySpacing.md,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.border,
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.border,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.crimsonPulse,
+                width: 2,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.error,
+                width: 1,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: FiftyRadii.standardRadius,
+              borderSide: const BorderSide(
+                color: FiftyColors.error,
+                width: 2,
+              ),
+            ),
+            errorStyle: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              color: FiftyColors.error,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -180,13 +378,16 @@ class RegisterPage extends GetWidget<AuthViewModel> {
   /// - `context`: Build context used by the action presenter for overlay/snackbar.
   ///
   /// **Side Effects**
-  /// - Updates [AuthViewModel.newUser] fields via `onSaved`.
+  /// - Updates [AuthViewModel.newUser] fields via controllers.
   /// - Triggers the global loader overlay and error handling via [AuthActions].
   ///
-  /// // ────────────────────────────────────────────────
+  /// // ----------------------------------------------------
   void _register(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      controller.newUser.username = _usernameController.text;
+      controller.newUser.phone = _phoneController.text;
+      controller.newUser.email = _emailController.text;
+      controller.newUser.password = _passwordController.text;
       AuthActions.instance.signUp(context);
     }
   }

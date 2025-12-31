@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import '/src/modules/menu/menu_bindings.dart';
-import '/src/modules/posts/posts_bindings.dart';
+import '/src/modules/space/space_bindings.dart';
 import 'auth.dart';
 
 /// **AuthBindings**
@@ -10,7 +10,7 @@ import 'auth.dart';
 /// **Features**:
 /// - Registers AuthViewModel with AuthService
 /// - Configures callbacks for state changes
-/// - Registers feature modules (Menu, Posts) on authentication success
+/// - Registers feature modules (Menu, Space) on authentication success
 ///
 /// **Usage**:
 /// ```dart
@@ -37,13 +37,13 @@ class AuthBindings implements Bindings {
   ///
   /// Registers feature modules that are only needed for logged-in users:
   /// - MenuBindings: Navigation and menu functionality
-  /// - PostsBindings: Posts example module
+  /// - SpaceBindings: Orbital Command space monitoring module
   void _onAuthenticated() {
     // Register menu/navigation bindings
     MenuBindings().dependencies();
 
-    // Register posts example module bindings
-    PostsBindings().dependencies();
+    // Register space/Orbital Command module bindings
+    SpaceBindings().dependencies();
   }
 
   /// **_onNotAuthenticated**
@@ -56,11 +56,11 @@ class AuthBindings implements Bindings {
   /// - Prevent memory leaks from registered dependencies
   ///
   /// **What it does:**
-  /// - Calls PostsBindings.destroy() to cleanup posts module
+  /// - Calls SpaceBindings.destroy() to cleanup space module
   /// - Calls MenuBindings.destroy() to cleanup menu module
   ///
   /// **Order matters:**
-  /// - Posts module is cleaned up first (feature module)
+  /// - Space module is cleaned up first (feature module)
   /// - Menu module is cleaned up second (navigation module)
   ///
   /// **Side Effects**
@@ -70,8 +70,8 @@ class AuthBindings implements Bindings {
   ///
   /// // ────────────────────────────────────────────────
   void _onNotAuthenticated() {
-    // Clean up posts module (reverse order of registration)
-    PostsBindings.destroy();
+    // Clean up space module (reverse order of registration)
+    SpaceBindings.destroy();
 
     // Clean up menu module
     MenuBindings.destroy();

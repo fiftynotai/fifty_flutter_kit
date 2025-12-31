@@ -70,7 +70,7 @@ class FiftyDataSlate extends StatelessWidget {
       curve: fifty.standardCurve,
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
-        color: FiftyColors.gunmetal,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.standardRadius,
         border: showBorder
             ? Border.all(
@@ -96,14 +96,17 @@ class FiftyDataSlate extends StatelessWidget {
                     color: colorScheme.primary,
                   ),
                 ),
-                Text(
-                  title!.toUpperCase(),
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
-                    fontWeight: FiftyTypography.medium,
-                    color: colorScheme.onSurface,
-                    letterSpacing: 1,
+                Expanded(
+                  child: Text(
+                    title!.toUpperCase(),
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontSize: FiftyTypography.mono,
+                      fontWeight: FiftyTypography.medium,
+                      color: colorScheme.onSurface,
+                      letterSpacing: 1,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -112,34 +115,47 @@ class FiftyDataSlate extends StatelessWidget {
           ],
           ...data.entries.map((entry) => Padding(
                 padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: _calculateKeyWidth(data.keys),
-                      child: Text(
-                        '${entry.key}:',
-                        style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.mono,
-                          fontWeight: FiftyTypography.regular,
-                          color: effectiveKeyColor,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    // Calculate key width but cap it at 40% of available space
+                    final calculatedWidth = _calculateKeyWidth(data.keys);
+                    final maxKeyWidth = constraints.maxWidth * 0.4;
+                    final effectiveKeyWidth = calculatedWidth.clamp(0.0, maxKeyWidth);
+
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: effectiveKeyWidth,
+                          ),
+                          child: Text(
+                            '${entry.key}:',
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamilyMono,
+                              fontSize: FiftyTypography.mono,
+                              fontWeight: FiftyTypography.regular,
+                              color: effectiveKeyColor,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: FiftySpacing.md),
-                    Expanded(
-                      child: Text(
-                        entry.value,
-                        style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.mono,
-                          fontWeight: FiftyTypography.regular,
-                          color: effectiveValueColor,
+                        const SizedBox(width: FiftySpacing.sm),
+                        Expanded(
+                          child: Text(
+                            entry.value,
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamilyMono,
+                              fontSize: FiftyTypography.mono,
+                              fontWeight: FiftyTypography.regular,
+                              color: effectiveValueColor,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               )),
         ],

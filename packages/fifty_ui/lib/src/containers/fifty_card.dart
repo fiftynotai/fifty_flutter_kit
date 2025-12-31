@@ -147,7 +147,7 @@ class _FiftyCardState extends State<FiftyCard>
     final effectiveBorderRadius =
         widget.borderRadius ?? FiftyRadii.standardRadius;
     final effectiveBackgroundColor =
-        widget.backgroundColor ?? FiftyColors.gunmetal;
+        widget.backgroundColor ?? colorScheme.surfaceContainerHighest;
     final effectivePadding = widget.padding ??
         const EdgeInsets.all(FiftySpacing.lg);
 

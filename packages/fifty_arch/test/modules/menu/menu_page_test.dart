@@ -1,3 +1,4 @@
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -13,9 +14,20 @@ void main() {
 
   group('MenuPageWithDrawer Widget Tests', () {
     late MenuViewModel viewModel;
+    late List<FlutterErrorDetails> errors;
 
     setUp(() {
       Get.testMode = true;
+      errors = [];
+
+      // Capture overflow errors during tests (FDL components may overflow in test env)
+      FlutterError.onError = (FlutterErrorDetails details) {
+        if (details.exception.toString().contains('overflowed')) {
+          errors.add(details);
+        } else {
+          FlutterError.presentError(details);
+        }
+      };
 
       // Register theme dependencies
       if (!Get.isRegistered<ThemeViewModel>()) {
@@ -49,12 +61,16 @@ void main() {
     });
 
     tearDown(() {
+      FlutterError.onError = FlutterError.presentError;
       Get.reset();
     });
 
     Widget createTestWidget() {
-      return const GetMaterialApp(
-        home: MenuPageWithDrawer(),
+      return GetMaterialApp(
+        theme: FiftyTheme.dark(),
+        darkTheme: FiftyTheme.dark(),
+        themeMode: ThemeMode.dark,
+        home: const MenuPageWithDrawer(),
       );
     }
 

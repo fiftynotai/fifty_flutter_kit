@@ -145,7 +145,7 @@ class _FiftyBadgeState extends State<FiftyBadge>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final accentColor = _getAccentColor(fifty, colorScheme);
@@ -191,7 +191,7 @@ class _FiftyBadgeState extends State<FiftyBadge>
     );
   }
 
-  Color _getAccentColor(FiftyThemeExtension fifty, ColorScheme colorScheme) {
+  Color _getAccentColor(FiftyThemeExtension? fifty, ColorScheme colorScheme) {
     // Custom color takes precedence
     if (widget.customColor != null) {
       return widget.customColor!;
@@ -201,9 +201,9 @@ class _FiftyBadgeState extends State<FiftyBadge>
       case FiftyBadgeVariant.primary:
         return colorScheme.primary;
       case FiftyBadgeVariant.success:
-        return fifty.success;
+        return fifty?.success ?? FiftyColors.igrisGreen;
       case FiftyBadgeVariant.warning:
-        return fifty.warning;
+        return fifty?.warning ?? FiftyColors.warning;
       case FiftyBadgeVariant.error:
         return colorScheme.error;
       case FiftyBadgeVariant.neutral:

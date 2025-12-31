@@ -26,7 +26,7 @@ import '/src/modules/theme/theme_bindings.dart';
 /// - `LocalizationViewModel` - Language/locale management
 ///
 /// **Notes**:
-/// - Auth, Menu, and Posts bindings are registered after authentication
+/// - Auth, Menu, and Space bindings are registered after authentication
 /// - Dependencies are registered in specific order to handle inter-dependencies
 /// - `ThemeViewModel` must be available before app widget builds
 /// - Use `permanent: true` for dependencies that should persist across route changes
@@ -50,7 +50,7 @@ class InitialBindings extends Bindings {
     // Feature Dependencies
     // ═══════════════════════════════════════════════════════════════════════════
 
-    // Note: Auth, Menu, and Posts bindings are registered via route bindings
+    // Note: Auth, Menu, and Space bindings are registered via route bindings
     // and auth success callbacks, not here.
   }
 }

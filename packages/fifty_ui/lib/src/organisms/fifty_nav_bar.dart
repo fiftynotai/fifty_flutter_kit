@@ -110,7 +110,7 @@ class FiftyNavBar extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.5),
+              color: FiftyColors.voidBlack.withValues(alpha: 0.5),
               borderRadius: _borderRadius,
               border: Border.all(
                 color: FiftyColors.hyperChrome.withValues(alpha: 0.1),

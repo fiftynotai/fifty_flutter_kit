@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/src/modules/posts/posts.dart';
+import '/src/modules/space/space.dart';
 import 'menu.dart';
 
 /// Bindings class for the menu module.
@@ -65,16 +65,16 @@ class MenuBindings implements Bindings {
   List<MenuItem> configureMenuItems() {
     return [
       const MenuItem(
+        id: 'orbital-command',
+        label: 'Orbital Command',
+        icon: Icons.radar,
+        page: OrbitalCommandPage(),
+      ),
+      const MenuItem(
         id: 'dashboard',
         label: 'Dashboard',
         icon: Icons.dashboard,
         page: DashboardPage(),
-      ),
-      const MenuItem(
-        id: 'posts',
-        label: 'Posts Example',
-        icon: Icons.article,
-        page: PostsPage(),
       ),
       const MenuItem(
         id: 'settings',

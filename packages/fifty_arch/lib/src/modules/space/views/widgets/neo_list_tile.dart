@@ -64,6 +64,8 @@ class NeoListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       onTap: onTap,
       child: Column(
@@ -81,7 +83,7 @@ class NeoListTile extends StatelessWidget {
                     fontFamily: FiftyTypography.fontFamilyMono,
                     fontSize: FiftyTypography.body,
                     fontWeight: FiftyTypography.medium,
-                    color: FiftyColors.terminalWhite,
+                    color: colorScheme.onSurface,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -185,6 +187,8 @@ class _MetricItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,7 +209,7 @@ class _MetricItem extends StatelessWidget {
             fontFamily: FiftyTypography.fontFamilyMono,
             fontSize: FiftyTypography.mono,
             fontWeight: FiftyTypography.medium,
-            color: FiftyColors.terminalWhite,
+            color: colorScheme.onSurface,
           ),
         ),
       ],

@@ -54,6 +54,8 @@ class ApodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       onTap: onTap,
       padding: EdgeInsets.zero,
@@ -74,13 +76,13 @@ class ApodCard extends StatelessWidget {
                     imageUrl: imageUrl,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
-                      color: FiftyColors.gunmetal,
+                      color: colorScheme.surfaceContainerHighest,
                       child: const Center(
                         child: FiftyLoadingIndicator(),
                       ),
                     ),
                     errorWidget: (context, url, error) => Container(
-                      color: FiftyColors.gunmetal,
+                      color: colorScheme.surfaceContainerHighest,
                       child: const Center(
                         child: Icon(
                           Icons.image_not_supported_outlined,
@@ -118,7 +120,7 @@ class ApodCard extends StatelessWidget {
                     fontFamily: FiftyTypography.fontFamilyHeadline,
                     fontSize: FiftyTypography.body,
                     fontWeight: FiftyTypography.ultrabold,
-                    color: FiftyColors.terminalWhite,
+                    color: colorScheme.onSurface,
                     letterSpacing: FiftyTypography.tight * FiftyTypography.body,
                     height: FiftyTypography.headingLineHeight,
                   ),

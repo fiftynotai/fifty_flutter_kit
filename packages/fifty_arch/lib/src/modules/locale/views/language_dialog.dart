@@ -1,93 +1,156 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/src/config/config.dart';
 import '../../../core/routing/route_manager.dart';
-import '/src/presentation/custom/customs.dart';
 import '../controllers/localization_view_model.dart';
 import '../data/models/language_model.dart';
 
-/// A dialog widget to allow the user to select a language from a dropdown list.
-/// This dialog uses GetX's `LocalizationViewModel` to manage the selected language.
+/// Language Protocol Dialog - FDL Kinetic Brutalism styled language selector.
+///
+/// A dialog widget to allow the user to select a communication language.
+/// Uses the Fifty Design Language (FDL) with Orbital Command space theme.
+///
+/// ## Features:
+/// - Gunmetal background with hyperChrome border
+/// - "LANGUAGE PROTOCOL" title in Monument Extended
+/// - Language chips with crimsonPulse selection accent
+/// - FiftyButton for confirm/cancel actions
+///
+/// ## Usage:
+/// ```dart
+/// showDialog(
+///   context: context,
+///   builder: (context) => const LanguagePickerDialog(),
+/// );
+/// ```
 class LanguagePickerDialog extends GetView<LocalizationViewModel> {
   const LanguagePickerDialog({super.key});
 
+  /// Gets the flag emoji for a given language code.
+  String _getFlagEmoji(String countryCode) {
+    switch (countryCode.toUpperCase()) {
+      case 'GB':
+        return '\u{1F1EC}\u{1F1E7}'; // UK flag
+      case 'AE':
+        return '\u{1F1E6}\u{1F1EA}'; // UAE flag
+      default:
+        return '\u{1F310}'; // Globe
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Define the border style for the dropdown field.
-    final border = OutlineInputBorder(
-      borderSide: const BorderSide(color: ColorManager.bodyColor, width: 0.6),
-      borderRadius: BorderRadius.circular(8.0),
-    );
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Dialog(
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      backgroundColor: colorScheme.surfaceContainerHighest,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(FiftyRadii.standard),
+        side: const BorderSide(
+          color: FiftyColors.hyperChrome,
+          width: 1,
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Close button in the top-right corner.
+            // Header with close button
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
+                // Title
+                Text(
+                  'LANGUAGE PROTOCOL',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyHeadline,
+                    fontSize: FiftyTypography.body,
+                    fontWeight: FiftyTypography.ultrabold,
+                    color: colorScheme.onSurface,
+                    letterSpacing: 2,
+                  ),
+                ),
+                // Close button
+                GestureDetector(
                   onTap: _close,
-                  child: const Icon(Icons.clear, color: ColorManager.titleColor),
+                  child: Container(
+                    padding: const EdgeInsets.all(FiftySpacing.xs),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(FiftyRadii.standard),
+                      border: Border.all(
+                        color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: FiftyColors.hyperChrome,
+                      size: 18,
+                    ),
+                  ),
                 ),
               ],
             ),
-            // Title text for the language picker.
-            const CustomText.subtitle(
-              tkChooseLanguage,
-            ),
-            const SizedBox(height: 16.0),
-            // Dropdown button for selecting the language.
-            ButtonTheme(
-              alignedDropdown: true,
-              child: Obx(
-                    () => DropdownButtonFormField<LanguageModel>(
-                  isExpanded: true,
-                  initialValue: controller.language,
-                  icon: const Icon(Icons.expand_more),
-                  dropdownColor: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  decoration: InputDecoration(
-                    hintText: tkChooseLanguage.tr,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 16.0),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: border,
-                    enabledBorder: border,
-                    focusedBorder: border,
-                  ),
-                  items: LocalizationViewModel.supportedLanguages
-                      .map(
-                        (e) => DropdownMenuItem(
-                      value: e,
-                      child: Row(
-                        children: [
-                          CustomText.subtitle(e.name),
-                        ],
-                      ),
-                    ),
-                  )
-                      .toList(),
-                  onChanged: controller.onChange, // Handle the language change.
-                ),
+            const SizedBox(height: FiftySpacing.sm),
+            // Subtitle
+            Text(
+              'Select communication language',
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamilyMono,
+                fontSize: FiftyTypography.mono,
+                color: FiftyColors.hyperChrome,
+                letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: 16.0),
-            // Confirm button to save the selected language.
-            CustomButton(
-              text: tkConfirmBtn,
-              onPressed: _confirm,
+            const SizedBox(height: FiftySpacing.xl),
+            // Language chips
+            Obx(
+              () => Wrap(
+                spacing: FiftySpacing.sm,
+                runSpacing: FiftySpacing.sm,
+                children: LocalizationViewModel.supportedLanguages
+                    .map((lang) => _buildLanguageChip(lang, context))
+                    .toList(),
+              ),
+            ),
+            const SizedBox(height: FiftySpacing.xl),
+            // Action buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FiftyButton(
+                  label: 'CANCEL',
+                  onPressed: _close,
+                  variant: FiftyButtonVariant.secondary,
+                  size: FiftyButtonSize.small,
+                ),
+                const SizedBox(width: FiftySpacing.md),
+                FiftyButton(
+                  label: 'CONFIRM',
+                  onPressed: _confirm,
+                  variant: FiftyButtonVariant.primary,
+                  size: FiftyButtonSize.small,
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  /// Builds a language selection chip with FDL styling.
+  Widget _buildLanguageChip(LanguageModel lang, BuildContext context) {
+    final isSelected = controller.language.code == lang.code;
+    final flag = _getFlagEmoji(lang.countryCode);
+
+    return FiftyChip(
+      label: '$flag ${lang.name}',
+      selected: isSelected,
+      onTap: () => controller.onChange(lang),
     );
   }
 

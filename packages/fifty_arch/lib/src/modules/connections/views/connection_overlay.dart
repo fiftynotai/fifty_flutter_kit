@@ -1,7 +1,7 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '/src/utils/utils.dart';
-import '/src/presentation/custom/customs.dart';
 import '/src/modules/locale/data/keys.dart';
 import '../connection.dart';
 
@@ -9,6 +9,9 @@ import '../connection.dart';
 ///
 /// Widget that overlays its [child] with a small status surface when the
 /// device is attempting to reconnect or has no internet connectivity.
+///
+/// Styled with FDL (Fifty Design Language) Kinetic Brutalism aesthetic
+/// using the Orbital Command space theme.
 ///
 /// Why
 /// - Provide ambient feedback without blocking the entire screen.
@@ -41,7 +44,7 @@ class ConnectionOverlay extends GetWidget<ConnectionViewModel> {
         Obx(() {
           switch (controller.connectionType.value) {
             case ConnectivityType.connecting:
-              return InfoItem(label: tkReconnecting.tr);
+              return const UplinkStatusBar(status: UplinkStatus.connecting);
             case ConnectivityType.disconnected:
             case ConnectivityType.noInternet:
               return const OfflineStatusCard();
@@ -54,21 +57,82 @@ class ConnectionOverlay extends GetWidget<ConnectionViewModel> {
   }
 }
 
+/// Uplink status states for the connection overlay.
+enum UplinkStatus {
+  /// Currently online and connected.
+  online,
+
+  /// Currently offline/disconnected.
+  offline,
+
+  /// Attempting to establish connection.
+  connecting,
+}
+
+/// **UplinkStatusBar**
+///
+/// A compact status bar shown when the connection status changes.
+/// Follows FDL Kinetic Brutalism aesthetic with Orbital Command theme.
+class UplinkStatusBar extends StatelessWidget {
+  /// The current uplink status.
+  final UplinkStatus status;
+
+  /// Constructor for the `UplinkStatusBar` widget.
+  const UplinkStatusBar({
+    super.key,
+    required this.status,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          margin: const EdgeInsets.only(top: FiftySpacing.md),
+          child: _buildStatusBadge(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge() {
+    switch (status) {
+      case UplinkStatus.online:
+        return FiftyBadge.status('UPLINK ACTIVE');
+      case UplinkStatus.offline:
+        return const FiftyBadge(
+          label: 'SIGNAL LOST',
+          variant: FiftyBadgeVariant.error,
+          showGlow: true,
+        );
+      case UplinkStatus.connecting:
+        return const FiftyBadge(
+          label: 'ESTABLISHING UPLINK',
+          variant: FiftyBadgeVariant.neutral,
+          showGlow: true,
+          customColor: FiftyColors.hyperChrome,
+        );
+    }
+  }
+}
+
 /// **OfflineStatusCard**
 ///
 /// Full-screen modal card shown when the app determines there is no internet
-/// connectivity. Displays a timer since disconnection and offers a manual
-/// refresh action.
+/// connectivity. Styled with FDL Kinetic Brutalism aesthetic.
 ///
 /// **Why**
 /// - Provide clear, blocking feedback when connectivity is lost.
 /// - Show user how long they've been offline with a live timer.
 ///
 /// **Key Features**
-/// - Full-screen overlay with semi-transparent background.
+/// - Full-screen overlay with voidBlack background (85% opacity).
+/// - Central FiftyCard with gunmetal background.
+/// - Pulsing WiFi-off icon in crimsonPulse.
+/// - Title in Monument Extended style, uppercase.
 /// - Live offline duration timer via ConnectionViewModel.
-/// - Manual refresh button to retry connectivity check.
-/// - Material 3 theming (errorContainer/onErrorContainer).
+/// - Retry button with FDL styling.
 /// - Auto-dismisses when connectivity is restored.
 ///
 // ────────────────────────────────────────────────
@@ -79,71 +143,131 @@ class OfflineStatusCard extends StatefulWidget {
   State<OfflineStatusCard> createState() => _OfflineStatusCardState();
 }
 
-class _OfflineStatusCardState extends State<OfflineStatusCard> {
-  /// Initializes the connection lost handler.
+class _OfflineStatusCardState extends State<OfflineStatusCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
+  /// Initializes the connection lost handler and pulse animation.
   @override
   void initState() {
-    ConnectionActions.instance.onConnectionLost();
     super.initState();
+    ConnectionActions.instance.onConnectionLost();
+
+    // Initialize pulse animation for the icon
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: FiftyMotion.systemLoad, // 800ms
+    );
+
+    _pulseAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+
+    // Check for reduced motion preference after build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final reduceMotion =
+          MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+      if (!reduceMotion) {
+        _pulseController.repeat(reverse: true);
+      }
+    });
   }
 
   /// Builds the UI for the no-internet widget.
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Material(
-      color: Colors.black26,
+      color: colorScheme.scrim,
       child: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(24.0),
-          alignment: Alignment.center,
-          child: Container(
-            padding: const EdgeInsets.all(24.0),
-            decoration: BoxDecoration(
-              color: cs.errorContainer,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Semantics(
-                  label: tkNoInternetMsg.tr,
-                  child: Icon(
-                    Icons.wifi_off_outlined,
-                    color: cs.onErrorContainer,
-                    size: 40,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(FiftySpacing.xxl),
+            child: FiftyCard(
+              padding: const EdgeInsets.all(FiftySpacing.xxxl),
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              scanlineOnHover: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Pulsing WiFi-off icon
+                  Semantics(
+                    label: tkNoInternetMsg.tr,
+                    child: AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _pulseAnimation.value,
+                          child: Icon(
+                            Icons.wifi_off,
+                            color: FiftyColors.crimsonPulse,
+                            size: 64,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(height: ResponsiveUtils.screenHeight(context, 0.01)),
-                CustomText.title(
-                  tkConnectionLost.tr,
-                  color: cs.onErrorContainer,
-                ),
-                CustomText.subtitle(
-                  tkNoInternetConnectionMessage.tr,
-                  color: cs.onErrorContainer,
-                ),
-                SizedBox(height: ResponsiveUtils.screenHeight(context, 0.01)),
-                CustomText.subtitle(
-                  tkConnectionAutoReconnect.tr,
-                  color: cs.onErrorContainer,
-                  textAlign: TextAlign.center,
-                ),
-                Obx(() => CustomText.subtitle(
-                      '(${Get.find<ConnectionViewModel>().dialogTimer.value})',
-                      color: cs.onErrorContainer,
-                    )),
-                const SizedBox(height: 12.0),
-                InkWell(
-                  onTap: _refresh,
-                  child: CustomText.subtitle(
-                    tkRefreshBtn.tr,
-                    color: cs.primary,
+                  const SizedBox(height: FiftySpacing.xl),
+
+                  // Title: SIGNAL LOST
+                  Text(
+                    'SIGNAL LOST',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyHeadline,
+                      fontSize: FiftyTypography.section,
+                      fontWeight: FiftyTypography.ultrabold,
+                      color: FiftyColors.crimsonPulse,
+                      letterSpacing: 4,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: FiftySpacing.md),
+
+                  // Subtitle: Attempting to restore uplink...
+                  Text(
+                    'Attempting to restore uplink...',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontSize: FiftyTypography.body,
+                      fontWeight: FiftyTypography.regular,
+                      color: FiftyColors.hyperChrome,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: FiftySpacing.lg),
+
+                  // Offline duration timer
+                  Obx(() => Text(
+                        'Offline for: ${Get.find<ConnectionViewModel>().dialogTimer.value}',
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamilyMono,
+                          fontSize: FiftyTypography.mono,
+                          fontWeight: FiftyTypography.regular,
+                          color: FiftyColors.hyperChrome.withValues(alpha: 0.7),
+                        ),
+                      )),
+                  const SizedBox(height: FiftySpacing.xl),
+
+                  // Loading indicator
+                  const FiftyLoadingIndicator(
+                    text: 'RECONNECTING',
+                    style: FiftyLoadingStyle.dots,
+                    size: FiftyLoadingSize.medium,
+                    color: FiftyColors.hyperChrome,
+                  ),
+                  const SizedBox(height: FiftySpacing.xxl),
+
+                  // Retry button
+                  FiftyButton(
+                    label: 'RETRY CONNECTION',
+                    onPressed: _refresh,
+                    variant: FiftyButtonVariant.secondary,
+                    icon: Icons.refresh,
+                    size: FiftyButtonSize.large,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -154,6 +278,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard> {
   /// Refreshes the connectivity state when the widget is disposed.
   @override
   void dispose() {
+    _pulseController.dispose();
     ConnectionActions.instance.refreshData();
     super.dispose();
   }
@@ -162,46 +287,5 @@ class _OfflineStatusCardState extends State<OfflineStatusCard> {
   void _refresh() {
     ConnectionActions.instance.checkConnectivity();
     ConnectionActions.instance.refreshData();
-  }
-}
-
-/// A reusable widget to display information with an optional trailing widget.
-class InfoItem extends StatelessWidget {
-  /// The label to display.
-  final String label;
-
-  /// An optional trailing widget (e.g., a progress indicator).
-  final Widget? trailing;
-
-  /// An optional callback for user interaction.
-  final VoidCallback? onPressed;
-
-  /// Constructor for the `InfoItem` widget.
-  const InfoItem({
-    super.key,
-    required this.label,
-    this.trailing,
-    this.onPressed,
-  });
-
-  /// Builds the UI for the `InfoItem`.
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return SafeArea(
-      child: Semantics(
-        label: tkReconnecting.tr,
-        child: Container(
-          color: cs.surfaceContainerHighest,
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(child: CustomText(label)),
-              trailing ?? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2)),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

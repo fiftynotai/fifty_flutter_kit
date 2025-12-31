@@ -50,10 +50,12 @@ class OrbitalCommandPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: FiftyColors.voidBlack,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: FiftyColors.voidBlack,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         title: Row(
           children: [
@@ -69,7 +71,7 @@ class OrbitalCommandPage extends StatelessWidget {
                 fontFamily: FiftyTypography.fontFamilyHeadline,
                 fontSize: FiftyTypography.body + 2,
                 fontWeight: FiftyTypography.ultrabold,
-                color: FiftyColors.terminalWhite,
+                color: colorScheme.onSurface,
                 letterSpacing: FiftyTypography.tight * (FiftyTypography.body + 2),
               ),
             ),
@@ -87,8 +89,8 @@ class OrbitalCommandPage extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(
-        color: FiftyColors.crimsonPulse,
-        backgroundColor: FiftyColors.gunmetal,
+        color: colorScheme.primary,
+        backgroundColor: colorScheme.surfaceContainerHighest,
         onRefresh: () async {
           // TODO: Wire to SpaceViewModel.refreshData()
           await Future.delayed(const Duration(seconds: 1));
@@ -105,10 +107,10 @@ class OrbitalCommandPage extends StatelessWidget {
 
               // APOD Card (placeholder for ApiHandler integration)
               ApodCard(
-                title: 'The Horsehead Nebula in Infrared',
-                imageUrl: 'https://apod.nasa.gov/apod/image/2401/Horsehead_HubbleEbisawa_960.jpg',
-                date: DateTime(2025, 1, 15),
-                hdUrl: 'https://apod.nasa.gov/apod/image/2401/Horsehead_HubbleEbisawa_1600.jpg',
+                title: 'Pillars of Creation',
+                imageUrl: 'https://images-assets.nasa.gov/image/PIA17563/PIA17563~small.jpg',
+                date: DateTime(2025, 12, 30),
+                hdUrl: 'https://images-assets.nasa.gov/image/PIA17563/PIA17563~orig.jpg',
                 onViewHd: () {
                   // TODO: Launch URL
                 },

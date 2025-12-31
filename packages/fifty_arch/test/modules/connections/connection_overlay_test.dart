@@ -1,3 +1,4 @@
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -17,27 +18,33 @@ void main() {
       await Get.delete<ConnectionViewModel>(force: true);
     });
 
-    Widget buildApp(Widget child) => GetMaterialApp(home: Scaffold(body: child));
+    Widget buildApp(Widget child) => GetMaterialApp(
+          theme: FiftyTheme.dark(),
+          darkTheme: FiftyTheme.dark(),
+          themeMode: ThemeMode.dark,
+          home: Scaffold(body: child),
+        );
 
-    testWidgets('shows InfoItem when connecting, offline card when no internet, and nothing when connected', (tester) async {
+    testWidgets('shows UplinkStatusBar when connecting, OfflineStatusCard when no internet, and nothing when connected', (tester) async {
       final vm = Get.find<ConnectionViewModel>();
 
-      // Start with connecting
+      // Start with connecting - shows UplinkStatusBar with "ESTABLISHING UPLINK"
       vm.connectionType.value = ConnectivityType.connecting;
       await tester.pumpWidget(buildApp(const ConnectionOverlay(child: SizedBox.shrink())));
       await tester.pump();
-      expect(find.textContaining('trying to reconnect'), findsOneWidget);
+      expect(find.byType(UplinkStatusBar), findsOneWidget);
 
-      // Switch to no internet
+      // Switch to no internet - shows OfflineStatusCard with "SIGNAL LOST"
       vm.connectionType.value = ConnectivityType.noInternet;
       await tester.pump();
-      expect(find.text('CONNECTION LOST'), findsOneWidget);
+      expect(find.byType(OfflineStatusCard), findsOneWidget);
+      expect(find.text('SIGNAL LOST'), findsOneWidget);
 
-      // Switch to connected
+      // Switch to connected - shows nothing
       vm.connectionType.value = ConnectivityType.wifi;
       await tester.pump();
-      expect(find.text('CONNECTION LOST'), findsNothing);
-      expect(find.textContaining('trying to reconnect'), findsNothing);
+      expect(find.byType(OfflineStatusCard), findsNothing);
+      expect(find.byType(UplinkStatusBar), findsNothing);
     });
   });
 }

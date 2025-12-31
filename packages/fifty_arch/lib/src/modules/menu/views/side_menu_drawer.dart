@@ -1,3 +1,5 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,13 +10,15 @@ import '/src/modules/menu/views/logout_drawer_item.dart';
 import '/src/modules/theme/theme.dart';
 import '/src/modules/locale/locale.dart';
 
-/// Navigation drawer widget for the menu system.
+/// Navigation drawer widget styled as "Command Center".
 ///
-/// Displays a side drawer with:
-/// - App logo and name
-/// - List of menu items from the MenuViewModel
-/// - Theme switcher
-/// - Automatic drawer close on item selection
+/// Displays a side drawer with FDL Kinetic Brutalism aesthetic:
+/// - voidBlack background
+/// - "COMMAND CENTER" header with crimsonPulse accent
+/// - Operator status badge
+/// - Navigation menu items with gunmetal/crimsonPulse styling
+/// - Settings section with theme and language controls
+/// - Logout option at bottom
 ///
 /// ## Usage:
 /// ```dart
@@ -31,94 +35,226 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Drawer(
-      child: Obx(
-        () => ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            // Drawer header with app logo
-            _buildDrawerHeader(context),
+      backgroundColor: colorScheme.surface,
+      child: SafeArea(
+        child: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Command Center header
+              _buildCommandCenterHeader(context),
 
-            // Menu items
-            ...controller.menuItems.asMap().entries.map((entry) {
-              final index = entry.key;
-              final menuItem = entry.value;
+              const FiftyDivider(),
 
-              return MenuDrawerItem(
-                label: menuItem.label,
-                icon: menuItem.icon,
-                isSelected: controller.isSelected(index),
-                onTap: () {
-                  controller.selectMenuItemByIndex(index);
-                  Navigator.of(context).pop(); // Close drawer
-                },
-              );
-            }),
+              // Navigation section
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    const SizedBox(height: FiftySpacing.sm),
 
-            // Divider before settings section
-            const Divider(),
+                    // Section header: NAVIGATION
+                    _buildSectionHeader('NAVIGATION'),
+                    const SizedBox(height: FiftySpacing.sm),
 
-            // Settings section header
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-              child: Text(
-                tkSettings.tr,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600],
+                    // Menu items
+                    ...controller.menuItems.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final menuItem = entry.value;
+
+                      return MenuDrawerItem(
+                        label: menuItem.label,
+                        icon: menuItem.icon,
+                        isSelected: controller.isSelected(index),
+                        onTap: () {
+                          controller.selectMenuItemByIndex(index);
+                          Navigator.of(context).pop(); // Close drawer
+                        },
+                      );
+                    }),
+
+                    const SizedBox(height: FiftySpacing.lg),
+                    const FiftyDivider(),
+                    const SizedBox(height: FiftySpacing.md),
+
+                    // Section header: SETTINGS
+                    _buildSectionHeader(tkSettings.tr.toUpperCase()),
+                    const SizedBox(height: FiftySpacing.sm),
+
+                    // Theme switcher with FDL styling
+                    _buildSettingsItem(
+                      context,
+                      icon: Icons.dark_mode_outlined,
+                      child: const ThemeDrawerItem(),
                     ),
+
+                    // Language switcher with FDL styling
+                    _buildSettingsItem(
+                      context,
+                      icon: Icons.language,
+                      child: const LanguageDrawerItem(),
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            // Theme switcher
-            const ThemeDrawerItem(),
-
-            // Language switcher
-            const LanguageDrawerItem(),
-
-            // Divider before logout
-            const Divider(),
-
-            // Logout
-            const LogoutDrawerItem(),
-          ],
+              // Bottom section: Logout
+              const FiftyDivider(),
+              const LogoutDrawerItem(),
+              const SizedBox(height: FiftySpacing.md),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  /// Builds the drawer header with app logo and name.
-  Widget _buildDrawerHeader(BuildContext context) {
+  /// Builds the Command Center header with logo and status badge.
+  Widget _buildCommandCenterHeader(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height * 0.2,
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+      padding: const EdgeInsets.all(FiftySpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-            child: SvgPicture.asset(
-              AssetsManager.logoPath,
-              height: MediaQuery.of(context).size.height * 0.15,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).primaryColor,
-                BlendMode.srcIn,
+          // Logo and Command Center title row
+          Row(
+            children: [
+              // Logo with crimson glow effect
+              Container(
+                padding: const EdgeInsets.all(FiftySpacing.sm),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(FiftySpacing.sm),
+                  border: Border.all(
+                    color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: SvgPicture.asset(
+                  AssetsManager.logoPath,
+                  height: 32,
+                  width: 32,
+                  colorFilter: const ColorFilter.mode(
+                    FiftyColors.crimsonPulse,
+                    BlendMode.srcIn,
+                  ),
+                  placeholderBuilder: (context) => const Icon(
+                    Icons.radar,
+                    size: 32,
+                    color: FiftyColors.crimsonPulse,
+                  ),
+                ),
               ),
+              const SizedBox(width: FiftySpacing.md),
+
+              // Title
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'COMMAND CENTER',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamilyHeadline,
+                        fontSize: FiftyTypography.body,
+                        fontWeight: FiftyTypography.ultrabold,
+                        color: FiftyColors.crimsonPulse,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    const SizedBox(height: FiftySpacing.xs),
+                    Text(
+                      appName.tr.toUpperCase(),
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamilyMono,
+                        fontSize: FiftyTypography.mono,
+                        fontWeight: FiftyTypography.regular,
+                        color: FiftyColors.hyperChrome,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: FiftySpacing.md),
+
+          // Operator status badge
+          FiftyChip(
+            label: 'OPERATOR ONLINE',
+            variant: FiftyChipVariant.success,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Builds a section header with FDL styling.
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: FiftySpacing.lg,
+        vertical: FiftySpacing.xs,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 3,
+            height: 12,
+            decoration: BoxDecoration(
+              color: FiftyColors.crimsonPulse,
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(width: 16.0),
-          Flexible(
-            child: Text(
-              appName,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-              overflow: TextOverflow.ellipsis,
+          const SizedBox(width: FiftySpacing.sm),
+          Text(
+            title,
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
+              fontSize: FiftyTypography.mono,
+              fontWeight: FiftyTypography.medium,
+              color: FiftyColors.hyperChrome,
+              letterSpacing: 1,
             ),
           ),
         ],
       ),
+    );
+  }
+
+  /// Wraps settings items with FDL-consistent styling.
+  Widget _buildSettingsItem(
+    BuildContext context, {
+    required IconData icon,
+    required Widget child,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        listTileTheme: ListTileThemeData(
+          iconColor: FiftyColors.hyperChrome,
+          textColor: colorScheme.onSurface,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: FiftySpacing.lg,
+          ),
+        ),
+      ),
+      child: child,
     );
   }
 }

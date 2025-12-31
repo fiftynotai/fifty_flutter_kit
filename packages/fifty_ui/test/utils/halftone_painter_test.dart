@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +10,7 @@ void main() {
     test('creates painter with default values', () {
       const painter = HalftonePainter();
 
-      expect(painter.color, Colors.white);
+      expect(painter.color, FiftyColors.terminalWhite);
       expect(painter.dotRadius, 1.0);
       expect(painter.spacing, 8.0);
       expect(painter.opacity, 0.05);
@@ -136,7 +137,7 @@ void main() {
       final customPaint = tester.widget<CustomPaint>(customPaints);
       final painter = customPaint.painter as HalftonePainter;
 
-      expect(painter.color, Colors.white);
+      expect(painter.color, FiftyColors.terminalWhite);
       expect(painter.dotRadius, 1.0);
       expect(painter.spacing, 8.0);
       expect(painter.opacity, 0.05);

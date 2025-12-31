@@ -1,3 +1,29 @@
+/// **Config**
+///
+/// Application configuration for Orbital Command - Space Monitoring Station.
+///
+/// **Why**
+/// - Provide a single source of truth for app branding and metadata.
+/// - Centralize API configurations for NASA services.
+/// - Enable easy configuration changes without code modifications.
+///
+/// **Usage**
+/// ```dart
+/// Text(Config.appName); // 'Orbital Command'
+/// Text(Config.appTagline); // 'Space Monitoring Station'
+/// ```
+// ────────────────────────────────────────────────
+class Config {
+  /// Application name displayed in UI
+  static const String appName = 'Orbital Command';
+
+  /// Application version
+  static const String appVersion = '1.0.0';
+
+  /// Application tagline/subtitle
+  static const String appTagline = 'Space Monitoring Station';
+}
+
 /// **APIConfiguration**
 ///
 /// Centralized configuration for API endpoints and environment selection.
@@ -9,16 +35,16 @@
 ///
 /// **Key Features**
 /// - `isDevelopment` flag to toggle between staging and production.
-/// - Module-specific URL constants (auth, posts, etc.).
+/// - Module-specific URL constants (auth, NASA APIs, etc.).
 /// - Type-safe, compile-time constants for all endpoints.
 ///
 /// **Usage Pattern**
 /// All service classes should use these URLs instead of hardcoding them:
 /// ```dart
-/// class PostService extends ApiService {
-///   Future<List<PostModel>> fetchPosts() async {
-///     final response = await get(APIConfiguration.postsUrl);
-///     return postModelFromJson(response.body);
+/// class NasaService extends ApiService {
+///   Future<ApodModel> fetchApod() async {
+///     final response = await get(APIConfiguration.apodUrl);
+///     return ApodModel.fromJson(response.body);
 ///   }
 /// }
 /// ```
@@ -63,16 +89,6 @@ class APIConfiguration {
 
   /// URL for refreshing an existing user session.
   static const String refreshSessionUrl = '$baseUrl/token/refresh';
-
-  // ────────────────────────────────────────────────
-  // Posts Module URLs (Example)
-  // ────────────────────────────────────────────────
-
-  /// URL for fetching posts from JSONPlaceholder API.
-  ///
-  /// This is a demonstration endpoint using a free public API.
-  /// Replace with your own posts endpoint when adapting this template.
-  static const String postsUrl = '$baseUrl/posts';
 
   // ────────────────────────────────────────────────
   // NASA API Configuration
