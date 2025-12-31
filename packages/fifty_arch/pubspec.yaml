@@ -1,6 +1,6 @@
 name: fifty_arch
 description: MVVM + Actions architecture framework for Flutter. Provides base classes, pre-built modules (auth, connectivity, locale, theme), and infrastructure for building scalable Flutter applications.
-version: 0.5.0
+version: 0.6.0
 repository: https://github.com/anthropic/fifty_eco_system/tree/main/packages/fifty_arch
 homepage: https://fifty.dev
 

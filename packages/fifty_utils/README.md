@@ -2,7 +2,7 @@
 
 Pure Dart/Flutter utilities - DateTime, Duration, Color extensions, responsive breakpoints, and async state containers.
 
-Part of the [Fifty Ecosystem](https://github.com/aspect-build/fifty_eco_system).
+Part of the [Fifty Ecosystem](../../README.md).
 
 ## Features
 
@@ -16,12 +16,22 @@ Part of the [Fifty Ecosystem](https://github.com/aspect-build/fifty_eco_system).
 
 Add to your `pubspec.yaml`:
 
+### Using Git
+
 ```yaml
 dependencies:
   fifty_utils:
     git:
       url: https://github.com/aspect-build/fifty_eco_system
       path: packages/fifty_utils
+```
+
+### Using Path (Monorepo)
+
+```yaml
+dependencies:
+  fifty_utils:
+    path: ../fifty_utils
 ```
 
 ## Usage
@@ -231,8 +241,18 @@ print('Showing ${page.data.length} of ${page.totalRows}');
 | `gridColumns(context)` | Responsive column count |
 | `screenWidth(context, [%])` | Screen width |
 | `screenHeight(context, [%])` | Screen height |
+| `pixelRatio(context)` | Device pixel ratio |
 | `isPortrait(context)` | Portrait orientation |
 | `isLandscape(context)` | Landscape orientation |
+
+### ApiStatus
+
+| Value | Description |
+|-------|-------------|
+| `idle` | No request made yet |
+| `loading` | Request in progress |
+| `success` | Request completed successfully |
+| `error` | Request failed |
 
 ### ApiResponse<E>
 
@@ -266,6 +286,14 @@ Stream<ApiResponse<E>> apiFetch<E>(
 })
 ```
 
+Emits a stream of request states: `loading? -> success | error`.
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `run` | Async function to execute | required |
+| `withLoading` | Emit loading state first | `true` |
+| `reportToSentry` | Report errors to Sentry | `true` |
+
 ### PaginationResponse<E>
 
 | Property | Description |
@@ -290,6 +318,17 @@ ResponsiveUtils.tabletBreakpoint = 1024;
 ResponsiveUtils.desktopBreakpoint = 1440;
 ResponsiveUtils.wideBreakpoint = 1440;
 ```
+
+## Related Packages
+
+- [fifty_arch](../fifty_arch/) - Uses fifty_utils for state management
+- [fifty_tokens](../fifty_tokens/) - Design tokens for consistent styling
+- [fifty_theme](../fifty_theme/) - Theme generation and management
+
+## Requirements
+
+- Flutter SDK >= 3.0.0
+- Dart SDK >= 3.0.0
 
 ## License
 

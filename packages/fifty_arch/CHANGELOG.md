@@ -4,6 +4,30 @@ All notable changes to this project template will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres loosely to Semantic Versioning for the template itself.
 
+## [0.6.0] - 2025-12-31
+
+### Changed
+
+- **Extracted storage to fifty_storage package**: Storage infrastructure extracted for better modularity.
+  - Moved: `PreferencesStorage`, `SecureTokenStorage`, `AppStorageService`
+  - fifty_arch now depends on fifty_storage v0.1.0
+
+- **Extracted utilities to fifty_utils package**: Pure utilities extracted for reuse across packages.
+  - Moved: DateTime extensions (`isToday`, `isYesterday`, `format()`, `timeAgo()`)
+  - Moved: Duration extensions (`format()`, `formatCompact()`)
+  - Moved: Color extensions (`HexColor.fromHex()`, `toHex()`)
+  - Moved: `ResponsiveUtils` (breakpoints, device detection, `valueByDevice()`)
+  - Moved: `ApiResponse<T>` (idle, loading, success, error states)
+  - Moved: `apiFetch()` stream helper
+  - Moved: `PaginationResponse<T>`
+  - fifty_arch now depends on fifty_utils v0.1.0
+
+### Migration Notes
+
+- No API changes required - imports are re-exported from fifty_arch
+- If you were importing utilities directly from `utils/`, update to use exports from fifty_utils or the main barrel file
+- If you were importing storage classes from `infrastructure/storage/`, update to use exports from fifty_storage or the main barrel file
+
 ## [0.5.0] - 2025-12-31
 
 ### Changed
