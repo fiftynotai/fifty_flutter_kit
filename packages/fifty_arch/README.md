@@ -36,7 +36,7 @@ View -> Actions -> ViewModel -> Service -> Model
 
 ### Pre-built Modules
 - **Auth** - Authentication with token refresh and secure storage
-- **Connections** - Real-time connectivity monitoring
+- **Connections** - Real-time connectivity monitoring (uses [fifty_connectivity](../fifty_connectivity))
 - **Locale** - Multi-language support with dynamic switching
 - **Theme** - Light/dark theme management
 - **Menu** - Navigation drawer and bottom navigation
@@ -45,6 +45,7 @@ View -> Actions -> ViewModel -> Service -> Model
 - **HTTP Client** - API service with caching strategies
 - **Storage** - Uses [fifty_storage](../fifty_storage) for secure tokens and preferences
 - **Caching** - Uses [fifty_cache](../fifty_cache) for TTL-based HTTP response caching
+- **Connectivity** - Uses [fifty_connectivity](../fifty_connectivity) for network monitoring
 
 ---
 
@@ -85,7 +86,7 @@ lib/src/
 |
 |-- modules/             # Feature modules
 |   |-- auth/            # Authentication
-|   |-- connections/     # Connectivity
+|   |-- connections/     # Connectivity (re-exports fifty_connectivity)
 |   |-- locale/          # Internationalization
 |   |-- menu/            # Navigation
 |   |-- posts/           # Example module
@@ -236,10 +237,17 @@ await authActions.logout();
 
 ### Connectivity
 
+The connectivity module now uses [fifty_connectivity](../fifty_connectivity) and re-exports its APIs for backwards compatibility:
+
 ```dart
 // Monitor connection
 final connVM = Get.find<ConnectionViewModel>();
 Obx(() => Text(connVM.isOnline.value ? 'Online' : 'Offline'));
+
+// Use ConnectionOverlay for automatic UI feedback
+ConnectionOverlay(
+  child: YourContent(),
+);
 ```
 
 ### Localization
@@ -286,6 +294,8 @@ dependencies:
     path: ../fifty_cache
   fifty_storage:
     path: ../fifty_storage
+  fifty_connectivity:
+    path: ../fifty_connectivity
 ```
 
 Use `fifty_theme` for theming:
@@ -321,6 +331,23 @@ if (cached != null) {
 }
 ```
 
+Use `fifty_connectivity` for network monitoring:
+```dart
+import 'package:fifty_connectivity/fifty_connectivity.dart';
+
+// Configure connectivity
+ConnectivityConfig.initialize(
+  dnsLookupHost: 'google.com',
+  httpCheckUrl: 'https://www.google.com',
+);
+
+// Get connection state
+final connVM = Get.find<ConnectionViewModel>();
+if (connVM.isOnline.value) {
+  // Proceed with network request
+}
+```
+
 ---
 
 ## Dependencies
@@ -329,9 +356,9 @@ if (cached != null) {
 |---------|---------|
 | get | State management |
 | loader_overlay | Loading overlays |
-| connectivity_plus | Network monitoring |
 | fifty_storage | Secure tokens and preferences |
 | fifty_cache | HTTP response caching |
+| fifty_connectivity | Network connectivity monitoring |
 | jwt_decoder | Token handling |
 
 ---
@@ -359,6 +386,8 @@ MIT License - See LICENSE file for details.
 | [fifty_ui](../fifty_ui) | UI components |
 | [fifty_cache](../fifty_cache) | HTTP caching |
 | [fifty_storage](../fifty_storage) | Secure storage |
+| [fifty_connectivity](../fifty_connectivity) | Network monitoring |
+| [fifty_utils](../fifty_utils) | Pure utilities |
 | [fifty_audio_engine](../fifty_audio_engine) | Audio management |
 | [fifty_speech_engine](../fifty_speech_engine) | TTS/STT |
 | [fifty_sentences_engine](../fifty_sentences_engine) | Dialogue system |

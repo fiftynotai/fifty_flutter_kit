@@ -13,6 +13,7 @@ A comprehensive Flutter/Dart package ecosystem providing design tokens, theming,
 | [fifty_utils](packages/fifty_utils/) | v0.1.0 | Pure utilities (DateTime, responsive, state) |
 | [fifty_cache](packages/fifty_cache/) | v0.1.0 | Multi-tier caching with TTL support |
 | [fifty_storage](packages/fifty_storage/) | v0.1.0 | Key-value storage abstraction |
+| [fifty_connectivity](packages/fifty_connectivity/) | v0.1.0 | Network connectivity monitoring |
 | [fifty_audio_engine](packages/fifty_audio_engine/) | v0.7.0 | Audio playback and recording |
 | [fifty_speech_engine](packages/fifty_speech_engine/) | v0.1.0 | Text-to-speech and speech-to-text |
 | [fifty_sentences_engine](packages/fifty_sentences_engine/) | v0.1.0 | Sentence building and word bank |
@@ -26,10 +27,11 @@ fifty_ecosystem/
     fifty_tokens/      # Design foundation
     fifty_theme/       # Theme layer (depends on tokens)
     fifty_ui/          # Components (depends on theme)
-    fifty_arch/        # Architecture (depends on utils, storage, cache)
+    fifty_arch/        # Architecture (depends on utils, storage, cache, connectivity)
     fifty_utils/       # Pure utilities (no dependencies)
     fifty_cache/       # Caching layer
     fifty_storage/     # Storage abstraction
+    fifty_connectivity/ # Network monitoring
     fifty_audio_engine/
     fifty_speech_engine/
     fifty_sentences_engine/
@@ -47,7 +49,7 @@ fifty_ui
 
 fifty_utils (foundation)
      |
-fifty_arch <-- fifty_storage, fifty_cache
+fifty_arch <-- fifty_storage, fifty_cache, fifty_connectivity
 ```
 
 ## Installation
@@ -161,6 +163,29 @@ class UserListView extends StatelessWidget {
 }
 ```
 
+### Connectivity Monitoring
+
+```dart
+import 'package:fifty_connectivity/fifty_connectivity.dart';
+
+// Configure connectivity monitoring
+ConnectivityConfig.initialize(
+  dnsLookupHost: 'google.com',
+  httpCheckUrl: 'https://www.google.com',
+);
+
+// Use ConnectionOverlay for automatic UI feedback
+ConnectionOverlay(
+  child: YourApp(),
+);
+
+// Or check status programmatically
+final connVM = Get.find<ConnectionViewModel>();
+if (connVM.isOnline.value) {
+  // Network available
+}
+```
+
 ## Package Details
 
 ### fifty_utils
@@ -189,6 +214,15 @@ Data persistence layers.
 
 - **Multi-tier caching** - Memory + disk with TTL
 - **Storage abstraction** - Platform-agnostic key-value storage
+
+### fifty_connectivity
+
+Network connectivity monitoring with intelligent reachability probing.
+
+- **ReachabilityService** - DNS and HTTP connectivity checks
+- **ConnectionViewModel** - Reactive connection state management
+- **ConnectionOverlay** - Automatic offline/online UI overlay
+- **ConnectivityCheckerSplash** - Splash screen with connectivity check
 
 ## Development
 

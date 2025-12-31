@@ -8,11 +8,16 @@
 
 ## Session Summary
 
-Completed BR-023: Extract utility functions from fifty_arch into standalone fifty_utils package. Updated ecosystem documentation and bumped fifty_arch to v0.6.0.
+Completed BR-025: Extract connectivity module from fifty_arch into standalone fifty_connectivity package. Updated ecosystem documentation and added fifty_connectivity to the package listings.
 
 ---
 
 ## Completed This Session
+
+**BR-025: Extract fifty_connectivity Package**
+- Status: Complete
+- Release: fifty_connectivity v0.1.0
+- Features: ReachabilityService, ConnectionViewModel, ConnectionOverlay, ConnectivityCheckerSplash
 
 **BR-023: Extract fifty_utils Package**
 - Status: Complete
@@ -22,10 +27,12 @@ Completed BR-023: Extract utility functions from fifty_arch into standalone fift
 **fifty_arch v0.6.0**
 - Added fifty_storage dependency
 - Added fifty_utils dependency
+- Added fifty_connectivity dependency
 - Re-exports for backwards compatibility
 
 **Documentation**
-- Root README.md: Complete ecosystem documentation
+- Root README.md: Complete ecosystem documentation with 12 packages
+- fifty_arch README.md: Updated with fifty_connectivity integration
 - fifty_utils README.md: Enhanced API docs
 
 ---
@@ -40,12 +47,12 @@ Completed BR-023: Extract utility functions from fifty_arch into standalone fift
 | fifty_cache | v0.1.0 | Released |
 | fifty_storage | v0.1.0 | Released |
 | fifty_utils | v0.1.0 | Released |
+| fifty_connectivity | v0.1.0 | Released |
 | fifty_arch | v0.6.0 | Released |
 | fifty_audio_engine | v0.7.0 | Released |
 | fifty_speech_engine | v0.1.0 | Released |
 | fifty_sentences_engine | v0.1.0 | Released |
 | fifty_map_engine | v0.1.0 | Released |
-| fifty_connectivity | v0.1.0 | Released |
 
 **Total: 12 packages**
 
@@ -56,11 +63,9 @@ Completed BR-023: Extract utility functions from fifty_arch into standalone fift
 **Remaining briefs:**
 | Brief | Title | Priority | Effort |
 |-------|-------|----------|--------|
-| BR-025 | fifty_connectivity extraction | P2 | M |
 | BR-018 | Fifty Composite Demo App | P2 | L |
 
 **Commands:**
-- `HUNT BR-025` - Extract connectivity module
 - `HUNT BR-018` - Build composite demo app
 
 **Alternative tasks:**
