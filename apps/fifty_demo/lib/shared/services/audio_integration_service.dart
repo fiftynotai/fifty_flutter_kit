@@ -1,87 +1,77 @@
 /// Audio Integration Service
 ///
 /// Wraps the fifty_audio_engine for use in the demo app.
-/// Provides a simplified API for audio playback by delegating
-/// to the FiftyAudioEngine singleton.
+/// Provides a simplified API for audio playback.
 library;
 
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
-import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/foundation.dart';
 
 /// Service for audio integration.
 ///
-/// Manages BGM, SFX, and Voice audio channels by delegating to
-/// [FiftyAudioEngine.instance]. This service acts as a thin wrapper
-/// that provides ChangeNotifier compatibility for Provider integration.
-///
-/// **Important:** [FiftyAudioEngine.instance.initialize()] must be called
-/// before using this service (typically in main.dart before DI setup).
+/// Manages BGM, SFX, and Voice audio channels.
 class AudioIntegrationService extends ChangeNotifier {
-  AudioIntegrationService() {
-    _setupListeners();
-  }
+  AudioIntegrationService();
 
-  /// Access to the FiftyAudioEngine singleton.
-  FiftyAudioEngine get _engine => FiftyAudioEngine.instance;
+  // Audio players
+  AudioPlayer? _bgmPlayer;
+  AudioPlayer? _sfxPlayer;
+  AudioPlayer? _voicePlayer;
 
   bool _initialized = false;
+  bool _bgmPlaying = false;
+  bool _voicePlaying = false;
+  double _bgmVolume = 0.7;
+  double _sfxVolume = 0.8;
+  double _voiceVolume = 0.9;
+  bool _bgmMuted = false;
+  bool _sfxMuted = false;
+  bool _voiceMuted = false;
+
+  StreamSubscription<PlayerState>? _bgmStateSub;
+  StreamSubscription<PlayerState>? _voiceStateSub;
 
   // ─────────────────────────────────────────────────────────────────────────
-  // Getters (delegate to engine channels)
+  // Getters
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Whether the service is initialized.
   bool get isInitialized => _initialized;
-
-  /// Whether BGM is currently playing.
-  bool get bgmPlaying => _engine.bgm.isPlaying;
-
-  /// Whether voice is currently playing.
-  bool get voicePlaying => _engine.voice.isPlaying;
-
-  /// Current BGM volume (0.0 to 1.0).
-  double get bgmVolume => _engine.bgm.volume;
-
-  /// Current SFX volume (0.0 to 1.0).
-  double get sfxVolume => _engine.sfx.volume;
-
-  /// Current voice volume (0.0 to 1.0).
-  double get voiceVolume => _engine.voice.volume;
-
-  /// Whether BGM is muted.
-  bool get bgmMuted => _engine.bgm.isMuted;
-
-  /// Whether SFX is muted.
-  bool get sfxMuted => _engine.sfx.isMuted;
-
-  /// Whether voice is muted.
-  bool get voiceMuted => _engine.voice.isMuted;
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // Configuration
-  // ─────────────────────────────────────────────────────────────────────────
-
-  // Note: changeSource() is not used because BgmChannel.play() overrides
-  // the base class and hardcodes AssetSource. We use playFromSource() directly
-  // with UrlSource for URL-based playback.
-
-  /// Sets up listeners to notify Provider consumers of state changes.
-  void _setupListeners() {
-    _engine.bgm.onIsPlayingChanged.listen((_) => notifyListeners());
-    _engine.voice.onIsPlayingChanged.listen((_) => notifyListeners());
-  }
+  bool get bgmPlaying => _bgmPlaying;
+  bool get voicePlaying => _voicePlaying;
+  double get bgmVolume => _bgmVolume;
+  double get sfxVolume => _sfxVolume;
+  double get voiceVolume => _voiceVolume;
+  bool get bgmMuted => _bgmMuted;
+  bool get sfxMuted => _sfxMuted;
+  bool get voiceMuted => _voiceMuted;
 
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Initializes the audio service.
-  ///
-  /// This marks the service as ready. The actual engine initialization
-  /// should be done in main.dart via [FiftyAudioEngine.instance.initialize()].
   Future<void> initialize() async {
     if (_initialized) return;
+
+    _bgmPlayer = AudioPlayer();
+    await _bgmPlayer!.setPlayerMode(PlayerMode.mediaPlayer);
+    _sfxPlayer = AudioPlayer();
+    await _sfxPlayer!.setPlayerMode(PlayerMode.lowLatency);
+    _voicePlayer = AudioPlayer();
+    await _voicePlayer!.setPlayerMode(PlayerMode.mediaPlayer);
+
+    _bgmStateSub = _bgmPlayer!.onPlayerStateChanged.listen((state) {
+      _bgmPlaying = state == PlayerState.playing;
+      notifyListeners();
+    });
+
+    _voiceStateSub = _voicePlayer!.onPlayerStateChanged.listen((state) {
+      _voicePlaying = state == PlayerState.playing;
+      notifyListeners();
+    });
+
     _initialized = true;
     notifyListeners();
   }
@@ -92,12 +82,10 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Plays BGM from the given URL.
   Future<void> playBgm(String url) async {
-    if (!_initialized) return;
+    if (!_initialized || _bgmPlayer == null) return;
     try {
-      // Use playFromSource with UrlSource directly because BgmChannel.play()
-      // overrides the base class and hardcodes AssetSource
-      await _engine.bgm.playFromSource(UrlSource(url));
-      notifyListeners();
+      await _bgmPlayer!.play(UrlSource(url));
+      await _bgmPlayer!.setVolume(_bgmMuted ? 0 : _bgmVolume);
     } catch (e) {
       debugPrint('BGM playback error: $e');
     }
@@ -105,35 +93,34 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Pauses BGM playback.
   Future<void> pauseBgm() async {
-    await _engine.bgm.pause();
-    notifyListeners();
+    await _bgmPlayer?.pause();
   }
 
   /// Resumes BGM playback.
   Future<void> resumeBgm() async {
-    await _engine.bgm.resume();
-    notifyListeners();
+    await _bgmPlayer?.resume();
   }
 
   /// Stops BGM playback.
   Future<void> stopBgm() async {
-    await _engine.bgm.stop();
+    await _bgmPlayer?.stop();
+    _bgmPlaying = false;
     notifyListeners();
   }
 
   /// Sets BGM volume.
   Future<void> setBgmVolume(double volume) async {
-    await _engine.bgm.setVolume(volume.clamp(0.0, 1.0));
+    _bgmVolume = volume.clamp(0.0, 1.0);
+    if (!_bgmMuted) {
+      await _bgmPlayer?.setVolume(_bgmVolume);
+    }
     notifyListeners();
   }
 
   /// Toggles BGM mute state.
   Future<void> toggleBgmMute() async {
-    if (_engine.bgm.isMuted) {
-      await _engine.bgm.unmute();
-    } else {
-      await _engine.bgm.mute();
-    }
+    _bgmMuted = !_bgmMuted;
+    await _bgmPlayer?.setVolume(_bgmMuted ? 0 : _bgmVolume);
     notifyListeners();
   }
 
@@ -143,10 +130,10 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Plays a one-shot SFX from the given URL.
   Future<void> playSfx(String url) async {
-    if (!_initialized || _engine.sfx.isMuted) return;
+    if (!_initialized || _sfxPlayer == null || _sfxMuted) return;
     try {
-      // Use playFromSource with UrlSource directly
-      await _engine.sfx.playFromSource(UrlSource(url));
+      await _sfxPlayer!.setVolume(_sfxVolume);
+      await _sfxPlayer!.play(UrlSource(url));
     } catch (e) {
       debugPrint('SFX playback error: $e');
     }
@@ -154,17 +141,13 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Sets SFX volume.
   void setSfxVolume(double volume) {
-    _engine.sfx.setVolume(volume.clamp(0.0, 1.0));
+    _sfxVolume = volume.clamp(0.0, 1.0);
     notifyListeners();
   }
 
   /// Toggles SFX mute state.
   void toggleSfxMute() {
-    if (_engine.sfx.isMuted) {
-      _engine.sfx.unmute();
-    } else {
-      _engine.sfx.mute();
-    }
+    _sfxMuted = !_sfxMuted;
     notifyListeners();
   }
 
@@ -174,10 +157,10 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Plays voice audio from the given URL.
   Future<void> playVoice(String url) async {
-    if (!_initialized || _engine.voice.isMuted) return;
+    if (!_initialized || _voicePlayer == null || _voiceMuted) return;
     try {
-      await _engine.voice.playVoice(url);
-      notifyListeners();
+      await _voicePlayer!.setVolume(_voiceVolume);
+      await _voicePlayer!.play(UrlSource(url));
     } catch (e) {
       debugPrint('Voice playback error: $e');
     }
@@ -185,23 +168,21 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Stops voice playback.
   Future<void> stopVoice() async {
-    await _engine.voice.stop();
+    await _voicePlayer?.stop();
+    _voicePlaying = false;
     notifyListeners();
   }
 
   /// Sets voice volume.
   Future<void> setVoiceVolume(double volume) async {
-    await _engine.voice.setVolume(volume.clamp(0.0, 1.0));
+    _voiceVolume = volume.clamp(0.0, 1.0);
+    await _voicePlayer?.setVolume(_voiceVolume);
     notifyListeners();
   }
 
   /// Toggles voice mute state.
   void toggleVoiceMute() {
-    if (_engine.voice.isMuted) {
-      _engine.voice.unmute();
-    } else {
-      _engine.voice.mute();
-    }
+    _voiceMuted = !_voiceMuted;
     notifyListeners();
   }
 
@@ -211,26 +192,36 @@ class AudioIntegrationService extends ChangeNotifier {
 
   /// Stops all audio.
   Future<void> stopAll() async {
-    await _engine.stopAll();
-    notifyListeners();
+    await stopBgm();
+    await _sfxPlayer?.stop();
+    await stopVoice();
   }
 
   /// Mutes all channels.
-  Future<void> muteAll() async {
-    await _engine.muteAll();
+  void muteAll() {
+    _bgmMuted = true;
+    _sfxMuted = true;
+    _voiceMuted = true;
+    _bgmPlayer?.setVolume(0);
     notifyListeners();
   }
 
   /// Unmutes all channels.
-  Future<void> unmuteAll() async {
-    await _engine.unmuteAll();
+  void unmuteAll() {
+    _bgmMuted = false;
+    _sfxMuted = false;
+    _voiceMuted = false;
+    _bgmPlayer?.setVolume(_bgmVolume);
     notifyListeners();
   }
 
   @override
   void dispose() {
-    // Do NOT dispose the engine singleton - it is shared across the app
-    // and managed by main.dart lifecycle.
+    _bgmStateSub?.cancel();
+    _voiceStateSub?.cancel();
+    _bgmPlayer?.dispose();
+    _sfxPlayer?.dispose();
+    _voicePlayer?.dispose();
     super.dispose();
   }
 }

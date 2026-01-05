@@ -5,7 +5,7 @@
 **Effort:** M-Medium (4-8h)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** Done
+**Status:** Blocked
 **Created:** 2026-01-05
 **Completed:** 2026-01-05
 
@@ -174,9 +174,10 @@ _(None)_
 
 ## Workflow State
 
-**Phase:** COMPLETE
+**Phase:** BLOCKED
 **Active Agent:** none
 **Retry Count:** 0
+**Blocker:** BR-029 (FiftyAudioEngine doesn't support URL sources)
 
 ### Agent Log
 - 2026-01-05 - Starting HUNT with multi-agent workflow
@@ -185,6 +186,9 @@ _(None)_
 - 2026-01-05 - TESTER complete: PASS
 - 2026-01-05 - REVIEWER complete: APPROVE
 - 2026-01-05 - COMMIT complete: a850202
+- 2026-01-05 - RUNTIME ERROR: BgmChannel.play() hardcodes AssetSource
+- 2026-01-05 - BLOCKED: Requires BR-029 to fix engine first
+- 2026-01-05 - REVERTED: Demo restored to audioplayers implementation
 
 ---
 
