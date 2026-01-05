@@ -1,0 +1,41 @@
+name: fifty_demo
+description: Fifty Ecosystem Composite Demo App
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fifty_tokens:
+    path: ../../packages/fifty_tokens
+  fifty_theme:
+    path: ../../packages/fifty_theme
+  fifty_ui:
+    path: ../../packages/fifty_ui
+  fifty_audio_engine:
+    path: ../../packages/fifty_audio_engine
+  fifty_speech_engine:
+    path: ../../packages/fifty_speech_engine
+  fifty_sentences_engine:
+    path: ../../packages/fifty_sentences_engine
+  fifty_map_engine:
+    path: ../../packages/fifty_map_engine
+  provider: ^6.1.2
+  get_it: ^8.0.3
+  audioplayers: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/audio/
+    - assets/maps/
