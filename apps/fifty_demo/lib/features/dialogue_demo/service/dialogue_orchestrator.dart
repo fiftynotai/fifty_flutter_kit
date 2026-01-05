@@ -3,7 +3,7 @@
 /// Coordinates sentence engine with speech engine for dialogue playback.
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/services/sentences_integration_service.dart';
 import '../../../shared/services/speech_integration_service.dart';
@@ -11,7 +11,7 @@ import '../../../shared/services/speech_integration_service.dart';
 /// Orchestrates dialogue playback with TTS.
 ///
 /// Combines sentence queue with text-to-speech for narrative experience.
-class DialogueOrchestrator extends ChangeNotifier {
+class DialogueOrchestrator extends GetxController {
   DialogueOrchestrator({
     required SpeechIntegrationService speechService,
     required SentencesIntegrationService sentencesService,
@@ -53,7 +53,7 @@ class DialogueOrchestrator extends ChangeNotifier {
   Future<void> initialize() async {
     await _speechService.initialize();
     await _sentencesService.initialize();
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -65,7 +65,7 @@ class DialogueOrchestrator extends ChangeNotifier {
     _sentencesService.clearQueue();
     _sentencesService.addSentences(sentences);
     _isPlaying = false;
-    notifyListeners();
+    update();
   }
 
   /// Starts playing the dialogue.
@@ -75,7 +75,7 @@ class DialogueOrchestrator extends ChangeNotifier {
     _isPlaying = true;
     _sentencesService.reset();
     await _playCurrentSentence();
-    notifyListeners();
+    update();
   }
 
   /// Plays the current sentence with optional TTS.
@@ -103,7 +103,7 @@ class DialogueOrchestrator extends ChangeNotifier {
   Future<void> advanceDialogue() async {
     if (!_sentencesService.hasMoreSentences) {
       _isPlaying = false;
-      notifyListeners();
+      update();
       return;
     }
 
@@ -120,14 +120,14 @@ class DialogueOrchestrator extends ChangeNotifier {
   /// Skips the current typing animation.
   void skipTyping() {
     _sentencesService.skipTyping();
-    notifyListeners();
+    update();
   }
 
   /// Stops the dialogue.
   void stopDialogue() {
     _isPlaying = false;
     _speechService.stopSpeaking();
-    notifyListeners();
+    update();
   }
 
   /// Resets the dialogue to the beginning.
@@ -135,7 +135,7 @@ class DialogueOrchestrator extends ChangeNotifier {
     _isPlaying = false;
     _sentencesService.reset();
     _speechService.stopSpeaking();
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -148,13 +148,13 @@ class DialogueOrchestrator extends ChangeNotifier {
     if (!_ttsEnabled) {
       _speechService.stopSpeaking();
     }
-    notifyListeners();
+    update();
   }
 
   /// Toggles auto-advance on/off.
   void toggleAutoAdvance() {
     _autoAdvance = !_autoAdvance;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -164,13 +164,13 @@ class DialogueOrchestrator extends ChangeNotifier {
   /// Starts listening for voice input.
   Future<void> startListening() async {
     await _speechService.startListening();
-    notifyListeners();
+    update();
   }
 
   /// Stops listening for voice input.
   Future<void> stopListening() async {
     await _speechService.stopListening();
-    notifyListeners();
+    update();
   }
 
   /// Processes recognized voice command.
@@ -186,7 +186,6 @@ class DialogueOrchestrator extends ChangeNotifier {
       stopDialogue();
     }
     _speechService.clearRecognizedText();
-    notifyListeners();
+    update();
   }
-
 }

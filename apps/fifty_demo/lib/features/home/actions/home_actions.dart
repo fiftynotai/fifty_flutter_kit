@@ -3,17 +3,23 @@
 /// Handles user interactions for the home feature.
 library;
 
-import '../../../shared/services/audio_integration_service.dart';
+import 'package:get/get.dart';
+
+import '../../../core/presentation/actions/action_presenter.dart';
+import '../viewmodel/home_viewmodel.dart';
 
 /// Actions for the home feature.
 ///
 /// Provides navigation and initialization actions.
 class HomeActions {
-  HomeActions({
-    required AudioIntegrationService audioService,
-  }) : _audioService = audioService;
+  HomeActions(this._viewModel, this._presenter);
 
-  final AudioIntegrationService _audioService;
+  final HomeViewModel _viewModel;
+  // ignore: unused_field - kept for future use in error handling
+  final ActionPresenter _presenter;
+
+  /// Static accessor for convenient access.
+  static HomeActions get instance => Get.find<HomeActions>();
 
   // ─────────────────────────────────────────────────────────────────────────
   // Navigation Actions
@@ -34,17 +40,17 @@ class HomeActions {
   /// To enable, add local audio files to assets/audio/sfx/.
   Future<void> onPlayClickSound() async {
     // SFX disabled - soundjay.com blocks hotlinking
-    // To enable: add local asset and use _audioService.playSfx('assets/...')
+    // To enable: add local asset and use audio service playSfx('assets/...')
   }
 
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization Actions
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Initializes audio service if needed.
-  Future<void> onInitializeAudio() async {
-    if (!_audioService.isInitialized) {
-      await _audioService.initialize();
+  /// Initializes services if needed.
+  Future<void> onInitializeServices() async {
+    if (!_viewModel.servicesInitialized) {
+      await _viewModel.initializeServices();
     }
   }
 }

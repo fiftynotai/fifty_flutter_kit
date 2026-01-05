@@ -3,17 +3,23 @@
 /// Handles user interactions for the dialogue demo feature.
 library;
 
-import '../service/dialogue_orchestrator.dart';
+import 'package:get/get.dart';
+
+import '../../../core/presentation/actions/action_presenter.dart';
+import '../viewmodel/dialogue_demo_viewmodel.dart';
 
 /// Actions for the dialogue demo feature.
 ///
 /// Provides dialogue playback and control actions.
 class DialogueDemoActions {
-  DialogueDemoActions({
-    required DialogueOrchestrator orchestrator,
-  }) : _orchestrator = orchestrator;
+  DialogueDemoActions(this._viewModel, this._presenter);
 
-  final DialogueOrchestrator _orchestrator;
+  final DialogueDemoViewModel _viewModel;
+  // ignore: unused_field - kept for future use in error handling
+  final ActionPresenter _presenter;
+
+  /// Static accessor for convenient access.
+  static DialogueDemoActions get instance => Get.find<DialogueDemoActions>();
 
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization
@@ -21,7 +27,8 @@ class DialogueDemoActions {
 
   /// Initializes the demo.
   Future<void> onInitialize() async {
-    await _orchestrator.initialize();
+    await _viewModel.orchestrator.initialize();
+    _viewModel.refresh();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -30,41 +37,48 @@ class DialogueDemoActions {
 
   /// Called when play button is tapped.
   Future<void> onPlayTapped() async {
-    await _orchestrator.startDialogue();
+    await _viewModel.orchestrator.startDialogue();
+    _viewModel.refresh();
   }
 
   /// Called when dialogue area is tapped (advance).
   Future<void> onDialogueTapped() async {
-    if (_orchestrator.isProcessing) {
-      _orchestrator.skipTyping();
+    if (_viewModel.orchestrator.isProcessing) {
+      _viewModel.orchestrator.skipTyping();
     } else {
-      await _orchestrator.advanceDialogue();
+      await _viewModel.orchestrator.advanceDialogue();
     }
+    _viewModel.refresh();
   }
 
   /// Called when next button is tapped.
   Future<void> onNextTapped() async {
-    await _orchestrator.advanceDialogue();
+    await _viewModel.orchestrator.advanceDialogue();
+    _viewModel.refresh();
   }
 
   /// Called when previous button is tapped.
   Future<void> onPreviousTapped() async {
-    await _orchestrator.previousDialogue();
+    await _viewModel.orchestrator.previousDialogue();
+    _viewModel.refresh();
   }
 
   /// Called when skip button is tapped.
   void onSkipTapped() {
-    _orchestrator.skipTyping();
+    _viewModel.orchestrator.skipTyping();
+    _viewModel.refresh();
   }
 
   /// Called when stop button is tapped.
   void onStopTapped() {
-    _orchestrator.stopDialogue();
+    _viewModel.orchestrator.stopDialogue();
+    _viewModel.refresh();
   }
 
   /// Called when reset button is tapped.
   void onResetTapped() {
-    _orchestrator.resetDialogue();
+    _viewModel.orchestrator.resetDialogue();
+    _viewModel.refresh();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -73,12 +87,14 @@ class DialogueDemoActions {
 
   /// Called when TTS toggle is tapped.
   void onToggleTts() {
-    _orchestrator.toggleTts();
+    _viewModel.orchestrator.toggleTts();
+    _viewModel.refresh();
   }
 
   /// Called when auto-advance toggle is tapped.
   void onToggleAutoAdvance() {
-    _orchestrator.toggleAutoAdvance();
+    _viewModel.orchestrator.toggleAutoAdvance();
+    _viewModel.refresh();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -87,15 +103,17 @@ class DialogueDemoActions {
 
   /// Called when mic button is tapped.
   Future<void> onMicTapped() async {
-    if (_orchestrator.sttListening) {
-      await _orchestrator.stopListening();
+    if (_viewModel.orchestrator.sttListening) {
+      await _viewModel.orchestrator.stopListening();
     } else {
-      await _orchestrator.startListening();
+      await _viewModel.orchestrator.startListening();
     }
+    _viewModel.refresh();
   }
 
   /// Called when voice input is received.
   void onVoiceInput(String text) {
-    _orchestrator.processVoiceCommand(text);
+    _viewModel.orchestrator.processVoiceCommand(text);
+    _viewModel.refresh();
   }
 }

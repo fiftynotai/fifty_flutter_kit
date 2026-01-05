@@ -3,17 +3,23 @@
 /// Handles user interactions for the map demo feature.
 library;
 
-import '../service/map_audio_coordinator.dart';
+import 'package:get/get.dart';
+
+import '../../../core/presentation/actions/action_presenter.dart';
+import '../viewmodel/map_demo_viewmodel.dart';
 
 /// Actions for the map demo feature.
 ///
 /// Provides map and audio control actions.
 class MapDemoActions {
-  MapDemoActions({
-    required MapAudioCoordinator coordinator,
-  }) : _coordinator = coordinator;
+  MapDemoActions(this._viewModel, this._presenter);
 
-  final MapAudioCoordinator _coordinator;
+  final MapDemoViewModel _viewModel;
+  // ignore: unused_field - kept for future use in error handling
+  final ActionPresenter _presenter;
+
+  /// Static accessor for convenient access.
+  static MapDemoActions get instance => Get.find<MapDemoActions>();
 
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization
@@ -21,7 +27,8 @@ class MapDemoActions {
 
   /// Initializes the demo.
   Future<void> onInitialize() async {
-    await _coordinator.initialize();
+    await _viewModel.coordinator.initialize();
+    _viewModel.refresh();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -30,17 +37,20 @@ class MapDemoActions {
 
   /// Called when play BGM button is tapped.
   Future<void> onPlayBgmTapped() async {
-    await _coordinator.startExplorationBgm();
+    await _viewModel.coordinator.startExplorationBgm();
+    _viewModel.refresh();
   }
 
   /// Called when stop BGM button is tapped.
   Future<void> onStopBgmTapped() async {
-    await _coordinator.stopExplorationBgm();
+    await _viewModel.coordinator.stopExplorationBgm();
+    _viewModel.refresh();
   }
 
   /// Called when BGM toggle is tapped.
   void onToggleBgm() {
-    _coordinator.toggleBgm();
+    _viewModel.coordinator.toggleBgm();
+    _viewModel.refresh();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -49,12 +59,13 @@ class MapDemoActions {
 
   /// Called when SFX toggle is tapped.
   void onToggleSfx() {
-    _coordinator.toggleSfx();
+    _viewModel.coordinator.toggleSfx();
+    _viewModel.refresh();
   }
 
   /// Called to test SFX.
   Future<void> onTestSfxTapped() async {
-    await _coordinator.playEntityTapSfx();
+    await _viewModel.coordinator.playEntityTapSfx();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -63,17 +74,17 @@ class MapDemoActions {
 
   /// Called when zoom in button is tapped.
   void onZoomInTapped() {
-    _coordinator.onZoomIn();
+    _viewModel.coordinator.onZoomIn();
   }
 
   /// Called when zoom out button is tapped.
   void onZoomOutTapped() {
-    _coordinator.onZoomOut();
+    _viewModel.coordinator.onZoomOut();
   }
 
   /// Called when center button is tapped.
   void onCenterTapped() {
-    _coordinator.onCenterCamera();
+    _viewModel.coordinator.onCenterCamera();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -82,6 +93,6 @@ class MapDemoActions {
 
   /// Called when a map entity is tapped.
   Future<void> onEntityTapped(String entityId) async {
-    await _coordinator.onEntityTapped(entityId);
+    await _viewModel.coordinator.onEntityTapped(entityId);
   }
 }

@@ -24,8 +24,8 @@ dependencies:
     path: ../../packages/fifty_sentences_engine
   fifty_map_engine:
     path: ../../packages/fifty_map_engine
-  provider: ^6.1.2
-  get_it: ^8.0.3
+  get: ^4.6.6
+  loader_overlay: ^4.0.3
   audioplayers: ^6.0.0
 
 dev_dependencies:

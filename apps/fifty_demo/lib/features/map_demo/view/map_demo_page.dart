@@ -6,9 +6,8 @@ library;
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
-import '../../../core/di/service_locator.dart';
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/status_indicator.dart';
@@ -20,29 +19,21 @@ import 'widgets/map_controls.dart';
 /// Map demo page widget.
 ///
 /// Shows map rendering with audio playback controls.
-class MapDemoPage extends StatefulWidget {
+class MapDemoPage extends GetView<MapDemoViewModel> {
   const MapDemoPage({super.key});
 
   @override
-  State<MapDemoPage> createState() => _MapDemoPageState();
-}
-
-class _MapDemoPageState extends State<MapDemoPage> {
-  late MapDemoActions _actions;
-
-  @override
-  void initState() {
-    super.initState();
-    _actions = serviceLocator<MapDemoActions>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _actions.onInitialize();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Consumer<MapDemoViewModel>(
-      builder: (context, viewModel, _) {
+    // Initialize on first build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Get.isRegistered<MapDemoActions>()) {
+        MapDemoActions.instance.onInitialize();
+      }
+    });
+
+    return GetBuilder<MapDemoViewModel>(
+      builder: (viewModel) {
+        final actions = Get.find<MapDemoActions>();
         return DemoScaffold(
           child: SingleChildScrollView(
             child: Column(
@@ -77,11 +68,11 @@ class _MapDemoPageState extends State<MapDemoPage> {
                   bgmEnabled: viewModel.bgmEnabled,
                   sfxEnabled: viewModel.sfxEnabled,
                   bgmPlaying: viewModel.bgmPlaying,
-                  onPlayBgm: _actions.onPlayBgmTapped,
-                  onStopBgm: _actions.onStopBgmTapped,
-                  onToggleBgm: _actions.onToggleBgm,
-                  onToggleSfx: _actions.onToggleSfx,
-                  onTestSfx: _actions.onTestSfxTapped,
+                  onPlayBgm: actions.onPlayBgmTapped,
+                  onStopBgm: actions.onStopBgmTapped,
+                  onToggleBgm: actions.onToggleBgm,
+                  onToggleSfx: actions.onToggleSfx,
+                  onTestSfx: actions.onTestSfxTapped,
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
@@ -91,9 +82,9 @@ class _MapDemoPageState extends State<MapDemoPage> {
                   subtitle: 'Map navigation',
                 ),
                 MapControlsWidget(
-                  onZoomIn: _actions.onZoomInTapped,
-                  onZoomOut: _actions.onZoomOutTapped,
-                  onCenter: _actions.onCenterTapped,
+                  onZoomIn: actions.onZoomInTapped,
+                  onZoomOut: actions.onZoomOutTapped,
+                  onCenter: actions.onCenterTapped,
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 

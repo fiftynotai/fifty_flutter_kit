@@ -7,7 +7,7 @@ library;
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
@@ -19,27 +19,13 @@ import 'widgets/feature_nav_card.dart';
 /// Home page widget.
 ///
 /// Displays ecosystem status overview and feature navigation cards.
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<HomeViewModel> {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    // Initialize services on first load
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<HomeViewModel>().initializeServices();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Consumer<HomeViewModel>(
-      builder: (context, viewModel, _) {
+    return GetBuilder<HomeViewModel>(
+      builder: (viewModel) {
         return DemoScaffold(
           child: SingleChildScrollView(
             child: Column(

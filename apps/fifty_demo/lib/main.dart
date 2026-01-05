@@ -9,25 +9,21 @@ import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/material.dart';
 
 import 'app/fifty_demo_app.dart';
-import 'core/di/service_locator.dart';
 
 /// Main entry point for the Fifty Demo application.
 ///
-/// Initializes Flutter bindings, sets up audio engine, dependency injection,
-/// and runs the root app widget.
+/// Initializes Flutter bindings, sets up audio engine, and runs the root app widget.
+/// Dependency injection is handled by GetX via InitialBindings.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize FiftyAudioEngine (before DI setup)
+  // Initialize FiftyAudioEngine (before app start)
   await FiftyAudioEngine.instance.initialize();
 
   // Configure channels for URL-based playback (not assets)
   FiftyAudioEngine.instance.bgm.changeSource(UrlSource.new);
   FiftyAudioEngine.instance.sfx.changeSource(UrlSource.new);
   FiftyAudioEngine.instance.voice.changeSource(UrlSource.new);
-
-  // Set up dependency injection
-  await setupServiceLocator();
 
   runApp(const FiftyDemoApp());
 }

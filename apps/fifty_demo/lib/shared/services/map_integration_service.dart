@@ -5,12 +5,12 @@
 library;
 
 import 'package:fifty_map_engine/fifty_map_engine.dart';
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 /// Service for map integration.
 ///
 /// Manages map controller, entities, and camera.
-class MapIntegrationService extends ChangeNotifier {
+class MapIntegrationService extends GetxController {
   MapIntegrationService();
 
   bool _initialized = false;
@@ -39,7 +39,7 @@ class MapIntegrationService extends ChangeNotifier {
   void initialize(FiftyMapController controller) {
     _controller = controller;
     _initialized = true;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -50,7 +50,7 @@ class MapIntegrationService extends ChangeNotifier {
   Future<void> loadEntities(List<FiftyMapEntity> entities) async {
     _isLoading = true;
     _lastError = null;
-    notifyListeners();
+    update();
 
     try {
       _entities
@@ -63,34 +63,34 @@ class MapIntegrationService extends ChangeNotifier {
       _isLoading = false;
     }
 
-    notifyListeners();
+    update();
   }
 
   /// Adds an entity to the map.
   void addEntity(FiftyMapEntity entity) {
     _entities.add(entity);
     _controller?.addEntities([entity]);
-    notifyListeners();
+    update();
   }
 
   /// Removes an entity from the map.
   void removeEntity(FiftyMapEntity entity) {
     _entities.removeWhere((e) => e.id == entity.id);
     _controller?.removeEntity(entity);
-    notifyListeners();
+    update();
   }
 
   /// Clears all entities from the map.
   void clearEntities() {
     _entities.clear();
     _controller?.clear();
-    notifyListeners();
+    update();
   }
 
   /// Moves an entity to a new position.
   void moveEntity(FiftyMapEntity entity, double x, double y) {
     _controller?.move(entity, x, y);
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -100,24 +100,24 @@ class MapIntegrationService extends ChangeNotifier {
   /// Zooms the camera in.
   void zoomIn() {
     _controller?.zoomIn();
-    notifyListeners();
+    update();
   }
 
   /// Zooms the camera out.
   void zoomOut() {
     _controller?.zoomOut();
-    notifyListeners();
+    update();
   }
 
   /// Centers the camera on the map.
   void centerCamera() {
     _controller?.centerMap();
-    notifyListeners();
+    update();
   }
 
   /// Focuses the camera on a specific entity.
   void focusOnEntity(FiftyMapEntity entity) {
     _controller?.centerOnEntity(entity);
-    notifyListeners();
+    update();
   }
 }

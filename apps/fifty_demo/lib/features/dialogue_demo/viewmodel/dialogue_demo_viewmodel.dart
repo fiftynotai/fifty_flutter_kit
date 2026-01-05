@@ -3,7 +3,7 @@
 /// Business logic for the dialogue demo feature.
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/services/sentences_integration_service.dart';
 import '../service/demo_dialogues.dart';
@@ -12,15 +12,20 @@ import '../service/dialogue_orchestrator.dart';
 /// ViewModel for the dialogue demo feature.
 ///
 /// Exposes dialogue and speech state for the view.
-class DialogueDemoViewModel extends ChangeNotifier {
+class DialogueDemoViewModel extends GetxController {
   DialogueDemoViewModel({
     required DialogueOrchestrator orchestrator,
-  }) : _orchestrator = orchestrator {
-    _orchestrator.addListener(_onOrchestratorChanged);
-  }
+  }) : _orchestrator = orchestrator;
 
   final DialogueOrchestrator _orchestrator;
   String _selectedDialogue = 'Introduction';
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Listen to orchestrator changes
+    ever(_orchestrator.obs, (_) => update());
+  }
 
   // ─────────────────────────────────────────────────────────────────────────
   // Getters
@@ -70,20 +75,12 @@ class DialogueDemoViewModel extends ChangeNotifier {
     if (dialogue != null) {
       _orchestrator.loadDialogue(dialogue);
     }
-    notifyListeners();
+    update();
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // Listener
-  // ─────────────────────────────────────────────────────────────────────────
-
-  void _onOrchestratorChanged() {
-    notifyListeners();
-  }
-
+  /// Refresh state from orchestrator.
   @override
-  void dispose() {
-    _orchestrator.removeListener(_onOrchestratorChanged);
-    super.dispose();
+  void refresh() {
+    update();
   }
 }

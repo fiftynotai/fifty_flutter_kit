@@ -6,7 +6,7 @@ library;
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 /// A single sentence in the queue.
 class Sentence {
@@ -26,7 +26,7 @@ class Sentence {
 /// Service for sentences integration.
 ///
 /// Manages dialogue queues and sentence processing.
-class SentencesIntegrationService extends ChangeNotifier {
+class SentencesIntegrationService extends GetxController {
   SentencesIntegrationService();
 
   bool _initialized = false;
@@ -59,7 +59,7 @@ class SentencesIntegrationService extends ChangeNotifier {
   Future<void> initialize() async {
     if (_initialized) return;
     _initialized = true;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -69,13 +69,13 @@ class SentencesIntegrationService extends ChangeNotifier {
   /// Adds a sentence to the queue.
   void addSentence(Sentence sentence) {
     _queue.add(sentence);
-    notifyListeners();
+    update();
   }
 
   /// Adds multiple sentences to the queue.
   void addSentences(List<Sentence> sentences) {
     _queue.addAll(sentences);
-    notifyListeners();
+    update();
   }
 
   /// Clears the sentence queue.
@@ -85,7 +85,7 @@ class SentencesIntegrationService extends ChangeNotifier {
     _displayedText = '';
     _typingTimer?.cancel();
     _processing = false;
-    notifyListeners();
+    update();
   }
 
   /// Resets to the beginning of the queue.
@@ -94,7 +94,7 @@ class SentencesIntegrationService extends ChangeNotifier {
     _displayedText = '';
     _typingTimer?.cancel();
     _processing = false;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -117,16 +117,16 @@ class SentencesIntegrationService extends ChangeNotifier {
         if (charIndex < sentence.text.length) {
           _displayedText = sentence.text.substring(0, charIndex + 1);
           charIndex++;
-          notifyListeners();
+          update();
         } else {
           timer.cancel();
           _processing = false;
-          notifyListeners();
+          update();
         }
       },
     );
 
-    notifyListeners();
+    update();
   }
 
   /// Skips the typing animation and shows full text.
@@ -136,7 +136,7 @@ class SentencesIntegrationService extends ChangeNotifier {
       _displayedText = _queue[_currentIndex].text;
     }
     _processing = false;
-    notifyListeners();
+    update();
   }
 
   /// Advances to the next sentence.
@@ -151,7 +151,7 @@ class SentencesIntegrationService extends ChangeNotifier {
     } else {
       // End of queue
       _displayedText = '';
-      notifyListeners();
+      update();
     }
   }
 
@@ -168,8 +168,8 @@ class SentencesIntegrationService extends ChangeNotifier {
   }
 
   @override
-  void dispose() {
+  void onClose() {
     _typingTimer?.cancel();
-    super.dispose();
+    super.onClose();
   }
 }

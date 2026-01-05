@@ -5,7 +5,7 @@ library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
@@ -18,13 +18,13 @@ import 'widgets/inputs_section.dart';
 /// UI showcase page widget.
 ///
 /// Shows all FDL components organized by category.
-class UiShowcasePage extends StatelessWidget {
+class UiShowcasePage extends GetView<UiShowcaseViewModel> {
   const UiShowcasePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UiShowcaseViewModel>(
-      builder: (context, viewModel, _) {
+    return GetBuilder<UiShowcaseViewModel>(
+      builder: (viewModel) {
         return DemoScaffold(
           child: SingleChildScrollView(
             child: Column(

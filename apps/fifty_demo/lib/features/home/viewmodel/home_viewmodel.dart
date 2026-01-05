@@ -4,7 +4,7 @@
 /// Displays ecosystem status and package information.
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/services/audio_integration_service.dart';
 import '../../../shared/services/map_integration_service.dart';
@@ -29,7 +29,7 @@ class PackageStatus {
 /// ViewModel for the home feature.
 ///
 /// Provides ecosystem status and navigation state.
-class HomeViewModel extends ChangeNotifier {
+class HomeViewModel extends GetxController {
   HomeViewModel({
     required AudioIntegrationService audioService,
     required SpeechIntegrationService speechService,
@@ -44,6 +44,10 @@ class HomeViewModel extends ChangeNotifier {
   final SpeechIntegrationService _speechService;
   final SentencesIntegrationService _sentencesService;
   final MapIntegrationService _mapService;
+
+  // Reactive state
+  final RxBool _servicesInitialized = false.obs;
+  bool get servicesInitialized => _servicesInitialized.value;
 
   // ─────────────────────────────────────────────────────────────────────────
   // Package Information
@@ -142,12 +146,19 @@ class HomeViewModel extends ChangeNotifier {
   // Initialization
   // ─────────────────────────────────────────────────────────────────────────
 
+  @override
+  void onInit() {
+    super.onInit();
+    initializeServices();
+  }
+
   /// Initializes all services.
   Future<void> initializeServices() async {
     await _audioService.initialize();
     await _speechService.initialize();
     await _sentencesService.initialize();
-    notifyListeners();
+    _servicesInitialized.value = true;
+    update();
   }
 }
 

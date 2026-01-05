@@ -3,7 +3,7 @@
 /// Coordinates map engine with audio engine for integrated experience.
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 import '../../../shared/services/audio_integration_service.dart';
 import '../../../shared/services/map_integration_service.dart';
@@ -11,7 +11,7 @@ import '../../../shared/services/map_integration_service.dart';
 /// Coordinates map interactions with audio playback.
 ///
 /// Plays BGM during exploration and SFX on entity interactions.
-class MapAudioCoordinator extends ChangeNotifier {
+class MapAudioCoordinator extends GetxController {
   MapAudioCoordinator({
     required AudioIntegrationService audioService,
     required MapIntegrationService mapService,
@@ -57,7 +57,7 @@ class MapAudioCoordinator extends ChangeNotifier {
   /// Initializes the coordinator and audio service.
   Future<void> initialize() async {
     await _audioService.initialize();
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -69,13 +69,13 @@ class MapAudioCoordinator extends ChangeNotifier {
     if (!_bgmEnabled) return;
     final url = bgmTracks[trackIndex % bgmTracks.length];
     await _audioService.playBgm(url);
-    notifyListeners();
+    update();
   }
 
   /// Stops exploration BGM.
   Future<void> stopExplorationBgm() async {
     await _audioService.stopBgm();
-    notifyListeners();
+    update();
   }
 
   /// Toggles BGM on/off.
@@ -84,7 +84,7 @@ class MapAudioCoordinator extends ChangeNotifier {
     if (!_bgmEnabled && _audioService.bgmPlaying) {
       _audioService.stopBgm();
     }
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -121,7 +121,7 @@ class MapAudioCoordinator extends ChangeNotifier {
   /// Toggles SFX on/off.
   void toggleSfx() {
     _sfxEnabled = !_sfxEnabled;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -133,24 +133,24 @@ class MapAudioCoordinator extends ChangeNotifier {
     await playEntityTapSfx();
     // Focus on entity would require the full FiftyMapEntity
     // For demo, we just play the SFX
-    notifyListeners();
+    update();
   }
 
   /// Called when camera zooms.
   void onZoomIn() {
     _mapService.zoomIn();
-    notifyListeners();
+    update();
   }
 
   /// Called when camera zooms out.
   void onZoomOut() {
     _mapService.zoomOut();
-    notifyListeners();
+    update();
   }
 
   /// Centers the camera.
   void onCenterCamera() {
     _mapService.centerCamera();
-    notifyListeners();
+    update();
   }
 }

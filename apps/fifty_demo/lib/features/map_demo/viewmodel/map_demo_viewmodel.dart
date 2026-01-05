@@ -3,21 +3,26 @@
 /// Business logic for the map demo feature.
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 import '../service/map_audio_coordinator.dart';
 
 /// ViewModel for the map demo feature.
 ///
 /// Exposes map and audio state for the view.
-class MapDemoViewModel extends ChangeNotifier {
+class MapDemoViewModel extends GetxController {
   MapDemoViewModel({
     required MapAudioCoordinator coordinator,
-  }) : _coordinator = coordinator {
-    _coordinator.addListener(_onCoordinatorChanged);
-  }
+  }) : _coordinator = coordinator;
 
   final MapAudioCoordinator _coordinator;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Listen to coordinator changes
+    ever(_coordinator.obs, (_) => update());
+  }
 
   // ─────────────────────────────────────────────────────────────────────────
   // Getters
@@ -47,17 +52,9 @@ class MapDemoViewModel extends ChangeNotifier {
     return 'EMPTY';
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // Listener
-  // ─────────────────────────────────────────────────────────────────────────
-
-  void _onCoordinatorChanged() {
-    notifyListeners();
-  }
-
+  /// Refresh state from coordinator.
   @override
-  void dispose() {
-    _coordinator.removeListener(_onCoordinatorChanged);
-    super.dispose();
+  void refresh() {
+    update();
   }
 }

@@ -6,9 +6,8 @@ library;
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
-import '../../../core/di/service_locator.dart';
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/status_indicator.dart';
@@ -21,31 +20,23 @@ import 'widgets/tts_controls.dart';
 /// Dialogue demo page widget.
 ///
 /// Shows dialogue playback with TTS/STT controls.
-class DialogueDemoPage extends StatefulWidget {
+class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
   const DialogueDemoPage({super.key});
 
   @override
-  State<DialogueDemoPage> createState() => _DialogueDemoPageState();
-}
-
-class _DialogueDemoPageState extends State<DialogueDemoPage> {
-  late DialogueDemoActions _actions;
-
-  @override
-  void initState() {
-    super.initState();
-    _actions = serviceLocator<DialogueDemoActions>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _actions.onInitialize();
-      // Load default dialogue
-      context.read<DialogueDemoViewModel>().selectDialogue('Introduction');
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Consumer<DialogueDemoViewModel>(
-      builder: (context, viewModel, _) {
+    // Initialize on first build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Get.isRegistered<DialogueDemoActions>()) {
+        DialogueDemoActions.instance.onInitialize();
+        // Load default dialogue
+        Get.find<DialogueDemoViewModel>().selectDialogue('Introduction');
+      }
+    });
+
+    return GetBuilder<DialogueDemoViewModel>(
+      builder: (viewModel) {
+        final actions = Get.find<DialogueDemoActions>();
         return DemoScaffold(
           child: SingleChildScrollView(
             child: Column(
@@ -132,7 +123,7 @@ class _DialogueDemoPageState extends State<DialogueDemoPage> {
                   text: viewModel.displayedText,
                   speaker: viewModel.currentSpeaker,
                   isTyping: viewModel.isProcessing,
-                  onTap: _actions.onDialogueTapped,
+                  onTap: actions.onDialogueTapped,
                 ),
                 const SizedBox(height: FiftySpacing.md),
                 // Progress bar
@@ -157,24 +148,24 @@ class _DialogueDemoPageState extends State<DialogueDemoPage> {
                     children: [
                       _ControlButton(
                         icon: Icons.skip_previous,
-                        onTap: _actions.onPreviousTapped,
+                        onTap: actions.onPreviousTapped,
                       ),
                       _ControlButton(
                         icon: viewModel.isPlaying
                             ? Icons.stop
                             : Icons.play_arrow,
                         onTap: viewModel.isPlaying
-                            ? _actions.onStopTapped
-                            : _actions.onPlayTapped,
+                            ? actions.onStopTapped
+                            : actions.onPlayTapped,
                         isPrimary: true,
                       ),
                       _ControlButton(
                         icon: Icons.skip_next,
-                        onTap: _actions.onNextTapped,
+                        onTap: actions.onNextTapped,
                       ),
                       _ControlButton(
                         icon: Icons.replay,
-                        onTap: _actions.onResetTapped,
+                        onTap: actions.onResetTapped,
                       ),
                     ],
                   ),
@@ -189,8 +180,8 @@ class _DialogueDemoPageState extends State<DialogueDemoPage> {
                 TtsControls(
                   enabled: viewModel.ttsEnabled,
                   autoAdvance: viewModel.autoAdvance,
-                  onToggleTts: _actions.onToggleTts,
-                  onToggleAutoAdvance: _actions.onToggleAutoAdvance,
+                  onToggleTts: actions.onToggleTts,
+                  onToggleAutoAdvance: actions.onToggleAutoAdvance,
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
@@ -202,7 +193,7 @@ class _DialogueDemoPageState extends State<DialogueDemoPage> {
                 SttControls(
                   isListening: viewModel.sttListening,
                   recognizedText: viewModel.recognizedText,
-                  onMicTapped: _actions.onMicTapped,
+                  onMicTapped: actions.onMicTapped,
                 ),
               ],
             ),

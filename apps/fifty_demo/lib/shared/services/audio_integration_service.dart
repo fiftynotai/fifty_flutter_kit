@@ -9,6 +9,7 @@ import 'dart:async';
 
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 /// Service for audio integration.
 ///
@@ -18,7 +19,7 @@ import 'package:flutter/foundation.dart';
 ///
 /// **Note:** Engine initialization happens in main.dart before DI setup.
 /// Channels are pre-configured for URL-based playback (not assets).
-class AudioIntegrationService extends ChangeNotifier {
+class AudioIntegrationService extends GetxController {
   AudioIntegrationService();
 
   /// Access the FiftyAudioEngine singleton.
@@ -62,11 +63,11 @@ class AudioIntegrationService extends ChangeNotifier {
 
     // Subscribe to playing state changes for notifications
     _bgmPlayingSub = _engine.bgm.onIsPlayingChanged.listen((_) {
-      notifyListeners();
+      update();
     });
 
     _voicePlayingSub = _engine.voice.onIsPlayingChanged.listen((_) {
-      notifyListeners();
+      update();
     });
 
     // Apply initial volumes
@@ -75,7 +76,7 @@ class AudioIntegrationService extends ChangeNotifier {
     await _engine.voice.setVolume(_voiceVolume);
 
     _initialized = true;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -106,7 +107,7 @@ class AudioIntegrationService extends ChangeNotifier {
   /// Stops BGM playback.
   Future<void> stopBgm() async {
     await _engine.bgm.stop();
-    notifyListeners();
+    update();
   }
 
   /// Sets BGM volume.
@@ -115,7 +116,7 @@ class AudioIntegrationService extends ChangeNotifier {
     if (!_bgmMuted) {
       await _engine.bgm.setVolume(_bgmVolume);
     }
-    notifyListeners();
+    update();
   }
 
   /// Toggles BGM mute state.
@@ -126,7 +127,7 @@ class AudioIntegrationService extends ChangeNotifier {
     } else {
       await _engine.bgm.setVolume(_bgmVolume);
     }
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -148,7 +149,7 @@ class AudioIntegrationService extends ChangeNotifier {
   void setSfxVolume(double volume) {
     _sfxVolume = volume.clamp(0.0, 1.0);
     _engine.sfx.setVolume(_sfxVolume);
-    notifyListeners();
+    update();
   }
 
   /// Toggles SFX mute state.
@@ -159,7 +160,7 @@ class AudioIntegrationService extends ChangeNotifier {
     } else {
       _engine.sfx.setVolume(_sfxVolume);
     }
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -180,14 +181,14 @@ class AudioIntegrationService extends ChangeNotifier {
   /// Stops voice playback.
   Future<void> stopVoice() async {
     await _engine.voice.stop();
-    notifyListeners();
+    update();
   }
 
   /// Sets voice volume.
   Future<void> setVoiceVolume(double volume) async {
     _voiceVolume = volume.clamp(0.0, 1.0);
     await _engine.voice.setVolume(_voiceVolume);
-    notifyListeners();
+    update();
   }
 
   /// Toggles voice mute state.
@@ -198,7 +199,7 @@ class AudioIntegrationService extends ChangeNotifier {
     } else {
       _engine.voice.setVolume(_voiceVolume);
     }
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -208,7 +209,7 @@ class AudioIntegrationService extends ChangeNotifier {
   /// Stops all audio.
   Future<void> stopAll() async {
     await _engine.stopAll();
-    notifyListeners();
+    update();
   }
 
   /// Mutes all channels.
@@ -217,7 +218,7 @@ class AudioIntegrationService extends ChangeNotifier {
     _sfxMuted = true;
     _voiceMuted = true;
     _engine.muteAll();
-    notifyListeners();
+    update();
   }
 
   /// Unmutes all channels.
@@ -226,13 +227,13 @@ class AudioIntegrationService extends ChangeNotifier {
     _sfxMuted = false;
     _voiceMuted = false;
     _engine.unmuteAll();
-    notifyListeners();
+    update();
   }
 
   @override
-  void dispose() {
+  void onClose() {
     _bgmPlayingSub?.cancel();
     _voicePlayingSub?.cancel();
-    super.dispose();
+    super.onClose();
   }
 }

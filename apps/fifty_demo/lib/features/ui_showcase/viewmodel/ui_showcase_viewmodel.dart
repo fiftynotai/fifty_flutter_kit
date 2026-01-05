@@ -3,12 +3,12 @@
 /// Business logic for the UI showcase feature.
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 /// ViewModel for the UI showcase feature.
 ///
 /// Provides state for showcasing FDL components.
-class UiShowcaseViewModel extends ChangeNotifier {
+class UiShowcaseViewModel extends GetxController {
   UiShowcaseViewModel();
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -29,7 +29,7 @@ class UiShowcaseViewModel extends ChangeNotifier {
   /// Changes the active section.
   void setActiveSection(String sectionId) {
     _activeSection = sectionId;
-    notifyListeners();
+    update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ class UiShowcaseViewModel extends ChangeNotifier {
 
   void toggleButtonLoading() {
     _buttonLoading = !_buttonLoading;
-    notifyListeners();
+    update();
   }
 
   // Input state
@@ -51,7 +51,7 @@ class UiShowcaseViewModel extends ChangeNotifier {
 
   void setInputValue(String value) {
     _inputValue = value;
-    notifyListeners();
+    update();
   }
 
   bool _switchValue = false;
@@ -59,7 +59,7 @@ class UiShowcaseViewModel extends ChangeNotifier {
 
   void toggleSwitch() {
     _switchValue = !_switchValue;
-    notifyListeners();
+    update();
   }
 
   double _sliderValue = 0.5;
@@ -67,7 +67,7 @@ class UiShowcaseViewModel extends ChangeNotifier {
 
   void setSliderValue(double value) {
     _sliderValue = value;
-    notifyListeners();
+    update();
   }
 
   // Display state
@@ -76,7 +76,7 @@ class UiShowcaseViewModel extends ChangeNotifier {
 
   void setTabIndex(int index) {
     _tabIndex = index;
-    notifyListeners();
+    update();
   }
 
   // Feedback state
@@ -85,10 +85,10 @@ class UiShowcaseViewModel extends ChangeNotifier {
 
   void triggerSnackbar() {
     _showSnackbar = true;
-    notifyListeners();
+    update();
     Future.delayed(const Duration(seconds: 3), () {
       _showSnackbar = false;
-      notifyListeners();
+      update();
     });
   }
 }
