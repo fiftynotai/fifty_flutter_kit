@@ -5,9 +5,9 @@
 **Effort:** M-Medium (4-8h)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-01-05
-**Completed:** _(pending)_
+**Completed:** 2026-01-05
 
 ---
 
@@ -141,35 +141,35 @@ See `packages/fifty_map_engine/example/lib/` for:
 ## Tasks
 
 ### Pending
-- [ ] Task 1: Copy image assets from fifty_map_engine example
-- [ ] Task 2: Copy and adapt map JSON file
-- [ ] Task 3: Update pubspec.yaml with new asset paths
-- [ ] Task 4: Create FiftyMapController in MapIntegrationService
-- [ ] Task 5: Add asset registration in MapIntegrationService
-- [ ] Task 6: Replace placeholder with FiftyMapWidget in MapDemoPage
-- [ ] Task 7: Wire entity tap callback to play SFX
-- [ ] Task 8: Connect camera controls to map controller
-- [ ] Task 9: Test map rendering and interactions
-- [ ] Task 10: Run flutter analyze and fix issues
+_(None)_
 
 ### In Progress
 _(None)_
 
 ### Completed
-_(None)_
+- [x] Task 1: Copy image assets from fifty_map_engine example
+- [x] Task 2: Copy and adapt map JSON file
+- [x] Task 3: Update pubspec.yaml with new asset paths
+- [x] Task 4: Create FiftyMapController in MapIntegrationService
+- [x] Task 5: Add asset registration in MapIntegrationService
+- [x] Task 6: Replace placeholder with FiftyMapWidget in MapDemoPage
+- [x] Task 7: Wire entity tap callback to play SFX
+- [x] Task 8: Connect camera controls to map controller
+- [x] Task 9: Test map rendering and interactions
+- [x] Task 10: Run flutter analyze and fix issues
 
 ---
 
 ## Acceptance Criteria
 
-1. [ ] Map renders with room backgrounds visible
-2. [ ] Furniture and monster entities display on map
-3. [ ] Tapping an entity plays click SFX
-4. [ ] Zoom in/out buttons change map scale
-5. [ ] Center button resets camera position
-6. [ ] Map loads from JSON asset file
-7. [ ] `flutter analyze` passes
-8. [ ] No placeholder text visible on Map Demo page
+1. [x] Map renders with room backgrounds visible
+2. [x] Furniture and monster entities display on map
+3. [x] Tapping an entity plays click SFX
+4. [x] Zoom in/out buttons change map scale
+5. [x] Center button resets camera position
+6. [x] Map loads from JSON asset file
+7. [x] `flutter analyze` passes
+8. [x] No placeholder text visible on Map Demo page
 
 ---
 
@@ -192,14 +192,18 @@ _(None)_
 
 ## Workflow State
 
-**Phase:** BUILDING
-**Active Agent:** coder
+**Phase:** COMPLETE
+**Active Agent:** _(none)_
 **Retry Count:** 0
 
 ### Agent Log
 - [2026-01-05 PLANNING] Starting planner agent...
 - [2026-01-05 PLANNING] Plan complete (7 phases, 10 files)
 - [2026-01-05 BUILDING] Starting coder agent...
+- [2026-01-05 BUILDING] Coder complete (5 files modified, 14 assets copied)
+- [2026-01-05 TESTING] Tester PASS (all checks passed)
+- [2026-01-05 REVIEWING] Reviewer verified assets present
+- [2026-01-05 COMMITTING] Committed as 61d9d99
 
 ---
 
