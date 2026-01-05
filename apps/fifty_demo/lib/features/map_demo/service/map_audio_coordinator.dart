@@ -52,9 +52,19 @@ class MapAudioCoordinator extends GetxController {
   // Initialization
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Initializes the coordinator and audio service.
+  /// Initializes the coordinator, audio service, and loads map from assets.
   Future<void> initialize() async {
     await _audioService.initialize();
+
+    // Load map from assets
+    try {
+      await _mapService.loadMapFromAssets('assets/maps/demo_map.json');
+    } catch (e) {
+      // Log error but continue - audio still works without map
+      // ignore: avoid_print
+      print('[MapAudioCoordinator] Failed to load map: $e');
+    }
+
     update();
   }
 

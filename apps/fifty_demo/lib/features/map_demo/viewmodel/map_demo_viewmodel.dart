@@ -3,6 +3,7 @@
 /// Business logic for the map demo feature.
 library;
 
+import 'package:fifty_map_engine/fifty_map_engine.dart';
 import 'package:get/get.dart';
 
 import '../service/map_audio_coordinator.dart';
@@ -34,6 +35,18 @@ class MapDemoViewModel extends GetxController {
   bool get bgmPlaying => _coordinator.bgmPlaying;
   bool get isInitialized => _coordinator.audioService.isInitialized;
 
+  /// Map controller for FiftyMapWidget.
+  FiftyMapController? get controller => _coordinator.mapService.controller;
+
+  /// Whether the map has been loaded from assets.
+  bool get isMapLoaded => _coordinator.mapService.isMapLoaded;
+
+  /// Whether the map is currently loading.
+  bool get isMapLoading => _coordinator.mapService.isLoading;
+
+  /// Map entities for initial load.
+  List<FiftyMapEntity> get entities => _coordinator.mapService.entities;
+
   // ─────────────────────────────────────────────────────────────────────────
   // Status Helpers
   // ─────────────────────────────────────────────────────────────────────────
@@ -48,8 +61,8 @@ class MapDemoViewModel extends GetxController {
   /// Status label for map.
   String get mapStatusLabel {
     if (_coordinator.mapService.isLoading) return 'LOADING';
+    if (_coordinator.mapService.isMapLoaded) return 'READY';
     if (_coordinator.mapService.hasEntities) return 'READY';
     return 'EMPTY';
   }
-
 }

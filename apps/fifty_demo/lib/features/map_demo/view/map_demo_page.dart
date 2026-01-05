@@ -3,6 +3,7 @@
 /// Demonstrates map engine with audio integration.
 library;
 
+import 'package:fifty_map_engine/fifty_map_engine.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -93,48 +94,93 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                   title: 'Map Preview',
                   subtitle: 'Interactive grid map',
                 ),
-                const FiftyCard(
-                  padding: EdgeInsets.all(FiftySpacing.lg),
-                  child: SizedBox(
-                    height: 300,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.map,
-                            size: 64,
-                            color: FiftyColors.hyperChrome,
-                          ),
-                          SizedBox(height: FiftySpacing.md),
-                          Text(
-                            'MAP WIDGET PLACEHOLDER',
-                            style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamilyMono,
-                              fontSize: FiftyTypography.body,
-                              color: FiftyColors.hyperChrome,
-                            ),
-                          ),
-                          SizedBox(height: FiftySpacing.sm),
-                          Text(
-                            'FiftyMapWidget renders here with entity interactions',
-                            style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamilyMono,
-                              fontSize: FiftyTypography.mono,
-                              color: FiftyColors.hyperChrome,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                _buildMapWidget(viewModel, actions),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  /// Builds the map widget based on loading state.
+  Widget _buildMapWidget(MapDemoViewModel viewModel, MapDemoActions actions) {
+    final controller = viewModel.controller;
+
+    // Show loading state
+    if (viewModel.isMapLoading) {
+      return const FiftyCard(
+        padding: EdgeInsets.all(FiftySpacing.lg),
+        child: SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: FiftyColors.crimsonPulse,
+                ),
+                SizedBox(height: FiftySpacing.md),
+                Text(
+                  'LOADING MAP...',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.body,
+                    color: FiftyColors.hyperChrome,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Show placeholder if controller not ready
+    if (controller == null || !viewModel.isMapLoaded) {
+      return const FiftyCard(
+        padding: EdgeInsets.all(FiftySpacing.lg),
+        child: SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.map_outlined,
+                  size: 64,
+                  color: FiftyColors.hyperChrome,
+                ),
+                SizedBox(height: FiftySpacing.md),
+                Text(
+                  'MAP NOT LOADED',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamilyMono,
+                    fontSize: FiftyTypography.body,
+                    color: FiftyColors.hyperChrome,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Show the actual map widget
+    return FiftyCard(
+      padding: EdgeInsets.zero,
+      child: ClipRRect(
+        borderRadius: FiftyRadii.standardRadius,
+        child: SizedBox(
+          height: 300,
+          child: FiftyMapWidget(
+            controller: controller,
+            initialEntities: viewModel.entities,
+            onEntityTap: (entity) => actions.onEntityTapped(entity.id),
+          ),
+        ),
+      ),
     );
   }
 }
