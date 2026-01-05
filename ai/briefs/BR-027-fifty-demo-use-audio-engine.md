@@ -5,9 +5,9 @@
 **Effort:** M-Medium (4-8h)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** Ready
+**Status:** Done
 **Created:** 2026-01-05
-**Completed:** _(pending)_
+**Completed:** 2026-01-05
 
 ---
 
@@ -174,7 +174,7 @@ _(None)_
 
 ## Workflow State
 
-**Phase:** READY
+**Phase:** COMPLETE
 **Active Agent:** none
 **Retry Count:** 0
 **Blocker:** _(resolved - BR-029 complete)_
@@ -190,6 +190,11 @@ _(None)_
 - 2026-01-05 - BLOCKED: Requires BR-029 to fix engine first
 - 2026-01-05 - REVERTED: Demo restored to audioplayers implementation
 - 2026-01-05 - UNBLOCKED: BR-029 complete (commit 0c510d2)
+- 2026-01-05 - RETRY: Resumed workflow after blocker resolved
+- 2026-01-05 - CODER complete: Rewrote with URL source support
+- 2026-01-05 - TESTER: PASS (0 errors, 1/1 tests)
+- 2026-01-05 - REVIEWER: APPROVE
+- 2026-01-05 - COMMIT: 772a5db
 
 ---
 

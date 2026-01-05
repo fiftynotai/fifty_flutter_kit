@@ -2,22 +2,22 @@
 
 **Status:** REST MODE
 **Last Updated:** 2026-01-05
-**Last Completed:** BR-029 (FiftyAudioEngine URL Source Support)
+**Last Completed:** BR-027 (Fifty Demo Use FiftyAudioEngine)
 
 ---
 
 ## Session Summary
 
-Completed BR-029: Fixed FiftyAudioEngine to support URL sources in BgmChannel.
+Completed BR-027: Demo app now properly uses FiftyAudioEngine instead of reimplementing audio.
 
 **Multi-Agent Workflow Executed:**
 | Phase | Agent | Result |
 |-------|-------|--------|
-| PLANNING | planner | 2-line surgical fix identified |
-| BUILDING | coder | bgm_channel.dart updated |
-| TESTING | tester | PASS (2/2 tests, 0 errors) |
-| REVIEWING | reviewer | APPROVE (backward compatible) |
-| COMMITTING | orchestrator | 0c510d2 committed |
+| PLANNING | planner | Used existing plan |
+| BUILDING | coder | Rewrote AudioIntegrationService |
+| TESTING | tester | PASS (0 errors, 1/1 tests) |
+| REVIEWING | reviewer | APPROVE |
+| COMMITTING | orchestrator | 772a5db committed |
 
 ---
 
@@ -26,15 +26,14 @@ Completed BR-029: Fixed FiftyAudioEngine to support URL sources in BgmChannel.
 **BR-029: FiftyAudioEngine URL Source Support**
 - Status: Done
 - Commit: 0c510d2
-- Changes:
-  - `BgmChannel.play()` now uses `resolveSource(path)` instead of hardcoded `AssetSource`
-  - Added empty playlist guard in `onStateChanged()` to prevent RangeError
-- Impact: Enables URL-based BGM playback via `changeSource(UrlSource.new)`
+- Fixed BgmChannel to use resolveSource() instead of hardcoded AssetSource
 
-**BR-027: Unblocked**
-- Was blocked by BR-029
-- Now Ready for implementation
-- Will update demo app to use FiftyAudioEngine properly
+**BR-027: Fifty Demo Use FiftyAudioEngine**
+- Status: Done
+- Commit: 772a5db
+- Rewrote AudioIntegrationService to wrap FiftyAudioEngine.instance
+- Removed direct AudioPlayer instantiation
+- Configured channels for URL-based playback
 
 ---
 
@@ -63,7 +62,7 @@ Completed BR-029: Fixed FiftyAudioEngine to support URL sources in BgmChannel.
 ### Apps (1)
 | App | Version | Status |
 |-----|---------|--------|
-| fifty_demo | v1.0.0 | Complete (uses audioplayers) |
+| fifty_demo | v1.1.0 | Uses FiftyAudioEngine |
 
 **Total: 11 packages + 1 template + 1 demo app**
 
@@ -73,15 +72,14 @@ Completed BR-029: Fixed FiftyAudioEngine to support URL sources in BgmChannel.
 
 | Brief | Type | Priority | Status |
 |-------|------|----------|--------|
-| BR-027 | Bug Fix | P1 | Ready |
 | BR-028 | Refactor | P1 | Ready |
 
 ---
 
 ## Next Steps When Resuming
 
-1. **Merge BR-029 branch** to main
-2. **HUNT BR-027** - Update demo to use FiftyAudioEngine (now unblocked)
-3. **HUNT BR-028** - Refactor demo to use MVVM+Actions pattern (large effort)
+1. **Merge branches to main**
+2. **HUNT BR-028** - Refactor demo to use MVVM+Actions pattern (large effort)
+3. **Test demo app** on target platform with URL audio
 
 ---
