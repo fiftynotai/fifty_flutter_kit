@@ -2,40 +2,39 @@
 
 **Status:** REST MODE
 **Last Updated:** 2026-01-05
-**Last Completed:** BR-018 (Fifty Composite Demo App)
+**Last Completed:** BR-029 (FiftyAudioEngine URL Source Support)
 
 ---
 
 ## Session Summary
 
-Completed BR-018: Fifty Composite Demo App using full multi-agent workflow.
+Completed BR-029: Fixed FiftyAudioEngine to support URL sources in BgmChannel.
 
 **Multi-Agent Workflow Executed:**
 | Phase | Agent | Result |
 |-------|-------|--------|
-| PLANNING | planner | Plan created (55 files spec) |
-| BUILDING | coder | 53 Dart files implemented |
-| TESTING | tester | PASS (analyzer, tests, build) |
-| REVIEWING | reviewer | APPROVE (all checks) |
-| COMMITTING | orchestrator | ea1a73d committed |
+| PLANNING | planner | 2-line surgical fix identified |
+| BUILDING | coder | bgm_channel.dart updated |
+| TESTING | tester | PASS (2/2 tests, 0 errors) |
+| REVIEWING | reviewer | APPROVE (backward compatible) |
+| COMMITTING | orchestrator | 0c510d2 committed |
 
 ---
 
 ## Completed This Session
 
-**BR-018: Fifty Composite Demo App**
+**BR-029: FiftyAudioEngine URL Source Support**
 - Status: Done
-- Commit: ea1a73d
-- Files: 190 files, 12,028 insertions
-- Features:
-  - Home page with FDL navigation
-  - Map Demo (FiftyMapWidget + FiftyAudioEngine)
-  - Dialogue Demo (FiftySentenceEngine + FiftySpeechEngine)
-  - UI Showcase (all fifty_ui components)
+- Commit: 0c510d2
+- Changes:
+  - `BgmChannel.play()` now uses `resolveSource(path)` instead of hardcoded `AssetSource`
+  - Added empty playlist guard in `onStateChanged()` to prevent RangeError
+- Impact: Enables URL-based BGM playback via `changeSource(UrlSource.new)`
 
-**Also Created:**
-- `ai/context/coding_guidelines.md` - MVVM+Actions architecture standards (993 lines)
-- `ai/plans/BR-018-plan.md` - Implementation plan
+**BR-027: Unblocked**
+- Was blocked by BR-029
+- Now Ready for implementation
+- Will update demo app to use FiftyAudioEngine properly
 
 ---
 
@@ -51,7 +50,7 @@ Completed BR-018: Fifty Composite Demo App using full multi-agent workflow.
 | fifty_storage | v0.1.0 | Released |
 | fifty_utils | v0.1.0 | Released |
 | fifty_connectivity | v0.1.0 | Released |
-| fifty_audio_engine | v0.7.0 | Released |
+| fifty_audio_engine | v0.8.0 | Ready (URL support) |
 | fifty_speech_engine | v0.1.0 | Released |
 | fifty_sentences_engine | v0.1.0 | Released |
 | fifty_map_engine | v0.1.0 | Released |
@@ -64,20 +63,25 @@ Completed BR-018: Fifty Composite Demo App using full multi-agent workflow.
 ### Apps (1)
 | App | Version | Status |
 |-----|---------|--------|
-| fifty_demo | v1.0.0 | Complete |
+| fifty_demo | v1.0.0 | Complete (uses audioplayers) |
 
 **Total: 11 packages + 1 template + 1 demo app**
 
 ---
 
+## Briefs Queue
+
+| Brief | Type | Priority | Status |
+|-------|------|----------|--------|
+| BR-027 | Bug Fix | P1 | Ready |
+| BR-028 | Refactor | P1 | Ready |
+
+---
+
 ## Next Steps When Resuming
 
-**All briefs complete!**
-
-**Suggested actions:**
-- Merge `implement/BR-018-composite-demo` branch to main
-- Push to remote
-- Publish packages to pub.dev
-- Run fifty_demo on target platforms
+1. **Merge BR-029 branch** to main
+2. **HUNT BR-027** - Update demo to use FiftyAudioEngine (now unblocked)
+3. **HUNT BR-028** - Refactor demo to use MVVM+Actions pattern (large effort)
 
 ---
