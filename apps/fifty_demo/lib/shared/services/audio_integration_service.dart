@@ -19,7 +19,6 @@ import 'package:flutter/foundation.dart';
 /// before using this service (typically in main.dart before DI setup).
 class AudioIntegrationService extends ChangeNotifier {
   AudioIntegrationService() {
-    _configureChannelsForUrlPlayback();
     _setupListeners();
   }
 
@@ -63,15 +62,9 @@ class AudioIntegrationService extends ChangeNotifier {
   // Configuration
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Configures audio channels to use URL sources instead of assets.
-  ///
-  /// The demo app uses remote URLs for audio playback, so we need to
-  /// configure the BGM and SFX channels to resolve paths as UrlSources.
-  /// Voice channel already uses UrlSource internally.
-  void _configureChannelsForUrlPlayback() {
-    _engine.bgm.changeSource(UrlSource.new);
-    _engine.sfx.changeSource(UrlSource.new);
-  }
+  // Note: changeSource() is not used because BgmChannel.play() overrides
+  // the base class and hardcodes AssetSource. We use playFromSource() directly
+  // with UrlSource for URL-based playback.
 
   /// Sets up listeners to notify Provider consumers of state changes.
   void _setupListeners() {
@@ -101,7 +94,9 @@ class AudioIntegrationService extends ChangeNotifier {
   Future<void> playBgm(String url) async {
     if (!_initialized) return;
     try {
-      await _engine.bgm.play(url);
+      // Use playFromSource with UrlSource directly because BgmChannel.play()
+      // overrides the base class and hardcodes AssetSource
+      await _engine.bgm.playFromSource(UrlSource(url));
       notifyListeners();
     } catch (e) {
       debugPrint('BGM playback error: $e');
@@ -150,7 +145,8 @@ class AudioIntegrationService extends ChangeNotifier {
   Future<void> playSfx(String url) async {
     if (!_initialized || _engine.sfx.isMuted) return;
     try {
-      await _engine.sfx.play(url);
+      // Use playFromSource with UrlSource directly
+      await _engine.sfx.playFromSource(UrlSource(url));
     } catch (e) {
       debugPrint('SFX playback error: $e');
     }
