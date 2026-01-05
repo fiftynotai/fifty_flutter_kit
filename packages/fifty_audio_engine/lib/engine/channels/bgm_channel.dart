@@ -182,14 +182,17 @@ class BgmChannel extends BaseAudioChannel {
   // Playback Overrides
   // ───────────────────────────────────────────────────────────────────────────
 
-  /// **Play a Track by Asset Path**
+  /// **Play a Track by Path**
   ///
-  /// Cancels any pending crossfade listener, plays the asset, and then wires
-  /// a new crossfade schedule for the new track.
+  /// Cancels any pending crossfade listener, resolves the path using the
+  /// configured source builder (default: AssetSource), and wires a new
+  /// crossfade schedule for the new track.
+  ///
+  /// To play URLs, call `changeSource(UrlSource.new)` before playing.
   @override
   Future<void> play(String path) async {
     _positionSub?.cancel();
-    await playFromSource(AssetSource(path)); // expects exact asset path & case
+    await playFromSource(resolveSource(path)); // Uses _sourceBuilder (respects changeSource)
     _scheduleCrossfade();
   }
 
@@ -345,6 +348,9 @@ class BgmChannel extends BaseAudioChannel {
   /// firing, but this remains as a safety fallback.
   @override
   void onStateChanged(PlayerState state) {
+    // Guard: skip logging if no playlist is loaded (e.g., direct playFromSource usage)
+    if (_currentPlaylist.isEmpty) return;
+
     switch (state) {
       case PlayerState.playing:
         FiftyAudioLogger.log('[${_currentPlaylist[_index]}] Started');
