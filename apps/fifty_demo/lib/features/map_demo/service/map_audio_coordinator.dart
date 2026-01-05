@@ -41,11 +41,11 @@ class MapAudioCoordinator extends GetxController {
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
   ];
 
-  // Local SFX assets
+  // Local SFX assets (AssetSource prepends 'assets/' automatically)
   static const Map<String, String> sfxSounds = {
-    'click': 'assets/audio/sfx/click.mp3',
-    'hover': 'assets/audio/sfx/hover.mp3',
-    'select': 'assets/audio/sfx/select.mp3',
+    'click': 'audio/sfx/click.mp3',
+    'hover': 'audio/sfx/hover.mp3',
+    'select': 'audio/sfx/select.mp3',
   };
 
   // ─────────────────────────────────────────────────────────────────────────
