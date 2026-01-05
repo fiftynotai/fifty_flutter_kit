@@ -20,9 +20,9 @@ Future<void> main() async {
   // Initialize FiftyAudioEngine (before app start)
   await FiftyAudioEngine.instance.initialize();
 
-  // Configure channels for URL-based playback (not assets)
+  // Configure channels: BGM/Voice use URLs, SFX uses local assets
   FiftyAudioEngine.instance.bgm.changeSource(UrlSource.new);
-  FiftyAudioEngine.instance.sfx.changeSource(UrlSource.new);
+  FiftyAudioEngine.instance.sfx.changeSource(AssetSource.new);
   FiftyAudioEngine.instance.voice.changeSource(UrlSource.new);
 
   runApp(const FiftyDemoApp());

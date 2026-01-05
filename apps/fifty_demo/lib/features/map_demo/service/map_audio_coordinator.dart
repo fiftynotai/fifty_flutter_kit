@@ -41,13 +41,11 @@ class MapAudioCoordinator extends GetxController {
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
   ];
 
-  // SFX disabled - external URLs unreliable for demo
-  // To enable SFX, add local audio files to assets/audio/sfx/
-  // and update these paths to 'assets/audio/sfx/click.mp3', etc.
-  static const Map<String, String?> sfxSounds = {
-    'click': null, // Disabled - was blocking hotlink
-    'hover': null,
-    'select': null,
+  // Local SFX assets
+  static const Map<String, String> sfxSounds = {
+    'click': 'assets/audio/sfx/click.mp3',
+    'hover': 'assets/audio/sfx/hover.mp3',
+    'select': 'assets/audio/sfx/select.mp3',
   };
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -94,28 +92,22 @@ class MapAudioCoordinator extends GetxController {
   /// Plays entity tap SFX.
   Future<void> playEntityTapSfx() async {
     if (!_sfxEnabled) return;
-    final url = sfxSounds['click'];
-    if (url != null) {
-      await _audioService.playSfx(url);
-    }
+    final path = sfxSounds['click']!;
+    await _audioService.playSfx(path);
   }
 
   /// Plays entity hover SFX.
   Future<void> playEntityHoverSfx() async {
     if (!_sfxEnabled) return;
-    final url = sfxSounds['hover'];
-    if (url != null) {
-      await _audioService.playSfx(url);
-    }
+    final path = sfxSounds['hover']!;
+    await _audioService.playSfx(path);
   }
 
   /// Plays selection SFX.
   Future<void> playSelectSfx() async {
     if (!_sfxEnabled) return;
-    final url = sfxSounds['select'];
-    if (url != null) {
-      await _audioService.playSfx(url);
-    }
+    final path = sfxSounds['select']!;
+    await _audioService.playSfx(path);
   }
 
   /// Toggles SFX on/off.
