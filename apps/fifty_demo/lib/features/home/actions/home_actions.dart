@@ -29,12 +29,12 @@ class HomeActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Plays a click sound effect.
+  ///
+  /// Note: SFX disabled - external URLs block hotlinking.
+  /// To enable, add local audio files to assets/audio/sfx/.
   Future<void> onPlayClickSound() async {
-    if (_audioService.isInitialized) {
-      await _audioService.playSfx(
-        'https://www.soundjay.com/buttons/sounds/button-09a.mp3',
-      );
-    }
+    // SFX disabled - soundjay.com blocks hotlinking
+    // To enable: add local asset and use _audioService.playSfx('assets/...')
   }
 
   // ─────────────────────────────────────────────────────────────────────────
