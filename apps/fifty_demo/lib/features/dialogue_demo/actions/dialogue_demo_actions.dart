@@ -28,7 +28,7 @@ class DialogueDemoActions {
   /// Initializes the demo.
   Future<void> onInitialize() async {
     await _viewModel.orchestrator.initialize();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -38,7 +38,7 @@ class DialogueDemoActions {
   /// Called when play button is tapped.
   Future<void> onPlayTapped() async {
     await _viewModel.orchestrator.startDialogue();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when dialogue area is tapped (advance).
@@ -48,37 +48,37 @@ class DialogueDemoActions {
     } else {
       await _viewModel.orchestrator.advanceDialogue();
     }
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when next button is tapped.
   Future<void> onNextTapped() async {
     await _viewModel.orchestrator.advanceDialogue();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when previous button is tapped.
   Future<void> onPreviousTapped() async {
     await _viewModel.orchestrator.previousDialogue();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when skip button is tapped.
   void onSkipTapped() {
     _viewModel.orchestrator.skipTyping();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when stop button is tapped.
   void onStopTapped() {
     _viewModel.orchestrator.stopDialogue();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when reset button is tapped.
   void onResetTapped() {
     _viewModel.orchestrator.resetDialogue();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -88,13 +88,13 @@ class DialogueDemoActions {
   /// Called when TTS toggle is tapped.
   void onToggleTts() {
     _viewModel.orchestrator.toggleTts();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when auto-advance toggle is tapped.
   void onToggleAutoAdvance() {
     _viewModel.orchestrator.toggleAutoAdvance();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -108,12 +108,12 @@ class DialogueDemoActions {
     } else {
       await _viewModel.orchestrator.startListening();
     }
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when voice input is received.
   void onVoiceInput(String text) {
     _viewModel.orchestrator.processVoiceCommand(text);
-    _viewModel.refresh();
+    _viewModel.update();
   }
 }

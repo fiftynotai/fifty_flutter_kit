@@ -78,9 +78,4 @@ class DialogueDemoViewModel extends GetxController {
     update();
   }
 
-  /// Refresh state from orchestrator.
-  @override
-  void refresh() {
-    update();
-  }
 }

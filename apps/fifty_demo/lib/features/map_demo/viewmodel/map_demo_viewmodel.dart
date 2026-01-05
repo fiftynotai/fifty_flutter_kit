@@ -52,9 +52,4 @@ class MapDemoViewModel extends GetxController {
     return 'EMPTY';
   }
 
-  /// Refresh state from coordinator.
-  @override
-  void refresh() {
-    update();
-  }
 }

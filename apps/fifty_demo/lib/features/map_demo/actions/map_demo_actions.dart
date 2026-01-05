@@ -28,7 +28,7 @@ class MapDemoActions {
   /// Initializes the demo.
   Future<void> onInitialize() async {
     await _viewModel.coordinator.initialize();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -38,19 +38,19 @@ class MapDemoActions {
   /// Called when play BGM button is tapped.
   Future<void> onPlayBgmTapped() async {
     await _viewModel.coordinator.startExplorationBgm();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when stop BGM button is tapped.
   Future<void> onStopBgmTapped() async {
     await _viewModel.coordinator.stopExplorationBgm();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called when BGM toggle is tapped.
   void onToggleBgm() {
     _viewModel.coordinator.toggleBgm();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -60,7 +60,7 @@ class MapDemoActions {
   /// Called when SFX toggle is tapped.
   void onToggleSfx() {
     _viewModel.coordinator.toggleSfx();
-    _viewModel.refresh();
+    _viewModel.update();
   }
 
   /// Called to test SFX.
