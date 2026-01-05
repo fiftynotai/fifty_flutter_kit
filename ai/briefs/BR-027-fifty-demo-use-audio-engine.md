@@ -5,7 +5,7 @@
 **Effort:** M-Medium (4-8h)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** Ready
+**Status:** In Progress
 **Created:** 2026-01-05
 **Completed:** _(pending)_
 
@@ -174,12 +174,14 @@ _(None)_
 
 ## Workflow State
 
-**Phase:** INIT
-**Active Agent:** none
+**Phase:** BUILDING
+**Active Agent:** coder
 **Retry Count:** 0
 
 ### Agent Log
-_(Timestamped subagent invocations)_
+- 2026-01-05 - Starting HUNT with multi-agent workflow
+- 2026-01-05 - PLANNER complete: Plan saved to ai/plans/BR-027-plan.md
+- 2026-01-05 - Invoking coder agent...
 
 ---
 
