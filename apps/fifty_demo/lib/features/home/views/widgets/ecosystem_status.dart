@@ -7,7 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
-import '../../viewmodel/home_viewmodel.dart';
+import '../../controllers/home_view_model.dart';
 
 /// Ecosystem status display widget.
 ///

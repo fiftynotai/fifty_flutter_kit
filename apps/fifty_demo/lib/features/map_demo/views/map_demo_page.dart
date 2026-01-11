@@ -13,7 +13,7 @@ import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/status_indicator.dart';
 import '../actions/map_demo_actions.dart';
-import '../viewmodel/map_demo_viewmodel.dart';
+import '../controllers/map_demo_view_model.dart';
 import 'widgets/audio_controls.dart';
 import 'widgets/map_controls.dart';
 
@@ -28,7 +28,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
     // Initialize on first build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (Get.isRegistered<MapDemoActions>()) {
-        MapDemoActions.instance.onInitialize();
+        MapDemoActions.instance.onInitialize(context);
       }
     });
 
@@ -69,11 +69,11 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                   bgmEnabled: viewModel.bgmEnabled,
                   sfxEnabled: viewModel.sfxEnabled,
                   bgmPlaying: viewModel.bgmPlaying,
-                  onPlayBgm: actions.onPlayBgmTapped,
-                  onStopBgm: actions.onStopBgmTapped,
+                  onPlayBgm: () => actions.onPlayBgmTapped(context),
+                  onStopBgm: () => actions.onStopBgmTapped(context),
                   onToggleBgm: actions.onToggleBgm,
                   onToggleSfx: actions.onToggleSfx,
-                  onTestSfx: actions.onTestSfxTapped,
+                  onTestSfx: () => actions.onTestSfxTapped(context),
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
@@ -94,7 +94,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                   title: 'Map Preview',
                   subtitle: 'Interactive grid map',
                 ),
-                _buildMapWidget(viewModel, actions),
+                _buildMapWidget(context, viewModel, actions),
               ],
             ),
           ),
@@ -104,7 +104,11 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
   }
 
   /// Builds the map widget based on loading state.
-  Widget _buildMapWidget(MapDemoViewModel viewModel, MapDemoActions actions) {
+  Widget _buildMapWidget(
+    BuildContext context,
+    MapDemoViewModel viewModel,
+    MapDemoActions actions,
+  ) {
     final controller = viewModel.controller;
 
     // Show loading state
@@ -177,7 +181,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
           child: FiftyMapWidget(
             controller: controller,
             initialEntities: viewModel.entities,
-            onEntityTap: (entity) => actions.onEntityTapped(entity.id),
+            onEntityTap: (entity) => actions.onEntityTapped(context, entity.id),
           ),
         ),
       ),

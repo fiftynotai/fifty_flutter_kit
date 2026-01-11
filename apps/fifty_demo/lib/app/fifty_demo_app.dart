@@ -13,13 +13,13 @@ import 'package:loader_overlay/loader_overlay.dart';
 
 import '../core/bindings/initial_bindings.dart';
 import '../features/dialogue_demo/dialogue_demo_bindings.dart';
-import '../features/dialogue_demo/view/dialogue_demo_page.dart';
+import '../features/dialogue_demo/views/dialogue_demo_page.dart';
 import '../features/home/home_bindings.dart';
-import '../features/home/view/home_page.dart';
+import '../features/home/views/home_page.dart';
 import '../features/map_demo/map_demo_bindings.dart';
-import '../features/map_demo/view/map_demo_page.dart';
+import '../features/map_demo/views/map_demo_page.dart';
 import '../features/ui_showcase/ui_showcase_bindings.dart';
-import '../features/ui_showcase/view/ui_showcase_page.dart';
+import '../features/ui_showcase/views/ui_showcase_page.dart';
 
 /// Main app shell with navigation.
 ///

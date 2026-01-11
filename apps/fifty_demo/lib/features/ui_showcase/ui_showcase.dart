@@ -4,9 +4,9 @@
 library;
 
 export 'actions/ui_showcase_actions.dart';
-export 'view/ui_showcase_page.dart';
-export 'view/widgets/buttons_section.dart';
-export 'view/widgets/display_section.dart';
-export 'view/widgets/feedback_section.dart';
-export 'view/widgets/inputs_section.dart';
-export 'viewmodel/ui_showcase_viewmodel.dart';
+export 'controllers/ui_showcase_view_model.dart';
+export 'views/ui_showcase_page.dart';
+export 'views/widgets/buttons_section.dart';
+export 'views/widgets/display_section.dart';
+export 'views/widgets/feedback_section.dart';
+export 'views/widgets/inputs_section.dart';

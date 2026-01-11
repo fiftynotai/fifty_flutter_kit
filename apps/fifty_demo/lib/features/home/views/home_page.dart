@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/status_indicator.dart';
-import '../viewmodel/home_viewmodel.dart';
+import '../controllers/home_view_model.dart';
 import 'widgets/ecosystem_status.dart';
 import 'widgets/feature_nav_card.dart';
 

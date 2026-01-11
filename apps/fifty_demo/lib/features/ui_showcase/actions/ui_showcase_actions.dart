@@ -3,10 +3,12 @@
 /// Handles user interactions for the UI showcase feature.
 library;
 
+// ignore: unused_import - required for BuildContext type even if not currently used
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/presentation/actions/action_presenter.dart';
-import '../viewmodel/ui_showcase_viewmodel.dart';
+import '../controllers/ui_showcase_view_model.dart';
 
 /// Actions for the UI showcase feature.
 ///
@@ -15,7 +17,7 @@ class UiShowcaseActions {
   UiShowcaseActions(this._viewModel, this._presenter);
 
   final UiShowcaseViewModel _viewModel;
-  // ignore: unused_field - kept for future use in error handling
+  // ignore: unused_field - kept for future async methods
   final ActionPresenter _presenter;
 
   /// Static accessor for convenient access.

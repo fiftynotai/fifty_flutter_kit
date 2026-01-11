@@ -12,7 +12,7 @@ import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/status_indicator.dart';
 import '../actions/dialogue_demo_actions.dart';
-import '../viewmodel/dialogue_demo_viewmodel.dart';
+import '../controllers/dialogue_demo_view_model.dart';
 import 'widgets/dialogue_display.dart';
 import 'widgets/stt_controls.dart';
 import 'widgets/tts_controls.dart';
@@ -28,7 +28,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
     // Initialize on first build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (Get.isRegistered<DialogueDemoActions>()) {
-        DialogueDemoActions.instance.onInitialize();
+        DialogueDemoActions.instance.onInitialize(context);
         // Load default dialogue
         Get.find<DialogueDemoViewModel>().selectDialogue('Introduction');
       }
@@ -123,7 +123,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                   text: viewModel.displayedText,
                   speaker: viewModel.currentSpeaker,
                   isTyping: viewModel.isProcessing,
-                  onTap: actions.onDialogueTapped,
+                  onTap: () => actions.onDialogueTapped(context),
                 ),
                 const SizedBox(height: FiftySpacing.md),
                 // Progress bar
@@ -148,7 +148,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                     children: [
                       _ControlButton(
                         icon: Icons.skip_previous,
-                        onTap: actions.onPreviousTapped,
+                        onTap: () => actions.onPreviousTapped(context),
                       ),
                       _ControlButton(
                         icon: viewModel.isPlaying
@@ -156,12 +156,12 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                             : Icons.play_arrow,
                         onTap: viewModel.isPlaying
                             ? actions.onStopTapped
-                            : actions.onPlayTapped,
+                            : () => actions.onPlayTapped(context),
                         isPrimary: true,
                       ),
                       _ControlButton(
                         icon: Icons.skip_next,
-                        onTap: actions.onNextTapped,
+                        onTap: () => actions.onNextTapped(context),
                       ),
                       _ControlButton(
                         icon: Icons.replay,
@@ -193,7 +193,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 SttControls(
                   isListening: viewModel.sttListening,
                   recognizedText: viewModel.recognizedText,
-                  onMicTapped: actions.onMicTapped,
+                  onMicTapped: () => actions.onMicTapped(context),
                 ),
               ],
             ),

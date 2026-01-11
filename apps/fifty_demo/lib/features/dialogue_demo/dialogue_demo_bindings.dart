@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 
 import '../../core/presentation/actions/action_presenter.dart';
 import 'actions/dialogue_demo_actions.dart';
+import 'controllers/dialogue_demo_view_model.dart';
 import 'service/dialogue_orchestrator.dart';
-import 'viewmodel/dialogue_demo_viewmodel.dart';
 
 /// **DialogueDemoBindings**
 ///

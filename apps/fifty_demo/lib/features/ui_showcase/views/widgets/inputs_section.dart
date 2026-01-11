@@ -7,7 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
-import '../../viewmodel/ui_showcase_viewmodel.dart';
+import '../../controllers/ui_showcase_view_model.dart';
 
 /// Inputs section widget.
 ///
