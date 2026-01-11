@@ -3,10 +3,11 @@
 /// Handles user interactions for the home feature.
 library;
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/presentation/actions/action_presenter.dart';
-import '../viewmodel/home_viewmodel.dart';
+import '../controllers/home_view_model.dart';
 
 /// Actions for the home feature.
 ///
@@ -15,7 +16,6 @@ class HomeActions {
   HomeActions(this._viewModel, this._presenter);
 
   final HomeViewModel _viewModel;
-  // ignore: unused_field - kept for future use in error handling
   final ActionPresenter _presenter;
 
   /// Static accessor for convenient access.
@@ -48,9 +48,11 @@ class HomeActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Initializes services if needed.
-  Future<void> onInitializeServices() async {
+  Future<void> onInitializeServices(BuildContext context) async {
     if (!_viewModel.servicesInitialized) {
-      await _viewModel.initializeServices();
+      await _presenter.actionHandler(context, () async {
+        await _viewModel.initializeServices();
+      });
     }
   }
 }

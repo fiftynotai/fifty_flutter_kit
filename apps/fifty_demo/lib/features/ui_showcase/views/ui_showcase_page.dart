@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
-import '../viewmodel/ui_showcase_viewmodel.dart';
+import '../controllers/ui_showcase_view_model.dart';
 import 'widgets/buttons_section.dart';
 import 'widgets/display_section.dart';
 import 'widgets/feedback_section.dart';

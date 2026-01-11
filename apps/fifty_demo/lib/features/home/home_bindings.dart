@@ -11,7 +11,7 @@ import '../../shared/services/map_integration_service.dart';
 import '../../shared/services/sentences_integration_service.dart';
 import '../../shared/services/speech_integration_service.dart';
 import 'actions/home_actions.dart';
-import 'viewmodel/home_viewmodel.dart';
+import 'controllers/home_view_model.dart';
 
 /// **HomeBindings**
 ///

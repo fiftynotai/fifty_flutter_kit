@@ -4,12 +4,12 @@
 library;
 
 export 'actions/dialogue_demo_actions.dart';
+export 'controllers/dialogue_demo_view_model.dart';
 export 'service/demo_dialogues.dart';
 export 'service/dialogue_orchestrator.dart';
-export 'view/dialogue_demo_page.dart';
-export 'view/widgets/choice_buttons.dart';
-export 'view/widgets/dialogue_display.dart';
-export 'view/widgets/sentence_queue_panel.dart';
-export 'view/widgets/stt_controls.dart';
-export 'view/widgets/tts_controls.dart';
-export 'viewmodel/dialogue_demo_viewmodel.dart';
+export 'views/dialogue_demo_page.dart';
+export 'views/widgets/choice_buttons.dart';
+export 'views/widgets/dialogue_display.dart';
+export 'views/widgets/sentence_queue_panel.dart';
+export 'views/widgets/stt_controls.dart';
+export 'views/widgets/tts_controls.dart';

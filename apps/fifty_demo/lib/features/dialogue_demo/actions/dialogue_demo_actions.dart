@@ -3,10 +3,11 @@
 /// Handles user interactions for the dialogue demo feature.
 library;
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/presentation/actions/action_presenter.dart';
-import '../viewmodel/dialogue_demo_viewmodel.dart';
+import '../controllers/dialogue_demo_view_model.dart';
 
 /// Actions for the dialogue demo feature.
 ///
@@ -15,7 +16,6 @@ class DialogueDemoActions {
   DialogueDemoActions(this._viewModel, this._presenter);
 
   final DialogueDemoViewModel _viewModel;
-  // ignore: unused_field - kept for future use in error handling
   final ActionPresenter _presenter;
 
   /// Static accessor for convenient access.
@@ -26,9 +26,11 @@ class DialogueDemoActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Initializes the demo.
-  Future<void> onInitialize() async {
-    await _viewModel.orchestrator.initialize();
-    _viewModel.update();
+  Future<void> onInitialize(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      await _viewModel.orchestrator.initialize();
+      _viewModel.update();
+    });
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -36,31 +38,39 @@ class DialogueDemoActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Called when play button is tapped.
-  Future<void> onPlayTapped() async {
-    await _viewModel.orchestrator.startDialogue();
-    _viewModel.update();
+  Future<void> onPlayTapped(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      await _viewModel.orchestrator.startDialogue();
+      _viewModel.update();
+    });
   }
 
   /// Called when dialogue area is tapped (advance).
-  Future<void> onDialogueTapped() async {
-    if (_viewModel.orchestrator.isProcessing) {
-      _viewModel.orchestrator.skipTyping();
-    } else {
-      await _viewModel.orchestrator.advanceDialogue();
-    }
-    _viewModel.update();
+  Future<void> onDialogueTapped(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      if (_viewModel.orchestrator.isProcessing) {
+        _viewModel.orchestrator.skipTyping();
+      } else {
+        await _viewModel.orchestrator.advanceDialogue();
+      }
+      _viewModel.update();
+    });
   }
 
   /// Called when next button is tapped.
-  Future<void> onNextTapped() async {
-    await _viewModel.orchestrator.advanceDialogue();
-    _viewModel.update();
+  Future<void> onNextTapped(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      await _viewModel.orchestrator.advanceDialogue();
+      _viewModel.update();
+    });
   }
 
   /// Called when previous button is tapped.
-  Future<void> onPreviousTapped() async {
-    await _viewModel.orchestrator.previousDialogue();
-    _viewModel.update();
+  Future<void> onPreviousTapped(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      await _viewModel.orchestrator.previousDialogue();
+      _viewModel.update();
+    });
   }
 
   /// Called when skip button is tapped.
@@ -102,13 +112,15 @@ class DialogueDemoActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Called when mic button is tapped.
-  Future<void> onMicTapped() async {
-    if (_viewModel.orchestrator.sttListening) {
-      await _viewModel.orchestrator.stopListening();
-    } else {
-      await _viewModel.orchestrator.startListening();
-    }
-    _viewModel.update();
+  Future<void> onMicTapped(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      if (_viewModel.orchestrator.sttListening) {
+        await _viewModel.orchestrator.stopListening();
+      } else {
+        await _viewModel.orchestrator.startListening();
+      }
+      _viewModel.update();
+    });
   }
 
   /// Called when voice input is received.

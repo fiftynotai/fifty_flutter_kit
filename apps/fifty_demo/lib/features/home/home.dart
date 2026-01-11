@@ -4,7 +4,7 @@
 library;
 
 export 'actions/home_actions.dart';
-export 'view/home_page.dart';
-export 'view/widgets/ecosystem_status.dart';
-export 'view/widgets/feature_nav_card.dart';
-export 'viewmodel/home_viewmodel.dart';
+export 'controllers/home_view_model.dart';
+export 'views/home_page.dart';
+export 'views/widgets/ecosystem_status.dart';
+export 'views/widgets/feature_nav_card.dart';

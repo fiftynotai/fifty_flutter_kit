@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 import '../../core/presentation/actions/action_presenter.dart';
 import 'actions/ui_showcase_actions.dart';
-import 'viewmodel/ui_showcase_viewmodel.dart';
+import 'controllers/ui_showcase_view_model.dart';
 
 /// **UiShowcaseBindings**
 ///

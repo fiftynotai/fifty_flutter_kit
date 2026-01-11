@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import '../../core/presentation/actions/action_presenter.dart';
 import '../map_demo/service/map_audio_coordinator.dart';
 import 'actions/map_demo_actions.dart';
-import 'viewmodel/map_demo_viewmodel.dart';
+import 'controllers/map_demo_view_model.dart';
 
 /// **MapDemoBindings**
 ///
