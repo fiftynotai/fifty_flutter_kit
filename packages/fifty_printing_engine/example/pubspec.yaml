@@ -1,0 +1,27 @@
+name: fifty_printing_engine_example
+description: Example app demonstrating fifty_printing_engine package usage
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Local package dependency
+  fifty_printing_engine:
+    path: ../
+
+  # UI/State management
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

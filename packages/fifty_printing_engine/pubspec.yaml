@@ -1,0 +1,23 @@
+name: fifty_printing_engine
+description: "Fifty ecosystem printing engine - multi-printer ESC/POS printing with Bluetooth and WiFi support"
+version: 1.0.0
+homepage: https://github.com/fiftynotai/fifty_eco_system
+repository: https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_printing_engine
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  escpos: any
+  print_bluetooth_thermal: ^1.1.6
+  permission_handler: ^12.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mockito: ^5.4.0
+  build_runner: ^2.4.0

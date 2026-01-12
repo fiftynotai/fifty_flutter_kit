@@ -3,7 +3,7 @@
 **Type:** Migration
 **Priority:** P2-Medium
 **Effort:** M-Medium (4-6 hours)
-**Status:** Ready
+**Status:** In Progress
 **Created:** 2026-01-11
 **Assignee:** -
 
