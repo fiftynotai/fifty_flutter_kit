@@ -286,12 +286,6 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
                 color: FiftyColors.hyperChrome,
               ),
             ),
-            SizedBox(height: FiftySpacing.xxxl),
-            FiftyButton(
-              label: 'Add Printer',
-              icon: Icons.add,
-              onPressed: _showAddPrinterDialog,
-            ),
           ],
         ),
       ),
