@@ -5,17 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2026-01-11
+## [1.0.0] - 2026-01-12
+
+Initial release of fifty_printing_engine to the Fifty Ecosystem.
+
+### Added
+- **Fifty Ecosystem Integration** - Package now part of Fifty ecosystem with consistent branding
+- **FDL-Compliant Example App** - Complete example app demonstrating all features with Fifty Design Language
+  - Kinetic Brutalism aesthetic with FiftyTheme.dark()
+  - FiftyCard, FiftyButton, and FDL tokens throughout
+  - Professional empty states and loading indicators
+- **Comprehensive Documentation** - Full README with:
+  - Complete API reference
+  - Usage examples for all printing strategies
+  - Platform setup guides (Android/iOS)
+  - Kitchen/receipt printing workflow example
 
 ### Changed
-- **Migrated to Fifty Ecosystem** - Package rebranded from `printing_engine` to `fifty_printing_engine`
-- Updated package name, imports, and documentation
-- No API breaking changes - all class names remain the same
+- **Package Rebranded** - Migrated from `printing_engine` to `fifty_printing_engine`
+- **Updated Imports** - Use `package:fifty_printing_engine/fifty_printing_engine.dart`
+- **Repository** - Now hosted in fifty_eco_system monorepo
+
+### Fixed
+- **Empty State UI** - Removed duplicate "Add Printer" button in empty state
 
 ### Migration Guide
+
 If upgrading from `printing_engine`:
-1. Update pubspec.yaml: `fifty_printing_engine: ^1.0.0`
-2. Update imports: `package:fifty_printing_engine/fifty_printing_engine.dart`
+
+1. Update pubspec.yaml:
+   ```yaml
+   dependencies:
+     fifty_printing_engine: ^1.0.0
+   ```
+
+2. Update imports:
+   ```dart
+   import 'package:fifty_printing_engine/fifty_printing_engine.dart';
+   ```
+
+No API breaking changes - all class names remain the same.
+
+---
 
 ## [0.1.0] - 2025-11-07
 
