@@ -1,3 +1,5 @@
+import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/printer_management_screen.dart';
@@ -15,10 +17,9 @@ class PrintingEngineExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Printing Engine Example',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
+      theme: FiftyTheme.dark(),
+      darkTheme: FiftyTheme.dark(),
+      themeMode: ThemeMode.dark,
       home: const MainNavigationScreen(),
     );
   }
@@ -76,6 +77,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           });
         },
         destinations: _destinations,
+        backgroundColor: FiftyColors.gunmetal,
+        indicatorColor: FiftyColors.crimsonPulse.withOpacity(0.2),
       ),
     );
   }

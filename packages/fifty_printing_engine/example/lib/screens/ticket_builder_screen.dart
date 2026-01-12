@@ -1,3 +1,5 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 
@@ -26,235 +28,276 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ticket Builder'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(
+          'Ticket Builder',
+          style: TextStyle(color: FiftyColors.terminalWhite),
+        ),
+        backgroundColor: FiftyColors.voidBlack,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Instructions Card
-          Card(
-            color: Colors.blue[50],
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: Colors.blue[700]),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Build a custom ticket with text formatting',
-                      style: TextStyle(
-                        color: Colors.blue[900],
-                        fontWeight: FontWeight.w500,
-                      ),
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            backgroundColor: FiftyColors.crimsonPulse.withOpacity(0.1),
+            scanlineOnHover: false,
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: FiftyColors.crimsonPulse),
+                SizedBox(width: FiftySpacing.md),
+                Expanded(
+                  child: Text(
+                    'Build a custom ticket with text formatting',
+                    style: TextStyle(
+                      color: FiftyColors.terminalWhite,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: FiftySpacing.lg),
 
           // Text Input
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Text Content',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _textController,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter text to print',
-                      border: OutlineInputBorder(),
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Text Content',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: FiftyColors.terminalWhite,
+                      ),
+                ),
+                SizedBox(height: FiftySpacing.md),
+                TextField(
+                  controller: _textController,
+                  onChanged: (_) => setState(() {}),
+                  decoration: InputDecoration(
+                    hintText: 'Enter text to print',
+                    hintStyle: TextStyle(color: FiftyColors.hyperChrome),
+                    border: OutlineInputBorder(
+                      borderRadius: FiftyRadii.standardRadius,
+                      borderSide: BorderSide(color: FiftyColors.border),
                     ),
-                    maxLines: 3,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: FiftyRadii.standardRadius,
+                      borderSide: BorderSide(color: FiftyColors.border),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: FiftyRadii.standardRadius,
+                      borderSide: BorderSide(color: FiftyColors.crimsonPulse),
+                    ),
+                    filled: true,
+                    fillColor: FiftyColors.voidBlack,
                   ),
-                ],
-              ),
+                  style: TextStyle(color: FiftyColors.terminalWhite),
+                  maxLines: 3,
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: FiftySpacing.lg),
 
           // Formatting Options
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Formatting',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Formatting',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: FiftyColors.terminalWhite,
+                      ),
+                ),
+                SizedBox(height: FiftySpacing.lg),
+
+                // Bold and Underline
+                Wrap(
+                  spacing: FiftySpacing.sm,
+                  children: [
+                    FilterChip(
+                      label: Text(
+                        'Bold',
+                        style: TextStyle(
+                          color: _bold
+                              ? FiftyColors.terminalWhite
+                              : FiftyColors.hyperChrome,
                         ),
-                  ),
-                  const SizedBox(height: 16),
+                      ),
+                      selected: _bold,
+                      selectedColor: FiftyColors.crimsonPulse.withOpacity(0.3),
+                      checkmarkColor: FiftyColors.crimsonPulse,
+                      backgroundColor: FiftyColors.gunmetal,
+                      onSelected: (value) {
+                        setState(() {
+                          _bold = value;
+                        });
+                      },
+                    ),
+                    FilterChip(
+                      label: Text(
+                        'Underline',
+                        style: TextStyle(
+                          color: _underline
+                              ? FiftyColors.terminalWhite
+                              : FiftyColors.hyperChrome,
+                        ),
+                      ),
+                      selected: _underline,
+                      selectedColor: FiftyColors.crimsonPulse.withOpacity(0.3),
+                      checkmarkColor: FiftyColors.crimsonPulse,
+                      backgroundColor: FiftyColors.gunmetal,
+                      onSelected: (value) {
+                        setState(() {
+                          _underline = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
 
-                  // Bold and Underline
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      FilterChip(
-                        label: const Text('Bold'),
-                        selected: _bold,
-                        onSelected: (value) {
-                          setState(() {
-                            _bold = value;
-                          });
-                        },
-                      ),
-                      FilterChip(
-                        label: const Text('Underline'),
-                        selected: _underline,
-                        onSelected: (value) {
-                          setState(() {
-                            _underline = value;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+                SizedBox(height: FiftySpacing.lg),
 
-                  const SizedBox(height: 16),
+                // Text Size
+                Text(
+                  'Text Size',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: FiftyColors.terminalWhite,
+                      ),
+                ),
+                SizedBox(height: FiftySpacing.sm),
+                SegmentedButton<PosTextSize>(
+                  segments: const [
+                    ButtonSegment(
+                      value: PosTextSize.size1,
+                      label: Text('1x'),
+                    ),
+                    ButtonSegment(
+                      value: PosTextSize.size2,
+                      label: Text('2x'),
+                    ),
+                    ButtonSegment(
+                      value: PosTextSize.size3,
+                      label: Text('3x'),
+                    ),
+                  ],
+                  selected: {_textSize},
+                  onSelectionChanged: (Set<PosTextSize> selection) {
+                    setState(() {
+                      _textSize = selection.first;
+                    });
+                  },
+                ),
 
-                  // Text Size
-                  Text(
-                    'Text Size',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  SegmentedButton<PosTextSize>(
-                    segments: const [
-                      ButtonSegment(
-                        value: PosTextSize.size1,
-                        label: Text('1x'),
-                      ),
-                      ButtonSegment(
-                        value: PosTextSize.size2,
-                        label: Text('2x'),
-                      ),
-                      ButtonSegment(
-                        value: PosTextSize.size3,
-                        label: Text('3x'),
-                      ),
-                    ],
-                    selected: {_textSize},
-                    onSelectionChanged: (Set<PosTextSize> selection) {
-                      setState(() {
-                        _textSize = selection.first;
-                      });
-                    },
-                  ),
+                SizedBox(height: FiftySpacing.lg),
 
-                  const SizedBox(height: 16),
-
-                  // Alignment
-                  Text(
-                    'Alignment',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  SegmentedButton<PosAlign>(
-                    segments: const [
-                      ButtonSegment(
-                        value: PosAlign.left,
-                        icon: Icon(Icons.format_align_left, size: 18),
+                // Alignment
+                Text(
+                  'Alignment',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: FiftyColors.terminalWhite,
                       ),
-                      ButtonSegment(
-                        value: PosAlign.center,
-                        icon: Icon(Icons.format_align_center, size: 18),
-                      ),
-                      ButtonSegment(
-                        value: PosAlign.right,
-                        icon: Icon(Icons.format_align_right, size: 18),
-                      ),
-                    ],
-                    selected: {_align},
-                    onSelectionChanged: (Set<PosAlign> selection) {
-                      setState(() {
-                        _align = selection.first;
-                      });
-                    },
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: FiftySpacing.sm),
+                SegmentedButton<PosAlign>(
+                  segments: const [
+                    ButtonSegment(
+                      value: PosAlign.left,
+                      icon: Icon(Icons.format_align_left, size: 18),
+                    ),
+                    ButtonSegment(
+                      value: PosAlign.center,
+                      icon: Icon(Icons.format_align_center, size: 18),
+                    ),
+                    ButtonSegment(
+                      value: PosAlign.right,
+                      icon: Icon(Icons.format_align_right, size: 18),
+                    ),
+                  ],
+                  selected: {_align},
+                  onSelectionChanged: (Set<PosAlign> selection) {
+                    setState(() {
+                      _align = selection.first;
+                    });
+                  },
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 24),
+          SizedBox(height: FiftySpacing.xxl),
 
           // Print Button
-          FilledButton.icon(
+          FiftyButton(
+            label: 'Print Custom Ticket',
+            icon: Icons.print,
             onPressed: _printCustomTicket,
-            icon: const Icon(Icons.print),
-            label: const Text('Print Custom Ticket'),
-            style: FilledButton.styleFrom(
-              padding: const EdgeInsets.all(16),
-            ),
+            expanded: true,
+            size: FiftyButtonSize.large,
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: FiftySpacing.lg),
 
           // Preview Card
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Preview',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey[300]!),
-                    ),
-                    child: Text(
-                      _textController.text.isEmpty
-                          ? 'Your text will appear here'
-                          : _textController.text,
-                      textAlign: _align == PosAlign.center
-                          ? TextAlign.center
-                          : _align == PosAlign.right
-                              ? TextAlign.right
-                              : TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: _bold ? FontWeight.bold : FontWeight.normal,
-                        decoration: _underline
-                            ? TextDecoration.underline
-                            : TextDecoration.none,
-                        fontSize: _textSize == PosTextSize.size3
-                            ? 24
-                            : _textSize == PosTextSize.size2
-                                ? 18
-                                : 14,
-                        color: _textController.text.isEmpty
-                            ? Colors.grey[400]
-                            : Colors.black87,
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Preview',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: FiftyColors.terminalWhite,
                       ),
+                ),
+                SizedBox(height: FiftySpacing.md),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(FiftySpacing.lg),
+                  decoration: BoxDecoration(
+                    color: FiftyColors.voidBlack,
+                    borderRadius: FiftyRadii.standardRadius,
+                    border: Border.all(color: FiftyColors.border),
+                  ),
+                  child: Text(
+                    _textController.text.isEmpty
+                        ? 'Your text will appear here'
+                        : _textController.text,
+                    textAlign: _align == PosAlign.center
+                        ? TextAlign.center
+                        : _align == PosAlign.right
+                            ? TextAlign.right
+                            : TextAlign.left,
+                    style: TextStyle(
+                      fontWeight: _bold ? FontWeight.bold : FontWeight.normal,
+                      decoration: _underline
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                      fontSize: _textSize == PosTextSize.size3
+                          ? 24
+                          : _textSize == PosTextSize.size2
+                              ? 18
+                              : 14,
+                      color: _textController.text.isEmpty
+                          ? FiftyColors.hyperChrome
+                          : FiftyColors.terminalWhite,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -267,9 +310,9 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
 
     if (text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter some text'),
-          backgroundColor: Colors.orange,
+        SnackBar(
+          content: const Text('Please enter some text'),
+          backgroundColor: FiftyColors.warning,
         ),
       );
       return;
@@ -279,9 +322,9 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
     final printers = _engine.getAvailablePrinters();
     if (printers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No printers registered'),
-          backgroundColor: Colors.orange,
+        SnackBar(
+          content: const Text('No printers registered'),
+          backgroundColor: FiftyColors.warning,
         ),
       );
       return;
@@ -308,9 +351,9 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
 
     // Print
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Printing custom ticket...'),
-        backgroundColor: Colors.blue,
+      SnackBar(
+        content: const Text('Printing custom ticket...'),
+        backgroundColor: FiftyColors.gunmetal,
       ),
     );
 
@@ -322,7 +365,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Printed to ${result.successCount} printer(s)'),
-            backgroundColor: Colors.green,
+            backgroundColor: FiftyColors.success,
           ),
         );
       } else if (result.isPartialSuccess) {
@@ -330,14 +373,14 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
           SnackBar(
             content: Text(
                 'Partial success: ${result.successCount}/${result.totalPrinters}'),
-            backgroundColor: Colors.orange,
+            backgroundColor: FiftyColors.warning,
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Print failed on all printers'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('Print failed on all printers'),
+            backgroundColor: FiftyColors.error,
           ),
         );
       }

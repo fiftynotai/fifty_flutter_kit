@@ -15,6 +15,14 @@ dependencies:
   fifty_printing_engine:
     path: ../
 
+  # FDL packages
+  fifty_tokens:
+    path: ../../fifty_tokens
+  fifty_theme:
+    path: ../../fifty_theme
+  fifty_ui:
+    path: ../../fifty_ui
+
   # UI/State management
   cupertino_icons: ^1.0.2
 

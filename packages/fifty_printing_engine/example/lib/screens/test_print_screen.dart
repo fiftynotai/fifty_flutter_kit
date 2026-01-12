@@ -1,3 +1,5 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import '../examples/kitchen_ticket_example.dart';
@@ -21,108 +23,111 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Test Print'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(
+          'Test Print',
+          style: TextStyle(color: FiftyColors.terminalWhite),
+        ),
+        backgroundColor: FiftyColors.voidBlack,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Routing Mode Selection
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Printing Mode',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 12),
-                  SegmentedButton<PrintingMode>(
-                    segments: const [
-                      ButtonSegment(
-                        value: PrintingMode.printToAll,
-                        label: Text('All'),
-                        icon: Icon(Icons.grid_view, size: 18),
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Printing Mode',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: FiftyColors.terminalWhite,
                       ),
-                      ButtonSegment(
-                        value: PrintingMode.roleBasedRouting,
-                        label: Text('Role'),
-                        icon: Icon(Icons.category, size: 18),
-                      ),
-                      ButtonSegment(
-                        value: PrintingMode.selectPerPrint,
-                        label: Text('Select'),
-                        icon: Icon(Icons.touch_app, size: 18),
-                      ),
-                    ],
-                    selected: {_currentMode},
-                    onSelectionChanged: (Set<PrintingMode> selection) {
-                      setState(() {
-                        _currentMode = selection.first;
-                        _engine.setPrintingMode(_currentMode);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  _buildModeDescription(),
-                ],
-              ),
+                ),
+                SizedBox(height: FiftySpacing.md),
+                SegmentedButton<PrintingMode>(
+                  segments: const [
+                    ButtonSegment(
+                      value: PrintingMode.printToAll,
+                      label: Text('All'),
+                      icon: Icon(Icons.grid_view, size: 18),
+                    ),
+                    ButtonSegment(
+                      value: PrintingMode.roleBasedRouting,
+                      label: Text('Role'),
+                      icon: Icon(Icons.category, size: 18),
+                    ),
+                    ButtonSegment(
+                      value: PrintingMode.selectPerPrint,
+                      label: Text('Select'),
+                      icon: Icon(Icons.touch_app, size: 18),
+                    ),
+                  ],
+                  selected: {_currentMode},
+                  onSelectionChanged: (Set<PrintingMode> selection) {
+                    setState(() {
+                      _currentMode = selection.first;
+                      _engine.setPrintingMode(_currentMode);
+                    });
+                  },
+                ),
+                SizedBox(height: FiftySpacing.md),
+                _buildModeDescription(),
+              ],
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: FiftySpacing.lg),
 
           // Role Mapping (if role-based mode)
           if (_currentMode == PrintingMode.roleBasedRouting)
             _buildRoleMappingCard(),
 
           // Sample Tickets
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Sample Tickets',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildSampleTicketButton(
-                    title: 'Kitchen Order',
-                    description: 'Print a sample kitchen order ticket',
-                    icon: Icons.restaurant_menu,
-                    color: Colors.orange,
-                    onPressed: _printKitchenTicket,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildSampleTicketButton(
-                    title: 'Receipt',
-                    description: 'Print a sample receipt',
-                    icon: Icons.receipt_long,
-                    color: Colors.blue,
-                    onPressed: _printReceiptTicket,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildSampleTicketButton(
-                    title: 'Simple Test',
-                    description: 'Print a simple "Hello World" ticket',
-                    icon: Icons.check_circle,
-                    color: Colors.green,
-                    onPressed: _printSimpleTicket,
-                  ),
-                ],
-              ),
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sample Tickets',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: FiftyColors.terminalWhite,
+                      ),
+                ),
+                SizedBox(height: FiftySpacing.lg),
+                _buildSampleTicketButton(
+                  title: 'Kitchen Order',
+                  description: 'Print a sample kitchen order ticket',
+                  icon: Icons.restaurant_menu,
+                  color: FiftyColors.warning,
+                  onPressed: _printKitchenTicket,
+                ),
+                SizedBox(height: FiftySpacing.md),
+                _buildSampleTicketButton(
+                  title: 'Receipt',
+                  description: 'Print a sample receipt',
+                  icon: Icons.receipt_long,
+                  color: FiftyColors.crimsonPulse,
+                  onPressed: _printReceiptTicket,
+                ),
+                SizedBox(height: FiftySpacing.md),
+                _buildSampleTicketButton(
+                  title: 'Simple Test',
+                  description: 'Print a simple "Hello World" ticket',
+                  icon: Icons.check_circle,
+                  color: FiftyColors.success,
+                  onPressed: _printSimpleTicket,
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: FiftySpacing.lg),
 
           // Last Print Result
           if (_lastResult != null)
@@ -141,35 +146,36 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
       case PrintingMode.printToAll:
         description = 'Prints to all registered printers';
         icon = Icons.grid_view;
-        color = Colors.blue;
+        color = FiftyColors.crimsonPulse;
         break;
       case PrintingMode.roleBasedRouting:
         description = 'Routes to printers based on assigned roles';
         icon = Icons.category;
-        color = Colors.purple;
+        color = FiftyColors.crimsonPulse;
         break;
       case PrintingMode.selectPerPrint:
         description = 'Manually select target printers before each print';
         icon = Icons.touch_app;
-        color = Colors.green;
+        color = FiftyColors.success;
         break;
     }
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: FiftyRadii.standardRadius,
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Row(
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(width: 12),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Text(
               description,
               style: TextStyle(
-                color: color.withOpacity(0.9),
+                color: FiftyColors.terminalWhite,
                 fontSize: 13,
               ),
             ),
@@ -182,70 +188,95 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
   Widget _buildRoleMappingCard() {
     final printers = _engine.getAvailablePrinters();
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Role Mappings',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            ...PrinterRole.values.map((role) {
-              final rolePrinters = printers.where((p) => p.role == role).toList();
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: [
-                    Chip(
-                      label: Text(role.name.toUpperCase()),
-                      avatar: const Icon(Icons.assignment, size: 16),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        rolePrinters.isEmpty
-                            ? 'No printers assigned'
-                            : rolePrinters.map((p) => p.name).join(', '),
-                        style: TextStyle(
-                          color: rolePrinters.isEmpty ? Colors.grey : Colors.black87,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ],
+    return FiftyCard(
+      padding: EdgeInsets.all(FiftySpacing.lg),
+      margin: EdgeInsets.only(bottom: FiftySpacing.lg),
+      scanlineOnHover: false,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Role Mappings',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: FiftyColors.terminalWhite,
                 ),
-              );
-            }),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.orange[50],
-                borderRadius: BorderRadius.circular(8),
-              ),
+          ),
+          SizedBox(height: FiftySpacing.md),
+          ...PrinterRole.values.map((role) {
+            final rolePrinters = printers.where((p) => p.role == role).toList();
+            return Padding(
+              padding: EdgeInsets.only(bottom: FiftySpacing.sm),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.orange[700], size: 20),
-                  const SizedBox(width: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: FiftySpacing.sm,
+                      vertical: FiftySpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: FiftyColors.crimsonPulse.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.assignment, size: 14, color: FiftyColors.crimsonPulse),
+                        SizedBox(width: FiftySpacing.xs),
+                        Text(
+                          role.name.toUpperCase(),
+                          style: TextStyle(
+                            color: FiftyColors.crimsonPulse,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
-                      'Assign roles to printers in the Printer Management screen',
+                      rolePrinters.isEmpty
+                          ? 'No printers assigned'
+                          : rolePrinters.map((p) => p.name).join(', '),
                       style: TextStyle(
-                        color: Colors.orange[900],
-                        fontSize: 12,
+                        color: rolePrinters.isEmpty
+                            ? FiftyColors.hyperChrome
+                            : FiftyColors.terminalWhite,
+                        fontSize: 13,
                       ),
                     ),
                   ),
                 ],
               ),
+            );
+          }),
+          SizedBox(height: FiftySpacing.sm),
+          Container(
+            padding: EdgeInsets.all(FiftySpacing.md),
+            decoration: BoxDecoration(
+              color: FiftyColors.warning.withOpacity(0.1),
+              borderRadius: FiftyRadii.standardRadius,
+              border: Border.all(color: FiftyColors.warning.withOpacity(0.3)),
             ),
-          ],
-        ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: FiftyColors.warning, size: 20),
+                SizedBox(width: FiftySpacing.sm),
+                Expanded(
+                  child: Text(
+                    'Assign roles to printers in the Printer Management screen',
+                    style: TextStyle(
+                      color: FiftyColors.terminalWhite,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -257,41 +288,41 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
     required Color color,
     required VoidCallback onPressed,
   }) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.all(16),
-      ),
+    return FiftyCard(
+      onTap: onPressed,
+      padding: EdgeInsets.all(FiftySpacing.lg),
+      scanlineOnHover: false,
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.1),
+            backgroundColor: color.withOpacity(0.2),
             child: Icon(icon, color: color),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: FiftySpacing.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
+                    color: FiftyColors.terminalWhite,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: FiftySpacing.xs),
                 Text(
                   description,
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: FiftyColors.hyperChrome,
                     fontSize: 13,
                   ),
                 ),
               ],
             ),
           ),
-          const Icon(Icons.print),
+          Icon(Icons.print, color: FiftyColors.hyperChrome),
         ],
       ),
     );
@@ -340,7 +371,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
     // Check if printers are registered
     final printers = _engine.getAvailablePrinters();
     if (printers.isEmpty) {
-      _showSnackBar('No printers registered', Colors.orange);
+      _showSnackBar('No printers registered', FiftyColors.warning);
       return;
     }
 
@@ -348,7 +379,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
     final ticket = await generator();
 
     // Show printing message
-    _showSnackBar('Printing $ticketName...', Colors.blue);
+    _showSnackBar('Printing $ticketName...', FiftyColors.gunmetal);
 
     // Print based on mode
     PrintResult result;
@@ -386,15 +417,15 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
     if (result.isSuccess) {
       _showSnackBar(
         'Printed to ${result.successCount} printer(s)',
-        Colors.green,
+        FiftyColors.success,
       );
     } else if (result.isPartialSuccess) {
       _showSnackBar(
         'Partial success: ${result.successCount}/${result.totalPrinters}',
-        Colors.orange,
+        FiftyColors.warning,
       );
     } else {
-      _showSnackBar('Print failed on all printers', Colors.red);
+      _showSnackBar('Print failed on all printers', FiftyColors.error);
     }
   }
 

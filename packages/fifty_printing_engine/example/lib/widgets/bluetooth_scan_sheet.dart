@@ -1,3 +1,5 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 
@@ -47,9 +49,9 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      padding: EdgeInsets.all(FiftySpacing.xxl),
+      decoration: BoxDecoration(
+        color: FiftyColors.gunmetal,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -59,34 +61,40 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
           // Header
           Row(
             children: [
-              const Icon(Icons.bluetooth_searching, color: Colors.blue),
-              const SizedBox(width: 12),
+              Icon(Icons.bluetooth_searching, color: FiftyColors.crimsonPulse),
+              SizedBox(width: FiftySpacing.md),
               Text(
                 'Scan for Bluetooth Printers',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: FiftyColors.terminalWhite,
                     ),
               ),
               const Spacer(),
               IconButton(
-                icon: const Icon(Icons.close),
+                icon: Icon(Icons.close, color: FiftyColors.hyperChrome),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: FiftySpacing.lg),
 
           // Loading State
           if (_isScanning) ...[
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(32.0),
+                padding: EdgeInsets.all(FiftySpacing.xxxl),
                 child: Column(
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Scanning for Bluetooth printers...'),
+                    CircularProgressIndicator(
+                      color: FiftyColors.crimsonPulse,
+                    ),
+                    SizedBox(height: FiftySpacing.lg),
+                    Text(
+                      'Scanning for Bluetooth printers...',
+                      style: TextStyle(color: FiftyColors.terminalWhite),
+                    ),
                   ],
                 ),
               ),
@@ -96,44 +104,44 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
           // Error State
           if (_error != null && !_isScanning) ...[
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(FiftySpacing.lg),
               decoration: BoxDecoration(
-                color: Colors.red[50],
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.red[200]!),
+                color: FiftyColors.error.withOpacity(0.1),
+                borderRadius: FiftyRadii.standardRadius,
+                border: Border.all(color: FiftyColors.error.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.red),
-                  const SizedBox(width: 12),
+                  Icon(Icons.error_outline, color: FiftyColors.error),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
                       _error!,
-                      style: TextStyle(color: Colors.red[900]),
+                      style: TextStyle(color: FiftyColors.terminalWhite),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: FiftySpacing.lg),
             Center(
               child: Wrap(
-                spacing: 8,
+                spacing: FiftySpacing.sm,
                 alignment: WrapAlignment.center,
                 children: [
                   if (_error!.contains('permission') || _error!.contains('Settings'))
-                    FilledButton.icon(
+                    FiftyButton(
+                      label: 'Open Settings',
+                      icon: Icons.settings,
                       onPressed: () async {
                         await _engine.openBluetoothSettings();
                       },
-                      icon: const Icon(Icons.settings),
-                      label: const Text('Open Settings'),
                     )
                   else
-                    FilledButton.icon(
+                    FiftyButton(
+                      label: 'Retry',
+                      icon: Icons.refresh,
                       onPressed: _scanForPrinters,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Retry'),
                     ),
                 ],
               ),
@@ -144,36 +152,37 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
           if (!_isScanning && _error == null) ...[
             if (_discoveredPrinters.isEmpty) ...[
               Container(
-                padding: const EdgeInsets.all(32),
+                padding: EdgeInsets.all(FiftySpacing.xxxl),
                 child: Center(
                   child: Column(
                     children: [
                       Icon(
                         Icons.bluetooth_disabled,
                         size: 64,
-                        color: Colors.grey[400],
+                        color: FiftyColors.hyperChrome,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: FiftySpacing.lg),
                       Text(
                         'No Printers Found',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.grey[600],
+                              color: FiftyColors.hyperChrome,
                             ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: FiftySpacing.sm),
                       Text(
                         'Make sure printer is paired in Bluetooth settings',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.grey[500],
+                          color: FiftyColors.hyperChrome,
                           fontSize: 13,
                         ),
                       ),
-                      const SizedBox(height: 24),
-                      OutlinedButton.icon(
+                      SizedBox(height: FiftySpacing.xxl),
+                      FiftyButton(
+                        label: 'Scan Again',
+                        icon: Icons.refresh,
+                        variant: FiftyButtonVariant.secondary,
                         onPressed: _scanForPrinters,
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Scan Again'),
                       ),
                     ],
                   ),
@@ -183,10 +192,10 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
               Text(
                 '${_discoveredPrinters.length} printer(s) found',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.grey[600],
+                      color: FiftyColors.hyperChrome,
                     ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: FiftySpacing.md),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 400),
                 child: ListView.builder(
@@ -194,40 +203,54 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
                   itemCount: _discoveredPrinters.length,
                   itemBuilder: (context, index) {
                     final printer = _discoveredPrinters[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
+                    return FiftyCard(
+                      margin: EdgeInsets.only(bottom: FiftySpacing.sm),
+                      padding: EdgeInsets.zero,
+                      onTap: () {
+                        Navigator.pop(context, printer);
+                      },
+                      scanlineOnHover: false,
                       child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: Colors.blue,
-                          child: Icon(Icons.print, color: Colors.white, size: 20),
+                        leading: CircleAvatar(
+                          backgroundColor: FiftyColors.crimsonPulse,
+                          child: Icon(
+                            Icons.print,
+                            color: FiftyColors.terminalWhite,
+                            size: 20,
+                          ),
                         ),
                         title: Text(
                           printer.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: FiftyColors.terminalWhite,
+                          ),
                         ),
                         subtitle: Text(
                           printer.macAddress,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: FiftyColors.hyperChrome,
                             fontSize: 12,
                             fontFamily: 'monospace',
                           ),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                        onTap: () {
-                          Navigator.pop(context, printer);
-                        },
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: FiftyColors.hyperChrome,
+                        ),
                       ),
                     );
                   },
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: FiftySpacing.lg),
               Center(
-                child: TextButton.icon(
+                child: FiftyButton(
+                  label: 'Scan Again',
+                  icon: Icons.refresh,
+                  variant: FiftyButtonVariant.ghost,
                   onPressed: _scanForPrinters,
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Scan Again'),
                 ),
               ),
             ],
