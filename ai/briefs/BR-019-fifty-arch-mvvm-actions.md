@@ -15,7 +15,7 @@
 
 **What's broken or missing?**
 
-The fifty_eco_system provides design tokens, themes, UI components, and specialized engines (audio, speech, sentences, map), but lacks a foundational **architecture package** that establishes the standard patterns for building Flutter applications.
+The fifty_flutter_kit provides design tokens, themes, UI components, and specialized engines (audio, speech, sentences, map), but lacks a foundational **architecture package** that establishes the standard patterns for building Flutter applications.
 
 Currently, each example app implements its own MVVM+Actions pattern manually. There's no reusable, standardized architecture foundation that:
 - Provides base classes for ViewModels, Actions, Services
@@ -116,7 +116,7 @@ A new package `fifty_arch` exists that:
 ### Naming Convention
 - Package: `fifty_arch`
 - Classes: `Fifty` prefix (FiftyViewModel, FiftyActions, etc.)
-- Follow existing fifty_eco_system naming patterns
+- Follow existing fifty_flutter_kit naming patterns
 
 ### Out of Scope
 - Full application implementation (that's BR-018)

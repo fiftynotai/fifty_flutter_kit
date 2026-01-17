@@ -7,7 +7,7 @@
 
 ## Summary
 
-Migrate and rebrand `printing_engine` package from `opaala_admin_app_v3/packages/` to `fifty_eco_system/packages/fifty_printing_engine` following Fifty ecosystem conventions. This is a pure rebrand - no functionality changes.
+Migrate and rebrand `printing_engine` package from `opaala_admin_app_v3/packages/` to `fifty_flutter_kit/packages/fifty_printing_engine` following Fifty ecosystem conventions. This is a pure rebrand - no functionality changes.
 
 ## Files to Modify
 
@@ -31,13 +31,13 @@ rsync -av --exclude='.dart_tool' --exclude='build' --exclude='.idea' \
   --exclude='.flutter-plugins' --exclude='.flutter-plugins-dependencies' \
   --exclude='.packages' --exclude='pubspec.lock' --exclude='*.iml' \
   /Users/m.elamin/StudioProjects/opaala_admin_app_v3/packages/printing_engine/ \
-  /Users/m.elamin/StudioProjects/fifty_eco_system/packages/fifty_printing_engine/
+  /Users/m.elamin/StudioProjects/fifty_flutter_kit/packages/fifty_printing_engine/
 ```
 
 ### Phase 2: Update pubspec.yaml
 - name: `fifty_printing_engine`
-- homepage: `https://github.com/fiftynotai/fifty_eco_system`
-- repository: `https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_printing_engine`
+- homepage: `https://github.com/fiftynotai/fifty_flutter_kit`
+- repository: `https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_printing_engine`
 
 ### Phase 3: Rename Library File
 - `lib/printing_engine.dart` → `lib/fifty_printing_engine.dart`

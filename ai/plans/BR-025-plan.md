@@ -49,7 +49,7 @@ Extract the connectivity module from `fifty_arch` into a standalone `fifty_conne
 name: fifty_connectivity
 description: Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of the Fifty ecosystem.
 version: 0.1.0
-repository: https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_connectivity
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_connectivity
 homepage: https://fifty.dev
 
 environment:

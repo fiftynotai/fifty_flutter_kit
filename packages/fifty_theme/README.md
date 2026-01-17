@@ -71,7 +71,7 @@ dependencies:
     path: ../fifty_theme  # Local path during development
     # Or use git:
     # git:
-    #   url: https://github.com/fifty-dev/fifty_eco_system.git
+    #   url: https://github.com/fifty-dev/fifty_flutter_kit.git
     #   path: packages/fifty_theme
 ```
 

@@ -2,7 +2,7 @@ name: mvvm_actions
 description: "PROJECT TEMPLATE - MVVM + Actions architecture scaffold for Flutter. Fork this template to start new projects. Do NOT import as a dependency."
 publish_to: none
 version: 1.0.0
-repository: https://github.com/anthropic/fifty_eco_system/tree/main/templates/mvvm_actions
+repository: https://github.com/anthropic/fifty_flutter_kit/tree/main/templates/mvvm_actions
 homepage: https://fifty.dev
 
 environment:

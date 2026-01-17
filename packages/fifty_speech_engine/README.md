@@ -30,7 +30,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   fifty_speech_engine:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_speech_engine
 ```
 
@@ -376,4 +376,4 @@ This package is part of the Fifty ecosystem:
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.

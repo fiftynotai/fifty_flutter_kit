@@ -24,7 +24,7 @@ Initial release of fifty_printing_engine to the Fifty Ecosystem.
 ### Changed
 - **Package Rebranded** - Migrated from `printing_engine` to `fifty_printing_engine`
 - **Updated Imports** - Use `package:fifty_printing_engine/fifty_printing_engine.dart`
-- **Repository** - Now hosted in fifty_eco_system monorepo
+- **Repository** - Now hosted in fifty_flutter_kit monorepo
 
 ### Fixed
 - **Empty State UI** - Removed duplicate "Add Printer" button in empty state

@@ -2,7 +2,7 @@
 
 **PROJECT TEMPLATE** - MVVM + Actions architecture scaffold for Flutter applications.
 
-Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_eco_system) - a comprehensive Flutter toolkit.
+Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
 
 ---
 
@@ -20,8 +20,8 @@ Unlike the packages in the `packages/` directory (which you add to your `pubspec
 
 ```bash
 # Option 1: Clone the ecosystem and copy the template
-git clone https://github.com/fiftynotai/fifty_eco_system.git
-cp -r fifty_eco_system/templates/mvvm_actions my_new_app
+git clone https://github.com/fiftynotai/fifty_flutter_kit.git
+cp -r fifty_flutter_kit/templates/mvvm_actions my_new_app
 cd my_new_app
 
 # Option 2: Use as a GitHub template (if available)

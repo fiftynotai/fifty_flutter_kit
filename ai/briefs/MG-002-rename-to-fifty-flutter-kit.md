@@ -3,7 +3,7 @@
 **Type:** Migration
 **Priority:** P2-Medium
 **Effort:** S-Small (1-2 hours)
-**Status:** Ready
+**Status:** In Progress
 **Created:** 2026-01-12
 **Assignee:** -
 
@@ -11,21 +11,21 @@
 
 ## Problem
 
-The current repository name `fifty_eco_system` is generic and doesn't communicate that this is a Flutter-specific package collection. A more descriptive name would improve discoverability and clarity.
+The current repository name `fifty_flutter_kit` is generic and doesn't communicate that this is a Flutter-specific package collection. A more descriptive name would improve discoverability and clarity.
 
 ---
 
 ## Goal
 
-Rename the repository from `fifty_eco_system` to `fifty_flutter_kit` across all references while maintaining zero breaking changes to package imports and APIs.
+Rename the repository from `fifty_flutter_kit` to `fifty_flutter_kit` across all references while maintaining zero breaking changes to package imports and APIs.
 
 ---
 
 ## Context & Inputs
 
 ### Current State
-- **Repository:** `https://github.com/fiftynotai/fifty_eco_system`
-- **Local Path:** `/Users/m.elamin/StudioProjects/fifty_eco_system`
+- **Repository:** `https://github.com/fiftynotai/fifty_flutter_kit`
+- **Local Path:** `/Users/m.elamin/StudioProjects/fifty_flutter_kit`
 - **Packages:** 12 packages with `homepage` and `repository` URLs pointing to current repo
 
 ### New State
@@ -101,7 +101,7 @@ ai/session/CURRENT_SESSION.md
 ### Automated
 1. Run `flutter pub get` in each package - all resolve
 2. Run `flutter analyze` in each package - no new errors
-3. Grep for old URL - zero matches: `grep -r "fifty_eco_system" .`
+3. Grep for old URL - zero matches: `grep -r "fifty_flutter_kit" .`
 
 ### Manual
 1. Verify GitHub repo accessible at new URL
@@ -118,17 +118,17 @@ ai/session/CURRENT_SESSION.md
    ```bash
    # Script to replace in all pubspec.yaml
    find packages -name "pubspec.yaml" -exec sed -i '' \
-     's/fifty_eco_system/fifty_flutter_kit/g' {} \;
+     's/fifty_flutter_kit/fifty_flutter_kit/g' {} \;
    ```
 
 2. **Update all README.md files:**
    ```bash
    find . -name "README.md" -exec sed -i '' \
-     's/fifty_eco_system/fifty_flutter_kit/g' {} \;
+     's/fifty_flutter_kit/fifty_flutter_kit/g' {} \;
    ```
 
 3. **Update CLAUDE.md:**
-   - Replace all `fifty_eco_system` references
+   - Replace all `fifty_flutter_kit` references
 
 4. **Update ai/ folder files:**
    - Session files, prompts if needed
@@ -141,7 +141,7 @@ ai/session/CURRENT_SESSION.md
 
 ### Phase 2: GitHub Rename
 
-1. Go to: `https://github.com/fiftynotai/fifty_eco_system/settings`
+1. Go to: `https://github.com/fiftynotai/fifty_flutter_kit/settings`
 2. Under "Repository name", change to `fifty_flutter_kit`
 3. Click "Rename"
 
@@ -170,7 +170,7 @@ ai/session/CURRENT_SESSION.md
 4. Optionally rename local folder:
    ```bash
    cd ..
-   mv fifty_eco_system fifty_flutter_kit
+   mv fifty_flutter_kit fifty_flutter_kit
    ```
 
 ---
@@ -188,9 +188,9 @@ ai/session/CURRENT_SESSION.md
 ## Rollback Plan
 
 If issues arise:
-1. Rename GitHub repo back to `fifty_eco_system`
+1. Rename GitHub repo back to `fifty_flutter_kit`
 2. Revert commit: `git revert HEAD`
-3. Update remote back: `git remote set-url origin https://github.com/fiftynotai/fifty_eco_system.git`
+3. Update remote back: `git remote set-url origin https://github.com/fiftynotai/fifty_flutter_kit.git`
 
 ---
 

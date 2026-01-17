@@ -30,7 +30,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   fifty_audio_engine:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_audio_engine
 ```
 
@@ -438,4 +438,4 @@ All channel states are persisted via `GetStorage`:
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.

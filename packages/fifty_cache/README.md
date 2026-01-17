@@ -2,7 +2,7 @@
 
 TTL-based HTTP response caching with pluggable stores and policies.
 
-Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_eco_system) - a comprehensive Flutter toolkit.
+Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
 
 ---
 
@@ -73,7 +73,7 @@ For external projects:
 dependencies:
   fifty_cache:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_cache
 ```
 

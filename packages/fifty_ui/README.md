@@ -46,15 +46,15 @@ dependencies:
 dependencies:
   fifty_ui:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_ui
   fifty_theme:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_theme
   fifty_tokens:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_tokens
 ```
 

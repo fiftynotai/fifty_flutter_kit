@@ -832,4 +832,4 @@ MIT License - see LICENSE file
 
 ## Contributing
 
-Contributions welcome! Please open an issue or submit a PR at [github.com/fiftynotai/fifty_eco_system](https://github.com/fiftynotai/fifty_eco_system).
+Contributions welcome! Please open an issue or submit a PR at [github.com/fiftynotai/fifty_flutter_kit](https://github.com/fiftynotai/fifty_flutter_kit).

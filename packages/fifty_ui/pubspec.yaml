@@ -3,7 +3,7 @@ description: FDL-styled Flutter components for the fifty.dev ecosystem.
 version: 0.5.0
 publish_to: none
 homepage: https://fifty.dev
-repository: https://github.com/fiftynotai/fifty_eco_system
+repository: https://github.com/fiftynotai/fifty_flutter_kit
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

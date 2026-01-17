@@ -87,7 +87,7 @@ dependencies:
 ```
 
 ### Target Location
-`/Users/m.elamin/StudioProjects/fifty_eco_system/packages/fifty_printing_engine`
+`/Users/m.elamin/StudioProjects/fifty_flutter_kit/packages/fifty_printing_engine`
 
 ### Existing Fifty Packages (naming reference)
 - fifty_audio_engine
@@ -119,8 +119,8 @@ dependencies:
 - [ ] Package copied to `packages/fifty_printing_engine/`
 - [ ] `pubspec.yaml` updated with Fifty branding:
   - name: `fifty_printing_engine`
-  - homepage: `https://github.com/fiftynotai/fifty_eco_system`
-  - repository: `https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_printing_engine`
+  - homepage: `https://github.com/fiftynotai/fifty_flutter_kit`
+  - repository: `https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_printing_engine`
 - [ ] Main library file renamed to `fifty_printing_engine.dart`
 - [ ] All internal imports updated (`package:printing_engine/` → `package:fifty_printing_engine/`)
 - [ ] README.md updated with Fifty branding and ecosystem context
@@ -157,8 +157,8 @@ dependencies:
 name: fifty_printing_engine
 description: "Fifty ecosystem printing engine - multi-printer ESC/POS printing with Bluetooth and WiFi support"
 version: 1.0.0
-homepage: https://github.com/fiftynotai/fifty_eco_system
-repository: https://github.com/fiftynotai/fifty_eco_system/tree/main/packages/fifty_printing_engine
+homepage: https://github.com/fiftynotai/fifty_flutter_kit
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_printing_engine
 
 environment:
   sdk: ^3.6.0

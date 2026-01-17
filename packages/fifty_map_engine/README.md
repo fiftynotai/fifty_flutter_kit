@@ -40,7 +40,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   fifty_map_engine:
     git:
-      url: https://github.com/fiftynotai/fifty_eco_system.git
+      url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_map_engine
 ```
 
@@ -768,4 +768,4 @@ flutter run
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.

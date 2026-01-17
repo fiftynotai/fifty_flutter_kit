@@ -53,8 +53,8 @@ Fifty Demo serves as an integration showcase for the Fifty ecosystem. It demonst
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-org/fifty_eco_system.git
-   cd fifty_eco_system/apps/fifty_demo
+   git clone https://github.com/your-org/fifty_flutter_kit.git
+   cd fifty_flutter_kit/apps/fifty_demo
    ```
 
 2. Install dependencies:

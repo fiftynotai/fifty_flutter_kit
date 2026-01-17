@@ -72,12 +72,12 @@ Add packages to your `pubspec.yaml`:
 dependencies:
   fifty_tokens:
     git:
-      url: https://github.com/aspect-build/fifty_eco_system
+      url: https://github.com/aspect-build/fifty_flutter_kit
       path: packages/fifty_tokens
 
   fifty_utils:
     git:
-      url: https://github.com/aspect-build/fifty_eco_system
+      url: https://github.com/aspect-build/fifty_flutter_kit
       path: packages/fifty_utils
 ```
 
