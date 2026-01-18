@@ -1,6 +1,6 @@
-# Fifty Ecosystem
+# Fifty Flutter Kit
 
-A comprehensive Flutter/Dart package ecosystem providing design tokens, theming, UI components, architecture patterns, and utility functions.
+A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI components, architecture patterns, printing capabilities, and utility functions.
 
 ## Packages
 
@@ -13,10 +13,17 @@ A comprehensive Flutter/Dart package ecosystem providing design tokens, theming,
 | [fifty_cache](packages/fifty_cache/) | v0.1.0 | Multi-tier caching with TTL support |
 | [fifty_storage](packages/fifty_storage/) | v0.1.0 | Key-value storage abstraction |
 | [fifty_connectivity](packages/fifty_connectivity/) | v0.1.0 | Network connectivity monitoring |
-| [fifty_audio_engine](packages/fifty_audio_engine/) | v0.7.0 | Audio playback and recording |
+| [fifty_audio_engine](packages/fifty_audio_engine/) | v0.8.0 | Audio playback and recording |
 | [fifty_speech_engine](packages/fifty_speech_engine/) | v0.1.0 | Text-to-speech and speech-to-text |
 | [fifty_sentences_engine](packages/fifty_sentences_engine/) | v0.1.0 | Sentence building and word bank |
 | [fifty_map_engine](packages/fifty_map_engine/) | v0.1.0 | Cross-platform maps integration |
+| [fifty_printing_engine](packages/fifty_printing_engine/) | v1.0.0 | Multi-printer ESC/POS printing (Bluetooth & WiFi) |
+
+## Apps
+
+| App | Description |
+|-----|-------------|
+| [fifty_demo](apps/fifty_demo/) | Demo app showcasing all packages |
 
 ## Templates
 
@@ -31,21 +38,24 @@ Templates depend on the packages above but are meant to be forked, not imported.
 ## Architecture
 
 ```
-fifty_ecosystem/
+fifty_flutter_kit/
   packages/
-    fifty_tokens/       # Design foundation
-    fifty_theme/        # Theme layer (depends on tokens)
-    fifty_ui/           # Components (depends on theme)
-    fifty_utils/        # Pure utilities (no dependencies)
-    fifty_cache/        # Caching layer
-    fifty_storage/      # Storage abstraction
-    fifty_connectivity/ # Network monitoring
-    fifty_audio_engine/
-    fifty_speech_engine/
-    fifty_sentences_engine/
-    fifty_map_engine/
+    fifty_tokens/           # Design foundation
+    fifty_theme/            # Theme layer (depends on tokens)
+    fifty_ui/               # Components (depends on theme)
+    fifty_utils/            # Pure utilities (no dependencies)
+    fifty_cache/            # Caching layer
+    fifty_storage/          # Storage abstraction
+    fifty_connectivity/     # Network monitoring
+    fifty_audio_engine/     # Audio playback
+    fifty_speech_engine/    # Speech services
+    fifty_sentences_engine/ # Sentence building
+    fifty_map_engine/       # Maps integration
+    fifty_printing_engine/  # ESC/POS printing
+  apps/
+    fifty_demo/             # Demo application
   templates/
-    mvvm_actions/       # Full app template (fork, don't import)
+    mvvm_actions/           # Full app template (fork, don't import)
 ```
 
 ### Dependency Graph
@@ -60,6 +70,8 @@ fifty_ui
 fifty_utils (foundation)
      |
 [mvvm_actions template] <-- fifty_storage, fifty_cache, fifty_connectivity
+
+fifty_printing_engine (standalone)
 ```
 
 ## Installation
@@ -72,12 +84,12 @@ Add packages to your `pubspec.yaml`:
 dependencies:
   fifty_tokens:
     git:
-      url: https://github.com/aspect-build/fifty_flutter_kit
+      url: https://github.com/fiftynotai/fifty_flutter_kit
       path: packages/fifty_tokens
 
   fifty_utils:
     git:
-      url: https://github.com/aspect-build/fifty_flutter_kit
+      url: https://github.com/fiftynotai/fifty_flutter_kit
       path: packages/fifty_utils
 ```
 
@@ -197,6 +209,22 @@ if (connVM.isOnline.value) {
 }
 ```
 
+### Printing (ESC/POS)
+
+```dart
+import 'package:fifty_printing_engine/fifty_printing_engine.dart';
+
+// Discover printers
+final bluetoothPrinters = await PrinterDiscovery.discoverBluetooth();
+final wifiPrinters = await PrinterDiscovery.discoverWifi();
+
+// Connect and print
+final printer = PrinterConnection(device: selectedPrinter);
+await printer.connect();
+await printer.printReceipt(receiptData);
+await printer.disconnect();
+```
+
 ## Package Details
 
 ### fifty_utils
@@ -234,6 +262,15 @@ Network connectivity monitoring with intelligent reachability probing.
 - **ConnectionViewModel** - Reactive connection state management
 - **ConnectionOverlay** - Automatic offline/online UI overlay
 - **ConnectivityCheckerSplash** - Splash screen with connectivity check
+
+### fifty_printing_engine
+
+Multi-printer ESC/POS printing engine supporting Bluetooth and WiFi printers.
+
+- **PrinterDiscovery** - Scan for Bluetooth and WiFi printers
+- **PrinterConnection** - Connection management with auto-reconnect
+- **ReceiptBuilder** - Fluent API for building receipts
+- **ESC/POS Commands** - Full command support including images and barcodes
 
 ## Development
 
