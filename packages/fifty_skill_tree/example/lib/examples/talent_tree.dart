@@ -1,4 +1,5 @@
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import '../data/sample_trees.dart';
@@ -57,7 +58,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
             '${node.name} upgraded to level ${result.newLevel}!',
           ),
           duration: const Duration(milliseconds: 800),
-          backgroundColor: _getBranchColor(node.branch),
+          backgroundColor: _getBranchColor(node.branch).withValues(alpha: 0.9),
         ),
       );
     }
@@ -66,9 +67,10 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
   void _handleReset() {
     _controller.reset();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('All talents reset! Points refunded.'),
-        duration: Duration(seconds: 1),
+      SnackBar(
+        content: const Text('All talents reset! Points refunded.'),
+        duration: const Duration(seconds: 1),
+        backgroundColor: FiftyColors.gunmetal,
       ),
     );
   }
@@ -76,13 +78,13 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'offense':
-        return Colors.red;
+        return FiftyColors.crimsonPulse;
       case 'defense':
-        return Colors.blue;
+        return const Color(0xFF2196F3); // Blue
       case 'utility':
-        return Colors.amber;
+        return FiftyColors.warning;
       default:
-        return Colors.grey;
+        return FiftyColors.hyperChrome;
     }
   }
 
@@ -96,12 +98,15 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Talent Tree'),
+        title: const Text('TALENT TREE'),
         actions: [
           TextButton.icon(
             onPressed: _handleReset,
-            icon: const Icon(Icons.refresh, color: Colors.white70),
-            label: const Text('Reset', style: TextStyle(color: Colors.white70)),
+            icon: Icon(Icons.refresh, color: FiftyColors.terminalWhite.withValues(alpha: 0.7)),
+            label: Text(
+              'RESET',
+              style: TextStyle(color: FiftyColors.terminalWhite.withValues(alpha: 0.7)),
+            ),
           ),
         ],
       ),
@@ -109,25 +114,25 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
         children: [
           // Points header
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(FiftySpacing.lg),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E1E1E),
+              color: FiftyColors.gunmetal,
               border: Border(
-                bottom: BorderSide(color: Colors.grey[800]!),
+                bottom: BorderSide(color: FiftyColors.border),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _PointsDisplay(
-                  label: 'Available',
+                  label: 'AVAILABLE',
                   value: _controller.availablePoints,
-                  color: Colors.amber,
+                  color: FiftyColors.warning,
                 ),
                 _PointsDisplay(
-                  label: 'Spent',
+                  label: 'SPENT',
                   value: _controller.spentPoints,
-                  color: Colors.grey,
+                  color: FiftyColors.hyperChrome,
                 ),
               ],
             ),
@@ -135,26 +140,26 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
 
           // Branch headers
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            color: const Color(0xFF1A1A1A),
+            padding: const EdgeInsets.symmetric(vertical: FiftySpacing.md),
+            color: FiftyColors.voidBlack,
             child: Row(
               children: [
                 _BranchHeader(
-                  label: 'Offense',
+                  label: 'OFFENSE',
                   icon: Icons.flash_on,
-                  color: Colors.red,
+                  color: FiftyColors.crimsonPulse,
                   points: _getBranchPoints('offense'),
                 ),
                 _BranchHeader(
-                  label: 'Defense',
+                  label: 'DEFENSE',
                   icon: Icons.shield,
-                  color: Colors.blue,
+                  color: const Color(0xFF2196F3),
                   points: _getBranchPoints('defense'),
                 ),
                 _BranchHeader(
-                  label: 'Utility',
+                  label: 'UTILITY',
                   icon: Icons.bolt,
-                  color: Colors.amber,
+                  color: FiftyColors.warning,
                   points: _getBranchPoints('utility'),
                 ),
               ],
@@ -170,27 +175,27 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
                 Expanded(
                   child: _TalentPath(
                     branch: 'offense',
-                    color: Colors.red,
+                    color: FiftyColors.crimsonPulse,
                     controller: _controller,
                     onNodeTap: _handleNodeTap,
                   ),
                 ),
-                Container(width: 1, color: Colors.grey[800]),
+                Container(width: 1, color: FiftyColors.border),
                 // Defense path
                 Expanded(
                   child: _TalentPath(
                     branch: 'defense',
-                    color: Colors.blue,
+                    color: const Color(0xFF2196F3),
                     controller: _controller,
                     onNodeTap: _handleNodeTap,
                   ),
                 ),
-                Container(width: 1, color: Colors.grey[800]),
+                Container(width: 1, color: FiftyColors.border),
                 // Utility path
                 Expanded(
                   child: _TalentPath(
                     branch: 'utility',
-                    color: Colors.amber,
+                    color: FiftyColors.warning,
                     controller: _controller,
                     onNodeTap: _handleNodeTap,
                   ),
@@ -201,12 +206,12 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
 
           // Footer hint
           Container(
-            padding: const EdgeInsets.all(12),
-            color: const Color(0xFF1E1E1E),
+            padding: const EdgeInsets.all(FiftySpacing.md),
+            color: FiftyColors.gunmetal,
             child: Text(
               'Tap a talent to invest a point',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white38,
+                    color: FiftyColors.hyperChrome,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -243,9 +248,10 @@ class _PointsDisplay extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.white54,
+          style: TextStyle(
+            color: FiftyColors.hyperChrome,
             fontSize: 12,
+            letterSpacing: 0.5,
           ),
         ),
       ],
@@ -272,18 +278,19 @@ class _BranchHeader extends StatelessWidget {
       child: Column(
         children: [
           Icon(icon, color: color, size: 24),
-          const SizedBox(height: 4),
+          const SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.bold,
+              letterSpacing: 0.5,
             ),
           ),
           Text(
-            '$points pts',
-            style: const TextStyle(
-              color: Colors.white38,
+            '$points PTS',
+            style: TextStyle(
+              color: FiftyColors.hyperChrome,
               fontSize: 12,
             ),
           ),
@@ -314,7 +321,7 @@ class _TalentPath extends StatelessWidget {
       ..sort((a, b) => a.tier.compareTo(b.tier));
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.lg),
       child: Column(
         children: [
           for (int i = 0; i < nodes.length; i++) ...[
@@ -322,7 +329,7 @@ class _TalentPath extends StatelessWidget {
               Container(
                 width: 2,
                 height: 20,
-                color: nodes[i - 1].isUnlocked ? color : Colors.grey[700],
+                color: nodes[i - 1].isUnlocked ? color : FiftyColors.border,
               ),
             _TalentNode(
               node: nodes[i],
@@ -361,10 +368,10 @@ class _TalentNode extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: isKeystone ? 80 : 64,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(FiftySpacing.sm),
         decoration: BoxDecoration(
-          color: isUnlocked ? color.withValues(alpha: 0.2) : const Color(0xFF2A2A2A),
-          borderRadius: BorderRadius.circular(isKeystone ? 12 : 8),
+          color: isUnlocked ? color.withValues(alpha: 0.2) : FiftyColors.gunmetal,
+          borderRadius: BorderRadius.circular(isKeystone ? FiftySpacing.md : FiftySpacing.sm),
           border: Border.all(
             color: isMaxed
                 ? color
@@ -372,7 +379,7 @@ class _TalentNode extends StatelessWidget {
                     ? color.withValues(alpha: 0.8)
                     : isAvailable
                         ? color.withValues(alpha: 0.5)
-                        : Colors.grey[700]!,
+                        : FiftyColors.border,
             width: isMaxed ? 3 : 2,
           ),
           boxShadow: isMaxed
@@ -389,22 +396,23 @@ class _TalentNode extends StatelessWidget {
           children: [
             Icon(
               node.icon ?? Icons.star,
-              color: isUnlocked ? color : Colors.white38,
+              color: isUnlocked ? color : FiftyColors.hyperChrome,
               size: isKeystone ? 24 : 20,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: FiftySpacing.xs),
             Text(
-              node.name,
+              node.name.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 10,
-                color: isUnlocked ? Colors.white : Colors.white54,
+                color: isUnlocked ? FiftyColors.terminalWhite : FiftyColors.hyperChrome,
                 fontWeight: isKeystone ? FontWeight.bold : FontWeight.normal,
+                letterSpacing: 0.3,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: FiftySpacing.xs),
             // Level indicator
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -418,11 +426,11 @@ class _TalentNode extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: index < node.currentLevel
                         ? color
-                        : Colors.grey[700],
+                        : FiftyColors.border,
                     border: Border.all(
                       color: index < node.currentLevel
                           ? color
-                          : Colors.grey[600]!,
+                          : FiftyColors.hyperChrome.withValues(alpha: 0.6),
                       width: 1,
                     ),
                   ),

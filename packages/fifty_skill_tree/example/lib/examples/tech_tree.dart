@@ -1,4 +1,6 @@
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
 import '../data/sample_trees.dart';
@@ -62,7 +64,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
           SnackBar(
             content: Text('Researched ${node.name}!'),
             duration: const Duration(seconds: 1),
-            backgroundColor: Colors.cyan[700],
+            backgroundColor: const Color(0xFF00BCD4).withValues(alpha: 0.9),
           ),
         );
       }
@@ -72,26 +74,26 @@ class _TechTreeExampleState extends State<TechTreeExample> {
   String _getBranchLabel(String? branch) {
     switch (branch) {
       case 'military':
-        return 'Military';
+        return 'MILITARY';
       case 'economy':
-        return 'Economy';
+        return 'ECONOMY';
       case 'technology':
-        return 'Technology';
+        return 'TECHNOLOGY';
       default:
-        return 'Basic';
+        return 'BASIC';
     }
   }
 
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'military':
-        return Colors.red;
+        return FiftyColors.crimsonPulse;
       case 'economy':
-        return Colors.amber;
+        return FiftyColors.warning;
       case 'technology':
-        return Colors.cyan;
+        return const Color(0xFF00BCD4); // Cyan
       default:
-        return Colors.grey;
+        return FiftyColors.hyperChrome;
     }
   }
 
@@ -106,7 +108,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tech Tree'),
+        title: const Text('TECH TREE'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -124,28 +126,28 @@ class _TechTreeExampleState extends State<TechTreeExample> {
         children: [
           // Resource bar
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(FiftySpacing.lg),
             color: const Color(0xFF0D1B2A),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _ResourceDisplay(
                   icon: Icons.science,
-                  label: 'Research Points',
+                  label: 'RESEARCH POINTS',
                   value: _controller.availablePoints.toString(),
-                  color: Colors.cyan,
+                  color: const Color(0xFF00BCD4),
                 ),
                 _ResourceDisplay(
                   icon: Icons.check_circle,
-                  label: 'Completed',
+                  label: 'COMPLETED',
                   value: _controller.tree.getUnlockedNodes().length.toString(),
-                  color: Colors.green,
+                  color: FiftyColors.igrisGreen,
                 ),
                 _ResourceDisplay(
                   icon: Icons.lock_open,
-                  label: 'Available',
+                  label: 'AVAILABLE',
                   value: _controller.tree.getAvailableNodes().length.toString(),
-                  color: Colors.amber,
+                  color: FiftyColors.warning,
                 ),
               ],
             ),
@@ -161,7 +163,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
                   child: SkillTreeView<void>(
                     controller: _controller,
                     layout: const GridLayout(columns: 3),
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(FiftySpacing.xxl),
                     nodeSize: const Size(72, 72),
                     levelSeparation: 60,
                     nodeSeparation: 40,
@@ -190,11 +192,14 @@ class _TechTreeExampleState extends State<TechTreeExample> {
                           branchColor: _getBranchColor(selectedNode.branch),
                           onResearch: () => _handleNodeTap(selectedNode),
                         )
-                      : const Center(
+                      : Center(
                           child: Text(
-                            'Select a technology\nto view details',
+                            'SELECT A TECHNOLOGY\nTO VIEW DETAILS',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white38),
+                            style: TextStyle(
+                              color: FiftyColors.hyperChrome,
+                              letterSpacing: 0.5,
+                            ),
                           ),
                         ),
                 ),
@@ -229,7 +234,7 @@ class _ResourceDisplay extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: color, size: 20),
-            const SizedBox(width: 4),
+            const SizedBox(width: FiftySpacing.xs),
             Text(
               value,
               style: TextStyle(
@@ -243,7 +248,8 @@ class _ResourceDisplay extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.white38,
+                color: FiftyColors.hyperChrome,
+                letterSpacing: 0.5,
               ),
         ),
       ],
@@ -274,13 +280,13 @@ class _TechNode extends StatelessWidget {
       width: 72,
       height: 72,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(isKeystone ? 16 : 8),
+        borderRadius: BorderRadius.circular(isKeystone ? FiftySpacing.lg : FiftySpacing.sm),
         color: isUnlocked
             ? branchColor.withValues(alpha: 0.2)
             : const Color(0xFF1B3A4B),
         border: Border.all(
           color: isSelected
-              ? Colors.white
+              ? FiftyColors.terminalWhite
               : isUnlocked
                   ? branchColor
                   : isAvailable
@@ -291,7 +297,7 @@ class _TechNode extends StatelessWidget {
         boxShadow: isSelected || isUnlocked
             ? [
                 BoxShadow(
-                  color: (isSelected ? Colors.white : branchColor)
+                  color: (isSelected ? FiftyColors.terminalWhite : branchColor)
                       .withValues(alpha: 0.3),
                   blurRadius: 8,
                   spreadRadius: 1,
@@ -307,8 +313,8 @@ class _TechNode extends StatelessWidget {
             color: isUnlocked
                 ? branchColor
                 : isAvailable
-                    ? Colors.white70
-                    : Colors.white38,
+                    ? FiftyColors.terminalWhite.withValues(alpha: 0.7)
+                    : FiftyColors.hyperChrome,
             size: 28,
           ),
           const SizedBox(height: 2),
@@ -316,7 +322,7 @@ class _TechNode extends StatelessWidget {
             Text(
               'T${node.tier}',
               style: TextStyle(
-                color: Colors.white38,
+                color: FiftyColors.hyperChrome,
                 fontSize: 10,
               ),
             ),
@@ -347,7 +353,7 @@ class _DetailPanel extends StatelessWidget {
     final isUnlocked = state == SkillState.unlocked || state == SkillState.maxed;
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -355,10 +361,13 @@ class _DetailPanel extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: FiftySpacing.sm,
+                  vertical: FiftySpacing.xs,
+                ),
                 decoration: BoxDecoration(
                   color: branchColor.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(FiftySpacing.xs),
                 ),
                 child: Text(
                   branchLabel,
@@ -366,60 +375,74 @@ class _DetailPanel extends StatelessWidget {
                     color: branchColor,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ),
               const Spacer(),
               Text(
-                'Tier ${node.tier}',
-                style: const TextStyle(color: Colors.white38, fontSize: 12),
+                'TIER ${node.tier}',
+                style: TextStyle(
+                  color: FiftyColors.hyperChrome,
+                  fontSize: 12,
+                  letterSpacing: 0.5,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: FiftySpacing.lg),
 
           // Name
           Text(
-            node.name,
-            style: const TextStyle(
+            node.name.toUpperCase(),
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: FiftyColors.terminalWhite,
+              letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: FiftySpacing.sm),
 
           // Description
           Text(
             node.description ?? 'No description available.',
-            style: const TextStyle(color: Colors.white70),
+            style: TextStyle(color: FiftyColors.terminalWhite.withValues(alpha: 0.7)),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: FiftySpacing.lg),
 
           // Prerequisites
           if (node.prerequisites.isNotEmpty) ...[
-            const Text(
-              'Requirements:',
+            Text(
+              'REQUIREMENTS:',
               style: TextStyle(
-                color: Colors.white38,
+                color: FiftyColors.hyperChrome,
                 fontSize: 12,
+                letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: FiftySpacing.xs),
             ...node.prerequisites.map((prereq) => Text(
                   '  - $prereq',
-                  style: const TextStyle(color: Colors.white54, fontSize: 12),
+                  style: TextStyle(
+                    color: FiftyColors.hyperChrome.withValues(alpha: 0.8),
+                    fontSize: 12,
+                  ),
                 )),
-            const SizedBox(height: 16),
+            const SizedBox(height: FiftySpacing.lg),
           ],
 
           // Cost
           Row(
             children: [
-              const Icon(Icons.science, size: 16, color: Colors.cyan),
-              const SizedBox(width: 4),
+              Icon(Icons.science, size: 16, color: const Color(0xFF00BCD4)),
+              const SizedBox(width: FiftySpacing.xs),
               Text(
-                'Cost: ${node.nextCost} points',
-                style: const TextStyle(color: Colors.cyan),
+                'COST: ${node.nextCost} POINTS',
+                style: TextStyle(
+                  color: const Color(0xFF00BCD4),
+                  letterSpacing: 0.5,
+                ),
               ),
             ],
           ),
@@ -429,20 +452,14 @@ class _DetailPanel extends StatelessWidget {
           // Research button
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
+            child: FiftyButton(
+              label: isUnlocked
+                  ? 'RESEARCHED'
+                  : isAvailable
+                      ? 'RESEARCH'
+                      : 'LOCKED',
               onPressed: isAvailable ? onResearch : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: branchColor,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: Colors.grey[800],
-              ),
-              child: Text(
-                isUnlocked
-                    ? 'Researched'
-                    : isAvailable
-                        ? 'Research'
-                        : 'Locked',
-              ),
+              variant: FiftyButtonVariant.primary,
             ),
           ),
         ],

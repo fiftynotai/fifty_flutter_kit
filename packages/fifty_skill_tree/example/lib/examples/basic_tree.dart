@@ -1,4 +1,6 @@
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
 import '../data/sample_trees.dart';
@@ -64,7 +66,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         SnackBar(
           content: Text('Unlocked ${node.name}!'),
           duration: const Duration(seconds: 1),
-          backgroundColor: Colors.green[700],
+          backgroundColor: FiftyColors.igrisGreen.withValues(alpha: 0.9),
         ),
       );
     } else {
@@ -88,7 +90,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         SnackBar(
           content: Text(message),
           duration: const Duration(seconds: 1),
-          backgroundColor: Colors.red[700],
+          backgroundColor: FiftyColors.crimsonPulse,
         ),
       );
     }
@@ -97,9 +99,10 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
   void _handleReset() {
     _controller.reset();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Tree reset! All points refunded.'),
-        duration: Duration(seconds: 1),
+      SnackBar(
+        content: const Text('Tree reset! All points refunded.'),
+        duration: const Duration(seconds: 1),
+        backgroundColor: FiftyColors.gunmetal,
       ),
     );
   }
@@ -108,7 +111,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basic Tree'),
+        title: const Text('BASIC TREE'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -121,24 +124,26 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         children: [
           // Points display
           Container(
-            padding: const EdgeInsets.all(16),
-            color: const Color(0xFF1E1E1E),
+            padding: const EdgeInsets.all(FiftySpacing.lg),
+            color: FiftyColors.gunmetal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.stars, color: Colors.amber),
-                const SizedBox(width: 8),
+                Icon(Icons.stars, color: FiftyColors.warning),
+                const SizedBox(width: FiftySpacing.sm),
                 Text(
-                  'Points: ${_controller.availablePoints}',
+                  'POINTS: ${_controller.availablePoints}',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: FiftyColors.terminalWhite,
+                        letterSpacing: 1,
                       ),
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: FiftySpacing.xxl),
                 Text(
-                  'Spent: ${_controller.spentPoints}',
+                  'SPENT: ${_controller.spentPoints}',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.white54,
+                        color: FiftyColors.hyperChrome,
                       ),
                 ),
               ],
@@ -150,7 +155,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
             child: SkillTreeView<void>(
               controller: _controller,
               layout: const VerticalTreeLayout(),
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(FiftySpacing.xxxl),
               nodeSize: const Size(64, 64),
               levelSeparation: 100,
               onNodeTap: _handleNodeTap,
@@ -163,12 +168,12 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
 
           // Instructions
           Container(
-            padding: const EdgeInsets.all(16),
-            color: const Color(0xFF1E1E1E),
+            padding: const EdgeInsets.all(FiftySpacing.lg),
+            color: FiftyColors.gunmetal,
             child: Text(
               'Tap a skill to unlock it. Long press for details.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white38,
+                    color: FiftyColors.hyperChrome,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -183,27 +188,43 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(node.name),
+      builder: (context) => FiftyDialog(
+        title: node.name.toUpperCase(),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (node.description != null) ...[
-              Text(node.description!),
-              const SizedBox(height: 16),
+              Text(
+                node.description!,
+                style: TextStyle(color: FiftyColors.terminalWhite),
+              ),
+              const SizedBox(height: FiftySpacing.lg),
             ],
-            Text('Level: ${node.currentLevel}/${node.maxLevel}'),
-            Text('Cost: ${node.nextCost} points'),
-            Text('State: ${state.name}'),
+            Text(
+              'Level: ${node.currentLevel}/${node.maxLevel}',
+              style: TextStyle(color: FiftyColors.hyperChrome),
+            ),
+            Text(
+              'Cost: ${node.nextCost} points',
+              style: TextStyle(color: FiftyColors.hyperChrome),
+            ),
+            Text(
+              'State: ${state.name.toUpperCase()}',
+              style: TextStyle(color: FiftyColors.hyperChrome),
+            ),
             if (node.prerequisites.isNotEmpty)
-              Text('Requires: ${node.prerequisites.join(", ")}'),
+              Text(
+                'Requires: ${node.prerequisites.join(", ")}',
+                style: TextStyle(color: FiftyColors.hyperChrome),
+              ),
           ],
         ),
         actions: [
-          TextButton(
+          FiftyButton(
+            label: 'CLOSE',
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            variant: FiftyButtonVariant.ghost,
           ),
         ],
       ),

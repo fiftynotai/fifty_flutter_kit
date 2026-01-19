@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import '../data/sample_trees.dart';
@@ -60,7 +61,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
         SnackBar(
           content: Text('Unlocked ${node.name}!'),
           duration: const Duration(seconds: 1),
-          backgroundColor: Colors.amber[700],
+          backgroundColor: FiftyColors.warning.withValues(alpha: 0.9),
         ),
       );
     }
@@ -83,10 +84,10 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
     _savedProgress = jsonEncode(progress);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Progress saved!'),
-        duration: Duration(seconds: 1),
-        backgroundColor: Colors.green,
+      SnackBar(
+        content: const Text('Progress saved!'),
+        duration: const Duration(seconds: 1),
+        backgroundColor: FiftyColors.igrisGreen.withValues(alpha: 0.9),
       ),
     );
   }
@@ -94,10 +95,10 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
   void _loadProgress() {
     if (_savedProgress == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No saved progress found'),
-          duration: Duration(seconds: 1),
-          backgroundColor: Colors.orange,
+        SnackBar(
+          content: const Text('No saved progress found'),
+          duration: const Duration(seconds: 1),
+          backgroundColor: FiftyColors.warning,
         ),
       );
       return;
@@ -107,10 +108,10 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
     _controller.importProgress(progress);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Progress loaded!'),
-        duration: Duration(seconds: 1),
-        backgroundColor: Colors.blue,
+      SnackBar(
+        content: const Text('Progress loaded!'),
+        duration: const Duration(seconds: 1),
+        backgroundColor: FiftyColors.crimsonPulse,
       ),
     );
   }
@@ -118,13 +119,13 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'warrior':
-        return Colors.red;
+        return FiftyColors.crimsonPulse;
       case 'mage':
-        return Colors.purple;
+        return const Color(0xFF9C27B0); // Purple
       case 'rogue':
-        return Colors.green;
+        return FiftyColors.igrisGreen;
       default:
-        return Colors.grey;
+        return FiftyColors.hyperChrome;
     }
   }
 
@@ -134,7 +135,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('RPG Skill Tree'),
+        title: const Text('RPG SKILL TREE'),
         actions: [
           IconButton(
             icon: Icon(isRadial ? Icons.account_tree : Icons.radio_button_on),
@@ -156,9 +157,10 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
             onPressed: () {
               _controller.reset();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Tree reset!'),
-                  duration: Duration(seconds: 1),
+                SnackBar(
+                  content: const Text('Tree reset!'),
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: FiftyColors.gunmetal,
                 ),
               );
             },
@@ -170,32 +172,36 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
         children: [
           // Header with points and branch legend
           Container(
-            padding: const EdgeInsets.all(16),
-            color: const Color(0xFF1E1E1E),
+            padding: const EdgeInsets.all(FiftySpacing.lg),
+            color: FiftyColors.gunmetal,
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.stars, color: Colors.amber),
-                    const SizedBox(width: 8),
+                    Icon(Icons.stars, color: FiftyColors.warning),
+                    const SizedBox(width: FiftySpacing.sm),
                     Text(
-                      'Points: ${_controller.availablePoints}',
+                      'POINTS: ${_controller.availablePoints}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
+                            color: FiftyColors.terminalWhite,
+                            letterSpacing: 1,
                           ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: FiftySpacing.md),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _LegendItem(color: Colors.red, label: 'Warrior'),
-                    const SizedBox(width: 16),
-                    _LegendItem(color: Colors.purple, label: 'Mage'),
-                    const SizedBox(width: 16),
-                    _LegendItem(color: Colors.green, label: 'Rogue'),
+                    _LegendItem(
+                        color: FiftyColors.crimsonPulse, label: 'WARRIOR'),
+                    const SizedBox(width: FiftySpacing.lg),
+                    _LegendItem(
+                        color: const Color(0xFF9C27B0), label: 'MAGE'),
+                    const SizedBox(width: FiftySpacing.lg),
+                    _LegendItem(color: FiftyColors.igrisGreen, label: 'ROGUE'),
                   ],
                 ),
               ],
@@ -207,7 +213,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
             child: SkillTreeView<void>(
               controller: _controller,
               layout: _currentLayout,
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(FiftySpacing.xxxl),
               nodeSize: const Size(56, 56),
               levelSeparation: 90,
               nodeSeparation: 60,
@@ -224,12 +230,12 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
 
           // Footer
           Container(
-            padding: const EdgeInsets.all(16),
-            color: const Color(0xFF1E1E1E),
+            padding: const EdgeInsets.all(FiftySpacing.lg),
+            color: FiftyColors.gunmetal,
             child: Text(
               'Choose your path: Warrior, Mage, or Rogue',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white38,
+                    color: FiftyColors.hyperChrome,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -262,11 +268,12 @@ class _LegendItem extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: FiftySpacing.xs),
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.white54,
+                color: FiftyColors.hyperChrome,
+                letterSpacing: 0.5,
               ),
         ),
       ],
@@ -296,16 +303,16 @@ class _CustomRpgNode extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         shape: isUltimate ? BoxShape.rectangle : BoxShape.circle,
-        borderRadius: isUltimate ? BorderRadius.circular(8) : null,
+        borderRadius: isUltimate ? BorderRadius.circular(FiftySpacing.sm) : null,
         color: isUnlocked
             ? branchColor.withValues(alpha: 0.3)
-            : const Color(0xFF2A2A2A),
+            : FiftyColors.gunmetal,
         border: Border.all(
           color: isUnlocked
               ? branchColor
               : isAvailable
                   ? branchColor.withValues(alpha: 0.6)
-                  : Colors.grey[700]!,
+                  : FiftyColors.border,
           width: isUnlocked ? 3 : 2,
         ),
         boxShadow: isUnlocked
@@ -324,8 +331,8 @@ class _CustomRpgNode extends StatelessWidget {
           color: isUnlocked
               ? branchColor
               : isAvailable
-                  ? Colors.white70
-                  : Colors.grey[600],
+                  ? FiftyColors.terminalWhite.withValues(alpha: 0.7)
+                  : FiftyColors.hyperChrome.withValues(alpha: 0.6),
           size: isUltimate ? 28 : 24,
         ),
       ),

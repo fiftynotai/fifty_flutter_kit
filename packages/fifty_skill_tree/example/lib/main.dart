@@ -1,3 +1,6 @@
+import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
 import 'examples/basic_tree.dart';
@@ -18,19 +21,9 @@ class SkillTreeExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Skill Tree Examples',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(useMaterial3: true).copyWith(
-        scaffoldBackgroundColor: const Color(0xFF121212),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1E1E1E),
-          elevation: 0,
-        ),
-        cardTheme: const CardThemeData(
-          color: Color(0xFF1E1E1E),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
-        ),
-      ),
+      theme: FiftyTheme.dark(),
+      darkTheme: FiftyTheme.dark(),
+      themeMode: ThemeMode.dark,
       home: const ExampleHomePage(),
     );
   }
@@ -44,61 +37,62 @@ class ExampleHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Skill Tree Examples'),
+        title: const Text('SKILL TREE EXAMPLES'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16),
+            const SizedBox(height: FiftySpacing.lg),
             Text(
-              'Choose an Example',
+              'CHOOSE AN EXAMPLE',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.white70,
+                    color: FiftyColors.hyperChrome,
+                    letterSpacing: 2,
                   ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: FiftySpacing.xxxl),
             _ExampleCard(
-              title: 'Basic Tree',
+              title: 'BASIC TREE',
               description: 'Simple linear skill progression',
               icon: Icons.account_tree,
-              color: Colors.blue,
+              color: FiftyColors.crimsonPulse,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const BasicTreeExample()),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
-              title: 'RPG Skill Tree',
+              title: 'RPG SKILL TREE',
               description: 'Multi-branch class skills (Warrior/Mage/Rogue)',
               icon: Icons.shield,
-              color: Colors.purple,
+              color: FiftyColors.crimsonPulse,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const RpgSkillTreeExample()),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
-              title: 'Tech Tree',
+              title: 'TECH TREE',
               description: 'Strategy game research tree with grid layout',
               icon: Icons.science,
-              color: Colors.cyan,
+              color: FiftyColors.crimsonPulse,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const TechTreeExample()),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
-              title: 'Talent Tree',
+              title: 'TALENT TREE',
               description: 'MOBA-style talents with 3 paths',
               icon: Icons.bolt,
-              color: Colors.amber,
+              color: FiftyColors.crimsonPulse,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const TalentTreeExample()),
@@ -128,54 +122,58 @@ class _ExampleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 28,
+    return FiftyCard(
+      onTap: onTap,
+      padding: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(FiftySpacing.xl),
+        child: Row(
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(FiftySpacing.md),
+                border: Border.all(
+                  color: color.withValues(alpha: 0.4),
+                  width: 1,
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      description,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white54,
-                          ),
-                    ),
-                  ],
-                ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 28,
               ),
-              const Icon(
-                Icons.chevron_right,
-                color: Colors.white38,
+            ),
+            const SizedBox(width: FiftySpacing.lg),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: FiftyColors.terminalWhite,
+                          letterSpacing: 1,
+                        ),
+                  ),
+                  const SizedBox(height: FiftySpacing.xs),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: FiftyColors.hyperChrome,
+                        ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: FiftyColors.hyperChrome.withValues(alpha: 0.5),
+            ),
+          ],
         ),
       ),
     );

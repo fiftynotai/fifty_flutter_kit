@@ -11,6 +11,12 @@ dependencies:
     sdk: flutter
   fifty_skill_tree:
     path: ../
+  fifty_tokens:
+    path: ../../fifty_tokens
+  fifty_ui:
+    path: ../../fifty_ui
+  fifty_theme:
+    path: ../../fifty_theme
 
 dev_dependencies:
   flutter_test:
