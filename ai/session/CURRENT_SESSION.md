@@ -1,14 +1,19 @@
 # Current Session
 
 **Status:** REST MODE
-**Last Updated:** 2026-01-18
-**Last Completed:** BR-027 Fifty Skill Tree Package
+**Last Updated:** 2026-01-19
+**Last Completed:** BR-027 Fifty Skill Tree Package (Released)
 
 ---
 
 ## Session Summary
 
-Successfully implemented `fifty_skill_tree` package - a production-ready Flutter widget for interactive skill trees with game integration support.
+Successfully implemented and released `fifty_skill_tree` v0.1.0 - a production-ready Flutter widget for interactive skill trees with game integration support.
+
+**Release Status:**
+- Merged to main: 776a740
+- Tag: v0.1.0-fifty_skill_tree
+- Feature branch cleaned up
 
 ---
 
@@ -86,7 +91,7 @@ Successfully implemented `fifty_skill_tree` package - a production-ready Flutter
 | fifty_sentences_engine | v0.1.0 | Released |
 | fifty_map_engine | v0.1.0 | Released |
 | fifty_printing_engine | v1.0.0 | Released |
-| **fifty_skill_tree** | **v0.1.0** | **Ready** |
+| **fifty_skill_tree** | **v0.1.0** | **Released** |
 
 ---
 
@@ -100,8 +105,10 @@ Successfully implemented `fifty_skill_tree` package - a production-ready Flutter
 
 ## Next Steps When Resuming
 
-1. **Merge PR** - Merge implement/BR-027-skill-tree to main
-2. **Archive BR-027** - Move to completed briefs
-3. **Next task** - "What should I work on next?"
+1. ~~**Merge PR**~~ - ✅ Merged to main (776a740)
+2. ~~**Tag Release**~~ - ✅ Tagged v0.1.0-fifty_skill_tree
+3. **Push to origin** - Push main and tags when ready
+4. **Publish to pub.dev** - `flutter pub publish` (optional)
+5. **Next task** - "What should I work on next?"
 
 ---
