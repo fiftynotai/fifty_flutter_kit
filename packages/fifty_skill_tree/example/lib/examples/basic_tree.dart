@@ -111,7 +111,13 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BASIC TREE'),
+        title: const Text(
+          'BASIC TREE',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -136,7 +142,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: FiftyColors.terminalWhite,
-                        letterSpacing: 1,
+                        letterSpacing: 1.2,
                       ),
                 ),
                 const SizedBox(width: FiftySpacing.xxl),

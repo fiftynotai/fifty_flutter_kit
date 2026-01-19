@@ -2,9 +2,13 @@ import 'dart:convert';
 
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
 import '../data/sample_trees.dart';
+
+/// Mage branch color - arcane purple for mystical skills.
+const Color _magePurple = Color(0xFF9C27B0);
 
 /// RPG-style skill tree example with multiple branches.
 ///
@@ -121,7 +125,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
       case 'warrior':
         return FiftyColors.crimsonPulse;
       case 'mage':
-        return const Color(0xFF9C27B0); // Purple
+        return _magePurple;
       case 'rogue':
         return FiftyColors.igrisGreen;
       default:
@@ -135,25 +139,32 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('RPG SKILL TREE'),
+        title: Text(
+          'RPG SKILL TREE',
+          style: TextStyle(
+            letterSpacing: 1.2,
+            fontWeight: FontWeight.bold,
+            color: FiftyColors.terminalWhite,
+          ),
+        ),
         actions: [
-          IconButton(
-            icon: Icon(isRadial ? Icons.account_tree : Icons.radio_button_on),
+          FiftyIconButton(
+            icon: isRadial ? Icons.account_tree : Icons.radio_button_on,
             onPressed: _toggleLayout,
             tooltip: isRadial ? 'Vertical Layout' : 'Radial Layout',
           ),
-          IconButton(
-            icon: const Icon(Icons.save),
+          FiftyIconButton(
+            icon: Icons.save,
             onPressed: _saveProgress,
             tooltip: 'Save Progress',
           ),
-          IconButton(
-            icon: const Icon(Icons.download),
+          FiftyIconButton(
+            icon: Icons.download,
             onPressed: _loadProgress,
             tooltip: 'Load Progress',
           ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
+          FiftyIconButton(
+            icon: Icons.refresh,
             onPressed: () {
               _controller.reset();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -171,9 +182,10 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
       body: Column(
         children: [
           // Header with points and branch legend
-          Container(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
-            color: FiftyColors.gunmetal,
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            borderRadius: BorderRadius.zero,
             child: Column(
               children: [
                 Row(
@@ -186,7 +198,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: FiftyColors.terminalWhite,
-                            letterSpacing: 1,
+                            letterSpacing: 1.2,
                           ),
                     ),
                   ],
@@ -198,8 +210,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                     _LegendItem(
                         color: FiftyColors.crimsonPulse, label: 'WARRIOR'),
                     const SizedBox(width: FiftySpacing.lg),
-                    _LegendItem(
-                        color: const Color(0xFF9C27B0), label: 'MAGE'),
+                    _LegendItem(color: _magePurple, label: 'MAGE'),
                     const SizedBox(width: FiftySpacing.lg),
                     _LegendItem(color: FiftyColors.igrisGreen, label: 'ROGUE'),
                   ],
@@ -229,15 +240,19 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
           ),
 
           // Footer
-          Container(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
-            color: FiftyColors.gunmetal,
-            child: Text(
-              'Choose your path: Warrior, Mage, or Rogue',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: FiftyColors.hyperChrome,
-                  ),
-              textAlign: TextAlign.center,
+          FiftyCard(
+            padding: EdgeInsets.all(FiftySpacing.lg),
+            scanlineOnHover: false,
+            borderRadius: BorderRadius.zero,
+            child: Center(
+              child: Text(
+                'CHOOSE YOUR PATH: WARRIOR, MAGE, OR ROGUE',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: FiftyColors.hyperChrome,
+                      letterSpacing: 1.2,
+                    ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ],
@@ -255,14 +270,17 @@ class _LegendItem extends StatelessWidget {
   final Color color;
   final String label;
 
+  /// Legend dot size using spacing tokens.
+  static const double _dotSize = FiftySpacing.md;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: _dotSize,
+          height: _dotSize,
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
@@ -273,7 +291,7 @@ class _LegendItem extends StatelessWidget {
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: FiftyColors.hyperChrome,
-                letterSpacing: 0.5,
+                letterSpacing: 1.2,
               ),
         ),
       ],
@@ -292,6 +310,16 @@ class _CustomRpgNode extends StatelessWidget {
   final SkillState state;
   final Color branchColor;
 
+  /// Node size constants.
+  static const double _nodeSize = 56;
+  static const double _iconSize = 24;
+  static const double _ultimateIconSize = 28;
+  static const double _glowBlurRadius = FiftySpacing.sm;
+
+  /// Ultimate node border radius (compact).
+  static final BorderRadius _ultimateRadius =
+      BorderRadius.circular(FiftySpacing.sm);
+
   @override
   Widget build(BuildContext context) {
     final isUnlocked = state == SkillState.unlocked || state == SkillState.maxed;
@@ -299,11 +327,11 @@ class _CustomRpgNode extends StatelessWidget {
     final isUltimate = node.type == SkillType.ultimate;
 
     return Container(
-      width: 56,
-      height: 56,
+      width: _nodeSize,
+      height: _nodeSize,
       decoration: BoxDecoration(
         shape: isUltimate ? BoxShape.rectangle : BoxShape.circle,
-        borderRadius: isUltimate ? BorderRadius.circular(FiftySpacing.sm) : null,
+        borderRadius: isUltimate ? _ultimateRadius : null,
         color: isUnlocked
             ? branchColor.withValues(alpha: 0.3)
             : FiftyColors.gunmetal,
@@ -319,7 +347,7 @@ class _CustomRpgNode extends StatelessWidget {
             ? [
                 BoxShadow(
                   color: branchColor.withValues(alpha: 0.4),
-                  blurRadius: 8,
+                  blurRadius: _glowBlurRadius,
                   spreadRadius: 1,
                 ),
               ]
@@ -333,7 +361,7 @@ class _CustomRpgNode extends StatelessWidget {
               : isAvailable
                   ? FiftyColors.terminalWhite.withValues(alpha: 0.7)
                   : FiftyColors.hyperChrome.withValues(alpha: 0.6),
-          size: isUltimate ? 28 : 24,
+          size: isUltimate ? _ultimateIconSize : _iconSize,
         ),
       ),
     );

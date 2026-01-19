@@ -1,8 +1,13 @@
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
 import '../data/sample_trees.dart';
+
+/// Defense branch color - Azure blue for protection theme.
+/// Not in FDL core palette but appropriate for game UI.
+const Color _defenseBlue = Color(0xFF2196F3);
 
 /// MOBA-style talent tree example.
 ///
@@ -80,7 +85,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
       case 'offense':
         return FiftyColors.crimsonPulse;
       case 'defense':
-        return const Color(0xFF2196F3); // Blue
+        return _defenseBlue;
       case 'utility':
         return FiftyColors.warning;
       default:
@@ -98,14 +103,21 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TALENT TREE'),
+        title: Text(
+          'TALENT TREE',
+          style: TextStyle(
+            letterSpacing: FiftyTypography.headingLineHeight,
+          ),
+        ),
         actions: [
-          TextButton.icon(
-            onPressed: _handleReset,
-            icon: Icon(Icons.refresh, color: FiftyColors.terminalWhite.withValues(alpha: 0.7)),
-            label: Text(
-              'RESET',
-              style: TextStyle(color: FiftyColors.terminalWhite.withValues(alpha: 0.7)),
+          Padding(
+            padding: const EdgeInsets.only(right: FiftySpacing.sm),
+            child: FiftyButton(
+              label: 'RESET',
+              icon: Icons.refresh,
+              variant: FiftyButtonVariant.ghost,
+              size: FiftyButtonSize.small,
+              onPressed: _handleReset,
             ),
           ),
         ],
@@ -153,7 +165,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
                 _BranchHeader(
                   label: 'DEFENSE',
                   icon: Icons.shield,
-                  color: const Color(0xFF2196F3),
+                  color: _defenseBlue,
                   points: _getBranchPoints('defense'),
                 ),
                 _BranchHeader(
@@ -185,7 +197,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
                 Expanded(
                   child: _TalentPath(
                     branch: 'defense',
-                    color: const Color(0xFF2196F3),
+                    color: _defenseBlue,
                     controller: _controller,
                     onNodeTap: _handleNodeTap,
                   ),
@@ -241,17 +253,19 @@ class _PointsDisplay extends StatelessWidget {
         Text(
           value.toString(),
           style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+            fontFamily: FiftyTypography.fontFamilyMono,
+            fontSize: FiftyTypography.section,
+            fontWeight: FiftyTypography.ultrabold,
             color: color,
           ),
         ),
         Text(
           label,
           style: TextStyle(
+            fontFamily: FiftyTypography.fontFamilyMono,
             color: FiftyColors.hyperChrome,
-            fontSize: 12,
-            letterSpacing: 0.5,
+            fontSize: FiftyTypography.mono,
+            letterSpacing: FiftyTypography.headingLineHeight,
           ),
         ),
       ],
@@ -277,21 +291,23 @@ class _BranchHeader extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Icon(icon, color: color, size: 24),
+          Icon(icon, color: color, size: FiftySpacing.xxl),
           const SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
               color: color,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
+              fontWeight: FiftyTypography.medium,
+              letterSpacing: FiftyTypography.headingLineHeight,
             ),
           ),
           Text(
             '$points PTS',
             style: TextStyle(
+              fontFamily: FiftyTypography.fontFamilyMono,
               color: FiftyColors.hyperChrome,
-              fontSize: 12,
+              fontSize: FiftyTypography.mono,
             ),
           ),
         ],
@@ -328,7 +344,7 @@ class _TalentPath extends StatelessWidget {
             if (i > 0)
               Container(
                 width: 2,
-                height: 20,
+                height: FiftySpacing.xl,
                 color: nodes[i - 1].isUnlocked ? color : FiftyColors.border,
               ),
             _TalentNode(
@@ -342,6 +358,32 @@ class _TalentPath extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Size constants for talent nodes.
+class _NodeSizes {
+  _NodeSizes._();
+
+  /// Standard node width.
+  static const double nodeWidth = 64;
+
+  /// Keystone node width (larger for emphasis).
+  static const double keystoneWidth = 80;
+
+  /// Standard icon size.
+  static const double iconSize = 20;
+
+  /// Keystone icon size.
+  static const double keystoneIconSize = 24;
+
+  /// Level indicator dot size.
+  static const double dotSize = 8;
+
+  /// Node label font size.
+  static const double labelFontSize = 10;
+
+  /// Glow blur radius for maxed nodes.
+  static const double glowBlurRadius = 8;
 }
 
 class _TalentNode extends StatelessWidget {
@@ -367,7 +409,7 @@ class _TalentNode extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: isKeystone ? 80 : 64,
+        width: isKeystone ? _NodeSizes.keystoneWidth : _NodeSizes.nodeWidth,
         padding: const EdgeInsets.all(FiftySpacing.sm),
         decoration: BoxDecoration(
           color: isUnlocked ? color.withValues(alpha: 0.2) : FiftyColors.gunmetal,
@@ -386,7 +428,7 @@ class _TalentNode extends StatelessWidget {
               ? [
                   BoxShadow(
                     color: color.withValues(alpha: 0.4),
-                    blurRadius: 8,
+                    blurRadius: _NodeSizes.glowBlurRadius,
                   ),
                 ]
               : null,
@@ -397,17 +439,18 @@ class _TalentNode extends StatelessWidget {
             Icon(
               node.icon ?? Icons.star,
               color: isUnlocked ? color : FiftyColors.hyperChrome,
-              size: isKeystone ? 24 : 20,
+              size: isKeystone ? _NodeSizes.keystoneIconSize : _NodeSizes.iconSize,
             ),
             const SizedBox(height: FiftySpacing.xs),
             Text(
               node.name.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10,
+                fontFamily: FiftyTypography.fontFamilyMono,
+                fontSize: _NodeSizes.labelFontSize,
                 color: isUnlocked ? FiftyColors.terminalWhite : FiftyColors.hyperChrome,
-                fontWeight: isKeystone ? FontWeight.bold : FontWeight.normal,
-                letterSpacing: 0.3,
+                fontWeight: isKeystone ? FiftyTypography.medium : FiftyTypography.regular,
+                letterSpacing: FiftyTypography.headingLineHeight,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -419,8 +462,8 @@ class _TalentNode extends StatelessWidget {
               children: List.generate(
                 node.maxLevel,
                 (index) => Container(
-                  width: 8,
-                  height: 8,
+                  width: _NodeSizes.dotSize,
+                  height: _NodeSizes.dotSize,
                   margin: const EdgeInsets.symmetric(horizontal: 1),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
