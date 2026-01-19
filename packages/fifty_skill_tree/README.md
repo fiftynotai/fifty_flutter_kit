@@ -5,6 +5,8 @@ Interactive skill tree widget for Flutter games - customizable, animated, and ga
 [![Pub Version](https://img.shields.io/pub/v/fifty_skill_tree)](https://pub.dev/packages/fifty_skill_tree)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.
+
 ## Features
 
 - **Multiple Layout Algorithms** - Vertical, horizontal, radial, grid, and custom positioning
@@ -509,6 +511,20 @@ SkillTreeView(
   },
 )
 ```
+
+## FDL Integration
+
+This package integrates seamlessly with the **Fifty Design Language (FDL)** ecosystem:
+
+```yaml
+dependencies:
+  fifty_skill_tree: ^0.1.0
+  fifty_theme: ^0.1.0    # Theme system
+  fifty_tokens: ^0.2.0   # Design tokens
+  fifty_ui: ^0.5.0       # UI components
+```
+
+The example app demonstrates full FDL integration with themed UI, consistent spacing, and branded components.
 
 ## API Reference
 
