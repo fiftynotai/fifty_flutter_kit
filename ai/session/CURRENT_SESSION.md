@@ -2,39 +2,36 @@
 
 **Status:** REST MODE
 **Last Updated:** 2026-01-20
-**Last Completed:** BG-001 - Component Alignment & Layout Bugs
+**Last Completed:** BR-032 - Selection Controls (Checkbox & Radio)
 
 ---
 
 ## Session Summary
 
-Completed BG-001 bug fixes for fifty_ui component alignment issues discovered after Design System v2 migration.
+Implemented BR-032 selection controls for fifty_ui package.
 
 **This Session:**
-- Fixed FiftyCard tap area (InkWell inside Stack with Positioned.fill)
-- Fixed FiftyTextField cursor positioning (Column vertical centering)
-- Fixed FiftyTextField multiline alignment (height/constraints)
-- Fixed FiftySlider thumb/label positioning (FractionalTranslation)
-- All fixes verified in example app by Monarch
+- Implemented FiftyCheckbox (20x20, 4px radius, burgundy checked state)
+- Implemented FiftyRadio<T> (20x20 circle, generic type support)
+- Both components with 150ms kinetic animation, hover glow, optional labels
+- All 222 tests passing, analyzer clean
+- Commit: 4d5ed8e on branch `feat/BR-032-selection-controls`
 
 ---
 
 ## Completed This Session
 
-**BG-001: Component Alignment & Layout Bugs**
+**BR-032: Selection Controls (Checkbox & Radio)**
 - Status: Done
-- Commit: e2febe0 on branch `fix/BG-001-alignment-bugs`
-- Type: Bug | Priority: P1-High | Effort: S-Small
+- Commit: 4d5ed8e on branch `feat/BR-032-selection-controls`
+- Type: Feature | Priority: P2-Medium | Effort: S-Small
 
-### Fixes Applied
+### Components Added
 
-| Component | Issue | Fix |
-|-----------|-------|-----|
-| FiftyCard | Tap area only on text | InkWell inside Stack with Positioned.fill |
-| FiftyTextField | Multiline text alignment | height: 48 for single-line, constraints for multiline |
-| FiftyTextField | Block/underscore cursor | Column with mainAxisAlignment.center |
-| FiftySlider | Thumb below track | Separated label/thumb with FractionalTranslation |
-| FiftySlider | Label squeezed | FractionalTranslation(-0.5, -0.2) for centering and gap |
+| Component | Description |
+|-----------|-------------|
+| FiftyCheckbox | Multi-select boolean control, 20x20, 4px radius |
+| FiftyRadio<T> | Single-select option control, generic type support |
 
 ---
 
@@ -64,8 +61,8 @@ Completed BG-001 bug fixes for fifty_ui component alignment issues discovered af
 | Brief | Type | Priority | Effort | Status |
 |-------|------|----------|--------|--------|
 | BG-001 | Bug | P1-High | S | **Done** |
+| BR-032 | Feature | P2-Medium | S | **Done** |
 | UI-005 | Feature | P2-Medium | M | Ready |
-| BR-032 | Feature | P2-Medium | S | Ready |
 | TD-001 | Tech Debt | P1-High | M | Ready |
 | BR-028 | Feature | P1-High | M | Ready |
 | BR-031 | Feature | P1-High | M | Ready |
@@ -76,20 +73,19 @@ Completed BG-001 bug fixes for fifty_ui component alignment issues discovered af
 
 ## Next Steps When Resuming
 
-1. **Merge BG-001** - Merge `fix/BG-001-alignment-bugs` branch to main
+1. **Merge BR-032** - Merge `feat/BR-032-selection-controls` branch to main
 
-2. **HUNT UI-005** - Example App Redesign (P2-Medium)
-   - Add missing component showcases (FiftySegmentedControl, FiftyCodeBlock, FiftyHero, FiftyNavBar)
+2. **HUNT TD-001** - Skill Tree FDL Refactor (P1-High)
+   - Refactor fifty_skill_tree to consume FDL tokens
+
+3. **HUNT BR-028** - fifty_achievement_engine (P1-High)
+   - New engine package for achievement system
+
+4. **HUNT BR-031** - fifty_forms (P1-High)
+   - Form validation and management package
+
+5. **HUNT UI-005** - Example App Redesign (P2-Medium)
+   - Add missing component showcases
    - Add new pages (Controls, Layout, Navigation)
-
-3. **HUNT BR-032** - Selection Controls (P2-Medium)
-   - Implement FiftyCheckbox
-   - Implement FiftyRadio
-
-4. **Continue with engine packages:**
-   - BR-028 fifty_achievement_engine
-   - BR-031 fifty_forms
-   - BR-029 fifty_inventory_engine
-   - BR-030 fifty_dialogue_engine
 
 ---
