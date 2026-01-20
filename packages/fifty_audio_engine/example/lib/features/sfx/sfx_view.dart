@@ -39,18 +39,21 @@ class _SfxViewState extends State<SfxView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: _viewModel,
-      builder: (context, _) {
-        return ListView(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
-          children: [
-            _buildSoundGrid(),
-            const SizedBox(height: FiftySpacing.lg),
-            _buildVolumeControl(),
-          ],
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(title: const Text('SFX Player')),
+      body: ListenableBuilder(
+        listenable: _viewModel,
+        builder: (context, _) {
+          return ListView(
+            padding: const EdgeInsets.all(FiftySpacing.lg),
+            children: [
+              _buildSoundGrid(),
+              const SizedBox(height: FiftySpacing.lg),
+              _buildVolumeControl(),
+            ],
+          );
+        },
+      ),
     );
   }
 

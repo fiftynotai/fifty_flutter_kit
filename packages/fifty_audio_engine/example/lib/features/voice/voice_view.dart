@@ -40,20 +40,23 @@ class _VoiceViewState extends State<VoiceView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: _viewModel,
-      builder: (context, _) {
-        return ListView(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
-          children: [
-            _buildVoiceLines(),
-            const SizedBox(height: FiftySpacing.lg),
-            _buildSettings(),
-            const SizedBox(height: FiftySpacing.lg),
-            _buildVolumeControl(),
-          ],
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(title: const Text('Voice Player')),
+      body: ListenableBuilder(
+        listenable: _viewModel,
+        builder: (context, _) {
+          return ListView(
+            padding: const EdgeInsets.all(FiftySpacing.lg),
+            children: [
+              _buildVoiceLines(),
+              const SizedBox(height: FiftySpacing.lg),
+              _buildSettings(),
+              const SizedBox(height: FiftySpacing.lg),
+              _buildVolumeControl(),
+            ],
+          );
+        },
+      ),
     );
   }
 

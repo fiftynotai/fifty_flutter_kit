@@ -21,9 +21,9 @@ class AudioEngineExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fifty Audio Engine',
-      theme: FiftyTheme.dark(),
       debugShowCheckedModeBanner: false,
-      home: const AudioDemoApp(),
+      theme: FiftyTheme.dark(),
+      home: const ExampleLauncher(),
     );
   }
 }
