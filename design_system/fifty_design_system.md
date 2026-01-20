@@ -1,10 +1,10 @@
-# 🧬 FIFTY.DEV // SYSTEM PROTOCOL (FDL)
+# FIFTY.DEV // SYSTEM PROTOCOL (FDL)
 
-**Version:** 1.1.0 · **Classification:** KINETIC BRUTALISM
+**Version:** 2.0.0 | **Classification:** KINETIC BRUTALISM
 
 **Maintainer:** Mohamed Elamin (System Architect)
 
-**Philosophy:** *Structured Chaos (Base)* · *Manga Aesthetics (Overlay)*
+**Philosophy:** *Structured Chaos (Base)* | *Manga Aesthetics (Overlay)*
 
 ---
 
@@ -104,10 +104,7 @@ The brand is **Kinetic**. It feels heavy but fast.
 > INITIALIZING...
 > LOADING ASSETS...
 > DONE.
-
 ```
-
-
 
 ---
 
@@ -124,7 +121,80 @@ UI elements should feel like physical data cartridges inserted into a slot.
 ### IGRIS Interface
 
 * Always a dedicated overlay or terminal window.
-* Visuals: Monospaced, `IGRIS_GREEN`, blinking block cursor `█`.
+* Visuals: Monospaced, `IGRIS_GREEN`, blinking block cursor.
+
+### Component Inventory (28 Components)
+
+The fifty_ui package provides 28 production-ready components implementing the FDL design language.
+
+#### Buttons
+
+| Component | Description |
+|-----------|-------------|
+| `FiftyButton` | Primary action trigger with variants (primary, secondary, ghost, danger) |
+| `FiftyIconButton` | Icon-only action button |
+
+#### Inputs
+
+| Component | Description |
+|-----------|-------------|
+| `FiftyTextField` | Terminal-style text input with blinking cursor |
+| `FiftySwitch` | Binary toggle control |
+| `FiftySlider` | Range selection control |
+| `FiftyDropdown` | Selection menu |
+| `FiftyCheckbox` | Multi-select control |
+| `FiftyRadio` | Single-select control |
+
+#### Controls
+
+| Component | Description |
+|-----------|-------------|
+| `FiftySegmentedControl` | Pill-style segmented selector |
+
+#### Display
+
+| Component | Description |
+|-----------|-------------|
+| `FiftyCard` | Interactive data cartridge container |
+| `FiftyBadge` | Status indicator |
+| `FiftyChip` | Compact label/tag |
+| `FiftyDivider` | Visual separator |
+| `FiftyDataSlate` | Key-value data display |
+| `FiftyAvatar` | User/entity representation |
+| `FiftyProgressBar` | Progress indicator |
+| `FiftyLoadingIndicator` | System load animation |
+| `FiftyCodeBlock` | Syntax-highlighted code display |
+
+#### Feedback
+
+| Component | Description |
+|-----------|-------------|
+| `FiftySnackbar` | Transient notification |
+| `FiftyDialog` | Modal interaction |
+| `FiftyTooltip` | Contextual hint |
+
+#### Layout
+
+| Component | Description |
+|-----------|-------------|
+| `FiftyHero` | Dramatic headline display |
+| `FiftyHeroSection` | Hero with subtitle |
+
+#### Navigation
+
+| Component | Description |
+|-----------|-------------|
+| `FiftyNavBar` | Floating navigation bar |
+
+#### Effects
+
+| Component | Description |
+|-----------|-------------|
+| `KineticEffect` | Motion physics wrapper |
+| `GlitchEffect` | Chromatic aberration animation |
+| `GlowContainer` | Pulse/glow effect |
+| `HalftonePainter` | Manga screentone generator |
+| `HalftoneOverlay` | Screentone overlay widget |
 
 ---
 
@@ -132,21 +202,61 @@ UI elements should feel like physical data cartridges inserted into a slot.
 
 The code structure mirrors the visual brand structure.
 
-**Visual Map:**
+### Visual Map
 
 ```mermaid
 graph TD
     A[fifty_tokens] --> B[fifty_theme]
-    B --> C[fifty_ui]
-    C --> D[fifty_docs]
-    C --> E[fifty_cmd]
-    E --> F[fifty_ai]
+    A --> C[fifty_ui]
+    B --> C
+    C --> D[Engine Packages]
 
+    subgraph Foundation
+        A
+        B
+        C
+    end
+
+    subgraph Infrastructure
+        E[fifty_cache]
+        F[fifty_storage]
+        G[fifty_utils]
+        H[fifty_connectivity]
+    end
+
+    subgraph Engines
+        I[fifty_audio_engine]
+        J[fifty_speech_engine]
+        K[fifty_sentences_engine]
+        L[fifty_map_engine]
+        M[fifty_printing_engine]
+        N[fifty_skill_tree]
+    end
 ```
 
-* **Foundation:** `fifty_tokens` (The DNA)
-* **Experience:** `fifty_ui` (The Body)
-* **Intelligence:** `fifty_ai` (The Mind/IGRIS)
+### Package Inventory (13 Packages)
+
+| Layer | Package | Purpose |
+|-------|---------|---------|
+| Foundation | `fifty_tokens` | Design tokens (colors, spacing, typography) |
+| Foundation | `fifty_theme` | Theme system (dark/light modes) |
+| Foundation | `fifty_ui` | Component library (28 components) |
+| Infrastructure | `fifty_cache` | HTTP response caching |
+| Infrastructure | `fifty_storage` | Secure local storage |
+| Infrastructure | `fifty_utils` | Utilities and ApiResponse |
+| Infrastructure | `fifty_connectivity` | Network monitoring |
+| Engine | `fifty_audio_engine` | Audio playback system |
+| Engine | `fifty_speech_engine` | Text-to-speech |
+| Engine | `fifty_sentences_engine` | Sentence processing |
+| Engine | `fifty_map_engine` | Map integration |
+| Engine | `fifty_printing_engine` | Print services |
+| Engine | `fifty_skill_tree` | RPG skill tree UI |
+
+### Layer Definitions
+
+* **Foundation:** The DNA. Design tokens, theming, and UI components that all other packages consume.
+* **Infrastructure:** Core utilities and services. Caching, storage, network monitoring.
+* **Engines:** Domain-specific functionality. Audio, speech, maps, printing, gamification.
 
 ---
 
@@ -195,7 +305,6 @@ graph TD
 > Input: The challenge or thought.
 > Process: How I solved it.
 > Output: The result.
-
 ```
 
 ---
@@ -229,7 +338,6 @@ Technical description of the logic.
 
 ## // INSTALLATION
 dart pub add package_name
-
 ```
 
 ### Doc Style
