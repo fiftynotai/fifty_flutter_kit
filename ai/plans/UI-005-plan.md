@@ -1,59 +1,71 @@
 # Implementation Plan: UI-005
 
+**Brief:** UI-005 - Example App Redesign & Complete Component Showcase
 **Complexity:** M (Medium)
 **Estimated Duration:** 4-6 hours
 **Risk Level:** Low
-**Created:** 2026-01-12
+**Created:** 2026-01-20
+
+---
 
 ## Summary
 
-Update the `fifty_printing_engine` example app (10 files) to use Fifty Design Language (FDL) components, tokens, and theming. Kinetic Brutalism aesthetic - dark theme, crimson accents, terminal-style typography.
+Redesign the fifty_ui example app to add 3 new gallery pages (Controls, Layout, Navigation) and enhance existing pages with missing components. Single-file structure in `main.dart`.
+
+---
+
+## Discovery
+
+**FiftyCheckbox and FiftyRadio already exist** in the library (contrary to brief assumption). Adding them to Inputs page scope.
+
+---
 
 ## Files to Modify
 
-| File | Action |
-|------|--------|
-| `example/pubspec.yaml` | Add FDL dependencies |
-| `example/lib/main.dart` | FiftyTheme.dark(), NavigationBar styling |
-| `example/lib/screens/home_screen.dart` | FiftyCard, FDL colors/spacing |
-| `example/lib/screens/printer_management_screen.dart` | FiftyButton, FDL dialogs |
-| `example/lib/screens/test_print_screen.dart` | FiftyCard, FiftyButton |
-| `example/lib/screens/ticket_builder_screen.dart` | FiftyCard, FiftyButton, FDL inputs |
-| `example/lib/widgets/printer_list_item.dart` | FiftyCard, status colors |
-| `example/lib/widgets/add_printer_dialog.dart` | FiftyCard dialog, FiftyButton |
-| `example/lib/widgets/printer_selection_dialog.dart` | FiftyCard dialog, FiftyButton |
-| `example/lib/widgets/bluetooth_scan_sheet.dart` | FDL bottom sheet, FiftyButton |
-| `example/lib/widgets/print_result_widget.dart` | FiftyCard, FDL status colors |
+| File | Action | Changes |
+|------|--------|---------|
+| `packages/fifty_ui/example/lib/main.dart` | MODIFY | Add 3 new pages, update GalleryHome, enhance Display & Inputs pages |
 
-**NOT modified:** kitchen_ticket_example.dart, receipt_ticket_example.dart (pure printing logic)
+---
 
-## Color Mapping
+## Implementation Phases
 
-| Flutter | FDL |
-|---------|-----|
-| Background | `FiftyColors.voidBlack` |
-| Cards | `FiftyColors.gunmetal` |
-| Primary accent | `FiftyColors.crimsonPulse` |
-| Secondary text | `FiftyColors.hyperChrome` |
-| Success | `FiftyColors.success` / `FiftyColors.igrisGreen` |
-| Error | `FiftyColors.error` |
-| Warning | `FiftyColors.warning` |
+### Phase 1: Update GalleryHome Navigation
+Add 3 new navigation cards in order:
+1. BUTTONS (existing)
+2. INPUTS (existing)
+3. CONTROLS (NEW)
+4. DISPLAY (existing)
+5. FEEDBACK (existing)
+6. LAYOUT (NEW)
+7. NAVIGATION (NEW)
 
-## Spacing Mapping
+### Phase 2: Add Controls Page (NEW)
+ControlsPage - StatefulWidget showcasing FiftySegmentedControl
 
-| Size | Token |
-|------|-------|
-| 4px | `FiftySpacing.xs` |
-| 8px | `FiftySpacing.sm` |
-| 12px | `FiftySpacing.md` |
-| 16px | `FiftySpacing.lg` |
-| 24px | `FiftySpacing.xl` |
-| 32px | `FiftySpacing.xxl` |
+### Phase 3: Enhance Display Page
+Add FiftyCodeBlock section
 
-## Phases
+### Phase 4: Add Layout Page (NEW)
+LayoutPage - StatelessWidget showcasing FiftyHero
 
-1. Dependencies - Add fifty_tokens, fifty_theme, fifty_ui
-2. Theme Setup - FiftyTheme.dark() in main.dart
-3. Screens - Update 4 screens with FDL
-4. Widgets - Update 5 widgets with FDL
-5. Verification - flutter analyze, build test
+### Phase 5: Add Navigation Page (NEW)
+NavigationPage - StatefulWidget showcasing FiftyNavBar
+
+### Phase 6: Enhance Inputs Page
+Add FiftyCheckbox and FiftyRadio sections
+
+---
+
+## Acceptance Criteria
+
+- [ ] New "Controls" page with FiftySegmentedControl
+- [ ] FiftyCodeBlock added to Display page
+- [ ] New "Layout" page with FiftyHero
+- [ ] New "Navigation" page with FiftyNavBar
+- [ ] FiftyCheckbox added to Inputs page
+- [ ] FiftyRadio added to Inputs page
+- [ ] Gallery home updated with 7 sections
+- [ ] Example app runs without errors
+
+---
