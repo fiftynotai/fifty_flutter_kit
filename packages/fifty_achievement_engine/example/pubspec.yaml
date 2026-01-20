@@ -1,0 +1,25 @@
+name: fifty_achievement_engine_example
+description: Example app demonstrating fifty_achievement_engine features.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fifty_achievement_engine:
+    path: ..
+  fifty_tokens:
+    path: ../../fifty_tokens
+  fifty_ui:
+    path: ../../fifty_ui
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

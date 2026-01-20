@@ -1,191 +1,269 @@
-# Implementation Plan: BR-028
+# Implementation Plan: BR-028 - Fifty Achievement Engine
 
-**Brief:** Fifty Demo - Use MVVM+Actions Template Pattern
-**Complexity:** L (Large)
-**Estimated Duration:** 2-3 working days
-**Risk Level:** Medium
-**Created:** 2026-01-05
+**Brief:** Fifty Achievement Engine Package
+**Complexity:** M (Medium)
+**Estimated Duration:** 1-2 weeks
+**Risk Level:** Low
+**Created:** 2026-01-20
+**Agent:** planner (ARCHITECT)
 
 ---
 
 ## Summary
 
-Refactor the fifty_demo app from Provider + GetIt architecture to MVVM+Actions with GetX. This involves changing state management, dependency injection, and UI binding patterns across ~45 files while preserving all existing functionality.
+Create `fifty_achievement_engine` - a Flutter package providing achievement/trophy systems with condition-based unlocks, progress tracking, and FDL-compliant UI widgets. Follows the established `fifty_skill_tree` patterns without introducing a separate theme system (FDL consumption only).
 
 ---
 
-## Files to Modify
+## CRITICAL: FDL Compliance Notes
 
-| File | Action | Changes |
-|------|--------|---------|
-| `apps/fifty_demo/pubspec.yaml` | MODIFY | Replace provider/get_it with get, add loader_overlay |
-| `apps/fifty_demo/lib/main.dart` | MODIFY | Add RouteManager init, change to simple runApp |
-| `apps/fifty_demo/lib/app/fifty_demo_app.dart` | MODIFY | Use GetMaterialApp, remove MultiProvider, add GlobalLoaderOverlay |
-| `apps/fifty_demo/lib/core/di/service_locator.dart` | DELETE | Remove GetIt service locator |
-| `apps/fifty_demo/lib/core/routing/route_manager.dart` | CREATE | Add RouteManager from template |
-| `apps/fifty_demo/lib/core/presentation/actions/action_presenter.dart` | CREATE | Add ActionPresenter base class |
-| `apps/fifty_demo/lib/core/errors/app_exception.dart` | CREATE | Add exception types |
-| `apps/fifty_demo/lib/core/bindings/initial_bindings.dart` | CREATE | Add InitialBindings for app-wide deps |
-| `apps/fifty_demo/lib/features/home/home_bindings.dart` | CREATE | Add HomeBindings |
-| `apps/fifty_demo/lib/features/home/viewmodel/home_viewmodel.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/features/home/actions/home_actions.dart` | MODIFY | Add ActionPresenter composition |
-| `apps/fifty_demo/lib/features/home/view/home_page.dart` | MODIFY | Consumer -> GetView + Obx |
-| `apps/fifty_demo/lib/features/map_demo/map_demo_bindings.dart` | CREATE | Add MapDemoBindings |
-| `apps/fifty_demo/lib/features/map_demo/viewmodel/map_demo_viewmodel.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/features/map_demo/actions/map_demo_actions.dart` | MODIFY | Add ActionPresenter composition |
-| `apps/fifty_demo/lib/features/map_demo/view/map_demo_page.dart` | MODIFY | Consumer -> GetView + Obx |
-| `apps/fifty_demo/lib/features/map_demo/service/map_audio_coordinator.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/features/dialogue_demo/dialogue_demo_bindings.dart` | CREATE | Add DialogueDemoBindings |
-| `apps/fifty_demo/lib/features/dialogue_demo/viewmodel/dialogue_demo_viewmodel.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/features/dialogue_demo/actions/dialogue_demo_actions.dart` | MODIFY | Add ActionPresenter composition |
-| `apps/fifty_demo/lib/features/dialogue_demo/view/dialogue_demo_page.dart` | MODIFY | Consumer -> GetView + Obx |
-| `apps/fifty_demo/lib/features/dialogue_demo/service/dialogue_orchestrator.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/features/ui_showcase/ui_showcase_bindings.dart` | CREATE | Add UiShowcaseBindings |
-| `apps/fifty_demo/lib/features/ui_showcase/viewmodel/ui_showcase_viewmodel.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/features/ui_showcase/actions/ui_showcase_actions.dart` | MODIFY | Add ActionPresenter composition |
-| `apps/fifty_demo/lib/features/ui_showcase/view/ui_showcase_page.dart` | MODIFY | Consumer -> GetView + Obx |
-| `apps/fifty_demo/lib/shared/services/audio_integration_service.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/shared/services/speech_integration_service.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/shared/services/sentences_integration_service.dart` | MODIFY | ChangeNotifier -> GetxController |
-| `apps/fifty_demo/lib/shared/services/map_integration_service.dart` | MODIFY | ChangeNotifier -> GetxController |
-| All view widget files | MODIFY | Remove serviceLocator references |
+Per `coding_guidelines.md` Engine Package Architecture rules:
 
-**Total Files: ~45** (8 CREATE, 1 DELETE, ~36 MODIFY)
+**REMOVED from brief's proposed structure:**
+- `themes/achievement_theme.dart` - ANTI-PATTERN
+- `themes/theme_presets.dart` - ANTI-PATTERN
+
+**CORRECT approach:**
+- Widgets consume `FiftyColors`, `FiftySpacing`, `FiftyTypography`, `FiftyRadii` directly
+- Optional override parameters on individual widgets (not a theme object)
+- State-based styling via semantic color getters
+
+---
+
+## Files to Create
+
+| File | Purpose |
+|------|---------|
+| `packages/fifty_achievement_engine/pubspec.yaml` | Package manifest |
+| `packages/fifty_achievement_engine/lib/fifty_achievement_engine.dart` | Barrel export |
+| `packages/fifty_achievement_engine/lib/src/models/achievement.dart` | Core model |
+| `packages/fifty_achievement_engine/lib/src/models/achievement_rarity.dart` | Rarity enum |
+| `packages/fifty_achievement_engine/lib/src/models/achievement_state.dart` | State enum |
+| `packages/fifty_achievement_engine/lib/src/models/achievement_progress.dart` | Progress data |
+| `packages/fifty_achievement_engine/lib/src/models/models.dart` | Barrel |
+| `packages/fifty_achievement_engine/lib/src/conditions/achievement_condition.dart` | Base condition |
+| `packages/fifty_achievement_engine/lib/src/conditions/achievement_context.dart` | Context data |
+| `packages/fifty_achievement_engine/lib/src/conditions/event_condition.dart` | Event trigger |
+| `packages/fifty_achievement_engine/lib/src/conditions/count_condition.dart` | Count-based |
+| `packages/fifty_achievement_engine/lib/src/conditions/threshold_condition.dart` | Threshold |
+| `packages/fifty_achievement_engine/lib/src/conditions/composite_condition.dart` | AND/OR |
+| `packages/fifty_achievement_engine/lib/src/conditions/time_condition.dart` | Time-based |
+| `packages/fifty_achievement_engine/lib/src/conditions/sequence_condition.dart` | Sequence |
+| `packages/fifty_achievement_engine/lib/src/conditions/conditions.dart` | Barrel |
+| `packages/fifty_achievement_engine/lib/src/controllers/achievement_controller.dart` | Main controller |
+| `packages/fifty_achievement_engine/lib/src/controllers/controllers.dart` | Barrel |
+| `packages/fifty_achievement_engine/lib/src/widgets/achievement_card.dart` | Card widget |
+| `packages/fifty_achievement_engine/lib/src/widgets/achievement_list.dart` | List widget |
+| `packages/fifty_achievement_engine/lib/src/widgets/achievement_popup.dart` | Toast popup |
+| `packages/fifty_achievement_engine/lib/src/widgets/achievement_progress.dart` | Progress bar |
+| `packages/fifty_achievement_engine/lib/src/widgets/achievement_summary.dart` | Summary widget |
+| `packages/fifty_achievement_engine/lib/src/widgets/widgets.dart` | Barrel |
+| `packages/fifty_achievement_engine/lib/src/serialization/progress_data.dart` | Progress data |
+| `packages/fifty_achievement_engine/lib/src/serialization/achievement_serializer.dart` | Serializer |
+| `packages/fifty_achievement_engine/lib/src/serialization/serialization.dart` | Barrel |
+| `packages/fifty_achievement_engine/README.md` | Documentation |
+| `packages/fifty_achievement_engine/CHANGELOG.md` | v0.1.0 |
+| `packages/fifty_achievement_engine/example/pubspec.yaml` | Example manifest |
+| `packages/fifty_achievement_engine/example/lib/main.dart` | Example entry |
+| Various test files | Unit/widget tests |
+
+**Total Files:** ~45 files
 
 ---
 
 ## Implementation Phases
 
-### Phase 1: Dependencies and Core Infrastructure
+### Phase 1: Foundation (Models)
 
-**1.1 Update pubspec.yaml**
+1. Create package scaffold (`pubspec.yaml`)
+2. Create `AchievementRarity` enum (common, uncommon, rare, epic, legendary)
+3. Create `AchievementState` enum (locked, available, unlocked, claimed)
+4. Create `Achievement<T>` model (generic, immutable, JSON serializable)
+5. Create `AchievementProgress` model
+
+**Dependencies:**
 ```yaml
-# Remove
-provider: ^6.1.2
-get_it: ^8.0.3
-
-# Add
-get: ^4.6.6
-loader_overlay: ^4.0.3
+dependencies:
+  flutter:
+    sdk: flutter
+  fifty_tokens:
+    path: ../fifty_tokens
+  fifty_ui:
+    path: ../fifty_ui
+  fifty_theme:
+    path: ../fifty_theme
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  mocktail: ^1.0.0
 ```
-
-**1.2 Create Core Infrastructure Files**
-
-- `/core/errors/app_exception.dart` - Exception types
-- `/core/presentation/actions/action_presenter.dart` - ActionPresenter base class
-- `/core/routing/route_manager.dart` - Navigation helpers
-- `/core/bindings/initial_bindings.dart` - App-wide DI
-
-**1.3 Delete service_locator.dart**
 
 ---
 
-### Phase 2: Shared Services Migration
+### Phase 2: Conditions System
 
-**Pattern:**
+1. Create base `AchievementCondition` abstract class
+2. Create `AchievementContext` data container
+3. Implement 6 condition types:
+   - `EventCondition` - One-time event triggers
+   - `CountCondition` - Cumulative count (kill 50 enemies)
+   - `ThresholdCondition` - Stat-based (reach level 10)
+   - `CompositeCondition` - AND/OR combinations
+   - `TimeCondition` - Time-based challenges
+   - `SequenceCondition` - Ordered event sequences
+
+**Key Pattern:**
 ```dart
-// FROM:
-class AudioIntegrationService extends ChangeNotifier {
-  void notifyListeners();
-}
-
-// TO:
-class AudioIntegrationService extends GetxController {
-  void update();
-}
-```
-
-Files:
-- AudioIntegrationService
-- SpeechIntegrationService
-- SentencesIntegrationService
-- MapIntegrationService
-
----
-
-### Phase 3: Feature Services Migration
-
-- MapAudioCoordinator
-- DialogueOrchestrator
-
----
-
-### Phase 4-7: Feature Migrations
-
-Each feature (Home, MapDemo, DialogueDemo, UiShowcase):
-1. Create {Feature}Bindings
-2. Migrate {Feature}ViewModel
-3. Migrate {Feature}Actions
-4. Migrate {Feature}Page
-
-**Bindings Pattern:**
-```dart
-class HomeBindings implements Bindings {
-  @override
-  void dependencies() {
-    if (!Get.isRegistered<HomeViewModel>()) {
-      Get.put<HomeViewModel>(HomeViewModel(...), permanent: true);
-    }
-    if (!Get.isRegistered<HomeActions>()) {
-      Get.lazyPut<HomeActions>(() => HomeActions(...), fenix: true);
-    }
-  }
-}
-```
-
-**ViewModel Pattern:**
-```dart
-class HomeViewModel extends GetxController {
-  final RxBool _allReady = false.obs;
-  bool get allReady => _allReady.value;
-
-  @override
-  void onInit() {
-    super.onInit();
-    initializeServices();
-  }
-}
-```
-
-**View Pattern:**
-```dart
-class HomePage extends GetView<HomeViewModel> {
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => ...controller.allReady...);
-  }
+abstract class AchievementCondition {
+  bool evaluate(AchievementContext context);
+  double getProgress(AchievementContext context);
+  String get type;
+  Map<String, dynamic> toJson();
+  factory AchievementCondition.fromJson(Map<String, dynamic> json);
 }
 ```
 
 ---
 
-### Phase 8: App Shell Migration
+### Phase 3: Controller
 
-**FiftyDemoApp:**
+Create `AchievementController<T>` extending `ChangeNotifier`:
+
+**API:**
 ```dart
-class FiftyDemoApp extends StatelessWidget {
+// Event tracking
+void trackEvent(String event, {int count = 1});
+void clearEvent(String event);
+
+// Stat tracking
+void updateStat(String stat, num value);
+void incrementStat(String stat, num delta);
+
+// Progress
+double getProgress(String achievementId);
+bool isUnlocked(String achievementId);
+
+// State
+List<Achievement<T>> get achievements;
+List<Achievement<T>> get unlockedAchievements;
+int get totalPoints;
+int get earnedPoints;
+
+// Callbacks
+ValueChanged<Achievement<T>>? onUnlock;
+
+// Serialization
+Map<String, dynamic> exportProgress();
+void importProgress(Map<String, dynamic> data);
+```
+
+---
+
+### Phase 4: Serialization
+
+1. Create `ProgressData` model
+2. Create `AchievementSerializer` with type registry
+
+---
+
+### Phase 5: UI Widgets (FDL COMPLIANT)
+
+**CRITICAL: NO THEME CLASS**
+
+All widgets consume FDL directly with optional overrides:
+
+```dart
+class AchievementCard extends StatelessWidget {
+  final Achievement achievement;
+  final double progress;
+  final VoidCallback? onTap;
+
+  // Optional overrides (NOT a theme object)
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final Color? progressColor;
+
   @override
   Widget build(BuildContext context) {
-    return GlobalLoaderOverlay(
-      child: GetMaterialApp(
-        theme: FiftyTheme.dark(),
-        initialBinding: InitialBindings(),
-        home: const DemoShell(),
+    return Container(
+      color: backgroundColor ?? FiftyColors.surfaceDark,
+      padding: const EdgeInsets.all(FiftySpacing.md),
+      decoration: BoxDecoration(
+        borderRadius: FiftyRadii.xxlRadius,
+        border: Border.all(color: borderColor ?? FiftyColors.borderDark),
       ),
+      // ...
     );
   }
+
+  // State-based colors via semantic getter
+  Color get _rarityColor => switch (achievement.rarity) {
+    AchievementRarity.common => FiftyColors.slateGrey,
+    AchievementRarity.uncommon => FiftyColors.hunterGreen,
+    AchievementRarity.rare => FiftyColors.burgundy,
+    AchievementRarity.epic => const Color(0xFF9B59B6),
+    AchievementRarity.legendary => const Color(0xFFE67E22),
+  };
 }
 ```
 
+**Widgets:**
+- `AchievementCard` - Single achievement display
+- `AchievementList` - Scrollable list with filtering
+- `AchievementPopup` - Toast notification on unlock
+- `AchievementProgress` - Progress bar widget
+- `AchievementSummary` - Points/completion overview
+
 ---
 
-### Phase 9: Cleanup and Testing
+### Phase 6: Barrel Exports
 
-1. Remove Provider imports
-2. Remove GetIt imports
-3. Replace serviceLocator references with Get.find
-4. Run flutter analyze
-5. Manual testing
+Main library export file.
+
+---
+
+### Phase 7: Example App
+
+Three demo scenarios:
+- Basic achievements
+- RPG achievements
+- Fitness achievements
+
+---
+
+### Phase 8: Documentation
+
+- README.md with usage examples
+- CHANGELOG.md with v0.1.0 entry
+- API doc comments
+
+---
+
+### Phase 9: Testing
+
+| Component | Test Count | Coverage |
+|-----------|------------|----------|
+| Models | 30+ | 90% |
+| Conditions | 60+ | 90% |
+| Controller | 40+ | 85% |
+| Serialization | 15+ | 90% |
+| Widgets | 20+ | 70% |
+| **Total** | **150+** | |
+
+---
+
+## Dependencies Graph
+
+```
+Phase 1 (Models) → Phase 2 (Conditions) → Phase 3 (Controller)
+                                                ↓
+Phase 4 (Serialization) ← ─────────────────────┘
+         ↓
+Phase 5 (Widgets) → Phase 6 (Barrel) → Phase 7 (Example) → Phase 8 (Docs)
+         ↓
+Phase 9 (Testing) ← runs parallel after Phase 4
+```
 
 ---
 
@@ -193,28 +271,26 @@ class FiftyDemoApp extends StatelessWidget {
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
-| Listener pattern changes | Medium | High | Test coordinators thoroughly |
-| IndexedStack + GetX disposal | Medium | Medium | Use permanent ViewModels |
-| Missing imports | High | Low | Run analyze frequently |
+| FDL violation (theme class) | Low | High | Strict code review, checklist |
+| Condition serialization complexity | Medium | Medium | Type registry pattern |
+| Performance with many achievements | Low | Medium | Lazy loading in list |
 
 ---
 
-## Complexity Per Phase
+## File Count Summary
 
-| Phase | Complexity | Duration |
-|-------|------------|----------|
-| 1. Core Infrastructure | Medium | 2-3 hours |
-| 2. Shared Services | Low | 1-2 hours |
-| 3. Feature Services | Low | 1 hour |
-| 4. Home Feature | Medium | 1-2 hours |
-| 5. Map Demo Feature | Medium | 2 hours |
-| 6. Dialogue Demo Feature | Medium | 2 hours |
-| 7. UI Showcase Feature | Low | 1 hour |
-| 8. App Shell | High | 2-3 hours |
-| 9. Cleanup & Testing | Medium | 3-4 hours |
-
-**Total: 16-22 hours**
+| Category | Files |
+|----------|-------|
+| Models | 5 |
+| Conditions | 8 |
+| Controllers | 2 |
+| Serialization | 3 |
+| Widgets | 6 |
+| Config/Export | 3 |
+| Example | 5 |
+| Tests | 13+ |
+| **Total** | **~45 files** |
 
 ---
 
-**Plan Status:** Ready for implementation
+**Plan Status:** Awaiting approval
