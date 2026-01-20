@@ -6,7 +6,6 @@ library;
 import 'package:flutter/material.dart';
 
 import '../features/speech_demo/view/speech_demo_page.dart';
-import '../shared/widgets/demo_scaffold.dart';
 
 /// Main app shell for the speech demo.
 class SpeechDemoApp extends StatelessWidget {
@@ -14,10 +13,11 @@ class SpeechDemoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DemoScaffold(
-      title: 'SPEECH ENGINE',
-      subtitle: 'fifty.dev speech system demonstration',
-      child: SpeechDemoPage(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Speech Engine'),
+      ),
+      body: const SpeechDemoPage(),
     );
   }
 }
