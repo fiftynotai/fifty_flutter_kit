@@ -1,347 +1,287 @@
+# Fifty UI - Component Library
+
 This is the **Construction Blueprint** for `fifty_ui`.
 
 While `fifty_theme` provided the definitions (colors, text styles), `fifty_ui` provides the **Tangible Components**. This package contains the actual Widgets that you will use to build your apps.
 
-Every widget here follows the **Kinetic Brutalism** doctrine: **Heavy structure, fast motion, raw feedback.**
+Every widget here follows the **FDL v2** specification: **Burgundy primary, mode-aware colors, Manrope typography, motion tokens.**
 
 ---
 
-# 📦 Package: `fifty_ui`
+## Package: `fifty_ui`
 
 **Role:** The Component Library (The Hardware).
-**Dependencies:** `flutter`, `flutter_animate`, `fifty_theme` (or `fifty_tokens`).
+**Dependencies:** `flutter`, `flutter_animate`, `fifty_tokens`, `fifty_theme`.
+**Version:** 1.0.0
 
 ---
 
-## 📂 1. Directory Structure
+## Component Inventory (28 Components)
 
-We organize by "Atomic Design" principles but renamed to fit the **System Architect** persona.
+### Buttons (2)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftyButton` | Primary action button | Variants (primary/secondary/ghost/danger), sizes (sm/md/lg), icon support, expanded mode |
+| `FiftyIconButton` | Circular icon button | Icon-only actions, sizes (sm/md/lg), hover effects |
+
+### Inputs (6)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftyTextField` | Text input field | 48px height, xl radius, prefix/suffix support, validation |
+| `FiftySwitch` | Kinetic toggle | ON = slateGrey (not primary), smooth animation |
+| `FiftySlider` | Range slider | Mode-aware styling, labels, discrete/continuous |
+| `FiftyDropdown` | Dropdown selector | xl radius, search support, multi-select option |
+| `FiftyCheckbox` | Multi-select control | v2 styling, label support, indeterminate state |
+| `FiftyRadio` | Single-select control | v2 styling, radio group support |
+
+### Controls (1)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftySegmentedControl` | Pill-style segmented control | Tab-like selection, animated indicator |
+
+### Containers (1)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftyCard` | Card container | xxl/xxxl radius, md shadow, optional halftone texture |
+
+### Display (7)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftyBadge` | Status indicator | Outlined pill style, variants (tech/status/custom) |
+| `FiftyChip` | Tag/label component | Removable, selectable, icon support |
+| `FiftyDivider` | Themed divider | Horizontal/vertical, label support |
+| `FiftyDataSlate` | Key-value display panel | Grid layout, titled sections |
+| `FiftyAvatar` | User avatar | Image/initials fallback, sizes, status indicator |
+| `FiftyProgressBar` | Linear progress indicator | Determinate/indeterminate, color variants |
+| `FiftyLoadingIndicator` | Text-based loading | Cycling status messages, terminal aesthetic |
+
+### Feedback (3)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftySnackbar` | Toast notification | Success/error/warning/info variants, actions |
+| `FiftyDialog` | Modal dialog | xxxl radius, title/content/actions slots |
+| `FiftyTooltip` | Hover tooltip | Positioning options, rich content support |
+
+### Organisms (2)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftyNavBar` | Floating navigation bar | Glassmorphism, dynamic island style, pill shape |
+| `FiftyHero` | Dramatic headline text | ALL CAPS, Manrope font, sizes (display/h1/h2), glitch effect |
+| `FiftyHeroSection` | Hero with subtitle | Combines FiftyHero with subtitle, consistent spacing |
+
+### Molecules (1)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `FiftyCodeBlock` | Code display | Syntax highlighting, copy button, language label |
+
+### Utils/Effects (5)
+
+| Component | Description | Key Features |
+|-----------|-------------|--------------|
+| `KineticEffect` | Hover/press animation wrapper | Scale on hover, press-down effect |
+| `GlitchEffect` | RGB chromatic aberration | Trigger on mount or on-demand, intensity control |
+| `GlowContainer` | Reusable glow wrapper | Animated glow, color customization |
+| `HalftonePainter` | CustomPainter for halftone dots | Configurable dot size and spacing |
+| `HalftoneOverlay` | Widget wrapper for halftone textures | Easy integration with any widget |
+
+---
+
+## Directory Structure
 
 ```text
 lib/
 ├── src/
-│   ├── atoms/                // Primitives
-│   │   ├── fifty_button.dart // The Kinetic Switch
-│   │   ├── fifty_input.dart  // The Terminal Line
-│   │   ├── fifty_badge.dart  // Status Pills
-│   │   ├── fifty_divider.dart// Glitch Lines
-│   │   └── fifty_loader.dart // Text Sequence Loader
-│   ├── molecules/            // Compounds
-│   │   ├── fifty_card.dart   // Bento Containers (Data Slates)
-│   │   ├── fifty_toast.dart  // System Alerts
-│   │   └── fifty_code_block.dart // Syntax Highlighter
-│   ├── organisms/            // Complex Structures
-│   │   ├── fifty_nav_bar.dart // Dynamic Command Island
-│   │   └── fifty_hero.dart   // Monument Text Headers
+│   ├── buttons/
+│   │   ├── fifty_button.dart
+│   │   └── fifty_icon_button.dart
+│   ├── inputs/
+│   │   ├── fifty_text_field.dart
+│   │   ├── fifty_switch.dart
+│   │   ├── fifty_slider.dart
+│   │   ├── fifty_dropdown.dart
+│   │   ├── fifty_checkbox.dart
+│   │   └── fifty_radio.dart
+│   ├── controls/
+│   │   └── fifty_segmented_control.dart
+│   ├── containers/
+│   │   └── fifty_card.dart
+│   ├── display/
+│   │   ├── fifty_avatar.dart
+│   │   ├── fifty_badge.dart
+│   │   ├── fifty_chip.dart
+│   │   ├── fifty_data_slate.dart
+│   │   ├── fifty_divider.dart
+│   │   ├── fifty_loading_indicator.dart
+│   │   └── fifty_progress_bar.dart
+│   ├── feedback/
+│   │   ├── fifty_dialog.dart
+│   │   ├── fifty_snackbar.dart
+│   │   └── fifty_tooltip.dart
+│   ├── organisms/
+│   │   ├── fifty_hero.dart         # Contains FiftyHero + FiftyHeroSection
+│   │   └── fifty_nav_bar.dart
+│   ├── molecules/
+│   │   └── fifty_code_block.dart
 │   └── utils/
-│       ├── kinetic_effect.dart // Hover/Scale logic wrapper
-│       └── glitch_effect.dart  // Chromatic Aberration shader
-├── fifty_ui.dart             // Main Export
+│       ├── glitch_effect.dart
+│       ├── glow_container.dart
+│       ├── halftone_painter.dart   # Contains HalftonePainter + HalftoneOverlay
+│       └── kinetic_effect.dart
+├── fifty_ui.dart                   # Main Export
 └── pubspec.yaml
-
 ```
 
 ---
 
-## 🛠 2. Widget Specifications (The Catalog)
+## Usage
 
-### A. `FiftyButton` (The Kinetic Switch)
-
-* **Concept:** A physical mechanical switch. Zero latency feeling.
-* **Design:**
-* **Shape:** Sharp corners (Radius 4px) or Pill (Radius 100px).
-* **States:**
-* *Idle:* `Gunmetal` BG, White Text.
-* *Hover:* Background snaps to `Crimson`. Text Glitches.
-* *Press:* Scale down to `0.95`.
-
-
-
-
-* **Properties:**
-* `label` (String)
-* `icon` (IconData, optional)
-* `isGlitch` (bool) -> Adds RGB split on hover.
-
-
-
-### B. `FiftyInput` (The Terminal Line)
-
-* **Concept:** A command line prompt.
-* **Design:**
-* **No Box:** Background is transparent.
-* **Border:** Bottom-only border.
-* *Idle:* Thin `HyperChrome`.
-* *Focus:* Thick `Crimson`.
-
-
-* **Prefix:** Always includes a prompt char `> ` or `// ` in `HyperChrome`.
-* **Cursor:** Solid block `█` or Underscore `_` that blinks.
-
-
-
-### C. `FiftyCard` (The Bento Slate)
-
-* **Concept:** A modular data container.
-* **Design:**
-* **Base:** `Gunmetal` fill.
-* **Border:** `1px` Solid `HyperChrome` (Opacity 10%).
-* **Texture:** Optional `HalftoneOverlay` (dots) in the background.
-* **Hover:** If `isInteractive` is true, slight scale up (`1.02`) and border turns `Crimson`.
-
-
-* **Properties:**
-* `child` (Widget)
-* `hasTexture` (bool)
-* `padding` (EdgeInsets)
-
-
-
-### D. `FiftyLoader` (The Compiler)
-
-* **Concept:** Rejects spinning circles. Simulates data processing.
-* **Design:**
-* Displays a sequence of monospace strings that cycle rapidly.
-* `> INITIALIZING...` -> `> MOUNTING...` -> `> SYNCING...`
-
-
-* **Properties:**
-* `textStyle` (TextStyle)
-* `color` (Color) -> Default `Crimson`.
-
-
-
-### E. `FiftyNavBar` (The Command Deck)
-
-* **Concept:** Floating "Dynamic Island" or HUD.
-* **Design:**
-* **Container:** Glassmorphism (Blur 20px) + Black Opacity 50%.
-* **Shape:** Pill.
-* **Items:** Text-only or Icon-only.
-* **Selection:** Active item gets a `Crimson` underbar `_`.
-
-
-
-### F. `FiftyBadge` (The System Tag)
-
-* **Concept:** Status indicators for IGRIS or project labels.
-* **Design:**
-* **Style:** Outlined Pill.
-* **Border:** `HyperChrome` or `IgrisGreen` (for AI).
-* **Text:** Tiny Monospace CAPS.
-
-
-* **Variants:**
-* `FiftyBadge.tech("FLUTTER")` (Gray)
-* `FiftyBadge.status("ONLINE")` (Green + Glow)
-
-
-
----
-
-## 💻 3. Implementation Examples
-
-Here is how you write the code for the key components using `flutter_animate` for that "Kinetic" feel.
-
-### `fifty_button.dart`
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:fifty_theme/fifty_theme.dart'; // Assuming specific exports
-
-class FiftyButton extends StatefulWidget {
-  final String label;
-  final VoidCallback onTap;
-  final bool isGlitch;
-
-  const FiftyButton({
-    super.key, 
-    required this.label, 
-    required this.onTap,
-    this.isGlitch = false,
-  });
-
-  @override
-  State<FiftyButton> createState() => _FiftyButtonState();
-}
-
-class _FiftyButtonState extends State<FiftyButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedContainer(
-          duration: 150.ms, // Fast snap
-          curve: Curves.easeOutExpo,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          decoration: BoxDecoration(
-            color: _isHovered ? FiftyColors.crimsonPulse : FiftyColors.gunmetal,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              color: _isHovered ? FiftyColors.crimsonPulse : FiftyColors.hyperChrome.withOpacity(0.3),
-            ),
-          ),
-          child: Text(
-            widget.label.toUpperCase(),
-            style: FiftyType.codeText.copyWith( // Using the Mono font
-              color: FiftyColors.terminalWhite,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
-            ),
-          ),
-        )
-        .animate(target: _isHovered ? 1 : 0)
-        .scale(begin: const Offset(1, 1), end: const Offset(1.02, 1.02)), // Slight breathe
-      ),
-    );
-  }
-}
-
-```
-
-### `fifty_card.dart`
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:fifty_theme/fifty_theme.dart';
-
-class FiftyCard extends StatelessWidget {
-  final Widget child;
-  final bool hasTexture;
-  final EdgeInsetsGeometry padding;
-
-  const FiftyCard({
-    super.key, 
-    required this.child, 
-    this.hasTexture = true, 
-    this.padding = const EdgeInsets.all(24),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: FiftyColors.gunmetal,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: FiftyColors.hyperChrome.withOpacity(0.1),
-          width: 1,
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Stack(
-          children: [
-            if (hasTexture)
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.05,
-                  child: Image.asset(
-                    'assets/textures/halftone_pattern.png', 
-                    package: 'fifty_ui',
-                    repeat: ImageRepeat.repeat,
-                  ),
-                ),
-              ),
-            Padding(
-              padding: padding,
-              child: child,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-```
-
-### `fifty_loader.dart`
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:fifty_theme/fifty_theme.dart';
-import 'dart:async';
-
-class FiftyLoader extends StatefulWidget {
-  const FiftyLoader({super.key});
-
-  @override
-  State<FiftyLoader> createState() => _FiftyLoaderState();
-}
-
-class _FiftyLoaderState extends State<FiftyLoader> {
-  final List<String> _steps = [
-    '> INITIALIZING...',
-    '> LOADING ASSETS...',
-    '> ESTABLISHING LINK...',
-    '> COMPILING...',
-  ];
-  int _index = 0;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
-      setState(() {
-        _index = (_index + 1) % _steps.length;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      _steps[_index],
-      style: FiftyType.codeText.copyWith(
-        color: FiftyColors.crimsonPulse,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-}
-
-```
-
----
-
-## 4. `pubspec.yaml` Plan
+### Installation
 
 ```yaml
-name: fifty_ui
-description: FDL-styled Flutter components for the fifty.dev ecosystem.
-version: 1.0.0
+dependencies:
+  fifty_ui:
+    path: ../fifty_ui
+  fifty_theme:
+    path: ../fifty_theme
+```
 
-environment:
-  sdk: ">=3.0.0 <4.0.0"
+### Basic Setup
 
+```dart
+import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_ui/fifty_ui.dart';
+
+MaterialApp(
+  theme: FiftyTheme.dark(),
+  home: MyApp(),
+);
+```
+
+### Component Examples
+
+**Button:**
+```dart
+FiftyButton(
+  label: 'DEPLOY',
+  onPressed: () => handleDeploy(),
+  variant: FiftyButtonVariant.primary,
+  size: FiftyButtonSize.large,
+  expanded: true,
+)
+```
+
+**Checkbox:**
+```dart
+FiftyCheckbox(
+  value: isSelected,
+  onChanged: (value) => setState(() => isSelected = value),
+  label: 'Enable notifications',
+)
+```
+
+**Radio:**
+```dart
+FiftyRadio<String>(
+  value: 'option1',
+  groupValue: selectedOption,
+  onChanged: (value) => setState(() => selectedOption = value),
+  label: 'Option 1',
+)
+```
+
+**Segmented Control:**
+```dart
+FiftySegmentedControl<int>(
+  segments: [
+    FiftySegment(value: 0, label: 'Day'),
+    FiftySegment(value: 1, label: 'Week'),
+    FiftySegment(value: 2, label: 'Month'),
+  ],
+  selected: selectedIndex,
+  onSelectionChanged: (value) => setState(() => selectedIndex = value),
+)
+```
+
+**Code Block:**
+```dart
+FiftyCodeBlock(
+  code: 'void main() => runApp(MyApp());',
+  language: 'dart',
+  showCopyButton: true,
+)
+```
+
+**Hero Section:**
+```dart
+FiftyHeroSection(
+  title: 'Welcome to Fifty',
+  subtitle: 'Build beautiful apps faster',
+  glitchOnMount: true,
+  titleGradient: LinearGradient(
+    colors: [FiftyColors.burgundy, FiftyColors.cream],
+  ),
+)
+```
+
+**Nav Bar:**
+```dart
+FiftyNavBar(
+  items: [
+    FiftyNavItem(icon: Icons.home, label: 'Home'),
+    FiftyNavItem(icon: Icons.search, label: 'Search'),
+    FiftyNavItem(icon: Icons.person, label: 'Profile'),
+  ],
+  selectedIndex: currentIndex,
+  onItemTapped: (index) => setState(() => currentIndex = index),
+)
+```
+
+---
+
+## Design Principles
+
+### FDL v2 Compliance
+
+All components follow the Fifty Design Language v2 specification:
+
+- **Primary Color:** Burgundy (#8B2635)
+- **Font Family:** Manrope
+- **Mode Support:** Dark and light themes
+- **Motion:** Using FDL timing tokens
+- **Accessibility:** WCAG 2.1 AA compliant
+
+### Component Categories
+
+| Category | Purpose | Examples |
+|----------|---------|----------|
+| **Atoms** | Primitive building blocks | Button, TextField, Switch |
+| **Molecules** | Composed components | CodeBlock, DataSlate |
+| **Organisms** | Complex structures | NavBar, Hero |
+| **Utils** | Animation/effect wrappers | KineticEffect, GlitchEffect |
+
+---
+
+## Dependencies
+
+```yaml
 dependencies:
   flutter:
     sdk: flutter
-  # The Visual Definition
-  fifty_theme:
-    path: ../fifty_theme 
-  # For Kinetic Motion
-  flutter_animate: ^4.2.0 
-  # For Glassmorphism/Filters (Optional but good)
-  glass_kit: ^3.0.0
-
-flutter:
-  assets:
-    - assets/textures/halftone_pattern.png
-
+  fifty_tokens: ^1.0.0
+  fifty_theme: ^1.0.0
+  flutter_animate: ^4.2.0
 ```
+
+---
+
+**Last Updated:** 2026-01-20
+**Version:** 1.0.0
+**Components:** 28 total
