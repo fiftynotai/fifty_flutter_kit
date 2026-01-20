@@ -3,17 +3,18 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// A terminal-style code display component.
+/// A terminal-style code display component with FDL v2 styling.
 ///
 /// Implements the FDL syntax highlighter specification:
-/// - Background: VoidBlack or Gunmetal
-/// - Border: HyperChrome 10% opacity
-/// - Line numbers: Optional, HyperChrome color
+/// - Background: Mode-aware surface color
+/// - Border: Mode-aware border color
+/// - Line numbers: Optional, slateGrey color
 /// - Syntax highlighting:
-///   - Crimson: Keywords
-///   - IgrisGreen: Strings
-///   - HyperChrome: Comments
+///   - Primary: Keywords
+///   - HunterGreen: Strings
+///   - SlateGrey: Comments
 /// - Copy button in top-right corner
+/// - Manrope typography
 ///
 /// Example:
 /// ```dart
@@ -70,7 +71,7 @@ class FiftyCodeBlock extends StatefulWidget {
 
   /// Background color override.
   ///
-  /// Defaults to [FiftyColors.gunmetal].
+  /// Defaults to mode-aware surface color.
   final Color? backgroundColor;
 
   @override
@@ -97,22 +98,27 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final lines = widget.code.split('\n');
     final lineNumberWidth = '${lines.length}'.length * 10.0 + FiftySpacing.md;
 
     final effectivePadding = widget.padding ??
         const EdgeInsets.all(FiftySpacing.md);
+    final effectiveBackgroundColor = widget.backgroundColor ??
+        (isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight);
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final lineNumberColor = FiftyColors.slateGrey;
 
     return Container(
       constraints: widget.maxHeight != null
           ? BoxConstraints(maxHeight: widget.maxHeight!)
           : null,
       decoration: BoxDecoration(
-        color: widget.backgroundColor ?? FiftyColors.gunmetal,
-        borderRadius: FiftyRadii.standardRadius,
+        color: effectiveBackgroundColor,
+        borderRadius: FiftyRadii.xlRadius,
         border: Border.all(
-          color: FiftyColors.hyperChrome.withValues(alpha: 0.1),
+          color: borderColor,
           width: 1,
         ),
       ),
@@ -133,11 +139,11 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
                         children: List.generate(lines.length, (index) {
                           return Text(
                             '${index + 1}',
-                            style: const TextStyle(
-                              fontFamily: FiftyTypography.fontFamilyMono,
-                              fontSize: FiftyTypography.mono,
-                              color: FiftyColors.hyperChrome,
-                              height: FiftyTypography.codeLineHeight,
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
+                              color: lineNumberColor,
+                              height: FiftyTypography.lineHeightBody,
                             ),
                           );
                         }),
@@ -146,18 +152,18 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
                     const SizedBox(width: FiftySpacing.md),
                     Container(
                       width: 1,
-                      color: FiftyColors.hyperChrome.withValues(alpha: 0.2),
+                      color: borderColor.withValues(alpha: 0.5),
                     ),
                     const SizedBox(width: FiftySpacing.md),
                   ],
                   Expanded(
                     child: SelectableText.rich(
-                      _buildHighlightedCode(lines, colorScheme, fifty),
-                      style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.mono,
-                        color: FiftyColors.terminalWhite,
-                        height: FiftyTypography.codeLineHeight,
+                      _buildHighlightedCode(lines, colorScheme, fifty, isDark),
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: colorScheme.onSurface,
+                        height: FiftyTypography.lineHeightBody,
                       ),
                     ),
                   ),
@@ -174,6 +180,7 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
                 copied: _copied,
                 onPressed: _copyToClipboard,
                 duration: fifty.fast,
+                isDark: isDark,
               ),
             ),
         ],
@@ -185,6 +192,7 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
     List<String> lines,
     ColorScheme colorScheme,
     FiftyThemeExtension fifty,
+    bool isDark,
   ) {
     final spans = <TextSpan>[];
 
@@ -192,7 +200,7 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
       if (i > 0) {
         spans.add(const TextSpan(text: '\n'));
       }
-      spans.addAll(_highlightLine(lines[i], colorScheme, fifty));
+      spans.addAll(_highlightLine(lines[i], colorScheme, fifty, isDark));
     }
 
     return TextSpan(children: spans);
@@ -202,16 +210,17 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
     String line,
     ColorScheme colorScheme,
     FiftyThemeExtension fifty,
+    bool isDark,
   ) {
     if (widget.language == 'plain') {
       return [TextSpan(text: line)];
     }
 
     final spans = <TextSpan>[];
-    final keywordColor = colorScheme.primary; // Crimson
-    final stringColor = fifty.igrisGreen; // IgrisGreen
-    const commentColor = FiftyColors.hyperChrome;
-    const numberColor = FiftyColors.warning;
+    final keywordColor = colorScheme.primary; // Burgundy
+    final stringColor = FiftyColors.hunterGreen; // HunterGreen
+    final commentColor = FiftyColors.slateGrey;
+    final numberColor = FiftyColors.warning;
 
     // Dart/JavaScript keywords
     const keywords = {
@@ -257,7 +266,7 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
         // Number
         spans.add(TextSpan(
           text: token,
-          style: const TextStyle(color: numberColor),
+          style: TextStyle(color: numberColor),
         ));
       } else if (keywords.contains(token)) {
         // Keyword
@@ -278,7 +287,7 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
     if (commentPart.isNotEmpty) {
       spans.add(TextSpan(
         text: commentPart,
-        style: const TextStyle(
+        style: TextStyle(
           color: commentColor,
           fontStyle: FontStyle.italic,
         ),
@@ -294,11 +303,13 @@ class _CopyButton extends StatefulWidget {
     required this.copied,
     required this.onPressed,
     required this.duration,
+    required this.isDark,
   });
 
   final bool copied;
   final VoidCallback onPressed;
   final Duration duration;
+  final bool isDark;
 
   @override
   State<_CopyButton> createState() => _CopyButtonState();
@@ -309,6 +320,11 @@ class _CopyButtonState extends State<_CopyButton> {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = widget.isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final hoverBackgroundColor = widget.isDark
+        ? FiftyColors.slateGrey.withValues(alpha: 0.2)
+        : Colors.grey.withValues(alpha: 0.1);
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -318,17 +334,13 @@ class _CopyButtonState extends State<_CopyButton> {
           duration: widget.duration,
           padding: const EdgeInsets.all(FiftySpacing.xs),
           decoration: BoxDecoration(
-            color: _isHovered
-                ? FiftyColors.hyperChrome.withValues(alpha: 0.2)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(FiftyRadii.standard / 2),
+            color: _isHovered ? hoverBackgroundColor : Colors.transparent,
+            borderRadius: FiftyRadii.smRadius,
           ),
           child: Icon(
             widget.copied ? Icons.check : Icons.copy,
             size: 16,
-            color: widget.copied
-                ? FiftyColors.success
-                : FiftyColors.hyperChrome,
+            color: widget.copied ? FiftyColors.hunterGreen : iconColor,
           ),
         ),
       ),

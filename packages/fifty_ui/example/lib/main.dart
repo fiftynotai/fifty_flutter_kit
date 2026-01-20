@@ -86,8 +86,8 @@ class GalleryHome extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.body,
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodyLarge,
                 fontWeight: FiftyTypography.medium,
               ),
             ),
@@ -230,9 +230,9 @@ class _ButtonsPageState extends State<ButtonsPage> {
           const Text(
             'Hover over buttons to see effects',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.md),
@@ -246,21 +246,14 @@ class _ButtonsPageState extends State<ButtonsPage> {
                 isGlitch: true,
               ),
               FiftyButton(
-                label: 'SHARP',
+                label: 'SECONDARY',
                 onPressed: () {},
-                shape: FiftyButtonShape.sharp,
                 variant: FiftyButtonVariant.secondary,
               ),
               FiftyButton(
-                label: 'PILL',
-                onPressed: () {},
-                shape: FiftyButtonShape.pill,
-              ),
-              FiftyButton(
-                label: 'GLITCH + PILL',
+                label: 'GLITCH + DANGER',
                 onPressed: () {},
                 isGlitch: true,
-                shape: FiftyButtonShape.pill,
                 variant: FiftyButtonVariant.danger,
               ),
             ],
@@ -374,9 +367,9 @@ class _InputsPageState extends State<InputsPage> {
           const Text(
             'Advanced styling for terminal-like inputs',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.md),
@@ -423,9 +416,9 @@ class _InputsPageState extends State<InputsPage> {
           const Text(
             'Kinetic toggle switches with snap animation',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.md),
@@ -450,9 +443,9 @@ class _InputsPageState extends State<InputsPage> {
           const Text(
             'Switch Sizes',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -489,9 +482,9 @@ class _InputsPageState extends State<InputsPage> {
           const Text(
             'Brutalist range selectors with square thumb',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.md),
@@ -536,9 +529,9 @@ class _InputsPageState extends State<InputsPage> {
           const Text(
             'Terminal-styled dropdown selectors',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.md),
@@ -611,8 +604,8 @@ class _DisplayPageState extends State<DisplayPage> {
                 Text(
                   'HALFTONE TEXTURE',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
                     fontWeight: FiftyTypography.medium,
                   ),
                 ),
@@ -620,9 +613,9 @@ class _DisplayPageState extends State<DisplayPage> {
                 Text(
                   'Card with halftone overlay and 5% hover scale',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
               ],
@@ -637,8 +630,8 @@ class _DisplayPageState extends State<DisplayPage> {
                 Text(
                   'NON-INTERACTIVE TEXTURE',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
                     fontWeight: FiftyTypography.medium,
                   ),
                 ),
@@ -646,9 +639,9 @@ class _DisplayPageState extends State<DisplayPage> {
                 Text(
                   'Static card with halftone texture (no hover)',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
               ],
@@ -693,9 +686,9 @@ class _DisplayPageState extends State<DisplayPage> {
           const Text(
             'Factory Constructors',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -719,7 +712,7 @@ class _DisplayPageState extends State<DisplayPage> {
             children: [
               FiftyAvatar(fallbackText: 'JD', size: 32),
               FiftyAvatar(fallbackText: 'AB', size: 40),
-              FiftyAvatar(fallbackText: 'XY', size: 48, borderColor: FiftyColors.crimsonPulse),
+              FiftyAvatar(fallbackText: 'XY', size: 48, borderColor: FiftyColors.burgundy),
             ],
           ),
           const SizedBox(height: FiftySpacing.xl),
@@ -746,7 +739,7 @@ class _DisplayPageState extends State<DisplayPage> {
               SizedBox(height: FiftySpacing.md),
               FiftyLoadingIndicator(
                 size: FiftyLoadingSize.large,
-                color: FiftyColors.igrisGreen,
+                color: FiftyColors.hunterGreen,
               ),
               SizedBox(height: FiftySpacing.md),
               // Custom loading text
@@ -763,9 +756,9 @@ class _DisplayPageState extends State<DisplayPage> {
           const Text(
             'Sequence Mode',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -780,7 +773,7 @@ class _DisplayPageState extends State<DisplayPage> {
               // Custom sequence list
               FiftyLoadingIndicator(
                 style: FiftyLoadingStyle.sequence,
-                color: FiftyColors.igrisGreen,
+                color: FiftyColors.hunterGreen,
                 sequences: [
                   '> BOOTING SYSTEM...',
                   '> LOADING MODULES...',
@@ -968,10 +961,10 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+          fontFamily: FiftyTypography.fontFamily,
+          fontSize: FiftyTypography.bodySmall,
           fontWeight: FiftyTypography.medium,
-          color: FiftyColors.hyperChrome,
+          color: FiftyColors.slateGrey,
           letterSpacing: 1,
         ),
       ),

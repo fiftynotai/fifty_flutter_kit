@@ -1,54 +1,85 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('FiftyElevation', () {
-    group('Glow Effects (Brand Signature)', () {
-      test('crimsonGlow uses crimsonPulse color', () {
+  group('FiftyShadows', () {
+    group('Shadow Tokens (v2)', () {
+      test('sm has correct offset and blur', () {
+        expect(FiftyShadows.sm.length, 1);
+        expect(FiftyShadows.sm[0].offset, const Offset(0, 1));
+        expect(FiftyShadows.sm[0].blurRadius, 2);
+      });
+
+      test('md has correct offset and blur', () {
+        expect(FiftyShadows.md.length, 1);
+        expect(FiftyShadows.md[0].offset, const Offset(0, 4));
+        expect(FiftyShadows.md[0].blurRadius, 6);
+      });
+
+      test('lg has correct offset and blur', () {
+        expect(FiftyShadows.lg.length, 1);
+        expect(FiftyShadows.lg[0].offset, const Offset(0, 10));
+        expect(FiftyShadows.lg[0].blurRadius, 15);
+      });
+
+      test('primary uses burgundy color', () {
+        final primary = FiftyShadows.primary;
+        expect(primary.length, 1);
+        expect(primary[0].blurRadius, 14);
+        // Check that color is based on burgundy
         expect(
-          FiftyElevation.crimsonGlow.color.toARGB32() & 0x00FFFFFF,
-          FiftyColors.crimsonPulse.toARGB32() & 0x00FFFFFF,
+          primary[0].color.toARGB32() & 0x00FFFFFF,
+          FiftyColors.burgundy.toARGB32() & 0x00FFFFFF,
         );
       });
 
-      test('crimsonGlow has 8px blur', () {
-        expect(FiftyElevation.crimsonGlow.blurRadius, 8);
-      });
-
-      test('focusRing uses crimsonPulse color', () {
+      test('glow uses cream color', () {
+        final glow = FiftyShadows.glow;
+        expect(glow.length, 1);
+        expect(glow[0].blurRadius, 15);
+        // Check that color is based on cream
         expect(
-          FiftyElevation.focusRing.color.toARGB32() & 0x00FFFFFF,
-          FiftyColors.crimsonPulse.toARGB32() & 0x00FFFFFF,
+          glow[0].color.toARGB32() & 0x00FFFFFF,
+          FiftyColors.cream.toARGB32() & 0x00FFFFFF,
         );
       });
 
-      test('focusRing has 4px blur', () {
-        expect(FiftyElevation.focusRing.blurRadius, 4);
+      test('none is empty list', () {
+        expect(FiftyShadows.none, isEmpty);
       });
     });
 
-    group('Glow Lists', () {
-      test('focus contains crimsonGlow', () {
-        expect(FiftyElevation.focus, contains(FiftyElevation.crimsonGlow));
+    group('Shadow Opacity', () {
+      test('sm has 5% opacity', () {
+        final alpha = (FiftyShadows.sm[0].color.a * 255.0).round();
+        expect(alpha, closeTo(13, 1)); // 5% of 255 = ~13
       });
 
-      test('strongFocus contains both glows', () {
-        expect(FiftyElevation.strongFocus, contains(FiftyElevation.focusRing));
-        expect(FiftyElevation.strongFocus, contains(FiftyElevation.crimsonGlow));
+      test('md has 7% opacity', () {
+        final alpha = (FiftyShadows.md[0].color.a * 255.0).round();
+        expect(alpha, closeTo(18, 1)); // 7% of 255 = ~18
+      });
+
+      test('lg has 10% opacity', () {
+        final alpha = (FiftyShadows.lg[0].color.a * 255.0).round();
+        expect(alpha, closeTo(26, 1)); // 10% of 255 = ~26
       });
     });
+  });
 
-    group('No Drop Shadows Philosophy', () {
-      test('only glow-based shadows exist', () {
-        // Verify crimsonGlow and focusRing are the only shadows
-        // and they use crimsonPulse (not black) for the glow effect
-        final crimsonGlowAlpha =
-            (FiftyElevation.crimsonGlow.color.a * 255.0).round() & 0xff;
-        final focusRingAlpha =
-            (FiftyElevation.focusRing.color.a * 255.0).round() & 0xff;
-        expect(crimsonGlowAlpha, lessThan(255));
-        expect(focusRingAlpha, lessThan(255));
-      });
+  group('FiftyElevation (deprecated)', () {
+    test('focusGlow returns list with shadow', () {
+      // ignore: deprecated_member_use_from_same_package
+      final glow = FiftyElevation.focusGlow(FiftyColors.burgundy);
+      expect(glow.length, 1);
+      expect(glow[0].blurRadius, 8);
+    });
+
+    test('scanlineOverlay returns empty widget', () {
+      // ignore: deprecated_member_use_from_same_package
+      final widget = FiftyElevation.scanlineOverlay();
+      expect(widget, isA<SizedBox>());
     });
   });
 }

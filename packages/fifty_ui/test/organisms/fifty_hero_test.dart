@@ -26,7 +26,7 @@ void main() {
       ));
 
       final text = tester.widget<Text>(find.text('TEST'));
-      expect(text.style?.fontSize, FiftyTypography.hero);
+      expect(text.style?.fontSize, FiftyTypography.displayLarge);
     });
 
     testWidgets('renders with h1 size', (tester) async {
@@ -38,7 +38,7 @@ void main() {
       ));
 
       final text = tester.widget<Text>(find.text('TEST'));
-      expect(text.style?.fontSize, FiftyTypography.display);
+      expect(text.style?.fontSize, FiftyTypography.displayMedium);
     });
 
     testWidgets('renders with h2 size', (tester) async {
@@ -50,7 +50,7 @@ void main() {
       ));
 
       final text = tester.widget<Text>(find.text('TEST'));
-      expect(text.style?.fontSize, FiftyTypography.section);
+      expect(text.style?.fontSize, FiftyTypography.titleLarge);
     });
 
     testWidgets('applies glitch effect when glitchOnMount is true', (tester) async {
@@ -79,7 +79,7 @@ void main() {
         const FiftyHero(
           text: 'Test',
           gradient: LinearGradient(
-            colors: [FiftyColors.crimsonPulse, FiftyColors.terminalWhite],
+            colors: [FiftyColors.burgundy, FiftyColors.cream],
           ),
         ),
       ));
@@ -141,7 +141,7 @@ void main() {
       ));
 
       final text = tester.widget<Text>(find.text('TEST'));
-      expect(text.style?.fontFamily, FiftyTypography.fontFamilyHeadline);
+      expect(text.style?.fontFamily, FiftyTypography.fontFamily);
     });
   });
 
@@ -219,7 +219,7 @@ void main() {
         const FiftyHeroSection(
           title: 'Main Title',
           titleGradient: LinearGradient(
-            colors: [FiftyColors.crimsonPulse, FiftyColors.terminalWhite],
+            colors: [FiftyColors.burgundy, FiftyColors.cream],
           ),
         ),
       ));

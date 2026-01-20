@@ -1,12 +1,13 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A wrapper widget that adds a FDL-styled tooltip on hover.
+/// A wrapper widget that adds a FDL v2 styled tooltip on hover.
 ///
 /// Features:
-/// - Dark background with light text
+/// - Mode-aware background (dark on light, light on dark)
 /// - Matches FDL design language
 /// - Configurable wait duration
+/// - Manrope font family
 ///
 /// Example:
 /// ```dart
@@ -43,20 +44,28 @@ class FiftyTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.darkBurgundy;
+    final textColor = isDark ? FiftyColors.cream : FiftyColors.cream;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return Tooltip(
       message: message,
       preferBelow: preferBelow,
       waitDuration: waitDuration,
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack,
-        borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: FiftyColors.border),
+        color: backgroundColor,
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(color: borderColor),
+        boxShadow: FiftyShadows.sm,
       ),
-      textStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      textStyle: TextStyle(
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: textColor,
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,

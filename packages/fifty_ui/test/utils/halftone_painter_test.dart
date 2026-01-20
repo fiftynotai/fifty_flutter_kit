@@ -10,7 +10,7 @@ void main() {
     test('creates painter with default values', () {
       const painter = HalftonePainter();
 
-      expect(painter.color, FiftyColors.terminalWhite);
+      expect(painter.color, FiftyColors.cream);
       expect(painter.dotRadius, 1.0);
       expect(painter.spacing, 8.0);
       expect(painter.opacity, 0.05);
@@ -137,7 +137,7 @@ void main() {
       final customPaint = tester.widget<CustomPaint>(customPaints);
       final painter = customPaint.painter as HalftonePainter;
 
-      expect(painter.color, FiftyColors.terminalWhite);
+      expect(painter.color, FiftyColors.cream);
       expect(painter.dotRadius, 1.0);
       expect(painter.spacing, 8.0);
       expect(painter.opacity, 0.05);

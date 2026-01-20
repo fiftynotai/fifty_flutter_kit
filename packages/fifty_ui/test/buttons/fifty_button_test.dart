@@ -165,57 +165,7 @@ void main() {
       });
     });
 
-    group('shape parameter', () {
-      testWidgets('renders with sharp shape by default', (tester) async {
-        await tester.pumpWidget(wrapWithTheme(
-          FiftyButton(
-            label: 'Test',
-            onPressed: () {},
-          ),
-        ));
-
-        expect(find.byType(FiftyButton), findsOneWidget);
-        // shape defaults to sharp
-      });
-
-      testWidgets('renders with sharp shape', (tester) async {
-        await tester.pumpWidget(wrapWithTheme(
-          FiftyButton(
-            label: 'Test',
-            onPressed: () {},
-            shape: FiftyButtonShape.sharp,
-          ),
-        ));
-
-        expect(find.byType(FiftyButton), findsOneWidget);
-      });
-
-      testWidgets('renders with pill shape', (tester) async {
-        await tester.pumpWidget(wrapWithTheme(
-          FiftyButton(
-            label: 'Test',
-            onPressed: () {},
-            shape: FiftyButtonShape.pill,
-          ),
-        ));
-
-        expect(find.byType(FiftyButton), findsOneWidget);
-      });
-
-      testWidgets('renders all shapes', (tester) async {
-        for (final shape in FiftyButtonShape.values) {
-          await tester.pumpWidget(wrapWithTheme(
-            FiftyButton(
-              label: 'Test',
-              onPressed: () {},
-              shape: shape,
-            ),
-          ));
-
-          expect(find.byType(FiftyButton), findsOneWidget);
-        }
-      });
-    });
+    // Note: FDL v2 removed shape parameter - buttons use consistent xl radius
 
     group('press animation', () {
       testWidgets('scales on press', (tester) async {

@@ -5,38 +5,50 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 
 void main() {
   // ============================================================================
-  // FIFTY TOKENS EXAMPLE
-  // Demonstrating FDL-aligned design tokens
+  // FIFTY TOKENS V2 EXAMPLE
+  // Demonstrating FDL v2 "Sophisticated Warm" design tokens
   // ============================================================================
 
   // ---------------------------------------------------------------------------
-  // COLORS (Mecha Cockpit / Server Room palette)
+  // COLORS (Sophisticated Warm palette)
   // ---------------------------------------------------------------------------
 
   // Core palette
-  print('VOID_BLACK: ${FiftyColors.voidBlack}'); // #050505
-  print('CRIMSON_PULSE: ${FiftyColors.crimsonPulse}'); // #960E29
-  print('GUNMETAL: ${FiftyColors.gunmetal}'); // #1A1A1A
-  print('TERMINAL_WHITE: ${FiftyColors.terminalWhite}'); // #EAEAEA
-  print('HYPER_CHROME: ${FiftyColors.hyperChrome}'); // #888888
-  print('IGRIS_GREEN: ${FiftyColors.igrisGreen}'); // #00FF41
+  print('BURGUNDY (primary): ${FiftyColors.burgundy}'); // #88292F
+  print('BURGUNDY_HOVER: ${FiftyColors.burgundyHover}'); // #6E2126
+  print('CREAM: ${FiftyColors.cream}'); // #FEFEE3
+  print('DARK_BURGUNDY: ${FiftyColors.darkBurgundy}'); // #1A0D0E
+  print('SLATE_GREY (secondary): ${FiftyColors.slateGrey}'); // #335C67
+  print('HUNTER_GREEN (success): ${FiftyColors.hunterGreen}'); // #4B644A
+  print('POWDER_BLUSH: ${FiftyColors.powderBlush}'); // #FFC9B9
+  print('SURFACE_DARK: ${FiftyColors.surfaceDark}'); // #2A1517
+
+  // Semantic aliases
+  print('Primary: ${FiftyColors.primary}');
+  print('Secondary: ${FiftyColors.secondary}');
+  print('Success: ${FiftyColors.success}');
 
   // ---------------------------------------------------------------------------
-  // TYPOGRAPHY (Monument Extended + JetBrains Mono)
+  // TYPOGRAPHY (Manrope unified font)
   // ---------------------------------------------------------------------------
 
-  // Font families
-  print(
-    'Headline font: ${FiftyTypography.fontFamilyHeadline}',
-  ); // Monument Extended
-  print('Mono font: ${FiftyTypography.fontFamilyMono}'); // JetBrains Mono
+  // Font family
+  print('Font family: ${FiftyTypography.fontFamily}'); // Manrope
 
-  // Type scale
-  print('Hero: ${FiftyTypography.hero}px'); // 64px
-  print('Display: ${FiftyTypography.display}px'); // 48px
-  print('Section: ${FiftyTypography.section}px'); // 32px
-  print('Body: ${FiftyTypography.body}px'); // 16px
-  print('Mono: ${FiftyTypography.mono}px'); // 12px
+  // Type scale (v2)
+  print('Display Large: ${FiftyTypography.displayLarge}px'); // 32px
+  print('Display Medium: ${FiftyTypography.displayMedium}px'); // 24px
+  print('Title Large: ${FiftyTypography.titleLarge}px'); // 20px
+  print('Title Medium: ${FiftyTypography.titleMedium}px'); // 18px
+  print('Body Large: ${FiftyTypography.bodyLarge}px'); // 16px
+  print('Body Medium: ${FiftyTypography.bodyMedium}px'); // 14px
+  print('Label Large: ${FiftyTypography.labelLarge}px'); // 14px
+
+  // Font weights
+  print('Regular: ${FiftyTypography.regular}');
+  print('Medium: ${FiftyTypography.medium}');
+  print('Bold: ${FiftyTypography.bold}');
+  print('Extra Bold: ${FiftyTypography.extraBold}');
 
   // ---------------------------------------------------------------------------
   // SPACING (4px base, tight density)
@@ -47,14 +59,20 @@ void main() {
   print('Standard gap: ${FiftySpacing.standard}px'); // 12px
 
   // ---------------------------------------------------------------------------
-  // RADII (12px standard, 24px smooth)
+  // RADII (Complete scale)
   // ---------------------------------------------------------------------------
 
-  print('Standard radius: ${FiftyRadii.standard}px'); // 12px
-  print('Smooth radius: ${FiftyRadii.smooth}px'); // 24px
+  print('None: ${FiftyRadii.none}px'); // 0px
+  print('Small: ${FiftyRadii.sm}px'); // 4px
+  print('Medium: ${FiftyRadii.md}px'); // 8px
+  print('Large: ${FiftyRadii.lg}px'); // 12px
+  print('XL: ${FiftyRadii.xl}px'); // 16px
+  print('XXL: ${FiftyRadii.xxl}px'); // 24px
+  print('XXXL: ${FiftyRadii.xxxl}px'); // 32px
+  print('Full: ${FiftyRadii.full}px'); // 9999px
 
   // ---------------------------------------------------------------------------
-  // MOTION (NO FADES - Kinetic)
+  // MOTION
   // ---------------------------------------------------------------------------
 
   print('Instant: ${FiftyMotion.instant}'); // 0ms
@@ -63,43 +81,78 @@ void main() {
   print('System Load: ${FiftyMotion.systemLoad}'); // 800ms
 
   // ---------------------------------------------------------------------------
-  // EXAMPLE: Building a "Data Slate" Card (FDL Component)
+  // SHADOWS (v2 - Soft, sophisticated)
   // ---------------------------------------------------------------------------
 
-  final dataSlateDecoration = BoxDecoration(
-    color: FiftyColors.gunmetal,
-    borderRadius: FiftyRadii.standardRadius,
+  print('Shadow SM: ${FiftyShadows.sm}');
+  print('Shadow MD: ${FiftyShadows.md}');
+  print('Shadow LG: ${FiftyShadows.lg}');
+  print('Shadow Primary: ${FiftyShadows.primary}');
+  print('Shadow Glow: ${FiftyShadows.glow}');
+
+  // ---------------------------------------------------------------------------
+  // GRADIENTS (v2 - New)
+  // ---------------------------------------------------------------------------
+
+  print('Gradient Primary: ${FiftyGradients.primary}');
+  print('Gradient Progress: ${FiftyGradients.progress}');
+  print('Gradient Surface: ${FiftyGradients.surface}');
+
+  // ---------------------------------------------------------------------------
+  // EXAMPLE: Building a Card (v2 style)
+  // ---------------------------------------------------------------------------
+
+  final cardDecoration = BoxDecoration(
+    color: FiftyColors.surfaceDark,
+    borderRadius: FiftyRadii.xxlRadius,
     border: Border.all(
-      color: FiftyColors.border, // hyperChrome @ 10%
+      color: FiftyColors.borderDark,
       width: 1,
     ),
+    boxShadow: FiftyShadows.md,
   );
 
-  print('Data Slate decoration: $dataSlateDecoration');
+  print('Card decoration: $cardDecoration');
 
   // ---------------------------------------------------------------------------
-  // EXAMPLE: Focus State with Crimson Glow
+  // EXAMPLE: Primary Button with Shadow
   // ---------------------------------------------------------------------------
 
-  final focusDecoration = BoxDecoration(
-    color: FiftyColors.gunmetal,
-    borderRadius: FiftyRadii.standardRadius,
-    boxShadow: FiftyElevation.focus,
+  final buttonDecoration = BoxDecoration(
+    color: FiftyColors.burgundy,
+    borderRadius: FiftyRadii.xlRadius,
+    boxShadow: FiftyShadows.primary,
   );
 
-  print('Focus decoration: $focusDecoration');
+  print('Button decoration: $buttonDecoration');
 
   // ---------------------------------------------------------------------------
-  // EXAMPLE: Terminal Text Style
+  // EXAMPLE: Display Text Style
   // ---------------------------------------------------------------------------
 
-  const terminalStyle = TextStyle(
-    fontFamily: FiftyTypography.fontFamilyMono,
-    fontSize: FiftyTypography.mono,
-    fontWeight: FiftyTypography.regular,
-    color: FiftyColors.igrisGreen,
-    height: FiftyTypography.codeLineHeight,
+  const displayStyle = TextStyle(
+    fontFamily: FiftyTypography.fontFamily,
+    fontSize: FiftyTypography.displayLarge,
+    fontWeight: FiftyTypography.extraBold,
+    color: FiftyColors.cream,
+    height: FiftyTypography.lineHeightDisplay,
+    letterSpacing: FiftyTypography.letterSpacingDisplay,
   );
 
-  print('Terminal style: $terminalStyle');
+  print('Display style: $displayStyle');
+
+  // ---------------------------------------------------------------------------
+  // EXAMPLE: Body Text Style
+  // ---------------------------------------------------------------------------
+
+  const bodyStyle = TextStyle(
+    fontFamily: FiftyTypography.fontFamily,
+    fontSize: FiftyTypography.bodyLarge,
+    fontWeight: FiftyTypography.medium,
+    color: FiftyColors.cream,
+    height: FiftyTypography.lineHeightBody,
+    letterSpacing: FiftyTypography.letterSpacingBody,
+  );
+
+  print('Body style: $bodyStyle');
 }

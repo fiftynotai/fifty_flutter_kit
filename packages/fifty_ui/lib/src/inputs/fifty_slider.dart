@@ -2,14 +2,15 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A brutalist-styled slider following FDL design principles.
+/// A styled slider following FDL v2 design principles.
 ///
 /// Features:
-/// - Thin track with HyperChrome styling
-/// - Crimson active track fill
-/// - Square thumb with rounded corners (brutalist aesthetic)
+/// - Mode-aware track styling
+/// - Primary color active track fill
+/// - Rounded thumb with border
 /// - Optional value label display
 /// - Kinetic hover/drag feedback
+/// - Manrope typography
 ///
 /// Example:
 /// ```dart
@@ -130,9 +131,17 @@ class _FiftySliderState extends State<FiftySlider> {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
+
+    final labelColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final trackBackgroundColor = isDark
+        ? FiftyColors.slateGrey.withValues(alpha: 0.3)
+        : FiftyColors.borderLight;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
 
     const trackHeight = 4.0;
     const thumbSize = 20.0;
@@ -146,12 +155,12 @@ class _FiftySliderState extends State<FiftySlider> {
           if (widget.label != null) ...[
             Text(
               widget.label!.toUpperCase(),
-              style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.mono,
-                fontWeight: FiftyTypography.medium,
-                color: FiftyColors.hyperChrome,
-                letterSpacing: 1,
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.labelMedium,
+                fontWeight: FiftyTypography.bold,
+                color: labelColor,
+                letterSpacing: FiftyTypography.letterSpacingLabelMedium,
               ),
             ),
             const SizedBox(height: FiftySpacing.sm),
@@ -187,8 +196,7 @@ class _FiftySliderState extends State<FiftySlider> {
                           child: Container(
                             height: trackHeight,
                             decoration: BoxDecoration(
-                              color:
-                                  FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                              color: trackBackgroundColor,
                               borderRadius:
                                   BorderRadius.circular(trackHeight / 2),
                             ),
@@ -234,8 +242,8 @@ class _FiftySliderState extends State<FiftySlider> {
                                         vertical: FiftySpacing.xs,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: FiftyColors.gunmetal,
-                                        borderRadius: FiftyRadii.standardRadius,
+                                        color: fillColor,
+                                        borderRadius: FiftyRadii.lgRadius,
                                         border: Border.all(
                                           color: colorScheme.primary,
                                           width: 1,
@@ -244,9 +252,8 @@ class _FiftySliderState extends State<FiftySlider> {
                                       child: Text(
                                         _valueLabel,
                                         style: TextStyle(
-                                          fontFamily:
-                                              FiftyTypography.fontFamilyMono,
-                                          fontSize: FiftyTypography.mono,
+                                          fontFamily: FiftyTypography.fontFamily,
+                                          fontSize: FiftyTypography.bodySmall,
                                           fontWeight: FiftyTypography.medium,
                                           color: colorScheme.primary,
                                         ),
@@ -263,16 +270,16 @@ class _FiftySliderState extends State<FiftySlider> {
                                   width: thumbSize,
                                   height: thumbSize,
                                   decoration: BoxDecoration(
-                                    color: FiftyColors.gunmetal,
-                                    borderRadius: BorderRadius.circular(4),
+                                    color: fillColor,
+                                    borderRadius: FiftyRadii.smRadius,
                                     border: Border.all(
                                       color: (_isDragging || _isHovered)
                                           ? colorScheme.primary
-                                          : FiftyColors.hyperChrome,
+                                          : borderColor,
                                       width: 2,
                                     ),
                                     boxShadow: (_isDragging || _isHovered)
-                                        ? fifty.focusGlow
+                                        ? fifty.shadowGlow
                                         : null,
                                   ),
                                 ),

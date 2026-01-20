@@ -2,150 +2,174 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  // Disable Google Fonts HTTP requests during tests
+  setUpAll(() {
+    GoogleFonts.config.allowRuntimeFetching = false;
+  });
+
   group('FiftyTheme', () {
     group('dark()', () {
-      late ThemeData theme;
-
-      setUp(() {
-        theme = FiftyTheme.dark();
-      });
-
       test('returns valid ThemeData', () {
+        final theme = FiftyTheme.dark();
         expect(theme, isA<ThemeData>());
       });
 
       test('has Brightness.dark', () {
+        final theme = FiftyTheme.dark();
         expect(theme.brightness, Brightness.dark);
       });
 
       test('useMaterial3 is true', () {
+        final theme = FiftyTheme.dark();
         expect(theme.useMaterial3, isTrue);
       });
 
-      test('scaffoldBackgroundColor is voidBlack', () {
-        expect(theme.scaffoldBackgroundColor, FiftyColors.voidBlack);
+      test('scaffoldBackgroundColor is darkBurgundy', () {
+        final theme = FiftyTheme.dark();
+        expect(theme.scaffoldBackgroundColor, FiftyColors.darkBurgundy);
       });
 
-      test('canvasColor is voidBlack', () {
-        expect(theme.canvasColor, FiftyColors.voidBlack);
+      test('canvasColor is darkBurgundy', () {
+        final theme = FiftyTheme.dark();
+        expect(theme.canvasColor, FiftyColors.darkBurgundy);
       });
 
-      test('cardColor is gunmetal', () {
-        expect(theme.cardColor, FiftyColors.gunmetal);
+      test('cardColor is surfaceDark', () {
+        final theme = FiftyTheme.dark();
+        expect(theme.cardColor, FiftyColors.surfaceDark);
       });
 
-      test('dialogTheme backgroundColor is gunmetal', () {
-        expect(theme.dialogTheme.backgroundColor, FiftyColors.gunmetal);
+      test('dialogTheme backgroundColor is surfaceDark', () {
+        final theme = FiftyTheme.dark();
+        expect(theme.dialogTheme.backgroundColor, FiftyColors.surfaceDark);
       });
 
-      test('shadowColor is transparent', () {
-        expect(theme.shadowColor, Colors.transparent);
+      test('shadows are enabled in v2', () {
+        final theme = FiftyTheme.dark();
+        // shadowColor is no longer transparent in v2
+        expect(theme.shadowColor, isNot(Colors.transparent));
       });
 
       test('visualDensity is compact', () {
+        final theme = FiftyTheme.dark();
         expect(theme.visualDensity, VisualDensity.compact);
       });
 
       test('FiftyThemeExtension is attached', () {
+        final theme = FiftyTheme.dark();
         final extension = theme.extension<FiftyThemeExtension>();
         expect(extension, isNotNull);
         expect(extension, isA<FiftyThemeExtension>());
       });
 
       test('colorScheme has dark brightness', () {
+        final theme = FiftyTheme.dark();
         expect(theme.colorScheme.brightness, Brightness.dark);
       });
 
-      test('colorScheme primary is crimsonPulse', () {
-        expect(theme.colorScheme.primary, FiftyColors.crimsonPulse);
+      test('colorScheme primary is burgundy', () {
+        final theme = FiftyTheme.dark();
+        expect(theme.colorScheme.primary, FiftyColors.burgundy);
       });
 
       test('textTheme is configured', () {
+        final theme = FiftyTheme.dark();
         expect(theme.textTheme, isNotNull);
         expect(theme.textTheme.displayLarge, isNotNull);
       });
 
-      test('textTheme bodyLarge uses JetBrains Mono', () {
-        expect(
-          theme.textTheme.bodyLarge?.fontFamily,
-          FiftyTypography.fontFamilyMono,
-        );
+      test('textTheme bodyLarge is configured', () {
+        final theme = FiftyTheme.dark();
+        // GoogleFonts uses dynamic font names, just verify it's configured
+        expect(theme.textTheme.bodyLarge, isNotNull);
+        expect(theme.textTheme.bodyLarge?.fontSize, 16);
       });
 
       test('appBarTheme is configured', () {
-        expect(theme.appBarTheme.backgroundColor, FiftyColors.voidBlack);
-        expect(theme.appBarTheme.foregroundColor, FiftyColors.terminalWhite);
+        final theme = FiftyTheme.dark();
+        expect(theme.appBarTheme.backgroundColor, FiftyColors.darkBurgundy);
+        expect(theme.appBarTheme.foregroundColor, FiftyColors.cream);
         expect(theme.appBarTheme.elevation, 0);
       });
 
       test('elevatedButtonTheme uses zero elevation', () {
+        final theme = FiftyTheme.dark();
         final style = theme.elevatedButtonTheme.style;
         expect(style, isNotNull);
       });
 
-      test('cardTheme uses gunmetal', () {
-        expect(theme.cardTheme.color, FiftyColors.gunmetal);
+      test('cardTheme uses surfaceDark', () {
+        final theme = FiftyTheme.dark();
+        expect(theme.cardTheme.color, FiftyColors.surfaceDark);
         expect(theme.cardTheme.elevation, 0);
       });
     });
 
     group('light()', () {
-      late ThemeData theme;
-
-      setUp(() {
-        theme = FiftyTheme.light();
-      });
-
       test('returns valid ThemeData', () {
+        final theme = FiftyTheme.light();
         expect(theme, isA<ThemeData>());
       });
 
       test('has Brightness.light', () {
+        final theme = FiftyTheme.light();
         expect(theme.brightness, Brightness.light);
       });
 
       test('useMaterial3 is true', () {
+        final theme = FiftyTheme.light();
         expect(theme.useMaterial3, isTrue);
       });
 
-      test('scaffoldBackgroundColor is terminalWhite', () {
-        expect(theme.scaffoldBackgroundColor, FiftyColors.terminalWhite);
+      test('scaffoldBackgroundColor is cream', () {
+        final theme = FiftyTheme.light();
+        expect(theme.scaffoldBackgroundColor, FiftyColors.cream);
       });
 
-      test('canvasColor is terminalWhite', () {
-        expect(theme.canvasColor, FiftyColors.terminalWhite);
+      test('canvasColor is cream', () {
+        final theme = FiftyTheme.light();
+        expect(theme.canvasColor, FiftyColors.cream);
       });
 
-      test('shadowColor is transparent', () {
-        expect(theme.shadowColor, Colors.transparent);
+      test('shadows are enabled in v2', () {
+        final theme = FiftyTheme.light();
+        // shadowColor is no longer transparent in v2
+        expect(theme.shadowColor, isNot(Colors.transparent));
       });
 
       test('FiftyThemeExtension is attached', () {
+        final theme = FiftyTheme.light();
         final extension = theme.extension<FiftyThemeExtension>();
         expect(extension, isNotNull);
         expect(extension, isA<FiftyThemeExtension>());
       });
 
       test('colorScheme has light brightness', () {
+        final theme = FiftyTheme.light();
         expect(theme.colorScheme.brightness, Brightness.light);
       });
 
-      test('colorScheme primary is crimsonPulse', () {
-        expect(theme.colorScheme.primary, FiftyColors.crimsonPulse);
+      test('colorScheme primary is burgundy', () {
+        final theme = FiftyTheme.light();
+        expect(theme.colorScheme.primary, FiftyColors.burgundy);
       });
 
-      test('textTheme bodyLarge uses JetBrains Mono', () {
-        expect(
-          theme.textTheme.bodyLarge?.fontFamily,
-          FiftyTypography.fontFamilyMono,
-        );
+      test('textTheme bodyLarge is configured', () {
+        final theme = FiftyTheme.light();
+        // GoogleFonts uses dynamic font names, just verify it's configured
+        expect(theme.textTheme.bodyLarge, isNotNull);
+        expect(theme.textTheme.bodyLarge?.fontSize, 16);
       });
 
-      test('appBarTheme uses terminalWhite background', () {
-        expect(theme.appBarTheme.backgroundColor, FiftyColors.terminalWhite);
-        expect(theme.appBarTheme.foregroundColor, FiftyColors.voidBlack);
+      test('appBarTheme uses cream background', () {
+        final theme = FiftyTheme.light();
+        expect(theme.appBarTheme.backgroundColor, FiftyColors.cream);
+        expect(theme.appBarTheme.foregroundColor, FiftyColors.darkBurgundy);
         expect(theme.appBarTheme.elevation, 0);
       });
     });

@@ -2,13 +2,14 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A terminal-style key-value display panel.
+/// A terminal-style key-value display panel with FDL v2 styling.
 ///
 /// Features:
-/// - Monospace typography for data display
+/// - Manrope typography for data display
 /// - Grid layout with aligned keys and values
 /// - Optional title header
 /// - Optional border glow effect
+/// - Mode-aware colors
 ///
 /// Example:
 /// ```dart
@@ -43,12 +44,12 @@ class FiftyDataSlate extends StatelessWidget {
   /// Whether to show the border outline.
   final bool showBorder;
 
-  /// Whether to show the crimson glow effect.
+  /// Whether to show the primary glow effect.
   final bool showGlow;
 
   /// The color for keys.
   ///
-  /// Defaults to [FiftyColors.hyperChrome].
+  /// Defaults to mode-aware secondary color.
   final Color? keyColor;
 
   /// The color for values.
@@ -61,9 +62,12 @@ class FiftyDataSlate extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveKeyColor = keyColor ?? FiftyColors.hyperChrome;
+    final effectiveKeyColor = keyColor ??
+        (isDark ? FiftyColors.slateGrey : Colors.grey[600]!);
     final effectiveValueColor = valueColor ?? colorScheme.onSurface;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
 
     return AnimatedContainer(
       duration: fifty.fast,
@@ -71,14 +75,14 @@ class FiftyDataSlate extends StatelessWidget {
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: FiftyRadii.standardRadius,
+        borderRadius: FiftyRadii.xxlRadius,
         border: showBorder
             ? Border.all(
-                color: showGlow ? colorScheme.primary : FiftyColors.border,
+                color: showGlow ? colorScheme.primary : borderColor,
                 width: showGlow ? 2 : 1,
               )
             : null,
-        boxShadow: showGlow ? fifty.focusGlow : null,
+        boxShadow: showGlow ? fifty.shadowGlow : FiftyShadows.md,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,8 +94,8 @@ class FiftyDataSlate extends StatelessWidget {
                 Text(
                   '> ',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
                     fontWeight: FiftyTypography.medium,
                     color: colorScheme.primary,
                   ),
@@ -100,11 +104,11 @@ class FiftyDataSlate extends StatelessWidget {
                   child: Text(
                     title!.toUpperCase(),
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.mono,
-                      fontWeight: FiftyTypography.medium,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
+                      fontWeight: FiftyTypography.bold,
                       color: colorScheme.onSurface,
-                      letterSpacing: 1,
+                      letterSpacing: FiftyTypography.letterSpacingLabelMedium,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -132,8 +136,8 @@ class FiftyDataSlate extends StatelessWidget {
                           child: Text(
                             '${entry.key}:',
                             style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamilyMono,
-                              fontSize: FiftyTypography.mono,
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
                               fontWeight: FiftyTypography.regular,
                               color: effectiveKeyColor,
                             ),
@@ -145,8 +149,8 @@ class FiftyDataSlate extends StatelessWidget {
                           child: Text(
                             entry.value,
                             style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamilyMono,
-                              fontSize: FiftyTypography.mono,
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
                               fontWeight: FiftyTypography.regular,
                               color: effectiveValueColor,
                             ),
@@ -168,7 +172,7 @@ class FiftyDataSlate extends StatelessWidget {
       0,
       (max, key) => key.length > max ? key.length : max,
     );
-    // Approximate width per character in monospace at 12px
+    // Approximate width per character at 12px
     return (maxLength + 1) * 7.5;
   }
 }

@@ -1,143 +1,125 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-/// Fifty.dev text theme builder.
+/// Fifty.dev text theme builder v2 - Manrope unified font.
 ///
-/// Creates a Flutter TextTheme using FiftyTypography tokens.
-/// Implements the binary type system:
-/// - Hype (Monument Extended) - Headlines, impact
-/// - Logic (JetBrains Mono) - Body, code, UI
-///
-/// All display text uses ALL CAPS convention per FDL.
+/// Creates a Flutter TextTheme using Manrope via google_fonts.
+/// Replaces the binary type system (Monument/JetBrains) with unified Manrope.
 class FiftyTextTheme {
   FiftyTextTheme._();
 
-  /// Creates the Fifty text theme for dark mode.
-  ///
-  /// Text colors are applied through ColorScheme, not hardcoded here.
-  /// This allows the theme to adapt to both dark and light modes.
+  /// Creates the Fifty v2 text theme.
   ///
   /// Scale:
-  /// - `displayLarge`: Hero (64px) - Monument Extended Ultrabold
-  /// - `displayMedium`: Display (48px) - Monument Extended Ultrabold
-  /// - `displaySmall`: Section (32px) - Monument Extended Regular
-  /// - `bodyLarge`: Body (16px) - JetBrains Mono
-  /// - `bodySmall`: Mono (12px) - JetBrains Mono
+  /// - `displayLarge`: 32px, extraBold (800)
+  /// - `displayMedium`: 24px, extraBold (800)
+  /// - `displaySmall`: 20px, bold (700)
+  /// - `headlineLarge`: 20px, bold
+  /// - `headlineMedium`: 18px, bold
+  /// - `headlineSmall`: 16px, bold
+  /// - `titleLarge`: 20px, bold
+  /// - `titleMedium`: 18px, bold
+  /// - `titleSmall`: 16px, bold
+  /// - `bodyLarge`: 16px, medium (500)
+  /// - `bodyMedium`: 14px, regular (400)
+  /// - `bodySmall`: 12px, regular
+  /// - `labelLarge`: 14px, bold
+  /// - `labelMedium`: 12px, bold (UPPERCASE, letterSpacing 1.5)
+  /// - `labelSmall`: 10px, semiBold (600)
   static TextTheme textTheme() {
-    return const TextTheme(
-      // Display styles - Monument Extended (Hype)
-      displayLarge: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: FiftyTypography.hero,
-        fontWeight: FiftyTypography.ultrabold,
-        letterSpacing: FiftyTypography.hero * FiftyTypography.tight,
-        height: FiftyTypography.displayLineHeight,
+    return TextTheme(
+      // Display styles
+      displayLarge: GoogleFonts.manrope(
+        fontSize: FiftyTypography.displayLarge,
+        fontWeight: FiftyTypography.extraBold,
+        letterSpacing: FiftyTypography.letterSpacingDisplay,
+        height: FiftyTypography.lineHeightDisplay,
       ),
-      displayMedium: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: FiftyTypography.display,
-        fontWeight: FiftyTypography.ultrabold,
-        letterSpacing: FiftyTypography.display * FiftyTypography.tight,
-        height: FiftyTypography.displayLineHeight,
+      displayMedium: GoogleFonts.manrope(
+        fontSize: FiftyTypography.displayMedium,
+        fontWeight: FiftyTypography.extraBold,
+        letterSpacing: FiftyTypography.letterSpacingDisplayMedium,
+        height: FiftyTypography.lineHeightDisplay,
       ),
-      displaySmall: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: FiftyTypography.section,
-        fontWeight: FiftyTypography.regular,
-        letterSpacing: FiftyTypography.section * FiftyTypography.tight,
-        height: FiftyTypography.headingLineHeight,
+      displaySmall: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleLarge,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
 
-      // Headline styles - Monument Extended (Hype)
-      headlineLarge: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: FiftyTypography.section,
-        fontWeight: FiftyTypography.ultrabold,
-        letterSpacing: FiftyTypography.section * FiftyTypography.tight,
-        height: FiftyTypography.headingLineHeight,
+      // Headline styles
+      headlineLarge: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleLarge,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
-      headlineMedium: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: 24,
-        fontWeight: FiftyTypography.ultrabold,
-        letterSpacing: 24 * FiftyTypography.tight,
-        height: FiftyTypography.headingLineHeight,
+      headlineMedium: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleMedium,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
-      headlineSmall: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: 20,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: 20 * FiftyTypography.tight,
-        height: FiftyTypography.headingLineHeight,
+      headlineSmall: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleSmall,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
 
-      // Title styles - JetBrains Mono (Logic)
-      titleLarge: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 20,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      // Title styles
+      titleLarge: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleLarge,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
-      titleMedium: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.body,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      titleMedium: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleMedium,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
-      titleSmall: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      titleSmall: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleSmall,
+        fontWeight: FiftyTypography.bold,
+        height: FiftyTypography.lineHeightTitle,
       ),
 
-      // Body styles - JetBrains Mono (Logic)
-      bodyLarge: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.body,
-        fontWeight: FiftyTypography.regular,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      // Body styles
+      bodyLarge: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyLarge,
+        fontWeight: FiftyTypography.medium,
+        letterSpacing: FiftyTypography.letterSpacingBody,
+        height: FiftyTypography.lineHeightBody,
       ),
-      bodyMedium: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      bodyMedium: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+        letterSpacing: FiftyTypography.letterSpacingBodyMedium,
+        height: FiftyTypography.lineHeightBody,
       ),
-      bodySmall: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      bodySmall: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.codeLineHeight,
+        letterSpacing: FiftyTypography.letterSpacingBodySmall,
+        height: FiftyTypography.lineHeightBody,
       ),
 
-      // Label styles - JetBrains Mono (Logic)
-      labelLarge: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      // Label styles
+      labelLarge: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelLarge,
+        fontWeight: FiftyTypography.bold,
+        letterSpacing: FiftyTypography.letterSpacingLabel,
+        height: FiftyTypography.lineHeightLabel,
       ),
-      labelMedium: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      labelMedium: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelMedium,
+        fontWeight: FiftyTypography.bold,
+        letterSpacing: FiftyTypography.letterSpacingLabelMedium,
+        height: FiftyTypography.lineHeightLabel,
       ),
-      labelSmall: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 10,
-        fontWeight: FiftyTypography.medium,
-        letterSpacing: FiftyTypography.standard,
-        height: FiftyTypography.bodyLineHeight,
+      labelSmall: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelSmall,
+        fontWeight: FiftyTypography.semiBold,
+        letterSpacing: FiftyTypography.letterSpacingLabel,
+        height: FiftyTypography.lineHeightLabel,
       ),
     );
   }

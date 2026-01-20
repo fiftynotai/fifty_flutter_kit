@@ -1,126 +1,112 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// Fifty.dev color scheme builder.
+/// Fifty.dev color scheme builder v2 - Sophisticated Warm.
 ///
-/// Maps FiftyColors tokens to Flutter's ColorScheme for Material Design
-/// integration. Dark mode is primary following FDL specification.
-///
-/// The color scheme uses the "Mecha Cockpit" aesthetic:
-/// - Void Black as the primary surface
-/// - Crimson Pulse as the brand accent
-/// - Terminal White for high-contrast text
+/// Maps FiftyColors v2 tokens to Flutter's ColorScheme.
+/// Dark mode remains primary following FDL specification.
 class FiftyColorScheme {
   FiftyColorScheme._();
 
-  /// Creates a dark ColorScheme using Fifty design tokens.
-  ///
-  /// This is the PRIMARY color scheme for the ecosystem.
-  /// Optimized for OLED displays and reduced eye strain.
+  /// Creates a dark ColorScheme using Fifty v2 design tokens.
   ///
   /// Color mappings:
-  /// - `primary`: Crimson Pulse (brand signature)
-  /// - `secondary`: Hyper Chrome (metallic accent)
-  /// - `surface`: Void Black (deep background)
-  /// - `error`: Crimson Pulse (destructive actions carry brand)
+  /// - `primary`: Burgundy (brand signature)
+  /// - `secondary`: Slate Grey (secondary actions)
+  /// - `surface`: Dark Burgundy (deep background)
+  /// - `tertiary`: Hunter Green (success)
   static ColorScheme dark() {
     return ColorScheme(
       brightness: Brightness.dark,
 
-      // Primary colors - Crimson Pulse (brand signature)
-      primary: FiftyColors.crimsonPulse,
-      onPrimary: FiftyColors.terminalWhite,
-      primaryContainer: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
-      onPrimaryContainer: FiftyColors.terminalWhite,
+      // Primary colors - Burgundy
+      primary: FiftyColors.burgundy,
+      onPrimary: FiftyColors.cream,
+      primaryContainer: FiftyColors.burgundy.withValues(alpha: 0.2),
+      onPrimaryContainer: FiftyColors.cream,
 
-      // Secondary colors - Hyper Chrome (metallic)
-      secondary: FiftyColors.hyperChrome,
-      onSecondary: FiftyColors.voidBlack,
-      secondaryContainer: FiftyColors.gunmetal,
-      onSecondaryContainer: FiftyColors.terminalWhite,
+      // Secondary colors - Slate Grey
+      secondary: FiftyColors.slateGrey,
+      onSecondary: FiftyColors.cream,
+      secondaryContainer: FiftyColors.slateGrey.withValues(alpha: 0.2),
+      onSecondaryContainer: FiftyColors.cream,
 
-      // Tertiary colors - Igris Green (AI/terminal)
-      tertiary: FiftyColors.igrisGreen,
-      onTertiary: FiftyColors.voidBlack,
-      tertiaryContainer: FiftyColors.igrisGreen.withValues(alpha: 0.2),
-      onTertiaryContainer: FiftyColors.igrisGreen,
+      // Tertiary colors - Hunter Green (success)
+      tertiary: FiftyColors.hunterGreen,
+      onTertiary: FiftyColors.cream,
+      tertiaryContainer: FiftyColors.hunterGreen.withValues(alpha: 0.2),
+      onTertiaryContainer: FiftyColors.hunterGreen,
 
-      // Error colors - Crimson Pulse (destructive = brand)
-      error: FiftyColors.error,
-      onError: FiftyColors.terminalWhite,
-      errorContainer: FiftyColors.error.withValues(alpha: 0.2),
-      onErrorContainer: FiftyColors.terminalWhite,
+      // Error colors - Burgundy (consistent with primary)
+      error: FiftyColors.burgundy,
+      onError: FiftyColors.cream,
+      errorContainer: FiftyColors.burgundy.withValues(alpha: 0.2),
+      onErrorContainer: FiftyColors.cream,
 
-      // Surface colors - Void Black base
-      surface: FiftyColors.voidBlack,
-      onSurface: FiftyColors.terminalWhite,
-      surfaceContainerHighest: FiftyColors.gunmetal,
-      onSurfaceVariant: FiftyColors.hyperChrome,
+      // Surface colors - Dark Burgundy base
+      surface: FiftyColors.darkBurgundy,
+      onSurface: FiftyColors.cream,
+      surfaceContainerHighest: FiftyColors.surfaceDark,
+      onSurfaceVariant: FiftyColors.slateGrey,
 
-      // Outline colors - Hyper Chrome based
-      outline: FiftyColors.border,
-      outlineVariant: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+      // Outline colors - White 5%
+      outline: FiftyColors.borderDark,
+      outlineVariant: Colors.white.withValues(alpha: 0.1),
 
-      // Other
-      shadow: Colors.transparent, // No shadows per FDL
-      scrim: FiftyColors.voidBlack.withValues(alpha: 0.8),
-      inverseSurface: FiftyColors.terminalWhite,
-      onInverseSurface: FiftyColors.voidBlack,
-      inversePrimary: FiftyColors.crimsonPulse,
+      // Other - NOW using shadows
+      shadow: Colors.black.withValues(alpha: 0.1),
+      scrim: FiftyColors.darkBurgundy.withValues(alpha: 0.8),
+      inverseSurface: FiftyColors.cream,
+      onInverseSurface: FiftyColors.darkBurgundy,
+      inversePrimary: FiftyColors.burgundy,
     );
   }
 
-  /// Creates a light ColorScheme using Fifty design tokens.
-  ///
-  /// This is the SECONDARY color scheme, provided for accessibility.
-  /// Inverts the dark palette while maintaining brand identity.
-  ///
-  /// Note: FDL specifies dark mode as primary. Use light mode
-  /// only when necessary for accessibility or user preference.
+  /// Creates a light ColorScheme using Fifty v2 design tokens.
   static ColorScheme light() {
     return ColorScheme(
       brightness: Brightness.light,
 
-      // Primary colors - Crimson Pulse (brand signature maintained)
-      primary: FiftyColors.crimsonPulse,
-      onPrimary: FiftyColors.terminalWhite,
-      primaryContainer: FiftyColors.crimsonPulse.withValues(alpha: 0.15),
-      onPrimaryContainer: FiftyColors.crimsonPulse,
+      // Primary colors - Burgundy
+      primary: FiftyColors.burgundy,
+      onPrimary: FiftyColors.cream,
+      primaryContainer: FiftyColors.burgundy.withValues(alpha: 0.15),
+      onPrimaryContainer: FiftyColors.burgundy,
 
-      // Secondary colors - Hyper Chrome (metallic)
-      secondary: FiftyColors.hyperChrome,
-      onSecondary: FiftyColors.terminalWhite,
-      secondaryContainer: FiftyColors.hyperChrome.withValues(alpha: 0.2),
-      onSecondaryContainer: FiftyColors.voidBlack,
+      // Secondary colors - Slate Grey
+      secondary: FiftyColors.slateGrey,
+      onSecondary: FiftyColors.cream,
+      secondaryContainer: FiftyColors.slateGrey.withValues(alpha: 0.2),
+      onSecondaryContainer: FiftyColors.darkBurgundy,
 
-      // Tertiary colors - Igris Green (AI/terminal)
-      tertiary: FiftyColors.igrisGreen,
-      onTertiary: FiftyColors.voidBlack,
-      tertiaryContainer: FiftyColors.igrisGreen.withValues(alpha: 0.15),
-      onTertiaryContainer: FiftyColors.voidBlack,
+      // Tertiary colors - Hunter Green (success)
+      tertiary: FiftyColors.hunterGreen,
+      onTertiary: FiftyColors.cream,
+      tertiaryContainer: FiftyColors.hunterGreen.withValues(alpha: 0.15),
+      onTertiaryContainer: FiftyColors.darkBurgundy,
 
-      // Error colors - Crimson Pulse
-      error: FiftyColors.error,
-      onError: FiftyColors.terminalWhite,
-      errorContainer: FiftyColors.error.withValues(alpha: 0.15),
-      onErrorContainer: FiftyColors.crimsonPulse,
+      // Error colors - Burgundy
+      error: FiftyColors.burgundy,
+      onError: FiftyColors.cream,
+      errorContainer: FiftyColors.burgundy.withValues(alpha: 0.15),
+      onErrorContainer: FiftyColors.burgundy,
 
-      // Surface colors - Terminal White base
-      surface: FiftyColors.terminalWhite,
-      onSurface: FiftyColors.voidBlack,
-      surfaceContainerHighest: FiftyColors.hyperChrome.withValues(alpha: 0.2),
-      onSurfaceVariant: FiftyColors.hyperChrome,
+      // Surface colors - Cream base
+      surface: FiftyColors.cream,
+      onSurface: FiftyColors.darkBurgundy,
+      surfaceContainerHighest: FiftyColors.surfaceLight,
+      onSurfaceVariant: FiftyColors.slateGrey,
 
-      // Outline colors
-      outline: FiftyColors.hyperChrome.withValues(alpha: 0.3),
-      outlineVariant: FiftyColors.hyperChrome.withValues(alpha: 0.15),
+      // Outline colors - Black 5%
+      outline: FiftyColors.borderLight,
+      outlineVariant: Colors.black.withValues(alpha: 0.1),
 
       // Other
-      shadow: Colors.transparent, // No shadows per FDL
-      scrim: FiftyColors.voidBlack.withValues(alpha: 0.4),
-      inverseSurface: FiftyColors.voidBlack,
-      onInverseSurface: FiftyColors.terminalWhite,
-      inversePrimary: FiftyColors.crimsonPulse,
+      shadow: Colors.black.withValues(alpha: 0.05),
+      scrim: FiftyColors.darkBurgundy.withValues(alpha: 0.4),
+      inverseSurface: FiftyColors.darkBurgundy,
+      onInverseSurface: FiftyColors.cream,
+      inversePrimary: FiftyColors.burgundy,
     );
   }
 }

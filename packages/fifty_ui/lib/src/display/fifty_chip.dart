@@ -13,17 +13,18 @@ enum FiftyChipVariant {
   /// Warning chip with amber accent.
   warning,
 
-  /// Error chip with crimson accent.
+  /// Error chip with burgundy accent.
   error,
 }
 
-/// A chip/tag component with FDL styling.
+/// A chip/tag component with FDL v2 styling.
 ///
 /// Features:
 /// - Four variants: default, success, warning, error
 /// - Optional delete button
-/// - Selected state with crimson accent
+/// - Selected state with primary accent
 /// - Optional avatar/leading widget
+/// - Manrope font family
 ///
 /// Example:
 /// ```dart
@@ -70,12 +71,16 @@ class FiftyChip extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = _getAccentColor(fifty, colorScheme);
     final backgroundColor = selected
         ? accentColor.withValues(alpha: 0.2)
         : colorScheme.surfaceContainerHighest;
-    final borderColor = selected ? accentColor : FiftyColors.border;
+    final borderColor = selected
+        ? accentColor
+        : (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
+    final deleteIconColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
 
     return Material(
       color: Colors.transparent,
@@ -109,21 +114,21 @@ class FiftyChip extends StatelessWidget {
               Text(
                 label.toUpperCase(),
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.medium,
                   color: selected ? accentColor : colorScheme.onSurface,
-                  letterSpacing: 0.5,
+                  letterSpacing: FiftyTypography.letterSpacingLabel,
                 ),
               ),
               if (onDeleted != null) ...[
                 const SizedBox(width: FiftySpacing.xs),
                 GestureDetector(
                   onTap: onDeleted,
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
                     size: 14,
-                    color: FiftyColors.hyperChrome,
+                    color: deleteIconColor,
                   ),
                 ),
               ],

@@ -1,14 +1,15 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'color_scheme.dart';
 import 'component_themes.dart';
 import 'text_theme.dart';
 import 'theme_extensions.dart';
 
-/// Fifty.dev theme builder - the main entry point.
+/// Fifty.dev theme builder v2 - the main entry point.
 ///
-/// Creates complete Flutter ThemeData using Fifty design tokens.
+/// Creates complete Flutter ThemeData using Fifty v2 design tokens.
 /// Assembles color scheme, text theme, component themes, and extensions.
 ///
 /// Usage:
@@ -23,7 +24,7 @@ import 'theme_extensions.dart';
 /// Accessing custom extensions:
 /// ```dart
 /// final fifty = Theme.of(context).extension<FiftyThemeExtension>()!;
-/// print(fifty.igrisGreen);
+/// print(fifty.accent);
 /// ```
 class FiftyTheme {
   FiftyTheme._();
@@ -36,9 +37,9 @@ class FiftyTheme {
   /// Features:
   /// - Material 3 enabled
   /// - Compact visual density
-  /// - Zero elevation (no drop shadows)
-  /// - Crimson Pulse accents
-  /// - Monument Extended + JetBrains Mono typography
+  /// - Soft shadows (v2)
+  /// - Burgundy accents
+  /// - Manrope typography
   static ThemeData dark() {
     final colorScheme = FiftyColorScheme.dark();
     final textTheme = FiftyTextTheme.textTheme();
@@ -50,18 +51,17 @@ class FiftyTheme {
       colorScheme: colorScheme,
       visualDensity: VisualDensity.compact,
 
-      // Scaffold and surfaces
-      scaffoldBackgroundColor: FiftyColors.voidBlack,
-      canvasColor: FiftyColors.voidBlack,
-      cardColor: FiftyColors.gunmetal,
+      // Scaffold and surfaces - v2 colors
+      scaffoldBackgroundColor: FiftyColors.darkBurgundy,
+      canvasColor: FiftyColors.darkBurgundy,
+      cardColor: FiftyColors.surfaceDark,
 
-      // Typography
+      // Typography - Manrope
       textTheme: textTheme,
       primaryTextTheme: textTheme,
-      fontFamily: FiftyTypography.fontFamilyMono,
+      fontFamily: GoogleFonts.manrope().fontFamily,
 
-      // Disable shadows globally
-      shadowColor: Colors.transparent,
+      // Shadows enabled in v2 (removed shadowColor: Colors.transparent)
 
       // Component themes
       appBarTheme: FiftyComponentThemes.appBarTheme(colorScheme),
@@ -95,9 +95,9 @@ class FiftyTheme {
       iconTheme: FiftyComponentThemes.iconTheme(colorScheme),
       scrollbarTheme: FiftyComponentThemes.scrollbarTheme(colorScheme),
 
-      // Extensions for custom properties
+      // Extensions for custom properties - v2 dark
       extensions: [
-        FiftyThemeExtension.standard(),
+        FiftyThemeExtension.dark(),
       ],
     );
   }
@@ -120,35 +120,32 @@ class FiftyTheme {
       colorScheme: colorScheme,
       visualDensity: VisualDensity.compact,
 
-      // Scaffold and surfaces
-      scaffoldBackgroundColor: FiftyColors.terminalWhite,
-      canvasColor: FiftyColors.terminalWhite,
-      cardColor: Colors.white,
+      // Scaffold and surfaces - v2 colors
+      scaffoldBackgroundColor: FiftyColors.cream,
+      canvasColor: FiftyColors.cream,
+      cardColor: FiftyColors.surfaceLight,
 
-      // Typography
+      // Typography - Manrope
       textTheme: textTheme,
       primaryTextTheme: textTheme,
-      fontFamily: FiftyTypography.fontFamilyMono,
+      fontFamily: GoogleFonts.manrope().fontFamily,
 
-      // Disable shadows globally
-      shadowColor: Colors.transparent,
+      // Shadows enabled in v2 (removed shadowColor: Colors.transparent)
 
       // Component themes (reuse dark themes - they adapt via colorScheme)
-      appBarTheme: const AppBarTheme(
-        backgroundColor: FiftyColors.terminalWhite,
-        foregroundColor: FiftyColors.voidBlack,
+      appBarTheme: AppBarTheme(
+        backgroundColor: FiftyColors.cream,
+        foregroundColor: FiftyColors.darkBurgundy,
         elevation: 0,
-        shadowColor: Colors.transparent,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        titleTextStyle: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 18,
-          fontWeight: FiftyTypography.medium,
-          color: FiftyColors.voidBlack,
+        titleTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.titleMedium,
+          fontWeight: FiftyTypography.bold,
+          color: FiftyColors.darkBurgundy,
         ),
-        iconTheme: IconThemeData(
-          color: FiftyColors.voidBlack,
+        iconTheme: const IconThemeData(
+          color: FiftyColors.darkBurgundy,
           size: 24,
         ),
       ),
@@ -156,184 +153,169 @@ class FiftyTheme {
       outlinedButtonTheme: FiftyComponentThemes.outlinedButtonTheme(colorScheme),
       textButtonTheme: FiftyComponentThemes.textButtonTheme(colorScheme),
       cardTheme: CardThemeData(
-        color: Colors.white,
+        color: FiftyColors.surfaceLight,
         elevation: 0,
-        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
+          borderRadius: FiftyRadii.xxlRadius,
+          side: BorderSide(color: FiftyColors.borderLight),
         ),
         margin: EdgeInsets.zero,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: FiftyColors.hyperChrome.withValues(alpha: 0.1),
+        fillColor: FiftyColors.slateGrey.withValues(alpha: 0.1),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          borderSide: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.3)),
+          borderRadius: FiftyRadii.xlRadius,
+          borderSide: BorderSide(color: FiftyColors.borderLight),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          borderSide: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.3)),
+          borderRadius: FiftyRadii.xlRadius,
+          borderSide: BorderSide(color: FiftyColors.borderLight),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          borderSide: const BorderSide(color: FiftyColors.crimsonPulse, width: 2),
+          borderRadius: FiftyRadii.xlRadius,
+          borderSide: const BorderSide(color: FiftyColors.burgundy, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          borderSide: const BorderSide(color: FiftyColors.error),
+          borderRadius: FiftyRadii.xlRadius,
+          borderSide: const BorderSide(color: FiftyColors.burgundy),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          borderSide: const BorderSide(color: FiftyColors.error, width: 2),
+          borderRadius: FiftyRadii.xlRadius,
+          borderSide: const BorderSide(color: FiftyColors.burgundy, width: 2),
         ),
-        hintStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
+        hintStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyMedium,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.hyperChrome,
+          color: FiftyColors.slateGrey,
         ),
-        labelStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
+        labelStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyMedium,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.hyperChrome,
+          color: FiftyColors.slateGrey,
         ),
-        floatingLabelStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
+        floatingLabelStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyMedium,
           fontWeight: FiftyTypography.medium,
-          color: FiftyColors.crimsonPulse,
+          color: FiftyColors.burgundy,
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: FiftyColors.surfaceLight,
         elevation: 0,
-        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.smooth),
-          side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
+          borderRadius: FiftyRadii.xxxlRadius,
+          side: BorderSide(color: FiftyColors.borderLight),
         ),
-        titleTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyHeadline,
-          fontSize: 20,
-          fontWeight: FiftyTypography.ultrabold,
-          color: FiftyColors.voidBlack,
+        titleTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.titleLarge,
+          fontWeight: FiftyTypography.bold,
+          color: FiftyColors.darkBurgundy,
         ),
-        contentTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.body,
+        contentTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyLarge,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.voidBlack,
+          color: FiftyColors.darkBurgundy,
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: FiftyColors.voidBlack,
-        contentTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
+        backgroundColor: FiftyColors.darkBurgundy,
+        contentTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyMedium,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.terminalWhite,
+          color: FiftyColors.cream,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          borderRadius: FiftyRadii.xlRadius,
         ),
         behavior: SnackBarBehavior.floating,
         elevation: 0,
       ),
       dividerTheme: DividerThemeData(
-        color: FiftyColors.hyperChrome.withValues(alpha: 0.2),
+        color: FiftyColors.borderLight,
         thickness: 1,
         space: FiftySpacing.lg,
       ),
       checkboxTheme: FiftyComponentThemes.checkboxTheme(colorScheme),
       radioTheme: FiftyComponentThemes.radioTheme(colorScheme),
       switchTheme: FiftyComponentThemes.switchTheme(colorScheme),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: FiftyColors.terminalWhite,
-        selectedItemColor: FiftyColors.crimsonPulse,
-        unselectedItemColor: FiftyColors.hyperChrome,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: FiftyColors.cream,
+        selectedItemColor: FiftyColors.burgundy,
+        unselectedItemColor: FiftyColors.slateGrey,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
-        selectedLabelStyle: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
-          fontWeight: FiftyTypography.medium,
+        selectedLabelStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelSmall,
+          fontWeight: FiftyTypography.semiBold,
         ),
-        unselectedLabelStyle: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+        unselectedLabelStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelSmall,
           fontWeight: FiftyTypography.regular,
         ),
       ),
       navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: Colors.white,
-        selectedIconTheme: const IconThemeData(color: FiftyColors.crimsonPulse),
-        unselectedIconTheme: const IconThemeData(color: FiftyColors.hyperChrome),
-        selectedLabelTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
-          fontWeight: FiftyTypography.medium,
-          color: FiftyColors.crimsonPulse,
+        backgroundColor: FiftyColors.surfaceLight,
+        selectedIconTheme: const IconThemeData(color: FiftyColors.burgundy),
+        unselectedIconTheme: const IconThemeData(color: FiftyColors.slateGrey),
+        selectedLabelTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelSmall,
+          fontWeight: FiftyTypography.semiBold,
+          color: FiftyColors.burgundy,
         ),
-        unselectedLabelTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+        unselectedLabelTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelSmall,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.hyperChrome,
+          color: FiftyColors.slateGrey,
         ),
         elevation: 0,
-        indicatorColor: FiftyColors.crimsonPulse.withValues(alpha: 0.15),
+        indicatorColor: FiftyColors.burgundy.withValues(alpha: 0.15),
       ),
       tabBarTheme: FiftyComponentThemes.tabBarTheme(colorScheme),
       floatingActionButtonTheme:
           FiftyComponentThemes.floatingActionButtonTheme(colorScheme),
       chipTheme: ChipThemeData(
-        backgroundColor: FiftyColors.hyperChrome.withValues(alpha: 0.1),
-        selectedColor: FiftyColors.crimsonPulse.withValues(alpha: 0.15),
-        disabledColor: FiftyColors.hyperChrome.withValues(alpha: 0.05),
-        labelStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+        backgroundColor: FiftyColors.slateGrey.withValues(alpha: 0.1),
+        selectedColor: FiftyColors.burgundy.withValues(alpha: 0.15),
+        disabledColor: FiftyColors.slateGrey.withValues(alpha: 0.05),
+        labelStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodySmall,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.voidBlack,
+          color: FiftyColors.darkBurgundy,
         ),
-        secondaryLabelStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+        secondaryLabelStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodySmall,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.hyperChrome,
+          color: FiftyColors.slateGrey,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.xs,
         ),
-        side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
+        side: BorderSide(color: FiftyColors.borderLight),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.full),
+          borderRadius: FiftyRadii.fullRadius,
         ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: FiftyColors.crimsonPulse,
-        linearTrackColor: FiftyColors.hyperChrome.withValues(alpha: 0.2),
-        circularTrackColor: FiftyColors.hyperChrome.withValues(alpha: 0.2),
+        color: FiftyColors.burgundy,
+        linearTrackColor: FiftyColors.slateGrey.withValues(alpha: 0.2),
+        circularTrackColor: FiftyColors.slateGrey.withValues(alpha: 0.2),
       ),
       sliderTheme: FiftyComponentThemes.sliderTheme(colorScheme),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
-          color: FiftyColors.voidBlack,
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          color: FiftyColors.darkBurgundy,
+          borderRadius: FiftyRadii.xlRadius,
         ),
-        textStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+        textStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodySmall,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.terminalWhite,
+          color: FiftyColors.cream,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
@@ -341,93 +323,86 @@ class FiftyTheme {
         ),
       ),
       popupMenuTheme: PopupMenuThemeData(
-        color: Colors.white,
+        color: FiftyColors.surfaceLight,
         elevation: 0,
-        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
+          borderRadius: FiftyRadii.xlRadius,
+          side: BorderSide(color: FiftyColors.borderLight),
         ),
-        textStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
+        textStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyMedium,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.voidBlack,
+          color: FiftyColors.darkBurgundy,
         ),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
-          backgroundColor: WidgetStateProperty.all(Colors.white),
+          backgroundColor: WidgetStateProperty.all(FiftyColors.surfaceLight),
           elevation: WidgetStateProperty.all(0),
-          shadowColor: WidgetStateProperty.all(Colors.transparent),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(FiftyRadii.standard),
-              side: BorderSide(color: FiftyColors.hyperChrome.withValues(alpha: 0.2)),
+              borderRadius: FiftyRadii.xlRadius,
+              side: BorderSide(color: FiftyColors.borderLight),
             ),
           ),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: FiftyColors.surfaceLight,
         elevation: 0,
-        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(FiftyRadii.smooth),
+            top: Radius.circular(FiftyRadii.xxxl),
           ),
         ),
-        modalBackgroundColor: Colors.white,
+        modalBackgroundColor: FiftyColors.surfaceLight,
         modalElevation: 0,
       ),
       drawerTheme: const DrawerThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: FiftyColors.surfaceLight,
         elevation: 0,
-        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(),
       ),
       listTileTheme: ListTileThemeData(
         tileColor: Colors.transparent,
-        selectedTileColor: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
-        iconColor: FiftyColors.hyperChrome,
-        selectedColor: FiftyColors.crimsonPulse,
-        textColor: FiftyColors.voidBlack,
+        selectedTileColor: FiftyColors.burgundy.withValues(alpha: 0.1),
+        iconColor: FiftyColors.slateGrey,
+        selectedColor: FiftyColors.burgundy,
+        textColor: FiftyColors.darkBurgundy,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.sm,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          borderRadius: FiftyRadii.xlRadius,
         ),
-        titleTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.body,
+        titleTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodyLarge,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.voidBlack,
+          color: FiftyColors.darkBurgundy,
         ),
-        subtitleTextStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.mono,
+        subtitleTextStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.bodySmall,
           fontWeight: FiftyTypography.regular,
-          color: FiftyColors.hyperChrome,
+          color: FiftyColors.slateGrey,
         ),
       ),
       iconTheme: const IconThemeData(
-        color: FiftyColors.voidBlack,
+        color: FiftyColors.darkBurgundy,
         size: 24,
       ),
       scrollbarTheme: ScrollbarThemeData(
         thumbColor: WidgetStateProperty.all(
-          FiftyColors.hyperChrome.withValues(alpha: 0.3),
+          FiftyColors.slateGrey.withValues(alpha: 0.3),
         ),
         trackColor: WidgetStateProperty.all(Colors.transparent),
         radius: const Radius.circular(4),
         thickness: WidgetStateProperty.all(8),
       ),
 
-      // Extensions for custom properties
+      // Extensions for custom properties - v2 light
       extensions: [
-        FiftyThemeExtension.standard(),
+        FiftyThemeExtension.light(),
       ],
     );
   }

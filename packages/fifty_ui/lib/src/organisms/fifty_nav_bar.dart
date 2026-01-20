@@ -9,7 +9,7 @@ enum FiftyNavBarStyle {
   /// Pill-shaped (stadium/capsule) with large border radius.
   pill,
 
-  /// Standard rectangular with standard border radius.
+  /// Standard rectangular with lg border radius.
   standard,
 }
 
@@ -28,12 +28,13 @@ class FiftyNavItem {
   final IconData? icon;
 }
 
-/// A floating "Dynamic Island" style navigation bar.
+/// A floating "Dynamic Island" style navigation bar with FDL v2 styling.
 ///
 /// Implements the FDL "Command Deck" specification:
-/// - Glassmorphism: BackdropFilter blur 20px + black 50% opacity
-/// - Shape: Pill (100px radius) or Standard (12px radius)
-/// - Selection: Active item gets Crimson underbar
+/// - Glassmorphism: BackdropFilter blur 20px + dark background with opacity
+/// - Shape: Pill (100px radius) or Standard (lg radius)
+/// - Selection: Active item gets primary underbar
+/// - Mode-aware colors
 ///
 /// Example:
 /// ```dart
@@ -86,7 +87,7 @@ class FiftyNavBar extends StatelessWidget {
       case FiftyNavBarStyle.pill:
         return BorderRadius.circular(100);
       case FiftyNavBarStyle.standard:
-        return FiftyRadii.standardRadius;
+        return FiftyRadii.lgRadius;
     }
   }
 
@@ -94,12 +95,20 @@ class FiftyNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
     final effectiveMargin = margin ??
         EdgeInsets.symmetric(
           horizontal: style == FiftyNavBarStyle.pill
               ? FiftySpacing.lg
               : FiftySpacing.md,
         );
+
+    final backgroundColor = isDark
+        ? FiftyColors.darkBurgundy.withValues(alpha: 0.5)
+        : FiftyColors.surfaceLight.withValues(alpha: 0.8);
+    final borderColor = isDark
+        ? FiftyColors.slateGrey.withValues(alpha: 0.1)
+        : FiftyColors.borderLight;
 
     return Container(
       margin: effectiveMargin,
@@ -110,10 +119,10 @@ class FiftyNavBar extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             decoration: BoxDecoration(
-              color: FiftyColors.voidBlack.withValues(alpha: 0.5),
+              color: backgroundColor,
               borderRadius: _borderRadius,
               border: Border.all(
-                color: FiftyColors.hyperChrome.withValues(alpha: 0.1),
+                color: borderColor,
                 width: 1,
               ),
             ),
@@ -126,6 +135,7 @@ class FiftyNavBar extends StatelessWidget {
                     isSelected: index == selectedIndex,
                     onTap: () => onItemSelected(index),
                     primaryColor: colorScheme.primary,
+                    isDark: isDark,
                   ),
                 );
               }),
@@ -143,12 +153,14 @@ class _FiftyNavBarItem extends StatefulWidget {
     required this.isSelected,
     required this.onTap,
     required this.primaryColor,
+    required this.isDark,
   });
 
   final FiftyNavItem item;
   final bool isSelected;
   final VoidCallback onTap;
   final Color primaryColor;
+  final bool isDark;
 
   @override
   State<_FiftyNavBarItem> createState() => _FiftyNavBarItemState();
@@ -163,12 +175,15 @@ class _FiftyNavBarItemState extends State<_FiftyNavBarItem> {
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
 
+    final activeTextColor = widget.isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
+    final inactiveTextColor = widget.isDark ? FiftyColors.slateGrey : Colors.grey[600];
+
     final textColor = widget.isSelected || _isHovered
-        ? FiftyColors.terminalWhite
-        : FiftyColors.hyperChrome;
+        ? activeTextColor
+        : inactiveTextColor;
     final iconColor = widget.isSelected
         ? widget.primaryColor
-        : (_isHovered ? FiftyColors.terminalWhite : FiftyColors.hyperChrome);
+        : (_isHovered ? activeTextColor : inactiveTextColor);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -203,18 +218,18 @@ class _FiftyNavBarItemState extends State<_FiftyNavBarItem> {
                 duration: fifty.fast,
                 curve: fifty.standardCurve,
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
+                  fontFamily: FiftyTypography.fontFamily,
                   fontSize: 10,
                   fontWeight: widget.isSelected
                       ? FiftyTypography.medium
                       : FiftyTypography.regular,
                   color: textColor,
-                  letterSpacing: FiftyTypography.tight * 10,
+                  letterSpacing: FiftyTypography.letterSpacingDisplay,
                 ),
                 child: Text(widget.item.label.toUpperCase()),
               ),
               const SizedBox(height: 4),
-              // Crimson underbar for selected state
+              // Primary underbar for selected state
               AnimatedContainer(
                 duration: fifty.fast,
                 curve: fifty.standardCurve,

@@ -2,13 +2,14 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A linear progress bar with FDL styling.
+/// A linear progress bar with FDL v2 styling.
 ///
 /// Features:
-/// - Crimson fill color matching FDL brand
+/// - Primary fill color matching FDL brand
 /// - Animated value transitions
 /// - Optional label and percentage display
-/// - Gunmetal track background
+/// - Mode-aware track background
+/// - Manrope font family
 ///
 /// Example:
 /// ```dart
@@ -44,12 +45,12 @@ class FiftyProgressBar extends StatelessWidget {
 
   /// The background (track) color.
   ///
-  /// Defaults to [FiftyColors.gunmetal].
+  /// Defaults to mode-aware surface color.
   final Color? backgroundColor;
 
   /// The foreground (fill) color.
   ///
-  /// Defaults to the primary color (crimson).
+  /// Defaults to the primary color (burgundy).
   final Color? foregroundColor;
 
   @override
@@ -57,9 +58,13 @@ class FiftyProgressBar extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveBackgroundColor = backgroundColor ?? FiftyColors.gunmetal;
+    final effectiveBackgroundColor = backgroundColor ??
+        (isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight);
     final effectiveForegroundColor = foregroundColor ?? colorScheme.primary;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final labelColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
     final clampedValue = value.clamp(0.0, 1.0);
     final percentage = (clampedValue * 100).round();
 
@@ -74,20 +79,20 @@ class FiftyProgressBar extends StatelessWidget {
               if (label != null)
                 Text(
                   label!.toUpperCase(),
-                  style: const TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
                     fontWeight: FiftyTypography.medium,
-                    color: FiftyColors.hyperChrome,
-                    letterSpacing: 0.5,
+                    color: labelColor,
+                    letterSpacing: FiftyTypography.letterSpacingLabel,
                   ),
                 ),
               if (showPercentage)
                 Text(
                   '$percentage%',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
                     fontWeight: FiftyTypography.medium,
                     color: colorScheme.onSurface,
                   ),
@@ -101,7 +106,7 @@ class FiftyProgressBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: effectiveBackgroundColor,
             borderRadius: BorderRadius.circular(height / 2),
-            border: Border.all(color: FiftyColors.border),
+            border: Border.all(color: borderColor),
           ),
           child: LayoutBuilder(
             builder: (context, constraints) {

@@ -15,11 +15,11 @@ enum FiftyHeroSize {
   h2,
 }
 
-/// Dramatic headline text with Monument Extended font.
+/// Dramatic headline text with Manrope font.
 ///
-/// Implements the FDL "Monument Headers" specification:
+/// Implements the FDL v2 "Monument Headers" specification:
 /// - Text: ALL CAPS
-/// - Font: Monument Extended
+/// - Font: Manrope (primary font family)
 /// - Sizes: display (64px), h1 (48px), h2 (32px)
 /// - Optional glitch effect on mount
 /// - Optional gradient fill
@@ -31,7 +31,7 @@ enum FiftyHeroSize {
 ///   size: FiftyHeroSize.display,
 ///   glitchOnMount: true,
 ///   gradient: LinearGradient(
-///     colors: [FiftyColors.crimsonPulse, FiftyColors.terminalWhite],
+///     colors: [FiftyColors.burgundy, FiftyColors.cream],
 ///   ),
 /// )
 /// ```
@@ -61,7 +61,7 @@ class FiftyHero extends StatelessWidget {
 
   /// Optional gradient to apply to the text.
   ///
-  /// If null, uses [FiftyColors.terminalWhite].
+  /// If null, uses [FiftyColors.cream].
   final Gradient? gradient;
 
   /// How the text should be aligned horizontally.
@@ -76,11 +76,11 @@ class FiftyHero extends StatelessWidget {
   double get _fontSize {
     switch (size) {
       case FiftyHeroSize.display:
-        return FiftyTypography.hero; // 64px
+        return FiftyTypography.displayLarge; // 32px (hero)
       case FiftyHeroSize.h1:
-        return FiftyTypography.display; // 48px
+        return FiftyTypography.displayMedium; // 24px
       case FiftyHeroSize.h2:
-        return FiftyTypography.section; // 32px
+        return FiftyTypography.titleLarge; // 20px
     }
   }
 
@@ -88,7 +88,7 @@ class FiftyHero extends StatelessWidget {
     switch (size) {
       case FiftyHeroSize.display:
       case FiftyHeroSize.h1:
-        return FiftyTypography.ultrabold;
+        return FiftyTypography.extraBold;
       case FiftyHeroSize.h2:
         return FiftyTypography.regular;
     }
@@ -112,12 +112,12 @@ class FiftyHero extends StatelessWidget {
 
   Widget _buildText(BuildContext context) {
     final style = TextStyle(
-      fontFamily: FiftyTypography.fontFamilyHeadline,
+      fontFamily: FiftyTypography.fontFamily,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
-      color: FiftyColors.terminalWhite,
-      letterSpacing: FiftyTypography.tight * _fontSize,
-      height: FiftyTypography.displayLineHeight,
+      color: FiftyColors.cream,
+      letterSpacing: FiftyTypography.letterSpacingDisplay,
+      height: FiftyTypography.lineHeightDisplay,
     );
 
     final textContent = Text(
@@ -207,11 +207,11 @@ class FiftyHeroSection extends StatelessWidget {
           Text(
             subtitle!,
             style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.body,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyLarge,
               fontWeight: FiftyTypography.regular,
-              color: FiftyColors.hyperChrome,
-              height: FiftyTypography.bodyLineHeight,
+              color: FiftyColors.slateGrey,
+              height: FiftyTypography.lineHeightBody,
             ),
             textAlign: _textAlignFromCrossAxis(),
           ),

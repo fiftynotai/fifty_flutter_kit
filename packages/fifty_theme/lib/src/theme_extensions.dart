@@ -1,31 +1,24 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// Fifty.dev theme extension for custom properties.
+/// Fifty.dev theme extension v2 for custom properties.
 ///
-/// Provides access to Fifty-specific design tokens that don't map
-/// directly to Material Design components:
-/// - Igris Green (AI terminal color)
-/// - Focus glow effects
+/// Provides access to Fifty-specific design tokens including:
+/// - Shadow tokens (sm, md, lg, primary, glow)
+/// - Accent color (mode-aware)
 /// - Motion durations and curves
 ///
 /// Access via `Theme.of(context).extension<FiftyThemeExtension>()`.
-///
-/// Example:
-/// ```dart
-/// final fifty = Theme.of(context).extension<FiftyThemeExtension>()!;
-/// Container(
-///   decoration: BoxDecoration(
-///     boxShadow: fifty.focusGlow,
-///   ),
-/// );
-/// ```
 class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
-  /// Creates a Fifty theme extension with all custom properties.
   const FiftyThemeExtension({
-    required this.igrisGreen,
-    required this.focusGlow,
-    required this.strongFocusGlow,
+    required this.accent,
+    required this.shadowSm,
+    required this.shadowMd,
+    required this.shadowLg,
+    required this.shadowPrimary,
+    required this.shadowGlow,
+    required this.success,
+    required this.warning,
     required this.instant,
     required this.fast,
     required this.compiling,
@@ -33,18 +26,19 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
     required this.standardCurve,
     required this.enterCurve,
     required this.exitCurve,
-    required this.success,
-    required this.warning,
   });
 
-  /// Creates the default Fifty theme extension.
-  ///
-  /// Uses all standard FDL tokens.
-  factory FiftyThemeExtension.standard() {
+  /// Creates the dark mode theme extension.
+  factory FiftyThemeExtension.dark() {
     return FiftyThemeExtension(
-      igrisGreen: FiftyColors.igrisGreen,
-      focusGlow: FiftyElevation.focus,
-      strongFocusGlow: FiftyElevation.strongFocus,
+      accent: FiftyColors.powderBlush,
+      shadowSm: FiftyShadows.sm,
+      shadowMd: FiftyShadows.md,
+      shadowLg: FiftyShadows.lg,
+      shadowPrimary: FiftyShadows.primary,
+      shadowGlow: FiftyShadows.glow,
+      success: FiftyColors.hunterGreen,
+      warning: FiftyColors.warning,
       instant: FiftyMotion.instant,
       fast: FiftyMotion.fast,
       compiling: FiftyMotion.compiling,
@@ -52,88 +46,98 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       standardCurve: FiftyMotion.standard,
       enterCurve: FiftyMotion.enter,
       exitCurve: FiftyMotion.exit,
-      success: FiftyColors.success,
-      warning: FiftyColors.warning,
     );
+  }
+
+  /// Creates the light mode theme extension.
+  factory FiftyThemeExtension.light() {
+    return FiftyThemeExtension(
+      accent: FiftyColors.burgundy,
+      shadowSm: FiftyShadows.sm,
+      shadowMd: FiftyShadows.md,
+      shadowLg: FiftyShadows.lg,
+      shadowPrimary: FiftyShadows.primary,
+      shadowGlow: FiftyShadows.none, // No glow in light mode
+      success: FiftyColors.hunterGreen,
+      warning: FiftyColors.warning,
+      instant: FiftyMotion.instant,
+      fast: FiftyMotion.fast,
+      compiling: FiftyMotion.compiling,
+      systemLoad: FiftyMotion.systemLoad,
+      standardCurve: FiftyMotion.standard,
+      enterCurve: FiftyMotion.enter,
+      exitCurve: FiftyMotion.exit,
+    );
+  }
+
+  /// @deprecated Use [dark] or [light] factory constructors.
+  @Deprecated('Use FiftyThemeExtension.dark() or FiftyThemeExtension.light()')
+  factory FiftyThemeExtension.standard() {
+    return FiftyThemeExtension.dark();
   }
 
   // ============================================================================
   // COLORS
   // ============================================================================
 
-  /// Igris Green (#00FF41) - AI terminal color.
+  /// Accent color (mode-aware).
   ///
-  /// Reserved for AI/terminal contexts only.
-  /// Use for IGRIS terminal output and AI indicators.
-  final Color igrisGreen;
+  /// - Dark mode: Powder Blush (#FFC9B9)
+  /// - Light mode: Burgundy (#88292F)
+  final Color accent;
 
-  /// Success color (#00BA33).
-  ///
-  /// Use for positive actions and confirmations.
+  /// Success color - Hunter Green (#4B644A).
   final Color success;
 
   /// Warning color (#F7A100).
-  ///
-  /// Use for caution states and important notices.
   final Color warning;
 
   // ============================================================================
-  // GLOWS
+  // SHADOWS
   // ============================================================================
 
-  /// Standard focus glow effect.
-  ///
-  /// Crimson glow for focus states.
-  /// Apply to BoxDecoration.boxShadow for interactive elements.
-  final List<BoxShadow> focusGlow;
+  /// Small shadow - Subtle elevation.
+  final List<BoxShadow> shadowSm;
 
-  /// Strong focus glow effect.
-  ///
-  /// Enhanced glow for active/selected states.
-  /// Provides more visual prominence.
-  final List<BoxShadow> strongFocusGlow;
+  /// Medium shadow - Cards.
+  final List<BoxShadow> shadowMd;
+
+  /// Large shadow - Modals and dropdowns.
+  final List<BoxShadow> shadowLg;
+
+  /// Primary shadow - Primary buttons.
+  final List<BoxShadow> shadowPrimary;
+
+  /// Glow shadow - Dark mode accent (empty in light mode).
+  final List<BoxShadow> shadowGlow;
 
   // ============================================================================
   // DURATIONS
   // ============================================================================
 
-  /// Instant duration (0ms) - Logic changes.
-  ///
-  /// For immediate state changes with no animation.
+  /// Instant duration (0ms).
   final Duration instant;
 
-  /// Fast duration (150ms) - Hover states.
-  ///
-  /// For quick feedback and micro-interactions.
+  /// Fast duration (150ms).
   final Duration fast;
 
-  /// Compiling duration (300ms) - Panel reveals.
-  ///
-  /// For panel animations and modal entrances.
+  /// Compiling duration (300ms).
   final Duration compiling;
 
-  /// System Load duration (800ms) - Staggered entry.
-  ///
-  /// For staggered list animations and page loads.
+  /// System Load duration (800ms).
   final Duration systemLoad;
 
   // ============================================================================
   // CURVES
   // ============================================================================
 
-  /// Standard curve - Smooth ease.
-  ///
-  /// For general-purpose animations.
+  /// Standard curve.
   final Curve standardCurve;
 
-  /// Enter curve - Springy entrance.
-  ///
-  /// For elements entering the viewport.
+  /// Enter curve.
   final Curve enterCurve;
 
-  /// Exit curve - Sharp exit.
-  ///
-  /// For elements leaving the viewport.
+  /// Exit curve.
   final Curve exitCurve;
 
   // ============================================================================
@@ -142,9 +146,14 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
 
   @override
   FiftyThemeExtension copyWith({
-    Color? igrisGreen,
-    List<BoxShadow>? focusGlow,
-    List<BoxShadow>? strongFocusGlow,
+    Color? accent,
+    List<BoxShadow>? shadowSm,
+    List<BoxShadow>? shadowMd,
+    List<BoxShadow>? shadowLg,
+    List<BoxShadow>? shadowPrimary,
+    List<BoxShadow>? shadowGlow,
+    Color? success,
+    Color? warning,
     Duration? instant,
     Duration? fast,
     Duration? compiling,
@@ -152,13 +161,16 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
     Curve? standardCurve,
     Curve? enterCurve,
     Curve? exitCurve,
-    Color? success,
-    Color? warning,
   }) {
     return FiftyThemeExtension(
-      igrisGreen: igrisGreen ?? this.igrisGreen,
-      focusGlow: focusGlow ?? this.focusGlow,
-      strongFocusGlow: strongFocusGlow ?? this.strongFocusGlow,
+      accent: accent ?? this.accent,
+      shadowSm: shadowSm ?? this.shadowSm,
+      shadowMd: shadowMd ?? this.shadowMd,
+      shadowLg: shadowLg ?? this.shadowLg,
+      shadowPrimary: shadowPrimary ?? this.shadowPrimary,
+      shadowGlow: shadowGlow ?? this.shadowGlow,
+      success: success ?? this.success,
+      warning: warning ?? this.warning,
       instant: instant ?? this.instant,
       fast: fast ?? this.fast,
       compiling: compiling ?? this.compiling,
@@ -166,8 +178,6 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       standardCurve: standardCurve ?? this.standardCurve,
       enterCurve: enterCurve ?? this.enterCurve,
       exitCurve: exitCurve ?? this.exitCurve,
-      success: success ?? this.success,
-      warning: warning ?? this.warning,
     );
   }
 
@@ -176,9 +186,14 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
     if (other == null) return this;
 
     return FiftyThemeExtension(
-      igrisGreen: Color.lerp(igrisGreen, other.igrisGreen, t)!,
-      focusGlow: t < 0.5 ? focusGlow : other.focusGlow,
-      strongFocusGlow: t < 0.5 ? strongFocusGlow : other.strongFocusGlow,
+      accent: Color.lerp(accent, other.accent, t)!,
+      shadowSm: t < 0.5 ? shadowSm : other.shadowSm,
+      shadowMd: t < 0.5 ? shadowMd : other.shadowMd,
+      shadowLg: t < 0.5 ? shadowLg : other.shadowLg,
+      shadowPrimary: t < 0.5 ? shadowPrimary : other.shadowPrimary,
+      shadowGlow: t < 0.5 ? shadowGlow : other.shadowGlow,
+      success: Color.lerp(success, other.success, t)!,
+      warning: Color.lerp(warning, other.warning, t)!,
       instant: t < 0.5 ? instant : other.instant,
       fast: t < 0.5 ? fast : other.fast,
       compiling: t < 0.5 ? compiling : other.compiling,
@@ -186,8 +201,6 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       standardCurve: t < 0.5 ? standardCurve : other.standardCurve,
       enterCurve: t < 0.5 ? enterCurve : other.enterCurve,
       exitCurve: t < 0.5 ? exitCurve : other.exitCurve,
-      success: Color.lerp(success, other.success, t)!,
-      warning: Color.lerp(warning, other.warning, t)!,
     );
   }
 }

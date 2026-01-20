@@ -1,14 +1,15 @@
-/// FDL-styled Flutter components for the fifty.dev ecosystem.
+/// FDL v2 styled Flutter components for the fifty.dev ecosystem.
 ///
 /// This package provides a comprehensive set of widgets that follow the
-/// Fifty Design Language (FDL) specification, built on top of `fifty_tokens`
+/// Fifty Design Language v2 specification, built on top of `fifty_tokens`
 /// and `fifty_theme`.
 ///
 /// All components feature:
-/// - Crimson glow focus states
-/// - Zero elevation (no drop shadows)
+/// - Burgundy primary color (FDL v2 brand)
+/// - Mode-aware colors (dark and light mode support)
 /// - Motion animations using FDL timing tokens
-/// - Dark-first design
+/// - WCAG 2.1 AA compliant accessibility
+/// - Manrope font family
 ///
 /// ## Getting Started
 ///
@@ -44,38 +45,41 @@
 /// ## Components
 ///
 /// ### Buttons
-/// - [FiftyButton] - Primary action button with variants
+/// - [FiftyButton] - Primary action button with variants (heights: 36/48/56)
 /// - [FiftyIconButton] - Circular icon button
 ///
 /// ### Inputs
-/// - [FiftyTextField] - Text input with focus glow
-/// - [FiftySwitch] - Kinetic toggle switch
-/// - [FiftySlider] - Brutalist range slider
-/// - [FiftyDropdown] - Terminal-styled dropdown selector
+/// - [FiftyTextField] - Text input with 48px height and xl radius
+/// - [FiftySwitch] - Kinetic toggle (ON = slateGrey, NOT primary!)
+/// - [FiftySlider] - Range slider with mode-aware styling
+/// - [FiftyDropdown] - Dropdown selector with xl radius
+///
+/// ### Controls
+/// - [FiftySegmentedControl] - Pill-style segmented control (NEW in v2)
 ///
 /// ### Containers
-/// - [FiftyCard] - Card container with optional tap interaction
+/// - [FiftyCard] - Card container with xxl/xxxl radius and md shadow
 ///
 /// ### Display
 /// - [FiftyChip] - Tag/label component
 /// - [FiftyDivider] - Themed divider
-/// - [FiftyDataSlate] - Terminal-style key-value display
+/// - [FiftyDataSlate] - Key-value display panel
 /// - [FiftyBadge] - Status indicator
 /// - [FiftyAvatar] - User avatar
 /// - [FiftyProgressBar] - Linear progress indicator
-/// - [FiftyLoadingIndicator] - FDL-compliant text-based loading indicator
+/// - [FiftyLoadingIndicator] - Text-based loading indicator
 ///
 /// ### Feedback
 /// - [FiftySnackbar] - Toast notification
-/// - [FiftyDialog] - Modal dialog
+/// - [FiftyDialog] - Modal dialog with xxxl radius
 /// - [FiftyTooltip] - Hover tooltip
 ///
 /// ### Organisms
 /// - [FiftyNavBar] - Floating navigation bar with glassmorphism
-/// - [FiftyHero] - Dramatic headline text with Monument Extended font
+/// - [FiftyHero] - Dramatic headline text with Manrope font
 ///
 /// ### Molecules
-/// - [FiftyCodeBlock] - Terminal-style code display with syntax highlighting
+/// - [FiftyCodeBlock] - Code display with syntax highlighting
 ///
 /// ### Utils
 /// - [GlowContainer] - Reusable glow animation wrapper
@@ -94,6 +98,9 @@ export 'src/inputs/fifty_dropdown.dart';
 export 'src/inputs/fifty_slider.dart';
 export 'src/inputs/fifty_switch.dart';
 export 'src/inputs/fifty_text_field.dart';
+
+// Controls (NEW in v2)
+export 'src/controls/fifty_segmented_control.dart';
 
 // Containers
 export 'src/containers/fifty_card.dart';

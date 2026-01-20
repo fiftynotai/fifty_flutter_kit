@@ -2,8 +2,8 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('FiftyColorScheme', () {
     group('dark()', () {
       late ColorScheme colorScheme;
@@ -16,56 +16,56 @@ void main() {
         expect(colorScheme.brightness, Brightness.dark);
       });
 
-      test('primary is crimsonPulse', () {
-        expect(colorScheme.primary, FiftyColors.crimsonPulse);
+      test('primary is burgundy', () {
+        expect(colorScheme.primary, FiftyColors.burgundy);
       });
 
-      test('onPrimary is terminalWhite', () {
-        expect(colorScheme.onPrimary, FiftyColors.terminalWhite);
+      test('onPrimary is cream', () {
+        expect(colorScheme.onPrimary, FiftyColors.cream);
       });
 
-      test('surface is voidBlack', () {
-        expect(colorScheme.surface, FiftyColors.voidBlack);
+      test('surface is darkBurgundy', () {
+        expect(colorScheme.surface, FiftyColors.darkBurgundy);
       });
 
-      test('onSurface is terminalWhite', () {
-        expect(colorScheme.onSurface, FiftyColors.terminalWhite);
+      test('onSurface is cream', () {
+        expect(colorScheme.onSurface, FiftyColors.cream);
       });
 
-      test('secondary is hyperChrome', () {
-        expect(colorScheme.secondary, FiftyColors.hyperChrome);
+      test('secondary is slateGrey', () {
+        expect(colorScheme.secondary, FiftyColors.slateGrey);
       });
 
-      test('tertiary is igrisGreen', () {
-        expect(colorScheme.tertiary, FiftyColors.igrisGreen);
+      test('tertiary is hunterGreen', () {
+        expect(colorScheme.tertiary, FiftyColors.hunterGreen);
       });
 
-      test('error is FiftyColors.error', () {
-        expect(colorScheme.error, FiftyColors.error);
+      test('error is burgundy', () {
+        expect(colorScheme.error, FiftyColors.burgundy);
       });
 
-      test('surfaceContainerHighest is gunmetal', () {
-        expect(colorScheme.surfaceContainerHighest, FiftyColors.gunmetal);
+      test('surfaceContainerHighest is surfaceDark', () {
+        expect(colorScheme.surfaceContainerHighest, FiftyColors.surfaceDark);
       });
 
-      test('outline is border color', () {
-        expect(colorScheme.outline, FiftyColors.border);
+      test('outline is borderDark', () {
+        expect(colorScheme.outline, FiftyColors.borderDark);
       });
 
-      test('shadow is transparent (no shadows per FDL)', () {
-        expect(colorScheme.shadow, Colors.transparent);
+      test('shadow is not transparent (shadows enabled in v2)', () {
+        expect(colorScheme.shadow, isNot(Colors.transparent));
       });
 
-      test('inverseSurface is terminalWhite', () {
-        expect(colorScheme.inverseSurface, FiftyColors.terminalWhite);
+      test('inverseSurface is cream', () {
+        expect(colorScheme.inverseSurface, FiftyColors.cream);
       });
 
-      test('onInverseSurface is voidBlack', () {
-        expect(colorScheme.onInverseSurface, FiftyColors.voidBlack);
+      test('onInverseSurface is darkBurgundy', () {
+        expect(colorScheme.onInverseSurface, FiftyColors.darkBurgundy);
       });
 
-      test('inversePrimary is crimsonPulse', () {
-        expect(colorScheme.inversePrimary, FiftyColors.crimsonPulse);
+      test('inversePrimary is burgundy', () {
+        expect(colorScheme.inversePrimary, FiftyColors.burgundy);
       });
 
       test('all ColorScheme properties are non-null', () {
@@ -93,28 +93,28 @@ void main() {
         expect(colorScheme.brightness, Brightness.light);
       });
 
-      test('primary is crimsonPulse (brand maintained)', () {
-        expect(colorScheme.primary, FiftyColors.crimsonPulse);
+      test('primary is burgundy (brand maintained)', () {
+        expect(colorScheme.primary, FiftyColors.burgundy);
       });
 
-      test('surface is terminalWhite', () {
-        expect(colorScheme.surface, FiftyColors.terminalWhite);
+      test('surface is cream', () {
+        expect(colorScheme.surface, FiftyColors.cream);
       });
 
-      test('onSurface is voidBlack', () {
-        expect(colorScheme.onSurface, FiftyColors.voidBlack);
+      test('onSurface is darkBurgundy', () {
+        expect(colorScheme.onSurface, FiftyColors.darkBurgundy);
       });
 
-      test('shadow is transparent (no shadows per FDL)', () {
-        expect(colorScheme.shadow, Colors.transparent);
+      test('shadow is not transparent (shadows enabled in v2)', () {
+        expect(colorScheme.shadow, isNot(Colors.transparent));
       });
 
-      test('inverseSurface is voidBlack', () {
-        expect(colorScheme.inverseSurface, FiftyColors.voidBlack);
+      test('inverseSurface is darkBurgundy', () {
+        expect(colorScheme.inverseSurface, FiftyColors.darkBurgundy);
       });
 
-      test('onInverseSurface is terminalWhite', () {
-        expect(colorScheme.onInverseSurface, FiftyColors.terminalWhite);
+      test('onInverseSurface is cream', () {
+        expect(colorScheme.onInverseSurface, FiftyColors.cream);
       });
 
       test('all ColorScheme properties are non-null', () {

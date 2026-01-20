@@ -54,18 +54,20 @@ enum FiftyCursorStyle {
   underscore,
 }
 
-/// A text field with FDL styling and crimson focus glow.
+/// A text field with FDL v2 styling.
 ///
 /// Features:
-/// - Crimson border and glow on focus (2px + box shadow)
-/// - Gunmetal background
-/// - JetBrains Mono typography
+/// - 48px fixed height
+/// - xl border radius (16px)
+/// - Mode-aware border colors
+/// - Focus ring with theme accent
+/// - Manrope font family
 /// - Error state styling
 /// - Optional prefix/suffix icons
 /// - Configurable border styles (full, bottom, none)
 /// - Configurable prefix styles (chevron, comment, none, custom)
 /// - Configurable cursor styles (line, block, underscore)
-/// - Terminal mode with "> " prefix (FDL: "Inputs look like terminal command lines")
+/// - Terminal mode with "> " prefix
 ///
 /// Example:
 /// ```dart
@@ -83,16 +85,6 @@ enum FiftyCursorStyle {
 ///   controller: _commandController,
 ///   terminalStyle: true,
 ///   hint: 'Enter command',
-/// )
-/// ```
-///
-/// Custom styling example:
-/// ```dart
-/// FiftyTextField(
-///   controller: _controller,
-///   borderStyle: FiftyBorderStyle.bottom,
-///   prefixStyle: FiftyPrefixStyle.comment,
-///   cursorStyle: FiftyCursorStyle.block,
 /// )
 /// ```
 class FiftyTextField extends StatefulWidget {
@@ -277,7 +269,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
     switch (widget.borderStyle) {
       case FiftyBorderStyle.full:
         return OutlineInputBorder(
-          borderRadius: FiftyRadii.standardRadius,
+          borderRadius: FiftyRadii.xlRadius,
           borderSide: BorderSide(color: color, width: width),
         );
       case FiftyBorderStyle.bottom:
@@ -290,7 +282,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
   }
 
   /// Builds the prefix icon widget.
-  Widget? _buildPrefixIcon(ColorScheme colorScheme) {
+  Widget? _buildPrefixIcon(ColorScheme colorScheme, bool isDark) {
     final prefixText = _prefixText;
     if (prefixText != null) {
       return Padding(
@@ -298,10 +290,12 @@ class _FiftyTextFieldState extends State<FiftyTextField>
         child: Text(
           prefixText,
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.body,
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodyMedium,
             fontWeight: FiftyTypography.medium,
-            color: _isFocused ? colorScheme.primary : FiftyColors.hyperChrome,
+            color: _isFocused
+                ? colorScheme.primary
+                : (isDark ? FiftyColors.slateGrey : Colors.grey[600]),
           ),
         ),
       );
@@ -326,8 +320,8 @@ class _FiftyTextFieldState extends State<FiftyTextField>
               child: Text(
                 cursorChar,
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.body,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyMedium,
                   fontWeight: FiftyTypography.medium,
                   color: colorScheme.primary,
                 ),
@@ -345,8 +339,14 @@ class _FiftyTextFieldState extends State<FiftyTextField>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final hasPrefixText = _prefixText != null;
+
+    // Mode-aware colors
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final hintColor = isDark ? FiftyColors.slateGrey : Colors.grey[500];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,13 +356,15 @@ class _FiftyTextFieldState extends State<FiftyTextField>
           Text(
             widget.label!.toUpperCase(),
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              fontWeight: FiftyTypography.medium,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.labelMedium,
+              fontWeight: FiftyTypography.bold,
               color: _hasError
                   ? colorScheme.error
-                  : (_isFocused ? colorScheme.primary : FiftyColors.hyperChrome),
-              letterSpacing: 1,
+                  : (_isFocused
+                      ? colorScheme.primary
+                      : (isDark ? FiftyColors.slateGrey : Colors.grey[600])),
+              letterSpacing: FiftyTypography.letterSpacingLabelMedium,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -370,11 +372,12 @@ class _FiftyTextFieldState extends State<FiftyTextField>
         AnimatedContainer(
           duration: fifty.fast,
           curve: fifty.standardCurve,
+          height: 48, // Fixed 48px height
           decoration: BoxDecoration(
             borderRadius: widget.borderStyle == FiftyBorderStyle.full
-                ? FiftyRadii.standardRadius
+                ? FiftyRadii.xlRadius
                 : null,
-            boxShadow: _isFocused && !_hasError ? fifty.focusGlow : null,
+            boxShadow: _isFocused && !_hasError ? fifty.shadowGlow : null,
           ),
           child: TextField(
             controller: widget.controller,
@@ -389,8 +392,8 @@ class _FiftyTextFieldState extends State<FiftyTextField>
             keyboardType: widget.keyboardType,
             textInputAction: widget.textInputAction,
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.body,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyMedium,
               fontWeight: FiftyTypography.regular,
               color: widget.enabled
                   ? colorScheme.onSurface
@@ -401,34 +404,34 @@ class _FiftyTextFieldState extends State<FiftyTextField>
                 : Colors.transparent, // Hide default cursor for custom styles
             decoration: InputDecoration(
               hintText: widget.hint,
-              hintStyle: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.body,
+              hintStyle: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodyMedium,
                 fontWeight: FiftyTypography.regular,
-                color: FiftyColors.hyperChrome,
+                color: hintColor,
               ),
-              prefixIcon: _buildPrefixIcon(colorScheme),
+              prefixIcon: _buildPrefixIcon(colorScheme, isDark),
               prefixIconConstraints: hasPrefixText
                   ? const BoxConstraints(minWidth: 24, minHeight: 0)
                   : null,
               prefixIconColor: _isFocused
                   ? colorScheme.primary
-                  : FiftyColors.hyperChrome,
+                  : (isDark ? FiftyColors.slateGrey : Colors.grey[600]),
               suffixIcon: _buildSuffixIcon(colorScheme),
-              suffixIconColor: FiftyColors.hyperChrome,
+              suffixIconColor: isDark ? FiftyColors.slateGrey : Colors.grey[600],
               filled: true,
-              fillColor: FiftyColors.gunmetal,
+              fillColor: fillColor,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: FiftySpacing.lg,
                 vertical: FiftySpacing.md,
               ),
-              border: _buildBorder(FiftyColors.border),
-              enabledBorder: _buildBorder(FiftyColors.border),
+              border: _buildBorder(borderColor),
+              enabledBorder: _buildBorder(borderColor),
               focusedBorder: _buildBorder(colorScheme.primary, width: 2),
               errorBorder: _buildBorder(colorScheme.error),
               focusedErrorBorder: _buildBorder(colorScheme.error, width: 2),
               disabledBorder: _buildBorder(
-                FiftyColors.border.withValues(alpha: 0.5),
+                borderColor.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -438,8 +441,8 @@ class _FiftyTextFieldState extends State<FiftyTextField>
           Text(
             widget.errorText!,
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
               fontWeight: FiftyTypography.regular,
               color: colorScheme.error,
             ),

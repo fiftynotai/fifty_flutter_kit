@@ -1,12 +1,14 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A circular avatar with FDL styling.
+/// A circular avatar with FDL v2 styling.
 ///
 /// Features:
 /// - Circular shape with customizable border
 /// - Image or fallback initials display
 /// - Customizable size and border color
+/// - Mode-aware colors
+/// - Manrope font family
 ///
 /// Example:
 /// ```dart
@@ -43,7 +45,7 @@ class FiftyAvatar extends StatelessWidget {
 
   /// The color of the border.
   ///
-  /// Defaults to [FiftyColors.border].
+  /// Defaults to mode-aware border color.
   final Color? borderColor;
 
   /// The width of the border.
@@ -51,16 +53,19 @@ class FiftyAvatar extends StatelessWidget {
 
   /// The background color for the fallback state.
   ///
-  /// Defaults to [FiftyColors.gunmetal].
+  /// Defaults to mode-aware surface color.
   final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveBorderColor = borderColor ?? FiftyColors.border;
-    final effectiveBackgroundColor = backgroundColor ?? FiftyColors.gunmetal;
+    final effectiveBorderColor = borderColor ??
+        (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
+    final effectiveBackgroundColor = backgroundColor ??
+        (isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight);
 
     return Container(
       width: size,
@@ -103,7 +108,7 @@ class FiftyAvatar extends StatelessWidget {
       child: Text(
         initials.length > 2 ? initials.substring(0, 2) : initials,
         style: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
+          fontFamily: FiftyTypography.fontFamily,
           fontSize: fontSize,
           fontWeight: FiftyTypography.medium,
           color: colorScheme.onSurface,

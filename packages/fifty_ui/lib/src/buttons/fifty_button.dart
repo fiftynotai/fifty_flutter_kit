@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 
 import '../utils/glitch_effect.dart';
 
-/// Button variants following the Fifty Design Language.
+/// Button variants following the Fifty Design Language v2.
 ///
 /// Each variant has a distinct visual style:
-/// - [primary]: Solid crimson background for main CTAs
-/// - [secondary]: Outlined with crimson border
+/// - [primary]: Solid burgundy background for main CTAs
+/// - [secondary]: Outlined with burgundy border
 /// - [ghost]: Text-only, no background or border
 /// - [danger]: Error/destructive action styling
 enum FiftyButtonVariant {
-  /// Primary button with solid crimson background.
+  /// Primary button with solid burgundy background.
   primary,
 
-  /// Secondary button with crimson outline.
+  /// Secondary button with burgundy outline.
   secondary,
 
   /// Ghost button with no background or border.
@@ -27,35 +27,23 @@ enum FiftyButtonVariant {
 
 /// Button sizes for different contexts.
 enum FiftyButtonSize {
-  /// Small button (height: 32px).
+  /// Small button (height: 36px).
   small,
 
-  /// Medium button (height: 40px).
+  /// Medium button (height: 48px).
   medium,
 
-  /// Large button (height: 48px).
+  /// Large button (height: 56px).
   large,
 }
 
-/// Button shape options for border radius.
-///
-/// - [sharp]: 4px border radius for a more angular look
-/// - [pill]: 100px border radius for a fully rounded pill shape
-enum FiftyButtonShape {
-  /// Sharp corners with 4px border radius.
-  sharp,
-
-  /// Fully rounded pill shape with 100px border radius.
-  pill,
-}
-
-/// A styled button following the Fifty Design Language.
+/// A styled button following the Fifty Design Language v2.
 ///
 /// Features:
 /// - Four variants: primary, secondary, ghost, danger
-/// - Three sizes: small, medium, large
-/// - Two shapes: sharp (4px radius), pill (100px radius)
-/// - Crimson glow on focus/hover
+/// - Three sizes: small (36px), medium (48px), large (56px)
+/// - Consistent xl border radius (16px)
+/// - Primary shadow on primary variant
 /// - Loading state with indicator
 /// - Optional leading icon
 /// - Glitch effect on hover when enabled
@@ -69,7 +57,6 @@ enum FiftyButtonShape {
 ///   variant: FiftyButtonVariant.primary,
 ///   icon: Icons.rocket_launch,
 ///   isGlitch: true,
-///   shape: FiftyButtonShape.sharp,
 /// )
 /// ```
 class FiftyButton extends StatefulWidget {
@@ -81,7 +68,6 @@ class FiftyButton extends StatefulWidget {
     this.icon,
     this.variant = FiftyButtonVariant.primary,
     this.size = FiftyButtonSize.medium,
-    this.shape = FiftyButtonShape.sharp,
     this.loading = false,
     this.disabled = false,
     this.expanded = false,
@@ -106,13 +92,6 @@ class FiftyButton extends StatefulWidget {
 
   /// The size of the button.
   final FiftyButtonSize size;
-
-  /// The shape of the button.
-  ///
-  /// Determines the border radius:
-  /// - [FiftyButtonShape.sharp]: 4px radius
-  /// - [FiftyButtonShape.pill]: 100px radius (fully rounded)
-  final FiftyButtonShape shape;
 
   /// Whether the button shows a loading indicator.
   ///
@@ -188,15 +167,6 @@ class _FiftyButtonState extends State<FiftyButton>
     super.dispose();
   }
 
-  BorderRadius get _borderRadius {
-    switch (widget.shape) {
-      case FiftyButtonShape.sharp:
-        return BorderRadius.circular(4);
-      case FiftyButtonShape.pill:
-        return BorderRadius.circular(100);
-    }
-  }
-
   double get _pressScale => _isPressed && !_reduceMotion ? 0.95 : 1.0;
 
   @override
@@ -212,6 +182,7 @@ class _FiftyButtonState extends State<FiftyButton>
     final backgroundColor = _getBackgroundColor(colorScheme);
     final foregroundColor = _getForegroundColor(colorScheme);
     final borderColor = _getBorderColor(colorScheme);
+    final shadow = _getShadow();
 
     return Focus(
       onFocusChange: (focused) => setState(() => _isFocused = focused),
@@ -232,20 +203,20 @@ class _FiftyButtonState extends State<FiftyButton>
               height: height,
               decoration: BoxDecoration(
                 color: backgroundColor,
-                borderRadius: _borderRadius,
+                borderRadius: FiftyRadii.xlRadius,
                 border: borderColor != null
                     ? Border.all(
                         color: borderColor,
                         width: _showGlow ? 2 : 1,
                       )
                     : null,
-                boxShadow: _showGlow ? fifty.focusGlow : null,
+                boxShadow: _showGlow ? fifty.shadowGlow : shadow,
               ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: _isDisabled ? null : widget.onPressed,
-                  borderRadius: _borderRadius,
+                  borderRadius: FiftyRadii.xlRadius,
                   splashColor: colorScheme.primary.withValues(alpha: 0.2),
                   highlightColor: Colors.transparent,
                   child: Container(
@@ -279,21 +250,21 @@ class _FiftyButtonState extends State<FiftyButton>
             TextSpan(
               text: padding,
               style: TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
+                fontFamily: FiftyTypography.fontFamily,
                 fontSize: fontSize,
                 fontWeight: FiftyTypography.medium,
                 color: Colors.transparent,
-                letterSpacing: FiftyTypography.tight * fontSize,
+                letterSpacing: FiftyTypography.letterSpacingLabel,
               ),
             ),
           ],
         ),
         style: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
+          fontFamily: FiftyTypography.fontFamily,
           fontSize: fontSize,
           fontWeight: FiftyTypography.medium,
           color: foregroundColor,
-          letterSpacing: FiftyTypography.tight * fontSize,
+          letterSpacing: FiftyTypography.letterSpacingLabel,
         ),
       );
     }
@@ -301,11 +272,11 @@ class _FiftyButtonState extends State<FiftyButton>
     Widget textWidget = Text(
       widget.label.toUpperCase(),
       style: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
+        fontFamily: FiftyTypography.fontFamily,
         fontSize: fontSize,
-        fontWeight: FiftyTypography.medium,
+        fontWeight: FiftyTypography.bold,
         color: _isDisabled ? foregroundColor.withValues(alpha: 0.5) : foregroundColor,
-        letterSpacing: FiftyTypography.tight * fontSize,
+        letterSpacing: FiftyTypography.letterSpacingLabel,
       ),
     );
 
@@ -340,11 +311,11 @@ class _FiftyButtonState extends State<FiftyButton>
   double _getHeight() {
     switch (widget.size) {
       case FiftyButtonSize.small:
-        return 32;
+        return 36;
       case FiftyButtonSize.medium:
-        return 40;
-      case FiftyButtonSize.large:
         return 48;
+      case FiftyButtonSize.large:
+        return 56;
     }
   }
 
@@ -362,11 +333,11 @@ class _FiftyButtonState extends State<FiftyButton>
   double _getFontSize() {
     switch (widget.size) {
       case FiftyButtonSize.small:
-        return 12;
+        return FiftyTypography.bodySmall;
       case FiftyButtonSize.medium:
-        return 14;
+        return FiftyTypography.labelLarge;
       case FiftyButtonSize.large:
-        return 16;
+        return FiftyTypography.bodyLarge;
     }
   }
 
@@ -414,6 +385,19 @@ class _FiftyButtonState extends State<FiftyButton>
       case FiftyButtonVariant.secondary:
         return colorScheme.primary;
       case FiftyButtonVariant.ghost:
+        return null;
+    }
+  }
+
+  List<BoxShadow>? _getShadow() {
+    if (_isDisabled) return null;
+
+    switch (widget.variant) {
+      case FiftyButtonVariant.primary:
+        return FiftyShadows.primary;
+      case FiftyButtonVariant.secondary:
+      case FiftyButtonVariant.ghost:
+      case FiftyButtonVariant.danger:
         return null;
     }
   }

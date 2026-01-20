@@ -4,12 +4,23 @@ import 'package:flutter/material.dart';
 
 import '../utils/halftone_painter.dart';
 
-/// A card container with FDL styling.
+/// Card size variants for FiftyCard.
+enum FiftyCardSize {
+  /// Standard card with xxl radius (24px).
+  standard,
+
+  /// Hero card with xxxl radius (32px).
+  hero,
+}
+
+/// A card container with FDL v2 styling.
 ///
 /// Features:
-/// - Gunmetal background with border outline (no shadow)
+/// - xxl border radius (24px) for standard, xxxl (32px) for hero cards
+/// - Medium shadow by default
+/// - Mode-aware border colors
 /// - Optional tap interaction with ripple effect
-/// - Selected state with crimson border and subtle glow
+/// - Selected state with primary border and subtle glow
 /// - Scanline effect on hover (FDL: "Cards: Hovering triggers a scanline effect")
 /// - Optional halftone texture overlay
 /// - Configurable hover scale animation
@@ -39,6 +50,8 @@ class FiftyCard extends StatefulWidget {
     this.scanlineOnHover = true,
     this.hasTexture = false,
     this.hoverScale = 1.02,
+    this.size = FiftyCardSize.standard,
+    this.showShadow = true,
   });
 
   /// The content of the card.
@@ -59,17 +72,17 @@ class FiftyCard extends StatefulWidget {
 
   /// Whether the card is in a selected state.
   ///
-  /// When true, shows crimson border and subtle glow.
+  /// When true, shows primary border and subtle glow.
   final bool selected;
 
   /// The border radius of the card.
   ///
-  /// Defaults to [FiftyRadii.standardRadius].
+  /// Defaults to [FiftyRadii.xxlRadius] for standard, [FiftyRadii.xxxlRadius] for hero.
   final BorderRadius? borderRadius;
 
   /// The background color of the card.
   ///
-  /// Defaults to [FiftyColors.gunmetal].
+  /// Defaults to theme's surfaceContainerHighest.
   final Color? backgroundColor;
 
   /// Whether to show the scanline effect on hover.
@@ -91,6 +104,18 @@ class FiftyCard extends StatefulWidget {
   /// Defaults to 1.02 (2% larger).
   final double hoverScale;
 
+  /// The size variant of the card.
+  ///
+  /// Affects border radius:
+  /// - [FiftyCardSize.standard]: xxl radius (24px)
+  /// - [FiftyCardSize.hero]: xxxl radius (32px)
+  final FiftyCardSize size;
+
+  /// Whether to show the medium shadow.
+  ///
+  /// Defaults to true.
+  final bool showShadow;
+
   @override
   State<FiftyCard> createState() => _FiftyCardState();
 }
@@ -110,6 +135,16 @@ class _FiftyCardState extends State<FiftyCard>
       MediaQuery.maybeDisableAnimationsOf(context) ?? false;
   double get _currentScale =>
       _isHovered && _isInteractive && !_reduceMotion ? widget.hoverScale : 1.0;
+
+  BorderRadius get _effectiveRadius {
+    if (widget.borderRadius != null) return widget.borderRadius!;
+    switch (widget.size) {
+      case FiftyCardSize.standard:
+        return FiftyRadii.xxlRadius;
+      case FiftyCardSize.hero:
+        return FiftyRadii.xxxlRadius;
+    }
+  }
 
   @override
   void initState() {
@@ -143,9 +178,9 @@ class _FiftyCardState extends State<FiftyCard>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveBorderRadius =
-        widget.borderRadius ?? FiftyRadii.standardRadius;
+    final effectiveBorderRadius = _effectiveRadius;
     final effectiveBackgroundColor =
         widget.backgroundColor ?? colorScheme.surfaceContainerHighest;
     final effectivePadding = widget.padding ??
@@ -153,8 +188,16 @@ class _FiftyCardState extends State<FiftyCard>
 
     final borderColor = widget.selected || _showGlow
         ? colorScheme.primary
-        : FiftyColors.border;
+        : (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
     final borderWidth = widget.selected || _showGlow ? 2.0 : 1.0;
+
+    // Determine shadow - use medium shadow by default
+    List<BoxShadow>? effectiveShadow;
+    if (_showGlow) {
+      effectiveShadow = fifty.shadowGlow;
+    } else if (widget.showShadow) {
+      effectiveShadow = FiftyShadows.md;
+    }
 
     Widget cardContent = Container(
       padding: effectivePadding,
@@ -196,7 +239,7 @@ class _FiftyCardState extends State<FiftyCard>
                 color: borderColor,
                 width: borderWidth,
               ),
-              boxShadow: _showGlow ? fifty.focusGlow : null,
+              boxShadow: effectiveShadow,
             ),
             child: ClipRRect(
               borderRadius: effectiveBorderRadius,
@@ -215,7 +258,7 @@ class _FiftyCardState extends State<FiftyCard>
                           return CustomPaint(
                             painter: _ScanlinePainter(
                               progress: _scanlineController.value,
-                              color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                              color: FiftyColors.burgundy.withValues(alpha: 0.3),
                             ),
                           );
                         },

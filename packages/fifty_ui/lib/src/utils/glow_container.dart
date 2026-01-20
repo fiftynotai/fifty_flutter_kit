@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 /// ```dart
 /// GlowContainer(
 ///   showGlow: _isFocused || _isHovered,
-///   borderRadius: FiftyRadii.standardRadius,
+///   borderRadius: FiftyRadii.lgRadius,
 ///   child: MyContent(),
 /// )
 /// ```
@@ -45,7 +45,7 @@ class GlowContainer extends StatelessWidget {
 
   /// The border radius for the container.
   ///
-  /// Defaults to [FiftyRadii.standardRadius] if not specified.
+  /// Defaults to [FiftyRadii.lgRadius] if not specified.
   final BorderRadius? borderRadius;
 
   /// The background color of the container.
@@ -77,12 +77,13 @@ class GlowContainer extends StatelessWidget {
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
 
-    final effectiveBorderRadius = borderRadius ?? FiftyRadii.standardRadius;
+    final isDark = theme.brightness == Brightness.dark;
+    final effectiveBorderRadius = borderRadius ?? FiftyRadii.lgRadius;
     final effectiveBorderColor = showGlow
         ? colorScheme.primary
-        : (borderColor ?? FiftyColors.border);
+        : (borderColor ?? (isDark ? FiftyColors.borderDark : FiftyColors.borderLight));
     final effectiveBorderWidth = showGlow ? 2.0 : borderWidth;
-    final glowShadows = useStrongGlow ? fifty.strongFocusGlow : fifty.focusGlow;
+    final glowShadows = fifty.shadowGlow;
 
     return AnimatedContainer(
       duration: fifty.fast,

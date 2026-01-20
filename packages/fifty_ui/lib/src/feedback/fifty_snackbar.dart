@@ -17,14 +17,15 @@ enum FiftySnackbarVariant {
   error,
 }
 
-/// A themed snackbar with FDL styling.
+/// A themed snackbar with FDL v2 styling.
 ///
 /// Use the static [show] method to display a snackbar.
 ///
 /// Features:
 /// - Four variants: info, success, warning, error
 /// - Border glow matching variant color
-/// - Gunmetal background with variant accent
+/// - Mode-aware background with variant accent
+/// - Manrope font family
 ///
 /// Example:
 /// ```dart
@@ -51,18 +52,21 @@ class FiftySnackbar {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = _getAccentColor(fifty, colorScheme, variant);
+    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final textColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
 
     // Note: Standard SnackBar uses default animation.
     // For FDL-compliant slide animation, use showWithSlide() instead.
     final snackBar = SnackBar(
       duration: duration,
       behavior: SnackBarBehavior.floating,
-      backgroundColor: FiftyColors.gunmetal,
+      backgroundColor: backgroundColor,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: FiftyRadii.standardRadius,
+        borderRadius: FiftyRadii.xlRadius,
         side: BorderSide(color: accentColor, width: 1),
       ),
       content: Row(
@@ -76,11 +80,11 @@ class FiftySnackbar {
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: 14,
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodyMedium,
                 fontWeight: FiftyTypography.regular,
-                color: FiftyColors.terminalWhite,
+                color: textColor,
               ),
             ),
           ),
@@ -115,7 +119,11 @@ class FiftySnackbar {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
     final accentColor = _getAccentColor(fifty, colorScheme, variant);
+    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final textColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
 
     late OverlayEntry overlayEntry;
     late AnimationController controller;
@@ -156,9 +164,10 @@ class FiftySnackbar {
                 vertical: FiftySpacing.md,
               ),
               decoration: BoxDecoration(
-                color: FiftyColors.gunmetal,
-                borderRadius: FiftyRadii.standardRadius,
+                color: backgroundColor,
+                borderRadius: FiftyRadii.xlRadius,
                 border: Border.all(color: accentColor, width: 1),
+                boxShadow: FiftyShadows.md,
               ),
               child: Row(
                 children: [
@@ -171,11 +180,11 @@ class FiftySnackbar {
                   Expanded(
                     child: Text(
                       message,
-                      style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodyMedium,
                         fontWeight: FiftyTypography.regular,
-                        color: FiftyColors.terminalWhite,
+                        color: textColor,
                       ),
                     ),
                   ),
@@ -189,9 +198,9 @@ class FiftySnackbar {
                       child: Text(
                         actionLabel.toUpperCase(),
                         style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: 14,
-                          fontWeight: FiftyTypography.medium,
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodyMedium,
+                          fontWeight: FiftyTypography.bold,
                           color: accentColor,
                         ),
                       ),
@@ -223,7 +232,7 @@ class FiftySnackbar {
   ) {
     switch (variant) {
       case FiftySnackbarVariant.info:
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
       case FiftySnackbarVariant.success:
         return fifty.success;
       case FiftySnackbarVariant.warning:

@@ -13,20 +13,21 @@ enum FiftyBadgeVariant {
   /// Warning badge with amber color.
   warning,
 
-  /// Error badge with crimson color.
+  /// Error badge with burgundy color.
   error,
 
-  /// Neutral badge with hyperChrome color.
+  /// Neutral badge with slateGrey color.
   neutral,
 }
 
-/// A small status indicator badge with FDL styling.
+/// A small status indicator badge with FDL v2 styling.
 ///
 /// Features:
 /// - Five variants matching semantic colors
 /// - Optional glow pulse animation
 /// - Compact pill shape
 /// - Factory constructors for common use cases
+/// - Manrope font family
 ///
 /// Example:
 /// ```dart
@@ -39,9 +40,9 @@ enum FiftyBadgeVariant {
 ///
 /// Factory constructor examples:
 /// ```dart
-/// FiftyBadge.tech('FLUTTER'),  // Gray/hyperChrome tech label
+/// FiftyBadge.tech('FLUTTER'),  // Gray/slateGrey tech label
 /// FiftyBadge.status('ONLINE'), // Green status with glow
-/// FiftyBadge.ai('IGRIS'),      // IgrisGreen AI indicator
+/// FiftyBadge.ai('IGRIS'),      // HunterGreen AI indicator
 /// ```
 class FiftyBadge extends StatefulWidget {
   /// Creates a Fifty-styled badge.
@@ -53,14 +54,14 @@ class FiftyBadge extends StatefulWidget {
     this.customColor,
   });
 
-  /// Creates a tech-style badge with gray/hyperChrome border.
+  /// Creates a tech-style badge with slateGrey border.
   ///
   /// Suitable for technology labels like 'FLUTTER', 'DART', 'REACT'.
   factory FiftyBadge.tech(String label) {
     return FiftyBadge(
       label: label,
       variant: FiftyBadgeVariant.neutral,
-      customColor: FiftyColors.hyperChrome,
+      customColor: FiftyColors.slateGrey,
     );
   }
 
@@ -75,13 +76,13 @@ class FiftyBadge extends StatefulWidget {
     );
   }
 
-  /// Creates an AI indicator badge with IgrisGreen border.
+  /// Creates an AI indicator badge with hunterGreen border.
   ///
   /// Suitable for AI-related labels like 'IGRIS', 'AI', 'AGENT'.
   factory FiftyBadge.ai(String label) {
     return FiftyBadge(
       label: label,
-      customColor: FiftyColors.igrisGreen,
+      customColor: FiftyColors.hunterGreen,
       showGlow: true,
     );
   }
@@ -179,11 +180,11 @@ class _FiftyBadgeState extends State<FiftyBadge>
           child: Text(
             widget.label.toUpperCase(),
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: 10,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.labelSmall,
               fontWeight: FiftyTypography.medium,
               color: accentColor,
-              letterSpacing: 0.5,
+              letterSpacing: FiftyTypography.letterSpacingLabel,
             ),
           ),
         );
@@ -201,13 +202,13 @@ class _FiftyBadgeState extends State<FiftyBadge>
       case FiftyBadgeVariant.primary:
         return colorScheme.primary;
       case FiftyBadgeVariant.success:
-        return fifty?.success ?? FiftyColors.igrisGreen;
+        return fifty?.success ?? FiftyColors.hunterGreen;
       case FiftyBadgeVariant.warning:
         return fifty?.warning ?? FiftyColors.warning;
       case FiftyBadgeVariant.error:
         return colorScheme.error;
       case FiftyBadgeVariant.neutral:
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
     }
   }
 }

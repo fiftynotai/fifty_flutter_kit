@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 class HalftonePainter extends CustomPainter {
   /// Creates a halftone pattern painter.
   const HalftonePainter({
-    this.color = FiftyColors.terminalWhite,
+    this.color = FiftyColors.cream,
     this.dotRadius = 1.0,
     this.spacing = 8.0,
     this.opacity = 0.05,
@@ -86,7 +86,7 @@ class HalftoneOverlay extends StatelessWidget {
   /// Creates a halftone overlay widget.
   const HalftoneOverlay({
     super.key,
-    this.color = FiftyColors.terminalWhite,
+    this.color = FiftyColors.cream,
     this.dotRadius = 1.0,
     this.spacing = 8.0,
     this.opacity = 0.05,

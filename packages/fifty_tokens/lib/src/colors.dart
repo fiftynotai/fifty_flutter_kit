@@ -1,113 +1,145 @@
 import 'package:flutter/material.dart';
 
-/// Fifty.dev color tokens - the visual signature of the brand.
+/// Fifty.dev color tokens v2 - Sophisticated Warm design system.
 ///
-/// All colors follow the Fifty Design Language (FDL) specification.
-/// Dark mode is the primary environment (OLED-optimized).
-///
-/// The palette evokes a "Mecha Cockpit" or "Server Room" environment.
+/// All colors follow the Fifty Design Language (FDL) v2 specification.
+/// Supports both dark mode (primary) and light mode.
 class FiftyColors {
   FiftyColors._();
 
   // ============================================================================
-  // CORE PALETTE (from FDL Brand Sheet)
+  // CORE PALETTE (v2 - Sophisticated Warm)
   // ============================================================================
 
-  /// Void Black (#050505) - The infinite canvas.
-  ///
-  /// Use for:
-  /// - Primary backgrounds
-  /// - OLED-optimized surfaces
-  /// - Deep, immersive environments
-  ///
-  /// Never pure black - has subtle warmth.
-  static const Color voidBlack = Color(0xFF050505);
-
-  /// Crimson Pulse (#960E29) - The heartbeat.
+  /// Burgundy (#88292F) - Primary brand color.
   ///
   /// Use for:
   /// - Primary buttons and CTAs
-  /// - Active states and errors
   /// - Brand accents and highlights
-  ///
-  /// The system's heartbeat - use sparingly for maximum impact.
-  static const Color crimsonPulse = Color(0xFF960E29);
+  /// - Active states
+  static const Color burgundy = Color(0xFF88292F);
 
-  /// Gunmetal (#1A1A1A) - Surfaces.
+  /// Burgundy Hover (#6E2126) - Primary hover state.
+  static const Color burgundyHover = Color(0xFF6E2126);
+
+  /// Cream (#FEFEE3) - Light background and dark mode text.
   ///
   /// Use for:
-  /// - Cards and bento containers
-  /// - Panels and code blocks
-  /// - Elevated surfaces
-  static const Color gunmetal = Color(0xFF1A1A1A);
+  /// - Light mode backgrounds
+  /// - Dark mode primary text
+  /// - Accent highlights
+  static const Color cream = Color(0xFFFEFEE3);
 
-  /// Terminal White (#EAEAEA) - Primary text.
+  /// Dark Burgundy (#1A0D0E) - Dark mode background.
   ///
   /// Use for:
-  /// - Headings and titles
-  /// - Primary content
-  /// - High legibility, reduced eye strain
-  ///
-  /// Not pure white - softer for extended reading.
-  static const Color terminalWhite = Color(0xFFEAEAEA);
+  /// - Dark mode backgrounds
+  /// - Deep, immersive dark surfaces
+  static const Color darkBurgundy = Color(0xFF1A0D0E);
 
-  /// Hyper Chrome (#888888) - Hardware/metadata.
+  /// Slate Grey (#335C67) - Secondary color.
   ///
   /// Use for:
-  /// - Borders and inactive icons
-  /// - Metadata and secondary text
-  /// - Subtle separators
-  static const Color hyperChrome = Color(0xFF888888);
+  /// - Secondary buttons
+  /// - Switch on-state (NOT primary!)
+  /// - Segmented control active state (dark mode)
+  static const Color slateGrey = Color(0xFF335C67);
 
-  /// Igris Green (#00FF41) - AI Agent.
+  /// Slate Grey Hover (#274750) - Secondary hover state.
+  static const Color slateGreyHover = Color(0xFF274750);
+
+  /// Hunter Green (#4B644A) - Success/positive color.
   ///
   /// Use for:
-  /// - IGRIS terminal output exclusively
-  /// - AI agent indicators
-  /// - System status (success variant)
-  ///
-  /// Reserved for AI/terminal contexts only.
-  static const Color igrisGreen = Color(0xFF00FF41);
+  /// - Success messages
+  /// - Positive indicators
+  /// - Confirmation states
+  static const Color hunterGreen = Color(0xFF4B644A);
 
-  // ============================================================================
-  // DERIVED COLORS
-  // ============================================================================
-
-  /// Border - Hyper Chrome at 10% opacity.
+  /// Powder Blush (#FFC9B9) - Dark mode accent.
   ///
-  /// Per FDL spec: 1px solid HYPER_CHROME @ 10% opacity.
   /// Use for:
-  /// - Card outlines
-  /// - Input borders
-  /// - Subtle separators
-  static const Color border = Color(0x1A888888);
+  /// - Dark mode accent color
+  /// - Outline button borders (dark mode)
+  /// - Focus rings (dark mode)
+  static const Color powderBlush = Color(0xFFFFC9B9);
+
+  /// Surface Light (#FFFFFF) - Light mode surfaces.
+  static const Color surfaceLight = Color(0xFFFFFFFF);
+
+  /// Surface Dark (#2A1517) - Dark mode surfaces/cards.
+  static const Color surfaceDark = Color(0xFF2A1517);
 
   // ============================================================================
   // SEMANTIC COLORS
   // ============================================================================
 
-  /// Success (#00BA33) - Positive actions.
-  ///
-  /// Use for:
-  /// - Success messages
-  /// - Confirmation states
-  /// - Positive indicators
-  static const Color success = Color(0xFF00BA33);
+  /// Primary - Alias for burgundy.
+  static const Color primary = burgundy;
+
+  /// Primary Hover - Alias for burgundyHover.
+  static const Color primaryHover = burgundyHover;
+
+  /// Secondary - Alias for slateGrey.
+  static const Color secondary = slateGrey;
+
+  /// Secondary Hover - Alias for slateGreyHover.
+  static const Color secondaryHover = slateGreyHover;
+
+  /// Success - Alias for hunterGreen.
+  static const Color success = hunterGreen;
 
   /// Warning (#F7A100) - Caution states.
-  ///
-  /// Use for:
-  /// - Warning messages
-  /// - Pending states
-  /// - Important notices
   static const Color warning = Color(0xFFF7A100);
 
-  /// Error - Uses Crimson Pulse.
-  ///
-  /// Destructive actions carry the brand signature.
-  /// Use for:
-  /// - Error messages
-  /// - Destructive actions
-  /// - Validation failures
-  static const Color error = Color(0xFF960E29);
+  /// Error - Uses burgundy for consistency.
+  static const Color error = burgundy;
+
+  // ============================================================================
+  // MODE-SPECIFIC HELPERS
+  // ============================================================================
+
+  /// Border color for light mode (black at 5% opacity).
+  static Color get borderLight => Colors.black.withValues(alpha: 0.05);
+
+  /// Border color for dark mode (white at 5% opacity).
+  static Color get borderDark => Colors.white.withValues(alpha: 0.05);
+
+  /// Focus border for light mode.
+  static const Color focusLight = burgundy;
+
+  /// Focus border for dark mode (powderBlush at 50% opacity).
+  static Color get focusDark => powderBlush.withValues(alpha: 0.5);
+
+  // ============================================================================
+  // DEPRECATED (v1 compatibility - remove in v2.0.0)
+  // ============================================================================
+
+  /// @deprecated Use [darkBurgundy] or [cream] instead.
+  @Deprecated('Use darkBurgundy for dark backgrounds or cream for light backgrounds')
+  static const Color voidBlack = Color(0xFF050505);
+
+  /// @deprecated Use [burgundy] instead.
+  @Deprecated('Use burgundy instead')
+  static const Color crimsonPulse = Color(0xFF960E29);
+
+  /// @deprecated Use [surfaceDark] instead.
+  @Deprecated('Use surfaceDark instead')
+  static const Color gunmetal = Color(0xFF1A1A1A);
+
+  /// @deprecated Use [cream] instead.
+  @Deprecated('Use cream instead')
+  static const Color terminalWhite = Color(0xFFEAEAEA);
+
+  /// @deprecated Use [slateGrey] instead.
+  @Deprecated('Use slateGrey instead')
+  static const Color hyperChrome = Color(0xFF888888);
+
+  /// @deprecated Use [hunterGreen] instead.
+  @Deprecated('Use hunterGreen instead')
+  static const Color igrisGreen = Color(0xFF00FF41);
+
+  /// @deprecated Use [borderLight] or [borderDark] instead.
+  @Deprecated('Use borderLight or borderDark instead')
+  static const Color border = Color(0x1A888888);
 }

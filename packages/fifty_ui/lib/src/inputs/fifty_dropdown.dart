@@ -21,14 +21,14 @@ class FiftyDropdownItem<T> {
   final IconData? icon;
 }
 
-/// A terminal-styled dropdown selector following FDL design principles.
+/// A styled dropdown selector following FDL v2 design principles.
 ///
 /// Features:
-/// - Looks like FiftyTextField with chevron indicator
-/// - Gunmetal menu background with HyperChrome border
-/// - Crimson highlight on hover
+/// - xl border radius (16px)
+/// - Mode-aware colors
+/// - Primary highlight on hover
 /// - Fast slide-down animation
-/// - Monospace typography
+/// - Manrope typography
 ///
 /// Example:
 /// ```dart
@@ -153,6 +153,8 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
   OverlayEntry _createOverlayEntry() {
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return OverlayEntry(
       builder: (context) => Positioned(
@@ -179,6 +181,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                 items: widget.items,
                 selectedValue: widget.value,
                 onSelect: _selectItem,
+                isDark: isDark,
               ),
             ),
           ),
@@ -192,9 +195,15 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
+
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final labelColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final hintColor = isDark ? FiftyColors.slateGrey : Colors.grey[500];
 
     return CompositedTransformTarget(
       link: _layerLink,
@@ -208,13 +217,11 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
               Text(
                 widget.label!.toUpperCase(),
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
-                  fontWeight: FiftyTypography.medium,
-                  color: _isOpen
-                      ? colorScheme.primary
-                      : FiftyColors.hyperChrome,
-                  letterSpacing: 1,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.labelMedium,
+                  fontWeight: FiftyTypography.bold,
+                  color: _isOpen ? colorScheme.primary : labelColor,
+                  letterSpacing: FiftyTypography.letterSpacingLabelMedium,
                 ),
               ),
               const SizedBox(height: FiftySpacing.sm),
@@ -229,22 +236,22 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                 onTap: _toggleDropdown,
                 child: AnimatedContainer(
                   duration: fifty.fast,
+                  height: 48,
                   padding: const EdgeInsets.symmetric(
                     horizontal: FiftySpacing.lg,
-                    vertical: FiftySpacing.md,
                   ),
                   decoration: BoxDecoration(
-                    color: FiftyColors.gunmetal,
-                    borderRadius: FiftyRadii.standardRadius,
+                    color: fillColor,
+                    borderRadius: FiftyRadii.xlRadius,
                     border: Border.all(
                       color: _isOpen
                           ? colorScheme.primary
                           : (_isHovered
                               ? colorScheme.primary.withValues(alpha: 0.5)
-                              : FiftyColors.border),
+                              : borderColor),
                       width: _isOpen ? 2 : 1,
                     ),
-                    boxShadow: _isOpen ? fifty.focusGlow : null,
+                    boxShadow: _isOpen ? fifty.shadowGlow : null,
                   ),
                   child: Row(
                     children: [
@@ -253,12 +260,12 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                         child: Text(
                           _selectedItem?.label ?? widget.hint ?? '',
                           style: TextStyle(
-                            fontFamily: FiftyTypography.fontFamilyMono,
-                            fontSize: FiftyTypography.body,
+                            fontFamily: FiftyTypography.fontFamily,
+                            fontSize: FiftyTypography.bodyMedium,
                             fontWeight: FiftyTypography.regular,
                             color: _selectedItem != null
                                 ? colorScheme.onSurface
-                                : FiftyColors.hyperChrome,
+                                : hintColor,
                           ),
                         ),
                       ),
@@ -269,9 +276,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                         turns: _isOpen ? 0.5 : 0,
                         child: Icon(
                           Icons.keyboard_arrow_down,
-                          color: _isOpen
-                              ? colorScheme.primary
-                              : FiftyColors.hyperChrome,
+                          color: _isOpen ? colorScheme.primary : labelColor,
                           size: 20,
                         ),
                       ),
@@ -293,32 +298,32 @@ class _DropdownMenu<T> extends StatelessWidget {
     required this.items,
     required this.selectedValue,
     required this.onSelect,
+    required this.isDark,
   });
 
   final List<FiftyDropdownItem<T>> items;
   final T? selectedValue;
   final ValueChanged<FiftyDropdownItem<T>> onSelect;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
+    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return Container(
       constraints: const BoxConstraints(maxHeight: 240),
       decoration: BoxDecoration(
-        color: FiftyColors.gunmetal,
-        borderRadius: FiftyRadii.standardRadius,
+        color: fillColor,
+        borderRadius: FiftyRadii.xlRadius,
         border: Border.all(
-          color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+          color: borderColor,
           width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: FiftyColors.voidBlack.withValues(alpha: 0.5),
-            blurRadius: 12,
-          ),
-        ],
+        boxShadow: FiftyShadows.md,
       ),
       child: ClipRRect(
-        borderRadius: FiftyRadii.standardRadius,
+        borderRadius: FiftyRadii.xlRadius,
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
           shrinkWrap: true,
@@ -331,6 +336,7 @@ class _DropdownMenu<T> extends StatelessWidget {
               item: item,
               isSelected: isSelected,
               onTap: () => onSelect(item),
+              isDark: isDark,
             );
           },
         ),
@@ -345,11 +351,13 @@ class _DropdownMenuItem<T> extends StatefulWidget {
     required this.item,
     required this.isSelected,
     required this.onTap,
+    required this.isDark,
   });
 
   final FiftyDropdownItem<T> item;
   final bool isSelected;
   final VoidCallback onTap;
+  final bool isDark;
 
   @override
   State<_DropdownMenuItem<T>> createState() => _DropdownMenuItemState<T>();
@@ -362,6 +370,7 @@ class _DropdownMenuItemState<T> extends State<_DropdownMenuItem<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final iconColor = widget.isDark ? FiftyColors.slateGrey : Colors.grey[600];
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -388,7 +397,7 @@ class _DropdownMenuItemState<T> extends State<_DropdownMenuItem<T>> {
                   size: 16,
                   color: widget.isSelected || _isHovered
                       ? colorScheme.primary
-                      : FiftyColors.hyperChrome,
+                      : iconColor,
                 ),
                 const SizedBox(width: FiftySpacing.sm),
               ],
@@ -396,8 +405,8 @@ class _DropdownMenuItemState<T> extends State<_DropdownMenuItem<T>> {
                 child: Text(
                   widget.item.label,
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyMedium,
                     fontWeight: widget.isSelected
                         ? FiftyTypography.medium
                         : FiftyTypography.regular,

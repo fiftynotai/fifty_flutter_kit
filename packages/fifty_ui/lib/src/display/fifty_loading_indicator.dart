@@ -71,12 +71,6 @@ class FiftyLoadingIndicator extends StatefulWidget {
     this.size = FiftyLoadingSize.medium,
     this.color,
     this.sequences,
-    @Deprecated('Use size parameter instead. Will be removed in v1.0.0')
-    // ignore: unused_element
-    double? legacySize,
-    @Deprecated('No longer used. Will be removed in v1.0.0')
-    // ignore: unused_element
-    double? strokeWidth,
   });
 
   /// The loading text to display.
@@ -96,7 +90,7 @@ class FiftyLoadingIndicator extends StatefulWidget {
 
   /// The color of the text.
   ///
-  /// Defaults to [FiftyColors.crimsonPulse].
+  /// Defaults to [FiftyColors.burgundy].
   final Color? color;
 
   /// Custom sequence list for [FiftyLoadingStyle.sequence] mode.
@@ -195,17 +189,17 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
   double _getFontSize() {
     switch (widget.size) {
       case FiftyLoadingSize.small:
-        return 12;
+        return FiftyTypography.bodySmall;
       case FiftyLoadingSize.medium:
-        return 14;
+        return FiftyTypography.bodyMedium;
       case FiftyLoadingSize.large:
-        return 16;
+        return FiftyTypography.bodyLarge;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final effectiveColor = widget.color ?? FiftyColors.crimsonPulse;
+    final effectiveColor = widget.color ?? FiftyColors.burgundy;
     final fontSize = _getFontSize();
 
     // Check for reduced motion preference
@@ -216,11 +210,11 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
         reduceMotion ? FiftyLoadingStyle.static : widget.style;
 
     final textStyle = TextStyle(
-      fontFamily: FiftyTypography.fontFamilyMono,
+      fontFamily: FiftyTypography.fontFamily,
       fontSize: fontSize,
       fontWeight: FiftyTypography.medium,
       color: effectiveColor,
-      letterSpacing: FiftyTypography.tight * fontSize,
+      letterSpacing: FiftyTypography.letterSpacingLabel,
     );
 
     switch (effectiveStyle) {

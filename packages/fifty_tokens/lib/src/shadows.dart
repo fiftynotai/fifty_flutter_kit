@@ -1,67 +1,99 @@
 import 'package:flutter/material.dart';
-
 import 'colors.dart';
 
-/// Fifty.dev elevation tokens - glows only.
+/// Fifty.dev shadow tokens v2 - Soft, sophisticated shadows.
 ///
-/// Philosophy: "No drop shadows. Use Outlines and Overlays."
-/// Exception: Crimson glow for focus/hover states (brand signature).
-///
-/// Depth is created through surface colors (voidBlack -> gunmetal),
-/// not through shadow projections.
+/// Replaces the v1 "no shadows" philosophy with subtle depth.
+class FiftyShadows {
+  FiftyShadows._();
+
+  // ============================================================================
+  // SHADOW TOKENS (v2)
+  // ============================================================================
+
+  /// Small shadow - Subtle elevation.
+  ///
+  /// Use for: Hover states, subtle depth.
+  /// Value: 0 1px 2px rgba(0,0,0,0.05)
+  static const List<BoxShadow> sm = [
+    BoxShadow(
+      offset: Offset(0, 1),
+      blurRadius: 2,
+      color: Color(0x0D000000), // 5% opacity
+    ),
+  ];
+
+  /// Medium shadow - Cards.
+  ///
+  /// Use for: Cards, elevated containers.
+  /// Value: 0 4px 6px rgba(0,0,0,0.07)
+  static const List<BoxShadow> md = [
+    BoxShadow(
+      offset: Offset(0, 4),
+      blurRadius: 6,
+      color: Color(0x12000000), // 7% opacity
+    ),
+  ];
+
+  /// Large shadow - Modals and dropdowns.
+  ///
+  /// Use for: Modals, dropdowns, dialogs.
+  /// Value: 0 10px 15px rgba(0,0,0,0.1)
+  static const List<BoxShadow> lg = [
+    BoxShadow(
+      offset: Offset(0, 10),
+      blurRadius: 15,
+      color: Color(0x1A000000), // 10% opacity
+    ),
+  ];
+
+  /// Primary shadow - Primary buttons.
+  ///
+  /// Use for: Primary action buttons.
+  /// Value: 0 4px 14px rgba(136,41,47,0.2)
+  static List<BoxShadow> get primary => [
+    BoxShadow(
+      offset: const Offset(0, 4),
+      blurRadius: 14,
+      color: FiftyColors.burgundy.withValues(alpha: 0.2),
+    ),
+  ];
+
+  /// Glow shadow - Dark mode accent.
+  ///
+  /// Use for: Focus states in dark mode, accent highlights.
+  /// Value: 0 0 15px rgba(254,254,227,0.1)
+  static List<BoxShadow> get glow => [
+    BoxShadow(
+      blurRadius: 15,
+      color: FiftyColors.cream.withValues(alpha: 0.1),
+    ),
+  ];
+
+  /// No shadow - Explicit none.
+  static const List<BoxShadow> none = [];
+}
+
+/// @deprecated Use [FiftyShadows] instead.
+@Deprecated('Use FiftyShadows instead')
 class FiftyElevation {
   FiftyElevation._();
 
-  // ============================================================================
-  // GLOW EFFECTS (Brand Signature)
-  // ============================================================================
+  /// @deprecated Use [FiftyShadows.glow] instead.
+  @Deprecated('Use FiftyShadows.glow instead')
+  static List<BoxShadow> focusGlow(Color color) {
+    return [
+      BoxShadow(
+        color: color.withValues(alpha: 0.4),
+        blurRadius: 8,
+        spreadRadius: 2,
+      ),
+    ];
+  }
 
-  /// Crimson glow - Focus and hover states.
-  ///
-  /// The signature fifty.dev visual effect.
-  /// Use for:
-  /// - Focus rings
-  /// - Hover states
-  /// - Active elements
-  /// - CMD prompt glow
-  ///
-  /// Apply sparingly for maximum impact.
-  static final BoxShadow crimsonGlow = BoxShadow(
-    color: FiftyColors.crimsonPulse.withValues(alpha: 0.45),
-    blurRadius: 8,
-  );
-
-  /// Focus ring - Keyboard accessibility indicator.
-  ///
-  /// Use for:
-  /// - Keyboard focus states
-  /// - Accessibility indicators
-  /// - Active element highlighting
-  static final BoxShadow focusRing = BoxShadow(
-    color: FiftyColors.crimsonPulse.withValues(alpha: 0.6),
-    blurRadius: 4,
-  );
-
-  // ============================================================================
-  // GLOW LISTS (Convenience)
-  // ============================================================================
-
-  /// Focus state - Standard crimson glow.
-  ///
-  /// Use for interactive element focus states.
-  static final List<BoxShadow> focus = [crimsonGlow];
-
-  /// Strong focus - Enhanced glow for emphasis.
-  ///
-  /// Use for active/selected states requiring more prominence.
-  static final List<BoxShadow> strongFocus = [focusRing, crimsonGlow];
-
-  // ============================================================================
-  // DEPTH WITHOUT SHADOWS
-  // ============================================================================
-  // Instead of drop shadows, use:
-  // - Surface colors: voidBlack (#050505) -> gunmetal (#1A1A1A)
-  // - Borders: 1px solid hyperChrome @ 10% opacity
-  // - Overlays: Glassmorphism with blur (Blur 20px)
-  // - Halftone textures: 5% opacity overlays
+  /// @deprecated Scanlines are removed in v2.
+  @Deprecated('Scanlines are removed in v2 design system')
+  static Widget scanlineOverlay({double opacity = 0.05}) {
+    return const SizedBox.shrink();
+  }
 }

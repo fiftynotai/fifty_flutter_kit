@@ -2,14 +2,18 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A kinetic toggle switch following FDL styling.
+/// A kinetic toggle switch following FDL v2 styling.
 ///
 /// Features:
 /// - Kinetic snap animation (150ms with overshoot)
-/// - Crimson thumb when active
-/// - HyperChrome thumb when inactive
-/// - Gunmetal track with subtle border
+/// - SlateGrey thumb when active (NOT primary!)
+/// - Theme onSurfaceVariant thumb when inactive
+/// - SurfaceDark track with subtle border
 /// - Optional label
+///
+/// **CRITICAL v2 DESIGN DECISION:**
+/// The ON-state uses [FiftyColors.slateGrey], NOT the primary color!
+/// This is intentional to differentiate switches from primary CTAs.
 ///
 /// Example:
 /// ```dart
@@ -56,10 +60,10 @@ enum FiftySwitchSize {
   /// Small switch (36x20).
   small,
 
-  /// Medium switch (48x24).
+  /// Medium switch (48x28).
   medium,
 
-  /// Large switch (60x32).
+  /// Large switch (60x36).
   large,
 }
 
@@ -87,9 +91,9 @@ class _FiftySwitchState extends State<FiftySwitch>
       case FiftySwitchSize.small:
         return 20;
       case FiftySwitchSize.medium:
-        return 24;
+        return 28;
       case FiftySwitchSize.large:
-        return 32;
+        return 36;
     }
   }
 
@@ -98,9 +102,9 @@ class _FiftySwitchState extends State<FiftySwitch>
       case FiftySwitchSize.small:
         return 16;
       case FiftySwitchSize.medium:
-        return 20;
+        return 24;
       case FiftySwitchSize.large:
-        return 28;
+        return 32;
     }
   }
 
@@ -167,9 +171,18 @@ class _FiftySwitchState extends State<FiftySwitch>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
+
+    // v2 color scheme - ON state uses slateGrey, NOT primary!
+    final trackOnColor = FiftyColors.slateGrey.withValues(alpha: 0.3);
+    final trackOffColor = FiftyColors.surfaceDark;
+    final thumbOnColor = FiftyColors.slateGrey;
+    final thumbOffColor = colorScheme.onSurfaceVariant;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final hoverBorderColor = FiftyColors.slateGrey;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -193,17 +206,20 @@ class _FiftySwitchState extends State<FiftySwitch>
                     width: _trackWidth,
                     height: _trackHeight,
                     decoration: BoxDecoration(
-                      color: widget.value
-                          ? colorScheme.primary.withValues(alpha: 0.3)
-                          : FiftyColors.gunmetal,
+                      color: widget.value ? trackOnColor : trackOffColor,
                       borderRadius: BorderRadius.circular(_trackHeight / 2),
                       border: Border.all(
-                        color: _isHovered
-                            ? colorScheme.primary
-                            : FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                        color: _isHovered ? hoverBorderColor : borderColor,
                         width: 1,
                       ),
-                      boxShadow: _isHovered ? fifty.focusGlow : null,
+                      boxShadow: _isHovered
+                          ? [
+                              BoxShadow(
+                                color: FiftyColors.slateGrey.withValues(alpha: 0.3),
+                                blurRadius: 8,
+                              ),
+                            ]
+                          : null,
                     ),
                     child: Stack(
                       children: [
@@ -216,14 +232,12 @@ class _FiftySwitchState extends State<FiftySwitch>
                               width: _thumbSize,
                               height: _thumbSize,
                               decoration: BoxDecoration(
-                                color: widget.value
-                                    ? colorScheme.primary
-                                    : FiftyColors.hyperChrome,
+                                color: widget.value ? thumbOnColor : thumbOffColor,
                                 shape: BoxShape.circle,
                                 boxShadow: widget.value
                                     ? [
                                         BoxShadow(
-                                          color: colorScheme.primary
+                                          color: FiftyColors.slateGrey
                                               .withValues(alpha: 0.4),
                                           blurRadius: 8,
                                         ),
@@ -243,8 +257,8 @@ class _FiftySwitchState extends State<FiftySwitch>
                 Text(
                   widget.label!,
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyMedium,
                     fontWeight: FiftyTypography.regular,
                     color: isEnabled
                         ? colorScheme.onSurface

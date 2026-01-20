@@ -2,12 +2,14 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A modal dialog with FDL styling.
+/// A modal dialog with FDL v2 styling.
 ///
 /// Features:
+/// - xxxl border radius (32px) for hero feel
 /// - Border glow effect
 /// - Optional close button
 /// - Animated entrance using compiling duration
+/// - Mode-aware colors
 ///
 /// Example:
 /// ```dart
@@ -55,7 +57,7 @@ class FiftyDialog extends StatelessWidget {
   /// Whether to show the close button in the top-right.
   final bool showCloseButton;
 
-  /// Whether to show the crimson glow effect.
+  /// Whether to show the primary glow effect.
   final bool showGlow;
 
   @override
@@ -63,6 +65,11 @@ class FiftyDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
+    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final closeIconColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -75,13 +82,13 @@ class FiftyDialog extends StatelessWidget {
           minWidth: 280,
         ),
         decoration: BoxDecoration(
-          color: FiftyColors.gunmetal,
-          borderRadius: FiftyRadii.smoothRadius,
+          color: backgroundColor,
+          borderRadius: FiftyRadii.xxxlRadius,
           border: Border.all(
-            color: showGlow ? colorScheme.primary : FiftyColors.border,
+            color: showGlow ? colorScheme.primary : borderColor,
             width: showGlow ? 2 : 1,
           ),
-          boxShadow: showGlow ? fifty.focusGlow : null,
+          boxShadow: showGlow ? fifty.shadowGlow : FiftyShadows.lg,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -97,18 +104,18 @@ class FiftyDialog extends StatelessWidget {
                         child: Text(
                           title!.toUpperCase(),
                           style: TextStyle(
-                            fontFamily: FiftyTypography.fontFamilyHeadline,
-                            fontSize: 20,
-                            fontWeight: FiftyTypography.ultrabold,
+                            fontFamily: FiftyTypography.fontFamily,
+                            fontSize: FiftyTypography.titleLarge,
+                            fontWeight: FiftyTypography.extraBold,
                             color: colorScheme.onSurface,
-                            letterSpacing: FiftyTypography.tight * 20,
+                            letterSpacing: FiftyTypography.letterSpacingDisplayMedium,
                           ),
                         ),
                       ),
                     if (showCloseButton)
                       IconButton(
                         icon: const Icon(Icons.close, size: 20),
-                        color: FiftyColors.hyperChrome,
+                        color: closeIconColor,
                         onPressed: () => Navigator.of(context).pop(),
                         tooltip: 'Close',
                         padding: EdgeInsets.zero,
@@ -126,11 +133,11 @@ class FiftyDialog extends StatelessWidget {
               ),
               child: DefaultTextStyle(
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.body,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyMedium,
                   fontWeight: FiftyTypography.regular,
                   color: colorScheme.onSurface,
-                  height: FiftyTypography.bodyLineHeight,
+                  height: FiftyTypography.lineHeightBody,
                 ),
                 child: content,
               ),
@@ -179,11 +186,16 @@ Future<T?> showFiftyDialog<T>({
   required WidgetBuilder builder,
   bool barrierDismissible = true,
 }) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  final barrierColor = isDark
+      ? FiftyColors.darkBurgundy.withValues(alpha: 0.8)
+      : Colors.black.withValues(alpha: 0.5);
+
   return showGeneralDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     barrierLabel: 'Dismiss',
-    barrierColor: FiftyColors.voidBlack.withValues(alpha: 0.8),
+    barrierColor: barrierColor,
     transitionDuration: FiftyMotion.compiling,
     pageBuilder: (context, animation, secondaryAnimation) => builder(context),
     // FDL Rule: "NO FADES. Use slides, wipes, reveals."

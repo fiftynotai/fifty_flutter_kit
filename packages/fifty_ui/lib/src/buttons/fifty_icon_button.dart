@@ -1,7 +1,8 @@
 import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// Icon button variants following the Fifty Design Language.
+/// Icon button variants following FDL v2.
 enum FiftyIconButtonVariant {
   /// Primary icon button with solid background.
   primary,
@@ -25,13 +26,14 @@ enum FiftyIconButtonSize {
   large,
 }
 
-/// A circular icon button with FDL styling.
+/// A circular icon button with FDL v2 styling.
 ///
 /// Features:
 /// - Circular shape with glow on focus/hover
 /// - Required tooltip for accessibility
 /// - Three variants: primary, secondary, ghost
 /// - Three sizes: small, medium, large
+/// - Mode-aware colors
 ///
 /// Example:
 /// ```dart
@@ -91,16 +93,30 @@ class _FiftyIconButtonState extends State<FiftyIconButton> {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final dimension = _getDimension();
     final iconSize = _getIconSize();
 
     final backgroundColor = _getBackgroundColor(colorScheme);
-    final foregroundColor = _getForegroundColor(colorScheme);
+    final foregroundColor = _getForegroundColor(colorScheme, isDark);
     final borderColor = _getBorderColor(colorScheme);
 
     return Tooltip(
       message: widget.tooltip,
+      decoration: BoxDecoration(
+        color: isDark ? FiftyColors.surfaceDark : FiftyColors.darkBurgundy,
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(
+          color: isDark ? FiftyColors.borderDark : FiftyColors.borderLight,
+        ),
+      ),
+      textStyle: TextStyle(
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
+        fontWeight: FiftyTypography.regular,
+        color: FiftyColors.cream,
+      ),
       child: Focus(
         onFocusChange: (focused) => setState(() => _isFocused = focused),
         child: MouseRegion(
@@ -120,7 +136,7 @@ class _FiftyIconButtonState extends State<FiftyIconButton> {
                       width: _showGlow ? 2 : 1,
                     )
                   : null,
-              boxShadow: _showGlow ? fifty.strongFocusGlow : null,
+              boxShadow: _showGlow ? fifty.shadowGlow : null,
             ),
             child: Material(
               color: Colors.transparent,
@@ -188,14 +204,14 @@ class _FiftyIconButtonState extends State<FiftyIconButton> {
     }
   }
 
-  Color _getForegroundColor(ColorScheme colorScheme) {
+  Color _getForegroundColor(ColorScheme colorScheme, bool isDark) {
     switch (widget.variant) {
       case FiftyIconButtonVariant.primary:
         return colorScheme.onPrimary;
       case FiftyIconButtonVariant.secondary:
         return colorScheme.primary;
       case FiftyIconButtonVariant.ghost:
-        return colorScheme.onSurface;
+        return isDark ? FiftyColors.slateGrey : Colors.grey[600]!;
     }
   }
 

@@ -1,12 +1,12 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
-/// A themed divider following FDL styling.
+/// A themed divider following FDL v2 styling.
 ///
 /// Features:
 /// - Horizontal or vertical orientation
 /// - Customizable thickness and indentation
-/// - Uses FiftyColors.border (hyperChrome at 10%)
+/// - Mode-aware border colors
 ///
 /// Example:
 /// ```dart
@@ -48,12 +48,15 @@ class FiftyDivider extends StatelessWidget {
 
   /// The color of the divider.
   ///
-  /// Defaults to [FiftyColors.border].
+  /// Defaults to mode-aware border color.
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveColor = color ?? FiftyColors.border;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final effectiveColor = color ??
+        (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
 
     if (vertical) {
       return Container(

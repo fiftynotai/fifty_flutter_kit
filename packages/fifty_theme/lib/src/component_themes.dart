@@ -1,46 +1,44 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-/// Fifty.dev component theme configurations.
+/// Fifty.dev component theme configurations v2.
 ///
-/// Applies FDL design principles to Material components:
-/// - Zero elevation (no drop shadows)
-/// - Crimson glow for focus states
+/// Applies FDL v2 design principles to Material components:
+/// - Soft shadows (enabled in v2)
+/// - Burgundy accents for focus states
 /// - Border outlines for depth
-/// - Tight density (compact)
+/// - Manrope typography
 class FiftyComponentThemes {
   FiftyComponentThemes._();
 
   /// Elevated button theme - Primary CTA style.
   ///
-  /// Uses Crimson Pulse background with zero elevation.
-  /// Glow effect applied via overlayColor on focus/hover.
+  /// Uses Burgundy background with soft shadow.
   static ElevatedButtonThemeData elevatedButtonTheme(ColorScheme colorScheme) {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: FiftyColors.crimsonPulse,
-        foregroundColor: FiftyColors.terminalWhite,
+        backgroundColor: FiftyColors.burgundy,
+        foregroundColor: FiftyColors.cream,
         elevation: 0,
-        shadowColor: Colors.transparent,
         padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          borderRadius: FiftyRadii.xlRadius,
         ),
-        textStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
-          fontWeight: FiftyTypography.medium,
+        textStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelLarge,
+          fontWeight: FiftyTypography.bold,
         ),
       ).copyWith(
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
-            return FiftyColors.terminalWhite.withValues(alpha: 0.1);
+            return FiftyColors.cream.withValues(alpha: 0.1);
           }
           if (states.contains(WidgetState.pressed)) {
-            return FiftyColors.terminalWhite.withValues(alpha: 0.2);
+            return FiftyColors.cream.withValues(alpha: 0.2);
           }
           return null;
         }),
@@ -50,40 +48,42 @@ class FiftyComponentThemes {
 
   /// Outlined button theme - Secondary action style.
   ///
-  /// Uses border outline with crimson hover state.
+  /// Uses border outline with burgundy hover state.
   static OutlinedButtonThemeData outlinedButtonTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final foregroundColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
+
     return OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: FiftyColors.terminalWhite,
+        foregroundColor: foregroundColor,
         elevation: 0,
-        shadowColor: Colors.transparent,
         padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          borderRadius: FiftyRadii.xlRadius,
         ),
-        side: const BorderSide(color: FiftyColors.border),
-        textStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
-          fontWeight: FiftyTypography.medium,
+        side: BorderSide(color: borderColor),
+        textStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelLarge,
+          fontWeight: FiftyTypography.bold,
         ),
       ).copyWith(
         side: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered) ||
               states.contains(WidgetState.focused)) {
-            return const BorderSide(color: FiftyColors.crimsonPulse);
+            return const BorderSide(color: FiftyColors.burgundy);
           }
-          return const BorderSide(color: FiftyColors.border);
+          return BorderSide(color: borderColor);
         }),
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
-            return FiftyColors.crimsonPulse.withValues(alpha: 0.1);
+            return FiftyColors.burgundy.withValues(alpha: 0.1);
           }
           if (states.contains(WidgetState.pressed)) {
-            return FiftyColors.crimsonPulse.withValues(alpha: 0.2);
+            return FiftyColors.burgundy.withValues(alpha: 0.2);
           }
           return null;
         }),
@@ -93,32 +93,30 @@ class FiftyComponentThemes {
 
   /// Text button theme - Tertiary action style.
   ///
-  /// Uses Crimson Pulse text color for brand consistency.
+  /// Uses Burgundy text color for brand consistency.
   static TextButtonThemeData textButtonTheme(ColorScheme colorScheme) {
     return TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: FiftyColors.crimsonPulse,
+        foregroundColor: FiftyColors.burgundy,
         elevation: 0,
-        shadowColor: Colors.transparent,
         padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.sm,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+          borderRadius: FiftyRadii.xlRadius,
         ),
-        textStyle: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: 14,
-          fontWeight: FiftyTypography.medium,
+        textStyle: GoogleFonts.manrope(
+          fontSize: FiftyTypography.labelLarge,
+          fontWeight: FiftyTypography.bold,
         ),
       ).copyWith(
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
-            return FiftyColors.crimsonPulse.withValues(alpha: 0.1);
+            return FiftyColors.burgundy.withValues(alpha: 0.1);
           }
           if (states.contains(WidgetState.pressed)) {
-            return FiftyColors.crimsonPulse.withValues(alpha: 0.2);
+            return FiftyColors.burgundy.withValues(alpha: 0.2);
           }
           return null;
         }),
@@ -126,140 +124,142 @@ class FiftyComponentThemes {
     );
   }
 
-  /// Card theme - Gunmetal surface with border.
+  /// Card theme - Surface with border.
   ///
-  /// Zero elevation with border outline for depth.
+  /// Uses elevation with soft shadow in v2.
   static CardThemeData cardTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return CardThemeData(
-      color: FiftyColors.gunmetal,
+      color: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
       elevation: 0,
-      shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        side: const BorderSide(color: FiftyColors.border),
+        borderRadius: FiftyRadii.xxlRadius,
+        side: BorderSide(color: borderColor),
       ),
       margin: EdgeInsets.zero,
     );
   }
 
-  /// Input decoration theme - Gunmetal fill with crimson focus.
+  /// Input decoration theme - Surface fill with burgundy focus.
   ///
-  /// Uses filled style with border that transitions to crimson on focus.
+  /// Uses filled style with border that transitions to burgundy on focus.
   static InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.1);
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    const hintColor = FiftyColors.slateGrey;
+
     return InputDecorationTheme(
       filled: true,
-      fillColor: FiftyColors.gunmetal,
+      fillColor: fillColor,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.md,
       ),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: const BorderSide(color: FiftyColors.border),
+        borderRadius: FiftyRadii.xlRadius,
+        borderSide: BorderSide(color: borderColor),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: const BorderSide(color: FiftyColors.border),
+        borderRadius: FiftyRadii.xlRadius,
+        borderSide: BorderSide(color: borderColor),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: const BorderSide(color: FiftyColors.crimsonPulse, width: 2),
+        borderRadius: FiftyRadii.xlRadius,
+        borderSide: const BorderSide(color: FiftyColors.burgundy, width: 2),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: const BorderSide(color: FiftyColors.error),
+        borderRadius: FiftyRadii.xlRadius,
+        borderSide: const BorderSide(color: FiftyColors.burgundy),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        borderSide: const BorderSide(color: FiftyColors.error, width: 2),
+        borderRadius: FiftyRadii.xlRadius,
+        borderSide: const BorderSide(color: FiftyColors.burgundy, width: 2),
       ),
-      hintStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      hintStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.hyperChrome,
+        color: hintColor,
       ),
-      labelStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      labelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.hyperChrome,
+        color: hintColor,
       ),
-      floatingLabelStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      floatingLabelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.medium,
-        color: FiftyColors.crimsonPulse,
+        color: FiftyColors.burgundy,
       ),
     );
   }
 
-  /// AppBar theme - Void Black with zero elevation.
+  /// AppBar theme - Background color based on mode.
   ///
   /// Maintains deep background for immersive feel.
   static AppBarTheme appBarTheme(ColorScheme colorScheme) {
-    return const AppBarTheme(
-      backgroundColor: FiftyColors.voidBlack,
-      foregroundColor: FiftyColors.terminalWhite,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return AppBarTheme(
+      backgroundColor: isDark ? FiftyColors.darkBurgundy : FiftyColors.cream,
+      foregroundColor: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       elevation: 0,
-      shadowColor: Colors.transparent,
       scrolledUnderElevation: 0,
       centerTitle: false,
-      titleTextStyle: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 18,
-        fontWeight: FiftyTypography.medium,
-        color: FiftyColors.terminalWhite,
+      titleTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleMedium,
+        fontWeight: FiftyTypography.bold,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       ),
       iconTheme: IconThemeData(
-        color: FiftyColors.terminalWhite,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
         size: 24,
       ),
     );
   }
 
-  /// Dialog theme - Gunmetal with smooth radius.
+  /// Dialog theme - Surface with smooth radius.
   ///
   /// Uses larger radius for softer appearance on modals.
   static DialogThemeData dialogTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return DialogThemeData(
-      backgroundColor: FiftyColors.gunmetal,
+      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
       elevation: 0,
-      shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.smooth),
-        side: const BorderSide(color: FiftyColors.border),
+        borderRadius: FiftyRadii.xxxlRadius,
+        side: BorderSide(color: borderColor),
       ),
-      titleTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyHeadline,
-        fontSize: 20,
-        fontWeight: FiftyTypography.ultrabold,
-        color: FiftyColors.terminalWhite,
+      titleTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.titleLarge,
+        fontWeight: FiftyTypography.bold,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       ),
-      contentTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.body,
+      contentTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyLarge,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       ),
     );
   }
 
-  /// SnackBar theme - Gunmetal surface.
+  /// SnackBar theme - Dark Burgundy surface.
   ///
-  /// Consistent with card styling.
+  /// Consistent appearance across themes.
   static SnackBarThemeData snackBarTheme(ColorScheme colorScheme) {
     return SnackBarThemeData(
-      backgroundColor: FiftyColors.gunmetal,
-      contentTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      backgroundColor: FiftyColors.darkBurgundy,
+      contentTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: FiftyColors.cream,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        side: const BorderSide(color: FiftyColors.border),
+        borderRadius: FiftyRadii.xlRadius,
       ),
       behavior: SnackBarBehavior.floating,
       elevation: 0,
@@ -270,92 +270,102 @@ class FiftyComponentThemes {
   ///
   /// Uses standard border color for subtle separation.
   static DividerThemeData dividerTheme(ColorScheme colorScheme) {
-    return const DividerThemeData(
-      color: FiftyColors.border,
+    final isDark = colorScheme.brightness == Brightness.dark;
+    return DividerThemeData(
+      color: isDark ? FiftyColors.borderDark : FiftyColors.borderLight,
       thickness: 1,
       space: FiftySpacing.lg,
     );
   }
 
-  /// Checkbox theme - Crimson Pulse when active.
+  /// Checkbox theme - Burgundy when active.
   ///
   /// Consistent brand color for selected states.
   static CheckboxThemeData checkboxTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.crimsonPulse;
+          return FiftyColors.burgundy;
         }
         return Colors.transparent;
       }),
-      checkColor: WidgetStateProperty.all(FiftyColors.terminalWhite),
-      side: const BorderSide(color: FiftyColors.border, width: 2),
+      checkColor: WidgetStateProperty.all(FiftyColors.cream),
+      side: BorderSide(color: borderColor, width: 2),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: FiftyRadii.smRadius,
       ),
     );
   }
 
-  /// Radio theme - Crimson Pulse when active.
+  /// Radio theme - Burgundy when active.
   ///
   /// Consistent brand color for selected states.
   static RadioThemeData radioTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return RadioThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.crimsonPulse;
+          return FiftyColors.burgundy;
         }
-        return FiftyColors.border;
+        return borderColor;
       }),
     );
   }
 
-  /// Switch theme - Crimson Pulse when active.
+  /// Switch theme - Slate Grey when active (NOT primary!).
   ///
-  /// Consistent brand color for toggled states.
+  /// Per v2 spec, switches use secondary color when on.
   static SwitchThemeData switchTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.crimsonPulse;
+          return FiftyColors.cream;
         }
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.crimsonPulse.withValues(alpha: 0.3);
+          return FiftyColors.slateGrey;
         }
-        return FiftyColors.gunmetal;
+        return isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
       }),
       trackOutlineColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return Colors.transparent;
         }
-        return FiftyColors.border;
+        return borderColor;
       }),
     );
   }
 
   /// Bottom navigation bar theme.
   ///
-  /// Uses Void Black background with Crimson Pulse selected items.
+  /// Uses background color based on mode with burgundy selected items.
   static BottomNavigationBarThemeData bottomNavigationBarTheme(
     ColorScheme colorScheme,
   ) {
-    return const BottomNavigationBarThemeData(
-      backgroundColor: FiftyColors.voidBlack,
-      selectedItemColor: FiftyColors.crimsonPulse,
-      unselectedItemColor: FiftyColors.hyperChrome,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return BottomNavigationBarThemeData(
+      backgroundColor: isDark ? FiftyColors.darkBurgundy : FiftyColors.cream,
+      selectedItemColor: FiftyColors.burgundy,
+      unselectedItemColor: FiftyColors.slateGrey,
       type: BottomNavigationBarType.fixed,
       elevation: 0,
-      selectedLabelStyle: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        fontWeight: FiftyTypography.medium,
+      selectedLabelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelSmall,
+        fontWeight: FiftyTypography.semiBold,
       ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      unselectedLabelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.regular,
       ),
     );
@@ -363,46 +373,46 @@ class FiftyComponentThemes {
 
   /// Navigation rail theme.
   ///
-  /// Uses Gunmetal background with Crimson Pulse selected items.
+  /// Uses surface color with burgundy selected items.
   static NavigationRailThemeData navigationRailTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return NavigationRailThemeData(
-      backgroundColor: FiftyColors.gunmetal,
-      selectedIconTheme: const IconThemeData(color: FiftyColors.crimsonPulse),
-      unselectedIconTheme: const IconThemeData(color: FiftyColors.hyperChrome),
-      selectedLabelTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        fontWeight: FiftyTypography.medium,
-        color: FiftyColors.crimsonPulse,
+      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      selectedIconTheme: const IconThemeData(color: FiftyColors.burgundy),
+      unselectedIconTheme: const IconThemeData(color: FiftyColors.slateGrey),
+      selectedLabelTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelSmall,
+        fontWeight: FiftyTypography.semiBold,
+        color: FiftyColors.burgundy,
       ),
-      unselectedLabelTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      unselectedLabelTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.hyperChrome,
+        color: FiftyColors.slateGrey,
       ),
       elevation: 0,
-      indicatorColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
+      indicatorColor: FiftyColors.burgundy.withValues(alpha: 0.15),
     );
   }
 
   /// Tab bar theme.
   ///
-  /// Uses Crimson Pulse for selected tab indicator.
+  /// Uses Burgundy for selected tab indicator.
   static TabBarThemeData tabBarTheme(ColorScheme colorScheme) {
-    return const TabBarThemeData(
-      indicatorColor: FiftyColors.crimsonPulse,
-      labelColor: FiftyColors.terminalWhite,
-      unselectedLabelColor: FiftyColors.hyperChrome,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return TabBarThemeData(
+      indicatorColor: FiftyColors.burgundy,
+      labelColor: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+      unselectedLabelColor: FiftyColors.slateGrey,
       indicatorSize: TabBarIndicatorSize.tab,
-      labelStyle: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
-        fontWeight: FiftyTypography.medium,
+      labelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelLarge,
+        fontWeight: FiftyTypography.bold,
       ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      unselectedLabelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.labelLarge,
         fontWeight: FiftyTypography.regular,
       ),
     );
@@ -410,101 +420,103 @@ class FiftyComponentThemes {
 
   /// Floating action button theme.
   ///
-  /// Uses Crimson Pulse with zero elevation.
+  /// Uses Burgundy with soft shadow.
   static FloatingActionButtonThemeData floatingActionButtonTheme(
     ColorScheme colorScheme,
   ) {
     return FloatingActionButtonThemeData(
-      backgroundColor: FiftyColors.crimsonPulse,
-      foregroundColor: FiftyColors.terminalWhite,
+      backgroundColor: FiftyColors.burgundy,
+      foregroundColor: FiftyColors.cream,
       elevation: 0,
       focusElevation: 0,
       hoverElevation: 0,
       highlightElevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
+        borderRadius: FiftyRadii.xlRadius,
       ),
     );
   }
 
   /// Chip theme.
   ///
-  /// Uses Gunmetal background with Crimson Pulse when selected.
+  /// Uses surface color with burgundy when selected.
   static ChipThemeData chipTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return ChipThemeData(
-      backgroundColor: FiftyColors.gunmetal,
-      selectedColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
-      disabledColor: FiftyColors.gunmetal.withValues(alpha: 0.5),
-      labelStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.1),
+      selectedColor: FiftyColors.burgundy.withValues(alpha: 0.15),
+      disabledColor: FiftyColors.slateGrey.withValues(alpha: 0.05),
+      labelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       ),
-      secondaryLabelStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      secondaryLabelStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.hyperChrome,
+        color: FiftyColors.slateGrey,
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.xs,
       ),
-      side: const BorderSide(color: FiftyColors.border),
+      side: BorderSide(color: borderColor),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.full),
+        borderRadius: FiftyRadii.fullRadius,
       ),
     );
   }
 
   /// Progress indicator theme.
   ///
-  /// Uses Crimson Pulse for the indicator.
+  /// Uses Burgundy for the indicator.
   static ProgressIndicatorThemeData progressIndicatorTheme(
     ColorScheme colorScheme,
   ) {
-    return const ProgressIndicatorThemeData(
-      color: FiftyColors.crimsonPulse,
-      linearTrackColor: FiftyColors.gunmetal,
-      circularTrackColor: FiftyColors.gunmetal,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return ProgressIndicatorThemeData(
+      color: FiftyColors.burgundy,
+      linearTrackColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.2),
+      circularTrackColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.2),
     );
   }
 
   /// Slider theme.
   ///
-  /// Uses Crimson Pulse for active track and thumb.
+  /// Uses Burgundy for active track and thumb.
   static SliderThemeData sliderTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return SliderThemeData(
-      activeTrackColor: FiftyColors.crimsonPulse,
-      inactiveTrackColor: FiftyColors.gunmetal,
-      thumbColor: FiftyColors.crimsonPulse,
-      overlayColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
-      valueIndicatorColor: FiftyColors.crimsonPulse,
-      valueIndicatorTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      activeTrackColor: FiftyColors.burgundy,
+      inactiveTrackColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.2),
+      thumbColor: FiftyColors.burgundy,
+      overlayColor: FiftyColors.burgundy.withValues(alpha: 0.2),
+      valueIndicatorColor: FiftyColors.burgundy,
+      valueIndicatorTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.medium,
-        color: FiftyColors.terminalWhite,
+        color: FiftyColors.cream,
       ),
     );
   }
 
   /// Tooltip theme.
   ///
-  /// Uses Gunmetal background with standard radius.
+  /// Uses dark burgundy background for visibility.
   static TooltipThemeData tooltipTheme(ColorScheme colorScheme) {
     return TooltipThemeData(
       decoration: BoxDecoration(
-        color: FiftyColors.gunmetal,
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        border: Border.all(color: FiftyColors.border),
+        color: FiftyColors.darkBurgundy,
+        borderRadius: FiftyRadii.xlRadius,
       ),
-      textStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      textStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: FiftyColors.cream,
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
@@ -515,39 +527,44 @@ class FiftyComponentThemes {
 
   /// Popup menu theme.
   ///
-  /// Uses Gunmetal background with border.
+  /// Uses surface color with border.
   static PopupMenuThemeData popupMenuTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return PopupMenuThemeData(
-      color: FiftyColors.gunmetal,
+      color: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
       elevation: 0,
-      shadowColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        side: const BorderSide(color: FiftyColors.border),
+        borderRadius: FiftyRadii.xlRadius,
+        side: BorderSide(color: borderColor),
       ),
-      textStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: 14,
+      textStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       ),
     );
   }
 
   /// Dropdown menu theme.
   ///
-  /// Uses Gunmetal background with border.
+  /// Uses surface color with border.
   static DropdownMenuThemeData dropdownMenuTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+
     return DropdownMenuThemeData(
       inputDecorationTheme: inputDecorationTheme(colorScheme),
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStateProperty.all(FiftyColors.gunmetal),
+        backgroundColor: WidgetStateProperty.all(
+          isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+        ),
         elevation: WidgetStateProperty.all(0),
-        shadowColor: WidgetStateProperty.all(Colors.transparent),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(FiftyRadii.standard),
-            side: const BorderSide(color: FiftyColors.border),
+            borderRadius: FiftyRadii.xlRadius,
+            side: BorderSide(color: borderColor),
           ),
         ),
       ),
@@ -556,31 +573,33 @@ class FiftyComponentThemes {
 
   /// Bottom sheet theme.
   ///
-  /// Uses Gunmetal background with smooth radius at top.
+  /// Uses surface color with smooth radius at top.
   static BottomSheetThemeData bottomSheetTheme(ColorScheme colorScheme) {
-    return const BottomSheetThemeData(
-      backgroundColor: FiftyColors.gunmetal,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return BottomSheetThemeData(
+      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
       elevation: 0,
-      shadowColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(FiftyRadii.smooth),
+          top: Radius.circular(FiftyRadii.xxxl),
         ),
       ),
-      modalBackgroundColor: FiftyColors.gunmetal,
+      modalBackgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
       modalElevation: 0,
     );
   }
 
   /// Drawer theme.
   ///
-  /// Uses Gunmetal background.
+  /// Uses surface color based on mode.
   static DrawerThemeData drawerTheme(ColorScheme colorScheme) {
-    return const DrawerThemeData(
-      backgroundColor: FiftyColors.gunmetal,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return DrawerThemeData(
+      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
       elevation: 0,
-      shadowColor: Colors.transparent,
-      shape: RoundedRectangleBorder(),
+      shape: const RoundedRectangleBorder(),
     );
   }
 
@@ -588,51 +607,53 @@ class FiftyComponentThemes {
   ///
   /// Uses standard spacing and typography.
   static ListTileThemeData listTileTheme(ColorScheme colorScheme) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return ListTileThemeData(
       tileColor: Colors.transparent,
-      selectedTileColor: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
-      iconColor: FiftyColors.hyperChrome,
-      selectedColor: FiftyColors.crimsonPulse,
-      textColor: FiftyColors.terminalWhite,
+      selectedTileColor: FiftyColors.burgundy.withValues(alpha: 0.1),
+      iconColor: FiftyColors.slateGrey,
+      selectedColor: FiftyColors.burgundy,
+      textColor: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.sm,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
+        borderRadius: FiftyRadii.xlRadius,
       ),
-      titleTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.body,
+      titleTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodyLarge,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.terminalWhite,
+        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       ),
-      subtitleTextStyle: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+      subtitleTextStyle: GoogleFonts.manrope(
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.hyperChrome,
+        color: FiftyColors.slateGrey,
       ),
     );
   }
 
   /// Icon theme.
   ///
-  /// Uses Terminal White as default icon color.
+  /// Uses cream (dark) or dark burgundy (light) as default icon color.
   static IconThemeData iconTheme(ColorScheme colorScheme) {
-    return const IconThemeData(
-      color: FiftyColors.terminalWhite,
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return IconThemeData(
+      color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
       size: 24,
     );
   }
 
   /// Scrollbar theme.
   ///
-  /// Uses Hyper Chrome with subtle appearance.
+  /// Uses Slate Grey with subtle appearance.
   static ScrollbarThemeData scrollbarTheme(ColorScheme colorScheme) {
     return ScrollbarThemeData(
       thumbColor: WidgetStateProperty.all(
-        FiftyColors.hyperChrome.withValues(alpha: 0.5),
+        FiftyColors.slateGrey.withValues(alpha: 0.5),
       ),
       trackColor: WidgetStateProperty.all(Colors.transparent),
       radius: const Radius.circular(4),
