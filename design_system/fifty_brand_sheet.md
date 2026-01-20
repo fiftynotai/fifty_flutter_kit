@@ -1,113 +1,137 @@
-# 🧾 FIFTY.DEV // VISUAL PROTOCOL (SHEET)
+# Fifty Brand Sheet
 
-**Status:** `ACTIVE` · **Classification:** KINETIC BRUTALISM
-A quick-reference syntax for colors, typography, and motion physics—complementing the full **System Protocol**.
-
----
-
-## 🎨 COLOR CONSTANTS
-
-| Variable | Hex Code | Usage | Logic |
-| --- | --- | --- | --- |
-| **`VOID_BLACK`** | `#050505` | Backgrounds | The infinite canvas. Deep OLED. |
-| **`CRIMSON_PULSE`** | `#960E29` | Primary Action | Heartbeat. Buttons, Errors, Cursors. |
-| **`GUNMETAL`** | `#1A1A1A` | Surfaces | Cards, Bento Grids, Panels. |
-| **`TERMINAL_WHITE`** | `#EAEAEA` | Primary Text | Readable, low eye-strain. |
-| **`HYPER_CHROME`** | `#888888` | Hardware/Border | Borders, Inactive Icons, Metadata. |
-| **`IGRIS_GREEN`** | `#00FF41` | AI Agent | Exclusive to IGRIS/Terminal output. |
+**Status:** ACTIVE | **Classification:** SOPHISTICATED MODERN
+Quick-reference for colors, typography, and visual language. Complements the full FDL v2 Design System.
 
 ---
 
-## 🔠 TYPOGRAPHY KERNEL
+## Color Constants
 
-| Role | Font Family | Weight | Style |
-| --- | --- | --- | --- |
-| **HEADLINES** | **Monument Extended** | Ultrabold (800) | ALL CAPS |
-| **SUB-HEADS** | **Monument Extended** | Regular (400) | ALL CAPS |
-| **BODY / CODE** | **JetBrains Mono** | Regular (400) | Sentence Case |
-| **UI ELEMENTS** | **JetBrains Mono** | Medium (500) | Uppercase / Code |
-
-**Scale Logic:** 64px (Hero) → 32px (Section) → 16px (Body) → 12px (Mono)
-**Tracking:** Headlines `-2%` (Tight) · Body `0%` (Standard).
-
----
-
-## 🧱 SHAPE & STRUCTURE
-
-* **Grid:** Bento-style modular layout. No floating elements.
-* **Radius:** `12px` (Standard) or `24px` (Smooth).
-* **Borders:** `1px` Solid `HYPER_CHROME` @ 10% Opacity.
-* **Density:** High. Tight gaps (`8px` or `12px`).
-* **Depth:** No drop shadows. Use **Outlines** and **Overlays**.
+| Variable | Hex Code | Usage |
+|----------|----------|-------|
+| `burgundy` | `#88292f` | Primary actions, buttons, accents |
+| `primary-hover` | `#6e2126` | Hover states |
+| `slate-grey` | `#335c67` | Secondary buttons, supporting elements |
+| `hunter-green` | `#4b644a` | Success states, toggles, checkboxes |
+| `cream` | `#fefee3` | Light mode background |
+| `background-dark` | `#1a0d0e` | Dark mode background |
+| `surface-light` | `#ffffff` | Light mode cards |
+| `surface-dark` | `#2a1517` | Dark mode cards |
+| `powder-blush` | `#ffc9b9` | Accent highlights, badges |
 
 ---
 
-## ⚡ MOTION PHYSICS
+## Typography
 
-* **Philosophy:** Kinetic. Heavy but fast. **NO FADES.**
-* **Transitions:** Slide, Wipe, Reveal (Shutter effect).
-* **Hover:** Magnetic Snap + Text Glitch (RGB Shift).
-* **Loading:** Sequential Text Output (`> INITIALIZING...`).
+**Font Family:** Manrope (all text)
 
-### Interaction States
+| Role | Weight | Size |
+|------|--------|------|
+| Display | Extrabold (800) | 48px |
+| Subheads | Bold (700) | 36px, 24px |
+| Body | Regular (400) | 20px, 16px |
+| UI Labels | Medium (500) | 14px, 12px |
+
+**Type Scale:** 48px - 36px - 24px - 20px - 16px - 14px - 12px
+
+---
+
+## Shape and Structure
+
+| Property | Value |
+|----------|-------|
+| Border Radius (default) | 8px |
+| Border Radius (large) | 12px |
+| Border Radius (xl) | 16px |
+| Border Radius (2xl) | 24px |
+| Border Radius (pill) | full |
+| Borders (light) | black/5% |
+| Borders (dark) | white/5% |
+| Shadows | soft, layered (sm, md, lg) |
+| Overlays | backdrop blur |
+
+---
+
+## Motion
+
+| Property | Value |
+|----------|-------|
+| Duration (default) | 200ms |
+| Easing | ease-out |
+| Transitions | opacity fades, subtle scale |
+| Press feedback | scale 0.98 |
+
+---
+
+## Interaction States
 
 | Trigger | Reaction |
-| --- | --- |
-| **Hover (Btn)** | Text turns `CRIMSON`, background shifts `GUNMETAL`. |
-| **Hover (Card)** | Scale `1.02` + Scanline overlay + Border glow. |
-| **Focus (Input)** | Bottom border turns `CRIMSON` + Blinking Cursor `_`. |
-| **Click** | Instant actuation (0ms delay). Mechanical feel. |
+|---------|----------|
+| Hover (Button) | Soft shadow appears, background shifts to `primary-hover` |
+| Hover (Card) | Subtle elevation, shadow-md |
+| Focus (Input) | `burgundy` focus ring |
+| Press | Scale 0.98, 200ms ease-out |
 
 ---
 
-## 🔳 COMPONENT SCHEMATICS
+## Component Style
 
-**Buttons:** Sharp or Pill shape · Text is Monospace · "Cartridge" feel.
-**Cards:** `GUNMETAL` surface · Halftone texture overlay · "Data Slate" look.
-**Inputs:** Terminal style · No background · `CRIMSON` caret.
-**Navigation:** Floating "Dynamic Island" glass pill · Bottom center.
-**Badges:** Outlined pills · Monospace text · `HYPER_CHROME` border.
-
----
-
-## 🧠 BRAND SIGNATURES
-
-**Wordmark:** `fifty.dev` (JetBrains Mono, lowercase).
-**Monogram:** The Glitch "50" Glyph.
-**Agent Icon:** `>_` or `//` representing IGRIS.
-**Texture:** Halftone dots (Manga shading) + Film Grain (Noise).
+| Component | Style |
+|-----------|-------|
+| Buttons | Rounded (8px), soft shadows on hover |
+| Cards | Elevated with subtle borders, soft shadows |
+| Inputs | Clean borders, `burgundy` focus ring |
+| Navigation | Floating with backdrop blur |
+| Badges | `powder-blush` background, rounded pill |
 
 ---
 
-## 📷 VISUAL AESTHETIC
+## Brand Signatures
 
-* **Lighting:** Mecha Cockpit / Server Room (Low key, Crimson rim lights).
-* **Texture:** Gritty. Paper grain mixed with OLED blacks.
-* **Content:** Schematics, Wireframes, Code Snippets, Manga Panels.
-* **Avoid:** Gradients, Corporate Memphis style, Pure White backgrounds.
-
----
-
-## 📱 SOCIAL TRANSMISSION
-
-| Platform | Layout Logic |
-| --- | --- |
-| **Instagram** | Cinematic. Big `Monument` text overlays. Crimson grid lines. |
-| **LinkedIn** | "Changelog" style updates. Technical breakdown of features. |
-| **Twitter / X** | Raw thoughts. "System Logs." Terminal screenshots. |
-
-**Caption Protocol:**
-`[TIMESTAMP] :: [TOPIC]`
-`> INPUT: ...`
-`> OUTPUT: ...`
+| Element | Specification |
+|---------|---------------|
+| Wordmark | fifty.dev (Manrope Bold, lowercase) |
+| Primary Color | Burgundy `#88292f` |
+| Light Background | Cream `#fefee3` |
+| Dark Background | Deep burgundy-black `#1a0d0e` |
+| Tone | Clear. Professional. Approachable. |
 
 ---
 
-## 🧭 SYSTEM SUMMARY
+## Visual Aesthetic
 
-> **fifty.dev** is the interface where **Engineering Logic** meets **Otaku Soul**.
-> The `CRIMSON` is not decoration; it is the system's heartbeat.
+**Dual Mode Design:**
+- Light: Warm cream background, burgundy accents
+- Dark: Deep burgundy-black background, warm surfaces
+
+**Photography:**
+- Warm, natural lighting
+- Soft, inviting imagery
+
+**Avoid:**
+- Harsh contrasts
+- Cold minimalism
+- Industrial textures
 
 ---
 
-*(Reference `fifty_design_system.md` for full implementation details.)*
+## Quick Reference
+
+```
+Primary:     #88292f (burgundy)
+Hover:       #6e2126 (primary-hover)
+Secondary:   #335c67 (slate-grey)
+Success:     #4b644a (hunter-green)
+Accent:      #ffc9b9 (powder-blush)
+
+Light BG:    #fefee3 (cream)
+Dark BG:     #1a0d0e (background-dark)
+
+Font:        Manrope
+Radius:      8px (default)
+Motion:      200ms ease-out
+```
+
+---
+
+*Reference `design_system/v2/` for full implementation details.*
