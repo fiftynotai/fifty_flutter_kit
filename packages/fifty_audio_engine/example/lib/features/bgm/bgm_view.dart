@@ -70,19 +70,19 @@ class _BgmViewState extends State<BgmView> {
           Text(
             _viewModel.currentTrack.title,
             style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyHeadline,
-              fontSize: FiftyTypography.section,
-              fontWeight: FiftyTypography.ultrabold,
-              color: FiftyColors.terminalWhite,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.titleLarge,
+              fontWeight: FiftyTypography.extraBold,
+              color: FiftyColors.cream,
             ),
           ),
           const SizedBox(height: FiftySpacing.xs),
           Text(
             _viewModel.currentTrack.artist,
             style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.body,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyLarge,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.lg),
@@ -99,17 +99,17 @@ class _BgmViewState extends State<BgmView> {
               Text(
                 _viewModel.positionString,
                 style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
-                  color: FiftyColors.hyperChrome,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: FiftyColors.slateGrey,
                 ),
               ),
               Text(
                 _viewModel.durationString,
                 style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
-                  color: FiftyColors.hyperChrome,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: FiftyColors.slateGrey,
                 ),
               ),
             ],
@@ -148,9 +148,9 @@ class _BgmViewState extends State<BgmView> {
               const Text(
                 'Shuffle',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.body,
-                  color: FiftyColors.terminalWhite,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
+                  color: FiftyColors.cream,
                 ),
               ),
               FiftySwitch(
@@ -213,9 +213,9 @@ class _TrackListItem extends StatelessWidget {
             color: isSelected
                 ? colorScheme.primary.withValues(alpha: 0.1)
                 : Colors.transparent,
-            borderRadius: FiftyRadii.standardRadius,
+            borderRadius: FiftyRadii.lgRadius,
             border: Border.all(
-              color: isSelected ? colorScheme.primary : FiftyColors.border,
+              color: isSelected ? colorScheme.primary : FiftyColors.borderDark,
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -235,7 +235,7 @@ class _TrackListItem extends StatelessWidget {
                         size: 20,
                         color: isSelected
                             ? colorScheme.primary
-                            : FiftyColors.hyperChrome,
+                            : FiftyColors.slateGrey,
                       ),
               ),
               const SizedBox(width: FiftySpacing.md),
@@ -247,22 +247,22 @@ class _TrackListItem extends StatelessWidget {
                     Text(
                       track.title,
                       style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.body,
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodyLarge,
                         fontWeight: isSelected
                             ? FiftyTypography.medium
                             : FiftyTypography.regular,
                         color: isSelected
                             ? colorScheme.primary
-                            : FiftyColors.terminalWhite,
+                            : FiftyColors.cream,
                       ),
                     ),
                     Text(
                       track.artist,
                       style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.mono,
-                        color: FiftyColors.hyperChrome,
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: FiftyColors.slateGrey,
                       ),
                     ),
                   ],
@@ -272,9 +272,9 @@ class _TrackListItem extends StatelessWidget {
               Text(
                 _formatDuration(track.duration),
                 style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
-                  color: FiftyColors.hyperChrome,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: FiftyColors.slateGrey,
                 ),
               ),
             ],

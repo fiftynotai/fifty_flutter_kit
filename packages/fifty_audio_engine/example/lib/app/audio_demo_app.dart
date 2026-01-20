@@ -38,7 +38,7 @@ class _AudioDemoAppState extends State<AudioDemoApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiftyColors.voidBlack,
+      backgroundColor: FiftyColors.darkBurgundy,
       body: SafeArea(
         child: Column(
           children: [
@@ -55,8 +55,8 @@ class _AudioDemoAppState extends State<AudioDemoApp> {
                 glitchOnMount: true,
                 titleGradient: const LinearGradient(
                   colors: [
-                    FiftyColors.crimsonPulse,
-                    FiftyColors.terminalWhite,
+                    FiftyColors.burgundy,
+                    FiftyColors.cream,
                   ],
                 ),
               ),

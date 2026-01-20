@@ -75,9 +75,9 @@ class _GlobalViewState extends State<GlobalView> {
                   const Text(
                     'Master Mute',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
-                      color: FiftyColors.terminalWhite,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
+                      color: FiftyColors.cream,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
@@ -86,9 +86,9 @@ class _GlobalViewState extends State<GlobalView> {
                         ? 'All channels muted'
                         : 'All channels active',
                     style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.mono,
-                      color: FiftyColors.hyperChrome,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
+                      color: FiftyColors.slateGrey,
                     ),
                   ),
                 ],
@@ -242,10 +242,10 @@ class _ChannelStatusRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack,
-        borderRadius: FiftyRadii.standardRadius,
+        color: FiftyColors.darkBurgundy,
+        borderRadius: FiftyRadii.lgRadius,
         border: Border.all(
-          color: FiftyColors.border,
+          color: FiftyColors.borderDark,
           width: 1,
         ),
       ),
@@ -257,8 +257,8 @@ class _ChannelStatusRow extends StatelessWidget {
             height: 8,
             decoration: BoxDecoration(
               color: isMuted
-                  ? FiftyColors.hyperChrome
-                  : (isActive ? FiftyColors.igrisGreen : colorScheme.primary),
+                  ? FiftyColors.slateGrey
+                  : (isActive ? FiftyColors.hunterGreen : colorScheme.primary),
               shape: BoxShape.circle,
             ),
           ),
@@ -269,10 +269,10 @@ class _ChannelStatusRow extends StatelessWidget {
             child: Text(
               label,
               style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.body,
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodyLarge,
                 fontWeight: FiftyTypography.medium,
-                color: FiftyColors.terminalWhite,
+                color: FiftyColors.cream,
               ),
             ),
           ),
@@ -282,7 +282,7 @@ class _ChannelStatusRow extends StatelessWidget {
             child: Container(
               height: 4,
               decoration: BoxDecoration(
-                color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                color: FiftyColors.slateGrey.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
               child: FractionallySizedBox(
@@ -290,7 +290,7 @@ class _ChannelStatusRow extends StatelessWidget {
                 widthFactor: isMuted ? 0 : volume,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: isMuted ? FiftyColors.hyperChrome : colorScheme.primary,
+                    color: isMuted ? FiftyColors.slateGrey : colorScheme.primary,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -304,9 +304,9 @@ class _ChannelStatusRow extends StatelessWidget {
             child: Text(
               isMuted ? 'MUTE' : '${(volume * 100).round()}%',
               style: TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.mono,
-                color: isMuted ? FiftyColors.hyperChrome : FiftyColors.terminalWhite,
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
+                color: isMuted ? FiftyColors.slateGrey : FiftyColors.cream,
               ),
               textAlign: TextAlign.right,
             ),

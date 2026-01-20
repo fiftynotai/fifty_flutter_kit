@@ -95,9 +95,9 @@ class _VoiceViewState extends State<VoiceView> {
                   const Text(
                     'BGM Ducking',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
-                      color: FiftyColors.terminalWhite,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
+                      color: FiftyColors.cream,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
@@ -106,9 +106,9 @@ class _VoiceViewState extends State<VoiceView> {
                         ? 'BGM volume lowers during voice'
                         : 'BGM plays at full volume',
                     style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.mono,
-                      color: FiftyColors.hyperChrome,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
+                      color: FiftyColors.slateGrey,
                     ),
                   ),
                 ],
@@ -179,10 +179,10 @@ class _VoiceLineButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: isPlaying
                   ? colorScheme.primary.withValues(alpha: 0.1)
-                  : FiftyColors.gunmetal,
-              borderRadius: FiftyRadii.standardRadius,
+                  : FiftyColors.surfaceDark,
+              borderRadius: FiftyRadii.lgRadius,
               border: Border.all(
-                color: isPlaying ? colorScheme.primary : FiftyColors.border,
+                color: isPlaying ? colorScheme.primary : FiftyColors.borderDark,
                 width: isPlaying ? 2 : 1,
               ),
             ),
@@ -195,19 +195,19 @@ class _VoiceLineButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isPlaying
                         ? colorScheme.primary
-                        : FiftyColors.voidBlack,
+                        : FiftyColors.darkBurgundy,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isPlaying
                           ? colorScheme.primary
-                          : FiftyColors.hyperChrome,
+                          : FiftyColors.slateGrey,
                       width: 1,
                     ),
                   ),
                   child: Icon(
                     isPlaying ? Icons.graphic_eq : Icons.play_arrow,
                     color: isPlaying
-                        ? FiftyColors.voidBlack
+                        ? FiftyColors.darkBurgundy
                         : colorScheme.primary,
                     size: 20,
                   ),
@@ -220,20 +220,20 @@ class _VoiceLineButton extends StatelessWidget {
                       Text(
                         label,
                         style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.body,
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodyLarge,
                           fontWeight: FiftyTypography.medium,
                           color: isPlaying
                               ? colorScheme.primary
-                              : FiftyColors.terminalWhite,
+                              : FiftyColors.cream,
                         ),
                       ),
                       Text(
                         description,
                         style: const TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.mono,
-                          color: FiftyColors.hyperChrome,
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodySmall,
+                          color: FiftyColors.slateGrey,
                         ),
                       ),
                     ],

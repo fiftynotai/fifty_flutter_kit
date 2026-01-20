@@ -42,10 +42,10 @@ class ChannelCard extends StatelessWidget {
               Text(
                 title.toUpperCase(),
                 style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.body,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
                   fontWeight: FiftyTypography.medium,
-                  color: FiftyColors.terminalWhite,
+                  color: FiftyColors.cream,
                   letterSpacing: 1,
                 ),
               ),
