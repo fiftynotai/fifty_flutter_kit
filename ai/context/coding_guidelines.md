@@ -987,6 +987,225 @@ if (connVM.isOnline.value) {
 
 ---
 
-**Last Updated:** 2026-01-01
+## Engine Package Architecture
+
+### Golden Rule: Consume, Don't Define
+
+Engine packages (skill_tree, achievement, inventory, dialogue, forms, etc.) **MUST consume** theming from FDL packages. They **MUST NOT** define their own theming systems.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     FDL Foundation Layer                         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │
+│  │ fifty_tokens│  │ fifty_theme │  │  fifty_ui   │              │
+│  │ (colors,    │  │ (dark/light │  │ (components)│              │
+│  │  spacing,   │  │  modes)     │  │             │              │
+│  │  typography)│  │             │  │             │              │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘              │
+│         │                │                │                      │
+│         └────────────────┼────────────────┘                      │
+│                          │                                       │
+│                          ▼                                       │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                   Engine Packages                          │  │
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐       │  │
+│  │  │ skill_tree   │ │ achievement  │ │  inventory   │  ...  │  │
+│  │  │ (consumes)   │ │ (consumes)   │ │ (consumes)   │       │  │
+│  │  └──────────────┘ └──────────────┘ └──────────────┘       │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Anti-Pattern: Self-Contained Theming
+
+**NEVER do this:**
+
+```dart
+// ❌ WRONG - Package defines its own theme system
+class SkillTreeTheme {
+  final Color lockedNodeColor;
+  final Color unlockedNodeColor;
+  final Color connectionColor;
+  // ... 20+ custom properties
+
+  factory SkillTreeTheme.dark() => SkillTreeTheme(
+    lockedNodeColor: Color(0xFF333333),  // hardcoded!
+    unlockedNodeColor: Color(0xFF00FF00), // hardcoded!
+  );
+}
+
+class SkillTreeThemePresets {
+  static SkillTreeTheme rpg() => ...  // more hardcoded values
+  static SkillTreeTheme sciFi() => ...
+}
+```
+
+**Problems:**
+- FDL changes don't propagate automatically
+- Inconsistent look with rest of ecosystem
+- Duplicate maintenance effort
+- Anti-pattern spreads to other packages
+
+### Correct Pattern: FDL Consumption
+
+**ALWAYS do this:**
+
+```dart
+// ✅ CORRECT - Package consumes from FDL
+import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
+
+class SkillNodeWidget extends StatelessWidget {
+  // Optional overrides (not a separate theme class)
+  final Color? nodeColor;
+  final Color? borderColor;
+
+  const SkillNodeWidget({
+    this.nodeColor,
+    this.borderColor,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // Use FDL tokens with optional override
+      color: nodeColor ?? FiftyColors.surface,
+      padding: FiftySpacing.insets.md,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: borderColor ?? FiftyColors.border,
+        ),
+        borderRadius: FiftyRadii.standardRadius,
+      ),
+      child: Text(
+        node.name,
+        style: TextStyle(
+          fontFamily: FiftyTypography.fontFamilyMono,
+          fontSize: FiftyTypography.body,
+          color: FiftyColors.textPrimary,
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Engine Package Checklist
+
+When creating or reviewing an engine package:
+
+- [ ] **Dependencies:** Includes `fifty_tokens` and `fifty_ui` in pubspec.yaml
+- [ ] **No Theme Class:** Does NOT define a custom `*Theme` class with color properties
+- [ ] **No Presets:** Does NOT define `*ThemePresets` with hardcoded variants
+- [ ] **FDL Colors:** Uses `FiftyColors.*` for all color values
+- [ ] **FDL Spacing:** Uses `FiftySpacing.*` for all padding/margins
+- [ ] **FDL Typography:** Uses `FiftyTypography.*` for all text styles
+- [ ] **FDL Radii:** Uses `FiftyRadii.*` for all border radius values
+- [ ] **FDL Components:** Uses `FiftyCard`, `FiftyButton`, etc. where applicable
+- [ ] **Optional Overrides:** Provides override parameters on widgets (not a theme object)
+- [ ] **Controller Clean:** Controller does NOT have a `theme` property
+
+### Override Pattern
+
+When customization is needed, use **widget-level optional parameters**, not a theme class:
+
+```dart
+// ✅ CORRECT - Optional overrides on widget
+SkillTreeView<void>(
+  controller: controller,
+  layout: const VerticalTreeLayout(),
+  // Optional overrides for specific use cases
+  lockedNodeColor: Colors.grey,
+  unlockedNodeColor: FiftyColors.igrisGreen,
+  connectionColor: FiftyColors.border,
+)
+
+// ❌ WRONG - Separate theme object
+SkillTreeView<void>(
+  controller: controller,
+  theme: SkillTreeTheme(
+    lockedNodeColor: Colors.grey,
+    // ... duplicates FDL
+  ),
+)
+```
+
+### State-Based Styling
+
+For widgets with multiple states (locked, unlocked, available, etc.), define semantic color getters:
+
+```dart
+class SkillNodeWidget extends StatelessWidget {
+  Color get _nodeColor {
+    switch (state) {
+      case SkillState.locked:
+        return FiftyColors.surfaceVariant;
+      case SkillState.available:
+        return FiftyColors.surface;
+      case SkillState.unlocked:
+        return FiftyColors.successBackground;
+      case SkillState.maxed:
+        return FiftyColors.primaryBackground;
+    }
+  }
+
+  Color get _borderColor {
+    switch (state) {
+      case SkillState.locked:
+        return FiftyColors.border;
+      case SkillState.available:
+        return FiftyColors.primary;
+      case SkillState.unlocked:
+        return FiftyColors.success;
+      case SkillState.maxed:
+        return FiftyColors.primaryAccent;
+    }
+  }
+}
+```
+
+### Package Dependencies Template
+
+Every engine package pubspec.yaml:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # FDL Foundation (REQUIRED)
+  fifty_tokens: ^0.2.0
+  fifty_ui: ^0.5.0
+
+  # Optional ecosystem packages
+  fifty_storage: ^0.1.0      # if persistence needed
+  fifty_audio_engine: ^0.8.0 # if sounds needed
+```
+
+### Why This Matters
+
+When the design system changes (new colors, new spacing scale, new typography):
+
+**With Self-Contained Theming (Wrong):**
+- Update fifty_tokens ✓
+- Update fifty_theme ✓
+- Update fifty_ui ✓
+- Update fifty_skill_tree manually ✗
+- Update fifty_achievement_engine manually ✗
+- Update fifty_inventory_engine manually ✗
+- Update fifty_dialogue_engine manually ✗
+- Update fifty_forms manually ✗
+- **5+ packages to update manually**
+
+**With FDL Consumption (Correct):**
+- Update fifty_tokens ✓
+- Update fifty_theme ✓
+- Update fifty_ui ✓
+- **All engine packages automatically updated**
+
+---
+
+**Last Updated:** 2026-01-20
 **Architecture Version:** MVVM + Actions 1.0
 **Maintained By:** Fifty.ai
