@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 
 /// Status indicator showing speech engine state.
 ///
-/// Uses FDL colors:
-/// - Crimson pulse for active states (speaking, listening)
-/// - Igris green for success/ready
-/// - Hyper chrome for idle
+/// Uses FDL v2 colors:
+/// - Burgundy for active states (speaking, listening)
+/// - Hunter green for success/ready
+/// - Slate grey for idle
 class StatusIndicator extends StatefulWidget {
   const StatusIndicator({
     super.key,
@@ -84,9 +84,9 @@ class _StatusIndicatorState extends State<StatusIndicator>
       return FiftyColors.warning;
     }
     if (widget.isActive) {
-      return FiftyColors.crimsonPulse;
+      return FiftyColors.burgundy;
     }
-    return FiftyColors.igrisGreen;
+    return FiftyColors.hunterGreen;
   }
 
   @override
@@ -126,8 +126,8 @@ class _StatusIndicatorState extends State<StatusIndicator>
         Text(
           widget.label,
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.mono,
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodySmall,
             fontWeight: FiftyTypography.medium,
             color: _indicatorColor,
             letterSpacing: 1.0,

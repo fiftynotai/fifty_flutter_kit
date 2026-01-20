@@ -94,10 +94,10 @@ class _TtsPanelState extends State<TtsPanel> {
                 const Text(
                   'TEXT-TO-SPEECH',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyHeadline,
-                    fontSize: FiftyTypography.body,
-                    fontWeight: FiftyTypography.ultrabold,
-                    color: FiftyColors.terminalWhite,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    fontWeight: FiftyTypography.extraBold,
+                    color: FiftyColors.cream,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -129,9 +129,9 @@ class _TtsPanelState extends State<TtsPanel> {
                 const Text(
                   'Language:',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
                 const SizedBox(width: FiftySpacing.md),
@@ -178,19 +178,19 @@ class _TtsPanelState extends State<TtsPanel> {
         vertical: FiftySpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack,
-        borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: FiftyColors.border),
+        color: FiftyColors.darkBurgundy,
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(color: FiftyColors.borderDark),
       ),
       child: DropdownButton<SpeechLanguage>(
         value: widget.currentLanguage,
         isExpanded: true,
         underline: const SizedBox.shrink(),
-        dropdownColor: FiftyColors.gunmetal,
+        dropdownColor: FiftyColors.surfaceDark,
         style: const TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.body,
-          color: FiftyColors.terminalWhite,
+          fontFamily: FiftyTypography.fontFamily,
+          fontSize: FiftyTypography.bodyLarge,
+          color: FiftyColors.cream,
         ),
         icon: Icon(
           Icons.arrow_drop_down_rounded,

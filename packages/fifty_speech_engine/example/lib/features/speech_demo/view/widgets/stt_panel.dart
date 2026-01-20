@@ -82,10 +82,10 @@ class SttPanel extends StatelessWidget {
                 const Text(
                   'SPEECH-TO-TEXT',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyHeadline,
-                    fontSize: FiftyTypography.body,
-                    fontWeight: FiftyTypography.ultrabold,
-                    color: FiftyColors.terminalWhite,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    fontWeight: FiftyTypography.extraBold,
+                    color: FiftyColors.cream,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -113,9 +113,9 @@ class SttPanel extends StatelessWidget {
                 const Text(
                   'Continuous Mode',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
                 FiftySwitch(
@@ -158,7 +158,7 @@ class SttPanel extends StatelessWidget {
                 padding: const EdgeInsets.all(FiftySpacing.md),
                 decoration: BoxDecoration(
                   color: FiftyColors.warning.withValues(alpha: 0.1),
-                  borderRadius: FiftyRadii.standardRadius,
+                  borderRadius: FiftyRadii.lgRadius,
                   border: Border.all(
                     color: FiftyColors.warning.withValues(alpha: 0.5),
                   ),
@@ -175,8 +175,8 @@ class SttPanel extends StatelessWidget {
                       child: Text(
                         errorMessage!,
                         style: const TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.mono,
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodySmall,
                           color: FiftyColors.warning,
                         ),
                       ),
@@ -197,12 +197,12 @@ class SttPanel extends StatelessWidget {
       constraints: const BoxConstraints(minHeight: 100),
       padding: const EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack,
-        borderRadius: FiftyRadii.standardRadius,
+        color: FiftyColors.darkBurgundy,
+        borderRadius: FiftyRadii.lgRadius,
         border: Border.all(
           color: isListening
               ? colorScheme.primary.withValues(alpha: 0.5)
-              : FiftyColors.border,
+              : FiftyColors.borderDark,
           width: isListening ? 2 : 1,
         ),
       ),
@@ -213,11 +213,11 @@ class SttPanel extends StatelessWidget {
           Text(
             isListening ? 'Listening...' : 'Recognized Text:',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
               color: isListening
                   ? colorScheme.primary
-                  : FiftyColors.hyperChrome,
+                  : FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -225,11 +225,11 @@ class SttPanel extends StatelessWidget {
           AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 200),
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.body,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyLarge,
               color: recognizedText.isEmpty
-                  ? FiftyColors.hyperChrome.withValues(alpha: 0.5)
-                  : FiftyColors.terminalWhite,
+                  ? FiftyColors.slateGrey.withValues(alpha: 0.5)
+                  : FiftyColors.cream,
               fontStyle: recognizedText.isEmpty
                   ? FontStyle.italic
                   : FontStyle.normal,
