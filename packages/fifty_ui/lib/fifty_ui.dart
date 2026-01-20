@@ -53,6 +53,8 @@
 /// - [FiftySwitch] - Kinetic toggle (ON = slateGrey, NOT primary!)
 /// - [FiftySlider] - Range slider with mode-aware styling
 /// - [FiftyDropdown] - Dropdown selector with xl radius
+/// - [FiftyCheckbox] - Multi-select boolean control with v2 styling
+/// - [FiftyRadio] - Single-select option control with v2 styling
 ///
 /// ### Controls
 /// - [FiftySegmentedControl] - Pill-style segmented control (NEW in v2)
@@ -98,6 +100,8 @@ export 'src/inputs/fifty_dropdown.dart';
 export 'src/inputs/fifty_slider.dart';
 export 'src/inputs/fifty_switch.dart';
 export 'src/inputs/fifty_text_field.dart';
+export 'src/inputs/fifty_checkbox.dart';
+export 'src/inputs/fifty_radio.dart';
 
 // Controls (NEW in v2)
 export 'src/controls/fifty_segmented_control.dart';
