@@ -2,77 +2,39 @@
 
 **Status:** REST MODE
 **Last Updated:** 2026-01-20
-**Last Completed:** MG-003 - Design System v2 Migration
+**Last Completed:** BG-001 - Component Alignment & Layout Bugs
 
 ---
 
 ## Session Summary
 
-Completed planning and documentation for Design System v2 migration and future engine packages.
+Completed BG-001 bug fixes for fifty_ui component alignment issues discovered after Design System v2 migration.
 
 **This Session:**
-- Registered 4 new feature briefs (achievement, inventory, dialogue, forms)
-- Created TD-001 for fifty_skill_tree FDL refactor
-- Established Engine Package Architecture guidelines
-- Added Promotion Pattern to coding guidelines
-- Created MG-003 Design System v2 Migration brief
+- Fixed FiftyCard tap area (InkWell inside Stack with Positioned.fill)
+- Fixed FiftyTextField cursor positioning (Column vertical centering)
+- Fixed FiftyTextField multiline alignment (height/constraints)
+- Fixed FiftySlider thumb/label positioning (FractionalTranslation)
+- All fixes verified in example app by Monarch
 
 ---
 
 ## Completed This Session
 
-**BR-027: Fifty Skill Tree Package (Implementation)**
+**BG-001: Component Alignment & Layout Bugs**
 - Status: Done
-- Commit: 2065ca4
-- Type: Feature | Priority: P2-Medium | Effort: L-Large
-- Target: packages/fifty_skill_tree/
+- Commit: e2febe0 on branch `fix/BG-001-alignment-bugs`
+- Type: Bug | Priority: P1-High | Effort: S-Small
 
-### Deliverables
+### Fixes Applied
 
-| Category | Count |
-|----------|-------|
-| Files created | 64 |
-| Lines of code | 13,350+ |
-| Tests | 188 |
-| Example demos | 4 |
-
-### Features Implemented
-
-**Core Models:**
-- SkillNode<T> with generic data support
-- SkillTree<T> with unlock operations
-- SkillConnection with visual styling
-- UnlockResult with success/failure handling
-
-**Layouts (5):**
-- VerticalTreeLayout (top-down)
-- HorizontalTreeLayout (left-right)
-- RadialTreeLayout (circular)
-- GridLayout (fixed grid)
-- CustomLayout (manual positions)
-
-**Animations (5):**
-- UnlockAnimation (burst + glow)
-- PulseAnimation (available nodes)
-- GlowAnimation (selection)
-- ShakeAnimation (failed unlock)
-- PathHighlightAnimation (path trace)
-
-**Themes (6 presets):**
-- Dark, Light, RPG, SciFi, Minimal, Nature
-
-**Serialization:**
-- Progress export/import
-- Full tree serialization
-
-### Agent Workflow
-
-| Agent | Task | Status |
-|-------|------|--------|
-| ARCHITECT | Planning | Complete |
-| FORGER | Phase 1-8 | Complete |
-| SENTINEL | Validation | Pass (188 tests) |
-| WATCHER | Review | Approved |
+| Component | Issue | Fix |
+|-----------|-------|-----|
+| FiftyCard | Tap area only on text | InkWell inside Stack with Positioned.fill |
+| FiftyTextField | Multiline text alignment | height: 48 for single-line, constraints for multiline |
+| FiftyTextField | Block/underscore cursor | Column with mainAxisAlignment.center |
+| FiftySlider | Thumb below track | Separated label/thumb with FractionalTranslation |
+| FiftySlider | Label squeezed | FractionalTranslation(-0.5, -0.2) for centering and gap |
 
 ---
 
@@ -81,9 +43,9 @@ Completed planning and documentation for Design System v2 migration and future e
 ### Packages (13)
 | Package | Version | Status |
 |---------|---------|--------|
-| fifty_tokens | v0.2.0 | Released |
-| fifty_theme | v0.1.0 | Released |
-| fifty_ui | v0.5.0 | Released |
+| fifty_tokens | v1.0.0 | Released (v2 Design) |
+| fifty_theme | v1.0.0 | Released (v2 Design) |
+| fifty_ui | v1.0.0 | Released (v2 Design) |
 | fifty_cache | v0.1.0 | Released |
 | fifty_storage | v0.1.0 | Released |
 | fifty_utils | v0.1.0 | Released |
@@ -93,7 +55,7 @@ Completed planning and documentation for Design System v2 migration and future e
 | fifty_sentences_engine | v0.1.0 | Released |
 | fifty_map_engine | v0.1.0 | Released |
 | fifty_printing_engine | v1.0.0 | Released |
-| **fifty_skill_tree** | **v0.1.0** | **Released** |
+| fifty_skill_tree | v0.1.0 | Released |
 
 ---
 
@@ -101,7 +63,9 @@ Completed planning and documentation for Design System v2 migration and future e
 
 | Brief | Type | Priority | Effort | Status |
 |-------|------|----------|--------|--------|
-| MG-003 | Migration | P0-Critical | L | Ready |
+| BG-001 | Bug | P1-High | S | **Done** |
+| UI-005 | Feature | P2-Medium | M | Ready |
+| BR-032 | Feature | P2-Medium | S | Ready |
 | TD-001 | Tech Debt | P1-High | M | Ready |
 | BR-028 | Feature | P1-High | M | Ready |
 | BR-031 | Feature | P1-High | M | Ready |
@@ -112,14 +76,17 @@ Completed planning and documentation for Design System v2 migration and future e
 
 ## Next Steps When Resuming
 
-1. **HUNT MG-003** - Design System v2 Migration (P0-Critical)
-   - Phase 1: fifty_tokens (colors, typography, radii, gradients)
-   - Phase 2: fifty_theme (theme data update)
-   - Phase 3: fifty_ui (component restyling)
+1. **Merge BG-001** - Merge `fix/BG-001-alignment-bugs` branch to main
 
-2. **TD-001** - Can run in parallel (fifty_skill_tree FDL refactor)
+2. **HUNT UI-005** - Example App Redesign (P2-Medium)
+   - Add missing component showcases (FiftySegmentedControl, FiftyCodeBlock, FiftyHero, FiftyNavBar)
+   - Add new pages (Controls, Layout, Navigation)
 
-3. **After MG-003** - Proceed with engine packages:
+3. **HUNT BR-032** - Selection Controls (P2-Medium)
+   - Implement FiftyCheckbox
+   - Implement FiftyRadio
+
+4. **Continue with engine packages:**
    - BR-028 fifty_achievement_engine
    - BR-031 fifty_forms
    - BR-029 fifty_inventory_engine
