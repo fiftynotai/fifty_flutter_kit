@@ -222,69 +222,70 @@ class _FiftySliderState extends State<FiftySlider> {
                           ),
                         ),
 
-                        // Thumb with optional label
-                        Positioned(
-                          left: (trackWidth - thumbSize) * _normalizedValue,
-                          top: widget.showLabel ? 24.0 : 0,
-                          child: Column(
-                            children: [
-                              // Value label
-                              if (widget.showLabel)
-                                AnimatedOpacity(
-                                  duration: fifty.fast,
-                                  opacity:
-                                      (_isDragging || _isHovered) ? 1.0 : 0.0,
-                                  child: Transform.translate(
-                                    offset: const Offset(0, -24),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: FiftySpacing.sm,
-                                        vertical: FiftySpacing.xs,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: fillColor,
-                                        borderRadius: FiftyRadii.lgRadius,
-                                        border: Border.all(
-                                          color: colorScheme.primary,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        _valueLabel,
-                                        style: TextStyle(
-                                          fontFamily: FiftyTypography.fontFamily,
-                                          fontSize: FiftyTypography.bodySmall,
-                                          fontWeight: FiftyTypography.medium,
-                                          color: colorScheme.primary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                              // Thumb
-                              AnimatedScale(
-                                duration: fifty.fast,
-                                scale: _isDragging ? 1.1 : 1.0,
+                        // Value label (positioned above thumb, centered)
+                        if (widget.showLabel)
+                          Positioned(
+                            // Position at thumb center
+                            left: (trackWidth - thumbSize) * _normalizedValue +
+                                thumbSize / 2,
+                            top: 0,
+                            child: AnimatedOpacity(
+                              duration: fifty.fast,
+                              opacity: (_isDragging || _isHovered) ? 1.0 : 0.0,
+                              child: FractionalTranslation(
+                                // Shift left by 50% to center, up slightly for gap
+                                translation: const Offset(-0.5, -0.2),
                                 child: Container(
-                                  width: thumbSize,
-                                  height: thumbSize,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: FiftySpacing.sm,
+                                    vertical: FiftySpacing.xs,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: fillColor,
-                                    borderRadius: FiftyRadii.smRadius,
+                                    borderRadius: FiftyRadii.lgRadius,
                                     border: Border.all(
-                                      color: (_isDragging || _isHovered)
-                                          ? colorScheme.primary
-                                          : borderColor,
-                                      width: 2,
+                                      color: colorScheme.primary,
+                                      width: 1,
                                     ),
-                                    boxShadow: (_isDragging || _isHovered)
-                                        ? fifty.shadowGlow
-                                        : null,
+                                  ),
+                                  child: Text(
+                                    _valueLabel,
+                                    style: TextStyle(
+                                      fontFamily: FiftyTypography.fontFamily,
+                                      fontSize: FiftyTypography.bodySmall,
+                                      fontWeight: FiftyTypography.medium,
+                                      color: colorScheme.primary,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ],
+                            ),
+                          ),
+
+                        // Thumb (vertically centered on track)
+                        Positioned(
+                          left: (trackWidth - thumbSize) * _normalizedValue,
+                          top: widget.showLabel ? 24.0 : 0,
+                          child: AnimatedScale(
+                            duration: fifty.fast,
+                            scale: _isDragging ? 1.1 : 1.0,
+                            child: Container(
+                              width: thumbSize,
+                              height: thumbSize,
+                              decoration: BoxDecoration(
+                                color: fillColor,
+                                borderRadius: FiftyRadii.smRadius,
+                                border: Border.all(
+                                  color: (_isDragging || _isHovered)
+                                      ? colorScheme.primary
+                                      : borderColor,
+                                  width: 2,
+                                ),
+                                boxShadow: (_isDragging || _isHovered)
+                                    ? fifty.shadowGlow
+                                    : null,
+                              ),
+                            ),
                           ),
                         ),
                       ],
