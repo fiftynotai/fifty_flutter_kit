@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -8,12 +9,25 @@ import '../themes/skill_tree_theme.dart';
 /// Shows the node name, description, cost, level progress, and current state
 /// with styling based on the provided theme.
 ///
+/// **Theming:**
+/// - If [theme] is null, FDL (Fifty Design Language) defaults are used
+/// - If [theme] is provided, custom theme colors are used
+///
 /// **Example:**
 /// ```dart
+/// // Using FDL defaults
 /// SkillTooltip(
 ///   node: myNode,
 ///   state: SkillState.available,
-///   theme: SkillTreeTheme.dark(),
+///   theme: null, // FDL defaults
+///   availablePoints: 5,
+/// )
+///
+/// // Using custom theme
+/// SkillTooltip(
+///   node: myNode,
+///   state: SkillState.available,
+///   theme: customTheme,
 ///   availablePoints: 5,
 /// )
 /// ```
@@ -23,7 +37,7 @@ class SkillTooltip<T> extends StatelessWidget {
   /// **Parameters:**
   /// - [node]: The skill node to display information for
   /// - [state]: Current state of the node
-  /// - [theme]: Theme containing colors and styles
+  /// - [theme]: Optional custom theme. If null, FDL defaults are used.
   /// - [showCost]: Whether to display the cost line (default true)
   /// - [showPrerequisites]: Whether to display prerequisites (default true)
   /// - [availablePoints]: Points available for the player (default 0)
@@ -31,7 +45,7 @@ class SkillTooltip<T> extends StatelessWidget {
     super.key,
     required this.node,
     required this.state,
-    required this.theme,
+    this.theme,
     this.showCost = true,
     this.showPrerequisites = true,
     this.availablePoints = 0,
@@ -43,8 +57,8 @@ class SkillTooltip<T> extends StatelessWidget {
   /// Current state of the node.
   final SkillState state;
 
-  /// Theme containing colors and styles.
-  final SkillTreeTheme theme;
+  /// Optional custom theme. If null, FDL defaults are used.
+  final SkillTreeTheme? theme;
 
   /// Whether to display the cost line.
   final bool showCost;
@@ -55,14 +69,54 @@ class SkillTooltip<T> extends StatelessWidget {
   /// Points available for the player.
   final int availablePoints;
 
+  // ---- FDL Default Styles ----
+
+  /// FDL default tooltip background color.
+  static Color get _fdlTooltipBackground => FiftyColors.surfaceDark;
+
+  /// FDL default tooltip border color.
+  static Color get _fdlTooltipBorder => FiftyColors.borderDark;
+
+  /// FDL default tooltip title style.
+  static const TextStyle _fdlTitleStyle = TextStyle(
+    color: FiftyColors.cream,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
+  /// FDL default tooltip description style.
+  static TextStyle get _fdlDescriptionStyle => TextStyle(
+    color: FiftyColors.cream.withAlpha(179),
+    fontSize: 12,
+  );
+
+  /// FDL default cost text style.
+  static const TextStyle _fdlCostStyle = TextStyle(
+    color: FiftyColors.warning,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+  );
+
+  /// FDL default level text style.
+  static const TextStyle _fdlLevelStyle = TextStyle(
+    color: FiftyColors.cream,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+  );
+
   @override
   Widget build(BuildContext context) {
+    final tooltipBackground = theme?.tooltipBackground ?? _fdlTooltipBackground;
+    final tooltipBorder = theme?.tooltipBorder ?? _fdlTooltipBorder;
+    final titleStyle = theme?.tooltipTitleStyle ?? _fdlTitleStyle;
+    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
+
     return Container(
       constraints: const BoxConstraints(maxWidth: 250),
       decoration: BoxDecoration(
-        color: theme.tooltipBackground ?? const Color(0xF0212121),
+        color: tooltipBackground,
         border: Border.all(
-          color: theme.tooltipBorder ?? const Color(0xFF616161),
+          color: tooltipBorder,
           width: 1,
         ),
         borderRadius: BorderRadius.circular(8),
@@ -82,12 +136,7 @@ class SkillTooltip<T> extends StatelessWidget {
           // Node name
           Text(
             node.name,
-            style: theme.tooltipTitleStyle ??
-                const TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+            style: titleStyle,
           ),
 
           // Description
@@ -95,11 +144,7 @@ class SkillTooltip<T> extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               node.description!,
-              style: theme.tooltipDescriptionStyle ??
-                  const TextStyle(
-                    color: Color(0xFFBDBDBD),
-                    fontSize: 12,
-                  ),
+              style: descriptionStyle,
             ),
           ],
 
@@ -133,40 +178,27 @@ class SkillTooltip<T> extends StatelessWidget {
   Widget _buildCostLine() {
     final cost = node.nextCost;
     final hasEnoughPoints = availablePoints >= cost;
+    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
+    final costColor = hasEnoughPoints
+        ? (theme?.nodeCostStyle?.color ?? FiftyColors.warning)
+        : FiftyColors.burgundy;
 
     return Row(
       children: [
         Text(
           'Cost: ',
-          style: theme.tooltipDescriptionStyle?.copyWith(
-                fontWeight: FontWeight.w600,
-              ) ??
-              const TextStyle(
-                color: Color(0xFFBDBDBD),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+          style: descriptionStyle.copyWith(fontWeight: FontWeight.w600),
         ),
         Text(
           '$cost',
-          style: theme.nodeCostStyle?.copyWith(
-                color: hasEnoughPoints
-                    ? theme.nodeCostStyle?.color
-                    : const Color(0xFFFF5252),
-              ) ??
-              TextStyle(
-                color:
-                    hasEnoughPoints ? const Color(0xFFFFD700) : const Color(0xFFFF5252),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+          style: (theme?.nodeCostStyle ?? _fdlCostStyle).copyWith(color: costColor),
         ),
         if (!hasEnoughPoints) ...[
           const SizedBox(width: 8),
           Text(
             '(Insufficient points)',
             style: TextStyle(
-              color: const Color(0xFFFF5252).withAlpha(179),
+              color: FiftyColors.burgundy.withAlpha(179),
               fontSize: 10,
               fontStyle: FontStyle.italic,
             ),
@@ -178,27 +210,18 @@ class SkillTooltip<T> extends StatelessWidget {
 
   /// Builds the level display line.
   Widget _buildLevelLine() {
+    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
+    final levelStyle = theme?.nodeLevelStyle ?? _fdlLevelStyle;
+
     return Row(
       children: [
         Text(
           'Level: ',
-          style: theme.tooltipDescriptionStyle?.copyWith(
-                fontWeight: FontWeight.w600,
-              ) ??
-              const TextStyle(
-                color: Color(0xFFBDBDBD),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+          style: descriptionStyle.copyWith(fontWeight: FontWeight.w600),
         ),
         Text(
           '${node.currentLevel}/${node.maxLevel}',
-          style: theme.nodeLevelStyle ??
-              const TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+          style: levelStyle,
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -206,7 +229,7 @@ class SkillTooltip<T> extends StatelessWidget {
             borderRadius: BorderRadius.circular(2),
             child: LinearProgressIndicator(
               value: node.currentLevel / node.maxLevel,
-              backgroundColor: const Color(0xFF333333),
+              backgroundColor: FiftyColors.surfaceDark,
               valueColor: AlwaysStoppedAnimation<Color>(
                 _getProgressColor(),
               ),
@@ -220,31 +243,19 @@ class SkillTooltip<T> extends StatelessWidget {
 
   /// Builds the prerequisites display line.
   Widget _buildPrerequisitesLine() {
+    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Requires: ',
-          style: theme.tooltipDescriptionStyle?.copyWith(
-                fontWeight: FontWeight.w600,
-              ) ??
-              const TextStyle(
-                color: Color(0xFFBDBDBD),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+          style: descriptionStyle.copyWith(fontWeight: FontWeight.w600),
         ),
         Expanded(
           child: Text(
             node.prerequisites.join(', '),
-            style: theme.tooltipDescriptionStyle?.copyWith(
-                  fontStyle: FontStyle.italic,
-                ) ??
-                const TextStyle(
-                  color: Color(0xFFBDBDBD),
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                ),
+            style: descriptionStyle.copyWith(fontStyle: FontStyle.italic),
           ),
         ),
       ],
@@ -276,31 +287,31 @@ class SkillTooltip<T> extends StatelessWidget {
     );
   }
 
-  /// Gets the state label and color.
+  /// Gets the state label and color using FDL colors.
   (String, Color) _getStateInfo() {
     switch (state) {
       case SkillState.locked:
-        return ('Locked', const Color(0xFF9E9E9E));
+        return ('Locked', FiftyColors.slateGrey);
       case SkillState.available:
-        return ('Available', const Color(0xFF4CAF50));
+        return ('Available', FiftyColors.success);
       case SkillState.unlocked:
-        return ('Unlocked', const Color(0xFF2196F3));
+        return ('Unlocked', FiftyColors.primary);
       case SkillState.maxed:
-        return ('Maxed', const Color(0xFFFFD700));
+        return ('Maxed', FiftyColors.warning);
     }
   }
 
-  /// Gets the progress bar color based on state.
+  /// Gets the progress bar color based on state using FDL colors.
   Color _getProgressColor() {
     switch (state) {
       case SkillState.locked:
-        return const Color(0xFF9E9E9E);
+        return FiftyColors.slateGrey;
       case SkillState.available:
-        return const Color(0xFF4CAF50);
+        return FiftyColors.success;
       case SkillState.unlocked:
-        return const Color(0xFF2196F3);
+        return FiftyColors.primary;
       case SkillState.maxed:
-        return const Color(0xFFFFD700);
+        return FiftyColors.warning;
     }
   }
 }

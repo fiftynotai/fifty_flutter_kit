@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/rendering.dart';
 
 import '../models/models.dart';
@@ -11,6 +12,10 @@ import 'line_painter.dart';
 /// drawing to either [LinePainter] or [BezierPainter] based on the
 /// [useCurvedConnections] setting.
 ///
+/// **Theming:**
+/// - If [theme] is null, FDL (Fifty Design Language) defaults are used
+/// - If [theme] is provided, custom theme colors are used
+///
 /// **Example:**
 /// ```dart
 /// CustomPaint(
@@ -18,7 +23,7 @@ import 'line_painter.dart';
 ///     connections: tree.connections,
 ///     nodePositions: positions,
 ///     nodeSize: Size(56, 56),
-///     theme: theme,
+///     theme: null, // FDL defaults
 ///     getNodeState: (id) => tree.getNodeState(id),
 ///     useCurvedConnections: true,
 ///   ),
@@ -31,7 +36,7 @@ class ConnectionPainter extends CustomPainter {
   /// - [connections]: All connections to draw
   /// - [nodePositions]: Map of node IDs to their center positions
   /// - [nodeSize]: The size of each node (used to calculate edge points)
-  /// - [theme]: The theme containing colors and styles
+  /// - [theme]: Optional custom theme. If null, FDL defaults are used.
   /// - [getNodeState]: Function to get the current state of a node
   /// - [useCurvedConnections]: Whether to use bezier curves (true) or straight lines (false)
   /// - [highlightedConnectionIds]: Optional set of connection IDs to highlight
@@ -39,7 +44,7 @@ class ConnectionPainter extends CustomPainter {
     required this.connections,
     required this.nodePositions,
     required this.nodeSize,
-    required this.theme,
+    this.theme,
     required this.getNodeState,
     this.useCurvedConnections = true,
     this.highlightedConnectionIds,
@@ -54,8 +59,8 @@ class ConnectionPainter extends CustomPainter {
   /// The size of each node widget.
   final Size nodeSize;
 
-  /// The theme containing colors and styles.
-  final SkillTreeTheme theme;
+  /// Optional custom theme. If null, FDL defaults are used.
+  final SkillTreeTheme? theme;
 
   /// Function to get the current state of a node by ID.
   final SkillState Function(String nodeId) getNodeState;
@@ -68,8 +73,25 @@ class ConnectionPainter extends CustomPainter {
   /// Connection IDs are formatted as "fromId->toId".
   final Set<String>? highlightedConnectionIds;
 
+  // ---- FDL Default Colors ----
+
+  /// FDL default color for locked connections.
+  static Color get _fdlLockedColor => FiftyColors.borderDark;
+
+  /// FDL default color for unlocked connections.
+  static Color get _fdlUnlockedColor => FiftyColors.success;
+
+  /// FDL default color for highlighted connections.
+  static Color get _fdlHighlightColor => FiftyColors.primary;
+
   @override
   void paint(Canvas canvas, Size size) {
+    // Get colors from theme or use FDL defaults
+    final lockedColor = theme?.connectionLockedColor ?? _fdlLockedColor;
+    final unlockedColor = theme?.connectionUnlockedColor ?? _fdlUnlockedColor;
+    final highlightColor = theme?.connectionHighlightColor ?? _fdlHighlightColor;
+    final connectionWidth = theme?.connectionWidth ?? 2.0;
+
     for (final connection in connections) {
       final fromPos = nodePositions[connection.fromId];
       final toPos = nodePositions[connection.toId];
@@ -86,22 +108,22 @@ class ConnectionPainter extends CustomPainter {
       } else if (fromState == SkillState.unlocked ||
           fromState == SkillState.maxed) {
         if (toState == SkillState.unlocked || toState == SkillState.maxed) {
-          connectionColor = theme.connectionUnlockedColor;
+          connectionColor = unlockedColor;
         } else {
-          connectionColor = theme.connectionUnlockedColor.withAlpha(128);
+          connectionColor = unlockedColor.withAlpha(128);
         }
       } else {
-        connectionColor = theme.connectionLockedColor;
+        connectionColor = lockedColor;
       }
 
       // Check if this connection should be highlighted
       final connectionId = '${connection.fromId}->${connection.toId}';
       final isHighlighted = highlightedConnectionIds?.contains(connectionId) ?? false;
       if (isHighlighted) {
-        connectionColor = theme.connectionHighlightColor ?? connectionColor;
+        connectionColor = highlightColor;
       }
 
-      final thickness = connection.thickness ?? theme.connectionWidth;
+      final thickness = connection.thickness ?? connectionWidth;
 
       // Calculate edge points (from node edge, not center)
       final edgePoints = _calculateEdgePoints(fromPos, toPos, nodeSize);

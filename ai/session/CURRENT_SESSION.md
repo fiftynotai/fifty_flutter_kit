@@ -1,7 +1,8 @@
 # Current Session
 
-**Status:** REST MODE
+**Status:** In Progress
 **Last Updated:** 2026-01-20
+**Current Brief:** TD-001 - Skill Tree FDL Refactor
 **Last Completed:** BR-032 - Selection Controls (Checkbox & Radio)
 
 ---

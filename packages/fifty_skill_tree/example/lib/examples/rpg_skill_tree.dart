@@ -36,9 +36,10 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
     final tree = createRpgTree();
     tree.addPoints(15);
 
+    // Use FDL defaults (no custom theme needed)
+    // SkillTreeThemePresets was removed - FDL provides consistent theming
     _controller = SkillTreeController<void>(
       tree: tree,
-      theme: SkillTreeThemePresets.rpg(),
     );
 
     _controller.addListener(_onControllerChanged);
@@ -65,7 +66,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
         SnackBar(
           content: Text('Unlocked ${node.name}!'),
           duration: const Duration(seconds: 1),
-          backgroundColor: FiftyColors.warning.withValues(alpha: 0.9),
+          backgroundColor: FiftyColors.success.withValues(alpha: 0.9),
         ),
       );
     }
@@ -91,7 +92,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
       SnackBar(
         content: const Text('Progress saved!'),
         duration: const Duration(seconds: 1),
-        backgroundColor: FiftyColors.igrisGreen.withValues(alpha: 0.9),
+        backgroundColor: FiftyColors.success.withValues(alpha: 0.9),
       ),
     );
   }
@@ -115,7 +116,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
       SnackBar(
         content: const Text('Progress loaded!'),
         duration: const Duration(seconds: 1),
-        backgroundColor: FiftyColors.crimsonPulse,
+        backgroundColor: FiftyColors.primary,
       ),
     );
   }
@@ -123,13 +124,13 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'warrior':
-        return FiftyColors.crimsonPulse;
+        return FiftyColors.burgundy;
       case 'mage':
         return _magePurple;
       case 'rogue':
-        return FiftyColors.igrisGreen;
+        return FiftyColors.hunterGreen;
       default:
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
     }
   }
 
@@ -144,7 +145,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
           style: TextStyle(
             letterSpacing: 1.2,
             fontWeight: FontWeight.bold,
-            color: FiftyColors.terminalWhite,
+            color: FiftyColors.cream,
           ),
         ),
         actions: [
@@ -171,7 +172,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                 SnackBar(
                   content: const Text('Tree reset!'),
                   duration: const Duration(seconds: 1),
-                  backgroundColor: FiftyColors.gunmetal,
+                  backgroundColor: FiftyColors.surfaceDark,
                 ),
               );
             },
@@ -197,7 +198,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                       'POINTS: ${_controller.availablePoints}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: FiftyColors.terminalWhite,
+                            color: FiftyColors.cream,
                             letterSpacing: 1.2,
                           ),
                     ),
@@ -208,11 +209,11 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _LegendItem(
-                        color: FiftyColors.crimsonPulse, label: 'WARRIOR'),
+                        color: FiftyColors.burgundy, label: 'WARRIOR'),
                     const SizedBox(width: FiftySpacing.lg),
                     _LegendItem(color: _magePurple, label: 'MAGE'),
                     const SizedBox(width: FiftySpacing.lg),
-                    _LegendItem(color: FiftyColors.igrisGreen, label: 'ROGUE'),
+                    _LegendItem(color: FiftyColors.hunterGreen, label: 'ROGUE'),
                   ],
                 ),
               ],
@@ -248,7 +249,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
               child: Text(
                 'CHOOSE YOUR PATH: WARRIOR, MAGE, OR ROGUE',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                       letterSpacing: 1.2,
                     ),
                 textAlign: TextAlign.center,
@@ -290,7 +291,7 @@ class _LegendItem extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
                 letterSpacing: 1.2,
               ),
         ),
@@ -334,13 +335,13 @@ class _CustomRpgNode extends StatelessWidget {
         borderRadius: isUltimate ? _ultimateRadius : null,
         color: isUnlocked
             ? branchColor.withValues(alpha: 0.3)
-            : FiftyColors.gunmetal,
+            : FiftyColors.surfaceDark,
         border: Border.all(
           color: isUnlocked
               ? branchColor
               : isAvailable
                   ? branchColor.withValues(alpha: 0.6)
-                  : FiftyColors.border,
+                  : FiftyColors.borderDark,
           width: isUnlocked ? 3 : 2,
         ),
         boxShadow: isUnlocked
@@ -359,8 +360,8 @@ class _CustomRpgNode extends StatelessWidget {
           color: isUnlocked
               ? branchColor
               : isAvailable
-                  ? FiftyColors.terminalWhite.withValues(alpha: 0.7)
-                  : FiftyColors.hyperChrome.withValues(alpha: 0.6),
+                  ? FiftyColors.cream.withValues(alpha: 0.7)
+                  : FiftyColors.slateGrey.withValues(alpha: 0.6),
           size: isUltimate ? _ultimateIconSize : _iconSize,
         ),
       ),

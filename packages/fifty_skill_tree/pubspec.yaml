@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # FDL Foundation (for default theming)
+  fifty_tokens:
+    path: ../fifty_tokens
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
