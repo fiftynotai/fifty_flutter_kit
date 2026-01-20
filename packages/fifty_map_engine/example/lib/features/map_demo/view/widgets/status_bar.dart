@@ -41,12 +41,27 @@ class StatusBar extends StatelessWidget {
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
-      backgroundColor: FiftyColors.gunmetal.withValues(alpha: 0.9),
+      backgroundColor: FiftyColors.surfaceDark.withValues(alpha: 0.9),
       scanlineOnHover: false,
       hoverScale: 1.0,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Package title
+          const Text(
+            'FIFTY MAP ENGINE',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              fontWeight: FiftyTypography.bold,
+              color: FiftyColors.cream,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(width: FiftySpacing.md),
+          const _VerticalDivider(),
+          const SizedBox(width: FiftySpacing.md),
+
           // Status indicator
           _buildStatusIndicator(),
           const SizedBox(width: FiftySpacing.sm),
@@ -55,9 +70,10 @@ class StatusBar extends StatelessWidget {
           Text(
             status,
             style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
               color: _getStatusColor(),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontSize: FiftyTypography.bodySmall,
+              fontWeight: FiftyTypography.semiBold,
               letterSpacing: 1.2,
             ),
           ),
@@ -70,9 +86,10 @@ class StatusBar extends StatelessWidget {
           Text(
             entityCount,
             style: const TextStyle(
-              color: FiftyColors.terminalWhite,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
+              fontFamily: FiftyTypography.fontFamily,
+              color: FiftyColors.cream,
+              fontSize: FiftyTypography.bodySmall,
+              fontWeight: FiftyTypography.regular,
             ),
           ),
 
@@ -127,7 +144,7 @@ class StatusBar extends StatelessWidget {
         return FiftyColors.error;
       case 'EMPTY':
       default:
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
     }
   }
 }
@@ -141,7 +158,7 @@ class _VerticalDivider extends StatelessWidget {
     return Container(
       width: 1,
       height: 16,
-      color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+      color: FiftyColors.slateGrey.withValues(alpha: 0.3),
     );
   }
 }

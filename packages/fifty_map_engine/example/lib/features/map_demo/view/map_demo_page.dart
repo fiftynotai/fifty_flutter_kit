@@ -46,7 +46,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
     return Consumer<MapViewModel>(
       builder: (context, viewModel, _) {
         return Scaffold(
-          backgroundColor: FiftyColors.voidBlack,
+          backgroundColor: FiftyColors.darkBurgundy,
           body: Stack(
             children: [
               // Map Widget (takes full screen)

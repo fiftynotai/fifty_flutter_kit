@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 /// Control panel with grouped action buttons.
 ///
 /// Features:
-/// - FiftyCard container with gunmetal background
+/// - FiftyCard container with surfaceDark background
 /// - FiftyIconButton controls with crimson glow on interaction
 /// - Grouped sections: Zoom/Center, Add/Remove, Load/Clear, D-pad
 class ControlPanel extends StatelessWidget {
@@ -57,7 +57,7 @@ class ControlPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
-      backgroundColor: FiftyColors.gunmetal.withValues(alpha: 0.9),
+      backgroundColor: FiftyColors.surfaceDark.withValues(alpha: 0.9),
       scanlineOnHover: false,
       hoverScale: 1.0,
       child: Column(
@@ -201,9 +201,10 @@ class ControlPanel extends StatelessWidget {
     return Text(
       label,
       style: const TextStyle(
-        color: FiftyColors.hyperChrome,
-        fontSize: 10,
-        fontWeight: FontWeight.w600,
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
+        fontWeight: FiftyTypography.medium,
+        color: FiftyColors.slateGrey,
         letterSpacing: 1.2,
       ),
     );
