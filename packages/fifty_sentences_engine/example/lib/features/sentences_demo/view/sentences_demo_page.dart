@@ -68,15 +68,15 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            color: FiftyColors.crimsonPulse,
+            color: FiftyColors.burgundy,
           ),
           SizedBox(height: FiftySpacing.lg),
           Text(
             'INITIALIZING SENTENCES ENGINE...',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.body,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyLarge,
+              color: FiftyColors.slateGrey,
               letterSpacing: 2.0,
             ),
           ),
@@ -140,9 +140,9 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
     return Container(
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
-        color: FiftyColors.gunmetal.withValues(alpha: 0.5),
-        borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: FiftyColors.border),
+        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(color: FiftyColors.borderDark),
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,17 +151,17 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
             children: [
               Icon(
                 Icons.info_outline_rounded,
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
                 size: 20,
               ),
               SizedBox(width: FiftySpacing.sm),
               Text(
                 'ABOUT THIS DEMO',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.medium,
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.slateGrey,
                   letterSpacing: 1.0,
                 ),
               ),
@@ -177,9 +177,9 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
             'Add sentences to the queue, then tap PROCESS to execute them in order. '
             'The engine handles instruction interpretation, flow control, and user interaction.',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
               height: 1.5,
             ),
           ),

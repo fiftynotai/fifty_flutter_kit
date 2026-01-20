@@ -80,9 +80,9 @@ class InstructionButtonsPanel extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
-        color: FiftyColors.gunmetal.withValues(alpha: 0.5),
-        borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: FiftyColors.border),
+        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(color: FiftyColors.borderDark),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,10 +115,10 @@ class InstructionButtonsPanel extends StatelessWidget {
     return Text(
       title,
       style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.medium,
-        color: FiftyColors.hyperChrome,
+        color: FiftyColors.slateGrey,
         letterSpacing: 2.0,
       ),
     );
@@ -131,7 +131,7 @@ class InstructionButtonsPanel extends StatelessWidget {
       children: [
         _buildInstructionButton(
           label: '+ WRITE',
-          color: FiftyColors.igrisGreen,
+          color: FiftyColors.hunterGreen,
           onPressed: isActive ? null : onAddWriteTapped,
         ),
         _buildInstructionButton(
@@ -146,7 +146,7 @@ class InstructionButtonsPanel extends StatelessWidget {
         ),
         _buildInstructionButton(
           label: '+ WAIT',
-          color: FiftyColors.crimsonPulse,
+          color: FiftyColors.burgundy,
           onPressed: isActive ? null : onAddWaitTapped,
         ),
       ],
@@ -171,20 +171,20 @@ class InstructionButtonsPanel extends StatelessWidget {
         decoration: BoxDecoration(
           color: isEnabled
               ? color.withValues(alpha: 0.2)
-              : FiftyColors.gunmetal.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
+              : FiftyColors.surfaceDark.withValues(alpha: 0.3),
+          borderRadius: FiftyRadii.lgRadius,
           border: Border.all(
-            color: isEnabled ? color : FiftyColors.hyperChrome.withValues(alpha: 0.3),
+            color: isEnabled ? color : FiftyColors.slateGrey.withValues(alpha: 0.3),
             width: 1.5,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.mono,
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodySmall,
             fontWeight: FiftyTypography.medium,
-            color: isEnabled ? color : FiftyColors.hyperChrome.withValues(alpha: 0.5),
+            color: isEnabled ? color : FiftyColors.slateGrey.withValues(alpha: 0.5),
             letterSpacing: 1.0,
           ),
         ),
@@ -193,60 +193,12 @@ class InstructionButtonsPanel extends StatelessWidget {
   }
 
   Widget _buildDemoStoryButton() {
-    return GestureDetector(
-      onTap: isActive ? null : onLoadDemoStoryTapped,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: FiftySpacing.lg,
-          vertical: FiftySpacing.md,
-        ),
-        decoration: BoxDecoration(
-          gradient: isActive
-              ? null
-              : const LinearGradient(
-                  colors: [
-                    FiftyColors.crimsonPulse,
-                    FiftyColors.igrisGreen,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-          color: isActive ? FiftyColors.gunmetal.withValues(alpha: 0.3) : null,
-          borderRadius: BorderRadius.circular(FiftyRadii.standard),
-          border: Border.all(
-            color: isActive
-                ? FiftyColors.hyperChrome.withValues(alpha: 0.3)
-                : FiftyColors.crimsonPulse,
-            width: 1.5,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.auto_stories_rounded,
-              color: isActive
-                  ? FiftyColors.hyperChrome.withValues(alpha: 0.5)
-                  : FiftyColors.terminalWhite,
-              size: 20,
-            ),
-            const SizedBox(width: FiftySpacing.sm),
-            Text(
-              'LOAD DEMO STORY',
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.mono,
-                fontWeight: FiftyTypography.medium,
-                color: isActive
-                    ? FiftyColors.hyperChrome.withValues(alpha: 0.5)
-                    : FiftyColors.terminalWhite,
-                letterSpacing: 1.0,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return FiftyButton(
+      label: 'LOAD DEMO STORY',
+      icon: Icons.auto_stories_rounded,
+      variant: FiftyButtonVariant.primary,
+      expanded: true,
+      onPressed: isActive ? null : onLoadDemoStoryTapped,
     );
   }
 

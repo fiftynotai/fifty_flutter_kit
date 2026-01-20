@@ -30,9 +30,9 @@ class SentenceQueuePanel extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
-        color: FiftyColors.gunmetal.withValues(alpha: 0.5),
-        borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: FiftyColors.border),
+        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(color: FiftyColors.borderDark),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,10 +60,10 @@ class SentenceQueuePanel extends StatelessWidget {
         const Text(
           'SENTENCE QUEUE',
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.mono,
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodySmall,
             fontWeight: FiftyTypography.medium,
-            color: FiftyColors.hyperChrome,
+            color: FiftyColors.slateGrey,
             letterSpacing: 2.0,
           ),
         ),
@@ -85,16 +85,16 @@ class SentenceQueuePanel extends StatelessWidget {
         children: [
           Icon(
             Icons.queue_outlined,
-            color: FiftyColors.hyperChrome.withValues(alpha: 0.5),
+            color: FiftyColors.slateGrey.withValues(alpha: 0.5),
             size: 32,
           ),
           const SizedBox(height: FiftySpacing.sm),
           Text(
             'Queue is empty',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.body,
-              color: FiftyColors.hyperChrome.withValues(alpha: 0.5),
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyLarge,
+              color: FiftyColors.slateGrey.withValues(alpha: 0.5),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -102,9 +102,9 @@ class SentenceQueuePanel extends StatelessWidget {
           Text(
             'Add sentences using the buttons below',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome.withValues(alpha: 0.5),
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey.withValues(alpha: 0.5),
             ),
           ),
         ],
@@ -134,9 +134,9 @@ class SentenceQueuePanel extends StatelessWidget {
         vertical: FiftySpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(FiftyRadii.standard),
-        border: Border.all(color: FiftyColors.border.withValues(alpha: 0.5)),
+        color: FiftyColors.darkBurgundy.withValues(alpha: 0.4),
+        borderRadius: FiftyRadii.lgRadius,
+        border: Border.all(color: FiftyColors.borderDark.withValues(alpha: 0.5)),
       ),
       child: Row(
         children: [
@@ -146,16 +146,16 @@ class SentenceQueuePanel extends StatelessWidget {
             height: 24,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: FiftyColors.gunmetal,
+              color: FiftyColors.surfaceDark,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
               '$index',
               style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.mono,
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
                 fontWeight: FiftyTypography.medium,
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
               ),
             ),
           ),
@@ -174,9 +174,9 @@ class SentenceQueuePanel extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.mono,
-                color: FiftyColors.terminalWhite,
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
+                color: FiftyColors.cream,
               ),
             ),
           ),
@@ -202,7 +202,7 @@ class SentenceQueuePanel extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
+          fontFamily: FiftyTypography.fontFamily,
           fontSize: 10,
           fontWeight: FiftyTypography.medium,
           color: color,
@@ -215,13 +215,13 @@ class SentenceQueuePanel extends StatelessWidget {
   Color _getInstructionColor(String instruction) {
     final lower = instruction.toLowerCase();
     if (lower.contains('write') && lower.contains('read')) {
-      return FiftyColors.crimsonPulse;
+      return FiftyColors.burgundy;
     }
-    if (lower.contains('write')) return FiftyColors.igrisGreen;
+    if (lower.contains('write')) return FiftyColors.hunterGreen;
     if (lower.contains('read')) return FiftyColors.success;
     if (lower.contains('ask')) return FiftyColors.warning;
-    if (lower.contains('wait')) return FiftyColors.crimsonPulse;
-    if (lower.contains('navigate')) return FiftyColors.crimsonPulse;
-    return FiftyColors.hyperChrome;
+    if (lower.contains('wait')) return FiftyColors.burgundy;
+    if (lower.contains('navigate')) return FiftyColors.burgundy;
+    return FiftyColors.slateGrey;
   }
 }
