@@ -40,7 +40,7 @@ class ExampleHomePage extends StatelessWidget {
         title: const Text('SKILL TREE EXAMPLES'),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

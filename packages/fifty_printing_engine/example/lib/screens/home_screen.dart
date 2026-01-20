@@ -136,7 +136,7 @@ class HomeScreen extends StatelessWidget {
           // Navigation Hint
           FiftyCard(
             padding: EdgeInsets.all(FiftySpacing.lg),
-            backgroundColor: FiftyColors.crimsonPulse.withOpacity(0.1),
+            backgroundColor: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
             scanlineOnHover: false,
             child: Row(
               children: [
@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.2),
+            backgroundColor: color.withValues(alpha: 0.2),
             child: Icon(icon, color: color),
           ),
           SizedBox(width: FiftySpacing.md),

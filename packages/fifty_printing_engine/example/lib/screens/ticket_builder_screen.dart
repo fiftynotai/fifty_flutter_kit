@@ -40,7 +40,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
           // Instructions Card
           FiftyCard(
             padding: EdgeInsets.all(FiftySpacing.lg),
-            backgroundColor: FiftyColors.crimsonPulse.withOpacity(0.1),
+            backgroundColor: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
             scanlineOnHover: false,
             child: Row(
               children: [
@@ -136,7 +136,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                         ),
                       ),
                       selected: _bold,
-                      selectedColor: FiftyColors.crimsonPulse.withOpacity(0.3),
+                      selectedColor: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
                       checkmarkColor: FiftyColors.crimsonPulse,
                       backgroundColor: FiftyColors.gunmetal,
                       onSelected: (value) {
@@ -155,7 +155,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                         ),
                       ),
                       selected: _underline,
-                      selectedColor: FiftyColors.crimsonPulse.withOpacity(0.3),
+                      selectedColor: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
                       checkmarkColor: FiftyColors.crimsonPulse,
                       backgroundColor: FiftyColors.gunmetal,
                       onSelected: (value) {

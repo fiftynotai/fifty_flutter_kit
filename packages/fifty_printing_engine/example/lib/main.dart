@@ -78,7 +78,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         },
         destinations: _destinations,
         backgroundColor: FiftyColors.gunmetal,
-        indicatorColor: FiftyColors.crimsonPulse.withOpacity(0.2),
+        indicatorColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
       ),
     );
   }

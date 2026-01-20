@@ -36,7 +36,7 @@ class PrinterListItem extends StatelessWidget {
             children: [
               // Type Icon
               CircleAvatar(
-                backgroundColor: _getStatusColor(status).withOpacity(0.2),
+                backgroundColor: _getStatusColor(status).withValues(alpha: 0.2),
                 child: Icon(
                   printer.type == PrinterType.bluetooth
                       ? Icons.bluetooth

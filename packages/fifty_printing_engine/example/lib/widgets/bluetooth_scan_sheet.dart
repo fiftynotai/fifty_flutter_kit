@@ -106,9 +106,9 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
             Container(
               padding: EdgeInsets.all(FiftySpacing.lg),
               decoration: BoxDecoration(
-                color: FiftyColors.error.withOpacity(0.1),
+                color: FiftyColors.error.withValues(alpha: 0.1),
                 borderRadius: FiftyRadii.standardRadius,
-                border: Border.all(color: FiftyColors.error.withOpacity(0.3)),
+                border: Border.all(color: FiftyColors.error.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [

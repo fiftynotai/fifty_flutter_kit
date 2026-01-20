@@ -121,13 +121,13 @@ class PrintResultWidget extends StatelessWidget {
                 padding: EdgeInsets.all(FiftySpacing.md),
                 decoration: BoxDecoration(
                   color: printerResult.success
-                      ? FiftyColors.success.withOpacity(0.1)
-                      : FiftyColors.error.withOpacity(0.1),
+                      ? FiftyColors.success.withValues(alpha: 0.1)
+                      : FiftyColors.error.withValues(alpha: 0.1),
                   borderRadius: FiftyRadii.standardRadius,
                   border: Border.all(
                     color: printerResult.success
-                        ? FiftyColors.success.withOpacity(0.3)
-                        : FiftyColors.error.withOpacity(0.3),
+                        ? FiftyColors.success.withValues(alpha: 0.3)
+                        : FiftyColors.error.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -195,9 +195,9 @@ class PrintResultWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [

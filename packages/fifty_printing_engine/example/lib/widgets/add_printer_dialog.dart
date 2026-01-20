@@ -89,7 +89,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
       labelText: labelText,
       labelStyle: TextStyle(color: FiftyColors.hyperChrome),
       hintText: hintText,
-      hintStyle: TextStyle(color: FiftyColors.hyperChrome.withOpacity(0.5)),
+      hintStyle: TextStyle(color: FiftyColors.hyperChrome.withValues(alpha: 0.5)),
       border: OutlineInputBorder(
         borderRadius: FiftyRadii.standardRadius,
         borderSide: BorderSide(color: FiftyColors.border),
@@ -299,10 +299,10 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                   Container(
                     padding: EdgeInsets.all(FiftySpacing.md),
                     decoration: BoxDecoration(
-                      color: FiftyColors.crimsonPulse.withOpacity(0.1),
+                      color: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
                       borderRadius: FiftyRadii.standardRadius,
                       border: Border.all(
-                        color: FiftyColors.crimsonPulse.withOpacity(0.3),
+                        color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(

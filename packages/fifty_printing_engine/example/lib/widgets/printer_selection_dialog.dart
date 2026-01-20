@@ -135,7 +135,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                                       vertical: 2,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: FiftyColors.crimsonPulse.withOpacity(0.2),
+                                      color: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(

@@ -163,9 +163,9 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
     return Container(
       padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: FiftyRadii.standardRadius,
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -215,7 +215,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
                       vertical: FiftySpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: FiftyColors.crimsonPulse.withOpacity(0.2),
+                      color: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
@@ -256,9 +256,9 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
           Container(
             padding: EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
-              color: FiftyColors.warning.withOpacity(0.1),
+              color: FiftyColors.warning.withValues(alpha: 0.1),
               borderRadius: FiftyRadii.standardRadius,
-              border: Border.all(color: FiftyColors.warning.withOpacity(0.3)),
+              border: Border.all(color: FiftyColors.warning.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -295,7 +295,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.2),
+            backgroundColor: color.withValues(alpha: 0.2),
             child: Icon(icon, color: color),
           ),
           SizedBox(width: FiftySpacing.lg),
