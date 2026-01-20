@@ -283,6 +283,8 @@ controller.onUnlock = (achievement) {
 };
 ```
 
+> **Note:** `AchievementPopup` includes an internal `Material` wrapper with `MaterialType.transparency` to ensure proper text rendering when displayed via Flutter's `Overlay`. This prevents the yellow underline text issue that occurs when `Text` widgets lack a `Material` ancestor.
+
 ### AchievementSummary
 
 Overall progress statistics.

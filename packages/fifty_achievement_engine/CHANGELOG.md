@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.1
+
+### Fixed
+
+- **AchievementPopup**: Added `Material(type: MaterialType.transparency)` wrapper to fix yellow underline text issue when displayed via Flutter's `Overlay`. Text widgets outside a `Material` ancestor exhibit default decoration (yellow underlines in debug mode). This fix ensures proper text rendering in overlay contexts.
+
+### Changed
+
+- **Example pages**: Converted `basic_achievements`, `rpg_achievements`, and `fitness_achievements` example pages from `Column` with `Expanded(AchievementList)` to `SingleChildScrollView` wrapping the entire content. The `AchievementList` now uses `shrinkWrap: true` and `NeverScrollableScrollPhysics()`. This allows full-page scrolling as a single unit rather than only the achievement list being scrollable.
+
 ## 0.1.0
 
 Initial release of the fifty_achievement_engine package.

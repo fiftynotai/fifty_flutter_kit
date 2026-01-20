@@ -7,17 +7,29 @@ import '../models/models.dart';
 ///
 /// Consumes FDL tokens directly for consistent styling.
 ///
+/// This widget wraps its content in a [Material] widget with
+/// [MaterialType.transparency] to ensure proper text rendering when
+/// displayed via Flutter's [Overlay]. Without a [Material] ancestor,
+/// [Text] widgets display with yellow underlines in debug mode.
+///
+/// **Usage with Overlay:**
+///
+/// When showing this popup via [Overlay.of(context)?.insert()], the popup
+/// handles the Material requirement internally - no additional wrapper needed.
+///
 /// **Example:**
 /// ```dart
 /// // Show popup when achievement unlocks
 /// controller.onUnlock = (achievement) {
-///   showOverlay(
-///     context: context,
+///   final overlay = Overlay.of(context);
+///   late OverlayEntry entry;
+///   entry = OverlayEntry(
 ///     builder: (context) => AchievementPopup(
 ///       achievement: achievement,
-///       onDismiss: () => hideOverlay(),
+///       onDismiss: () => entry.remove(),
 ///     ),
 ///   );
+///   overlay.insert(entry);
 /// };
 /// ```
 class AchievementPopup<T> extends StatefulWidget {
@@ -143,9 +155,11 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
               ),
             );
           },
-          child: GestureDetector(
-            onTap: widget.onTap ?? _dismiss,
-            child: Container(
+          child: Material(
+            type: MaterialType.transparency,
+            child: GestureDetector(
+              onTap: widget.onTap ?? _dismiss,
+              child: Container(
               margin: const EdgeInsets.all(FiftySpacing.md),
               padding: const EdgeInsets.all(FiftySpacing.md),
               constraints: const BoxConstraints(maxWidth: 400),
@@ -175,6 +189,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
                 ],
               ),
             ),
+          ),
           ),
         ),
       ),

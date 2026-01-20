@@ -216,145 +216,148 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
       appBar: AppBar(
         title: const Text('Fitness Achievements'),
       ),
-      body: Column(
-        children: [
-          // Workout timer
-          Container(
-            margin: const EdgeInsets.all(FiftySpacing.md),
-            padding: const EdgeInsets.all(FiftySpacing.lg),
-            decoration: BoxDecoration(
-              color: _isWorkingOut
-                  ? FiftyColors.hunterGreen.withValues(alpha: 0.2)
-                  : FiftyColors.surfaceDark,
-              borderRadius: FiftyRadii.lgRadius,
-              border: Border.all(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: FiftySpacing.xxl),
+        child: Column(
+          children: [
+            // Workout timer
+            Container(
+              margin: const EdgeInsets.all(FiftySpacing.md),
+              padding: const EdgeInsets.all(FiftySpacing.lg),
+              decoration: BoxDecoration(
                 color: _isWorkingOut
-                    ? FiftyColors.hunterGreen
-                    : FiftyColors.borderDark,
-                width: _isWorkingOut ? 2 : 1,
+                    ? FiftyColors.hunterGreen.withValues(alpha: 0.2)
+                    : FiftyColors.surfaceDark,
+                borderRadius: FiftyRadii.lgRadius,
+                border: Border.all(
+                  color: _isWorkingOut
+                      ? FiftyColors.hunterGreen
+                      : FiftyColors.borderDark,
+                  width: _isWorkingOut ? 2 : 1,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    _formatTime(_workoutSeconds),
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.displayLarge,
+                      fontWeight: FiftyTypography.extraBold,
+                      color: _isWorkingOut
+                          ? FiftyColors.hunterGreen
+                          : FiftyColors.cream,
+                    ),
+                  ),
+                  const SizedBox(height: FiftySpacing.md),
+                  ElevatedButton.icon(
+                    onPressed: _toggleWorkout,
+                    icon: Icon(_isWorkingOut ? Icons.stop : Icons.play_arrow),
+                    label: Text(_isWorkingOut ? 'End Workout' : 'Start Workout'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          _isWorkingOut ? FiftyColors.burgundy : FiftyColors.hunterGreen,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: FiftySpacing.xl,
+                        vertical: FiftySpacing.md,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              children: [
-                Text(
-                  _formatTime(_workoutSeconds),
+
+            // Exercise buttons
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildExerciseButton(
+                      'Push-ups',
+                      'pushup',
+                      Icons.accessibility_new,
+                    ),
+                  ),
+                  const SizedBox(width: FiftySpacing.sm),
+                  Expanded(
+                    child: _buildExerciseButton(
+                      'Squats',
+                      'squat',
+                      Icons.directions_walk,
+                    ),
+                  ),
+                  const SizedBox(width: FiftySpacing.sm),
+                  Expanded(
+                    child: _buildExerciseButton(
+                      'Sit-ups',
+                      'situp',
+                      Icons.self_improvement,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Hidden button
+            Padding(
+              padding: const EdgeInsets.all(FiftySpacing.md),
+              child: TextButton(
+                onPressed: _triggerEarlyBird,
+                child: Text(
+                  'Simulate Early Morning (5 AM)',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.displayLarge,
-                    fontWeight: FiftyTypography.extraBold,
-                    color: _isWorkingOut
-                        ? FiftyColors.hunterGreen
-                        : FiftyColors.cream,
+                    color: FiftyColors.cream.withValues(alpha: 0.5),
                   ),
-                ),
-                const SizedBox(height: FiftySpacing.md),
-                ElevatedButton.icon(
-                  onPressed: _toggleWorkout,
-                  icon: Icon(_isWorkingOut ? Icons.stop : Icons.play_arrow),
-                  label: Text(_isWorkingOut ? 'End Workout' : 'Start Workout'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        _isWorkingOut ? FiftyColors.burgundy : FiftyColors.hunterGreen,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: FiftySpacing.xl,
-                      vertical: FiftySpacing.md,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Exercise buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildExerciseButton(
-                    'Push-ups',
-                    'pushup',
-                    Icons.accessibility_new,
-                  ),
-                ),
-                const SizedBox(width: FiftySpacing.sm),
-                Expanded(
-                  child: _buildExerciseButton(
-                    'Squats',
-                    'squat',
-                    Icons.directions_walk,
-                  ),
-                ),
-                const SizedBox(width: FiftySpacing.sm),
-                Expanded(
-                  child: _buildExerciseButton(
-                    'Sit-ups',
-                    'situp',
-                    Icons.self_improvement,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Hidden button
-          Padding(
-            padding: const EdgeInsets.all(FiftySpacing.md),
-            child: TextButton(
-              onPressed: _triggerEarlyBird,
-              child: Text(
-                'Simulate Early Morning (5 AM)',
-                style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamily,
-                  color: FiftyColors.cream.withValues(alpha: 0.5),
                 ),
               ),
             ),
-          ),
 
-          // Stats row
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
-            child: ListenableBuilder(
-              listenable: _controller,
-              builder: (context, _) {
-                final context = _controller.context;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatChip(
-                      'Push-ups',
-                      context.getEventCount('pushup_done').toString(),
-                    ),
-                    _buildStatChip(
-                      'Squats',
-                      context.getEventCount('squat_done').toString(),
-                    ),
-                    _buildStatChip(
-                      'Sit-ups',
-                      context.getEventCount('situp_done').toString(),
-                    ),
-                    _buildStatChip(
-                      'Calories',
-                      context.getStat('calories_burned').toStringAsFixed(0),
-                    ),
-                  ],
-                );
-              },
+            // Stats row
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              child: ListenableBuilder(
+                listenable: _controller,
+                builder: (context, _) {
+                  final ctx = _controller.context;
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatChip(
+                        'Push-ups',
+                        ctx.getEventCount('pushup_done').toString(),
+                      ),
+                      _buildStatChip(
+                        'Squats',
+                        ctx.getEventCount('squat_done').toString(),
+                      ),
+                      _buildStatChip(
+                        'Sit-ups',
+                        ctx.getEventCount('situp_done').toString(),
+                      ),
+                      _buildStatChip(
+                        'Calories',
+                        ctx.getStat('calories_burned').toStringAsFixed(0),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
 
-          const SizedBox(height: FiftySpacing.md),
+            const SizedBox(height: FiftySpacing.md),
 
-          // Achievement list
-          Expanded(
-            child: AchievementList<void>(
+            // Achievement list
+            AchievementList<void>(
               controller: _controller,
               compact: true,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

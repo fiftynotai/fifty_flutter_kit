@@ -1,6 +1,6 @@
 name: fifty_achievement_engine
 description: Achievement system for Flutter games with condition-based unlocks, progress tracking, and FDL-compliant UI.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/aspect-build/fifty_flutter_kit
 
 environment:

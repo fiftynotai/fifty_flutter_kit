@@ -125,72 +125,75 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Summary at top
-          Padding(
-            padding: const EdgeInsets.all(FiftySpacing.md),
-            child: AchievementSummary(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: FiftySpacing.xxl),
+        child: Column(
+          children: [
+            // Summary at top
+            Padding(
+              padding: const EdgeInsets.all(FiftySpacing.md),
+              child: AchievementSummary(
+                controller: _controller,
+                showRarityBreakdown: true,
+                compact: true,
+              ),
+            ),
+
+            // Action buttons
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildActionButton(
+                      label: 'Click Me!',
+                      onPressed: () => _controller.trackEvent('button_clicked'),
+                      color: FiftyColors.burgundy,
+                    ),
+                  ),
+                  const SizedBox(width: FiftySpacing.md),
+                  Expanded(
+                    child: _buildActionButton(
+                      label: 'Find Secret',
+                      onPressed: () => _controller.trackEvent('secret_found'),
+                      color: FiftyColors.slateGrey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Click counter
+            Padding(
+              padding: const EdgeInsets.all(FiftySpacing.md),
+              child: ListenableBuilder(
+                listenable: _controller,
+                builder: (context, _) {
+                  final clicks = _controller.context.getEventCount('button_clicked');
+                  return Text(
+                    'Clicks: $clicks',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.titleLarge,
+                      fontWeight: FiftyTypography.bold,
+                      color: FiftyColors.cream,
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // Achievement list
+            AchievementList<void>(
               controller: _controller,
-              showRarityBreakdown: true,
-              compact: true,
-            ),
-          ),
-
-          // Action buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    label: 'Click Me!',
-                    onPressed: () => _controller.trackEvent('button_clicked'),
-                    color: FiftyColors.burgundy,
-                  ),
-                ),
-                const SizedBox(width: FiftySpacing.md),
-                Expanded(
-                  child: _buildActionButton(
-                    label: 'Find Secret',
-                    onPressed: () => _controller.trackEvent('secret_found'),
-                    color: FiftyColors.slateGrey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Click counter
-          Padding(
-            padding: const EdgeInsets.all(FiftySpacing.md),
-            child: ListenableBuilder(
-              listenable: _controller,
-              builder: (context, _) {
-                final clicks = _controller.context.getEventCount('button_clicked');
-                return Text(
-                  'Clicks: $clicks',
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.titleLarge,
-                    fontWeight: FiftyTypography.bold,
-                    color: FiftyColors.cream,
-                  ),
-                );
-              },
-            ),
-          ),
-
-          // Achievement list
-          Expanded(
-            child: AchievementList<void>(
-              controller: _controller,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               onTap: (achievement) {
                 _showAchievementDetails(context, achievement);
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -233,72 +233,75 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
       appBar: AppBar(
         title: const Text('RPG Achievements'),
       ),
-      body: Column(
-        children: [
-          // Player stats
-          Container(
-            margin: const EdgeInsets.all(FiftySpacing.md),
-            padding: const EdgeInsets.all(FiftySpacing.md),
-            decoration: BoxDecoration(
-              color: FiftyColors.surfaceDark,
-              borderRadius: FiftyRadii.lgRadius,
-              border: Border.all(color: FiftyColors.borderDark),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: FiftySpacing.xxl),
+        child: Column(
+          children: [
+            // Player stats
+            Container(
+              margin: const EdgeInsets.all(FiftySpacing.md),
+              padding: const EdgeInsets.all(FiftySpacing.md),
+              decoration: BoxDecoration(
+                color: FiftyColors.surfaceDark,
+                borderRadius: FiftyRadii.lgRadius,
+                border: Border.all(color: FiftyColors.borderDark),
+              ),
+              child: ListenableBuilder(
+                listenable: _controller,
+                builder: (context, _) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatColumn('Level', _playerLevel.toString()),
+                      _buildStatColumn('Gold', _gold.toString()),
+                      _buildStatColumn('EXP', _exp.toString()),
+                      _buildStatColumn(
+                        'Kills',
+                        _controller.context.getEventCount('enemy_killed').toString(),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-            child: ListenableBuilder(
-              listenable: _controller,
-              builder: (context, _) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatColumn('Level', _playerLevel.toString()),
-                    _buildStatColumn('Gold', _gold.toString()),
-                    _buildStatColumn('EXP', _exp.toString()),
-                    _buildStatColumn(
-                      'Kills',
-                      _controller.context.getEventCount('enemy_killed').toString(),
-                    ),
-                  ],
-                );
-              },
+
+            // Action buttons
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              child: Wrap(
+                spacing: FiftySpacing.sm,
+                runSpacing: FiftySpacing.sm,
+                children: [
+                  _buildActionChip('Kill Enemy', _killEnemy, Icons.pets),
+                  _buildActionChip('Kill Boss', _killBoss, Icons.whatshot),
+                  _buildActionChip(
+                      'Complete Quest', _completeQuest, Icons.assignment_turned_in),
+                  _buildActionChip('Find Secret', _findSecret, Icons.explore),
+                ],
+              ),
             ),
-          ),
 
-          // Action buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
-            child: Wrap(
-              spacing: FiftySpacing.sm,
-              runSpacing: FiftySpacing.sm,
-              children: [
-                _buildActionChip('Kill Enemy', _killEnemy, Icons.pets),
-                _buildActionChip('Kill Boss', _killBoss, Icons.whatshot),
-                _buildActionChip(
-                    'Complete Quest', _completeQuest, Icons.assignment_turned_in),
-                _buildActionChip('Find Secret', _findSecret, Icons.explore),
-              ],
+            const SizedBox(height: FiftySpacing.md),
+
+            // Summary
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              child: AchievementSummary(
+                controller: _controller,
+                showCategoryBreakdown: true,
+                compact: true,
+              ),
             ),
-          ),
 
-          const SizedBox(height: FiftySpacing.md),
-
-          // Summary
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
-            child: AchievementSummary(
+            // Achievement list
+            AchievementList<void>(
               controller: _controller,
-              showCategoryBreakdown: true,
               compact: true,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
             ),
-          ),
-
-          // Achievement list
-          Expanded(
-            child: AchievementList<void>(
-              controller: _controller,
-              compact: true,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
