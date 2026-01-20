@@ -1,10 +1,10 @@
-# FIFTY.DEV // SYSTEM PROTOCOL (FDL)
+# FIFTY.DEV // DESIGN SYSTEM
 
-**Version:** 2.0.0 | **Classification:** KINETIC BRUTALISM
+**Version:** 2.0.0 | **Classification:** SOPHISTICATED MODERN
 
 **Maintainer:** Mohamed Elamin (System Architect)
 
-**Philosophy:** *Structured Chaos (Base)* | *Manga Aesthetics (Overlay)*
+**Philosophy:** *Refined Warmth* | *Dual Mode Elegance*
 
 ---
 
@@ -12,116 +12,162 @@
 
 ### Identity
 
-fifty.dev exists at the strict intersection of **Systems Architecture** and **Manga Aesthetics**. It rejects polished corporate minimalism in favor of grit, structure, and kinetic energy. We do not build "apps"; we construct ecosystems.
+fifty.dev exists at the intersection of **Sophisticated Design** and **Modern Functionality**. We embrace refined warmth over cold minimalism, organic tones over harsh contrasts. We build thoughtful ecosystems that feel approachable yet professional.
 
 ### Vision
 
-> *"I don't code features. I engineer logic flow."*
+> *"Crafting experiences that feel both refined and human."*
 
 ### Core Traits
 
-* **Dark Mode Native:** OLED-friendly, terminal-inspired environments.
-* **Aggressive Structure:** High density, bento-grid layouts.
-* **Kinetic:** Nothing fades in; it slides, wipes, or compiles.
-* **Dual Persona:** The Engineer (Logic) + The Otaku (Chaos).
+* **Dual Mode Native:** Cream light mode and deep burgundy-black dark mode.
+* **Organic Warmth:** Natural, earthy palette with softer visual treatment.
+* **Refined Structure:** Clean layouts with purposeful whitespace.
+* **Sophisticated Simplicity:** Professional elegance without pretension.
 
 ---
 
 ## SECTION 2 — COLOR SYSTEM
 
-The palette evokes a "Mecha Cockpit" or "Server Room" environment.
+The palette evokes warmth, sophistication, and natural elegance.
 
 | Role | Variable Name | Hex Code | Usage |
-| --- | --- | --- | --- |
-| **Background** | `VOID_BLACK` | `#050505` | The infinite canvas. Never pure black. |
-| **Primary Accent** | `CRIMSON_PULSE` | `#960E29` | The heartbeat. Buttons, active states, errors. |
-| **Surface** | `GUNMETAL` | `#1A1A1A` | Cards, bento containers, code blocks. |
-| **Text Primary** | `TERMINAL_WHITE` | `#EAEAEA` | High legibility, reduced eye strain. |
-| **Text Secondary** | `HYPER_CHROME` | `#888888` | Metadata, borders, hardware details. |
-| **System Status** | `IGRIS_GREEN` | `#00FF41` | Exclusive to IGRIS terminal outputs. |
+|------|---------------|----------|-------|
+| **Primary** | `burgundy` | `#88292f` | Primary actions, buttons, accents |
+| **Primary Hover** | `primary-hover` | `#6e2126` | Hover states, pressed states |
+| **Secondary** | `slate-grey` | `#335c67` | Secondary buttons, supporting text |
+| **Success/Toggle** | `hunter-green` | `#4b644a` | Toggles, success states, checkboxes |
+| **Light Background** | `light-yellow` / `cream` | `#fefee3` | Light mode background canvas |
+| **Dark Background** | `background-dark` | `#1a0d0e` | Dark mode background canvas |
+| **Surface Light** | `surface-light` | `#ffffff` | Light mode cards, elevated surfaces |
+| **Surface Dark** | `surface-dark` | `#2a1517` | Dark mode cards, elevated surfaces |
+| **Accent** | `powder-blush` | `#ffc9b9` | Highlights, badges, warm accents |
+
+### Color Usage Guidelines
+
+* **Primary (Burgundy):** Use for primary CTAs, active navigation, key interactive elements.
+* **Secondary (Slate Grey):** Use for secondary actions, body text in light mode, supporting UI.
+* **Success (Hunter Green):** Reserved for positive states, toggles, form validation success.
+* **Accent (Powder Blush):** Use sparingly for highlights, badges, and warm accent touches.
 
 ---
 
 ## SECTION 3 — TYPOGRAPHY SYSTEM
 
-We use a binary type system to represent **Hype (Visuals)** vs. **Logic (Code)**.
+We use a unified type system with **Manrope** for all text, creating cohesion across display and body content.
 
-| Role | Font Family | Weight | Case |
-| --- | --- | --- | --- |
-| **Headlines / Hero** | **Monument Extended** | Ultrabold (800) | ALL CAPS |
-| **Subheads** | **Monument Extended** | Regular (400) | ALL CAPS |
-| **Body Copy** | **JetBrains Mono** | Regular (400) | Sentence |
-| **UI / Code** | **JetBrains Mono** | Medium (500) | Sentence |
+| Role | Font Family | Weight | Usage |
+|------|-------------|--------|-------|
+| **Display / Headlines** | **Manrope** | Extrabold (800) | Hero text, page titles, feature headlines |
+| **Subheads** | **Manrope** | Bold (700) | Section headings, card titles |
+| **Body Copy** | **Manrope** | Regular (400) | Paragraphs, descriptions, general content |
+| **UI Elements** | **Manrope** | Medium (500) | Buttons, labels, navigation items |
+| **Captions** | **Manrope** | Regular (400) | Small text, metadata, helper text |
 
-### Type Scale (Golden Ratio)
+### Type Scale
 
-* **Display XL:** 64px (Tight Tracking `-2%`)
-* **Display L:** 48px
-* **Heading:** 32px
-* **Body:** 16px (Height `1.5`)
-* **Mono Small:** 12px (Opacity `0.7`)
+* **Display XL:** 48px / 3rem (Line height 1.1)
+* **Display L:** 36px / 2.25rem (Line height 1.2)
+* **Heading:** 24px / 1.5rem (Line height 1.3)
+* **Subheading:** 20px / 1.25rem (Line height 1.4)
+* **Body:** 16px / 1rem (Line height 1.5)
+* **Small:** 14px / 0.875rem (Line height 1.5)
+* **Caption:** 12px / 0.75rem (Line height 1.4)
 
 ---
 
 ## SECTION 4 — GRID & SPACING ARCHITECTURE
 
-### The Bento Grid
+### Spacing System
 
-Content must never float in empty space. It is contained in modular units.
+Content uses a consistent spacing scale based on 4px increments.
 
 * **Base Unit:** 4px
-* **Gaps:** Tight (`8px` or `12px`) to create density.
-* **Container Radius:** `12px` (Standard) or `24px` (Smooth).
-* **Stroke:** `1px` solid `HYPER_CHROME` at `10%` opacity.
+* **Spacing Scale:** 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96px
+* **Component Padding:** 16px (compact) / 24px (standard) / 32px (spacious)
+* **Section Margins:** 48px - 96px depending on content density
+
+### Border Radius
+
+| Size | Value | Usage |
+|------|-------|-------|
+| **Default** | 0.5rem (8px) | Buttons, inputs, small cards |
+| **Large** | 0.75rem (12px) | Cards, modals |
+| **XL** | 1rem (16px) | Large containers, sections |
+| **2XL** | 1.5rem (24px) | Hero sections, feature cards |
+| **Full** | 9999px | Pills, badges, avatars |
 
 ### Surfaces & Depth
 
-| Level | Color | Texture Overlay |
-| --- | --- | --- |
-| **Base** | `#050505` | Noise / Grain (3% Opacity) |
-| **Card** | `#1A1A1A` | Halftone Dots (5% Opacity) |
-| **Overlay** | `#1A1A1A` | Glassmorphism (Blur 20px) |
+| Level | Light Mode | Dark Mode | Effect |
+|-------|------------|-----------|--------|
+| **Base** | `#fefee3` | `#1a0d0e` | Page background |
+| **Surface** | `#ffffff` | `#2a1517` | Cards, elevated content |
+| **Overlay** | `rgba(255,255,255,0.8)` | `rgba(42,21,23,0.8)` | Backdrop blur (blur-md) |
+
+### Borders
+
+* **Light Mode:** `rgba(0,0,0,0.05)` - subtle, nearly invisible
+* **Dark Mode:** `rgba(255,255,255,0.05)` - subtle, nearly invisible
+* **Stroke Width:** 1px for subtle definition
 
 ---
 
 ## SECTION 5 — MOTION PHYSICS
 
-The brand is **Kinetic**. It feels heavy but fast.
+The brand is **Smooth**. It feels refined and responsive.
 
-### Timing (The "Snap" Feel)
+### Timing
 
-* **Instant:** `0ms` (Logic changes)
-* **Fast:** `150ms` (Hover states)
-* **Compiling:** `300ms` (Panel reveals)
-* **System Load:** `800ms` (Staggered entry)
+* **Instant:** 0ms (State changes)
+* **Fast:** 150ms (Micro-interactions)
+* **Default:** 200ms (Standard transitions)
+* **Emphasis:** 300ms (Reveals, expansions)
+* **Orchestrated:** 400-600ms (Staggered entry)
+
+### Easing
+
+* **Default:** `ease-out` - Natural deceleration
+* **Enter:** `ease-out` - Elements arriving
+* **Exit:** `ease-in` - Elements leaving
+* **Bounce:** `cubic-bezier(0.68, -0.55, 0.265, 1.55)` - Playful emphasis
 
 ### Transitions
 
-* **NO FADES.** Use **Slides, Wipes, and Reveals**.
-* *Concept:* A shutter closing, a manga page turning, a blast door opening.
-* **Loading:** Never use a spinner. Use text sequences:
-```bash
-> INITIALIZING...
-> LOADING ASSETS...
-> DONE.
-```
+* **Preferred:** Opacity fades, subtle scale transforms, smooth slides
+* **Press Feedback:** Scale to 0.98 on press, return on release
+* **Hover States:** Subtle color shifts, shadow elevation
+* **Loading States:** Subtle pulsing, skeleton loaders, progress indicators
+
+### Effects
+
+* **Backdrop Blur:** `blur-md` (12px) for overlays, `blur-lg` (24px) for modals
+* **Shadows:** Soft, layered shadows for depth
+  * `shadow-sm`: 0 1px 2px rgba(0,0,0,0.05)
+  * `shadow-md`: 0 4px 6px rgba(0,0,0,0.1)
+  * `shadow-lg`: 0 10px 15px rgba(0,0,0,0.1)
 
 ---
 
 ## SECTION 6 — COMPONENT PHILOSOPHY
 
-### The "Cartridge" Concept
+### Design Principles
 
-UI elements should feel like physical data cartridges inserted into a slot.
+UI elements should feel refined, approachable, and purposeful.
 
-* **Buttons:** Sharp edges or pill shapes. On hover, text turns `CRIMSON` and snaps to cursor.
-* **Inputs:** Look like terminal command lines (`_` blinking cursor).
-* **Cards:** Interactive. Hovering triggers a "scanline" effect.
+* **Buttons:** Rounded corners (default 8px, pill for emphasis). Subtle shadow on hover.
+* **Inputs:** Clean borders, generous padding, clear focus states with primary color.
+* **Cards:** Soft shadows, subtle borders, comfortable padding.
 
-### IGRIS Interface
+### Interactive States
 
-* Always a dedicated overlay or terminal window.
-* Visuals: Monospaced, `IGRIS_GREEN`, blinking block cursor.
+| State | Light Mode | Dark Mode |
+|-------|------------|-----------|
+| **Default** | Surface with subtle border | Surface with subtle border |
+| **Hover** | Elevated shadow, subtle background shift | Elevated shadow, subtle background shift |
+| **Active/Pressed** | Scale 0.98, deeper color | Scale 0.98, deeper color |
+| **Focus** | Primary color ring (2px) | Primary color ring (2px) |
+| **Disabled** | 50% opacity | 50% opacity |
 
 ### Component Inventory (28 Components)
 
@@ -138,11 +184,11 @@ The fifty_ui package provides 28 production-ready components implementing the FD
 
 | Component | Description |
 |-----------|-------------|
-| `FiftyTextField` | Terminal-style text input with blinking cursor |
+| `FiftyTextField` | Clean text input with focus states |
 | `FiftySwitch` | Binary toggle control |
 | `FiftySlider` | Range selection control |
 | `FiftyDropdown` | Selection menu |
-| `FiftyCheckbox` | Multi-select control |
+| `FiftyCheckbox` | Multi-select control (hunter-green active state) |
 | `FiftyRadio` | Single-select control |
 
 #### Controls
@@ -155,14 +201,14 @@ The fifty_ui package provides 28 production-ready components implementing the FD
 
 | Component | Description |
 |-----------|-------------|
-| `FiftyCard` | Interactive data cartridge container |
-| `FiftyBadge` | Status indicator |
+| `FiftyCard` | Elevated container with soft shadow |
+| `FiftyBadge` | Status indicator (powder-blush accent) |
 | `FiftyChip` | Compact label/tag |
 | `FiftyDivider` | Visual separator |
 | `FiftyDataSlate` | Key-value data display |
 | `FiftyAvatar` | User/entity representation |
 | `FiftyProgressBar` | Progress indicator |
-| `FiftyLoadingIndicator` | System load animation |
+| `FiftyLoadingIndicator` | Smooth loading animation |
 | `FiftyCodeBlock` | Syntax-highlighted code display |
 
 #### Feedback
@@ -170,7 +216,7 @@ The fifty_ui package provides 28 production-ready components implementing the FD
 | Component | Description |
 |-----------|-------------|
 | `FiftySnackbar` | Transient notification |
-| `FiftyDialog` | Modal interaction |
+| `FiftyDialog` | Modal interaction with backdrop blur |
 | `FiftyTooltip` | Contextual hint |
 
 #### Layout
@@ -184,7 +230,7 @@ The fifty_ui package provides 28 production-ready components implementing the FD
 
 | Component | Description |
 |-----------|-------------|
-| `FiftyNavBar` | Floating navigation bar |
+| `FiftyNavBar` | Floating navigation bar with backdrop blur |
 
 #### Effects
 
@@ -193,8 +239,8 @@ The fifty_ui package provides 28 production-ready components implementing the FD
 | `KineticEffect` | Motion physics wrapper |
 | `GlitchEffect` | Chromatic aberration animation |
 | `GlowContainer` | Pulse/glow effect |
-| `HalftonePainter` | Manga screentone generator |
-| `HalftoneOverlay` | Screentone overlay widget |
+| `HalftonePainter` | Texture pattern generator |
+| `HalftoneOverlay` | Pattern overlay widget |
 
 ---
 
@@ -239,7 +285,7 @@ graph TD
 | Layer | Package | Purpose |
 |-------|---------|---------|
 | Foundation | `fifty_tokens` | Design tokens (colors, spacing, typography) |
-| Foundation | `fifty_theme` | Theme system (dark/light modes) |
+| Foundation | `fifty_theme` | Theme system (light/dark modes) |
 | Foundation | `fifty_ui` | Component library (28 components) |
 | Infrastructure | `fifty_cache` | HTTP response caching |
 | Infrastructure | `fifty_storage` | Secure local storage |
@@ -264,23 +310,28 @@ graph TD
 
 ### Logo System
 
-* **Wordmark:** `fifty.dev` (JetBrains Mono, lowercase)
-* **Monogram:** The "50" Glitch Circuit Glyph.
-* **Icon:** `>_` or `//` representing the terminal root.
+* **Wordmark:** `fifty.dev` (Manrope Bold, lowercase)
+* **Monogram:** The "50" mark, clean and refined.
+* **Favicon:** Simplified monogram for small sizes.
 
 ### Visual Artifacts
 
-* **Halftones:** Manga screentones used as background texture.
-* **Glitch:** Chromatic aberration (RGB split) used sparingly on hover.
-* **Code:** Actual code snippets used as decorative elements.
+* **Gradients:** Subtle gradients for depth (burgundy to darker burgundy).
+* **Patterns:** Minimal geometric patterns for backgrounds.
+* **Photography:** Warm, natural lighting. Avoid harsh contrasts.
 
 ### Tone of Voice
 
-**Direct. Technical. Confident.**
+**Clear. Professional. Approachable.**
 
-* *Instead of:* "Contact Me" -> *Use:* `OPEN CONNECTION`
-* *Instead of:* "My Work" -> *Use:* `DEPLOYMENTS`
-* *Instead of:* "About" -> *Use:* `CORE IDENTITY`
+* Write in plain language that respects the reader.
+* Be helpful without being condescending.
+* Be confident without being aggressive.
+
+**Examples:**
+* *Instead of:* "Click here to learn more" -> *Use:* "Learn more"
+* *Instead of:* "ERROR: Invalid input" -> *Use:* "Please enter a valid email"
+* *Instead of:* "Submit" -> *Use:* "Continue" or action-specific label
 
 ---
 
@@ -288,40 +339,47 @@ graph TD
 
 ### Content Pillars
 
-1. **System Logs:** Behind-the-scenes of building packages.
-2. **Audio Artifacts:** Music production snippets.
-3. **IGRIS Dialogues:** Conversations with your AI agent.
+1. **Engineering Insights:** Technical deep-dives and learnings.
+2. **Design Process:** Behind-the-scenes of building the system.
+3. **Product Updates:** New features, improvements, releases.
 
 ### Visual Templates
 
-* **Background:** `VOID_BLACK` with Crimson grid lines.
-* **Typography:** Massive `Monument Extended` headlines.
-* **Footer:** `[ SYSTEM: ONLINE ]` status indicator.
+* **Background:** Light cream (`#fefee3`) or deep burgundy (`#1a0d0e`) based on context.
+* **Typography:** Bold Manrope headlines with ample whitespace.
+* **Accent:** Burgundy highlights for emphasis.
 
-### Caption Formula
+### Caption Guidelines
 
-```
-[TIMESTAMP] :: [TOPIC]
-> Input: The challenge or thought.
-> Process: How I solved it.
-> Output: The result.
-```
+* Lead with value or insight.
+* Keep it concise and scannable.
+* Use line breaks for readability.
+* End with a clear call-to-action when appropriate.
 
 ---
 
 ## SECTION 10 — PORTFOLIO / WEBSITE SYSTEM
 
-### The "Command Center" Layout
+### Layout Philosophy
 
-* **Navigation:** Floating "Dynamic Island" at bottom center.
-* **Hero Section:** Interactive Flame Engine particle system (Crimson particles).
-* **Projects:** Displayed as a "Select Screen" in a video game.
+* **Navigation:** Clean, floating navigation with backdrop blur effect.
+* **Hero Section:** Large typography, subtle animations, clear value proposition.
+* **Projects:** Card-based grid with hover effects and clear hierarchy.
 
-### Project Case Studies
+### Project Presentation
 
-Don't just show screenshots. Show the **Layers**.
+Show work with context and depth:
 
-* Explode the view: Database Layer -> Logic Layer -> UI Layer.
+* **Overview:** What it is and why it matters.
+* **Process:** Key decisions and challenges.
+* **Outcome:** Results and impact.
+* **Visuals:** High-quality screenshots with device mockups.
+
+### Page Structure
+
+* **Above the fold:** Hero with clear value proposition.
+* **Content sections:** Alternating layouts for visual interest.
+* **Footer:** Compact, essential links and contact.
 
 ---
 
@@ -330,21 +388,40 @@ Don't just show screenshots. Show the **Layers**.
 ### README Template
 
 ```markdown
-# [PACKAGE_NAME]
-> Status: STABLE | Version: 1.0.0
+# Package Name
 
-## // OVERVIEW
-Technical description of the logic.
+Brief description of what this package does.
 
-## // INSTALLATION
-dart pub add package_name
+## Installation
+
+```bash
+flutter pub add package_name
 ```
 
-### Doc Style
+## Usage
 
-* Dark mode only.
-* Code blocks must have syntax highlighting (Crimson/Green/White).
-* Use "Warning" blocks styled as system alerts.
+```dart
+// Basic usage example
+```
+
+## Features
+
+- Feature one
+- Feature two
+- Feature three
+
+## API Reference
+
+See the API documentation for details.
+```
+
+### Documentation Style
+
+* Support both light and dark mode.
+* Use syntax highlighting for all code blocks.
+* Include practical, runnable examples.
+* Use callouts for important notes and warnings.
+* Keep explanations concise but complete.
 
 ---
 
@@ -352,16 +429,23 @@ dart pub add package_name
 
 ### Governance
 
-* **Tokens First:** Never hardcode a hex value. Always use `FiftyColors.crimsonPulse`.
-* **Motion Check:** Does it slide? If it fades, rewrite it.
-* **Tone Check:** Is it too friendly? Make it more technical.
+* **Tokens First:** Never hardcode color or spacing values. Use design tokens.
+* **Theme Aware:** All components must support both light and dark modes.
+* **Accessibility:** Ensure sufficient color contrast and touch targets.
 
-### Annual Review
+### Quality Gates
 
-* Update the "Glitch" effects.
-* Refine the IGRIS logic model.
-* Audit package dependencies.
+* **Visual Review:** Does it match the design system specifications?
+* **Mode Test:** Does it look good in both light and dark mode?
+* **Motion Test:** Are transitions smooth and purposeful?
+* **Accessibility Test:** Does it meet WCAG AA standards?
+
+### Maintenance Schedule
+
+* **Quarterly:** Review and update color palette if needed.
+* **Bi-annually:** Audit component library for consistency.
+* **Annually:** Full design system review and refinement.
 
 ### Closing Directive
 
-> **"The interface is the machine. Make it feel alive."**
+> **"Design with intention. Build with care. Create experiences that feel both refined and human."**
