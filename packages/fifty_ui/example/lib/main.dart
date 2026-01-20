@@ -52,6 +52,14 @@ class GalleryHome extends StatelessWidget {
           ),
           _buildSection(
             context,
+            title: 'CONTROLS',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ControlsPage()),
+            ),
+          ),
+          _buildSection(
+            context,
             title: 'DISPLAY',
             onTap: () => Navigator.push(
               context,
@@ -64,6 +72,22 @@ class GalleryHome extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const FeedbackPage()),
+            ),
+          ),
+          _buildSection(
+            context,
+            title: 'LAYOUT',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LayoutPage()),
+            ),
+          ),
+          _buildSection(
+            context,
+            title: 'NAVIGATION',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const NavigationPage()),
             ),
           ),
         ],
@@ -288,6 +312,13 @@ class _InputsPageState extends State<InputsPage> {
   String? _selectedLanguage;
   String? _selectedPriority;
 
+  // Checkbox states
+  bool _checkbox1 = false;
+  bool _checkbox2 = true;
+
+  // Radio state
+  String? _radioValue = 'option1';
+
   final _languages = [
     const FiftyDropdownItem(value: 'dart', label: 'Dart', icon: Icons.code),
     const FiftyDropdownItem(value: 'kotlin', label: 'Kotlin', icon: Icons.android),
@@ -410,6 +441,74 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Underscore Cursor',
             hint: 'Focus to see underscore cursor',
             cursorStyle: FiftyCursorStyle.underscore,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Checkboxes'),
+          const Text(
+            'Selection controls with kinetic animation',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyCheckbox(
+            value: _checkbox1,
+            onChanged: (value) => setState(() => _checkbox1 = value),
+            label: 'Accept terms and conditions',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyCheckbox(
+            value: _checkbox2,
+            onChanged: (value) => setState(() => _checkbox2 = value),
+            label: 'Subscribe to newsletter',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyCheckbox(
+            value: false,
+            onChanged: null,
+            label: 'Disabled checkbox',
+            enabled: false,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Radio Buttons'),
+          const Text(
+            'Mutually exclusive selection with animated dot',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyRadio<String>(
+            value: 'option1',
+            groupValue: _radioValue,
+            onChanged: (value) => setState(() => _radioValue = value),
+            label: 'Option 1',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyRadio<String>(
+            value: 'option2',
+            groupValue: _radioValue,
+            onChanged: (value) => setState(() => _radioValue = value),
+            label: 'Option 2',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyRadio<String>(
+            value: 'option3',
+            groupValue: _radioValue,
+            onChanged: (value) => setState(() => _radioValue = value),
+            label: 'Option 3',
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyRadio<String>(
+            value: 'disabled',
+            groupValue: null,
+            onChanged: null,
+            label: 'Disabled radio',
+            enabled: false,
           ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Switches'),
@@ -559,6 +658,114 @@ class _InputsPageState extends State<InputsPage> {
             enabled: false,
           ),
           const SizedBox(height: FiftySpacing.xl),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// CONTROLS PAGE
+// ============================================================================
+
+class ControlsPage extends StatefulWidget {
+  const ControlsPage({super.key});
+
+  @override
+  State<ControlsPage> createState() => _ControlsPageState();
+}
+
+class _ControlsPageState extends State<ControlsPage> {
+  String _period = 'daily';
+  String _viewMode = 'grid';
+  String _expandedValue = 'all';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('CONTROLS')),
+      body: ListView(
+        padding: const EdgeInsets.all(FiftySpacing.lg),
+        children: [
+          const _SectionTitle('Segmented Control'),
+          const Text(
+            'Pill-style segments with animated selection',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySegmentedControl<String>(
+            segments: const [
+              FiftySegment(value: 'daily', label: 'Daily'),
+              FiftySegment(value: 'weekly', label: 'Weekly'),
+              FiftySegment(value: 'monthly', label: 'Monthly'),
+            ],
+            selected: _period,
+            onChanged: (value) => setState(() => _period = value),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('With Icons'),
+          const Text(
+            'Segments with leading icons',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySegmentedControl<String>(
+            segments: const [
+              FiftySegment(value: 'grid', label: 'Grid', icon: Icons.grid_view),
+              FiftySegment(value: 'list', label: 'List', icon: Icons.list),
+            ],
+            selected: _viewMode,
+            onChanged: (value) => setState(() => _viewMode = value),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Expanded Mode'),
+          const Text(
+            'Segments expand to fill available width',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySegmentedControl<String>(
+            segments: const [
+              FiftySegment(value: 'all', label: 'All'),
+              FiftySegment(value: 'active', label: 'Active'),
+              FiftySegment(value: 'completed', label: 'Completed'),
+            ],
+            selected: _expandedValue,
+            onChanged: (value) => setState(() => _expandedValue = value),
+            expanded: true,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Disabled State'),
+          const Text(
+            'Non-interactive segmented control',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftySegmentedControl<String>(
+            segments: const [
+              FiftySegment(value: 'on', label: 'On'),
+              FiftySegment(value: 'off', label: 'Off'),
+            ],
+            selected: 'on',
+            onChanged: (value) {},
+            enabled: false,
+          ),
         ],
       ),
     );
@@ -784,6 +991,94 @@ class _DisplayPageState extends State<DisplayPage> {
             ],
           ),
           const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Code Block'),
+          const Text(
+            'Terminal-style code display with syntax highlighting',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyCodeBlock(
+            code: '''void main() {
+  print('Hello, Fifty!');
+
+  // Initialize the app
+  final app = FiftyApp();
+  app.run();
+}''',
+            language: 'dart',
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const Text(
+            'Without Line Numbers',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          const FiftyCodeBlock(
+            code: 'final greeting = "Welcome to Fifty UI";',
+            language: 'dart',
+            showLineNumbers: false,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const Text(
+            'Without Copy Button',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          const FiftyCodeBlock(
+            code: 'npm install fifty-ui',
+            language: 'plain',
+            copyButton: false,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const Text(
+            'With Max Height (Scrollable)',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          const FiftyCodeBlock(
+            code: '''class FiftyWidget extends StatelessWidget {
+  const FiftyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Text('Fifty UI'),
+    );
+  }
+}
+
+// More code to demonstrate scrolling...
+class AnotherWidget extends StatefulWidget {
+  const AnotherWidget({super.key});
+
+  @override
+  State<AnotherWidget> createState() => _AnotherWidgetState();
+}''',
+            language: 'dart',
+            maxHeight: 150,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Data Slate'),
           const FiftyDataSlate(
             title: 'System Status',
@@ -938,6 +1233,258 @@ class FeedbackPage extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// LAYOUT PAGE
+// ============================================================================
+
+class LayoutPage extends StatelessWidget {
+  const LayoutPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('LAYOUT')),
+      body: ListView(
+        padding: const EdgeInsets.all(FiftySpacing.lg),
+        children: [
+          const _SectionTitle('Hero Text'),
+          const Text(
+            'Monument headers with Manrope font',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHero(
+            text: 'Display Size',
+            size: FiftyHeroSize.display,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('H1 Size'),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHero(
+            text: 'H1 Headline',
+            size: FiftyHeroSize.h1,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('H2 Size'),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHero(
+            text: 'H2 Section Header',
+            size: FiftyHeroSize.h2,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('With Glitch Effect'),
+          const Text(
+            'Kinetic glitch animation on mount',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHero(
+            text: 'Glitch Hero',
+            size: FiftyHeroSize.h1,
+            glitchOnMount: true,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('With Gradient'),
+          const Text(
+            'Custom gradient fill for dramatic effect',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHero(
+            text: 'Gradient Text',
+            size: FiftyHeroSize.h1,
+            gradient: LinearGradient(
+              colors: [FiftyColors.burgundy, FiftyColors.hunterGreen],
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Hero Section'),
+          const Text(
+            'Title with subtitle combo',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHeroSection(
+            title: 'Fifty UI',
+            subtitle: 'Design System v2 - Kinetic Brutalism',
+            glitchOnMount: true,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Left Aligned Section'),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyHeroSection(
+            title: 'Welcome',
+            subtitle: 'Build beautiful interfaces with confidence',
+            titleSize: FiftyHeroSize.h1,
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// NAVIGATION PAGE
+// ============================================================================
+
+class NavigationPage extends StatefulWidget {
+  const NavigationPage({super.key});
+
+  @override
+  State<NavigationPage> createState() => _NavigationPageState();
+}
+
+class _NavigationPageState extends State<NavigationPage> {
+  int _pillIndex = 0;
+  int _standardIndex = 1;
+  int _textOnlyIndex = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('NAVIGATION')),
+      body: ListView(
+        padding: const EdgeInsets.all(FiftySpacing.lg),
+        children: [
+          const _SectionTitle('NavBar - Pill Style'),
+          const Text(
+            'Dynamic Island inspired with glassmorphism',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: FiftyColors.surfaceDark,
+              borderRadius: FiftyRadii.lgRadius,
+            ),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Positioned(
+                  bottom: FiftySpacing.lg,
+                  left: 0,
+                  right: 0,
+                  child: FiftyNavBar(
+                    items: const [
+                      FiftyNavItem(label: 'Home', icon: Icons.home),
+                      FiftyNavItem(label: 'Search', icon: Icons.search),
+                      FiftyNavItem(label: 'Profile', icon: Icons.person),
+                    ],
+                    selectedIndex: _pillIndex,
+                    onItemSelected: (index) => setState(() => _pillIndex = index),
+                    style: FiftyNavBarStyle.pill,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('NavBar - Standard Style'),
+          const Text(
+            'Rectangular with standard border radius',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: FiftyColors.surfaceDark,
+              borderRadius: FiftyRadii.lgRadius,
+            ),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Positioned(
+                  bottom: FiftySpacing.lg,
+                  left: 0,
+                  right: 0,
+                  child: FiftyNavBar(
+                    items: const [
+                      FiftyNavItem(label: 'Dashboard', icon: Icons.dashboard),
+                      FiftyNavItem(label: 'Analytics', icon: Icons.analytics),
+                      FiftyNavItem(label: 'Reports', icon: Icons.description),
+                      FiftyNavItem(label: 'Settings', icon: Icons.settings),
+                    ],
+                    selectedIndex: _standardIndex,
+                    onItemSelected: (index) => setState(() => _standardIndex = index),
+                    style: FiftyNavBarStyle.standard,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Text-Only (No Icons)'),
+          const Text(
+            'Label-only navigation items',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Container(
+            height: 100,
+            decoration: BoxDecoration(
+              color: FiftyColors.surfaceDark,
+              borderRadius: FiftyRadii.lgRadius,
+            ),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Positioned(
+                  bottom: FiftySpacing.lg,
+                  left: 0,
+                  right: 0,
+                  child: FiftyNavBar(
+                    items: const [
+                      FiftyNavItem(label: 'Today'),
+                      FiftyNavItem(label: 'Week'),
+                      FiftyNavItem(label: 'Month'),
+                      FiftyNavItem(label: 'Year'),
+                    ],
+                    selectedIndex: _textOnlyIndex,
+                    onItemSelected: (index) => setState(() => _textOnlyIndex = index),
+                    style: FiftyNavBarStyle.pill,
+                    height: 44,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
