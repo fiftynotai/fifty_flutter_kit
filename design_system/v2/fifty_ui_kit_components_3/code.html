@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Forms and Inputs Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              // Burgundy as Primary
+              "primary": "#88292f", 
+              "primary-hover": "#6e2126",
+              // Light yellow as light background
+              "background-light": "#fefee3",
+              // Dark slate/burgundy mix for dark mode background
+              "background-dark": "#1a0d0e", 
+              // Custom palette additions
+              "slate-grey": "#335c67", // Teal-ish
+              "hunter-green": "#4b644a",
+              "powder-blush": "#ffc9b9",
+              "surface-light": "#ffffff",
+              "surface-dark": "#2a1517", // Slightly lighter than background-dark
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"],
+              "body": ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem", 
+              "lg": "0.75rem", 
+              "xl": "1rem", 
+              "2xl": "1.5rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+          min-height: max(800px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased transition-colors duration-200">
+<div class="mx-auto w-full max-w-md min-h-screen relative shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark flex flex-col">
+<header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10 dark:border-white/5 px-4 pt-12 pb-4 flex items-center justify-between">
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-powder-blush">arrow_back_ios_new</span>
+</button>
+<div class="text-center">
+<h1 class="text-lg font-bold text-primary dark:text-powder-blush">Forms &amp; Inputs</h1>
+<p class="text-xs font-medium text-slate-grey dark:text-gray-400">Showcase Components</p>
+</div>
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-powder-blush">more_horiz</span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto p-5 pb-24 space-y-6 scroll-smooth">
+<section>
+<div class="flex items-center gap-2 mb-4 px-1">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">edit</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Text Inputs</h3>
+</div>
+<div class="bg-white dark:bg-surface-dark p-6 rounded-2xl shadow-sm border border-black/5 dark:border-white/5 space-y-5">
+<div class="group">
+<label class="block text-xs font-bold text-slate-grey dark:text-gray-400 mb-2 uppercase tracking-wide">Email Address</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 text-slate-400 dark:text-gray-500 material-symbols-outlined text-[20px] transition-colors group-focus-within:text-primary dark:group-focus-within:text-powder-blush">mail</span>
+<input class="w-full h-12 pl-12 pr-4 bg-background-light dark:bg-background-dark border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-powder-blush/50 focus:border-transparent transition-all dark:text-white placeholder-gray-400 text-sm" placeholder="name@example.com" type="email"/>
+</div>
+</div>
+<div class="group">
+<label class="block text-xs font-bold text-slate-grey dark:text-gray-400 mb-2 uppercase tracking-wide">Password</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 text-slate-400 dark:text-gray-500 material-symbols-outlined text-[20px] transition-colors group-focus-within:text-primary dark:group-focus-within:text-powder-blush">lock</span>
+<input class="w-full h-12 pl-12 pr-12 bg-background-light dark:bg-background-dark border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-powder-blush/50 focus:border-transparent transition-all dark:text-white text-sm placeholder-gray-400" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 p-1 rounded-md text-slate-400 hover:text-primary dark:hover:text-powder-blush transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<div class="pt-2">
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary dark:group-focus-within:text-powder-blush material-symbols-outlined text-[20px] transition-colors">search</span>
+<input class="w-full h-12 pl-12 pr-4 bg-gray-50 dark:bg-black/20 border-transparent focus:bg-white dark:focus:bg-black/40 border focus:border-primary/20 dark:focus:border-white/20 rounded-full text-sm focus:ring-0 dark:text-white transition-all placeholder-gray-400" placeholder="Search..." type="text"/>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center gap-2 mb-4 px-1">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">toggle_on</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Selection Controls</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-5 bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-black/5 dark:border-white/5">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 flex items-center justify-center bg-powder-blush/20 rounded-full text-primary dark:text-powder-blush">
+<span class="material-symbols-outlined text-[20px]">notifications_active</span>
+</div>
+<div>
+<h4 class="text-sm font-bold dark:text-white leading-tight">Notifications</h4>
+<p class="text-xs text-slate-500 dark:text-gray-400 mt-0.5">Push alerts enabled</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-[20px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-slate-grey peer-checked:dark:bg-slate-grey"></div>
+</label>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-black/5 dark:border-white/5">
+<h4 class="text-xs font-bold text-slate-grey dark:text-gray-400 uppercase tracking-wide mb-3">Display Mode</h4>
+<div class="flex gap-4">
+<label class="flex-1 cursor-pointer group">
+<input class="peer sr-only" name="mode" type="radio"/>
+<div class="flex flex-col items-center p-3 rounded-xl border border-gray-200 dark:border-white/10 bg-background-light dark:bg-background-dark peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary dark:peer-checked:border-powder-blush dark:peer-checked:ring-powder-blush transition-all">
+<span class="material-symbols-outlined text-slate-grey dark:text-gray-400 mb-1 group-hover:scale-110 transition-transform">light_mode</span>
+<span class="text-xs font-medium dark:text-white">Light</span>
+</div>
+</label>
+<label class="flex-1 cursor-pointer group">
+<input checked="" class="peer sr-only" name="mode" type="radio"/>
+<div class="flex flex-col items-center p-3 rounded-xl border border-gray-200 dark:border-white/10 bg-background-light dark:bg-background-dark peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary dark:peer-checked:border-powder-blush dark:peer-checked:ring-powder-blush transition-all">
+<span class="material-symbols-outlined text-slate-grey dark:text-gray-400 mb-1 group-hover:scale-110 transition-transform">dark_mode</span>
+<span class="text-xs font-medium dark:text-white">Dark</span>
+</div>
+</label>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-black/5 dark:border-white/5">
+<h4 class="text-xs font-bold text-slate-grey dark:text-gray-400 uppercase tracking-wide mb-3">Connections</h4>
+<div class="space-y-3">
+<label class="flex items-center justify-between cursor-pointer group p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg -mx-2 transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 dark:text-gray-500">wifi</span>
+<span class="text-sm font-medium dark:text-gray-200">Wifi Network</span>
+</div>
+<div class="relative flex items-center justify-center w-5 h-5">
+<input checked="" class="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-gray-500 rounded checked:bg-primary checked:border-primary transition-all" type="checkbox"/>
+<span class="material-symbols-outlined text-white text-[14px] font-bold absolute opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+</label>
+<div class="h-px w-full bg-gray-100 dark:bg-white/5"></div>
+<label class="flex items-center justify-between cursor-pointer group p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg -mx-2 transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 dark:text-gray-500">bluetooth</span>
+<span class="text-sm font-medium dark:text-gray-200">Bluetooth</span>
+</div>
+<div class="relative flex items-center justify-center w-5 h-5">
+<input class="peer appearance-none w-5 h-5 border-2 border-slate-300 dark:border-gray-500 rounded checked:bg-primary checked:border-primary transition-all" type="checkbox"/>
+<span class="material-symbols-outlined text-white text-[14px] font-bold absolute opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="absolute bottom-0 w-full bg-white/90 dark:bg-surface-dark/95 backdrop-blur-lg border-t border-gray-100 dark:border-white/5 pb-6 pt-2 px-6 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 p-2 text-primary dark:text-powder-blush">
+<span class="material-symbols-outlined filled">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">widgets</span>
+<span class="text-[10px] font-medium">Components</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-medium">Saved</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</nav>
+</div>
+
+</body></html>

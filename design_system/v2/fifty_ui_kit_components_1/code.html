@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fifty UI Kit Components</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              // Using the user requested palette mapped to theme names
+              // Burgundy as Primary
+              "primary": "#88292f", 
+              "primary-hover": "#6e2126",
+              // Light yellow as light background
+              "background-light": "#fefee3",
+              // Keeping a dark slate/burgundy mix for dark mode background to match the "sophisticated" feel while respecting dark mode config structure
+              "background-dark": "#1a0d0e", 
+              
+              // Custom palette additions
+              "slate-grey": "#335c67",
+              "hunter-green": "#4b644a",
+              "powder-blush": "#ffc9b9",
+              "surface-light": "#ffffff",
+              "surface-dark": "#2a1517", // Slightly lighter than background-dark
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"],
+              "body": ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem", 
+              "lg": "0.75rem", 
+              "xl": "1rem", 
+              "2xl": "1.5rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased transition-colors duration-200">
+<!-- Mobile Wrapper -->
+<div class="mx-auto w-full max-w-md min-h-screen relative shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark flex flex-col">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10 dark:border-white/5 px-4 pt-12 pb-4 flex items-center justify-between">
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-powder-blush">arrow_back_ios_new</span>
+</button>
+<div class="text-center">
+<h1 class="text-lg font-bold text-primary dark:text-powder-blush">Fifty UI Kit</h1>
+<p class="text-xs font-medium text-slate-grey dark:text-gray-400">Design System v2.0</p>
+</div>
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-powder-blush">more_horiz</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-5 pb-24 space-y-8 scroll-smooth">
+<!-- Hero / Branding Section -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-[#5a1b1f] p-6 text-white shadow-lg">
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold mb-3 border border-white/10">Flutter Ready</span>
+<h2 class="text-3xl font-extrabold mb-2 leading-tight">Typography &amp; <br/>Color Palette</h2>
+<p class="text-powder-blush/90 text-sm mb-6">Sophisticated styling for modern applications.</p>
+<div class="flex gap-2">
+<div class="h-8 w-8 rounded-full bg-[#fefee3] shadow-sm border-2 border-white/10" title="Cream"></div>
+<div class="h-8 w-8 rounded-full bg-[#88292f] shadow-sm border-2 border-white/10" title="Burgundy"></div>
+<div class="h-8 w-8 rounded-full bg-[#335c67] shadow-sm border-2 border-white/10" title="Slate"></div>
+<div class="h-8 w-8 rounded-full bg-[#4b644a] shadow-sm border-2 border-white/10" title="Hunter Green"></div>
+<div class="h-8 w-8 rounded-full bg-[#ffc9b9] shadow-sm border-2 border-white/10" title="Blush"></div>
+</div>
+</div>
+<!-- Abstract decorative circle -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-6xl">design_services</span>
+</div>
+</section>
+<!-- Buttons Section -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">touch_app</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Buttons &amp; Actions</h3>
+</div>
+<div class="space-y-3">
+<!-- Primary Button -->
+<button class="w-full h-12 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group">
+<span>Get Started</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-sm">arrow_forward</span>
+</button>
+<!-- Secondary Button -->
+<button class="w-full h-12 bg-slate-grey text-white font-semibold rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">download</span>
+<span>Download Kit</span>
+</button>
+<div class="grid grid-cols-2 gap-3">
+<!-- Outline Button -->
+<button class="h-12 border-2 border-primary text-primary dark:text-powder-blush dark:border-powder-blush font-bold rounded-lg hover:bg-primary/5 transition-colors">
+                            Log In
+                        </button>
+<!-- Ghost Button -->
+<button class="h-12 text-slate-grey dark:text-gray-300 font-semibold rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                            Skip for now
+                        </button>
+</div>
+</div>
+</section>
+<!-- Inputs Section -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">edit</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Input Fields</h3>
+</div>
+<div class="space-y-4 bg-white dark:bg-surface-dark p-5 rounded-xl shadow-sm border border-black/5 dark:border-white/5">
+<!-- Standard Input -->
+<div class="group">
+<label class="block text-xs font-bold text-slate-grey dark:text-gray-400 mb-1.5 uppercase tracking-wide">Email Address</label>
+<div class="relative flex items-center">
+<span class="absolute left-3 text-slate-400 material-symbols-outlined text-[20px]">mail</span>
+<input class="w-full h-12 pl-10 pr-4 bg-background-light dark:bg-background-dark border border-gray-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all dark:text-white placeholder-gray-400 text-sm" placeholder="name@example.com" type="email"/>
+</div>
+</div>
+<!-- Password Input with visible toggle -->
+<div class="group">
+<label class="block text-xs font-bold text-slate-grey dark:text-gray-400 mb-1.5 uppercase tracking-wide">Password</label>
+<div class="relative flex items-center">
+<span class="absolute left-3 text-slate-400 material-symbols-outlined text-[20px]">lock</span>
+<input class="w-full h-12 pl-10 pr-10 bg-background-light dark:bg-background-dark border border-gray-200 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all dark:text-white text-sm" type="password" value="Password123"/>
+<button class="absolute right-3 text-primary dark:text-powder-blush hover:text-primary-hover">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Search Input Small -->
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 material-symbols-outlined text-[18px]">search</span>
+<input class="w-full h-10 pl-9 pr-4 bg-gray-50 dark:bg-black/20 border-none rounded-full text-sm focus:ring-1 focus:ring-slate-grey dark:text-white" placeholder="Search components..." type="text"/>
+</div>
+</div>
+</section>
+<!-- Selection Controls -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">toggle_on</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Selection Controls</h3>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<!-- Toggle Switch Row -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-black/5 dark:border-white/5">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-powder-blush/20 rounded-lg text-primary dark:text-powder-blush">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+<div>
+<h4 class="text-sm font-bold dark:text-white">Push Notifications</h4>
+<p class="text-xs text-slate-500 dark:text-gray-400">Receive daily updates</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-hunter-green"></div>
+</label>
+</div>
+<!-- Radio & Checkbox Row -->
+<div class="flex gap-4">
+<div class="flex-1 p-4 bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-black/5 dark:border-white/5 flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<div class="relative flex items-center justify-center w-5 h-5">
+<input class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-full checked:border-primary checked:border-4 transition-all" name="radio-group" type="radio"/>
+</div>
+<span class="text-sm font-medium dark:text-gray-200">Light Mode</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<div class="relative flex items-center justify-center w-5 h-5">
+<input checked="" class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-full checked:border-primary checked:border-4 transition-all" name="radio-group" type="radio"/>
+</div>
+<span class="text-sm font-medium dark:text-gray-200">Dark Mode</span>
+</label>
+</div>
+<div class="flex-1 p-4 bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-black/5 dark:border-white/5 flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-5 h-5 border-2 border-slate-300 rounded flex items-center justify-center group-hover:border-hunter-green transition-colors bg-hunter-green border-none">
+<span class="material-symbols-outlined text-white text-sm font-bold">check</span>
+</div>
+<span class="text-sm font-medium dark:text-gray-200">Wifi</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-5 h-5 border-2 border-slate-300 dark:border-gray-600 rounded flex items-center justify-center group-hover:border-hunter-green transition-colors">
+</div>
+<span class="text-sm font-medium dark:text-gray-200">Bluetooth</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Cards Section -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">dashboard</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Cards</h3>
+</div>
+<!-- Product/Content Card -->
+<div class="bg-white dark:bg-surface-dark rounded-2xl overflow-hidden shadow-md border border-black/5 dark:border-white/5 mb-4">
+<div class="h-40 bg-slate-200 relative">
+<img alt="Abstract art with deep burgundy and teal fluid shapes" class="w-full h-full object-cover" data-alt="Abstract art with deep burgundy and teal fluid shapes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsNp23HZq2z8GTOE_I3dumLSfNsfwrS6ySXO3u_HyrbAe76TwtwYRAox74jBEig2AAmpELOAdYepiREAza_FzD4f2quvyRTzMUcYN9g00RL1-RnrbEQH5y_clhTJbJGJmTdfyC-jjF-oaBbmRjhwr4wX3GS7oZZEDmY0GnzCbO7Ip4uf9cm5gkyGfEcWgHWGkgBJm0jMpy_lObPJdClN4BhGlzGUjIeMa9Ipi46SjtTJCGZz1Gp3mUWhgQFgisu0QaAFCXwVMaBCbl"/>
+<div class="absolute top-3 right-3 bg-white/90 dark:bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-500 text-sm">star</span> 4.9
+                        </div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-lg leading-tight dark:text-white">Abstract Waves</h4>
+<p class="text-xs text-slate-500 dark:text-gray-400">Digital Asset</p>
+</div>
+<div class="bg-powder-blush/30 text-primary dark:text-powder-blush px-2 py-1 rounded text-xs font-bold">$24.00</div>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">High-quality 3D render suitable for modern UI backgrounds and hero sections.</p>
+<button class="w-full py-2.5 rounded-lg border border-slate-grey text-slate-grey dark:text-white dark:border-white/20 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                            View Details
+                        </button>
+</div>
+</div>
+<!-- Horizontal Small Card -->
+<div class="flex bg-slate-grey text-white rounded-xl overflow-hidden shadow-md">
+<div class="w-24 bg-gray-300 relative">
+<img alt="Modern minimalist office setup" class="w-full h-full object-cover" data-alt="Modern minimalist office setup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4gkJhKFmK1sqs76aUhrCPCOZC-4vuc7jMIKQO0ZNfYdsmU3_ZhdlSZU2P-_r9l2O35gWGXTHy1VDu9l8cxvPM90ALFPd6VrQlazowAbGrUWQor5AhViOKBjwWkDB92zHO1lyXC0h-2sSFh-9UGJVoJ92lQPKK7cAfXyJ1wcUoG5YNzJhXWJto6Otf0wD-a_afJ9uzbWbDmjt5Z7oME1iV5bMXa1JR9BwIeiensbFGzYaQI6fvdQrMO5JoYYTaVN8k291wYu02tipw"/>
+</div>
+<div class="flex-1 p-3 flex flex-col justify-center">
+<h5 class="font-bold text-sm mb-1">Weekly Analytics</h5>
+<p class="text-xs text-gray-300 mb-2">Updated 2 mins ago</p>
+<div class="w-full bg-white/20 rounded-full h-1.5">
+<div class="bg-powder-blush h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<div class="px-3 flex items-center justify-center border-l border-white/10">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="absolute bottom-0 w-full bg-white/90 dark:bg-surface-dark/95 backdrop-blur-lg border-t border-gray-100 dark:border-white/5 pb-6 pt-2 px-6 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 p-2 text-primary dark:text-powder-blush">
+<span class="material-symbols-outlined filled">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">widgets</span>
+<span class="text-[10px] font-medium">Components</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-medium">Saved</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</nav>
+</div>
+</body></html>

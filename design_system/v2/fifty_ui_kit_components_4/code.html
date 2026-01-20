@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cards and Layout Containers</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#88292f", 
+              "primary-hover": "#6e2126",
+              "background-light": "#fefee3",
+              "background-dark": "#1a0d0e", 
+              "slate-grey": "#335c67",
+              "hunter-green": "#4b644a",
+              "powder-blush": "#ffc9b9",
+              "surface-light": "#ffffff",
+              "surface-dark": "#2a1517", 
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"],
+              "body": ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem", 
+              "lg": "0.75rem", 
+              "xl": "1rem", 
+              "2xl": "1.5rem",
+              "3xl": "2rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased transition-colors duration-200">
+<div class="mx-auto w-full max-w-md min-h-screen relative shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark flex flex-col">
+<header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10 dark:border-white/5 px-4 pt-12 pb-4 flex items-center justify-between">
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-powder-blush">arrow_back_ios_new</span>
+</button>
+<div class="text-center">
+<h1 class="text-lg font-bold text-primary dark:text-powder-blush">Cards &amp; Layouts</h1>
+<p class="text-xs font-medium text-slate-grey dark:text-gray-400">Container Styles</p>
+</div>
+<button class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-powder-blush">more_horiz</span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto p-5 pb-24 space-y-8 scroll-smooth">
+<section>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">star</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Featured</h3>
+</div>
+<button class="text-xs font-bold text-primary dark:text-powder-blush hover:underline">View All</button>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-3xl overflow-hidden shadow-lg shadow-primary/5 border border-black/5 dark:border-white/5 group">
+<div class="h-56 bg-slate-200 relative overflow-hidden">
+<img alt="Abstract art with deep burgundy and teal fluid shapes" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsNp23HZq2z8GTOE_I3dumLSfNsfwrS6ySXO3u_HyrbAe76TwtwYRAox74jBEig2AAmpELOAdYepiREAza_FzD4f2quvyRTzMUcYN9g00RL1-RnrbEQH5y_clhTJbJGJmTdfyC-jjF-oaBbmRjhwr4wX3GS7oZZEDmY0GnzCbO7Ip4uf9cm5gkyGfEcWgHWGkgBJm0jMpy_lObPJdClN4BhGlzGUjIeMa9Ipi46SjtTJCGZz1Gp3mUWhgQFgisu0QaAFCXwVMaBCbl"/>
+<div class="absolute top-4 right-4 bg-white/95 dark:bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-sm border border-black/5 dark:border-white/10">
+<span class="material-symbols-outlined text-amber-500 text-sm filled">star</span>
+<span class="text-slate-900 dark:text-white">4.9</span>
+<span class="text-slate-400 text-[10px] font-normal">(128)</span>
+</div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-primary/90 text-white dark:bg-primary dark:text-white px-3 py-1 rounded-lg text-xs font-semibold backdrop-blur-sm shadow-sm">
+                            Premium Asset
+                        </span>
+</div>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-bold text-xl leading-tight dark:text-white mb-1">Abstract Waves Pack</h4>
+<p class="text-xs text-slate-500 dark:text-gray-400">Created by Studio Fifty</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-lg font-extrabold text-primary dark:text-powder-blush">$24.00</span>
+<span class="text-[10px] text-hunter-green font-medium bg-hunter-green/10 px-1.5 py-0.5 rounded">-20% OFF</span>
+</div>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300 mb-5 leading-relaxed">
+                        High-quality 3D render suitable for modern UI backgrounds. Includes 12 variations of fluid burgundy and cream shapes.
+                    </p>
+<div class="flex gap-3">
+<button class="flex-1 py-3 rounded-xl bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:bg-primary-hover transition-all flex items-center justify-center gap-2">
+<span>Purchase</span>
+</button>
+<button class="w-12 h-12 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary dark:hover:text-powder-blush transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">analytics</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">Analytics</h3>
+</div>
+<div class="bg-slate-grey text-white rounded-2xl p-1 overflow-hidden shadow-md flex mb-4">
+<div class="flex-1 p-4 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-white/10 rounded-lg">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</div>
+<h5 class="font-bold text-sm">Weekly Goal</h5>
+</div>
+<span class="text-xs font-bold text-powder-blush">75%</span>
+</div>
+<div class="w-full bg-black/20 rounded-full h-2 mb-2">
+<div class="bg-gradient-to-r from-powder-blush to-primary h-2 rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-[10px] text-white/60">12 sales remaining to reach target</p>
+</div>
+<div class="w-28 relative rounded-xl overflow-hidden hidden sm:block">
+<img alt="Modern minimalist office setup" class="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4gkJhKFmK1sqs76aUhrCPCOZC-4vuc7jMIKQO0ZNfYdsmU3_ZhdlSZU2P-_r9l2O35gWGXTHy1VDu9l8cxvPM90ALFPd6VrQlazowAbGrUWQor5AhViOKBjwWkDB92zHO1lyXC0h-2sSFh-9UGJVoJ92lQPKK7cAfXyJ1wcUoG5YNzJhXWJto6Otf0wD-a_afJ9uzbWbDmjt5Z7oME1iV5bMXa1JR9BwIeiensbFGzYaQI6fvdQrMO5JoYYTaVN8k291wYu02tipw"/>
+<div class="absolute inset-0 bg-slate-grey/30"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-white dark:bg-surface-dark p-4 rounded-2xl shadow-sm border border-black/5 dark:border-white/5 flex flex-col justify-between h-32 hover:border-primary/20 transition-colors">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-xl bg-background-light dark:bg-white/5 text-slate-grey dark:text-gray-300">
+<span class="material-symbols-outlined text-xl">visibility</span>
+</div>
+<span class="text-[10px] font-bold text-hunter-green flex items-center bg-hunter-green/10 px-1.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[10px] mr-0.5">arrow_upward</span> 12%
+                        </span>
+</div>
+<div>
+<p class="text-xs text-slate-500 dark:text-gray-400 mb-0.5 font-medium">Total Views</p>
+<h4 class="text-2xl font-extrabold text-slate-900 dark:text-white">45.2k</h4>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-4 rounded-2xl shadow-sm border border-black/5 dark:border-white/5 flex flex-col justify-between h-32 hover:border-primary/20 transition-colors">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-xl bg-background-light dark:bg-white/5 text-primary">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</div>
+<span class="text-[10px] font-bold text-hunter-green flex items-center bg-hunter-green/10 px-1.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[10px] mr-0.5">arrow_upward</span> 5%
+                        </span>
+</div>
+<div>
+<p class="text-xs text-slate-500 dark:text-gray-400 mb-0.5 font-medium">Likes</p>
+<h4 class="text-2xl font-extrabold text-slate-900 dark:text-white">8.4k</h4>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-4 rounded-2xl shadow-sm border border-black/5 dark:border-white/5 flex flex-col justify-between h-32 hover:border-primary/20 transition-colors">
+<div class="flex justify-between items-start">
+<div class="p-2 rounded-xl bg-background-light dark:bg-white/5 text-purple-600 dark:text-purple-300">
+<span class="material-symbols-outlined text-xl">shopping_bag</span>
+</div>
+<span class="text-[10px] font-bold text-red-500 flex items-center bg-red-50 dark:bg-red-900/20 px-1.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[10px] mr-0.5">arrow_downward</span> 2%
+                        </span>
+</div>
+<div>
+<p class="text-xs text-slate-500 dark:text-gray-400 mb-0.5 font-medium">Orders</p>
+<h4 class="text-2xl font-extrabold text-slate-900 dark:text-white">350</h4>
+</div>
+</div>
+<div class="bg-primary p-4 rounded-2xl shadow-md border border-white/10 flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="p-2 rounded-xl bg-white/10 text-white">
+<span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+</div>
+</div>
+<div class="relative z-10">
+<p class="text-xs text-white/70 mb-0.5 font-medium">Revenue</p>
+<h4 class="text-2xl font-extrabold text-white">$12.5k</h4>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-slate-grey dark:text-powder-blush text-sm">view_list</span>
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-grey dark:text-gray-400">List Containers</h3>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-black/5 dark:border-white/5 overflow-hidden">
+<div class="p-4 border-b border-gray-100 dark:border-white/5 flex justify-between items-center">
+<h4 class="font-bold text-sm dark:text-white">Recent Transactions</h4>
+<button class="text-slate-400 hover:text-primary dark:hover:text-powder-blush">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-background-light/50 dark:hover:bg-white/5 transition-colors cursor-pointer group border-b border-gray-50 dark:border-white/5 last:border-0">
+<div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-xl">subscriptions</span>
+</div>
+<div class="flex-1">
+<h5 class="text-sm font-bold text-slate-900 dark:text-white">Subscription</h5>
+<p class="text-xs text-slate-500 dark:text-gray-400">Adobe Creative Cloud</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-white">-$54.00</p>
+<p class="text-[10px] text-slate-400">Today</p>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-background-light/50 dark:hover:bg-white/5 transition-colors cursor-pointer group border-b border-gray-50 dark:border-white/5 last:border-0">
+<div class="w-10 h-10 rounded-full bg-hunter-green/10 text-hunter-green flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-xl">arrow_downward</span>
+</div>
+<div class="flex-1">
+<h5 class="text-sm font-bold text-slate-900 dark:text-white">Deposit</h5>
+<p class="text-xs text-slate-500 dark:text-gray-400">Freelance Work</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-hunter-green">+$850.00</p>
+<p class="text-[10px] text-slate-400">Yesterday</p>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-background-light/50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-xl">shopping_cart</span>
+</div>
+<div class="flex-1">
+<h5 class="text-sm font-bold text-slate-900 dark:text-white">Grocery</h5>
+<p class="text-xs text-slate-500 dark:text-gray-400">Whole Foods Market</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-white">-$124.50</p>
+<p class="text-[10px] text-slate-400">Oct 24</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="absolute bottom-0 w-full bg-white/90 dark:bg-surface-dark/95 backdrop-blur-lg border-t border-gray-100 dark:border-white/5 pb-6 pt-2 px-6 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 p-2 text-primary dark:text-powder-blush">
+<span class="material-symbols-outlined filled">grid_view</span>
+<span class="text-[10px] font-bold">Layouts</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">pie_chart</span>
+<span class="text-[10px] font-medium">Stats</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-slate-grey dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</nav>
+</div>
+
+</body></html>
