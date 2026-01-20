@@ -1,19 +1,21 @@
 # Current Session
 
 **Status:** REST MODE
-**Last Updated:** 2026-01-19
-**Last Completed:** BR-027 Fifty Skill Tree Package (Released)
+**Last Updated:** 2026-01-20
+**Last Completed:** Design System v2 Planning
 
 ---
 
 ## Session Summary
 
-Successfully implemented and released `fifty_skill_tree` v0.1.0 - a production-ready Flutter widget for interactive skill trees with game integration support.
+Completed planning and documentation for Design System v2 migration and future engine packages.
 
-**Release Status:**
-- Merged to main: 776a740
-- Tag: v0.1.0-fifty_skill_tree
-- Feature branch cleaned up
+**This Session:**
+- Registered 4 new feature briefs (achievement, inventory, dialogue, forms)
+- Created TD-001 for fifty_skill_tree FDL refactor
+- Established Engine Package Architecture guidelines
+- Added Promotion Pattern to coding guidelines
+- Created MG-003 Design System v2 Migration brief
 
 ---
 
@@ -97,18 +99,30 @@ Successfully implemented and released `fifty_skill_tree` v0.1.0 - a production-r
 
 ## Briefs Queue
 
-| Brief | Type | Priority | Status |
-|-------|------|----------|--------|
-| BR-027 | Feature | P2-Medium | Done |
+| Brief | Type | Priority | Effort | Status |
+|-------|------|----------|--------|--------|
+| MG-003 | Migration | P0-Critical | L | Ready |
+| TD-001 | Tech Debt | P1-High | M | Ready |
+| BR-028 | Feature | P1-High | M | Ready |
+| BR-031 | Feature | P1-High | M | Ready |
+| BR-029 | Feature | P2-Medium | L | Ready |
+| BR-030 | Feature | P2-Medium | L | Ready |
 
 ---
 
 ## Next Steps When Resuming
 
-1. ~~**Merge PR**~~ - ✅ Merged to main (776a740)
-2. ~~**Tag Release**~~ - ✅ Tagged v0.1.0-fifty_skill_tree
-3. **Push to origin** - Push main and tags when ready
-4. **Publish to pub.dev** - `flutter pub publish` (optional)
-5. **Next task** - "What should I work on next?"
+1. **HUNT MG-003** - Design System v2 Migration (P0-Critical)
+   - Phase 1: fifty_tokens (colors, typography, radii, gradients)
+   - Phase 2: fifty_theme (theme data update)
+   - Phase 3: fifty_ui (component restyling)
+
+2. **TD-001** - Can run in parallel (fifty_skill_tree FDL refactor)
+
+3. **After MG-003** - Proceed with engine packages:
+   - BR-028 fifty_achievement_engine
+   - BR-031 fifty_forms
+   - BR-029 fifty_inventory_engine
+   - BR-030 fifty_dialogue_engine
 
 ---
