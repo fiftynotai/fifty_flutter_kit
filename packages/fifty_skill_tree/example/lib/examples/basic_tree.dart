@@ -33,10 +33,10 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
     // Give the player some starting points
     tree.addPoints(10);
 
-    // Create the controller with dark theme
+    // Create the controller with FDL defaults (no custom theme needed)
     _controller = SkillTreeController<void>(
       tree: tree,
-      theme: SkillTreeTheme.dark(),
+      // No theme = FDL defaults are used automatically
     );
 
     // Listen for changes to update the UI
@@ -66,7 +66,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         SnackBar(
           content: Text('Unlocked ${node.name}!'),
           duration: const Duration(seconds: 1),
-          backgroundColor: FiftyColors.igrisGreen.withValues(alpha: 0.9),
+          backgroundColor: FiftyColors.success.withValues(alpha: 0.9),
         ),
       );
     } else {
@@ -90,7 +90,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         SnackBar(
           content: Text(message),
           duration: const Duration(seconds: 1),
-          backgroundColor: FiftyColors.crimsonPulse,
+          backgroundColor: FiftyColors.burgundy,
         ),
       );
     }
@@ -102,7 +102,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
       SnackBar(
         content: const Text('Tree reset! All points refunded.'),
         duration: const Duration(seconds: 1),
-        backgroundColor: FiftyColors.gunmetal,
+        backgroundColor: FiftyColors.surfaceDark,
       ),
     );
   }
@@ -131,7 +131,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
           // Points display
           Container(
             padding: const EdgeInsets.all(FiftySpacing.lg),
-            color: FiftyColors.gunmetal,
+            color: FiftyColors.surfaceDark,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -141,7 +141,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                   'POINTS: ${_controller.availablePoints}',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: FiftyColors.terminalWhite,
+                        color: FiftyColors.cream,
                         letterSpacing: 1.2,
                       ),
                 ),
@@ -149,7 +149,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                 Text(
                   'SPENT: ${_controller.spentPoints}',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: FiftyColors.hyperChrome,
+                        color: FiftyColors.slateGrey,
                       ),
                 ),
               ],
@@ -175,11 +175,11 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
           // Instructions
           Container(
             padding: const EdgeInsets.all(FiftySpacing.lg),
-            color: FiftyColors.gunmetal,
+            color: FiftyColors.surfaceDark,
             child: Text(
               'Tap a skill to unlock it. Long press for details.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -203,26 +203,26 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
             if (node.description != null) ...[
               Text(
                 node.description!,
-                style: TextStyle(color: FiftyColors.terminalWhite),
+                style: TextStyle(color: FiftyColors.cream),
               ),
               const SizedBox(height: FiftySpacing.lg),
             ],
             Text(
               'Level: ${node.currentLevel}/${node.maxLevel}',
-              style: TextStyle(color: FiftyColors.hyperChrome),
+              style: TextStyle(color: FiftyColors.slateGrey),
             ),
             Text(
               'Cost: ${node.nextCost} points',
-              style: TextStyle(color: FiftyColors.hyperChrome),
+              style: TextStyle(color: FiftyColors.slateGrey),
             ),
             Text(
               'State: ${state.name.toUpperCase()}',
-              style: TextStyle(color: FiftyColors.hyperChrome),
+              style: TextStyle(color: FiftyColors.slateGrey),
             ),
             if (node.prerequisites.isNotEmpty)
               Text(
                 'Requires: ${node.prerequisites.join(", ")}',
-                style: TextStyle(color: FiftyColors.hyperChrome),
+                style: TextStyle(color: FiftyColors.slateGrey),
               ),
           ],
         ),

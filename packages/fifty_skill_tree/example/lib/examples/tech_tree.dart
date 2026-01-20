@@ -33,9 +33,10 @@ class _TechTreeExampleState extends State<TechTreeExample> {
     final tree = createTechTree();
     tree.addPoints(20);
 
+    // Use FDL defaults (no custom theme needed)
+    // SkillTreeThemePresets was removed - FDL provides consistent theming
     _controller = SkillTreeController<void>(
       tree: tree,
-      theme: SkillTreeThemePresets.scifi(),
     );
 
     _controller.addListener(_onControllerChanged);
@@ -66,7 +67,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
 
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: FiftyColors.gunmetal,
+      backgroundColor: FiftyColors.surfaceDark,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(FiftySpacing.lg),
@@ -98,7 +99,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
           SnackBar(
             content: Text('Researched ${node.name}!'),
             duration: const Duration(seconds: 1),
-            backgroundColor: FiftyColors.igrisGreen.withValues(alpha: 0.9),
+            backgroundColor: FiftyColors.success.withValues(alpha: 0.9),
           ),
         );
       }
@@ -121,34 +122,34 @@ class _TechTreeExampleState extends State<TechTreeExample> {
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'military':
-        return FiftyColors.crimsonPulse;
+        return FiftyColors.burgundy;
       case 'economy':
         return FiftyColors.warning;
       case 'technology':
         return _techCyan;
       default:
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiftyColors.voidBlack,
+      backgroundColor: FiftyColors.darkBurgundy,
       appBar: AppBar(
-        backgroundColor: FiftyColors.gunmetal,
+        backgroundColor: FiftyColors.surfaceDark,
         title: Text(
           'TECH TREE',
           style: TextStyle(
-            color: FiftyColors.terminalWhite,
+            color: FiftyColors.cream,
             letterSpacing: 1.5,
             fontWeight: FontWeight.bold,
           ),
         ),
-        iconTheme: IconThemeData(color: FiftyColors.terminalWhite),
+        iconTheme: IconThemeData(color: FiftyColors.cream),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh, color: FiftyColors.terminalWhite),
+            icon: Icon(Icons.refresh, color: FiftyColors.cream),
             onPressed: () {
               _controller.reset();
               setState(() {
@@ -164,7 +165,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
           // Resource bar
           Container(
             padding: const EdgeInsets.all(FiftySpacing.lg),
-            color: FiftyColors.gunmetal,
+            color: FiftyColors.surfaceDark,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -178,7 +179,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
                   icon: Icons.check_circle,
                   label: 'COMPLETED',
                   value: _controller.tree.getUnlockedNodes().length.toString(),
-                  color: FiftyColors.igrisGreen,
+                  color: FiftyColors.success,
                 ),
                 _ResourceDisplay(
                   icon: Icons.lock_open,
@@ -258,7 +259,7 @@ class _ResourceDisplay extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: FiftyColors.hyperChrome,
+            color: FiftyColors.slateGrey,
             letterSpacing: 0.5,
             fontSize: 10,
           ),
@@ -297,21 +298,21 @@ class _TechNode extends StatelessWidget {
         ),
         color: isUnlocked
             ? branchColor.withValues(alpha: 0.2)
-            : FiftyColors.gunmetal,
+            : FiftyColors.surfaceDark,
         border: Border.all(
           color: isSelected
-              ? FiftyColors.terminalWhite
+              ? FiftyColors.cream
               : isUnlocked
                   ? branchColor
                   : isAvailable
                       ? branchColor.withValues(alpha: 0.6)
-                      : FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                      : FiftyColors.slateGrey.withValues(alpha: 0.3),
           width: isSelected ? 3 : 2,
         ),
         boxShadow: isSelected || isUnlocked
             ? [
                 BoxShadow(
-                  color: (isSelected ? FiftyColors.terminalWhite : branchColor)
+                  color: (isSelected ? FiftyColors.cream : branchColor)
                       .withValues(alpha: 0.3),
                   blurRadius: 8,
                   spreadRadius: 1,
@@ -327,8 +328,8 @@ class _TechNode extends StatelessWidget {
             color: isUnlocked
                 ? branchColor
                 : isAvailable
-                    ? FiftyColors.terminalWhite.withValues(alpha: 0.7)
-                    : FiftyColors.hyperChrome,
+                    ? FiftyColors.cream.withValues(alpha: 0.7)
+                    : FiftyColors.slateGrey,
             size: 28,
           ),
           const SizedBox(height: 2),
@@ -336,7 +337,7 @@ class _TechNode extends StatelessWidget {
             Text(
               'T${node.tier}',
               style: TextStyle(
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
                 fontSize: 10,
               ),
             ),
@@ -384,7 +385,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               height: 4,
               margin: const EdgeInsets.only(bottom: FiftySpacing.lg),
               decoration: BoxDecoration(
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -418,7 +419,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               Text(
                 'TIER ${node.tier}',
                 style: TextStyle(
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.slateGrey,
                   fontSize: 12,
                   letterSpacing: 0.5,
                 ),
@@ -433,7 +434,7 @@ class _NodeDetailsSheet extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: FiftyColors.terminalWhite,
+              color: FiftyColors.cream,
               letterSpacing: 1,
             ),
           ),
@@ -443,7 +444,7 @@ class _NodeDetailsSheet extends StatelessWidget {
           Text(
             node.description ?? 'No description available.',
             style: TextStyle(
-              color: FiftyColors.terminalWhite.withValues(alpha: 0.7),
+              color: FiftyColors.cream.withValues(alpha: 0.7),
             ),
           ),
           const SizedBox(height: FiftySpacing.lg),
@@ -453,7 +454,7 @@ class _NodeDetailsSheet extends StatelessWidget {
             Text(
               'REQUIREMENTS:',
               style: TextStyle(
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
                 fontSize: 12,
                 letterSpacing: 0.5,
               ),
@@ -463,7 +464,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               (prereq) => Text(
                 '  - $prereq',
                 style: TextStyle(
-                  color: FiftyColors.hyperChrome.withValues(alpha: 0.8),
+                  color: FiftyColors.slateGrey.withValues(alpha: 0.8),
                   fontSize: 12,
                 ),
               ),
@@ -479,7 +480,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               Text(
                 'COST: ${node.nextCost} POINTS',
                 style: TextStyle(
-                  color: canAfford ? branchColor : FiftyColors.crimsonPulse,
+                  color: canAfford ? branchColor : FiftyColors.burgundy,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -488,7 +489,7 @@ class _NodeDetailsSheet extends StatelessWidget {
                 Text(
                   '(Need ${node.nextCost - availablePoints} more)',
                   style: TextStyle(
-                    color: FiftyColors.crimsonPulse,
+                    color: FiftyColors.burgundy,
                     fontSize: 12,
                   ),
                 ),

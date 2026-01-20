@@ -11,11 +11,24 @@ import '../themes/skill_tree_theme.dart';
 /// - Unlock operations with results
 /// - Progress serialization/deserialization
 ///
+/// **Theming:**
+/// - If no theme is provided, widgets use FDL (Fifty Design Language) defaults
+/// - Use [setTheme] to apply a custom [SkillTreeTheme] for full customization
+///
 /// **Example:**
 /// ```dart
+/// // Option 1: Use FDL defaults (recommended)
 /// final controller = SkillTreeController<AbilityData>(
 ///   tree: mySkillTree,
-///   theme: SkillTreeTheme.dark(),
+/// );
+///
+/// // Option 2: Use custom theme
+/// final controller = SkillTreeController<AbilityData>(
+///   tree: mySkillTree,
+///   theme: SkillTreeTheme(
+///     lockedNodeColor: Colors.grey,
+///     // ... custom colors
+///   ),
 /// );
 ///
 /// // Listen for changes
@@ -34,7 +47,7 @@ class SkillTreeController<T> extends ChangeNotifier {
   ///
   /// **Parameters:**
   /// - [tree]: The skill tree to manage
-  /// - [theme]: Optional theme (defaults to dark theme)
+  /// - [theme]: Optional custom theme. If null, FDL defaults are used.
   /// - [initialZoom]: Initial zoom level (defaults to 1.0)
   /// - [initialPanOffset]: Initial pan offset (defaults to zero)
   SkillTreeController({
@@ -43,14 +56,14 @@ class SkillTreeController<T> extends ChangeNotifier {
     double initialZoom = 1.0,
     Offset initialPanOffset = Offset.zero,
   })  : _tree = tree,
-        _theme = theme ?? SkillTreeTheme.dark(),
+        _theme = theme,
         _zoom = initialZoom,
         _panOffset = initialPanOffset;
 
   // ---- State ----
 
   SkillTree<T> _tree;
-  SkillTreeTheme _theme;
+  SkillTreeTheme? _theme;
   double _zoom;
   Offset _panOffset;
   String? _selectedNodeId;
@@ -61,8 +74,8 @@ class SkillTreeController<T> extends ChangeNotifier {
   /// The current skill tree.
   SkillTree<T> get tree => _tree;
 
-  /// The current theme.
-  SkillTreeTheme get theme => _theme;
+  /// The current custom theme, or null if using FDL defaults.
+  SkillTreeTheme? get theme => _theme;
 
   /// Current zoom level (1.0 = 100%).
   double get zoom => _zoom;
@@ -182,8 +195,11 @@ class SkillTreeController<T> extends ChangeNotifier {
 
   // ---- Theme ----
 
-  /// Updates the theme.
-  void setTheme(SkillTreeTheme theme) {
+  /// Updates the theme to a custom [SkillTreeTheme].
+  ///
+  /// Use this to apply a custom color scheme. Set to null to revert
+  /// to FDL defaults.
+  void setTheme(SkillTreeTheme? theme) {
     if (_theme != theme) {
       _theme = theme;
       notifyListeners();

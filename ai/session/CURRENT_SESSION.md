@@ -2,36 +2,41 @@
 
 **Status:** REST MODE
 **Last Updated:** 2026-01-20
-**Last Completed:** BR-032 - Selection Controls (Checkbox & Radio)
+**Last Completed:** TD-001 - Skill Tree FDL Refactor
 
 ---
 
 ## Session Summary
 
-Implemented BR-032 selection controls for fifty_ui package.
+Refactored fifty_skill_tree to consume FDL tokens by default while preserving backward compatibility.
 
 **This Session:**
-- Implemented FiftyCheckbox (20x20, 4px radius, burgundy checked state)
-- Implemented FiftyRadio<T> (20x20 circle, generic type support)
-- Both components with 150ms kinetic animation, hover glow, optional labels
-- All 222 tests passing, analyzer clean
-- Commit: 4d5ed8e on branch `feat/BR-032-selection-controls`
+- FDL tokens now DEFAULT (no theme required)
+- SkillTreeTheme + setTheme() preserved for custom themes
+- ThemePresets removed (hardcoded presets)
+- All 188 tests passing
+- Commit: 3bea525 on branch `refactor/TD-001-skill-tree-fdl`
 
 ---
 
 ## Completed This Session
 
-**BR-032: Selection Controls (Checkbox & Radio)**
+**TD-001: Skill Tree FDL Refactor**
 - Status: Done
-- Commit: 4d5ed8e on branch `feat/BR-032-selection-controls`
-- Type: Feature | Priority: P2-Medium | Effort: S-Small
+- Commit: 3bea525 on branch `refactor/TD-001-skill-tree-fdl`
+- Type: Tech Debt | Priority: P1-High | Effort: M-Medium
 
-### Components Added
+### Changes Made
 
-| Component | Description |
-|-----------|-------------|
-| FiftyCheckbox | Multi-select boolean control, 20x20, 4px radius |
-| FiftyRadio<T> | Single-select option control, generic type support |
+| File | Action |
+|------|--------|
+| pubspec.yaml | Added fifty_tokens |
+| skill_tree_controller.dart | Made theme nullable |
+| skill_node_widget.dart | FDL defaults |
+| skill_tooltip.dart | FDL defaults |
+| connection_painter.dart | FDL defaults |
+| theme_presets.dart | DELETED |
+| Example apps (4) | Updated |
 
 ---
 
@@ -52,7 +57,7 @@ Implemented BR-032 selection controls for fifty_ui package.
 | fifty_sentences_engine | v0.1.0 | Released |
 | fifty_map_engine | v0.1.0 | Released |
 | fifty_printing_engine | v1.0.0 | Released |
-| fifty_skill_tree | v0.1.0 | Released |
+| fifty_skill_tree | v0.2.0 | **FDL Integrated** |
 
 ---
 
@@ -62,10 +67,10 @@ Implemented BR-032 selection controls for fifty_ui package.
 |-------|------|----------|--------|--------|
 | BG-001 | Bug | P1-High | S | **Done** |
 | BR-032 | Feature | P2-Medium | S | **Done** |
-| UI-005 | Feature | P2-Medium | M | Ready |
-| TD-001 | Tech Debt | P1-High | M | Ready |
+| TD-001 | Tech Debt | P1-High | M | **Done** |
 | BR-028 | Feature | P1-High | M | Ready |
 | BR-031 | Feature | P1-High | M | Ready |
+| UI-005 | Feature | P2-Medium | M | Ready |
 | BR-029 | Feature | P2-Medium | L | Ready |
 | BR-030 | Feature | P2-Medium | L | Ready |
 
@@ -73,19 +78,15 @@ Implemented BR-032 selection controls for fifty_ui package.
 
 ## Next Steps When Resuming
 
-1. **Merge BR-032** - Merge `feat/BR-032-selection-controls` branch to main
+1. **Merge TD-001** - Merge `refactor/TD-001-skill-tree-fdl` branch to main
 
-2. **HUNT TD-001** - Skill Tree FDL Refactor (P1-High)
-   - Refactor fifty_skill_tree to consume FDL tokens
+2. **HUNT BR-028** - fifty_achievement_engine (P1-High)
+   - New engine package following FDL pattern
 
-3. **HUNT BR-028** - fifty_achievement_engine (P1-High)
-   - New engine package for achievement system
-
-4. **HUNT BR-031** - fifty_forms (P1-High)
+3. **HUNT BR-031** - fifty_forms (P1-High)
    - Form validation and management package
 
-5. **HUNT UI-005** - Example App Redesign (P2-Medium)
+4. **HUNT UI-005** - Example App Redesign (P2-Medium)
    - Add missing component showcases
-   - Add new pages (Controls, Layout, Navigation)
 
 ---
