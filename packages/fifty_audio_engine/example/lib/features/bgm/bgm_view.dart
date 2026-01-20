@@ -42,23 +42,20 @@ class _BgmViewState extends State<BgmView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('BGM Player')),
-      body: ListenableBuilder(
-        listenable: _viewModel,
-        builder: (context, _) {
-          return ListView(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
-            children: [
-              _buildNowPlaying(),
-              const SizedBox(height: FiftySpacing.lg),
-              _buildControls(),
-              const SizedBox(height: FiftySpacing.lg),
-              _buildTrackList(),
-            ],
-          );
-        },
-      ),
+    return ListenableBuilder(
+      listenable: _viewModel,
+      builder: (context, _) {
+        return ListView(
+          padding: const EdgeInsets.all(FiftySpacing.lg),
+          children: [
+            _buildNowPlaying(),
+            const SizedBox(height: FiftySpacing.lg),
+            _buildControls(),
+            const SizedBox(height: FiftySpacing.lg),
+            _buildTrackList(),
+          ],
+        );
+      },
     );
   }
 

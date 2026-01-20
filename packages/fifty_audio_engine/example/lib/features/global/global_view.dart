@@ -41,23 +41,20 @@ class _GlobalViewState extends State<GlobalView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Global Controls')),
-      body: ListenableBuilder(
-        listenable: _viewModel,
-        builder: (context, _) {
-          return ListView(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
-            children: [
-              _buildMasterControls(),
-              const SizedBox(height: FiftySpacing.lg),
-              _buildFadeControls(),
-              const SizedBox(height: FiftySpacing.lg),
-              _buildChannelStatus(),
-            ],
-          );
-        },
-      ),
+    return ListenableBuilder(
+      listenable: _viewModel,
+      builder: (context, _) {
+        return ListView(
+          padding: const EdgeInsets.all(FiftySpacing.lg),
+          children: [
+            _buildMasterControls(),
+            const SizedBox(height: FiftySpacing.lg),
+            _buildFadeControls(),
+            const SizedBox(height: FiftySpacing.lg),
+            _buildChannelStatus(),
+          ],
+        );
+      },
     );
   }
 
