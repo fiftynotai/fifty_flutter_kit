@@ -3,7 +3,7 @@
 **Type:** Feature
 **Priority:** P2-Medium
 **Effort:** M-Medium (1-2d)
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-01-20
 **Requested By:** Monarch
 
@@ -168,8 +168,8 @@ These selection controls are referenced in the v2 design spec but not yet implem
 
 ## Workflow State
 
-**Phase:** COMMITTING
-**Active Agent:** orchestrator
+**Phase:** COMPLETE
+**Active Agent:** none
 **Retry Count:** 0
 
 ### Agent Log
@@ -184,3 +184,4 @@ These selection controls are referenced in the v2 design spec but not yet implem
 - [2026-01-20 18:33] Invoking reviewer agent...
 - [2026-01-20 18:34] JUDGE APPROVE - ready for commit
 - [2026-01-20 18:34] Committing changes...
+- [2026-01-20 18:35] COMPLETE - commit 3cbc54a
