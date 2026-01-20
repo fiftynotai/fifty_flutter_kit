@@ -310,25 +310,32 @@ class _FiftyTextFieldState extends State<FiftyTextField>
       final cursorChar = widget.cursorStyle == FiftyCursorStyle.block
           ? '\u2588' // Full block character
           : '_';
-      return Padding(
-        padding: const EdgeInsets.only(right: FiftySpacing.sm),
-        child: AnimatedBuilder(
-          animation: _cursorController,
-          builder: (context, child) {
-            return Opacity(
-              opacity: _cursorController.value,
-              child: Text(
-                cursorChar,
-                style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamily,
-                  fontSize: FiftyTypography.bodyMedium,
-                  fontWeight: FiftyTypography.medium,
-                  color: colorScheme.primary,
-                ),
-              ),
-            );
-          },
-        ),
+      // Use Column to center vertically only, keeping horizontal position at end
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: FiftySpacing.sm),
+            child: AnimatedBuilder(
+              animation: _cursorController,
+              builder: (context, child) {
+                return Opacity(
+                  opacity: _cursorController.value,
+                  child: Text(
+                    cursorChar,
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyMedium,
+                      fontWeight: FiftyTypography.medium,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       );
     }
     return widget.suffix;
@@ -372,7 +379,11 @@ class _FiftyTextFieldState extends State<FiftyTextField>
         AnimatedContainer(
           duration: fifty.fast,
           curve: fifty.standardCurve,
-          height: 48, // Fixed 48px height
+          // Fixed height for single-line, flexible for multiline
+          height: widget.maxLines == 1 ? 48 : null,
+          constraints: widget.maxLines != 1
+              ? const BoxConstraints(minHeight: 48)
+              : null,
           decoration: BoxDecoration(
             borderRadius: widget.borderStyle == FiftyBorderStyle.full
                 ? FiftyRadii.xlRadius
@@ -391,6 +402,10 @@ class _FiftyTextFieldState extends State<FiftyTextField>
             autofocus: widget.autofocus,
             keyboardType: widget.keyboardType,
             textInputAction: widget.textInputAction,
+            // Top-align text for multiline fields
+            textAlignVertical: widget.maxLines != 1
+                ? TextAlignVertical.top
+                : null,
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyMedium,

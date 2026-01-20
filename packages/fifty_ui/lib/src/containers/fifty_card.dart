@@ -199,23 +199,77 @@ class _FiftyCardState extends State<FiftyCard>
       effectiveShadow = FiftyShadows.md;
     }
 
-    Widget cardContent = Container(
+    // Card visual content (padding + child)
+    final cardContent = Container(
       padding: effectivePadding,
       child: widget.child,
     );
 
-    if (_isInteractive) {
-      cardContent = Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: widget.onTap,
-          borderRadius: effectiveBorderRadius,
-          splashColor: colorScheme.primary.withValues(alpha: 0.2),
-          highlightColor: Colors.transparent,
-          child: cardContent,
+    // The visual card structure with decoration and overlays
+    final Widget cardVisual = AnimatedContainer(
+      duration: fifty.fast,
+      curve: fifty.standardCurve,
+      margin: widget.margin,
+      decoration: BoxDecoration(
+        color: effectiveBackgroundColor,
+        borderRadius: effectiveBorderRadius,
+        border: Border.all(
+          color: borderColor,
+          width: borderWidth,
         ),
-      );
-    }
+        boxShadow: effectiveShadow,
+      ),
+      child: ClipRRect(
+        borderRadius: effectiveBorderRadius,
+        child: Stack(
+          children: [
+            cardContent,
+            // FDL Rule: "Cards: Hovering triggers a scanline effect"
+            if (widget.scanlineOnHover)
+              Positioned.fill(
+                child: AnimatedBuilder(
+                  animation: _scanlineController,
+                  builder: (context, child) {
+                    if (!_showScanline && _scanlineController.value == 0) {
+                      return const SizedBox.shrink();
+                    }
+                    return CustomPaint(
+                      painter: _ScanlinePainter(
+                        progress: _scanlineController.value,
+                        color: FiftyColors.burgundy.withValues(alpha: 0.3),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            // Halftone texture overlay
+            if (widget.hasTexture)
+              const Positioned.fill(
+                child: IgnorePointer(
+                  child: HalftoneOverlay(
+                    opacity: 0.05,
+                    dotRadius: 1.0,
+                    spacing: 8.0,
+                  ),
+                ),
+              ),
+            // Interactive ripple layer - INSIDE Stack so it draws ON TOP
+            if (_isInteractive)
+              Positioned.fill(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: widget.onTap,
+                    borderRadius: effectiveBorderRadius,
+                    splashColor: colorScheme.primary.withValues(alpha: 0.2),
+                    highlightColor: colorScheme.primary.withValues(alpha: 0.1),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
 
     return Focus(
       onFocusChange: _isInteractive
@@ -228,57 +282,7 @@ class _FiftyCardState extends State<FiftyCard>
           scale: _currentScale,
           duration: fifty.fast,
           curve: fifty.standardCurve,
-          child: AnimatedContainer(
-            duration: fifty.fast,
-            curve: fifty.standardCurve,
-            margin: widget.margin,
-            decoration: BoxDecoration(
-              color: effectiveBackgroundColor,
-              borderRadius: effectiveBorderRadius,
-              border: Border.all(
-                color: borderColor,
-                width: borderWidth,
-              ),
-              boxShadow: effectiveShadow,
-            ),
-            child: ClipRRect(
-              borderRadius: effectiveBorderRadius,
-              child: Stack(
-                children: [
-                  cardContent,
-                  // FDL Rule: "Cards: Hovering triggers a scanline effect"
-                  if (widget.scanlineOnHover)
-                    Positioned.fill(
-                      child: AnimatedBuilder(
-                        animation: _scanlineController,
-                        builder: (context, child) {
-                          if (!_showScanline && _scanlineController.value == 0) {
-                            return const SizedBox.shrink();
-                          }
-                          return CustomPaint(
-                            painter: _ScanlinePainter(
-                              progress: _scanlineController.value,
-                              color: FiftyColors.burgundy.withValues(alpha: 0.3),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  // Halftone texture overlay
-                  if (widget.hasTexture)
-                    const Positioned.fill(
-                      child: IgnorePointer(
-                        child: HalftoneOverlay(
-                          opacity: 0.05,
-                          dotRadius: 1.0,
-                          spacing: 8.0,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
+          child: cardVisual,
         ),
       ),
     );
