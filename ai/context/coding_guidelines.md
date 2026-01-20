@@ -1183,6 +1183,99 @@ dependencies:
   fifty_audio_engine: ^0.8.0 # if sounds needed
 ```
 
+### The Promotion Pattern
+
+Not everything belongs in FDL. Use this decision tree:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  When building something new, ask:                          │
+│                                                             │
+│  1. Is it a primitive? (color, spacing, typography)         │
+│     YES → Must go in fifty_tokens                           │
+│                                                             │
+│  2. Is it a generic component? (button, card, modal)        │
+│     YES → Must go in fifty_ui                               │
+│                                                             │
+│  3. Is it domain-specific? (skill node, inventory slot)     │
+│     YES → Can stay in engine package                        │
+│           BUT must consume FDL primitives                   │
+│                                                             │
+│  4. Is it used by 2+ packages?                              │
+│     YES → PROMOTE to fifty_ui                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Layer Classification:**
+
+| Layer | Location | Examples |
+|-------|----------|----------|
+| Primitives | fifty_tokens | Colors, spacing, typography, radii, motion |
+| Generic Components | fifty_ui | Button, Card, TextField, Modal, Toast, ProgressBar |
+| Domain Widgets | Engine package | SkillNodeWidget, AchievementCard, InventorySlot |
+| Domain Painters | Engine package | SkillConnectionPainter, DialogueBoxPainter |
+
+**Promotion Workflow:**
+
+When something is needed by multiple packages:
+
+```
+1. Package A creates GlowAnimation (lives in package A)
+2. Package B needs same animation
+3. STOP - Don't copy to Package B
+4. Create brief: "Promote GlowAnimation to fifty_ui"
+5. Move to fifty_ui with proper API
+6. Both packages consume from fifty_ui
+```
+
+**Examples:**
+
+| Component | Where | Why |
+|-----------|-------|-----|
+| `FiftyColors.success` | fifty_tokens | Primitive |
+| `FiftyButton` | fifty_ui | Generic component |
+| `FiftyProgressBar` | fifty_ui | Generic component |
+| `SkillNodeWidget` | fifty_skill_tree | Domain-specific |
+| `AchievementCard` | fifty_achievement | Domain-specific |
+| `GlowAnimation` | **Promote** | Used by 2+ packages |
+| `RarityBorder` | **Promote** | Used by inventory + achievement |
+
+**Domain Widget Pattern:**
+
+```dart
+// ✅ CORRECT - Domain widget consuming FDL primitives
+class SkillNodeWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: FiftyColors.surface,           // ← FDL primitive
+      padding: FiftySpacing.insets.md,      // ← FDL primitive
+      child: FiftyCard(                     // ← FDL component
+        child: _buildSkillContent(),        // ← Domain-specific logic
+      ),
+    );
+  }
+}
+
+// ✅ CORRECT - Domain-specific painter consuming FDL
+class SkillConnectionPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = FiftyColors.border          // ← Consumes FDL
+      ..strokeWidth = 2;
+    // Domain-specific drawing logic stays here
+  }
+}
+```
+
+**Benefits of This Approach:**
+
+- **Speed:** Engine packages can build domain widgets without waiting for FDL updates
+- **Consistency:** All primitives come from FDL - no hardcoded values
+- **Scalability:** Common patterns get promoted to FDL over time
+- **Clean FDL:** Foundation doesn't bloat with domain-specific niche components
+
 ### Why This Matters
 
 When the design system changes (new colors, new spacing scale, new typography):
