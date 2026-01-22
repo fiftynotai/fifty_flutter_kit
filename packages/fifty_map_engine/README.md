@@ -1,6 +1,6 @@
 # Fifty Map Engine
 
-Flame-based interactive grid map rendering for Flutter games. Part of the Fifty ecosystem.
+Flame-based interactive grid map rendering for Flutter games. Part of Fifty Flutter Kit.
 
 [![Pub Version](https://img.shields.io/pub/v/fifty_map_engine)](https://pub.dev/packages/fifty_map_engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -720,7 +720,7 @@ await controller.centerOnEntity(exit, duration: Duration(seconds: 1));
 
 ## Fifty Design Language Integration
 
-This package is part of the Fifty ecosystem:
+This package is part of Fifty Flutter Kit:
 
 - **Consistent naming** - All classes use `Fifty` prefix
 - **Compatible packages** - Works with `fifty_ui`, `fifty_theme`, `fifty_tokens`
@@ -768,4 +768,4 @@ flutter run
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

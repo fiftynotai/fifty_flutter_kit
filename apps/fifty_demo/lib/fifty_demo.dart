@@ -1,6 +1,6 @@
 /// Fifty Demo - Composite Demo App
 ///
-/// Showcases all Fifty ecosystem packages working together.
+/// Showcases all Fifty Flutter Kit packages working together.
 ///
 /// **Features:**
 /// - Home: Ecosystem status and navigation

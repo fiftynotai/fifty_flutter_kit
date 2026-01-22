@@ -5,12 +5,12 @@
 Pod::Spec.new do |s|
   s.name             = 'fifty_speech_engine'
   s.version          = '0.1.0'
-  s.summary          = 'Fifty ecosystem speech engine - TTS and STT for Flutter'
+  s.summary          = 'Fifty Flutter Kit speech engine - TTS and STT for Flutter'
   s.description      = <<-DESC
 A unified speech engine providing Text-to-Speech (TTS) and Speech-to-Text (STT)
-capabilities for Flutter games and applications. Part of the Fifty Design Language ecosystem.
+capabilities for Flutter games and applications. Part of Fifty Flutter Kit.
                        DESC
-  s.homepage         = 'https://github.com/fiftynotai/fifty_eco_system'
+  s.homepage         = 'https://github.com/fiftynotai/fifty_flutter_kit'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Fifty.ai' => 'contact@fifty.ai' }
   s.source           = { :path => '.' }

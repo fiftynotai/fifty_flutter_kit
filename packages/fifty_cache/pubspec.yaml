@@ -1,5 +1,5 @@
 name: fifty_cache
-description: TTL-based HTTP response caching with pluggable stores and policies. Part of the Fifty ecosystem.
+description: TTL-based HTTP response caching with pluggable stores and policies. Part of the Fifty Flutter Kit.
 version: 0.1.0
 repository: https://github.com/anthropic/fifty_flutter_kit/tree/main/packages/fifty_cache
 homepage: https://fifty.dev

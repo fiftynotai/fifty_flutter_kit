@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial release of fifty_speech_engine
-- Rebranded from erune_speech_engine to Fifty ecosystem
+- Rebranded from erune_speech_engine to Fifty Flutter Kit
 - **FiftySpeechEngine** - Unified TTS and STT interface
   - Locale-aware configuration
   - Combined initialization for both engines
@@ -70,4 +70,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

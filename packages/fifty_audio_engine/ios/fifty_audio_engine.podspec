@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name             = 'fifty_audio_engine'
   s.version          = '0.7.0'
-  s.summary          = 'Fifty ecosystem audio engine'
+  s.summary          = 'Fifty Flutter Kit audio engine'
   s.description      = <<-DESC
 Modular and reactive audio system for Flutter games and apps.
-Part of the Fifty Design Language ecosystem.
+Part of Fifty Flutter Kit.
                        DESC
-  s.homepage         = 'https://github.com/fiftynotai/fifty_eco_system'
+  s.homepage         = 'https://github.com/fiftynotai/fifty_flutter_kit'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Fifty.ai' => 'dev@fifty.ai' }
   s.source           = { :path => '.' }

@@ -1,7 +1,7 @@
 /// Fifty Utils - Pure Dart/Flutter utility functions
 ///
 /// This package provides commonly used utility functions extracted from
-/// the mvvm_actions template for reuse across the Fifty ecosystem.
+/// the mvvm_actions template for reuse across Fifty Flutter Kit.
 ///
 /// ## Extensions
 ///

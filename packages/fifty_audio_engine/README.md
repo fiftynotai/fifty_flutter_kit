@@ -1,6 +1,6 @@
 # Fifty Audio Engine
 
-A modular, reactive audio system for Flutter games and applications. Built for the Fifty Design Language ecosystem.
+A modular, reactive audio system for Flutter games and applications. Built for Fifty Flutter Kit.
 
 ---
 
@@ -403,7 +403,7 @@ await voice.waitUntilStopped();
 
 ## Fifty Design Language Integration
 
-This package is part of the Fifty ecosystem:
+This package is part of Fifty Flutter Kit:
 
 - **FiftyMotion tokens** - Fade durations align with motion system
 - **Namespace isolation** - Storage keys prefixed with `fifty_audio_*`
@@ -438,4 +438,4 @@ All channel states are persisted via `GetStorage`:
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

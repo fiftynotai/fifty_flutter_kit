@@ -1,5 +1,5 @@
 name: fifty_storage
-description: Secure token storage and preferences management for Flutter apps. Part of the Fifty ecosystem.
+description: Secure token storage and preferences management for Flutter apps. Part of the Fifty Flutter Kit.
 version: 0.1.0
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_storage
 homepage: https://fifty.dev

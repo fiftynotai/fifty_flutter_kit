@@ -1,4 +1,4 @@
-# Coding Guidelines - Fifty Ecosystem
+# Coding Guidelines - Fifty Flutter Kit
 
 **Generated:** 2026-01-01
 **Source:** Base Architecture Template Analysis (Mode A)
@@ -10,7 +10,7 @@
 
 ## Overview
 
-The Fifty Ecosystem follows the **MVVM + Actions** architecture pattern, originally based on [KalvadTech's flutter-mvvm-actions-arch](https://github.com/KalvadTech/flutter-mvvm-actions-arch). This architecture provides clean separation of concerns with dedicated layers for UI, business logic, data access, and UX orchestration.
+Fifty Flutter Kit follows the **MVVM + Actions** architecture pattern, originally based on [KalvadTech's flutter-mvvm-actions-arch](https://github.com/KalvadTech/flutter-mvvm-actions-arch). This architecture provides clean separation of concerns with dedicated layers for UI, business logic, data access, and UX orchestration.
 
 **Key Principles:**
 - **Layer Isolation:** Each layer has a single responsibility
@@ -1299,6 +1299,6 @@ When the design system changes (new colors, new spacing scale, new typography):
 
 ---
 
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-22
 **Architecture Version:** MVVM + Actions 1.0
 **Maintained By:** Fifty.ai

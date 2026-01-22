@@ -65,14 +65,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive README with API reference
   - Quick start guide with code examples
   - Usage patterns for common scenarios
-  - Fifty ecosystem integration examples
+  - Fifty Flutter Kit integration examples
 
 ### Changed
 
 - Rebranded from `erune_sentences_engine` to `fifty_sentences_engine`
 - Removed GetX dependency - now uses plain Dart callbacks
 - Package namespace changed to `com.fifty.sentences_engine`
-- Updated documentation for Fifty ecosystem integration
+- Updated documentation for Fifty Flutter Kit integration
 
 ### Migration Notes
 

@@ -2,7 +2,7 @@
 
 Production-grade Flutter package for multi-printer ESC/POS printing with Bluetooth and WiFi support.
 
-**Part of the Fifty Ecosystem** - A collection of high-quality Flutter packages for building enterprise-grade applications.
+**Part of the Fifty Flutter Kit** - A collection of high-quality Flutter packages for building enterprise-grade applications.
 
 ---
 
@@ -34,7 +34,7 @@ Production-grade Flutter package for multi-printer ESC/POS printing with Bluetoo
 - [Usage Examples](#usage-examples)
 - [API Reference](#api-reference)
 - [Platform Setup](#platform-setup)
-- [Part of Fifty Ecosystem](#part-of-the-fifty-ecosystem)
+- [Part of Fifty Flutter Kit](#part-of-fifty-flutter-kit)
 - [License](#license)
 
 ---
@@ -792,9 +792,9 @@ Add to `ios/Runner/Info.plist`:
 
 ---
 
-## Part of the Fifty Ecosystem
+## Part of Fifty Flutter Kit
 
-This package is part of the Fifty Ecosystem:
+This package is part of the Fifty Flutter Kit:
 
 | Package | Description |
 |---------|-------------|

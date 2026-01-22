@@ -33,7 +33,7 @@ dependencies:
   timeago: ^3.7.0
   jwt_decoder: ^2.0.1
 
-  # Fifty Ecosystem
+  # Fifty Flutter Kit
   fifty_tokens:
     path: ../../packages/fifty_tokens
   fifty_theme:

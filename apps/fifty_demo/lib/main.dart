@@ -1,6 +1,6 @@
 /// Fifty Demo App - Entry Point
 ///
-/// Composite demo app showcasing all Fifty ecosystem packages working together.
+/// Composite demo app showcasing all Fifty Flutter Kit packages working together.
 /// Demonstrates audio, speech, sentences, and map engines with FDL styling.
 library;
 

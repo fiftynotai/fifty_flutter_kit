@@ -2,7 +2,7 @@
 
 Pure Dart/Flutter utilities - DateTime, Duration, Color extensions, responsive breakpoints, and async state containers.
 
-Part of the [Fifty Ecosystem](../../README.md).
+Part of the [Fifty Flutter Kit](../../README.md).
 
 ## Features
 

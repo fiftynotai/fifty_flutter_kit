@@ -11,7 +11,7 @@ abstract class DemoDialogues {
   static const List<Sentence> introduction = [
     Sentence(
       id: 'intro_1',
-      text: 'Welcome to the Fifty Ecosystem demonstration.',
+      text: 'Welcome to the Fifty Flutter Kit demonstration.',
       speaker: 'SYSTEM',
     ),
     Sentence(
@@ -87,7 +87,7 @@ abstract class DemoDialogues {
     ),
     Sentence(
       id: 'story_4',
-      text: '"Welcome to the Fifty ecosystem, Commander."',
+      text: '"Welcome to Fifty Flutter Kit, Commander."',
       speaker: 'AI',
     ),
     Sentence(

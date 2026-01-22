@@ -2,7 +2,7 @@
 
 **PROJECT TEMPLATE** - MVVM + Actions architecture scaffold for Flutter applications.
 
-Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
 
 ---
 
@@ -292,7 +292,7 @@ if (themeVM.isDarkMode) {
 
 ---
 
-## Fifty Ecosystem Integration
+## Fifty Flutter Kit Integration
 
 This template uses these Fifty packages (already configured in pubspec.yaml):
 
@@ -375,7 +375,7 @@ if (connVM.isOnline.value) {
 
 Based on [flutter-mvvm-actions-arch](https://github.com/KalvadTech/flutter-mvvm-actions-arch) by KalvadTech.
 
-Rebranded and integrated into the Fifty Ecosystem by [Fifty.ai](https://fifty.dev).
+Rebranded and integrated into Fifty Flutter Kit by [Fifty.ai](https://fifty.dev).
 
 ---
 

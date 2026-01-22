@@ -348,7 +348,7 @@ flutter run
 
 ## Fifty Design Language Integration
 
-This package is part of the Fifty ecosystem:
+This package is part of Fifty Flutter Kit:
 
 - **Consistent naming** - FiftySpeechEngine follows ecosystem patterns
 - **Compatible packages** - Works with `fifty_audio_engine`, `fifty_ui`
@@ -376,4 +376,4 @@ This package is part of the Fifty ecosystem:
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

@@ -2,7 +2,7 @@
 
 TTL-based HTTP response caching with pluggable stores and policies.
 
-Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
+Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
 
 ---
 
@@ -57,7 +57,7 @@ Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_flutter_kit) -
 
 ### Path Dependency (Monorepo)
 
-For projects within the Fifty ecosystem:
+For projects within the Fifty Flutter Kit:
 
 ```yaml
 dependencies:

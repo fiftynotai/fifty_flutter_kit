@@ -1,5 +1,5 @@
 name: fifty_speech_engine
-description: "Fifty ecosystem speech engine - TTS and STT for Flutter games and applications"
+description: "Fifty Flutter Kit speech engine - TTS and STT for Flutter games and applications"
 version: 0.1.0
 homepage: https://github.com/fiftynotai/fifty_flutter_kit
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_speech_engine

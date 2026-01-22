@@ -5,12 +5,12 @@
 Pod::Spec.new do |s|
   s.name             = 'fifty_map_engine'
   s.version          = '0.1.0'
-  s.summary          = 'Fifty ecosystem map engine - Flame-based interactive grid map rendering for Flutter games'
+  s.summary          = 'Fifty Flutter Kit map engine - Flame-based interactive grid map rendering for Flutter games'
   s.description      = <<-DESC
-Fifty ecosystem map engine - Flame-based interactive grid map rendering for Flutter games.
+Fifty Flutter Kit map engine - Flame-based interactive grid map rendering for Flutter games.
 Provides tile-based map rendering with pan, zoom, and entity management.
                        DESC
-  s.homepage         = 'https://github.com/fiftynotai/fifty_eco_system'
+  s.homepage         = 'https://github.com/fiftynotai/fifty_flutter_kit'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Fifty.ai' => 'dev@fifty.ai' }
   s.source           = { :path => '.' }

@@ -1,6 +1,6 @@
 # Fifty Connectivity
 
-Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of the Fifty ecosystem.
+Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of the Fifty Flutter Kit.
 
 ## Features
 

@@ -1,6 +1,6 @@
 # Fifty Sentences Engine
 
-A sentence processing engine for Flutter games and interactive applications. Part of the Fifty ecosystem.
+A sentence processing engine for Flutter games and interactive applications. Part of Fifty Flutter Kit.
 
 Provides a complete sentence processing system enabling narration, player interaction, and navigation control in visual novels, interactive fiction, and narrative games.
 
@@ -401,7 +401,7 @@ while (queue.isNotEmpty) {
 }
 ```
 
-## Integration with Fifty Ecosystem
+## Integration with Fifty Flutter Kit
 
 ### With fifty_speech_engine
 
@@ -532,4 +532,4 @@ MIT License - see LICENSE file for details.
 
 ## Contributing
 
-Part of the Fifty ecosystem. See the main repository for contribution guidelines.
+Part of Fifty Flutter Kit. See the main repository for contribution guidelines.

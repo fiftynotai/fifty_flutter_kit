@@ -1,7 +1,7 @@
 /// Fifty Connectivity - Network connectivity monitoring for Flutter
 ///
 /// This package provides intelligent network connectivity monitoring with
-/// DNS/HTTP reachability probing. Part of the Fifty ecosystem.
+/// DNS/HTTP reachability probing. Part of Fifty Flutter Kit.
 ///
 /// ## Features
 ///

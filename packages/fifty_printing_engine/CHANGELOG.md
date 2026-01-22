@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2026-01-12
 
-Initial release of fifty_printing_engine to the Fifty Ecosystem.
+Initial release of fifty_printing_engine to Fifty Flutter Kit.
 
 ### Added
-- **Fifty Ecosystem Integration** - Package now part of Fifty ecosystem with consistent branding
+- **Fifty Flutter Kit Integration** - Package now part of Fifty Flutter Kit with consistent branding
 - **FDL-Compliant Example App** - Complete example app demonstrating all features with Fifty Design Language
   - Kinetic Brutalism aesthetic with FiftyTheme.dark()
   - FiftyCard, FiftyButton, and FDL tokens throughout

@@ -1,6 +1,6 @@
 # Fifty Demo
 
-A composite demo application showcasing the Fifty ecosystem packages working together. Demonstrates audio, speech, sentences, and map engines with Fifty Design Language (FDL) styling.
+A composite demo application showcasing the Fifty Flutter Kit packages working together. Demonstrates audio, speech, sentences, and map engines with Fifty Design Language (FDL) styling.
 
 ## Table of Contents
 
@@ -16,13 +16,13 @@ A composite demo application showcasing the Fifty ecosystem packages working tog
 
 ## Overview
 
-Fifty Demo serves as an integration showcase for the Fifty ecosystem. It demonstrates how multiple Fifty packages can work together to create a cohesive application experience with consistent theming, audio management, speech capabilities, and interactive maps.
+Fifty Demo serves as an integration showcase for Fifty Flutter Kit. It demonstrates how multiple Fifty packages can work together to create a cohesive application experience with consistent theming, audio management, speech capabilities, and interactive maps.
 
 **Key Highlights:**
 
 - MVVM + Actions architecture with GetX state management
 - Fifty Design Language (FDL) dark theme throughout
-- Integration of 7 Fifty ecosystem packages
+- Integration of 7 Fifty Flutter Kit packages
 - Tabbed navigation between demo features
 
 ## Features
@@ -88,19 +88,19 @@ Fifty Demo follows the **MVVM + Actions** architecture pattern with GetX for dep
 ┌─────────────────────────────────────────────────────────────┐
 │                          View                               │
 │  (GetView<ViewModel>, builds UI from ViewModel state)      │
-└─────────────────────────────┬───────────────────────────────┘
+└─────────────────────────────────┬───────────────────────────┘
                               │ observes
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                       ViewModel                             │
 │  (GetxController, exposes state, no user action logic)     │
-└─────────────────────────────┬───────────────────────────────┘
+└─────────────────────────────────┬───────────────────────────┘
                               │ managed by
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                        Actions                              │
 │  (Handles user interactions, calls services/viewmodel)     │
-└─────────────────────────────┬───────────────────────────────┘
+└─────────────────────────────────┬───────────────────────────┘
                               │ uses
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
@@ -200,7 +200,7 @@ lib/
 
 ## Package Dependencies
 
-### Fifty Ecosystem Packages
+### Fifty Flutter Kit Packages
 
 | Package | Version | Description |
 |---------|---------|-------------|
@@ -276,7 +276,7 @@ assets/
 
 ## License
 
-This project is part of the Fifty ecosystem. See the root repository for license information.
+This project is part of Fifty Flutter Kit. See the root repository for license information.
 
 ---
 

@@ -5,12 +5,12 @@
 Pod::Spec.new do |s|
   s.name             = 'fifty_sentences_engine'
   s.version          = '0.1.0'
-  s.summary          = 'Fifty ecosystem sentence processing engine for games and interactive applications.'
+  s.summary          = 'Fifty Flutter Kit sentence processing engine for games and interactive applications.'
   s.description      = <<-DESC
 A sentence processing engine for Flutter games and interactive applications.
 Provides sentence queuing, interpretation, and execution for visual novels and narrative games.
                        DESC
-  s.homepage         = 'https://github.com/fiftynotai/fifty_eco_system'
+  s.homepage         = 'https://github.com/fiftynotai/fifty_flutter_kit'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Fifty.ai' => 'dev@fifty.ai' }
 

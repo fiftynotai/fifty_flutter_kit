@@ -1,6 +1,6 @@
 # Fifty Forms
 
-Production-ready form building with validation, multi-step wizards, and draft persistence for the Fifty Ecosystem.
+Production-ready form building with validation, multi-step wizards, and draft persistence for the Fifty Flutter Kit.
 
 ## Features
 

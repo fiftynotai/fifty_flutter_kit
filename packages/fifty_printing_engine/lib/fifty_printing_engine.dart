@@ -1,4 +1,4 @@
-/// Fifty Ecosystem printing engine for multi-printer ESC/POS printing
+/// Fifty Flutter Kit printing engine for multi-printer ESC/POS printing
 ///
 /// Provides a unified API for managing multiple printers (Bluetooth, WiFi)
 /// with flexible routing strategies, health monitoring, and comprehensive

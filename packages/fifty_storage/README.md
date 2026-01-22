@@ -2,7 +2,7 @@
 
 Secure token storage and preferences management for Flutter apps.
 
-Part of the [Fifty Ecosystem](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
+Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
 
 ---
 
@@ -60,7 +60,7 @@ Originally extracted from `fifty_arch` to enable standalone use.
 
 ### Path Dependency (Monorepo)
 
-For projects within the Fifty ecosystem:
+For projects within the Fifty Flutter Kit:
 
 ```yaml
 dependencies:
