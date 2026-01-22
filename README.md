@@ -6,9 +6,10 @@ A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI compon
 
 | Package | Version | Description |
 |---------|---------|-------------|
-| [fifty_tokens](packages/fifty_tokens/) | v0.2.0 | Design tokens (colors, typography, spacing) |
-| [fifty_theme](packages/fifty_theme/) | v0.1.0 | Theme generation and management |
-| [fifty_ui](packages/fifty_ui/) | v0.5.0 | Component library (buttons, cards, inputs) |
+| [fifty_tokens](packages/fifty_tokens/) | v1.0.0 | Design tokens (colors, typography, spacing) |
+| [fifty_theme](packages/fifty_theme/) | v1.0.0 | Theme generation and management |
+| [fifty_ui](packages/fifty_ui/) | v1.0.0 | Component library (buttons, cards, inputs) |
+| [fifty_forms](packages/fifty_forms/) | v0.1.0 | Form building with validation, multi-step wizards, and draft persistence |
 | [fifty_utils](packages/fifty_utils/) | v0.1.0 | Pure utilities (DateTime, responsive, state) |
 | [fifty_cache](packages/fifty_cache/) | v0.1.0 | Multi-tier caching with TTL support |
 | [fifty_storage](packages/fifty_storage/) | v0.1.0 | Key-value storage abstraction |
@@ -18,6 +19,8 @@ A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI compon
 | [fifty_sentences_engine](packages/fifty_sentences_engine/) | v0.1.0 | Sentence building and word bank |
 | [fifty_map_engine](packages/fifty_map_engine/) | v0.1.0 | Cross-platform maps integration |
 | [fifty_printing_engine](packages/fifty_printing_engine/) | v1.0.0 | Multi-printer ESC/POS printing (Bluetooth & WiFi) |
+| [fifty_skill_tree](packages/fifty_skill_tree/) | v0.2.0 | Skill tree visualization and progression system |
+| [fifty_achievement_engine](packages/fifty_achievement_engine/) | v0.1.1 | Achievement tracking and unlocking system |
 
 ## Apps
 
@@ -43,6 +46,7 @@ fifty_flutter_kit/
     fifty_tokens/           # Design foundation
     fifty_theme/            # Theme layer (depends on tokens)
     fifty_ui/               # Components (depends on theme)
+    fifty_forms/            # Form building system
     fifty_utils/            # Pure utilities (no dependencies)
     fifty_cache/            # Caching layer
     fifty_storage/          # Storage abstraction
@@ -52,6 +56,8 @@ fifty_flutter_kit/
     fifty_sentences_engine/ # Sentence building
     fifty_map_engine/       # Maps integration
     fifty_printing_engine/  # ESC/POS printing
+    fifty_skill_tree/       # Skill tree engine
+    fifty_achievement_engine/ # Achievement system
   apps/
     fifty_demo/             # Demo application
   templates/
@@ -66,7 +72,9 @@ fifty_tokens (foundation)
 fifty_theme
      |
 fifty_ui
-
+     |
+[fifty_forms, fifty_skill_tree, fifty_achievement_engine] <-- consume FDL
+     |
 fifty_utils (foundation)
      |
 [mvvm_actions template] <-- fifty_storage, fifty_cache, fifty_connectivity
@@ -128,6 +136,32 @@ MaterialApp(
 FiftyButton(
   label: 'Submit',
   onPressed: () {},
+);
+```
+
+### Forms
+
+```dart
+import 'package:fifty_forms/fifty_forms.dart';
+
+// Create form controller
+final controller = FiftyFormController();
+
+// Build form with validation
+FiftyForm(
+  controller: controller,
+  child: Column(
+    children: [
+      FiftyTextField(
+        name: 'email',
+        validators: [Validators.required(), Validators.email()],
+      ),
+      FiftyButton(
+        label: 'Submit',
+        onPressed: () => controller.submit(),
+      ),
+    ],
+  ),
 );
 ```
 
@@ -238,6 +272,17 @@ Pure Dart/Flutter utilities with zero external dependencies (except `intl`).
 - **ApiResponse** - Immutable async state container
 - **apiFetch()** - Stream-based API fetching
 
+### fifty_forms
+
+Production-ready form building system with FDL v2 compliance.
+
+- **FiftyFormController** - Centralized form state management
+- **25 Built-in Validators** - Required, email, min/max length, regex, and more
+- **10 Field Types** - Text, checkbox, switch, dropdown, radio, date, time, slider, range, autocomplete
+- **FiftyMultiStepForm** - Wizard-style multi-step forms with navigation
+- **FiftyFormArray** - Dynamic form fields (add/remove)
+- **DraftManager** - Auto-save and restore form drafts
+
 ### mvvm_actions (Template)
 
 Full-featured app template using MVVM + Actions architecture. **Fork this, don't import.**
@@ -271,6 +316,22 @@ Multi-printer ESC/POS printing engine supporting Bluetooth and WiFi printers.
 - **PrinterConnection** - Connection management with auto-reconnect
 - **ReceiptBuilder** - Fluent API for building receipts
 - **ESC/POS Commands** - Full command support including images and barcodes
+
+### fifty_skill_tree
+
+Skill tree visualization and progression system for gamification.
+
+- **SkillTreeController** - Manage skill nodes and progression
+- **SkillTreeView** - Visual tree rendering with connections
+- **Unlock Conditions** - Prerequisite-based skill unlocking
+
+### fifty_achievement_engine
+
+Achievement tracking and unlocking system for gamification.
+
+- **AchievementController** - Track and unlock achievements
+- **Progress Tracking** - Incremental achievement progress
+- **Event System** - Achievement unlock notifications
 
 ## Development
 
