@@ -1,0 +1,29 @@
+name: fifty_forms_example
+description: Example app demonstrating fifty_forms package.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fifty_forms:
+    path: ../
+  fifty_ui:
+    path: ../../fifty_ui
+  fifty_tokens:
+    path: ../../fifty_tokens
+  fifty_theme:
+    path: ../../fifty_theme
+  get_storage: ^2.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

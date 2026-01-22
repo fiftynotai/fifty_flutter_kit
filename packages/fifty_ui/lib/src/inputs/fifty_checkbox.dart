@@ -194,15 +194,17 @@ class _FiftyCheckboxState extends State<FiftyCheckbox>
               ),
               if (widget.label != null) ...[
                 const SizedBox(width: FiftySpacing.md),
-                Text(
-                  widget.label!,
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.bodyMedium,
-                    fontWeight: FiftyTypography.regular,
-                    color: isEnabled
-                        ? colorScheme.onSurface
-                        : colorScheme.onSurface.withValues(alpha: 0.5),
+                Flexible(
+                  child: Text(
+                    widget.label!,
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyMedium,
+                      fontWeight: FiftyTypography.regular,
+                      color: isEnabled
+                          ? colorScheme.onSurface
+                          : colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
                   ),
                 ),
               ],
