@@ -38,25 +38,25 @@ class SentenceQueuePanel extends StatelessWidget {
               const Text(
                 'QUEUE',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyHeadline,
-                  fontSize: FiftyTypography.mono,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.crimsonPulse,
+                  color: FiftyColors.burgundy,
                   letterSpacing: 2,
                 ),
               ),
               Text(
                 '${sentences.length} ITEMS',
-                style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
                   fontSize: 10,
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.cream.withValues(alpha: 0.7),
                 ),
               ),
             ],
           ),
           const SizedBox(height: FiftySpacing.md),
-          Container(height: 1, color: FiftyColors.border),
+          Container(height: 1, color: FiftyColors.borderDark),
           const SizedBox(height: FiftySpacing.md),
           // Sentence list
           ...sentences.asMap().entries.map((entry) {
@@ -75,12 +75,12 @@ class SentenceQueuePanel extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: FiftySpacing.xs),
                 decoration: BoxDecoration(
                   color: isCurrent
-                      ? FiftyColors.crimsonPulse.withValues(alpha: 0.1)
+                      ? FiftyColors.burgundy.withValues(alpha: 0.1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(4),
                   border: isCurrent
                       ? Border.all(
-                          color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                          color: FiftyColors.burgundy.withValues(alpha: 0.3),
                         )
                       : null,
                 ),
@@ -92,17 +92,17 @@ class SentenceQueuePanel extends StatelessWidget {
                       height: 24,
                       decoration: BoxDecoration(
                         color: isCurrent
-                            ? FiftyColors.crimsonPulse
+                            ? FiftyColors.burgundy
                             : isPast
-                                ? FiftyColors.igrisGreen.withValues(alpha: 0.5)
+                                ? FiftyColors.hunterGreen.withValues(alpha: 0.5)
                                 : Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isCurrent
-                              ? FiftyColors.crimsonPulse
+                              ? FiftyColors.burgundy
                               : isPast
-                                  ? FiftyColors.igrisGreen
-                                  : FiftyColors.border,
+                                  ? FiftyColors.hunterGreen
+                                  : FiftyColors.borderDark,
                         ),
                       ),
                       child: Center(
@@ -110,16 +110,16 @@ class SentenceQueuePanel extends StatelessWidget {
                             ? const Icon(
                                 Icons.check,
                                 size: 14,
-                                color: FiftyColors.terminalWhite,
+                                color: FiftyColors.cream,
                               )
                             : Text(
                                 '${index + 1}',
                                 style: TextStyle(
-                                  fontFamily: FiftyTypography.fontFamilyMono,
+                                  fontFamily: FiftyTypography.fontFamily,
                                   fontSize: 10,
                                   color: isCurrent
-                                      ? FiftyColors.terminalWhite
-                                      : FiftyColors.hyperChrome,
+                                      ? FiftyColors.cream
+                                      : FiftyColors.cream.withValues(alpha: 0.7),
                                 ),
                               ),
                       ),
@@ -130,13 +130,13 @@ class SentenceQueuePanel extends StatelessWidget {
                       child: Text(
                         sentence.text,
                         style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.mono,
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodySmall,
                           color: isCurrent
-                              ? FiftyColors.terminalWhite
+                              ? FiftyColors.cream
                               : isPast
-                                  ? FiftyColors.hyperChrome
-                                  : FiftyColors.hyperChrome.withValues(alpha: 0.7),
+                                  ? FiftyColors.cream.withValues(alpha: 0.7)
+                                  : FiftyColors.cream.withValues(alpha: 0.5),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

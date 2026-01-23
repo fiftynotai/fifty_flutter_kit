@@ -4,11 +4,16 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
+  connectivity_plus
   fifty_audio_engine
   fifty_map_engine
   fifty_sentences_engine
+  flutter_secure_storage_windows
   flutter_tts
+  permission_handler_windows
+  print_bluetooth_thermal
   speech_to_text_windows
+  url_launcher_windows
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

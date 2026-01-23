@@ -39,21 +39,21 @@ class SttControls extends StatelessWidget {
                   height: 48,
                   decoration: BoxDecoration(
                     color: isListening
-                        ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                        ? FiftyColors.burgundy.withValues(alpha: 0.2)
                         : Colors.transparent,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isListening
-                          ? FiftyColors.crimsonPulse
-                          : FiftyColors.border,
+                          ? FiftyColors.burgundy
+                          : FiftyColors.borderDark,
                       width: 2,
                     ),
                   ),
                   child: Icon(
                     isListening ? Icons.mic : Icons.mic_none,
                     color: isListening
-                        ? FiftyColors.crimsonPulse
-                        : FiftyColors.hyperChrome,
+                        ? FiftyColors.burgundy
+                        : FiftyColors.cream.withValues(alpha: 0.7),
                   ),
                 ),
               ),
@@ -65,20 +65,20 @@ class SttControls extends StatelessWidget {
                     Text(
                       isListening ? 'LISTENING...' : 'TAP TO SPEAK',
                       style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.body,
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodyLarge,
                         color: isListening
-                            ? FiftyColors.crimsonPulse
-                            : FiftyColors.hyperChrome,
+                            ? FiftyColors.burgundy
+                            : FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: FiftySpacing.xs),
-                    const Text(
+                    Text(
                       'Commands: "next", "previous", "skip", "stop"',
                       style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
+                        fontFamily: FiftyTypography.fontFamily,
                         fontSize: 10,
-                        color: FiftyColors.hyperChrome,
+                        color: FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -93,28 +93,28 @@ class SttControls extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
-                color: FiftyColors.voidBlack,
-                borderRadius: FiftyRadii.standardRadius,
-                border: Border.all(color: FiftyColors.border),
+                color: FiftyColors.darkBurgundy,
+                borderRadius: FiftyRadii.lgRadius,
+                border: Border.all(color: FiftyColors.borderDark),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'RECOGNIZED:',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontFamily: FiftyTypography.fontFamily,
                       fontSize: 10,
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.cream.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
                   Text(
                     '"$recognizedText"',
                     style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
-                      color: FiftyColors.terminalWhite,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
+                      color: FiftyColors.cream,
                       fontStyle: FontStyle.italic,
                     ),
                   ),

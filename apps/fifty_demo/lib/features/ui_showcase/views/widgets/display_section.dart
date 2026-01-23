@@ -36,19 +36,19 @@ class DisplaySection extends StatelessWidget {
               Text(
                 'STANDARD CARD',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyHeadline,
-                  fontSize: FiftyTypography.body,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.terminalWhite,
+                  color: FiftyColors.cream,
                 ),
               ),
               SizedBox(height: FiftySpacing.sm),
               Text(
                 'Cards provide containment for content with consistent styling.',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.mono,
-                  color: FiftyColors.hyperChrome,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: FiftyColors.slateGrey,
                 ),
               ),
             ],
@@ -81,8 +81,8 @@ class DisplaySection extends StatelessWidget {
             titleSize: FiftyHeroSize.h2,
             titleGradient: LinearGradient(
               colors: [
-                FiftyColors.crimsonPulse,
-                FiftyColors.terminalWhite,
+                FiftyColors.burgundy,
+                FiftyColors.cream,
               ],
             ),
           ),
@@ -111,13 +111,13 @@ class DisplaySection extends StatelessWidget {
           spacing: FiftySpacing.sm,
           runSpacing: FiftySpacing.sm,
           children: [
-            _ColorSwatch(color: FiftyColors.crimsonPulse, label: 'CRIMSON'),
-            _ColorSwatch(color: FiftyColors.voidBlack, label: 'VOID'),
-            _ColorSwatch(color: FiftyColors.terminalWhite, label: 'TERMINAL'),
-            _ColorSwatch(color: FiftyColors.hyperChrome, label: 'CHROME'),
-            _ColorSwatch(color: FiftyColors.igrisGreen, label: 'GREEN'),
+            _ColorSwatch(color: FiftyColors.burgundy, label: 'BURGUNDY'),
+            _ColorSwatch(color: FiftyColors.darkBurgundy, label: 'DARK BURGUNDY'),
+            _ColorSwatch(color: FiftyColors.cream, label: 'CREAM'),
+            _ColorSwatch(color: FiftyColors.slateGrey, label: 'SLATE GREY'),
+            _ColorSwatch(color: FiftyColors.hunterGreen, label: 'HUNTER GREEN'),
+            _ColorSwatch(color: FiftyColors.powderBlush, label: 'POWDER BLUSH'),
             _ColorSwatch(color: FiftyColors.warning, label: 'WARNING'),
-            _ColorSwatch(color: FiftyColors.error, label: 'ERROR'),
           ],
         ),
       ],
@@ -135,9 +135,9 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label,
       style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        color: FiftyColors.hyperChrome,
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
+        color: FiftyColors.slateGrey,
         letterSpacing: 1,
       ),
     );
@@ -159,8 +159,8 @@ class _ColorSwatch extends StatelessWidget {
       width: 80,
       padding: const EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
-        border: Border.all(color: FiftyColors.border),
-        borderRadius: FiftyRadii.standardRadius,
+        border: Border.all(color: FiftyColors.borderDark),
+        borderRadius: FiftyRadii.lgRadius,
       ),
       child: Column(
         children: [
@@ -170,16 +170,16 @@ class _ColorSwatch extends StatelessWidget {
             decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: FiftyColors.border),
+              border: Border.all(color: FiftyColors.borderDark),
             ),
           ),
           const SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
+              fontFamily: FiftyTypography.fontFamily,
               fontSize: 8,
-              color: FiftyColors.hyperChrome,
+              color: FiftyColors.slateGrey,
             ),
           ),
         ],

@@ -155,9 +155,9 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label,
       style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        color: FiftyColors.hyperChrome,
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
+        color: FiftyColors.slateGrey,
         letterSpacing: 1,
       ),
     );

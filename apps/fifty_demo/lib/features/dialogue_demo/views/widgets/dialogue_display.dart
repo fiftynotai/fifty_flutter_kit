@@ -38,10 +38,10 @@ class DialogueDisplay extends StatelessWidget {
               Text(
                 speaker!,
                 style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyHeadline,
-                  fontSize: FiftyTypography.mono,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.crimsonPulse,
+                  color: FiftyColors.burgundy,
                   letterSpacing: 2,
                 ),
               ),
@@ -57,11 +57,11 @@ class DialogueDisplay extends StatelessWidget {
                     child: Text(
                       text.isEmpty ? 'Tap PLAY to start dialogue...' : text,
                       style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.body,
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodyLarge,
                         color: text.isEmpty
-                            ? FiftyColors.hyperChrome
-                            : FiftyColors.terminalWhite,
+                            ? FiftyColors.cream.withValues(alpha: 0.7)
+                            : FiftyColors.cream,
                         height: 1.5,
                       ),
                     ),
@@ -76,10 +76,10 @@ class DialogueDisplay extends StatelessWidget {
             // Hint
             Text(
               isTyping ? 'TAP TO SKIP' : 'TAP TO CONTINUE',
-              style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
                 fontSize: 10,
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.cream.withValues(alpha: 0.7),
                 letterSpacing: 1,
               ),
             ),
@@ -123,7 +123,7 @@ class _TypingCursorState extends State<_TypingCursor>
       child: Container(
         width: 2,
         height: 20,
-        color: FiftyColors.crimsonPulse,
+        color: FiftyColors.burgundy,
       ),
     );
   }

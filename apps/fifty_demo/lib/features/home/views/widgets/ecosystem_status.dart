@@ -1,6 +1,6 @@
 /// Ecosystem Status Widget
 ///
-/// Displays a grid of package status cards.
+/// Displays a categorized grid of package status cards.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -11,7 +11,7 @@ import '../../controllers/home_view_model.dart';
 
 /// Ecosystem status display widget.
 ///
-/// Shows a grid of all Fifty packages with their status.
+/// Shows a categorized grid of all Fifty packages with their status.
 class EcosystemStatus extends StatelessWidget {
   const EcosystemStatus({
     required this.packages,
@@ -23,10 +23,68 @@ class EcosystemStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: FiftySpacing.md,
-      runSpacing: FiftySpacing.md,
-      children: packages.map((pkg) => _PackageCard(package: pkg)).toList(),
+    // Group packages by category
+    final groupedPackages = <PackageCategory, List<PackageStatus>>{};
+    for (final pkg in packages) {
+      groupedPackages.putIfAbsent(pkg.category, () => []).add(pkg);
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: PackageCategory.values.map((category) {
+        final categoryPackages = groupedPackages[category] ?? [];
+        if (categoryPackages.isEmpty) return const SizedBox.shrink();
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: FiftySpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Category header
+              Padding(
+                padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+                child: Text(
+                  category.label.toUpperCase(),
+                  style: const TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    fontWeight: FontWeight.w600,
+                    color: FiftyColors.slateGrey,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ),
+              // Package grid
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  // Calculate columns based on available width
+                  const cardMinWidth = 140.0;
+                  const spacing = FiftySpacing.sm;
+                  final columns =
+                      ((constraints.maxWidth + spacing) / (cardMinWidth + spacing))
+                          .floor()
+                          .clamp(2, 4);
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: columns,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                      childAspectRatio: 1.4,
+                    ),
+                    itemCount: categoryPackages.length,
+                    itemBuilder: (context, index) {
+                      return _PackageCard(package: categoryPackages[index]);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }
@@ -38,65 +96,65 @@ class _PackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160,
-      child: FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Status dot and version
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: package.isReady
-                        ? FiftyColors.igrisGreen
-                        : FiftyColors.warning,
-                    shape: BoxShape.circle,
-                  ),
+    return FiftyCard(
+      padding: const EdgeInsets.all(FiftySpacing.sm),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Status dot and version row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: package.isReady
+                      ? FiftyColors.hunterGreen
+                      : FiftyColors.warning,
+                  shape: BoxShape.circle,
                 ),
-                Text(
-                  package.version,
-                  style: const TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: 10,
-                    color: FiftyColors.hyperChrome,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: FiftySpacing.sm),
-            // Package name
-            Text(
-              package.name,
-              style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.mono,
-                fontWeight: FontWeight.bold,
-                color: FiftyColors.terminalWhite,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            if (package.description != null) ...[
-              const SizedBox(height: FiftySpacing.xs),
               Text(
-                package.description!,
+                package.version,
                 style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: 10,
+                  color: FiftyColors.slateGrey,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.xs),
+          // Package name
+          Text(
+            package.name,
+            style: const TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: FiftyColors.cream,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (package.description != null) ...[
+            const SizedBox(height: 2),
+            Expanded(
+              child: Text(
+                package.description!,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
                   fontSize: 9,
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.cream.withValues(alpha: 0.6),
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
     );
   }

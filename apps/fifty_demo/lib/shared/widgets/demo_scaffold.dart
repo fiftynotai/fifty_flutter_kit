@@ -34,7 +34,7 @@ class DemoScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: FiftyColors.voidBlack,
+      color: FiftyColors.darkBurgundy,
       padding: padding ??
           const EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
@@ -53,10 +53,10 @@ class DemoScaffold extends StatelessWidget {
                     Text(
                       title!,
                       style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyHeadline,
-                        fontSize: FiftyTypography.section,
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.titleLarge,
                         fontWeight: FontWeight.bold,
-                        color: FiftyColors.terminalWhite,
+                        color: FiftyColors.cream,
                         letterSpacing: 2,
                       ),
                     ),

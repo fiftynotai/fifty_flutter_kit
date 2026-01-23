@@ -32,32 +32,8 @@ class InputsSection extends StatelessWidget {
           padding: const EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Enter text...',
-                  hintStyle: const TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    color: FiftyColors.hyperChrome,
-                  ),
-                  filled: true,
-                  fillColor: FiftyColors.voidBlack,
-                  border: OutlineInputBorder(
-                    borderRadius: FiftyRadii.standardRadius,
-                    borderSide: const BorderSide(color: FiftyColors.border),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: FiftyRadii.standardRadius,
-                    borderSide: const BorderSide(color: FiftyColors.border),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: FiftyRadii.standardRadius,
-                    borderSide: const BorderSide(color: FiftyColors.crimsonPulse),
-                  ),
-                ),
-                style: const TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  color: FiftyColors.terminalWhite,
-                ),
+              FiftyTextField(
+                hint: 'Enter text...',
                 onChanged: viewModel.setInputValue,
               ),
               if (viewModel.inputValue.isNotEmpty) ...[
@@ -65,9 +41,9 @@ class InputsSection extends StatelessWidget {
                 Text(
                   'VALUE: "${viewModel.inputValue}"',
                   style: const TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
               ],
@@ -87,45 +63,14 @@ class InputsSection extends StatelessWidget {
               const Text(
                 'ENABLE FEATURE',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyMono,
-                  fontSize: FiftyTypography.body,
-                  color: FiftyColors.terminalWhite,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
+                  color: FiftyColors.cream,
                 ),
               ),
-              GestureDetector(
-                onTap: viewModel.toggleSwitch,
-                child: Container(
-                  width: 48,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: viewModel.switchValue
-                        ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: viewModel.switchValue
-                          ? FiftyColors.crimsonPulse
-                          : FiftyColors.border,
-                    ),
-                  ),
-                  child: AnimatedAlign(
-                    duration: const Duration(milliseconds: 200),
-                    alignment: viewModel.switchValue
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      width: 18,
-                      height: 18,
-                      margin: const EdgeInsets.symmetric(horizontal: 2),
-                      decoration: BoxDecoration(
-                        color: viewModel.switchValue
-                            ? FiftyColors.crimsonPulse
-                            : FiftyColors.hyperChrome,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ),
+              FiftySwitch(
+                value: viewModel.switchValue,
+                onChanged: (_) => viewModel.toggleSwitch(),
               ),
             ],
           ),
@@ -138,41 +83,22 @@ class InputsSection extends StatelessWidget {
         FiftyCard(
           padding: const EdgeInsets.all(FiftySpacing.lg),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'VALUE',
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
-                      color: FiftyColors.terminalWhite,
-                    ),
-                  ),
-                  Text(
-                    '${(viewModel.sliderValue * 100).toInt()}%',
-                    style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
-                      color: FiftyColors.crimsonPulse,
-                    ),
-                  ),
-                ],
+              const Text(
+                'VOLUME',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
+                  color: FiftyColors.cream,
+                ),
               ),
               const SizedBox(height: FiftySpacing.md),
-              SliderTheme(
-                data: SliderThemeData(
-                  activeTrackColor: FiftyColors.crimsonPulse,
-                  inactiveTrackColor: FiftyColors.border,
-                  thumbColor: FiftyColors.crimsonPulse,
-                  overlayColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
-                  trackHeight: 4,
-                ),
-                child: Slider(
-                  value: viewModel.sliderValue,
-                  onChanged: viewModel.setSliderValue,
-                ),
+              FiftySlider(
+                value: viewModel.sliderValue,
+                onChanged: viewModel.setSliderValue,
+                showLabel: true,
+                labelBuilder: (v) => '${(v * 100).toInt()}%',
               ),
             ],
           ),
@@ -192,9 +118,9 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label,
       style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        color: FiftyColors.hyperChrome,
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
+        color: FiftyColors.slateGrey,
         letterSpacing: 1,
       ),
     );

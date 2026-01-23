@@ -42,24 +42,37 @@ class SectionHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title.toUpperCase(),
-                    style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
-                      fontSize: FiftyTypography.body,
-                      fontWeight: FontWeight.bold,
-                      color: FiftyColors.crimsonPulse,
-                      letterSpacing: 2,
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.only(right: FiftySpacing.sm),
+                        decoration: const BoxDecoration(
+                          color: FiftyColors.burgundy,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      Text(
+                        title.toUpperCase(),
+                        style: const TextStyle(
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodyLarge,
+                          fontWeight: FontWeight.bold,
+                          color: FiftyColors.burgundy,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ],
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: FiftySpacing.xs),
                     Text(
                       subtitle!,
-                      style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.mono,
-                        color: FiftyColors.hyperChrome,
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -73,7 +86,7 @@ class SectionHeader extends StatelessWidget {
           const SizedBox(height: FiftySpacing.sm),
           Container(
             height: 1,
-            color: FiftyColors.border,
+            color: FiftyColors.borderDark,
           ),
         ],
         const SizedBox(height: FiftySpacing.md),

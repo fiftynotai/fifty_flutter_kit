@@ -43,26 +43,26 @@ class EntityInfoPanel extends StatelessWidget {
               const Text(
                 'ENTITY INFO',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamilyHeadline,
-                  fontSize: FiftyTypography.body,
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.crimsonPulse,
+                  color: FiftyColors.burgundy,
                   letterSpacing: 1,
                 ),
               ),
               if (onClose != null)
                 GestureDetector(
                   onTap: onClose,
-                  child: const Icon(
+                  child: Icon(
                     Icons.close,
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.cream.withValues(alpha: 0.7),
                     size: 20,
                   ),
                 ),
             ],
           ),
           const SizedBox(height: FiftySpacing.md),
-          Container(height: 1, color: FiftyColors.border),
+          Container(height: 1, color: FiftyColors.borderDark),
           const SizedBox(height: FiftySpacing.md),
           // Info rows
           _InfoRow(label: 'ID', value: entityId),
@@ -97,18 +97,18 @@ class _InfoRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.cream.withValues(alpha: 0.7),
             ),
           ),
           Text(
             value,
             style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.terminalWhite,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.cream,
             ),
           ),
         ],

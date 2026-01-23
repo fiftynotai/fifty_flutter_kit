@@ -51,10 +51,61 @@ class HomePage extends GetView<HomeViewModel> {
                     const SizedBox(width: FiftySpacing.lg),
                     Text(
                       '${viewModel.readyCount}/${viewModel.totalCount} READY',
-                      style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.mono,
-                        color: FiftyColors.hyperChrome,
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: FiftyColors.cream.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: FiftySpacing.xxl),
+
+                // Analytics Section
+                const SectionHeader(
+                  title: 'Analytics',
+                  subtitle: 'Demo statistics overview',
+                ),
+                const Row(
+                  children: [
+                    Expanded(
+                      child: _StatsCard(
+                        icon: Icons.visibility_outlined,
+                        value: '45.2k',
+                        label: 'Total Views',
+                        trend: '+12%',
+                      ),
+                    ),
+                    SizedBox(width: FiftySpacing.md),
+                    Expanded(
+                      child: _StatsCard(
+                        icon: Icons.favorite_outline,
+                        value: '8.4k',
+                        label: 'Likes',
+                        trend: '+5%',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: FiftySpacing.md),
+                const Row(
+                  children: [
+                    Expanded(
+                      child: _StatsCard(
+                        icon: Icons.shopping_cart_outlined,
+                        value: '350',
+                        label: 'Orders',
+                        trend: '+2%',
+                      ),
+                    ),
+                    SizedBox(width: FiftySpacing.md),
+                    Expanded(
+                      child: _StatsCard(
+                        icon: Icons.attach_money,
+                        value: '\$12.5k',
+                        label: 'Revenue',
+                        trend: '+8%',
+                        accentColor: FiftyColors.hunterGreen,
                       ),
                     ),
                   ],
@@ -114,18 +165,106 @@ class HomePage extends GetView<HomeViewModel> {
         children: [
           Text(
             label.toUpperCase(),
-            style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.hyperChrome,
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.cream.withValues(alpha: 0.7),
             ),
           ),
           Text(
             value,
             style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
-              color: FiftyColors.terminalWhite,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.cream,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A statistics card widget for the home page.
+class _StatsCard extends StatelessWidget {
+  const _StatsCard({
+    required this.icon,
+    required this.value,
+    required this.label,
+    required this.trend,
+    this.accentColor,
+  });
+
+  final IconData icon;
+  final String value;
+  final String label;
+  final String trend;
+  final Color? accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = accentColor ?? FiftyColors.burgundy;
+
+    return FiftyCard(
+      padding: const EdgeInsets.all(FiftySpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  borderRadius: FiftyRadii.smRadius,
+                ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 18,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: FiftySpacing.sm,
+                  vertical: FiftySpacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: FiftyColors.hunterGreen.withValues(alpha: 0.1),
+                  borderRadius: FiftyRadii.smRadius,
+                ),
+                child: Text(
+                  trend,
+                  style: const TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.labelSmall,
+                    fontWeight: FontWeight.bold,
+                    color: FiftyColors.hunterGreen,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Text(
+            value,
+            style: const TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.titleLarge,
+              fontWeight: FontWeight.bold,
+              color: FiftyColors.cream,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.xs),
+          Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.labelSmall,
+              color: FiftyColors.cream.withValues(alpha: 0.7),
+              letterSpacing: 1,
             ),
           ),
         ],

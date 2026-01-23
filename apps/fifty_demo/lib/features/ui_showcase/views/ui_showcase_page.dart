@@ -95,13 +95,13 @@ class _SectionNav extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isActive
-                  ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                  ? FiftyColors.burgundy.withValues(alpha: 0.2)
                   : Colors.transparent,
-              borderRadius: FiftyRadii.standardRadius,
+              borderRadius: FiftyRadii.lgRadius,
               border: Border.all(
                 color: isActive
-                    ? FiftyColors.crimsonPulse
-                    : FiftyColors.border,
+                    ? FiftyColors.burgundy
+                    : FiftyColors.borderDark,
               ),
             ),
             child: Row(
@@ -111,18 +111,18 @@ class _SectionNav extends StatelessWidget {
                   IconData(section.icon, fontFamily: 'MaterialIcons'),
                   size: 16,
                   color: isActive
-                      ? FiftyColors.crimsonPulse
-                      : FiftyColors.hyperChrome,
+                      ? FiftyColors.burgundy
+                      : FiftyColors.slateGrey,
                 ),
                 const SizedBox(width: FiftySpacing.xs),
                 Text(
                   section.label,
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
                     color: isActive
-                        ? FiftyColors.crimsonPulse
-                        : FiftyColors.hyperChrome,
+                        ? FiftyColors.burgundy
+                        : FiftyColors.slateGrey,
                   ),
                 ),
               ],

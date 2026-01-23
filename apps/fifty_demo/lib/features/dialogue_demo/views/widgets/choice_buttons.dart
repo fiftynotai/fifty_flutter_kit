@@ -47,13 +47,13 @@ class ChoiceButtons extends StatelessWidget {
               padding: const EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                    ? FiftyColors.burgundy.withValues(alpha: 0.2)
                     : Colors.transparent,
-                borderRadius: FiftyRadii.standardRadius,
+                borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(
                   color: isSelected
-                      ? FiftyColors.crimsonPulse
-                      : FiftyColors.border,
+                      ? FiftyColors.burgundy
+                      : FiftyColors.borderDark,
                 ),
               ),
               child: Row(
@@ -64,20 +64,20 @@ class ChoiceButtons extends StatelessWidget {
                     height: 24,
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? FiftyColors.crimsonPulse
+                          ? FiftyColors.burgundy
                           : Colors.transparent,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: isSelected
-                            ? FiftyColors.crimsonPulse
-                            : FiftyColors.hyperChrome,
+                            ? FiftyColors.burgundy
+                            : FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                     child: isSelected
                         ? const Icon(
                             Icons.check,
                             size: 14,
-                            color: FiftyColors.terminalWhite,
+                            color: FiftyColors.cream,
                           )
                         : null,
                   ),
@@ -87,11 +87,11 @@ class ChoiceButtons extends StatelessWidget {
                     child: Text(
                       choice.text,
                       style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.body,
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodyLarge,
                         color: isSelected
-                            ? FiftyColors.terminalWhite
-                            : FiftyColors.hyperChrome,
+                            ? FiftyColors.cream
+                            : FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                   ),

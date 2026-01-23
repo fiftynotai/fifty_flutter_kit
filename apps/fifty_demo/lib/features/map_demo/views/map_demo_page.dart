@@ -113,24 +113,24 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
 
     // Show loading state
     if (viewModel.isMapLoading) {
-      return const FiftyCard(
-        padding: EdgeInsets.all(FiftySpacing.lg),
+      return FiftyCard(
+        padding: const EdgeInsets.all(FiftySpacing.lg),
         child: SizedBox(
           height: 300,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(
-                  color: FiftyColors.crimsonPulse,
+                const CircularProgressIndicator(
+                  color: FiftyColors.burgundy,
                 ),
-                SizedBox(height: FiftySpacing.md),
+                const SizedBox(height: FiftySpacing.md),
                 Text(
                   'LOADING MAP...',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    color: FiftyColors.cream.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -142,8 +142,8 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
 
     // Show placeholder if controller not ready
     if (controller == null || !viewModel.isMapLoaded) {
-      return const FiftyCard(
-        padding: EdgeInsets.all(FiftySpacing.lg),
+      return FiftyCard(
+        padding: const EdgeInsets.all(FiftySpacing.lg),
         child: SizedBox(
           height: 300,
           child: Center(
@@ -153,15 +153,15 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                 Icon(
                   Icons.map_outlined,
                   size: 64,
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.cream.withValues(alpha: 0.7),
                 ),
-                SizedBox(height: FiftySpacing.md),
+                const SizedBox(height: FiftySpacing.md),
                 Text(
                   'MAP NOT LOADED',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    color: FiftyColors.cream.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -175,7 +175,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
     return FiftyCard(
       padding: EdgeInsets.zero,
       child: ClipRRect(
-        borderRadius: FiftyRadii.standardRadius,
+        borderRadius: FiftyRadii.lgRadius,
         child: SizedBox(
           height: 300,
           child: FiftyMapWidget(

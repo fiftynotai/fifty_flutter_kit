@@ -11,18 +11,31 @@ import '../../../shared/services/map_integration_service.dart';
 import '../../../shared/services/sentences_integration_service.dart';
 import '../../../shared/services/speech_integration_service.dart';
 
+/// Package category for grouping.
+enum PackageCategory {
+  designSystem('Design System'),
+  engines('Engines'),
+  features('Features'),
+  utilities('Utilities');
+
+  const PackageCategory(this.label);
+  final String label;
+}
+
 /// Package status information.
 class PackageStatus {
   const PackageStatus({
     required this.name,
     required this.version,
     required this.isReady,
+    required this.category,
     this.description,
   });
 
   final String name;
   final String version;
   final bool isReady;
+  final PackageCategory category;
   final String? description;
 }
 
@@ -55,47 +68,114 @@ class HomeViewModel extends GetxController {
 
   /// List of all Fifty packages with their status.
   List<PackageStatus> get packages => [
+        // Design System packages
         const PackageStatus(
           name: 'fifty_tokens',
-          version: 'v0.2.0',
+          version: 'v1.0.0',
           isReady: true,
+          category: PackageCategory.designSystem,
           description: 'Design tokens (colors, typography, spacing)',
         ),
         const PackageStatus(
           name: 'fifty_theme',
-          version: 'v0.1.0',
+          version: 'v1.0.0',
           isReady: true,
+          category: PackageCategory.designSystem,
           description: 'Theme system (dark/light themes)',
         ),
         const PackageStatus(
           name: 'fifty_ui',
-          version: 'v0.5.0',
+          version: 'v1.0.0',
           isReady: true,
+          category: PackageCategory.designSystem,
           description: 'UI components (buttons, cards, inputs)',
         ),
+        // Engine packages
         PackageStatus(
           name: 'fifty_audio_engine',
-          version: 'v0.7.0',
+          version: 'v0.8.0',
           isReady: _audioService.isInitialized,
+          category: PackageCategory.engines,
           description: 'Audio (BGM, SFX, Voice channels)',
         ),
         PackageStatus(
           name: 'fifty_speech_engine',
           version: 'v0.1.0',
           isReady: _speechService.isInitialized,
+          category: PackageCategory.engines,
           description: 'TTS/STT capabilities',
         ),
         PackageStatus(
           name: 'fifty_sentences_engine',
           version: 'v0.1.0',
           isReady: _sentencesService.isInitialized,
+          category: PackageCategory.engines,
           description: 'Dialogue/sentence queue processing',
         ),
         PackageStatus(
           name: 'fifty_map_engine',
           version: 'v0.1.0',
           isReady: _mapService.isInitialized,
+          category: PackageCategory.engines,
           description: 'Interactive grid map rendering',
+        ),
+        const PackageStatus(
+          name: 'fifty_printing_engine',
+          version: 'v1.0.0',
+          isReady: true,
+          category: PackageCategory.engines,
+          description: 'Document printing utilities',
+        ),
+        // Feature packages
+        const PackageStatus(
+          name: 'fifty_forms',
+          version: 'v0.1.0',
+          isReady: true,
+          category: PackageCategory.features,
+          description: 'Form validation & management',
+        ),
+        const PackageStatus(
+          name: 'fifty_skill_tree',
+          version: 'v0.2.0',
+          isReady: true,
+          category: PackageCategory.features,
+          description: 'Skill progression system',
+        ),
+        const PackageStatus(
+          name: 'fifty_achievement_engine',
+          version: 'v0.1.1',
+          isReady: true,
+          category: PackageCategory.features,
+          description: 'Achievement tracking system',
+        ),
+        // Utility packages
+        const PackageStatus(
+          name: 'fifty_cache',
+          version: 'v0.1.0',
+          isReady: true,
+          category: PackageCategory.utilities,
+          description: 'Caching layer for data',
+        ),
+        const PackageStatus(
+          name: 'fifty_storage',
+          version: 'v0.1.0',
+          isReady: true,
+          category: PackageCategory.utilities,
+          description: 'Local storage abstraction',
+        ),
+        const PackageStatus(
+          name: 'fifty_utils',
+          version: 'v0.1.0',
+          isReady: true,
+          category: PackageCategory.utilities,
+          description: 'Common utility functions',
+        ),
+        const PackageStatus(
+          name: 'fifty_connectivity',
+          version: 'v0.1.0',
+          isReady: true,
+          category: PackageCategory.utilities,
+          description: 'Network connectivity monitoring',
         ),
       ];
 

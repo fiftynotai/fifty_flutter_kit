@@ -72,24 +72,24 @@ class _ControlButton extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
-              borderRadius: FiftyRadii.standardRadius,
+              color: FiftyColors.burgundy.withValues(alpha: 0.1),
+              borderRadius: FiftyRadii.lgRadius,
               border: Border.all(
-                color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                color: FiftyColors.burgundy.withValues(alpha: 0.3),
               ),
             ),
             child: Icon(
               icon,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
             ),
           ),
           const SizedBox(height: FiftySpacing.xs),
           Text(
             label,
-            style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
               fontSize: 10,
-              color: FiftyColors.hyperChrome,
+              color: FiftyColors.cream.withValues(alpha: 0.7),
             ),
           ),
         ],

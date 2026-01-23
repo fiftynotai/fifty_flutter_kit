@@ -61,10 +61,10 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                     const SizedBox(width: FiftySpacing.lg),
                     Text(
                       viewModel.progressLabel,
-                      style: const TextStyle(
-                        fontFamily: FiftyTypography.fontFamilyMono,
-                        fontSize: FiftyTypography.mono,
-                        color: FiftyColors.hyperChrome,
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -89,23 +89,23 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                              ? FiftyColors.burgundy.withValues(alpha: 0.2)
                               : Colors.transparent,
-                          borderRadius: FiftyRadii.standardRadius,
+                          borderRadius: FiftyRadii.lgRadius,
                           border: Border.all(
                             color: isSelected
-                                ? FiftyColors.crimsonPulse
-                                : FiftyColors.border,
+                                ? FiftyColors.burgundy
+                                : FiftyColors.borderDark,
                           ),
                         ),
                         child: Text(
                           name.toUpperCase(),
                           style: TextStyle(
-                            fontFamily: FiftyTypography.fontFamilyMono,
-                            fontSize: FiftyTypography.mono,
+                            fontFamily: FiftyTypography.fontFamily,
+                            fontSize: FiftyTypography.bodySmall,
                             color: isSelected
-                                ? FiftyColors.crimsonPulse
-                                : FiftyColors.hyperChrome,
+                                ? FiftyColors.burgundy
+                                : FiftyColors.cream.withValues(alpha: 0.7),
                           ),
                         ),
                       ),
@@ -129,9 +129,9 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 // Progress bar
                 LinearProgressIndicator(
                   value: viewModel.progress,
-                  backgroundColor: FiftyColors.border,
+                  backgroundColor: FiftyColors.borderDark,
                   valueColor: const AlwaysStoppedAnimation<Color>(
-                    FiftyColors.crimsonPulse,
+                    FiftyColors.burgundy,
                   ),
                 ),
                 const SizedBox(height: FiftySpacing.xl),
@@ -224,17 +224,19 @@ class _ControlButton extends StatelessWidget {
         height: isPrimary ? 56 : 44,
         decoration: BoxDecoration(
           color: isPrimary
-              ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+              ? FiftyColors.burgundy.withValues(alpha: 0.2)
               : Colors.transparent,
           shape: BoxShape.circle,
           border: Border.all(
-            color: isPrimary ? FiftyColors.crimsonPulse : FiftyColors.border,
+            color: isPrimary ? FiftyColors.burgundy : FiftyColors.borderDark,
             width: isPrimary ? 2 : 1,
           ),
         ),
         child: Icon(
           icon,
-          color: isPrimary ? FiftyColors.crimsonPulse : FiftyColors.hyperChrome,
+          color: isPrimary
+              ? FiftyColors.burgundy
+              : FiftyColors.cream.withValues(alpha: 0.7),
           size: isPrimary ? 28 : 20,
         ),
       ),

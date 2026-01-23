@@ -44,15 +44,15 @@ class FeatureNavCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
-                borderRadius: FiftyRadii.standardRadius,
+                color: FiftyColors.burgundy.withValues(alpha: 0.1),
+                borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(
-                  color: FiftyColors.crimsonPulse.withValues(alpha: 0.3),
+                  color: FiftyColors.burgundy.withValues(alpha: 0.3),
                 ),
               ),
               child: Icon(
                 icon,
-                color: FiftyColors.crimsonPulse,
+                color: FiftyColors.burgundy,
                 size: 24,
               ),
             ),
@@ -65,29 +65,29 @@ class FeatureNavCard extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
-                      fontSize: FiftyTypography.body,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
                       fontWeight: FontWeight.bold,
-                      color: FiftyColors.terminalWhite,
+                      color: FiftyColors.cream,
                       letterSpacing: 1,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.mono,
-                      color: FiftyColors.hyperChrome,
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
+                      color: FiftyColors.cream.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
               ),
             ),
             // Arrow
-            const Icon(
+            Icon(
               Icons.chevron_right,
-              color: FiftyColors.hyperChrome,
+              color: FiftyColors.cream.withValues(alpha: 0.5),
             ),
           ],
         ),

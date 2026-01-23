@@ -28,12 +28,12 @@ class FeedbackSection extends StatelessWidget {
         // Loading Indicators
         const _SectionLabel(label: 'LOADING INDICATORS'),
         const SizedBox(height: FiftySpacing.md),
-        const FiftyCard(
-          padding: EdgeInsets.all(FiftySpacing.lg),
+        FiftyCard(
+          padding: const EdgeInsets.all(FiftySpacing.lg),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Column(
+              const Column(
                 children: [
                   SizedBox(
                     width: 24,
@@ -41,7 +41,7 @@ class FeedbackSection extends StatelessWidget {
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        FiftyColors.crimsonPulse,
+                        FiftyColors.burgundy,
                       ),
                     ),
                   ),
@@ -49,9 +49,9 @@ class FeedbackSection extends StatelessWidget {
                   Text(
                     'SPINNER',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontFamily: FiftyTypography.fontFamily,
                       fontSize: 10,
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                   ),
                 ],
@@ -61,19 +61,19 @@ class FeedbackSection extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     child: LinearProgressIndicator(
-                      backgroundColor: FiftyColors.border,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        FiftyColors.crimsonPulse,
+                      backgroundColor: FiftyColors.borderDark,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        FiftyColors.burgundy,
                       ),
                     ),
                   ),
-                  SizedBox(height: FiftySpacing.sm),
-                  Text(
+                  const SizedBox(height: FiftySpacing.sm),
+                  const Text(
                     'PROGRESS',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
+                      fontFamily: FiftyTypography.fontFamily,
                       fontSize: 10,
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                   ),
                 ],
@@ -92,10 +92,10 @@ class FeedbackSection extends StatelessWidget {
             spacing: FiftySpacing.md,
             runSpacing: FiftySpacing.md,
             children: [
-              _StatusBadge(label: 'ONLINE', color: FiftyColors.igrisGreen),
+              _StatusBadge(label: 'ONLINE', color: FiftyColors.hunterGreen),
               _StatusBadge(label: 'PENDING', color: FiftyColors.warning),
               _StatusBadge(label: 'ERROR', color: FiftyColors.error),
-              _StatusBadge(label: 'OFFLINE', color: FiftyColors.hyperChrome),
+              _StatusBadge(label: 'OFFLINE', color: FiftyColors.slateGrey),
             ],
           ),
         ),
@@ -115,15 +115,15 @@ class FeedbackSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
-              color: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
-              borderRadius: FiftyRadii.standardRadius,
-              border: Border.all(color: FiftyColors.crimsonPulse),
+              color: FiftyColors.burgundy.withValues(alpha: 0.1),
+              borderRadius: FiftyRadii.lgRadius,
+              border: Border.all(color: FiftyColors.burgundy),
             ),
             child: const Row(
               children: [
                 Icon(
                   Icons.check_circle,
-                  color: FiftyColors.crimsonPulse,
+                  color: FiftyColors.burgundy,
                   size: 20,
                 ),
                 SizedBox(width: FiftySpacing.sm),
@@ -131,9 +131,9 @@ class FeedbackSection extends StatelessWidget {
                   child: Text(
                     'Action completed successfully!',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
-                      color: FiftyColors.terminalWhite,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
+                      color: FiftyColors.cream,
                     ),
                   ),
                 ),
@@ -154,24 +154,24 @@ class FeedbackSection extends StatelessWidget {
                 Icon(
                   Icons.inbox,
                   size: 48,
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.slateGrey,
                 ),
                 SizedBox(height: FiftySpacing.md),
                 Text(
                   'NO DATA FOUND',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyHeadline,
-                    fontSize: FiftyTypography.body,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
                 SizedBox(height: FiftySpacing.xs),
                 Text(
                   'Check back later or try a different filter',
                   style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.mono,
-                    color: FiftyColors.hyperChrome,
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
               ],
@@ -193,9 +193,9 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label,
       style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamilyMono,
-        fontSize: FiftyTypography.mono,
-        color: FiftyColors.hyperChrome,
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.bodySmall,
+        color: FiftyColors.slateGrey,
         letterSpacing: 1,
       ),
     );
@@ -238,8 +238,8 @@ class _StatusBadge extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
-              fontSize: FiftyTypography.mono,
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
               color: color,
             ),
           ),

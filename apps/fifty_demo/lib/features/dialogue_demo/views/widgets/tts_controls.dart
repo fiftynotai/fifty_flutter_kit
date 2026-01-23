@@ -38,7 +38,7 @@ class TtsControls extends StatelessWidget {
             onToggle: onToggleTts,
           ),
           const SizedBox(height: FiftySpacing.md),
-          Container(height: 1, color: FiftyColors.border),
+          Container(height: 1, color: FiftyColors.borderDark),
           const SizedBox(height: FiftySpacing.md),
           // Auto-advance Toggle
           _SettingRow(
@@ -75,18 +75,20 @@ class _SettingRow extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: value ? FiftyColors.crimsonPulse : FiftyColors.hyperChrome,
+              color: value
+                  ? FiftyColors.burgundy
+                  : FiftyColors.cream.withValues(alpha: 0.7),
               size: 20,
             ),
             const SizedBox(width: FiftySpacing.sm),
             Text(
               label,
               style: TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
-                fontSize: FiftyTypography.body,
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodyLarge,
                 color: value
-                    ? FiftyColors.terminalWhite
-                    : FiftyColors.hyperChrome,
+                    ? FiftyColors.cream
+                    : FiftyColors.cream.withValues(alpha: 0.7),
               ),
             ),
           ],
@@ -98,11 +100,11 @@ class _SettingRow extends StatelessWidget {
             height: 24,
             decoration: BoxDecoration(
               color: value
-                  ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                  ? FiftyColors.burgundy.withValues(alpha: 0.2)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: value ? FiftyColors.crimsonPulse : FiftyColors.border,
+                color: value ? FiftyColors.burgundy : FiftyColors.borderDark,
               ),
             ),
             child: AnimatedAlign(
@@ -114,8 +116,8 @@ class _SettingRow extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: BoxDecoration(
                   color: value
-                      ? FiftyColors.crimsonPulse
-                      : FiftyColors.hyperChrome,
+                      ? FiftyColors.burgundy
+                      : FiftyColors.cream.withValues(alpha: 0.7),
                   shape: BoxShape.circle,
                 ),
               ),

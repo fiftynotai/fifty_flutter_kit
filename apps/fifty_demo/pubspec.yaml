@@ -10,12 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Fifty Flutter Kit - Design System
   fifty_tokens:
     path: ../../packages/fifty_tokens
   fifty_theme:
     path: ../../packages/fifty_theme
   fifty_ui:
     path: ../../packages/fifty_ui
+  # Fifty Flutter Kit - Engines
   fifty_audio_engine:
     path: ../../packages/fifty_audio_engine
   fifty_speech_engine:
@@ -24,9 +26,23 @@ dependencies:
     path: ../../packages/fifty_sentences_engine
   fifty_map_engine:
     path: ../../packages/fifty_map_engine
+  fifty_printing_engine:
+    path: ../../packages/fifty_printing_engine
+  # Fifty Flutter Kit - Features
+  fifty_skill_tree:
+    path: ../../packages/fifty_skill_tree
+  fifty_achievement_engine:
+    path: ../../packages/fifty_achievement_engine
+  # Fifty Flutter Kit - Utilities
+  fifty_forms:
+    path: ../../packages/fifty_forms
+  fifty_connectivity:
+    path: ../../packages/fifty_connectivity
+  # Third-party
   get: ^4.6.6
   loader_overlay: ^4.0.3
   audioplayers: ^6.0.0
+  url_launcher: ^6.2.0
 
 dev_dependencies:
   flutter_test:

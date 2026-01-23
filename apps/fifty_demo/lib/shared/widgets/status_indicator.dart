@@ -48,15 +48,15 @@ class StatusIndicator extends StatelessWidget {
   Color get _dotColor {
     switch (state) {
       case StatusState.ready:
-        return FiftyColors.igrisGreen;
+        return FiftyColors.hunterGreen;
       case StatusState.loading:
         return FiftyColors.warning;
       case StatusState.error:
-        return FiftyColors.error;
+        return FiftyColors.burgundy;
       case StatusState.offline:
-        return FiftyColors.hyperChrome;
+        return FiftyColors.slateGrey;
       case StatusState.idle:
-        return FiftyColors.border;
+        return FiftyColors.borderDark;
     }
   }
 
@@ -93,18 +93,18 @@ class StatusIndicator extends StatelessWidget {
         ],
         Text(
           label,
-          style: const TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.mono,
-            color: FiftyColors.hyperChrome,
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodySmall,
+            color: FiftyColors.cream.withValues(alpha: 0.7),
           ),
         ),
         const SizedBox(width: FiftySpacing.xs),
         Text(
           '[$_statusText]',
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.mono,
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodySmall,
             color: _dotColor,
           ),
         ),

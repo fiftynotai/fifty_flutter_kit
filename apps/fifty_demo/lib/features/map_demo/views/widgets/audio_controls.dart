@@ -48,30 +48,30 @@ class AudioControlsWidget extends StatelessWidget {
                   Icon(
                     Icons.music_note,
                     color: bgmEnabled
-                        ? FiftyColors.crimsonPulse
-                        : FiftyColors.hyperChrome,
+                        ? FiftyColors.burgundy
+                        : FiftyColors.cream.withValues(alpha: 0.7),
                     size: 20,
                   ),
                   const SizedBox(width: FiftySpacing.sm),
                   Text(
                     'BGM',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
                       color: bgmEnabled
-                          ? FiftyColors.terminalWhite
-                          : FiftyColors.hyperChrome,
+                          ? FiftyColors.cream
+                          : FiftyColors.cream.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(width: FiftySpacing.sm),
                   Text(
                     bgmPlaying ? '[PLAYING]' : '[STOPPED]',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.mono,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
                       color: bgmPlaying
-                          ? FiftyColors.igrisGreen
-                          : FiftyColors.hyperChrome,
+                          ? FiftyColors.hunterGreen
+                          : FiftyColors.cream.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -91,21 +91,21 @@ class AudioControlsWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(FiftySpacing.xs),
                       decoration: BoxDecoration(
                         color: bgmEnabled
-                            ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                            ? FiftyColors.burgundy.withValues(alpha: 0.2)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(4),
                         border: Border.all(
                           color: bgmEnabled
-                              ? FiftyColors.crimsonPulse
-                              : FiftyColors.border,
+                              ? FiftyColors.burgundy
+                              : FiftyColors.borderDark,
                         ),
                       ),
                       child: Icon(
                         bgmEnabled ? Icons.volume_up : Icons.volume_off,
                         size: 16,
                         color: bgmEnabled
-                            ? FiftyColors.crimsonPulse
-                            : FiftyColors.hyperChrome,
+                            ? FiftyColors.burgundy
+                            : FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                   ),
@@ -114,7 +114,7 @@ class AudioControlsWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: FiftySpacing.md),
-          Container(height: 1, color: FiftyColors.border),
+          Container(height: 1, color: FiftyColors.borderDark),
           const SizedBox(height: FiftySpacing.md),
           // SFX Row
           Row(
@@ -125,30 +125,30 @@ class AudioControlsWidget extends StatelessWidget {
                   Icon(
                     Icons.speaker,
                     color: sfxEnabled
-                        ? FiftyColors.crimsonPulse
-                        : FiftyColors.hyperChrome,
+                        ? FiftyColors.burgundy
+                        : FiftyColors.cream.withValues(alpha: 0.7),
                     size: 20,
                   ),
                   const SizedBox(width: FiftySpacing.sm),
                   Text(
                     'SFX',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
                       color: sfxEnabled
-                          ? FiftyColors.terminalWhite
-                          : FiftyColors.hyperChrome,
+                          ? FiftyColors.cream
+                          : FiftyColors.cream.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(width: FiftySpacing.sm),
                   Text(
                     sfxEnabled ? '[ENABLED]' : '[DISABLED]',
                     style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.mono,
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
                       color: sfxEnabled
-                          ? FiftyColors.igrisGreen
-                          : FiftyColors.hyperChrome,
+                          ? FiftyColors.hunterGreen
+                          : FiftyColors.cream.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -168,21 +168,21 @@ class AudioControlsWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(FiftySpacing.xs),
                       decoration: BoxDecoration(
                         color: sfxEnabled
-                            ? FiftyColors.crimsonPulse.withValues(alpha: 0.2)
+                            ? FiftyColors.burgundy.withValues(alpha: 0.2)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(4),
                         border: Border.all(
                           color: sfxEnabled
-                              ? FiftyColors.crimsonPulse
-                              : FiftyColors.border,
+                              ? FiftyColors.burgundy
+                              : FiftyColors.borderDark,
                         ),
                       ),
                       child: Icon(
                         sfxEnabled ? Icons.volume_up : Icons.volume_off,
                         size: 16,
                         color: sfxEnabled
-                            ? FiftyColors.crimsonPulse
-                            : FiftyColors.hyperChrome,
+                            ? FiftyColors.burgundy
+                            : FiftyColors.cream.withValues(alpha: 0.7),
                       ),
                     ),
                   ),
