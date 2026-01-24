@@ -7,6 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/widgets/section_label.dart';
 import '../../controllers/ui_showcase_view_model.dart';
 
 /// Feedback section widget.
@@ -26,57 +27,20 @@ class FeedbackSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Loading Indicators
-        const _SectionLabel(label: 'LOADING INDICATORS'),
+        const SectionLabel(label: 'LOADING INDICATORS'),
         const SizedBox(height: FiftySpacing.md),
-        FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+        const FiftyCard(
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Column(
-                children: [
-                  SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        FiftyColors.burgundy,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: FiftySpacing.sm),
-                  Text(
-                    'SPINNER',
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamily,
-                      fontSize: 10,
-                      color: FiftyColors.slateGrey,
-                    ),
-                  ),
-                ],
+              _LoadingIndicatorDemo(
+                type: _LoadingType.spinner,
+                label: 'SPINNER',
               ),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: LinearProgressIndicator(
-                      backgroundColor: FiftyColors.borderDark,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        FiftyColors.burgundy,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: FiftySpacing.sm),
-                  const Text(
-                    'PROGRESS',
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamily,
-                      fontSize: 10,
-                      color: FiftyColors.slateGrey,
-                    ),
-                  ),
-                ],
+              _LoadingIndicatorDemo(
+                type: _LoadingType.progress,
+                label: 'PROGRESS',
               ),
             ],
           ),
@@ -84,7 +48,7 @@ class FeedbackSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Status Badges
-        const _SectionLabel(label: 'STATUS BADGES'),
+        const SectionLabel(label: 'STATUS BADGES'),
         const SizedBox(height: FiftySpacing.md),
         const FiftyCard(
           padding: EdgeInsets.all(FiftySpacing.lg),
@@ -101,50 +65,59 @@ class FeedbackSection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
-        // Toast/Snackbar
-        const _SectionLabel(label: 'TOAST NOTIFICATION'),
+        // Toast/Snackbar - Now triggers actual FiftySnackbar
+        const SectionLabel(label: 'TOAST NOTIFICATION'),
         const SizedBox(height: FiftySpacing.md),
-        FiftyButton(
-          label: 'SHOW TOAST',
-          onPressed: viewModel.triggerSnackbar,
-          variant: FiftyButtonVariant.secondary,
-          size: FiftyButtonSize.medium,
+        Wrap(
+          spacing: FiftySpacing.sm,
+          runSpacing: FiftySpacing.sm,
+          children: [
+            FiftyButton(
+              label: 'INFO',
+              onPressed: () => FiftySnackbar.show(
+                context,
+                message: 'This is an info notification',
+                variant: FiftySnackbarVariant.info,
+              ),
+              variant: FiftyButtonVariant.secondary,
+              size: FiftyButtonSize.small,
+            ),
+            FiftyButton(
+              label: 'SUCCESS',
+              onPressed: () => FiftySnackbar.show(
+                context,
+                message: 'Action completed successfully!',
+                variant: FiftySnackbarVariant.success,
+              ),
+              variant: FiftyButtonVariant.secondary,
+              size: FiftyButtonSize.small,
+            ),
+            FiftyButton(
+              label: 'WARNING',
+              onPressed: () => FiftySnackbar.show(
+                context,
+                message: 'Please review before proceeding',
+                variant: FiftySnackbarVariant.warning,
+              ),
+              variant: FiftyButtonVariant.secondary,
+              size: FiftyButtonSize.small,
+            ),
+            FiftyButton(
+              label: 'ERROR',
+              onPressed: () => FiftySnackbar.show(
+                context,
+                message: 'Something went wrong',
+                variant: FiftySnackbarVariant.error,
+              ),
+              variant: FiftyButtonVariant.secondary,
+              size: FiftyButtonSize.small,
+            ),
+          ],
         ),
-        if (viewModel.showSnackbar) ...[
-          const SizedBox(height: FiftySpacing.md),
-          Container(
-            padding: const EdgeInsets.all(FiftySpacing.md),
-            decoration: BoxDecoration(
-              color: FiftyColors.burgundy.withValues(alpha: 0.1),
-              borderRadius: FiftyRadii.lgRadius,
-              border: Border.all(color: FiftyColors.burgundy),
-            ),
-            child: const Row(
-              children: [
-                Icon(
-                  Icons.check_circle,
-                  color: FiftyColors.burgundy,
-                  size: 20,
-                ),
-                SizedBox(width: FiftySpacing.sm),
-                Expanded(
-                  child: Text(
-                    'Action completed successfully!',
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamily,
-                      fontSize: FiftyTypography.bodyLarge,
-                      color: FiftyColors.cream,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
         const SizedBox(height: FiftySpacing.xl),
 
         // Empty State
-        const _SectionLabel(label: 'EMPTY STATE'),
+        const SectionLabel(label: 'EMPTY STATE'),
         const SizedBox(height: FiftySpacing.md),
         const FiftyCard(
           padding: EdgeInsets.all(FiftySpacing.xxl),
@@ -183,30 +156,73 @@ class FeedbackSection extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.label});
+/// Loading indicator type for demo.
+enum _LoadingType { spinner, progress }
 
+/// Styled loading indicator demo widget.
+///
+/// Displays loading indicators with consistent FDL styling.
+class _LoadingIndicatorDemo extends StatelessWidget {
+  const _LoadingIndicatorDemo({
+    required this.type,
+    required this.label,
+  });
+
+  /// Size for spinner indicator.
+  static const double _spinnerSize = 24;
+
+  /// Width for progress indicator.
+  static const double _progressWidth = 100;
+
+  final _LoadingType type;
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamily,
-        fontSize: FiftyTypography.bodySmall,
-        color: FiftyColors.slateGrey,
-        letterSpacing: 1,
-      ),
+    return Column(
+      children: [
+        if (type == _LoadingType.spinner)
+          const SizedBox(
+            width: _spinnerSize,
+            height: _spinnerSize,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(FiftyColors.burgundy),
+            ),
+          )
+        else
+          SizedBox(
+            width: _progressWidth,
+            child: LinearProgressIndicator(
+              backgroundColor: FiftyColors.borderDark,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                FiftyColors.burgundy,
+              ),
+            ),
+          ),
+        const SizedBox(height: FiftySpacing.sm),
+        Text(
+          label,
+          style: const TextStyle(
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.labelSmall,
+            color: FiftyColors.slateGrey,
+          ),
+        ),
+      ],
     );
   }
 }
 
+/// Status badge widget with FDL styling.
 class _StatusBadge extends StatelessWidget {
   const _StatusBadge({
     required this.label,
     required this.color,
   });
+
+  /// Size for status dot indicator.
+  static const double _dotSize = 6;
 
   final String label;
   final Color color;
@@ -220,15 +236,15 @@ class _StatusBadge extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: FiftyRadii.lgRadius,
         border: Border.all(color: color),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 6,
-            height: 6,
+            width: _dotSize,
+            height: _dotSize,
             decoration: BoxDecoration(
               color: color,
               shape: BoxShape.circle,

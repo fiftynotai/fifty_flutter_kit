@@ -195,6 +195,12 @@ class _StatsCard extends StatelessWidget {
     this.accentColor,
   });
 
+  /// Size for the icon container.
+  static const double _iconContainerSize = 36;
+
+  /// Size for the icon inside the container.
+  static const double _iconSize = 18;
+
   final IconData icon;
   final String value;
   final String label;
@@ -214,8 +220,8 @@ class _StatsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: 36,
-                height: 36,
+                width: _iconContainerSize,
+                height: _iconContainerSize,
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.1),
                   borderRadius: FiftyRadii.smRadius,
@@ -223,7 +229,7 @@ class _StatsCard extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: color,
-                  size: 18,
+                  size: _iconSize,
                 ),
               ),
               Container(

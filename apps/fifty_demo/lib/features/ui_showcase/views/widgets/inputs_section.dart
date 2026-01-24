@@ -7,6 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/widgets/section_label.dart';
 import '../../controllers/ui_showcase_view_model.dart';
 
 /// Inputs section widget.
@@ -26,7 +27,7 @@ class InputsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Text Input
-        const _SectionLabel(label: 'TEXT INPUT'),
+        const SectionLabel(label: 'TEXT INPUT'),
         const SizedBox(height: FiftySpacing.md),
         FiftyCard(
           padding: const EdgeInsets.all(FiftySpacing.lg),
@@ -53,7 +54,7 @@ class InputsSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Toggle Switch
-        const _SectionLabel(label: 'TOGGLE SWITCH'),
+        const SectionLabel(label: 'TOGGLE SWITCH'),
         const SizedBox(height: FiftySpacing.md),
         FiftyCard(
           padding: const EdgeInsets.all(FiftySpacing.lg),
@@ -78,7 +79,7 @@ class InputsSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Slider
-        const _SectionLabel(label: 'SLIDER'),
+        const SectionLabel(label: 'SLIDER'),
         const SizedBox(height: FiftySpacing.md),
         FiftyCard(
           padding: const EdgeInsets.all(FiftySpacing.lg),
@@ -108,21 +109,3 @@ class InputsSection extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamily,
-        fontSize: FiftyTypography.bodySmall,
-        color: FiftyColors.slateGrey,
-        letterSpacing: 1,
-      ),
-    );
-  }
-}

@@ -7,6 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/widgets/section_label.dart';
 import '../../controllers/ui_showcase_view_model.dart';
 
 /// Display section widget.
@@ -26,7 +27,7 @@ class DisplaySection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Cards
-        const _SectionLabel(label: 'CARDS'),
+        const SectionLabel(label: 'CARDS'),
         const SizedBox(height: FiftySpacing.md),
         const FiftyCard(
           padding: EdgeInsets.all(FiftySpacing.lg),
@@ -57,7 +58,7 @@ class DisplaySection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Data Slate
-        const _SectionLabel(label: 'DATA SLATE'),
+        const SectionLabel(label: 'DATA SLATE'),
         const SizedBox(height: FiftySpacing.md),
         const FiftyDataSlate(
           title: 'SYSTEM STATUS',
@@ -71,7 +72,7 @@ class DisplaySection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Hero Section
-        const _SectionLabel(label: 'HERO SECTION'),
+        const SectionLabel(label: 'HERO SECTION'),
         const SizedBox(height: FiftySpacing.md),
         const FiftyCard(
           padding: EdgeInsets.all(FiftySpacing.lg),
@@ -90,7 +91,7 @@ class DisplaySection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Navigation Bar
-        const _SectionLabel(label: 'NAVIGATION BAR'),
+        const SectionLabel(label: 'NAVIGATION BAR'),
         const SizedBox(height: FiftySpacing.md),
         FiftyNavBar(
           items: const [
@@ -105,7 +106,7 @@ class DisplaySection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Color Palette
-        const _SectionLabel(label: 'COLOR PALETTE'),
+        const SectionLabel(label: 'COLOR PALETTE'),
         const SizedBox(height: FiftySpacing.md),
         const Wrap(
           spacing: FiftySpacing.sm,
@@ -125,24 +126,6 @@ class DisplaySection extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamily,
-        fontSize: FiftyTypography.bodySmall,
-        color: FiftyColors.slateGrey,
-        letterSpacing: 1,
-      ),
-    );
-  }
-}
 
 class _ColorSwatch extends StatelessWidget {
   const _ColorSwatch({
@@ -150,13 +133,19 @@ class _ColorSwatch extends StatelessWidget {
     required this.label,
   });
 
+  /// Width for color swatch container (based on content needs).
+  static const double _swatchWidth = 80;
+
+  /// Size for the color preview square.
+  static const double _colorPreviewSize = 40;
+
   final Color color;
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
+      width: _swatchWidth,
       padding: const EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
         border: Border.all(color: FiftyColors.borderDark),
@@ -165,11 +154,11 @@ class _ColorSwatch extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: _colorPreviewSize,
+            height: _colorPreviewSize,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: FiftyRadii.smRadius,
               border: Border.all(color: FiftyColors.borderDark),
             ),
           ),
@@ -178,7 +167,7 @@ class _ColorSwatch extends StatelessWidget {
             label,
             style: const TextStyle(
               fontFamily: FiftyTypography.fontFamily,
-              fontSize: 8,
+              fontSize: FiftyTypography.labelSmall,
               color: FiftyColors.slateGrey,
             ),
           ),

@@ -199,7 +199,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: FiftyRadii.smRadius,
               child: LinearProgressIndicator(
                 value: viewModel.passwordStrength,
                 backgroundColor: FiftyColors.slateGrey.withValues(alpha: 0.3),

@@ -120,7 +120,7 @@ class _PackageCard extends StatelessWidget {
                 package.version,
                 style: const TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
-                  fontSize: 10,
+                  fontSize: FiftyTypography.labelSmall,
                   color: FiftyColors.slateGrey,
                 ),
               ),
@@ -132,7 +132,7 @@ class _PackageCard extends StatelessWidget {
             package.name,
             style: const TextStyle(
               fontFamily: FiftyTypography.fontFamily,
-              fontSize: 11,
+              fontSize: FiftyTypography.bodySmall,
               fontWeight: FontWeight.bold,
               color: FiftyColors.cream,
             ),
@@ -146,7 +146,7 @@ class _PackageCard extends StatelessWidget {
                 package.description!,
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
-                  fontSize: 9,
+                  fontSize: FiftyTypography.labelSmall,
                   color: FiftyColors.cream.withValues(alpha: 0.6),
                 ),
                 maxLines: 2,

@@ -122,7 +122,9 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const CircularProgressIndicator(
-                  color: FiftyColors.burgundy,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FiftyColors.burgundy,
+                  ),
                 ),
                 const SizedBox(height: FiftySpacing.md),
                 Text(

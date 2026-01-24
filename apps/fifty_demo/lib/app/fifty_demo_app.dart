@@ -47,9 +47,7 @@ class FiftyDemoApp extends StatelessWidget {
       home: GlobalLoaderOverlay(
         overlayColor: FiftyColors.darkBurgundy.withAlpha(200),
         overlayWidgetBuilder: (_) => const Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(FiftyColors.burgundy),
-          ),
+          child: _FdlLoadingIndicator(),
         ),
         child: const _DemoShell(),
       ),
@@ -70,6 +68,9 @@ class _DemoShell extends StatefulWidget {
 class _DemoShellState extends State<_DemoShell> {
   int _selectedIndex = 0;
   bool _bindingsInitialized = false;
+
+  /// Height for the hero card in the header.
+  static const double _heroCardHeight = 140;
 
   /// Navigation items for the bottom navigation bar.
   static const _navItems = [
@@ -142,7 +143,7 @@ class _DemoShellState extends State<_DemoShell> {
               child: FiftyCard(
                 padding: EdgeInsets.zero,
                 child: Container(
-                  height: 140,
+                  height: _DemoShellState._heroCardHeight,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       begin: Alignment.topLeft,
@@ -245,11 +246,7 @@ class _DemoShellState extends State<_DemoShell> {
                       ],
                     )
                   : const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          FiftyColors.burgundy,
-                        ),
-                      ),
+                      child: _FdlLoadingIndicator(),
                     ),
             ),
           ],
@@ -285,6 +282,20 @@ class _DemoShellState extends State<_DemoShell> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// FDL-styled loading indicator.
+///
+/// A consistent loading indicator using FDL color tokens.
+class _FdlLoadingIndicator extends StatelessWidget {
+  const _FdlLoadingIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return const CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(FiftyColors.burgundy),
     );
   }
 }

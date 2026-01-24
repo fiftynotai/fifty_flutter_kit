@@ -199,7 +199,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   color: isSelected
                       ? FiftyColors.burgundy
                       : FiftyColors.surfaceDark,
-                  borderRadius: BorderRadius.circular(FiftyRadii.md),
+                  borderRadius: FiftyRadii.mdRadius,
                   border: Border.all(
                     color: isSelected
                         ? FiftyColors.burgundy
@@ -283,7 +283,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                         color: isSelected
                             ? viewModel.getSkillColor(skill).withValues(alpha: 0.3)
                             : FiftyColors.surfaceDark,
-                        borderRadius: BorderRadius.circular(FiftyRadii.md),
+                        borderRadius: FiftyRadii.mdRadius,
                         border: Border.all(
                           color: isSelected
                               ? viewModel.getSkillColor(skill)
@@ -302,7 +302,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                   .getSkillColor(skill)
                                   .withValues(alpha: 0.2),
                               borderRadius:
-                                  BorderRadius.circular(FiftyRadii.sm),
+                                  FiftyRadii.smRadius,
                             ),
                             child: Icon(
                               skill.icon,
@@ -339,7 +339,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                             .getSkillColor(skill)
                                             .withValues(alpha: 0.2),
                                         borderRadius:
-                                            BorderRadius.circular(FiftyRadii.sm),
+                                            FiftyRadii.smRadius,
                                       ),
                                       child: Text(
                                         viewModel.getSkillStatus(skill),
@@ -415,7 +415,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                 height: 56,
                 decoration: BoxDecoration(
                   color: viewModel.getSkillColor(skill).withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(FiftyRadii.md),
+                  borderRadius: FiftyRadii.mdRadius,
                 ),
                 child: Icon(
                   skill.icon,

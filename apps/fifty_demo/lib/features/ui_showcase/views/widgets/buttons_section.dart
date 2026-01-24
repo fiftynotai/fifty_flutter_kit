@@ -7,6 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../shared/widgets/section_label.dart';
 import '../../controllers/ui_showcase_view_model.dart';
 
 /// Buttons section widget.
@@ -26,7 +27,7 @@ class ButtonsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Primary Buttons
-        const _SectionLabel(label: 'PRIMARY BUTTONS'),
+        const SectionLabel(label: 'PRIMARY BUTTONS'),
         const SizedBox(height: FiftySpacing.md),
         Wrap(
           spacing: FiftySpacing.md,
@@ -55,7 +56,7 @@ class ButtonsSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Secondary Buttons
-        const _SectionLabel(label: 'SECONDARY BUTTONS'),
+        const SectionLabel(label: 'SECONDARY BUTTONS'),
         const SizedBox(height: FiftySpacing.md),
         Wrap(
           spacing: FiftySpacing.md,
@@ -84,7 +85,7 @@ class ButtonsSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Ghost Buttons
-        const _SectionLabel(label: 'GHOST BUTTONS'),
+        const SectionLabel(label: 'GHOST BUTTONS'),
         const SizedBox(height: FiftySpacing.md),
         Wrap(
           spacing: FiftySpacing.md,
@@ -108,7 +109,7 @@ class ButtonsSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Disabled State
-        const _SectionLabel(label: 'DISABLED STATE'),
+        const SectionLabel(label: 'DISABLED STATE'),
         const SizedBox(height: FiftySpacing.md),
         const Wrap(
           spacing: FiftySpacing.md,
@@ -131,7 +132,7 @@ class ButtonsSection extends StatelessWidget {
         const SizedBox(height: FiftySpacing.xl),
 
         // Expanded Button
-        const _SectionLabel(label: 'EXPANDED BUTTON'),
+        const SectionLabel(label: 'EXPANDED BUTTON'),
         const SizedBox(height: FiftySpacing.md),
         FiftyButton(
           label: 'FULL WIDTH BUTTON',
@@ -145,21 +146,3 @@ class ButtonsSection extends StatelessWidget {
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamily,
-        fontSize: FiftyTypography.bodySmall,
-        color: FiftyColors.slateGrey,
-        letterSpacing: 1,
-      ),
-    );
-  }
-}

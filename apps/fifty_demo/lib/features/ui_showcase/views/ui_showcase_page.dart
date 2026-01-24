@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
+import '../../../shared/widgets/section_nav_pill.dart';
 import '../controllers/ui_showcase_view_model.dart';
 import 'widgets/buttons_section.dart';
 import 'widgets/display_section.dart';
@@ -85,49 +86,11 @@ class _SectionNav extends StatelessWidget {
       spacing: FiftySpacing.sm,
       runSpacing: FiftySpacing.sm,
       children: sections.map((section) {
-        final isActive = section.id == activeSection;
-        return GestureDetector(
+        return SectionNavPill(
+          label: section.label,
+          icon: IconData(section.icon, fontFamily: 'MaterialIcons'),
+          isActive: section.id == activeSection,
           onTap: () => onSectionSelected(section.id),
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: FiftySpacing.md,
-              vertical: FiftySpacing.sm,
-            ),
-            decoration: BoxDecoration(
-              color: isActive
-                  ? FiftyColors.burgundy.withValues(alpha: 0.2)
-                  : Colors.transparent,
-              borderRadius: FiftyRadii.lgRadius,
-              border: Border.all(
-                color: isActive
-                    ? FiftyColors.burgundy
-                    : FiftyColors.borderDark,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  IconData(section.icon, fontFamily: 'MaterialIcons'),
-                  size: 16,
-                  color: isActive
-                      ? FiftyColors.burgundy
-                      : FiftyColors.slateGrey,
-                ),
-                const SizedBox(width: FiftySpacing.xs),
-                Text(
-                  section.label,
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.bodySmall,
-                    color: isActive
-                        ? FiftyColors.burgundy
-                        : FiftyColors.slateGrey,
-                  ),
-                ),
-              ],
-            ),
-          ),
         );
       }).toList(),
     );
