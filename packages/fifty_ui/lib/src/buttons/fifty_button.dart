@@ -8,15 +8,19 @@ import '../utils/glitch_effect.dart';
 ///
 /// Each variant has a distinct visual style:
 /// - [primary]: Solid burgundy background for main CTAs
-/// - [secondary]: Outlined with burgundy border
+/// - [secondary]: Solid slate-grey background for secondary actions
+/// - [outline]: Burgundy border with transparent background
 /// - [ghost]: Text-only, no background or border
 /// - [danger]: Error/destructive action styling
 enum FiftyButtonVariant {
   /// Primary button with solid burgundy background.
   primary,
 
-  /// Secondary button with burgundy outline.
+  /// Secondary button with solid slate-grey background.
   secondary,
+
+  /// Outline button with burgundy border and transparent background.
+  outline,
 
   /// Ghost button with no background or border.
   ghost,
@@ -40,23 +44,23 @@ enum FiftyButtonSize {
 /// A styled button following the Fifty Design Language v2.
 ///
 /// Features:
-/// - Four variants: primary, secondary, ghost, danger
+/// - Five variants: primary, secondary, outline, ghost, danger
 /// - Three sizes: small (36px), medium (48px), large (56px)
 /// - Consistent xl border radius (16px)
 /// - Primary shadow on primary variant
 /// - Loading state with indicator
 /// - Optional leading icon
+/// - Optional trailing icon (for CTAs with arrows)
 /// - Glitch effect on hover when enabled
 /// - Press animation with scale effect
 ///
 /// Example:
 /// ```dart
 /// FiftyButton(
-///   label: 'DEPLOY',
-///   onPressed: () => handleDeploy(),
+///   label: 'GET STARTED',
+///   onPressed: () => handleStart(),
 ///   variant: FiftyButtonVariant.primary,
-///   icon: Icons.rocket_launch,
-///   isGlitch: true,
+///   trailingIcon: Icons.arrow_forward,
 /// )
 /// ```
 class FiftyButton extends StatefulWidget {
@@ -66,6 +70,7 @@ class FiftyButton extends StatefulWidget {
     required this.label,
     this.onPressed,
     this.icon,
+    this.trailingIcon,
     this.variant = FiftyButtonVariant.primary,
     this.size = FiftyButtonSize.medium,
     this.loading = false,
@@ -86,6 +91,12 @@ class FiftyButton extends StatefulWidget {
 
   /// Optional leading icon.
   final IconData? icon;
+
+  /// Optional trailing icon.
+  ///
+  /// Displayed on the right side of the label text.
+  /// Commonly used with [Icons.arrow_forward] for CTAs.
+  final IconData? trailingIcon;
 
   /// The visual variant of the button.
   final FiftyButtonVariant variant;
@@ -289,18 +300,28 @@ class _FiftyButtonState extends State<FiftyButton>
       );
     }
 
-    if (widget.icon != null) {
+    if (widget.icon != null || widget.trailingIcon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            widget.icon,
-            size: fontSize + 4,
-            color: _isDisabled ? foregroundColor.withValues(alpha: 0.5) : foregroundColor,
-          ),
-          const SizedBox(width: FiftySpacing.sm),
+          if (widget.icon != null) ...[
+            Icon(
+              widget.icon,
+              size: fontSize + 4,
+              color: _isDisabled ? foregroundColor.withValues(alpha: 0.5) : foregroundColor,
+            ),
+            const SizedBox(width: FiftySpacing.sm),
+          ],
           textWidget,
+          if (widget.trailingIcon != null) ...[
+            const SizedBox(width: FiftySpacing.sm),
+            Icon(
+              widget.trailingIcon,
+              size: fontSize + 4,
+              color: _isDisabled ? foregroundColor.withValues(alpha: 0.5) : foregroundColor,
+            ),
+          ],
         ],
       );
     }
@@ -348,6 +369,8 @@ class _FiftyButtonState extends State<FiftyButton>
         case FiftyButtonVariant.danger:
           return colorScheme.primary.withValues(alpha: 0.3);
         case FiftyButtonVariant.secondary:
+          return FiftyColors.slateGrey.withValues(alpha: 0.3);
+        case FiftyButtonVariant.outline:
         case FiftyButtonVariant.ghost:
           return Colors.transparent;
       }
@@ -357,6 +380,8 @@ class _FiftyButtonState extends State<FiftyButton>
       case FiftyButtonVariant.primary:
         return colorScheme.primary;
       case FiftyButtonVariant.secondary:
+        return FiftyColors.slateGrey;
+      case FiftyButtonVariant.outline:
       case FiftyButtonVariant.ghost:
         return Colors.transparent;
       case FiftyButtonVariant.danger:
@@ -369,6 +394,8 @@ class _FiftyButtonState extends State<FiftyButton>
       case FiftyButtonVariant.primary:
         return colorScheme.onPrimary;
       case FiftyButtonVariant.secondary:
+        return Colors.white;
+      case FiftyButtonVariant.outline:
         return colorScheme.primary;
       case FiftyButtonVariant.ghost:
         return colorScheme.onSurface;
@@ -380,9 +407,10 @@ class _FiftyButtonState extends State<FiftyButton>
   Color? _getBorderColor(ColorScheme colorScheme) {
     switch (widget.variant) {
       case FiftyButtonVariant.primary:
+      case FiftyButtonVariant.secondary:
       case FiftyButtonVariant.danger:
         return null;
-      case FiftyButtonVariant.secondary:
+      case FiftyButtonVariant.outline:
         return colorScheme.primary;
       case FiftyButtonVariant.ghost:
         return null;
@@ -396,6 +424,8 @@ class _FiftyButtonState extends State<FiftyButton>
       case FiftyButtonVariant.primary:
         return FiftyShadows.primary;
       case FiftyButtonVariant.secondary:
+        return FiftyShadows.sm;
+      case FiftyButtonVariant.outline:
       case FiftyButtonVariant.ghost:
       case FiftyButtonVariant.danger:
         return null;

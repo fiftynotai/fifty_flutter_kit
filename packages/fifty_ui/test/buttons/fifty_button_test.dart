@@ -180,5 +180,81 @@ void main() {
         expect(find.byType(AnimatedScale), findsOneWidget);
       });
     });
+
+    group('outline variant', () {
+      testWidgets('renders with transparent background and border',
+          (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Outline',
+            onPressed: () {},
+            variant: FiftyButtonVariant.outline,
+          ),
+        ));
+
+        expect(find.text('OUTLINE'), findsOneWidget);
+        expect(find.byType(FiftyButton), findsOneWidget);
+      });
+    });
+
+    group('secondary variant (slate-grey filled)', () {
+      testWidgets('renders with slate-grey background', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Secondary',
+            onPressed: () {},
+            variant: FiftyButtonVariant.secondary,
+          ),
+        ));
+
+        expect(find.text('SECONDARY'), findsOneWidget);
+        expect(find.byType(FiftyButton), findsOneWidget);
+      });
+    });
+
+    group('trailingIcon parameter', () {
+      testWidgets('renders with trailing icon', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Continue',
+            onPressed: () {},
+            trailingIcon: Icons.arrow_forward,
+          ),
+        ));
+
+        expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+        expect(find.text('CONTINUE'), findsOneWidget);
+      });
+
+      testWidgets('renders with both leading and trailing icons',
+          (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          FiftyButton(
+            label: 'Navigate',
+            onPressed: () {},
+            icon: Icons.map,
+            trailingIcon: Icons.arrow_forward,
+          ),
+        ));
+
+        expect(find.byIcon(Icons.map), findsOneWidget);
+        expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+        expect(find.text('NAVIGATE'), findsOneWidget);
+      });
+
+      testWidgets('trailing icon respects disabled state', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyButton(
+            label: 'Disabled',
+            onPressed: null,
+            trailingIcon: Icons.arrow_forward,
+            disabled: true,
+          ),
+        ));
+
+        expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+        expect(find.byType(FiftyButton), findsOneWidget);
+      });
+    });
   });
 }

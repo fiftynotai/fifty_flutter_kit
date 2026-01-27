@@ -84,6 +84,35 @@ class ButtonsSection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
+        // Outline Buttons
+        const SectionLabel(label: 'OUTLINE BUTTONS'),
+        const SizedBox(height: FiftySpacing.md),
+        Wrap(
+          spacing: FiftySpacing.md,
+          runSpacing: FiftySpacing.md,
+          children: [
+            FiftyButton(
+              label: 'LARGE',
+              onPressed: () {},
+              variant: FiftyButtonVariant.outline,
+              size: FiftyButtonSize.large,
+            ),
+            FiftyButton(
+              label: 'MEDIUM',
+              onPressed: () {},
+              variant: FiftyButtonVariant.outline,
+              size: FiftyButtonSize.medium,
+            ),
+            FiftyButton(
+              label: 'SMALL',
+              onPressed: () {},
+              variant: FiftyButtonVariant.outline,
+              size: FiftyButtonSize.small,
+            ),
+          ],
+        ),
+        const SizedBox(height: FiftySpacing.xl),
+
         // Ghost Buttons
         const SectionLabel(label: 'GHOST BUTTONS'),
         const SizedBox(height: FiftySpacing.md),
@@ -108,6 +137,38 @@ class ButtonsSection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
+        // Trailing Icon Examples
+        const SectionLabel(label: 'TRAILING ICON'),
+        const SizedBox(height: FiftySpacing.md),
+        Wrap(
+          spacing: FiftySpacing.md,
+          runSpacing: FiftySpacing.md,
+          children: [
+            FiftyButton(
+              label: 'GET STARTED',
+              onPressed: () {},
+              variant: FiftyButtonVariant.primary,
+              size: FiftyButtonSize.large,
+              trailingIcon: Icons.arrow_forward,
+            ),
+            FiftyButton(
+              label: 'DOWNLOAD',
+              onPressed: () {},
+              variant: FiftyButtonVariant.secondary,
+              size: FiftyButtonSize.medium,
+              icon: Icons.download,
+            ),
+            FiftyButton(
+              label: 'LEARN MORE',
+              onPressed: () {},
+              variant: FiftyButtonVariant.outline,
+              size: FiftyButtonSize.medium,
+              trailingIcon: Icons.arrow_forward,
+            ),
+          ],
+        ),
+        const SizedBox(height: FiftySpacing.xl),
+
         // Disabled State
         const SectionLabel(label: 'DISABLED STATE'),
         const SizedBox(height: FiftySpacing.md),
@@ -125,6 +186,12 @@ class ButtonsSection extends StatelessWidget {
               label: 'DISABLED',
               onPressed: null,
               variant: FiftyButtonVariant.secondary,
+              size: FiftyButtonSize.medium,
+            ),
+            FiftyButton(
+              label: 'DISABLED',
+              onPressed: null,
+              variant: FiftyButtonVariant.outline,
               size: FiftyButtonSize.medium,
             ),
           ],
