@@ -54,6 +54,18 @@ enum FiftyCursorStyle {
   underscore,
 }
 
+/// Shape options for FiftyTextField.
+///
+/// - [standard]: Rectangular with xl radius (16px)
+/// - [rounded]: Pill shape with full radius (for search inputs)
+enum FiftyTextFieldShape {
+  /// Standard rectangular shape with xl radius.
+  standard,
+
+  /// Pill/rounded shape with full radius (for search inputs).
+  rounded,
+}
+
 /// A text field with FDL v2 styling.
 ///
 /// Features:
@@ -112,6 +124,7 @@ class FiftyTextField extends StatefulWidget {
     this.prefixStyle,
     this.customPrefix,
     this.cursorStyle = FiftyCursorStyle.line,
+    this.shape = FiftyTextFieldShape.standard,
   });
 
   /// Controller for the text field.
@@ -203,6 +216,13 @@ class FiftyTextField extends StatefulWidget {
   /// - [FiftyCursorStyle.underscore]: Underscore cursor
   final FiftyCursorStyle cursorStyle;
 
+  /// The shape of the text field.
+  ///
+  /// Controls the border radius:
+  /// - [FiftyTextFieldShape.standard]: xl radius (16px) - default
+  /// - [FiftyTextFieldShape.rounded]: Full pill radius (for search inputs)
+  final FiftyTextFieldShape shape;
+
   @override
   State<FiftyTextField> createState() => _FiftyTextFieldState();
 }
@@ -264,12 +284,22 @@ class _FiftyTextFieldState extends State<FiftyTextField>
     });
   }
 
+  /// Gets the border radius based on shape.
+  BorderRadius get _borderRadius {
+    switch (widget.shape) {
+      case FiftyTextFieldShape.standard:
+        return FiftyRadii.xlRadius;
+      case FiftyTextFieldShape.rounded:
+        return BorderRadius.circular(9999); // Full pill
+    }
+  }
+
   /// Builds the border based on [widget.borderStyle].
   InputBorder _buildBorder(Color color, {double width = 1}) {
     switch (widget.borderStyle) {
       case FiftyBorderStyle.full:
         return OutlineInputBorder(
-          borderRadius: FiftyRadii.xlRadius,
+          borderRadius: _borderRadius,
           borderSide: BorderSide(color: color, width: width),
         );
       case FiftyBorderStyle.bottom:
@@ -386,7 +416,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
               : null,
           decoration: BoxDecoration(
             borderRadius: widget.borderStyle == FiftyBorderStyle.full
-                ? FiftyRadii.xlRadius
+                ? _borderRadius
                 : null,
             boxShadow: _isFocused && !_hasError ? fifty.shadowGlow : null,
           ),

@@ -33,9 +33,17 @@ class InputsSection extends StatelessWidget {
           padding: const EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             children: [
+              // Standard input
               FiftyTextField(
                 hint: 'Enter text...',
                 onChanged: viewModel.setInputValue,
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              // Rounded search input
+              const FiftyTextField(
+                hint: 'Search...',
+                prefix: Icon(Icons.search, size: 20),
+                shape: FiftyTextFieldShape.rounded,
               ),
               if (viewModel.inputValue.isNotEmpty) ...[
                 const SizedBox(height: FiftySpacing.sm),

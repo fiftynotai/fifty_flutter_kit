@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -224,6 +225,61 @@ void main() {
           await tester.pumpWidget(wrapWithTheme(
             FiftyTextField(
               cursorStyle: style,
+            ),
+          ));
+
+          expect(find.byType(FiftyTextField), findsOneWidget);
+        }
+      });
+    });
+
+    group('shape parameter', () {
+      testWidgets('default shape is standard', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            hint: 'Default',
+          ),
+        ));
+
+        final textField = tester.widget<TextField>(find.byType(TextField));
+        final decoration = textField.decoration!;
+        final border = decoration.border as OutlineInputBorder;
+        expect(border.borderRadius, FiftyRadii.xlRadius);
+      });
+
+      testWidgets('standard shape uses xl radius', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            hint: 'Standard',
+            shape: FiftyTextFieldShape.standard,
+          ),
+        ));
+
+        final textField = tester.widget<TextField>(find.byType(TextField));
+        final decoration = textField.decoration!;
+        final border = decoration.border as OutlineInputBorder;
+        expect(border.borderRadius, FiftyRadii.xlRadius);
+      });
+
+      testWidgets('rounded shape uses full pill radius', (tester) async {
+        await tester.pumpWidget(wrapWithTheme(
+          const FiftyTextField(
+            hint: 'Search...',
+            shape: FiftyTextFieldShape.rounded,
+          ),
+        ));
+
+        final textField = tester.widget<TextField>(find.byType(TextField));
+        final decoration = textField.decoration!;
+        final border = decoration.border as OutlineInputBorder;
+        expect(border.borderRadius, BorderRadius.circular(9999));
+      });
+
+      testWidgets('renders all shape variants', (tester) async {
+        for (final shape in FiftyTextFieldShape.values) {
+          await tester.pumpWidget(wrapWithTheme(
+            FiftyTextField(
+              shape: shape,
             ),
           ));
 
