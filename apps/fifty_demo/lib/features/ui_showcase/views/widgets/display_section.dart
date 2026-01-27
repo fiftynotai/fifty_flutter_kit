@@ -98,6 +98,46 @@ class DisplaySection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
+        // List Tiles
+        const SectionLabel(label: 'LIST TILES'),
+        const SizedBox(height: FiftySpacing.md),
+        FiftyCard(
+          padding: EdgeInsets.zero,
+          child: Column(
+            children: [
+              FiftyListTile(
+                leadingIcon: Icons.subscriptions,
+                leadingIconColor: Colors.blue,
+                leadingIconBackgroundColor: Colors.blue.withValues(alpha: 0.15),
+                title: 'Subscription',
+                subtitle: 'Adobe Creative Cloud',
+                trailingText: '-\$54.00',
+                trailingSubtext: 'Today',
+                showDivider: true,
+              ),
+              FiftyListTile(
+                leadingIcon: Icons.arrow_downward,
+                leadingIconColor: FiftyColors.hunterGreen,
+                leadingIconBackgroundColor:
+                    FiftyColors.hunterGreen.withValues(alpha: 0.15),
+                title: 'Deposit',
+                subtitle: 'Freelance Work',
+                trailingText: '+\$850.00',
+                trailingTextColor: FiftyColors.hunterGreen,
+                trailingSubtext: 'Yesterday',
+                showDivider: true,
+              ),
+              const FiftyListTile(
+                leadingIcon: Icons.notifications,
+                title: 'Notifications',
+                subtitle: 'Push alerts enabled',
+                trailing: Icon(Icons.chevron_right, color: FiftyColors.slateGrey),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: FiftySpacing.xl),
+
         // Navigation Bar
         const SectionLabel(label: 'NAVIGATION BAR'),
         const SizedBox(height: FiftySpacing.md),
