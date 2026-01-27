@@ -98,6 +98,17 @@ class DisplaySection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
+        // Progress Card
+        const SectionLabel(label: 'PROGRESS CARD'),
+        const SizedBox(height: FiftySpacing.md),
+        const FiftyProgressCard(
+          icon: Icons.trending_up,
+          title: 'Weekly Goal',
+          progress: 0.75,
+          subtitle: '12 sales remaining to reach target',
+        ),
+        const SizedBox(height: FiftySpacing.xl),
+
         // List Tiles
         const SectionLabel(label: 'LIST TILES'),
         const SizedBox(height: FiftySpacing.md),

@@ -122,6 +122,7 @@ export 'src/display/fifty_loading_indicator.dart';
 export 'src/display/fifty_progress_bar.dart';
 export 'src/display/fifty_stat_card.dart';
 export 'src/display/fifty_list_tile.dart';
+export 'src/display/fifty_progress_card.dart';
 
 // Feedback
 export 'src/feedback/fifty_dialog.dart';
