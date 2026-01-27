@@ -71,25 +71,6 @@ class DisplaySection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
-        // Hero Section
-        const SectionLabel(label: 'HERO SECTION'),
-        const SizedBox(height: FiftySpacing.md),
-        const FiftyCard(
-          padding: EdgeInsets.all(FiftySpacing.lg),
-          child: FiftyHeroSection(
-            title: 'HERO TITLE',
-            subtitle: 'Supporting text goes here',
-            titleSize: FiftyHeroSize.h2,
-            titleGradient: LinearGradient(
-              colors: [
-                FiftyColors.burgundy,
-                FiftyColors.cream,
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: FiftySpacing.xl),
-
         // Navigation Bar
         const SectionLabel(label: 'NAVIGATION BAR'),
         const SizedBox(height: FiftySpacing.md),

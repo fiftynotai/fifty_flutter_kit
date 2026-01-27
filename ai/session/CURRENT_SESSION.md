@@ -2,7 +2,7 @@
 
 **Status:** REST MODE
 **Last Updated:** 2026-01-24
-**Last Completed:** BR-041 (fifty_demo UI Polish & FDL Consistency)
+**Last Completed:** BR-042 (Home Page Welcome/Onboarding Redesign)
 **Commit:** b4dbbcd - refactor(fifty_demo): implement QA fixes for FDL v2 compliance
 
 ---

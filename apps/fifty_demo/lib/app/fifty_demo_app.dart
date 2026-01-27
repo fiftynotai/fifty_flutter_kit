@@ -134,115 +134,121 @@ class _DemoShellState extends State<_DemoShell> {
         bottom: false, // Let bottom nav handle safe area
         child: Column(
           children: [
-            // Hero header card with FDL v2 colors
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: FiftySpacing.lg,
-                vertical: FiftySpacing.lg,
-              ),
-              child: FiftyCard(
-                padding: EdgeInsets.zero,
-                child: Container(
-                  height: _DemoShellState._heroCardHeight,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        FiftyColors.burgundy,
-                        FiftyColors.darkBurgundy,
-                      ],
-                    ),
-                    borderRadius: FiftyRadii.lgRadius,
-                  ),
-                  child: Stack(
-                    children: [
-                      // Badge
-                      Positioned(
-                        top: FiftySpacing.md,
-                        left: FiftySpacing.md,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: FiftySpacing.sm,
-                            vertical: FiftySpacing.xs,
-                          ),
-                          decoration: BoxDecoration(
-                            color: FiftyColors.powderBlush.withValues(alpha: 0.2),
-                            borderRadius: FiftyRadii.smRadius,
-                            border: Border.all(
-                              color:
-                                  FiftyColors.powderBlush.withValues(alpha: 0.4),
-                            ),
-                          ),
-                          child: const Text(
-                            'FLUTTER KIT',
-                            style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamily,
-                              fontSize: FiftyTypography.labelSmall,
-                              fontWeight: FontWeight.bold,
-                              color: FiftyColors.cream,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
+            // Hero header card - only shown on Home tab
+            if (_selectedIndex == 0)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: FiftySpacing.lg,
+                  vertical: FiftySpacing.lg,
+                ),
+                child: FiftyCard(
+                  padding: EdgeInsets.zero,
+                  hasTexture: true,
+                  child: Container(
+                    height: _DemoShellState._heroCardHeight,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          FiftyColors.burgundy,
+                          FiftyColors.darkBurgundy,
+                        ],
                       ),
-                      // Title and subtitle
-                      const Positioned(
-                        bottom: FiftySpacing.lg,
-                        left: FiftySpacing.md,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Fifty Demo',
+                      borderRadius: FiftyRadii.lgRadius,
+                    ),
+                    child: Stack(
+                      children: [
+                        // Badge
+                        Positioned(
+                          top: FiftySpacing.md,
+                          left: FiftySpacing.md,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: FiftySpacing.sm,
+                              vertical: FiftySpacing.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: FiftyColors.powderBlush.withValues(alpha: 0.2),
+                              borderRadius: FiftyRadii.smRadius,
+                              border: Border.all(
+                                color:
+                                    FiftyColors.powderBlush.withValues(alpha: 0.4),
+                              ),
+                            ),
+                            child: const Text(
+                              'FLUTTER KIT',
                               style: TextStyle(
                                 fontFamily: FiftyTypography.fontFamily,
-                                fontSize: FiftyTypography.displayMedium,
+                                fontSize: FiftyTypography.labelSmall,
                                 fontWeight: FontWeight.bold,
                                 color: FiftyColors.cream,
+                                letterSpacing: 1,
                               ),
                             ),
-                            SizedBox(height: FiftySpacing.xs),
-                            Text(
-                              'Design System v2.0',
-                              style: TextStyle(
-                                fontFamily: FiftyTypography.fontFamily,
-                                fontSize: FiftyTypography.bodyMedium,
-                                color: FiftyColors.cream,
+                          ),
+                        ),
+                        // Title and subtitle
+                        const Positioned(
+                          bottom: FiftySpacing.lg,
+                          left: FiftySpacing.md,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Fifty Demo',
+                                style: TextStyle(
+                                  fontFamily: FiftyTypography.fontFamily,
+                                  fontSize: FiftyTypography.displayMedium,
+                                  fontWeight: FontWeight.bold,
+                                  color: FiftyColors.cream,
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: FiftySpacing.xs),
+                              Text(
+                                'Design System v2.0',
+                                style: TextStyle(
+                                  fontFamily: FiftyTypography.fontFamily,
+                                  fontSize: FiftyTypography.bodyMedium,
+                                  color: FiftyColors.cream,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      // Dot indicators (decorative)
-                      Positioned(
-                        bottom: FiftySpacing.md,
-                        right: FiftySpacing.md,
-                        child: Row(
-                          children: [
-                            _buildDot(true),
-                            const SizedBox(width: FiftySpacing.xs),
-                            _buildDot(false),
-                            const SizedBox(width: FiftySpacing.xs),
-                            _buildDot(false),
-                          ],
+                        // Dot indicators (decorative)
+                        Positioned(
+                          bottom: FiftySpacing.md,
+                          right: FiftySpacing.md,
+                          child: Row(
+                            children: [
+                              _buildDot(true),
+                              const SizedBox(width: FiftySpacing.xs),
+                              _buildDot(false),
+                              const SizedBox(width: FiftySpacing.xs),
+                              _buildDot(false),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
             // Content area
             Expanded(
               child: _bindingsInitialized
                   ? IndexedStack(
                       index: _selectedIndex,
-                      children: const [
-                        HomePage(),
-                        PackagesPage(),
-                        UiShowcasePage(),
-                        SettingsPage(),
+                      children: [
+                        HomePage(
+                          onTabChange: (index) {
+                            setState(() => _selectedIndex = index);
+                          },
+                        ),
+                        const PackagesPage(),
+                        const UiShowcasePage(),
+                        const SettingsPage(),
                       ],
                     )
                   : const Center(

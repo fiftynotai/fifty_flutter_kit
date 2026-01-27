@@ -1,7 +1,7 @@
 /// Home Page
 ///
 /// Main landing page for the Fifty Demo app.
-/// Displays ecosystem status and navigation to demo features.
+/// Displays getting started actions, updates, and resources.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -11,16 +11,34 @@ import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
 import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
+import '../../dialogue_demo/views/dialogue_demo_page.dart';
+import '../../map_demo/views/map_demo_page.dart';
 import '../controllers/home_view_model.dart';
-import 'widgets/ecosystem_status.dart';
-import 'widgets/feature_nav_card.dart';
+import 'widgets/getting_started_section.dart';
+import 'widgets/resources_section.dart';
+import 'widgets/whats_new_section.dart';
 
 /// Home page widget.
 ///
-/// Displays ecosystem status overview and feature navigation cards.
+/// Displays getting started actions, what's new, resources, and system info.
 class HomePage extends GetView<HomeViewModel> {
-  const HomePage({super.key});
+  /// Creates the home page.
+  ///
+  /// [onTabChange] is an optional callback to switch to a different tab.
+  /// If not provided, tab navigation will show a snackbar message.
+  const HomePage({
+    super.key,
+    this.onTabChange,
+  });
+
+  /// Callback to switch to a different tab index.
+  ///
+  /// Index mapping:
+  /// - 0: Home
+  /// - 1: Packages
+  /// - 2: UI Kit
+  /// - 3: Settings
+  final void Function(int index)? onTabChange;
 
   @override
   Widget build(BuildContext context) {
@@ -31,105 +49,33 @@ class HomePage extends GetView<HomeViewModel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Ecosystem Status Section
+                // Getting Started Section
                 const SectionHeader(
-                  title: 'Ecosystem Status',
-                  subtitle: 'Fifty package integration status',
+                  title: 'Getting Started',
+                  subtitle: 'Quick actions',
                 ),
-                EcosystemStatus(packages: viewModel.packages),
-                const SizedBox(height: FiftySpacing.xl),
-
-                // Quick Status Row
-                Row(
-                  children: [
-                    StatusIndicator(
-                      label: 'PACKAGES',
-                      state: viewModel.allReady
-                          ? StatusState.ready
-                          : StatusState.loading,
-                    ),
-                    const SizedBox(width: FiftySpacing.lg),
-                    Text(
-                      '${viewModel.readyCount}/${viewModel.totalCount} READY',
-                      style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamily,
-                        fontSize: FiftyTypography.bodySmall,
-                        color: FiftyColors.cream.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
+                GettingStartedSection(
+                  onExplorePackages: () => _navigateToTab(context, 1),
+                  onUiComponents: () => _navigateToTab(context, 2),
+                  onAudioDemo: () => Get.to<void>(() => const DialogueDemoPage()),
+                  onMapDemo: () => Get.to<void>(() => const MapDemoPage()),
                 ),
                 const SizedBox(height: FiftySpacing.xxl),
 
-                // Analytics Section
+                // What's New Section
                 const SectionHeader(
-                  title: 'Analytics',
-                  subtitle: 'Demo statistics overview',
+                  title: "What's New",
+                  subtitle: 'Recent updates',
                 ),
-                const Row(
-                  children: [
-                    Expanded(
-                      child: _StatsCard(
-                        icon: Icons.visibility_outlined,
-                        value: '45.2k',
-                        label: 'Total Views',
-                        trend: '+12%',
-                      ),
-                    ),
-                    SizedBox(width: FiftySpacing.md),
-                    Expanded(
-                      child: _StatsCard(
-                        icon: Icons.favorite_outline,
-                        value: '8.4k',
-                        label: 'Likes',
-                        trend: '+5%',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: FiftySpacing.md),
-                const Row(
-                  children: [
-                    Expanded(
-                      child: _StatsCard(
-                        icon: Icons.shopping_cart_outlined,
-                        value: '350',
-                        label: 'Orders',
-                        trend: '+2%',
-                      ),
-                    ),
-                    SizedBox(width: FiftySpacing.md),
-                    Expanded(
-                      child: _StatsCard(
-                        icon: Icons.attach_money,
-                        value: '\$12.5k',
-                        label: 'Revenue',
-                        trend: '+8%',
-                        accentColor: FiftyColors.hunterGreen,
-                      ),
-                    ),
-                  ],
-                ),
+                const WhatsNewSection(),
                 const SizedBox(height: FiftySpacing.xxl),
 
-                // Demo Features Section
+                // Resources Section
                 const SectionHeader(
-                  title: 'Demo Features',
-                  subtitle: 'Explore ecosystem capabilities',
+                  title: 'Resources',
+                  subtitle: 'External links',
                 ),
-                ...HomeViewModel.features.map(
-                  (feature) => Padding(
-                    padding: const EdgeInsets.only(bottom: FiftySpacing.md),
-                    child: FeatureNavCard(
-                      title: feature.title,
-                      subtitle: feature.subtitle,
-                      icon: IconData(feature.icon, fontFamily: 'MaterialIcons'),
-                      onTap: () {
-                        // Navigation handled by parent IndexedStack
-                      },
-                    ),
-                  ),
-                ),
+                const ResourcesSection(),
                 const SizedBox(height: FiftySpacing.xxl),
 
                 // System Info Section
@@ -139,6 +85,7 @@ class HomePage extends GetView<HomeViewModel> {
                 ),
                 FiftyCard(
                   padding: const EdgeInsets.all(FiftySpacing.lg),
+                  hasTexture: true,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -155,6 +102,23 @@ class HomePage extends GetView<HomeViewModel> {
         );
       },
     );
+  }
+
+  /// Navigates to a tab by index.
+  ///
+  /// Uses [onTabChange] callback if provided, otherwise shows a snackbar.
+  void _navigateToTab(BuildContext context, int tabIndex) {
+    if (onTabChange != null) {
+      onTabChange!(tabIndex);
+    } else {
+      // Fallback: show snackbar with navigation hint
+      final tabNames = ['Home', 'Packages', 'UI Kit', 'Settings'];
+      FiftySnackbar.show(
+        context,
+        message: 'Navigate to ${tabNames[tabIndex]} tab',
+        variant: FiftySnackbarVariant.info,
+      );
+    }
   }
 
   Widget _buildInfoRow(String label, String value) {
@@ -177,100 +141,6 @@ class HomePage extends GetView<HomeViewModel> {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
               color: FiftyColors.cream,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// A statistics card widget for the home page.
-class _StatsCard extends StatelessWidget {
-  const _StatsCard({
-    required this.icon,
-    required this.value,
-    required this.label,
-    required this.trend,
-    this.accentColor,
-  });
-
-  /// Size for the icon container.
-  static const double _iconContainerSize = 36;
-
-  /// Size for the icon inside the container.
-  static const double _iconSize = 18;
-
-  final IconData icon;
-  final String value;
-  final String label;
-  final String trend;
-  final Color? accentColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = accentColor ?? FiftyColors.burgundy;
-
-    return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: _iconContainerSize,
-                height: _iconContainerSize,
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: FiftyRadii.smRadius,
-                ),
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: _iconSize,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: FiftySpacing.sm,
-                  vertical: FiftySpacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: FiftyColors.hunterGreen.withValues(alpha: 0.1),
-                  borderRadius: FiftyRadii.smRadius,
-                ),
-                child: Text(
-                  trend,
-                  style: const TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.labelSmall,
-                    fontWeight: FontWeight.bold,
-                    color: FiftyColors.hunterGreen,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: FiftySpacing.md),
-          Text(
-            value,
-            style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.titleLarge,
-              fontWeight: FontWeight.bold,
-              color: FiftyColors.cream,
-            ),
-          ),
-          const SizedBox(height: FiftySpacing.xs),
-          Text(
-            label.toUpperCase(),
-            style: TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.labelSmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
-              letterSpacing: 1,
             ),
           ),
         ],
