@@ -70,6 +70,17 @@ class UiShowcaseViewModel extends GetxController {
     update();
   }
 
+  // Display mode state (for radio card demo)
+  int _displayMode = 1; // 0 = light, 1 = dark
+  int get displayMode => _displayMode;
+
+  void setDisplayMode(int? mode) {
+    if (mode != null) {
+      _displayMode = mode;
+      update();
+    }
+  }
+
   // Display state
   int _tabIndex = 0;
   int get tabIndex => _tabIndex;

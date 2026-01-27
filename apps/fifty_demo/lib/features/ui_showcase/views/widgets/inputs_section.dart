@@ -104,6 +104,52 @@ class InputsSection extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: FiftySpacing.xl),
+
+        // Radio Card
+        const SectionLabel(label: 'RADIO CARD'),
+        const SizedBox(height: FiftySpacing.md),
+        FiftyCard(
+          padding: const EdgeInsets.all(FiftySpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'DISPLAY MODE',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  fontWeight: FiftyTypography.semiBold,
+                  color: FiftyColors.slateGrey,
+                ),
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: FiftyRadioCard<int>(
+                      value: 0,
+                      groupValue: viewModel.displayMode,
+                      onChanged: viewModel.setDisplayMode,
+                      icon: Icons.light_mode,
+                      label: 'Light',
+                    ),
+                  ),
+                  const SizedBox(width: FiftySpacing.md),
+                  Expanded(
+                    child: FiftyRadioCard<int>(
+                      value: 1,
+                      groupValue: viewModel.displayMode,
+                      onChanged: viewModel.setDisplayMode,
+                      icon: Icons.dark_mode,
+                      label: 'Dark',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -104,6 +104,7 @@ export 'src/inputs/fifty_switch.dart';
 export 'src/inputs/fifty_text_field.dart';
 export 'src/inputs/fifty_checkbox.dart';
 export 'src/inputs/fifty_radio.dart';
+export 'src/inputs/fifty_radio_card.dart';
 
 // Controls (NEW in v2)
 export 'src/controls/fifty_segmented_control.dart';
