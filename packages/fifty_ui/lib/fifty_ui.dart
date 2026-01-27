@@ -69,6 +69,7 @@
 /// - [FiftyBadge] - Status indicator
 /// - [FiftyAvatar] - User avatar
 /// - [FiftyProgressBar] - Linear progress indicator
+/// - [FiftyStatCard] - Metric/KPI display card
 /// - [FiftyLoadingIndicator] - Text-based loading indicator
 ///
 /// ### Feedback
@@ -117,6 +118,7 @@ export 'src/display/fifty_data_slate.dart';
 export 'src/display/fifty_divider.dart';
 export 'src/display/fifty_loading_indicator.dart';
 export 'src/display/fifty_progress_bar.dart';
+export 'src/display/fifty_stat_card.dart';
 
 // Feedback
 export 'src/feedback/fifty_dialog.dart';

@@ -71,6 +71,33 @@ class DisplaySection extends StatelessWidget {
         ),
         const SizedBox(height: FiftySpacing.xl),
 
+        // Stat Cards
+        const SectionLabel(label: 'STAT CARDS'),
+        const SizedBox(height: FiftySpacing.md),
+        const Row(
+          children: [
+            Expanded(
+              child: FiftyStatCard(
+                label: 'Total Views',
+                value: '45.2k',
+                icon: Icons.visibility,
+                trend: FiftyStatTrend.up,
+                trendValue: '12%',
+              ),
+            ),
+            SizedBox(width: FiftySpacing.md),
+            Expanded(
+              child: FiftyStatCard(
+                label: 'Revenue',
+                value: '\$12.5k',
+                icon: Icons.account_balance_wallet,
+                highlight: true,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: FiftySpacing.xl),
+
         // Navigation Bar
         const SectionLabel(label: 'NAVIGATION BAR'),
         const SizedBox(height: FiftySpacing.md),
