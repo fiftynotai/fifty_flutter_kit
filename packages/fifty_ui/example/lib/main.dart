@@ -169,6 +169,11 @@ class _ButtonsPageState extends State<ButtonsPage> {
                 onPressed: () {},
                 variant: FiftyButtonVariant.danger,
               ),
+              FiftyButton(
+                label: 'Outline',
+                onPressed: () {},
+                variant: FiftyButtonVariant.outline,
+              ),
             ],
           ),
           const SizedBox(height: FiftySpacing.xl),
@@ -222,6 +227,31 @@ class _ButtonsPageState extends State<ButtonsPage> {
             label: _loading ? 'Stop Loading' : 'Start Loading',
             onPressed: () => setState(() => _loading = !_loading),
             variant: FiftyButtonVariant.secondary,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Trailing Icons'),
+          Wrap(
+            spacing: FiftySpacing.md,
+            runSpacing: FiftySpacing.md,
+            children: [
+              FiftyButton(
+                label: 'Get Started',
+                onPressed: () {},
+                trailingIcon: Icons.arrow_forward,
+              ),
+              FiftyButton(
+                label: 'Download',
+                onPressed: () {},
+                variant: FiftyButtonVariant.secondary,
+                icon: Icons.download,
+              ),
+              FiftyButton(
+                label: 'Learn More',
+                onPressed: () {},
+                variant: FiftyButtonVariant.outline,
+                trailingIcon: Icons.arrow_forward,
+              ),
+            ],
           ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Icon Buttons'),
@@ -319,6 +349,9 @@ class _InputsPageState extends State<InputsPage> {
   // Radio state
   String? _radioValue = 'option1';
 
+  // Radio card state
+  int _displayMode = 1;
+
   final _languages = [
     const FiftyDropdownItem(value: 'dart', label: 'Dart', icon: Icons.code),
     const FiftyDropdownItem(value: 'kotlin', label: 'Kotlin', icon: Icons.android),
@@ -392,6 +425,12 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Terminal Style',
             hint: 'Enter command',
             terminalStyle: true,
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          const FiftyTextField(
+            hint: 'Search...',
+            prefix: Icon(Icons.search),
+            shape: FiftyTextFieldShape.rounded,
           ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Terminal Styles'),
@@ -509,6 +548,40 @@ class _InputsPageState extends State<InputsPage> {
             onChanged: null,
             label: 'Disabled radio',
             enabled: false,
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Radio Cards'),
+          const Text(
+            'Card-style radio selection for theme modes',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: FiftyRadioCard<int>(
+                  value: 0,
+                  groupValue: _displayMode,
+                  onChanged: (v) => setState(() => _displayMode = v ?? 0),
+                  icon: Icons.light_mode,
+                  label: 'Light',
+                ),
+              ),
+              const SizedBox(width: FiftySpacing.md),
+              Expanded(
+                child: FiftyRadioCard<int>(
+                  value: 1,
+                  groupValue: _displayMode,
+                  onChanged: (v) => setState(() => _displayMode = v ?? 1),
+                  icon: Icons.dark_mode,
+                  label: 'Dark',
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Switches'),
@@ -850,6 +923,94 @@ class _DisplayPageState extends State<DisplayPage> {
                     fontSize: FiftyTypography.bodySmall,
                     color: FiftyColors.slateGrey,
                   ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Stat Cards'),
+          const Text(
+            'Metric display with trend indicators',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const Row(
+            children: [
+              Expanded(
+                child: FiftyStatCard(
+                  label: 'Total Views',
+                  value: '45.2k',
+                  icon: Icons.visibility,
+                  trend: FiftyStatTrend.up,
+                  trendValue: '12%',
+                ),
+              ),
+              SizedBox(width: FiftySpacing.md),
+              Expanded(
+                child: FiftyStatCard(
+                  label: 'Revenue',
+                  value: '\$12.5k',
+                  icon: Icons.account_balance_wallet,
+                  highlight: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Progress Card'),
+          const Text(
+            'Progress metrics with gradient bar',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          const FiftyProgressCard(
+            icon: Icons.trending_up,
+            title: 'Weekly Goal',
+            progress: 0.75,
+            subtitle: '12 sales remaining to reach target',
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('List Tiles'),
+          const Text(
+            'Transaction-style list items',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          FiftyCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                FiftyListTile(
+                  leadingIcon: Icons.subscriptions,
+                  leadingIconColor: Colors.blue,
+                  leadingIconBackgroundColor: Colors.blue.withValues(alpha: 0.15),
+                  title: 'Subscription',
+                  subtitle: 'Adobe Creative Cloud',
+                  trailingText: '-\$54.00',
+                  trailingSubtext: 'Today',
+                  showDivider: true,
+                ),
+                FiftyListTile(
+                  leadingIcon: Icons.arrow_downward,
+                  leadingIconColor: FiftyColors.hunterGreen,
+                  leadingIconBackgroundColor: FiftyColors.hunterGreen.withValues(alpha: 0.15),
+                  title: 'Deposit',
+                  subtitle: 'Freelance Work',
+                  trailingText: '+\$850.00',
+                  trailingTextColor: FiftyColors.hunterGreen,
+                  trailingSubtext: 'Yesterday',
                 ),
               ],
             ),
