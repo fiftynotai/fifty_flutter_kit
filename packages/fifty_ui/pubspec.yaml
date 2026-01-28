@@ -1,6 +1,6 @@
 name: fifty_ui
 description: FDL v2 styled Flutter components for the fifty.dev ecosystem.
-version: 1.0.0
+version: 0.6.0
 publish_to: none
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit

@@ -5,6 +5,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-01-28
+
+### Added
+
+#### Display Components
+
+- `FiftyStatCard` - Metric/KPI display card with trend indicators
+  - Icon in colored container
+  - Large value with label display
+  - Trend indicator (up/down/neutral) with percentage
+  - Highlight variant with primary background
+  - Mode-aware colors
+
+- `FiftyListTile` - List item component with comprehensive layout options
+  - Leading icon in colored circular background
+  - Title and optional subtitle
+  - Trailing text with optional subtext, or custom widget
+  - Hover state with background change and icon scale
+  - Optional divider
+  - Mode-aware colors
+
+- `FiftyProgressCard` - Progress metric card with gradient bar
+  - Slate-grey background per FDL v2
+  - Icon in subtle container
+  - Title with optional percentage display
+  - Gradient progress bar (powder-blush to primary)
+  - Subtitle text
+  - Animated progress changes
+
+#### Input Components
+
+- `FiftyRadioCard<T>` - Card-style radio selection component
+  - Centered icon with label below
+  - Border highlight when selected with ring effect
+  - Generic type support for radio groups
+  - Kinetic hover animation on icon
+  - Disabled state support
+
+#### FiftyButton Enhancements
+
+- `secondary` variant - Slate-grey background for secondary actions
+- `outline` variant - Mode-aware border (burgundy in light, powder-blush in dark)
+- `trailingIcon` property - Icon displayed after the label
+- All variants now fully support light and dark modes
+
+#### FiftyTextField Enhancements
+
+- `shape` property with `FiftyTextFieldShape` enum
+  - `standard` - Rectangular with xl radius (16px) - default
+  - `rounded` - Full pill radius for search inputs
+
+### Fixed
+
+- Outline button variant now uses mode-aware colors (powder-blush in dark, burgundy in light)
+
+### Brief References
+
+- BR-043: FiftyButton Variants Update
+- BR-044: FiftyStatCard
+- BR-045: FiftyListTile
+- BR-046: FiftyRadioCard
+- BR-047: FiftyProgressCard
+- BR-048: FiftyTextField Variants
+
 ## [0.5.0] - 2025-12-31
 
 ### Fixed
