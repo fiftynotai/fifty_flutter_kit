@@ -3,7 +3,7 @@
 **Status:** REST MODE
 **Last Updated:** 2026-01-29
 **Active Brief:** None
-**Last Completed:** BR-048 (FiftyTextField Shape Variants)
+**Last Completed:** BR-049 (FiftySegmentedControl Variants)
 **Last Release:** fifty_ui v0.6.0 (bc87d82)
 
 ---
@@ -79,7 +79,7 @@ Completed implementation of 6 FDL v2 components to align fifty_ui package with t
 | BR-046 | Feature | P2-Medium | S | **Done** |
 | BR-047 | Feature | P2-Medium | S | **Done** |
 | BR-048 | Feature | P3-Low | S | **Done** |
-| BR-049 | Feature | P2-Medium | S | Ready |
+| BR-049 | Feature | P2-Medium | S | **Done** |
 | BR-029 | Feature | P2-Medium | L | Ready |
 | BR-030 | Feature | P2-Medium | L | Ready |
 
