@@ -5,6 +5,7 @@
 **Effort:** S-Small (< 1d)
 **Status:** Done
 **Created:** 2026-01-27
+**Completed:** 2026-01-27
 
 ---
 
@@ -124,6 +125,31 @@ Row(
 7. [x] Dark/light mode support
 8. [x] Tests pass (12/12)
 9. [x] Demo showcases theme mode selection
+
+---
+
+## Implementation Notes
+
+**Commit:** 6bb57b9 - feat(fifty_ui): add FiftyRadioCard component
+
+**Files Created:**
+- `packages/fifty_ui/lib/src/inputs/fifty_radio_card.dart` - New generic component implementation
+
+**Files Modified:**
+- `packages/fifty_ui/lib/fifty_ui.dart` - Added export for FiftyRadioCard
+- `packages/fifty_ui/test/inputs/fifty_radio_card_test.dart` - 12 tests added
+- `apps/fifty_demo/lib/features/ui_showcase/views/widgets/inputs_section.dart` - Added theme mode selection showcase
+
+**Key Implementation Details:**
+- Generic type `<T>` for type-safe value handling (works with enums, strings, etc.)
+- Selected state shows primary color border with subtle ring/glow effect
+- Hover state applies kinetic scale animation to icon
+- Disabled state reduces opacity and ignores taps
+- Card-style layout: icon centered above label text
+- Uses FDL v2 color palette (powder-blush accent on selection)
+
+**Deviations from Spec:**
+- None - implementation matches FDL v2 design specification
 
 ---
 

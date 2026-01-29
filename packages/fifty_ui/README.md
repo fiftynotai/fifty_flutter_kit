@@ -111,12 +111,27 @@ FiftyButton(
   shape: FiftyButtonShape.sharp,
 )
 
-// Pill-shaped secondary
+// Secondary (slate-grey filled)
 FiftyButton(
-  label: 'CANCEL',
-  onPressed: () => Navigator.pop(context),
+  label: 'DOWNLOAD',
+  onPressed: () => handleDownload(),
   variant: FiftyButtonVariant.secondary,
-  shape: FiftyButtonShape.pill,
+  icon: Icons.download,
+)
+
+// Outline (burgundy border)
+FiftyButton(
+  label: 'LOG IN',
+  onPressed: () => handleLogin(),
+  variant: FiftyButtonVariant.outline,
+)
+
+// With trailing icon (arrow)
+FiftyButton(
+  label: 'GET STARTED',
+  onPressed: () => handleStart(),
+  variant: FiftyButtonVariant.primary,
+  trailingIcon: Icons.arrow_forward,
 )
 
 // Loading state (animated dots, not spinner)
@@ -139,9 +154,10 @@ FiftyButton(
 | `isGlitch` | bool | false | RGB split effect on hover |
 | `loading` | bool | false | Show animated dots instead of label |
 | `icon` | IconData? | null | Leading icon |
+| `trailingIcon` | IconData? | null | Trailing icon (e.g., arrow) |
 | `expanded` | bool | false | Fill available width |
 
-**Variants:** `primary`, `secondary`, `ghost`, `danger`
+**Variants:** `primary`, `secondary`, `outline`, `ghost`, `danger`
 
 ---
 
@@ -175,6 +191,14 @@ FiftyTextField(
   prefix: Icon(Icons.email),
 )
 
+// Rounded/pill shape (for search inputs)
+FiftyTextField(
+  controller: _searchController,
+  hint: 'Search...',
+  prefixIcon: Icons.search,
+  shape: FiftyTextFieldShape.rounded,
+)
+
 // Terminal style (bottom border + chevron prefix)
 FiftyTextField(
   controller: _commandController,
@@ -195,11 +219,61 @@ FiftyTextField(
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| `shape` | FiftyTextFieldShape | standard | Shape: standard (xl radius), rounded (pill) |
 | `borderStyle` | FiftyBorderStyle | full | Border rendering: full, bottom, none |
 | `prefixStyle` | FiftyPrefixStyle? | null | Prefix character: chevron(">"), comment("//"), custom, none |
 | `customPrefix` | String? | null | Custom prefix when prefixStyle is custom |
 | `cursorStyle` | FiftyCursorStyle | line | Cursor type: line, block, underscore |
 | `terminalStyle` | bool | false | Legacy: enables chevron prefix + bottom border |
+
+---
+
+#### FiftyRadioCard
+
+Card-style radio selection for options like theme mode.
+
+```dart
+Row(
+  children: [
+    Expanded(
+      child: FiftyRadioCard<ThemeMode>(
+        value: ThemeMode.light,
+        groupValue: _themeMode,
+        onChanged: (v) => setState(() => _themeMode = v),
+        icon: Icons.light_mode,
+        label: 'Light',
+      ),
+    ),
+    SizedBox(width: FiftySpacing.md),
+    Expanded(
+      child: FiftyRadioCard<ThemeMode>(
+        value: ThemeMode.dark,
+        groupValue: _themeMode,
+        onChanged: (v) => setState(() => _themeMode = v),
+        icon: Icons.dark_mode,
+        label: 'Dark',
+      ),
+    ),
+  ],
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `value` | T | required | This card's value |
+| `groupValue` | T? | required | Currently selected value in group |
+| `onChanged` | ValueChanged<T?>? | required | Selection callback |
+| `icon` | IconData | required | Icon displayed in card |
+| `label` | String | required | Label below icon |
+| `enabled` | bool | true | Enable/disable interaction |
+
+**Features:**
+- Generic type support (works with enums, strings, etc.)
+- Selected state shows primary border with glow effect
+- Hover state scales icon with kinetic animation
+- Dark/light mode support
 
 ---
 
@@ -408,6 +482,176 @@ FiftyCard(
 ---
 
 ### Display
+
+#### FiftyStatCard
+
+Metric display card with trend indicators for KPIs and dashboards.
+
+```dart
+// Standard stat card
+FiftyStatCard(
+  label: 'Total Views',
+  value: '45.2k',
+  icon: Icons.visibility,
+  trend: FiftyStatTrend.up,
+  trendValue: '12%',
+)
+
+// Highlight variant (primary background)
+FiftyStatCard(
+  label: 'Revenue',
+  value: '\$12.5k',
+  icon: Icons.account_balance_wallet,
+  highlight: true,
+)
+
+// With custom icon color
+FiftyStatCard(
+  label: 'Active Users',
+  value: '1,234',
+  icon: Icons.people,
+  iconColor: Colors.blue,
+  trend: FiftyStatTrend.down,
+  trendValue: '5%',
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `label` | String | required | Metric label text |
+| `value` | String | required | Metric value (formatted) |
+| `icon` | IconData | required | Icon in circular container |
+| `trend` | FiftyStatTrend? | null | Trend direction: up, down, neutral |
+| `trendValue` | String? | null | Trend percentage (e.g., "12%") |
+| `iconColor` | Color? | null | Custom icon color |
+| `highlight` | bool | false | Use primary background variant |
+
+**Features:**
+- Trend arrows with semantic colors (green up, red down)
+- Icon in subtle background container
+- Highlight variant for emphasis
+- Fixed height (~128px) per FDL v2 spec
+- Dark/light mode support
+
+---
+
+#### FiftyListTile
+
+Styled list item for transactions, settings, and list-based content.
+
+```dart
+// Transaction item
+FiftyListTile(
+  leadingIcon: Icons.subscriptions,
+  leadingIconColor: Colors.blue,
+  leadingIconBackgroundColor: Colors.blue.withOpacity(0.1),
+  title: 'Subscription',
+  subtitle: 'Adobe Creative Cloud',
+  trailingText: '-\$54.00',
+  trailingSubtext: 'Today',
+  onTap: () => navigateToDetail(),
+)
+
+// Settings item with chevron
+FiftyListTile(
+  leadingIcon: Icons.notifications,
+  title: 'Notifications',
+  subtitle: 'Push alerts enabled',
+  trailing: Icon(Icons.chevron_right),
+  onTap: () => openSettings(),
+)
+
+// Deposit with custom color
+FiftyListTile(
+  leadingIcon: Icons.arrow_downward,
+  leadingIconColor: Colors.green,
+  title: 'Deposit',
+  subtitle: 'Freelance Work',
+  trailingText: '+\$850.00',
+  trailingTextColor: Colors.green,
+  trailingSubtext: 'Yesterday',
+  showDivider: true,
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `title` | String | required | Primary text |
+| `subtitle` | String? | null | Secondary text |
+| `leading` | Widget? | null | Custom leading widget |
+| `leadingIcon` | IconData? | null | Icon (alternative to leading) |
+| `leadingIconColor` | Color? | null | Icon color |
+| `leadingIconBackgroundColor` | Color? | null | Icon background color |
+| `trailing` | Widget? | null | Custom trailing widget |
+| `trailingText` | String? | null | Trailing text (e.g., amount) |
+| `trailingSubtext` | String? | null | Trailing subtext (e.g., date) |
+| `trailingTextColor` | Color? | null | Custom trailing text color |
+| `onTap` | VoidCallback? | null | Tap callback |
+| `showDivider` | bool | false | Show bottom divider |
+
+**Features:**
+- Leading icon in circular colored container
+- Two-line trailing text for transaction displays
+- Hover state with subtle background animation
+- Optional bottom divider
+- Dark/light mode support
+
+---
+
+#### FiftyProgressCard
+
+Progress bar card for goals and metrics with gradient fill.
+
+```dart
+// Basic progress card
+FiftyProgressCard(
+  icon: Icons.trending_up,
+  title: 'Weekly Goal',
+  progress: 0.75,
+  subtitle: '12 sales remaining to reach target',
+)
+
+// Without percentage display
+FiftyProgressCard(
+  title: 'Upload Progress',
+  progress: 0.45,
+  showPercentage: false,
+)
+
+// Custom gradient
+FiftyProgressCard(
+  title: 'Storage Used',
+  progress: 0.82,
+  icon: Icons.storage,
+  progressGradient: LinearGradient(
+    colors: [FiftyColors.hunterGreen, FiftyColors.slateGrey],
+  ),
+)
+```
+
+**Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `title` | String | required | Card title |
+| `progress` | double | required | Progress value (0.0 to 1.0) |
+| `icon` | IconData? | null | Icon in background container |
+| `subtitle` | String? | null | Description text below progress |
+| `showPercentage` | bool | true | Show percentage in top-right |
+| `progressGradient` | Gradient? | null | Custom progress bar gradient |
+
+**Features:**
+- Slate-grey background per FDL v2 spec
+- Default gradient: powder-blush to primary (burgundy)
+- Smooth animation on progress changes
+- Icon in circular container with subtle background
+- Progress value clamped between 0.0 and 1.0
+
+---
 
 #### FiftyBadge
 

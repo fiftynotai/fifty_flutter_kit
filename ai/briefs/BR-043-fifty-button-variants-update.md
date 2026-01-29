@@ -3,8 +3,9 @@
 **Type:** Feature
 **Priority:** P2-Medium
 **Effort:** M-Medium (1-2d)
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-01-27
+**Completed:** 2026-01-27
 
 ---
 
@@ -132,13 +133,13 @@ Color _getBackgroundColor(ColorScheme colorScheme) {
 
 ## Acceptance Criteria
 
-1. [ ] `FiftyButtonVariant.secondary` renders slate-grey filled button
-2. [ ] `FiftyButtonVariant.outline` renders burgundy outline button
-3. [ ] `trailingIcon` parameter displays icon on right side of label
-4. [ ] All existing tests pass
-5. [ ] New tests added for secondary and outline variants
-6. [ ] fifty_demo buttons section shows all 5 variants
-7. [ ] `flutter analyze` passes with no errors
+1. [x] `FiftyButtonVariant.secondary` renders slate-grey filled button
+2. [x] `FiftyButtonVariant.outline` renders burgundy outline button
+3. [x] `trailingIcon` parameter displays icon on right side of label
+4. [x] All existing tests pass (17/17)
+5. [x] New tests added for secondary and outline variants (5 new tests)
+6. [x] fifty_demo buttons section shows all 5 variants
+7. [x] `flutter analyze` passes with no errors
 
 ---
 
@@ -151,6 +152,29 @@ Color _getBackgroundColor(ColorScheme colorScheme) {
 - New `secondary` for slate-grey filled buttons
 
 Consider adding deprecation warning for one release cycle.
+
+---
+
+## Implementation Notes
+
+**Commit:** e7405e3 - feat(fifty_ui): add FiftyButton variants and trailing icon support
+
+**Fix Commit:** a801051 - fix(fifty_ui): outline button mode-aware colors
+
+**Files Modified:**
+- `packages/fifty_ui/lib/src/buttons/fifty_button.dart` - Added outline variant, trailingIcon parameter, mode-aware colors
+- `packages/fifty_ui/test/buttons/fifty_button_test.dart` - Added tests for new variants
+- `apps/fifty_demo/lib/features/ui_showcase/views/widgets/buttons_section.dart` - Updated showcase with all 5 variants
+
+**Key Changes:**
+- Added `FiftyButtonVariant.outline` enum value
+- Added `trailingIcon` parameter for right-side icons (arrows, etc.)
+- Secondary variant now uses slate-grey background
+- Outline variant uses burgundy border with transparent background
+- Fix applied for mode-aware colors (light/dark mode support)
+
+**Deviations from Spec:**
+- None - implementation matches FDL v2 design specification
 
 ---
 

@@ -5,6 +5,7 @@
 **Effort:** S-Small (< 1d)
 **Status:** Done
 **Created:** 2026-01-27
+**Completed:** 2026-01-27
 
 ---
 
@@ -117,6 +118,27 @@ BorderRadius get _borderRadius {
 5. [x] Existing code continues to work (backward compatible)
 6. [x] Tests updated for new shape parameter (4 new tests)
 7. [x] Demo shows both variants
+
+---
+
+## Implementation Notes
+
+**Commit:** 04c87c6 - feat(fifty_ui): add shape variants to FiftyTextField
+
+**Files Modified:**
+- `packages/fifty_ui/lib/src/inputs/fifty_text_field.dart` - Added FiftyTextFieldShape enum and shape parameter
+- `packages/fifty_ui/test/inputs/fifty_text_field_test.dart` - 4 new tests for shape variants
+- `apps/fifty_demo/lib/features/ui_showcase/views/widgets/inputs_section.dart` - Added search input showcase
+
+**Key Implementation Details:**
+- `FiftyTextFieldShape` enum with `standard` and `rounded` values
+- Default shape is `standard` for backward compatibility
+- Rounded shape uses `BorderRadius.circular(100)` for full pill effect
+- Shape parameter affects all border radius calculations (normal, focused, error states)
+- Ideal for search inputs, filters, and pill-style form fields
+
+**Deviations from Spec:**
+- None - implementation matches FDL v2 design specification
 
 ---
 
