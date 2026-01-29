@@ -81,6 +81,23 @@ class UiShowcaseViewModel extends GetxController {
     }
   }
 
+  // Segmented control state
+  String _period = 'daily';
+  String get period => _period;
+
+  void setPeriod(String value) {
+    _period = value;
+    update();
+  }
+
+  String _themeSelection = 'dark';
+  String get themeSelection => _themeSelection;
+
+  void setThemeSelection(String value) {
+    _themeSelection = value;
+    update();
+  }
+
   // Display state
   int _tabIndex = 0;
   int get tabIndex => _tabIndex;

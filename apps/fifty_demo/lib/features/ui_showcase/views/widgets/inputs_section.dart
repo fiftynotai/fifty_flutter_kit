@@ -158,6 +158,90 @@ class InputsSection extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: FiftySpacing.xl),
+
+        // Segmented Control
+        const SectionLabel(label: 'SEGMENTED CONTROL'),
+        const SizedBox(height: FiftySpacing.md),
+        FiftyCard(
+          padding: const EdgeInsets.all(FiftySpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'PRIMARY VARIANT',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  fontWeight: FiftyTypography.semiBold,
+                  color: FiftyColors.slateGrey,
+                ),
+              ),
+              const SizedBox(height: FiftySpacing.sm),
+              const Text(
+                'Cream background with burgundy text',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: FiftyColors.slateGrey,
+                ),
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftySegmentedControl<String>(
+                segments: const [
+                  FiftySegment(value: 'daily', label: 'Daily'),
+                  FiftySegment(value: 'weekly', label: 'Weekly'),
+                  FiftySegment(value: 'monthly', label: 'Monthly'),
+                ],
+                selected: viewModel.period,
+                onChanged: viewModel.setPeriod,
+                variant: FiftySegmentedControlVariant.primary,
+              ),
+              const SizedBox(height: FiftySpacing.xl),
+              const Text(
+                'SECONDARY VARIANT',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  fontWeight: FiftyTypography.semiBold,
+                  color: FiftyColors.slateGrey,
+                ),
+              ),
+              const SizedBox(height: FiftySpacing.sm),
+              const Text(
+                'Slate-grey background with cream text',
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: FiftyColors.slateGrey,
+                ),
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftySegmentedControl<String>(
+                segments: const [
+                  FiftySegment(
+                    value: 'light',
+                    label: 'Light',
+                    icon: Icons.light_mode,
+                  ),
+                  FiftySegment(
+                    value: 'dark',
+                    label: 'Dark',
+                    icon: Icons.dark_mode,
+                  ),
+                  FiftySegment(
+                    value: 'system',
+                    label: 'System',
+                    icon: Icons.settings_suggest,
+                  ),
+                ],
+                selected: viewModel.themeSelection,
+                onChanged: viewModel.setThemeSelection,
+                variant: FiftySegmentedControlVariant.secondary,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -752,6 +752,7 @@ class _ControlsPageState extends State<ControlsPage> {
   String _period = 'daily';
   String _viewMode = 'grid';
   String _expandedValue = 'all';
+  String _themeMode = 'dark';
 
   @override
   Widget build(BuildContext context) {
@@ -778,6 +779,77 @@ class _ControlsPageState extends State<ControlsPage> {
             ],
             selected: _period,
             onChanged: (value) => setState(() => _period = value),
+          ),
+          const SizedBox(height: FiftySpacing.xl),
+          const _SectionTitle('Variants'),
+          const Text(
+            'Primary (cream/burgundy) and Secondary (slate/cream)',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: FiftyColors.slateGrey,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Primary',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: FiftyColors.slateGrey,
+                      ),
+                    ),
+                    const SizedBox(height: FiftySpacing.sm),
+                    FiftySegmentedControl<String>(
+                      segments: const [
+                        FiftySegment(value: 'daily', label: 'Daily'),
+                        FiftySegment(value: 'weekly', label: 'Weekly'),
+                      ],
+                      selected: _period,
+                      onChanged: (value) => setState(() => _period = value),
+                      variant: FiftySegmentedControlVariant.primary,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Secondary',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: FiftyColors.slateGrey,
+                      ),
+                    ),
+                    const SizedBox(height: FiftySpacing.sm),
+                    FiftySegmentedControl<String>(
+                      segments: const [
+                        FiftySegment(value: 'light', label: 'Light', icon: Icons.light_mode),
+                        FiftySegment(value: 'dark', label: 'Dark', icon: Icons.dark_mode),
+                        FiftySegment(value: 'system', label: 'System', icon: Icons.settings_suggest),
+                      ],
+                      selected: _themeMode,
+                      onChanged: (value) => setState(() => _themeMode = value),
+                      variant: FiftySegmentedControlVariant.secondary,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('With Icons'),
