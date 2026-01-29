@@ -1,6 +1,17 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
+/// Visual variants for [FiftySegmentedControl].
+enum FiftySegmentedControlVariant {
+  /// Cream background with burgundy text.
+  /// Used for content filters (Daily/Weekly/Monthly).
+  primary,
+
+  /// Slate-grey background with cream text.
+  /// Used for system settings (Light/Dark/System).
+  secondary,
+}
+
 /// A segment option for [FiftySegmentedControl].
 class FiftySegment<T> {
   /// Creates a segment option.
@@ -24,16 +35,17 @@ class FiftySegment<T> {
 ///
 /// Features:
 /// - Pill-style segments with animated selection
-/// - Dark mode: slateGrey active background
-/// - Light mode: cream active background
+/// - Two visual variants: primary and secondary
 /// - Icon + label support
 /// - Responsive expanded mode
 ///
-/// **CRITICAL v2 DESIGN DECISION:**
-/// Active segments use [FiftyColors.slateGrey] in dark mode and
-/// [FiftyColors.cream] in light mode, NOT the primary color!
+/// **Variants:**
+/// - [FiftySegmentedControlVariant.primary]: Cream background with burgundy text.
+///   Use for content filters (Daily/Weekly/Monthly).
+/// - [FiftySegmentedControlVariant.secondary]: Slate-grey background with cream text.
+///   Use for system settings (Light/Dark/System).
 ///
-/// Example:
+/// Primary variant example (default):
 /// ```dart
 /// FiftySegmentedControl<String>(
 ///   segments: [
@@ -43,6 +55,20 @@ class FiftySegment<T> {
 ///   ],
 ///   selected: _period,
 ///   onChanged: (value) => setState(() => _period = value),
+/// )
+/// ```
+///
+/// Secondary variant example:
+/// ```dart
+/// FiftySegmentedControl<ThemeMode>(
+///   variant: FiftySegmentedControlVariant.secondary,
+///   segments: [
+///     FiftySegment(value: ThemeMode.light, label: 'Light'),
+///     FiftySegment(value: ThemeMode.dark, label: 'Dark'),
+///     FiftySegment(value: ThemeMode.system, label: 'System'),
+///   ],
+///   selected: _themeMode,
+///   onChanged: (value) => setState(() => _themeMode = value),
 /// )
 /// ```
 ///
@@ -65,9 +91,18 @@ class FiftySegmentedControl<T> extends StatelessWidget {
     required this.segments,
     required this.selected,
     required this.onChanged,
+    this.variant = FiftySegmentedControlVariant.primary,
     this.expanded = false,
     this.enabled = true,
   });
+
+  /// The visual variant of the segmented control.
+  ///
+  /// - [FiftySegmentedControlVariant.primary]: Cream background with burgundy text
+  /// - [FiftySegmentedControlVariant.secondary]: Slate-grey background with cream text
+  ///
+  /// Defaults to [FiftySegmentedControlVariant.primary].
+  final FiftySegmentedControlVariant variant;
 
   /// The available segment options.
   final List<FiftySegment<T>> segments;
@@ -115,6 +150,7 @@ class FiftySegmentedControl<T> extends StatelessWidget {
                       segment: segment,
                       isSelected: isSelected,
                       isDark: isDark,
+                      variant: variant,
                       onTap: enabled ? () => onChanged(segment.value) : null,
                     ),
                   );
@@ -128,6 +164,7 @@ class FiftySegmentedControl<T> extends StatelessWidget {
                     segment: segment,
                     isSelected: isSelected,
                     isDark: isDark,
+                    variant: variant,
                     onTap: enabled ? () => onChanged(segment.value) : null,
                   );
                 }).toList(),
@@ -143,19 +180,25 @@ class _FiftySegmentItem<T> extends StatelessWidget {
     required this.segment,
     required this.isSelected,
     required this.isDark,
+    required this.variant,
     required this.onTap,
   });
 
   final FiftySegment<T> segment;
   final bool isSelected;
   final bool isDark;
+  final FiftySegmentedControlVariant variant;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    // v2 design: slateGrey for dark mode, cream for light mode
-    final activeColor = isDark ? FiftyColors.slateGrey : FiftyColors.cream;
-    final activeTextColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
+    // Active colors are variant-based (mode-independent)
+    final activeColor = variant == FiftySegmentedControlVariant.primary
+        ? FiftyColors.cream
+        : FiftyColors.slateGrey;
+    final activeTextColor = variant == FiftySegmentedControlVariant.primary
+        ? FiftyColors.burgundy
+        : FiftyColors.cream;
     final inactiveTextColor = isDark ? Colors.grey[400] : Colors.grey[600];
 
     return GestureDetector(
