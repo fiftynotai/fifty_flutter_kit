@@ -1,6 +1,7 @@
 /// Audio Demo Actions
 ///
 /// Handles user interactions for the audio demo feature.
+/// Connects to the actual FiftyAudioEngine through the ViewModel.
 library;
 
 import 'package:flutter/material.dart';
@@ -31,38 +32,38 @@ class AudioDemoActions {
   }
 
   /// Called when play/pause button is tapped.
-  void onToggleBgmPlayback() {
-    _viewModel.toggleBgmPlayback();
+  Future<void> onToggleBgmPlayback() async {
+    await _viewModel.toggleBgmPlayback();
   }
 
   /// Called when play button is tapped.
-  void onPlayBgm() {
-    _viewModel.playBgm();
+  Future<void> onPlayBgm() async {
+    await _viewModel.playBgm();
   }
 
   /// Called when pause button is tapped.
-  void onPauseBgm() {
-    _viewModel.pauseBgm();
+  Future<void> onPauseBgm() async {
+    await _viewModel.pauseBgm();
   }
 
   /// Called when stop button is tapped.
-  void onStopBgm() {
-    _viewModel.stopBgm();
+  Future<void> onStopBgm() async {
+    await _viewModel.stopBgm();
   }
 
   /// Called when BGM mute is toggled.
-  void onToggleBgmMute() {
-    _viewModel.toggleBgmMute();
+  Future<void> onToggleBgmMute() async {
+    await _viewModel.toggleBgmMute();
   }
 
   /// Called when BGM volume changes.
-  void onBgmVolumeChanged(double volume) {
-    _viewModel.setBgmVolume(volume);
+  Future<void> onBgmVolumeChanged(double volume) async {
+    await _viewModel.setBgmVolume(volume);
   }
 
   /// Called when BGM seek slider changes.
-  void onBgmSeek(double progress) {
-    _viewModel.seekBgm(progress);
+  Future<void> onBgmSeek(double progress) async {
+    await _viewModel.seekBgm(progress);
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -78,20 +79,20 @@ class AudioDemoActions {
   Future<void> onPlaySfx(BuildContext context, SoundEffect sfx) async {
     await _presenter.actionHandlerWithoutLoading(
       () async {
-        _viewModel.playSfx(sfx);
+        await _viewModel.playSfx(sfx);
       },
       context: context,
     );
   }
 
   /// Called when SFX mute is toggled.
-  void onToggleSfxMute() {
-    _viewModel.toggleSfxMute();
+  Future<void> onToggleSfxMute() async {
+    await _viewModel.toggleSfxMute();
   }
 
   /// Called when SFX volume changes.
-  void onSfxVolumeChanged(double volume) {
-    _viewModel.setSfxVolume(volume);
+  Future<void> onSfxVolumeChanged(double volume) async {
+    await _viewModel.setSfxVolume(volume);
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -102,7 +103,7 @@ class AudioDemoActions {
   Future<void> onPlayVoiceLine(BuildContext context, String line) async {
     await _presenter.actionHandlerWithoutLoading(
       () async {
-        _viewModel.playVoiceLine(line);
+        await _viewModel.playVoiceLine(line);
       },
       context: context,
     );
@@ -114,13 +115,13 @@ class AudioDemoActions {
   }
 
   /// Called when voice mute is toggled.
-  void onToggleVoiceMute() {
-    _viewModel.toggleVoiceMute();
+  Future<void> onToggleVoiceMute() async {
+    await _viewModel.toggleVoiceMute();
   }
 
   /// Called when voice volume changes.
-  void onVoiceVolumeChanged(double volume) {
-    _viewModel.setVoiceVolume(volume);
+  Future<void> onVoiceVolumeChanged(double volume) async {
+    await _viewModel.setVoiceVolume(volume);
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -128,17 +129,17 @@ class AudioDemoActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Called when master volume changes.
-  void onMasterVolumeChanged(double volume) {
-    _viewModel.setMasterVolume(volume);
+  Future<void> onMasterVolumeChanged(double volume) async {
+    await _viewModel.setMasterVolume(volume);
   }
 
   /// Called when master mute is toggled.
-  void onToggleMasterMute() {
-    _viewModel.toggleMasterMute();
+  Future<void> onToggleMasterMute() async {
+    await _viewModel.toggleMasterMute();
   }
 
   /// Called when reset button is tapped.
-  void onResetAll() {
-    _viewModel.resetAll();
+  Future<void> onResetAll() async {
+    await _viewModel.resetAll();
   }
 }

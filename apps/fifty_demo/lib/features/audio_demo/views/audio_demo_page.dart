@@ -368,7 +368,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                             ),
                           ),
                           Text(
-                            viewModel.currentTrack.fileName,
+                            viewModel.currentTrack.assetPath.split('/').last,
                             style: TextStyle(
                               fontFamily: FiftyTypography.fontFamily,
                               fontSize: FiftyTypography.bodySmall,
