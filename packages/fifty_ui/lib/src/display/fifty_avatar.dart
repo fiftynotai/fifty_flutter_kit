@@ -58,14 +58,10 @@ class FiftyAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
-    final effectiveBorderColor = borderColor ??
-        (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
-    final effectiveBackgroundColor = backgroundColor ??
-        (isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight);
+    final effectiveBorderColor = borderColor ?? colorScheme.outline;
+    final effectiveBackgroundColor = backgroundColor ?? colorScheme.surfaceContainerHighest;
 
     return Container(
       width: size,

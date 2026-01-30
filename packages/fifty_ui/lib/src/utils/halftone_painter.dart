@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 /// Creates a repeatable pattern of dots at 5% opacity, suitable for
 /// adding subtle texture to surfaces without requiring image assets.
 ///
-/// Example:
+/// **Note:** Since this is a CustomPainter without BuildContext access,
+/// consumers should pass theme-appropriate colors from their widget:
 /// ```dart
+/// final colorScheme = Theme.of(context).colorScheme;
 /// CustomPaint(
 ///   painter: HalftonePainter(
-///     color: Colors.white,
+///     color: colorScheme.onSurface,
 ///     dotRadius: 1.5,
 ///     spacing: 8.0,
 ///   ),
@@ -19,6 +21,10 @@ import 'package:flutter/material.dart';
 /// ```
 class HalftonePainter extends CustomPainter {
   /// Creates a halftone pattern painter.
+  ///
+  /// The [color] parameter defaults to [FiftyColors.cream] for backwards
+  /// compatibility. For theme-aware usage, pass `colorScheme.onSurface`
+  /// or another appropriate theme color from your widget's build method.
   const HalftonePainter({
     this.color = FiftyColors.cream,
     this.dotRadius = 1.0,
@@ -28,7 +34,8 @@ class HalftonePainter extends CustomPainter {
 
   /// The color of the halftone dots.
   ///
-  /// Defaults to white.
+  /// Defaults to [FiftyColors.cream]. For theme-aware usage, pass
+  /// `colorScheme.onSurface` from your widget's build method.
   final Color color;
 
   /// The radius of each dot.
@@ -73,27 +80,34 @@ class HalftonePainter extends CustomPainter {
 ///
 /// Convenience widget wrapping [HalftonePainter].
 ///
+/// When [color] is not specified, it automatically uses `colorScheme.onSurface`
+/// for theme-aware coloring.
+///
 /// Example:
 /// ```dart
 /// Stack(
 ///   children: [
 ///     Container(color: Colors.black),
-///     HalftoneOverlay(),
+///     HalftoneOverlay(), // Uses theme color automatically
 ///   ],
 /// )
 /// ```
 class HalftoneOverlay extends StatelessWidget {
   /// Creates a halftone overlay widget.
+  ///
+  /// If [color] is null, uses `colorScheme.onSurface` from the current theme.
   const HalftoneOverlay({
     super.key,
-    this.color = FiftyColors.cream,
+    this.color,
     this.dotRadius = 1.0,
     this.spacing = 8.0,
     this.opacity = 0.05,
   });
 
   /// The color of the halftone dots.
-  final Color color;
+  ///
+  /// If null, uses `colorScheme.onSurface` from the current theme.
+  final Color? color;
 
   /// The radius of each dot.
   final double dotRadius;
@@ -106,9 +120,11 @@ class HalftoneOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveColor = color ?? Theme.of(context).colorScheme.onSurface;
+
     return CustomPaint(
       painter: HalftonePainter(
-        color: color,
+        color: effectiveColor,
         dotRadius: dotRadius,
         spacing: spacing,
         opacity: opacity,

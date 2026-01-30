@@ -120,7 +120,7 @@ class FiftyTheme {
       colorScheme: colorScheme,
       visualDensity: VisualDensity.compact,
 
-      // Scaffold and surfaces - v2 colors
+      // Scaffold and surfaces - v2 colors (warm cream)
       scaffoldBackgroundColor: FiftyColors.cream,
       canvasColor: FiftyColors.cream,
       cardColor: FiftyColors.surfaceLight,

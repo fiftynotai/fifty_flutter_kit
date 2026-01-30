@@ -4,6 +4,7 @@
 /// Demonstrates printer discovery and ticket printing.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -252,16 +253,22 @@ class PrintingDemoViewModel extends GetxController {
   }
 
   /// Gets color for printer status.
-  Color getStatusColor(PrinterStatus status) {
+  ///
+  /// Accepts theme parameters for theme-aware colors.
+  Color getStatusColor(
+    PrinterStatus status,
+    ColorScheme colorScheme,
+    FiftyThemeExtension? fiftyTheme,
+  ) {
     switch (status) {
       case PrinterStatus.online:
-        return const Color(0xFF4A6741); // hunterGreen
+        return fiftyTheme?.success ?? colorScheme.tertiary;
       case PrinterStatus.busy:
-        return const Color(0xFFF5A623); // warning
+        return fiftyTheme?.warning ?? colorScheme.error;
       case PrinterStatus.offline:
-        return const Color(0xFF6B7280); // slateGrey
+        return colorScheme.onSurfaceVariant;
       case PrinterStatus.error:
-        return const Color(0xFF722F37); // burgundy
+        return colorScheme.primary;
     }
   }
 

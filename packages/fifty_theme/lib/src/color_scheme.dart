@@ -91,7 +91,7 @@ class FiftyColorScheme {
       errorContainer: FiftyColors.burgundy.withValues(alpha: 0.15),
       onErrorContainer: FiftyColors.burgundy,
 
-      // Surface colors - Cream base
+      // Surface colors - Warm cream base
       surface: FiftyColors.cream,
       onSurface: FiftyColors.darkBurgundy,
       surfaceContainerHighest: FiftyColors.surfaceLight,

@@ -24,6 +24,10 @@ void main() {
         test('warning is FiftyColors.warning', () {
           expect(extension.warning, FiftyColors.warning);
         });
+
+        test('info is FiftyColors.slateGrey', () {
+          expect(extension.info, FiftyColors.slateGrey);
+        });
       });
 
       group('Shadows', () {
@@ -150,6 +154,14 @@ void main() {
         expect(copied.accent, original.accent);
       });
 
+      test('returns new instance with updated info', () {
+        const newColor = Colors.blueGrey;
+        final copied = original.copyWith(info: newColor);
+
+        expect(copied.info, newColor);
+        expect(copied.accent, original.accent);
+      });
+
       test('returns new instance with updated fast duration', () {
         const newDuration = Duration(milliseconds: 200);
         final copied = original.copyWith(fast: newDuration);
@@ -172,6 +184,7 @@ void main() {
         expect(copied.accent, original.accent);
         expect(copied.success, original.success);
         expect(copied.warning, original.warning);
+        expect(copied.info, original.info);
         expect(copied.shadowSm, original.shadowSm);
         expect(copied.shadowMd, original.shadowMd);
         expect(copied.shadowLg, original.shadowLg);
@@ -209,6 +222,7 @@ void main() {
           exitCurve: Curves.bounceOut,
           success: Colors.green,
           warning: Colors.orange,
+          info: Colors.grey,
         );
       });
 

@@ -93,29 +93,28 @@ class _FiftyIconButtonState extends State<FiftyIconButton> {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final dimension = _getDimension();
     final iconSize = _getIconSize();
 
     final backgroundColor = _getBackgroundColor(colorScheme);
-    final foregroundColor = _getForegroundColor(colorScheme, isDark);
+    final foregroundColor = _getForegroundColor(colorScheme);
     final borderColor = _getBorderColor(colorScheme);
 
     return Tooltip(
       message: widget.tooltip,
       decoration: BoxDecoration(
-        color: isDark ? FiftyColors.surfaceDark : FiftyColors.darkBurgundy,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
         border: Border.all(
-          color: isDark ? FiftyColors.borderDark : FiftyColors.borderLight,
+          color: colorScheme.outline,
         ),
       ),
       textStyle: TextStyle(
         fontFamily: FiftyTypography.fontFamily,
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.cream,
+        color: colorScheme.onSurface,
       ),
       child: Focus(
         onFocusChange: (focused) => setState(() => _isFocused = focused),
@@ -204,14 +203,14 @@ class _FiftyIconButtonState extends State<FiftyIconButton> {
     }
   }
 
-  Color _getForegroundColor(ColorScheme colorScheme, bool isDark) {
+  Color _getForegroundColor(ColorScheme colorScheme) {
     switch (widget.variant) {
       case FiftyIconButtonVariant.primary:
         return colorScheme.onPrimary;
       case FiftyIconButtonVariant.secondary:
         return colorScheme.primary;
       case FiftyIconButtonVariant.ghost:
-        return isDark ? FiftyColors.slateGrey : Colors.grey[600]!;
+        return colorScheme.onSurfaceVariant;
     }
   }
 

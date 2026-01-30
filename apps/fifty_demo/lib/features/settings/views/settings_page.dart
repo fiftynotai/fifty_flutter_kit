@@ -1,6 +1,7 @@
 /// Settings Page
 ///
 /// Provides app configuration, theme selection, and app information.
+/// Uses theme-aware colors for light/dark mode support.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -15,6 +16,7 @@ import '../controllers/settings_view_model.dart';
 /// Settings page widget.
 ///
 /// Displays theme options, app info, and configuration settings.
+/// Uses theme-aware colors via [ColorScheme].
 class SettingsPage extends GetView<SettingsViewModel> {
   /// Creates a settings page.
   const SettingsPage({super.key});
@@ -33,7 +35,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                   title: 'Appearance',
                   subtitle: 'Theme and display settings',
                 ),
-                _buildThemeSelector(viewModel),
+                _buildThemeSelector(context, viewModel),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // App Information
@@ -41,7 +43,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                   title: 'App Info',
                   subtitle: 'Version and build details',
                 ),
-                _buildAppInfo(),
+                _buildAppInfo(context),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // About
@@ -49,7 +51,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                   title: 'About',
                   subtitle: 'Fifty Flutter Kit',
                 ),
-                _buildAbout(),
+                _buildAbout(context),
                 const SizedBox(height: FiftySpacing.xxl),
               ],
             ),
@@ -59,34 +61,39 @@ class SettingsPage extends GetView<SettingsViewModel> {
     );
   }
 
-  Widget _buildThemeSelector(SettingsViewModel viewModel) {
+  Widget _buildThemeSelector(BuildContext context, SettingsViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           _buildThemeOption(
+            context,
             viewModel,
             AppThemeMode.dark,
             'Dark Mode',
             'Default FDL theme',
             Icons.dark_mode_outlined,
           ),
-          const Divider(
-            color: FiftyColors.surfaceDark,
+          Divider(
+            color: colorScheme.surfaceContainerHighest,
             height: FiftySpacing.md,
           ),
           _buildThemeOption(
+            context,
             viewModel,
             AppThemeMode.light,
             'Light Mode',
             'Light theme variant',
             Icons.light_mode_outlined,
           ),
-          const Divider(
-            color: FiftyColors.surfaceDark,
+          Divider(
+            color: colorScheme.surfaceContainerHighest,
             height: FiftySpacing.md,
           ),
           _buildThemeOption(
+            context,
             viewModel,
             AppThemeMode.system,
             'System',
@@ -99,12 +106,14 @@ class SettingsPage extends GetView<SettingsViewModel> {
   }
 
   Widget _buildThemeOption(
+    BuildContext context,
     SettingsViewModel viewModel,
     AppThemeMode mode,
     String title,
     String subtitle,
     IconData icon,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isSelected = viewModel.themeMode == mode;
 
     return InkWell(
@@ -117,7 +126,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
           children: [
             Icon(
               icon,
-              color: isSelected ? FiftyColors.burgundy : FiftyColors.cream,
+              color: isSelected ? colorScheme.primary : colorScheme.onSurface,
               size: 24,
             ),
             const SizedBox(width: FiftySpacing.md),
@@ -131,7 +140,9 @@ class SettingsPage extends GetView<SettingsViewModel> {
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? FiftyColors.burgundy : FiftyColors.cream,
+                      color: isSelected
+                          ? colorScheme.primary
+                          : colorScheme.onSurface,
                     ),
                   ),
                   Text(
@@ -139,16 +150,16 @@ class SettingsPage extends GetView<SettingsViewModel> {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
               ),
             ),
             if (isSelected)
-              const Icon(
+              Icon(
                 Icons.check_circle,
-                color: FiftyColors.burgundy,
+                color: colorScheme.primary,
                 size: 20,
               ),
           ],
@@ -157,24 +168,26 @@ class SettingsPage extends GetView<SettingsViewModel> {
     );
   }
 
-  Widget _buildAppInfo() {
+  Widget _buildAppInfo(BuildContext context) {
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
-          _buildInfoRow('App', SettingsViewModel.appName),
-          _buildInfoRow('Version', SettingsViewModel.appVersion),
-          _buildInfoRow('Build', SettingsViewModel.buildNumber),
-          _buildInfoRow('Architecture', SettingsViewModel.architecture),
-          _buildInfoRow('Design System', SettingsViewModel.designSystem),
-          _buildInfoRow('Framework', SettingsViewModel.frameworkVersion),
-          _buildInfoRow('State', SettingsViewModel.stateManagement),
+          _buildInfoRow(context, 'App', SettingsViewModel.appName),
+          _buildInfoRow(context, 'Version', SettingsViewModel.appVersion),
+          _buildInfoRow(context, 'Build', SettingsViewModel.buildNumber),
+          _buildInfoRow(context, 'Architecture', SettingsViewModel.architecture),
+          _buildInfoRow(context, 'Design System', SettingsViewModel.designSystem),
+          _buildInfoRow(context, 'Framework', SettingsViewModel.frameworkVersion),
+          _buildInfoRow(context, 'State', SettingsViewModel.stateManagement),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(BuildContext context, String label, String value) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
@@ -185,16 +198,16 @@ class SettingsPage extends GetView<SettingsViewModel> {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           Flexible(
             child: Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodySmall,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
               ),
               textAlign: TextAlign.end,
             ),
@@ -204,19 +217,21 @@ class SettingsPage extends GetView<SettingsViewModel> {
     );
   }
 
-  Widget _buildAbout() {
+  Widget _buildAbout(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'FIFTY FLUTTER KIT',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyLarge,
               fontWeight: FontWeight.w600,
-              color: FiftyColors.burgundy,
+              color: colorScheme.primary,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -227,15 +242,15 @@ class SettingsPage extends GetView<SettingsViewModel> {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.8),
+              color: colorScheme.onSurface.withValues(alpha: 0.8),
               height: 1.5,
             ),
           ),
           const SizedBox(height: FiftySpacing.md),
-          const Divider(color: FiftyColors.surfaceDark),
+          Divider(color: colorScheme.surfaceContainerHighest),
           const SizedBox(height: FiftySpacing.sm),
-          _buildInfoRow('Copyright', SettingsViewModel.copyright),
-          _buildInfoRow('License', SettingsViewModel.license),
+          _buildInfoRow(context, 'Copyright', SettingsViewModel.copyright),
+          _buildInfoRow(context, 'License', SettingsViewModel.license),
         ],
       ),
     );

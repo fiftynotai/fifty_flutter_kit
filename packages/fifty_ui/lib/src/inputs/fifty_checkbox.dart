@@ -123,18 +123,17 @@ class _FiftyCheckboxState extends State<FiftyCheckbox>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fiftyTheme = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
 
-    // v2 color scheme
-    const checkedBgColor = FiftyColors.primary;
+    // v2 color scheme - using theme colors
+    final checkedBgColor = colorScheme.primary;
     const uncheckedBgColor = Colors.transparent;
-    final borderColor =
-        isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final hoverBorderColor = isDark ? FiftyColors.powderBlush : FiftyColors.primary;
+    final borderColor = colorScheme.outline;
+    final hoverBorderColor = fiftyTheme?.accent ?? colorScheme.primary;
     const checkColor = Colors.white;
 
     return MouseRegion(

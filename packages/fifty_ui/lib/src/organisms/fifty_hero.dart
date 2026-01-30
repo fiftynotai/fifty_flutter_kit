@@ -111,11 +111,13 @@ class FiftyHero extends StatelessWidget {
   }
 
   Widget _buildText(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     final style = TextStyle(
       fontFamily: FiftyTypography.fontFamily,
       fontSize: _fontSize,
       fontWeight: _fontWeight,
-      color: FiftyColors.cream,
+      color: colorScheme.onSurface,
       letterSpacing: FiftyTypography.letterSpacingDisplay,
       height: FiftyTypography.lineHeightDisplay,
     );
@@ -204,16 +206,21 @@ class FiftyHeroSection extends StatelessWidget {
         ),
         if (subtitle != null) ...[
           SizedBox(height: spacing),
-          Text(
-            subtitle!,
-            style: const TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.bodyLarge,
-              fontWeight: FiftyTypography.regular,
-              color: FiftyColors.slateGrey,
-              height: FiftyTypography.lineHeightBody,
-            ),
-            textAlign: _textAlignFromCrossAxis(),
+          Builder(
+            builder: (context) {
+              final colorScheme = Theme.of(context).colorScheme;
+              return Text(
+                subtitle!,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyLarge,
+                  fontWeight: FiftyTypography.regular,
+                  color: colorScheme.onSurfaceVariant,
+                  height: FiftyTypography.lineHeightBody,
+                ),
+                textAlign: _textAlignFromCrossAxis(),
+              );
+            },
           ),
         ],
       ],

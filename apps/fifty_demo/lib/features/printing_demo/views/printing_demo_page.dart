@@ -3,6 +3,7 @@
 /// Demonstrates printing engine with printer discovery and ticket printing.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -26,27 +27,10 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     return GetBuilder<PrintingDemoViewModel>(
       builder: (viewModel) {
         final actions = Get.find<PrintingDemoActions>();
-        return Scaffold(
-          backgroundColor: FiftyColors.darkBurgundy,
-          appBar: AppBar(
-            backgroundColor: FiftyColors.surfaceDark,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: FiftyColors.cream),
-              onPressed: actions.onBackTapped,
-            ),
-            title: const Text(
-              'PRINTING ENGINE',
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodyLarge,
-                fontWeight: FontWeight.bold,
-                color: FiftyColors.cream,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-          body: DemoScaffold(
-            child: SingleChildScrollView(
+
+        return DemoScaffold(
+          title: 'Printing Engine',
+          child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -88,7 +72,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                       title: 'Available Printers',
                       subtitle: '${viewModel.printers.length} printers found',
                     ),
-                    _buildPrintersList(viewModel, actions),
+                    _buildPrintersList(context, viewModel, actions),
                     const SizedBox(height: FiftySpacing.xl),
                   ],
 
@@ -97,7 +81,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     title: 'Ticket Preview',
                     subtitle: 'Sample receipt ticket',
                   ),
-                  _buildTicketPreview(viewModel),
+                  _buildTicketPreview(context, viewModel),
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Print Section
@@ -109,10 +93,9 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 ],
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
   }
 
   Widget _buildDiscoverySection(
@@ -120,6 +103,8 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     PrintingDemoViewModel viewModel,
     PrintingDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Row(
@@ -134,10 +119,10 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                       : viewModel.printers.isEmpty
                           ? 'Tap to discover nearby printers'
                           : '${viewModel.printers.length} printers discovered',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyMedium,
-                    color: FiftyColors.cream,
+                    color: colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -157,13 +142,23 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
   }
 
   Widget _buildPrintersList(
+    BuildContext context,
     PrintingDemoViewModel viewModel,
     PrintingDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+
     return Column(
       children: viewModel.printers.map((printer) {
         final isSelected = viewModel.selectedPrinter?.id == printer.id;
         final isOnline = printer.status == PrinterStatus.online;
+        final statusColor = viewModel.getStatusColor(
+          printer.status,
+          colorScheme,
+          fiftyTheme,
+        );
 
         return Padding(
           padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
@@ -180,15 +175,15 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     height: 40,
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? FiftyColors.burgundy.withValues(alpha: 0.3)
-                          : FiftyColors.slateGrey.withValues(alpha: 0.2),
+                          ? colorScheme.primary.withValues(alpha: 0.3)
+                          : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(FiftyRadii.sm),
                     ),
                     child: Icon(
                       printer.icon,
                       color: isSelected
-                          ? FiftyColors.burgundy
-                          : FiftyColors.slateGrey,
+                          ? colorScheme.primary
+                          : colorScheme.onSurfaceVariant,
                       size: 20,
                     ),
                   ),
@@ -206,7 +201,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                             fontSize: FiftyTypography.bodyMedium,
                             fontWeight:
                                 isSelected ? FontWeight.bold : FontWeight.normal,
-                            color: FiftyColors.cream,
+                            color: colorScheme.onSurface,
                           ),
                         ),
                         const SizedBox(height: FiftySpacing.xs),
@@ -216,7 +211,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                               width: 6,
                               height: 6,
                               decoration: BoxDecoration(
-                                color: viewModel.getStatusColor(printer.status),
+                                color: statusColor,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -226,7 +221,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                               style: TextStyle(
                                 fontFamily: FiftyTypography.fontFamily,
                                 fontSize: FiftyTypography.bodySmall,
-                                color: viewModel.getStatusColor(printer.status),
+                                color: statusColor,
                               ),
                             ),
                           ],
@@ -237,15 +232,15 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
 
                   // Selection indicator
                   if (isSelected)
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
-                      color: FiftyColors.hunterGreen,
+                      color: successColor,
                       size: 24,
                     )
                   else if (isOnline)
                     Icon(
                       Icons.radio_button_unchecked,
-                      color: FiftyColors.cream.withValues(alpha: 0.3),
+                      color: colorScheme.onSurface.withValues(alpha: 0.3),
                       size: 24,
                     ),
                 ],
@@ -257,14 +252,16 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     );
   }
 
-  Widget _buildTicketPreview(PrintingDemoViewModel viewModel) {
+  Widget _buildTicketPreview(BuildContext context, PrintingDemoViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(FiftySpacing.md),
         decoration: BoxDecoration(
-          color: FiftyColors.cream,
+          color: colorScheme.onSurface,
           borderRadius: BorderRadius.circular(FiftyRadii.sm),
         ),
         child: Column(
@@ -272,10 +269,10 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
           children: viewModel.sampleTicketLines.map((line) {
             return Text(
               line,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Courier',
                 fontSize: 12,
-                color: FiftyColors.darkBurgundy,
+                color: colorScheme.surface,
                 height: 1.4,
               ),
             );
@@ -290,6 +287,11 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     PrintingDemoViewModel viewModel,
     PrintingDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+    final errorColor = colorScheme.primary; // burgundy maps to primary
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Column(
@@ -300,7 +302,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
             children: [
               Icon(
                 Icons.print_outlined,
-                color: FiftyColors.cream.withValues(alpha: 0.7),
+                color: colorScheme.onSurface.withValues(alpha: 0.7),
                 size: 20,
               ),
               const SizedBox(width: FiftySpacing.sm),
@@ -312,7 +314,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyMedium,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ),
@@ -326,8 +328,8 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
               padding: const EdgeInsets.all(FiftySpacing.sm),
               decoration: BoxDecoration(
                 color: viewModel.lastResult!.success
-                    ? FiftyColors.hunterGreen.withValues(alpha: 0.2)
-                    : FiftyColors.burgundy.withValues(alpha: 0.2),
+                    ? successColor.withValues(alpha: 0.2)
+                    : errorColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(FiftyRadii.sm),
               ),
               child: Row(
@@ -337,8 +339,8 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                         ? Icons.check_circle_outline
                         : Icons.error_outline,
                     color: viewModel.lastResult!.success
-                        ? FiftyColors.hunterGreen
-                        : FiftyColors.burgundy,
+                        ? successColor
+                        : errorColor,
                     size: 16,
                   ),
                   const SizedBox(width: FiftySpacing.sm),
@@ -349,8 +351,8 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
                         color: viewModel.lastResult!.success
-                            ? FiftyColors.hunterGreen
-                            : FiftyColors.burgundy,
+                            ? successColor
+                            : errorColor,
                       ),
                     ),
                   ),

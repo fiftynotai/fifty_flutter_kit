@@ -3,6 +3,7 @@
 /// Showcases FDL display components.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +24,16 @@ class DisplaySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Cards
         const SectionLabel(label: 'CARDS'),
         const SizedBox(height: FiftySpacing.md),
-        const FiftyCard(
-          padding: EdgeInsets.all(FiftySpacing.lg),
+        FiftyCard(
+          padding: const EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,16 +43,16 @@ class DisplaySection extends StatelessWidget {
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodyLarge,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.cream,
+                  color: colorScheme.onSurface,
                 ),
               ),
-              SizedBox(height: FiftySpacing.sm),
+              const SizedBox(height: FiftySpacing.sm),
               Text(
                 'Cards provide containment for content with consistent styling.',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -112,40 +115,47 @@ class DisplaySection extends StatelessWidget {
         // List Tiles
         const SectionLabel(label: 'LIST TILES'),
         const SizedBox(height: FiftySpacing.md),
-        FiftyCard(
-          padding: EdgeInsets.zero,
-          child: Column(
-            children: [
-              FiftyListTile(
-                leadingIcon: Icons.subscriptions,
-                leadingIconColor: Colors.blue,
-                leadingIconBackgroundColor: Colors.blue.withValues(alpha: 0.15),
-                title: 'Subscription',
-                subtitle: 'Adobe Creative Cloud',
-                trailingText: '-\$54.00',
-                trailingSubtext: 'Today',
-                showDivider: true,
+        Builder(
+          builder: (context) {
+            final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+            final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+            final infoColor = fiftyTheme?.info ?? colorScheme.onSurfaceVariant;
+            return FiftyCard(
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  FiftyListTile(
+                    leadingIcon: Icons.subscriptions,
+                    leadingIconColor: infoColor,
+                    leadingIconBackgroundColor: infoColor.withValues(alpha: 0.15),
+                    title: 'Subscription',
+                    subtitle: 'Adobe Creative Cloud',
+                    trailingText: '-\$54.00',
+                    trailingSubtext: 'Today',
+                    showDivider: true,
+                  ),
+                  FiftyListTile(
+                    leadingIcon: Icons.arrow_downward,
+                    leadingIconColor: successColor,
+                    leadingIconBackgroundColor:
+                        successColor.withValues(alpha: 0.15),
+                    title: 'Deposit',
+                    subtitle: 'Freelance Work',
+                    trailingText: '+\$850.00',
+                    trailingTextColor: successColor,
+                    trailingSubtext: 'Yesterday',
+                    showDivider: true,
+                  ),
+                  FiftyListTile(
+                    leadingIcon: Icons.notifications,
+                    title: 'Notifications',
+                    subtitle: 'Push alerts enabled',
+                    trailing: Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
+                  ),
+                ],
               ),
-              FiftyListTile(
-                leadingIcon: Icons.arrow_downward,
-                leadingIconColor: FiftyColors.hunterGreen,
-                leadingIconBackgroundColor:
-                    FiftyColors.hunterGreen.withValues(alpha: 0.15),
-                title: 'Deposit',
-                subtitle: 'Freelance Work',
-                trailingText: '+\$850.00',
-                trailingTextColor: FiftyColors.hunterGreen,
-                trailingSubtext: 'Yesterday',
-                showDivider: true,
-              ),
-              const FiftyListTile(
-                leadingIcon: Icons.notifications,
-                title: 'Notifications',
-                subtitle: 'Push alerts enabled',
-                trailing: Icon(Icons.chevron_right, color: FiftyColors.slateGrey),
-              ),
-            ],
-          ),
+            );
+          },
         ),
         const SizedBox(height: FiftySpacing.xl),
 
@@ -203,11 +213,13 @@ class _ColorSwatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       width: _swatchWidth,
       padding: const EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
-        border: Border.all(color: FiftyColors.borderDark),
+        border: Border.all(color: colorScheme.outline),
         borderRadius: FiftyRadii.lgRadius,
       ),
       child: Column(
@@ -218,16 +230,17 @@ class _ColorSwatch extends StatelessWidget {
             decoration: BoxDecoration(
               color: color,
               borderRadius: FiftyRadii.smRadius,
-              border: Border.all(color: FiftyColors.borderDark),
+              border: Border.all(color: colorScheme.outline),
             ),
           ),
           const SizedBox(height: FiftySpacing.xs),
           Text(
             label,
-            style: const TextStyle(
+            textAlign: TextAlign.center,
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.labelSmall,
-              color: FiftyColors.slateGrey,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
         ],

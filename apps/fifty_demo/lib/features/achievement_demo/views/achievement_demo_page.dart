@@ -3,6 +3,7 @@
 /// Demonstrates achievement tracking and unlocking.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -25,41 +26,23 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
     return GetBuilder<AchievementDemoViewModel>(
       builder: (viewModel) {
         final actions = Get.find<AchievementDemoActions>();
-        return Scaffold(
-          backgroundColor: FiftyColors.darkBurgundy,
-          appBar: AppBar(
-            backgroundColor: FiftyColors.surfaceDark,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: FiftyColors.cream),
-              onPressed: actions.onBackTapped,
-            ),
-            title: const Text(
-              'ACHIEVEMENT ENGINE',
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodyLarge,
-                fontWeight: FontWeight.bold,
-                color: FiftyColors.cream,
-                letterSpacing: 2,
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.refresh, color: FiftyColors.cream),
-                onPressed: () => actions.onResetTapped(context),
-                tooltip: 'Reset All',
-              ),
-            ],
-          ),
-          body: Stack(
+
+        return DemoScaffold(
+          title: 'Achievement Engine',
+          padding: EdgeInsets.zero,
+          child: Stack(
             children: [
-              DemoScaffold(
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: FiftySpacing.lg,
+                  vertical: FiftySpacing.md,
+                ),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Summary Stats
-                      _buildSummaryCard(viewModel),
+                      _buildSummaryCard(context, viewModel),
                       const SizedBox(height: FiftySpacing.xl),
 
                       // Event Triggers
@@ -84,7 +67,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
 
               // Unlock Popup
               if (viewModel.recentUnlock != null)
-                _buildUnlockPopup(viewModel.recentUnlock!, actions),
+                _buildUnlockPopup(context, viewModel.recentUnlock!, actions),
             ],
           ),
         );
@@ -92,7 +75,11 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
     );
   }
 
-  Widget _buildSummaryCard(AchievementDemoViewModel viewModel) {
+  Widget _buildSummaryCard(BuildContext context, AchievementDemoViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Column(
@@ -110,7 +97,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
-                        color: FiftyColors.cream.withValues(alpha: 0.7),
+                        color: colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: FiftySpacing.sm),
@@ -119,10 +106,8 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       child: LinearProgressIndicator(
                         value: viewModel.completionPercentage,
                         backgroundColor:
-                            FiftyColors.slateGrey.withValues(alpha: 0.3),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          FiftyColors.hunterGreen,
-                        ),
+                            colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                        valueColor: AlwaysStoppedAnimation<Color>(successColor),
                         minHeight: 8,
                       ),
                     ),
@@ -132,11 +117,11 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
               const SizedBox(width: FiftySpacing.lg),
               Text(
                 '${(viewModel.completionPercentage * 100).toInt()}%',
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.titleLarge,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.hunterGreen,
+                  color: successColor,
                 ),
               ),
             ],
@@ -181,7 +166,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: 10,
-                        color: FiftyColors.cream.withValues(alpha: 0.5),
+                        color: colorScheme.onSurface.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -199,6 +184,8 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
     AchievementDemoViewModel viewModel,
     AchievementDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Wrap(
       spacing: FiftySpacing.sm,
       runSpacing: FiftySpacing.sm,
@@ -215,16 +202,16 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
               vertical: FiftySpacing.sm,
             ),
             decoration: BoxDecoration(
-              color: FiftyColors.surfaceDark,
+              color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(FiftyRadii.md),
-              border: Border.all(color: FiftyColors.borderDark),
+              border: Border.all(color: colorScheme.outline),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   event.icon,
-                  color: FiftyColors.burgundy,
+                  color: colorScheme.primary,
                   size: 20,
                 ),
                 const SizedBox(width: FiftySpacing.sm),
@@ -233,11 +220,11 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                   children: [
                     Text(
                       event.label.toUpperCase(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: FiftyColors.cream,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     Text(
@@ -247,7 +234,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: 10,
-                        color: FiftyColors.cream.withValues(alpha: 0.5),
+                        color: colorScheme.onSurface.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -272,14 +259,19 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
   }
 
   Widget _buildUnlockPopup(
+    BuildContext context,
     DemoAchievement achievement,
     AchievementDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+
     return Positioned.fill(
       child: GestureDetector(
         onTap: actions.onDismissUnlock,
         child: Container(
-          color: Colors.black.withValues(alpha: 0.7),
+          color: colorScheme.surface.withValues(alpha: 0.85),
           child: Center(
             child: FiftyCard(
               padding: const EdgeInsets.all(FiftySpacing.xl),
@@ -310,12 +302,12 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                   const SizedBox(height: FiftySpacing.lg),
 
                   // Title
-                  const Text(
+                  Text(
                     'ACHIEVEMENT UNLOCKED!',
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.hunterGreen,
+                      color: successColor,
                       letterSpacing: 2,
                     ),
                   ),
@@ -324,11 +316,11 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                   // Achievement name
                   Text(
                     achievement.name.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.titleLarge,
                       fontWeight: FontWeight.bold,
-                      color: FiftyColors.cream,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
@@ -362,7 +354,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodyMedium,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.lg),
@@ -373,7 +365,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.cream.withValues(alpha: 0.5),
+                      color: colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -394,6 +386,8 @@ class _AchievementCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Opacity(
       opacity: achievement.isUnlocked ? 1.0 : 0.6,
       child: FiftyCard(
@@ -407,14 +401,14 @@ class _AchievementCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: achievement.isUnlocked
                     ? achievement.rarity.color.withValues(alpha: 0.2)
-                    : FiftyColors.slateGrey.withValues(alpha: 0.2),
+                    : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(FiftyRadii.sm),
               ),
               child: Icon(
                 achievement.isUnlocked ? achievement.icon : Icons.lock_outline,
                 color: achievement.isUnlocked
                     ? achievement.rarity.color
-                    : FiftyColors.slateGrey,
+                    : colorScheme.onSurfaceVariant,
                 size: 24,
               ),
             ),
@@ -430,11 +424,11 @@ class _AchievementCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           achievement.name.toUpperCase(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: FiftyTypography.fontFamily,
                             fontSize: FiftyTypography.bodyMedium,
                             fontWeight: FontWeight.bold,
-                            color: FiftyColors.cream,
+                            color: colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -464,7 +458,7 @@ class _AchievementCard extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
 
@@ -479,7 +473,7 @@ class _AchievementCard extends StatelessWidget {
                             child: LinearProgressIndicator(
                               value: achievement.progress,
                               backgroundColor:
-                                  FiftyColors.slateGrey.withValues(alpha: 0.3),
+                                  colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 achievement.rarity.color,
                               ),
@@ -493,7 +487,7 @@ class _AchievementCard extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: FiftyTypography.fontFamily,
                             fontSize: 10,
-                            color: FiftyColors.cream.withValues(alpha: 0.5),
+                            color: colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         ),
                       ],
@@ -505,13 +499,19 @@ class _AchievementCard extends StatelessWidget {
 
             // Checkmark for unlocked
             if (achievement.isUnlocked)
-              const Padding(
-                padding: EdgeInsets.only(left: FiftySpacing.sm),
-                child: Icon(
-                  Icons.check_circle,
-                  color: FiftyColors.hunterGreen,
-                  size: 24,
-                ),
+              Builder(
+                builder: (context) {
+                  final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+                  final colorScheme = Theme.of(context).colorScheme;
+                  return Padding(
+                    padding: const EdgeInsets.only(left: FiftySpacing.sm),
+                    child: Icon(
+                      Icons.check_circle,
+                      color: fiftyTheme?.success ?? colorScheme.tertiary,
+                      size: 24,
+                    ),
+                  );
+                },
               ),
           ],
         ),

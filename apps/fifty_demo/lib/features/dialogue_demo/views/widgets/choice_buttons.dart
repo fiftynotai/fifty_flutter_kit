@@ -34,6 +34,8 @@ class ChoiceButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: choices.map((choice) {
@@ -47,13 +49,13 @@ class ChoiceButtons extends StatelessWidget {
               padding: const EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? FiftyColors.burgundy.withValues(alpha: 0.2)
+                    ? colorScheme.primary.withValues(alpha: 0.2)
                     : Colors.transparent,
                 borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(
                   color: isSelected
-                      ? FiftyColors.burgundy
-                      : FiftyColors.borderDark,
+                      ? colorScheme.primary
+                      : colorScheme.outline,
                 ),
               ),
               child: Row(
@@ -64,20 +66,20 @@ class ChoiceButtons extends StatelessWidget {
                     height: 24,
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? FiftyColors.burgundy
+                          ? colorScheme.primary
                           : Colors.transparent,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: isSelected
-                            ? FiftyColors.burgundy
-                            : FiftyColors.cream.withValues(alpha: 0.7),
+                            ? colorScheme.primary
+                            : colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                     child: isSelected
-                        ? const Icon(
+                        ? Icon(
                             Icons.check,
                             size: 14,
-                            color: FiftyColors.cream,
+                            color: colorScheme.onPrimary,
                           )
                         : null,
                   ),
@@ -90,8 +92,8 @@ class ChoiceButtons extends StatelessWidget {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodyLarge,
                         color: isSelected
-                            ? FiftyColors.cream
-                            : FiftyColors.cream.withValues(alpha: 0.7),
+                            ? colorScheme.onSurface
+                            : colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                   ),

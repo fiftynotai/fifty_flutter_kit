@@ -1,4 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A themed divider following FDL v2 styling.
@@ -53,10 +52,8 @@ class FiftyDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final effectiveColor = color ??
-        (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
+    final colorScheme = Theme.of(context).colorScheme;
+    final effectiveColor = color ?? colorScheme.outline;
 
     if (vertical) {
       return Container(

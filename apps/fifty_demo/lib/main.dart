@@ -6,6 +6,7 @@ library;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
+import 'package:fifty_storage/fifty_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'app/fifty_demo_app.dart';
@@ -17,13 +18,17 @@ import 'app/fifty_demo_app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize storage for theme persistence
+  PreferencesStorage.configure(containerName: 'fifty_demo');
+  await PreferencesStorage.instance.initialize();
+
   // Initialize FiftyAudioEngine (before app start)
   await FiftyAudioEngine.instance.initialize();
 
-  // Configure channels: BGM/Voice use URLs, SFX uses local assets
-  FiftyAudioEngine.instance.bgm.changeSource(UrlSource.new);
+  // Configure channels: all use local assets for demo
+  FiftyAudioEngine.instance.bgm.changeSource(AssetSource.new);
   FiftyAudioEngine.instance.sfx.changeSource(AssetSource.new);
-  FiftyAudioEngine.instance.voice.changeSource(UrlSource.new);
+  FiftyAudioEngine.instance.voice.changeSource(AssetSource.new);
 
   runApp(const FiftyDemoApp());
 }

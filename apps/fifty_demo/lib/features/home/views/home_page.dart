@@ -2,6 +2,7 @@
 ///
 /// Main landing page for the Fifty Demo app.
 /// Displays getting started actions, updates, and resources.
+/// Uses theme-aware colors for light/dark mode support.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -21,6 +22,7 @@ import 'widgets/whats_new_section.dart';
 /// Home page widget.
 ///
 /// Displays getting started actions, what's new, resources, and system info.
+/// Uses theme-aware colors via [ColorScheme].
 class HomePage extends GetView<HomeViewModel> {
   /// Creates the home page.
   ///
@@ -42,6 +44,8 @@ class HomePage extends GetView<HomeViewModel> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GetBuilder<HomeViewModel>(
       builder: (viewModel) {
         return DemoScaffold(
@@ -89,10 +93,10 @@ class HomePage extends GetView<HomeViewModel> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildInfoRow('App', 'Fifty Demo'),
-                      _buildInfoRow('Version', '1.0.0'),
-                      _buildInfoRow('Architecture', 'MVVM + Actions'),
-                      _buildInfoRow('UI System', 'Fifty Design Language'),
+                      _buildInfoRow(colorScheme, 'App', 'Fifty Demo'),
+                      _buildInfoRow(colorScheme, 'Version', '1.0.0'),
+                      _buildInfoRow(colorScheme, 'Architecture', 'MVVM + Actions'),
+                      _buildInfoRow(colorScheme, 'UI System', 'Fifty Design Language'),
                     ],
                   ),
                 ),
@@ -121,7 +125,7 @@ class HomePage extends GetView<HomeViewModel> {
     }
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(ColorScheme colorScheme, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
@@ -132,15 +136,15 @@ class HomePage extends GetView<HomeViewModel> {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream,
+              color: colorScheme.onSurface,
             ),
           ),
         ],

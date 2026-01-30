@@ -61,20 +61,21 @@ class FiftyProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
+    final colorScheme = theme.colorScheme;
 
     // Clamp progress to valid range
     final clampedProgress = progress.clamp(0.0, 1.0);
     final percentageText = '${(clampedProgress * 100).round()}%';
 
-    // Default gradient: powder-blush to primary (per design)
+    // Default gradient: accent to primary (per design)
     final gradient = progressGradient ??
-        const LinearGradient(
-          colors: [FiftyColors.powderBlush, FiftyColors.primary],
+        LinearGradient(
+          colors: [fifty.accent, colorScheme.primary],
         );
 
     return Container(
       decoration: BoxDecoration(
-        color: FiftyColors.slateGrey,
+        color: colorScheme.onSurfaceVariant,
         borderRadius: FiftyRadii.xxlRadius,
         boxShadow: FiftyShadows.md,
       ),
@@ -117,11 +118,11 @@ class FiftyProgressCard extends StatelessWidget {
                 if (showPercentage)
                   Text(
                     percentageText,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
                       fontWeight: FiftyTypography.bold,
-                      color: FiftyColors.powderBlush,
+                      color: fifty.accent,
                     ),
                   ),
               ],

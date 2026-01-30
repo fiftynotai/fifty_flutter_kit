@@ -59,13 +59,18 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                           : StatusState.idle,
                     ),
                     const SizedBox(width: FiftySpacing.lg),
-                    Text(
-                      viewModel.progressLabel,
-                      style: TextStyle(
-                        fontFamily: FiftyTypography.fontFamily,
-                        fontSize: FiftyTypography.bodySmall,
-                        color: FiftyColors.cream.withValues(alpha: 0.7),
-                      ),
+                    Builder(
+                      builder: (context) {
+                        final colorScheme = Theme.of(context).colorScheme;
+                        return Text(
+                          viewModel.progressLabel,
+                          style: TextStyle(
+                            fontFamily: FiftyTypography.fontFamily,
+                            fontSize: FiftyTypography.bodySmall,
+                            color: colorScheme.onSurface.withValues(alpha: 0.7),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -76,41 +81,46 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                   title: 'Select Dialogue',
                   subtitle: 'Choose a demo dialogue',
                 ),
-                Wrap(
-                  spacing: FiftySpacing.sm,
-                  children: viewModel.dialogueOptions.map((name) {
-                    final isSelected = name == viewModel.selectedDialogue;
-                    return GestureDetector(
-                      onTap: () => viewModel.selectDialogue(name),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: FiftySpacing.md,
-                          vertical: FiftySpacing.sm,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? FiftyColors.burgundy.withValues(alpha: 0.2)
-                              : Colors.transparent,
-                          borderRadius: FiftyRadii.lgRadius,
-                          border: Border.all(
-                            color: isSelected
-                                ? FiftyColors.burgundy
-                                : FiftyColors.borderDark,
+                Builder(
+                  builder: (context) {
+                    final colorScheme = Theme.of(context).colorScheme;
+                    return Wrap(
+                      spacing: FiftySpacing.sm,
+                      children: viewModel.dialogueOptions.map((name) {
+                        final isSelected = name == viewModel.selectedDialogue;
+                        return GestureDetector(
+                          onTap: () => viewModel.selectDialogue(name),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: FiftySpacing.md,
+                              vertical: FiftySpacing.sm,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? colorScheme.primary.withValues(alpha: 0.2)
+                                  : Colors.transparent,
+                              borderRadius: FiftyRadii.lgRadius,
+                              border: Border.all(
+                                color: isSelected
+                                    ? colorScheme.primary
+                                    : colorScheme.outline,
+                              ),
+                            ),
+                            child: Text(
+                              name.toUpperCase(),
+                              style: TextStyle(
+                                fontFamily: FiftyTypography.fontFamily,
+                                fontSize: FiftyTypography.bodySmall,
+                                color: isSelected
+                                    ? colorScheme.primary
+                                    : colorScheme.onSurface.withValues(alpha: 0.7),
+                              ),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          name.toUpperCase(),
-                          style: TextStyle(
-                            fontFamily: FiftyTypography.fontFamily,
-                            fontSize: FiftyTypography.bodySmall,
-                            color: isSelected
-                                ? FiftyColors.burgundy
-                                : FiftyColors.cream.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      ),
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
+                  },
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
@@ -127,12 +137,17 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 ),
                 const SizedBox(height: FiftySpacing.md),
                 // Progress bar
-                LinearProgressIndicator(
-                  value: viewModel.progress,
-                  backgroundColor: FiftyColors.borderDark,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    FiftyColors.burgundy,
-                  ),
+                Builder(
+                  builder: (context) {
+                    final colorScheme = Theme.of(context).colorScheme;
+                    return LinearProgressIndicator(
+                      value: viewModel.progress,
+                      backgroundColor: colorScheme.outline,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        colorScheme.primary,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
@@ -217,6 +232,8 @@ class _ControlButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -224,19 +241,19 @@ class _ControlButton extends StatelessWidget {
         height: isPrimary ? 56 : 44,
         decoration: BoxDecoration(
           color: isPrimary
-              ? FiftyColors.burgundy.withValues(alpha: 0.2)
+              ? colorScheme.primary.withValues(alpha: 0.2)
               : Colors.transparent,
           shape: BoxShape.circle,
           border: Border.all(
-            color: isPrimary ? FiftyColors.burgundy : FiftyColors.borderDark,
+            color: isPrimary ? colorScheme.primary : colorScheme.outline,
             width: isPrimary ? 2 : 1,
           ),
         ),
         child: Icon(
           icon,
           color: isPrimary
-              ? FiftyColors.burgundy
-              : FiftyColors.cream.withValues(alpha: 0.7),
+              ? colorScheme.primary
+              : colorScheme.onSurface.withValues(alpha: 0.7),
           size: isPrimary ? 28 : 20,
         ),
       ),

@@ -145,18 +145,17 @@ class _FiftyRadioState<T> extends State<FiftyRadio<T>>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fiftyTheme = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
 
-    // v2 color scheme
-    const selectedBorderColor = FiftyColors.primary;
-    final unselectedBorderColor =
-        isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final hoverBorderColor = isDark ? FiftyColors.powderBlush : FiftyColors.primary;
-    const dotColor = FiftyColors.primary;
+    // v2 color scheme - using theme colors
+    final selectedBorderColor = colorScheme.primary;
+    final unselectedBorderColor = colorScheme.outline;
+    final hoverBorderColor = fiftyTheme?.accent ?? colorScheme.primary;
+    final dotColor = colorScheme.primary;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -206,7 +205,7 @@ class _FiftyRadioState<T> extends State<FiftyRadio<T>>
                             child: Container(
                               width: _innerDotSize,
                               height: _innerDotSize,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: dotColor,
                                 shape: BoxShape.circle,
                               ),

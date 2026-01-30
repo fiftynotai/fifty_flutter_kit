@@ -2,8 +2,10 @@
 ///
 /// Displays a status indicator with label and optional icon.
 /// Used throughout the demo to show engine/service status.
+/// Uses theme-aware colors for light/dark mode support.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +30,8 @@ enum StatusState {
 /// A status indicator widget.
 ///
 /// Shows a colored dot with label to indicate status.
+/// Uses theme-aware colors via [ColorScheme] for labels,
+/// while status colors remain semantic (green=ready, yellow=loading, etc).
 class StatusIndicator extends StatelessWidget {
   const StatusIndicator({
     required this.label,
@@ -45,18 +49,18 @@ class StatusIndicator extends StatelessWidget {
   /// Whether to show the colored dot.
   final bool showDot;
 
-  Color get _dotColor {
+  Color _getDotColor(ColorScheme colorScheme, FiftyThemeExtension? fiftyTheme) {
     switch (state) {
       case StatusState.ready:
-        return FiftyColors.hunterGreen;
+        return fiftyTheme?.success ?? colorScheme.tertiary;
       case StatusState.loading:
-        return FiftyColors.warning;
+        return fiftyTheme?.warning ?? colorScheme.error;
       case StatusState.error:
-        return FiftyColors.burgundy;
+        return colorScheme.error;
       case StatusState.offline:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
       case StatusState.idle:
-        return FiftyColors.borderDark;
+        return colorScheme.outline;
     }
   }
 
@@ -77,6 +81,10 @@ class StatusIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final dotColor = _getDotColor(colorScheme, fiftyTheme);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -85,7 +93,7 @@ class StatusIndicator extends StatelessWidget {
             width: 8,
             height: 8,
             decoration: BoxDecoration(
-              color: _dotColor,
+              color: dotColor,
               shape: BoxShape.circle,
             ),
           ),
@@ -96,7 +104,7 @@ class StatusIndicator extends StatelessWidget {
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodySmall,
-            color: FiftyColors.cream.withValues(alpha: 0.7),
+            color: colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
         const SizedBox(width: FiftySpacing.xs),
@@ -105,7 +113,7 @@ class StatusIndicator extends StatelessWidget {
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodySmall,
-            color: _dotColor,
+            color: dotColor,
           ),
         ),
       ],

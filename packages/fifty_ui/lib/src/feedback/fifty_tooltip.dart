@@ -45,11 +45,12 @@ class FiftyTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
-    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.darkBurgundy;
-    final textColor = isDark ? FiftyColors.cream : FiftyColors.cream;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    // Tooltip uses inverse colors for visibility
+    final backgroundColor = colorScheme.inverseSurface;
+    final textColor = colorScheme.onInverseSurface;
+    final borderColor = colorScheme.outline;
 
     return Tooltip(
       message: message,

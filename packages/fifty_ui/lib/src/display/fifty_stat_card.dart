@@ -78,7 +78,6 @@ class FiftyStatCard extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     // Background color
     final backgroundColor = highlight
@@ -88,7 +87,7 @@ class FiftyStatCard extends StatelessWidget {
     // Text colors
     final labelColor = highlight
         ? colorScheme.onPrimary.withValues(alpha: 0.7)
-        : (isDark ? FiftyColors.slateGrey : Colors.grey[600]!);
+        : colorScheme.onSurfaceVariant;
     final valueColor = highlight ? colorScheme.onPrimary : colorScheme.onSurface;
 
     // Icon container colors
@@ -99,7 +98,7 @@ class FiftyStatCard extends StatelessWidget {
     final iconFgColor = highlight ? colorScheme.onPrimary : effectiveIconColor;
 
     // Border
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final borderColor = colorScheme.outline;
 
     return SizedBox(
       height: 128,
@@ -120,7 +119,7 @@ class FiftyStatCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildIconContainer(iconBgColor, iconFgColor),
-                if (trend != null) _buildTrendBadge(colorScheme, highlight),
+                if (trend != null) _buildTrendBadge(colorScheme, highlight, fifty),
               ],
             ),
             const Spacer(),
@@ -160,11 +159,15 @@ class FiftyStatCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTrendBadge(ColorScheme colorScheme, bool isHighlight) {
+  Widget _buildTrendBadge(
+    ColorScheme colorScheme,
+    bool isHighlight,
+    FiftyThemeExtension fifty,
+  ) {
     final trendColor = switch (trend!) {
-      FiftyStatTrend.up => FiftyColors.hunterGreen,
+      FiftyStatTrend.up => fifty.success,
       FiftyStatTrend.down => colorScheme.error,
-      FiftyStatTrend.neutral => FiftyColors.slateGrey,
+      FiftyStatTrend.neutral => colorScheme.onSurfaceVariant,
     };
 
     final badgeBgColor = isHighlight

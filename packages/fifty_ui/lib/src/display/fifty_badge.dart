@@ -208,7 +208,7 @@ class _FiftyBadgeState extends State<FiftyBadge>
       case FiftyBadgeVariant.error:
         return colorScheme.error;
       case FiftyBadgeVariant.neutral:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
     }
   }
 }

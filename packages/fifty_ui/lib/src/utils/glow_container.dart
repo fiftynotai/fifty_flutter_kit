@@ -77,11 +77,10 @@ class GlowContainer extends StatelessWidget {
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
 
-    final isDark = theme.brightness == Brightness.dark;
     final effectiveBorderRadius = borderRadius ?? FiftyRadii.lgRadius;
     final effectiveBorderColor = showGlow
         ? colorScheme.primary
-        : (borderColor ?? (isDark ? FiftyColors.borderDark : FiftyColors.borderLight));
+        : (borderColor ?? colorScheme.outline);
     final effectiveBorderWidth = showGlow ? 2.0 : borderWidth;
     final glowShadows = fifty.shadowGlow;
 

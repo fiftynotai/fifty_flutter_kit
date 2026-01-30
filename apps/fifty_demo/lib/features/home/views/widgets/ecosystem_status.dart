@@ -3,6 +3,7 @@
 /// Displays a categorized grid of package status cards.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class EcosystemStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     // Group packages by category
     final groupedPackages = <PackageCategory, List<PackageStatus>>{};
     for (final pkg in packages) {
@@ -45,11 +48,11 @@ class EcosystemStatus extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
                 child: Text(
                   category.label.toUpperCase(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
                     fontWeight: FontWeight.w600,
-                    color: FiftyColors.slateGrey,
+                    color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.2,
                   ),
                 ),
@@ -96,6 +99,11 @@ class _PackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+    final warningColor = fiftyTheme?.warning ?? colorScheme.error;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.sm),
       child: Column(
@@ -110,18 +118,16 @@ class _PackageCard extends StatelessWidget {
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: package.isReady
-                      ? FiftyColors.hunterGreen
-                      : FiftyColors.warning,
+                  color: package.isReady ? successColor : warningColor,
                   shape: BoxShape.circle,
                 ),
               ),
               Text(
                 package.version,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.labelSmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -130,11 +136,11 @@ class _PackageCard extends StatelessWidget {
           // Package name
           Text(
             package.name,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
               fontWeight: FontWeight.bold,
-              color: FiftyColors.cream,
+              color: colorScheme.onSurface,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -147,7 +153,7 @@ class _PackageCard extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.labelSmall,
-                  color: FiftyColors.cream.withValues(alpha: 0.6),
+                  color: colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

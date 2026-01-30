@@ -199,7 +199,8 @@ class _FiftyLoadingIndicatorState extends State<FiftyLoadingIndicator>
 
   @override
   Widget build(BuildContext context) {
-    final effectiveColor = widget.color ?? FiftyColors.burgundy;
+    final colorScheme = Theme.of(context).colorScheme;
+    final effectiveColor = widget.color ?? colorScheme.primary;
     final fontSize = _getFontSize();
 
     // Check for reduced motion preference

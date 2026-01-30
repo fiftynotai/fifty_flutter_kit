@@ -6,5 +6,6 @@ library;
 
 export 'actions/settings_actions.dart';
 export 'controllers/settings_view_model.dart';
+export 'data/services/theme_service.dart';
 export 'settings_bindings.dart';
 export 'views/settings_page.dart';

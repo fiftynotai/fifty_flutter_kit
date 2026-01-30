@@ -241,7 +241,7 @@ packages:
     source: path
     version: "0.1.0"
   fifty_storage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "../../packages/fifty_storage"
       relative: true
@@ -267,7 +267,7 @@ packages:
       path: "../../packages/fifty_ui"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "0.6.0"
   fifty_utils:
     dependency: transitive
     description:

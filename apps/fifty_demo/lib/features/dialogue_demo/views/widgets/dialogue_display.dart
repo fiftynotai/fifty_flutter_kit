@@ -26,6 +26,8 @@ class DialogueDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: FiftyCard(
@@ -37,11 +39,11 @@ class DialogueDisplay extends StatelessWidget {
             if (speaker != null && speaker!.isNotEmpty) ...[
               Text(
                 speaker!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.burgundy,
+                  color: colorScheme.primary,
                   letterSpacing: 2,
                 ),
               ),
@@ -60,8 +62,8 @@ class DialogueDisplay extends StatelessWidget {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodyLarge,
                         color: text.isEmpty
-                            ? FiftyColors.cream.withValues(alpha: 0.7)
-                            : FiftyColors.cream,
+                            ? colorScheme.onSurface.withValues(alpha: 0.7)
+                            : colorScheme.onSurface,
                         height: 1.5,
                       ),
                     ),
@@ -79,7 +81,7 @@ class DialogueDisplay extends StatelessWidget {
               style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: 10,
-                color: FiftyColors.cream.withValues(alpha: 0.7),
+                color: colorScheme.onSurface.withValues(alpha: 0.7),
                 letterSpacing: 1,
               ),
             ),
@@ -118,12 +120,14 @@ class _TypingCursorState extends State<_TypingCursor>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FadeTransition(
       opacity: _controller,
       child: Container(
         width: 2,
         height: 20,
-        color: FiftyColors.burgundy,
+        color: colorScheme.primary,
       ),
     );
   }

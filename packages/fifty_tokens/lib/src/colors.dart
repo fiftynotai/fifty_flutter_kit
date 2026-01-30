@@ -64,8 +64,11 @@ class FiftyColors {
   /// - Focus rings (dark mode)
   static const Color powderBlush = Color(0xFFFFC9B9);
 
-  /// Surface Light (#FFFFFF) - Light mode surfaces.
-  static const Color surfaceLight = Color(0xFFFFFFFF);
+  /// Surface Light (#FAF9DE) - Light mode card/surface color.
+  ///
+  /// Darker cream shade creates contrast against cream background,
+  /// giving cards depth while staying in the warm palette.
+  static const Color surfaceLight = Color(0xFFFAF9DE);
 
   /// Surface Dark (#2A1517) - Dark mode surfaces/cards.
   static const Color surfaceDark = Color(0xFF2A1517);

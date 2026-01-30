@@ -35,6 +35,8 @@ class WhatsNewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: EdgeInsets.zero,
       child: Column(
@@ -43,7 +45,7 @@ class WhatsNewSection extends StatelessWidget {
             _UpdateItemWidget(item: _updates[i]),
             if (i < _updates.length - 1)
               Divider(
-                color: FiftyColors.borderDark,
+                color: colorScheme.outline,
                 height: 1,
                 indent: FiftySpacing.lg,
                 endIndent: FiftySpacing.lg,
@@ -83,6 +85,8 @@ class _UpdateItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.all(FiftySpacing.lg),
       child: Row(
@@ -94,16 +98,16 @@ class _UpdateItemWidget extends StatelessWidget {
               vertical: FiftySpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: FiftyColors.burgundy.withValues(alpha: 0.1),
+              color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: FiftyRadii.smRadius,
             ),
             child: Text(
               item.date,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.labelSmall,
                 fontWeight: FontWeight.w600,
-                color: FiftyColors.burgundy,
+                color: colorScheme.primary,
                 letterSpacing: 0.5,
               ),
             ),
@@ -115,11 +119,11 @@ class _UpdateItemWidget extends StatelessWidget {
               children: [
                 Text(
                   item.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyMedium,
                     fontWeight: FontWeight.bold,
-                    color: FiftyColors.cream,
+                    color: colorScheme.onSurface,
                     letterSpacing: 0.25,
                   ),
                 ),
@@ -129,7 +133,7 @@ class _UpdateItemWidget extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],

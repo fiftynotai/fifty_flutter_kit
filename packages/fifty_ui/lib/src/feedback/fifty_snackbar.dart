@@ -52,11 +52,10 @@ class FiftySnackbar {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = _getAccentColor(fifty, colorScheme, variant);
-    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final textColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
+    final backgroundColor = colorScheme.surfaceContainerHighest;
+    final textColor = colorScheme.onSurface;
 
     // Note: Standard SnackBar uses default animation.
     // For FDL-compliant slide animation, use showWithSlide() instead.
@@ -119,11 +118,10 @@ class FiftySnackbar {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = _getAccentColor(fifty, colorScheme, variant);
-    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final textColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
+    final backgroundColor = colorScheme.surfaceContainerHighest;
+    final textColor = colorScheme.onSurface;
 
     late OverlayEntry overlayEntry;
     late AnimationController controller;
@@ -232,7 +230,7 @@ class FiftySnackbar {
   ) {
     switch (variant) {
       case FiftySnackbarVariant.info:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
       case FiftySnackbarVariant.success:
         return fifty.success;
       case FiftySnackbarVariant.warning:

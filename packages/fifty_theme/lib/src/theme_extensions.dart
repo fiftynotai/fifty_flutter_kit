@@ -19,6 +19,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
     required this.shadowGlow,
     required this.success,
     required this.warning,
+    required this.info,
     required this.instant,
     required this.fast,
     required this.compiling,
@@ -39,6 +40,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       shadowGlow: FiftyShadows.glow,
       success: FiftyColors.hunterGreen,
       warning: FiftyColors.warning,
+      info: FiftyColors.slateGrey,
       instant: FiftyMotion.instant,
       fast: FiftyMotion.fast,
       compiling: FiftyMotion.compiling,
@@ -60,6 +62,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       shadowGlow: FiftyShadows.none, // No glow in light mode
       success: FiftyColors.hunterGreen,
       warning: FiftyColors.warning,
+      info: FiftyColors.slateGrey,
       instant: FiftyMotion.instant,
       fast: FiftyMotion.fast,
       compiling: FiftyMotion.compiling,
@@ -91,6 +94,11 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
 
   /// Warning color (#F7A100).
   final Color warning;
+
+  /// Info color - Slate Grey (#6D7B8D).
+  ///
+  /// Used for informational/neutral states, secondary text, and muted elements.
+  final Color info;
 
   // ============================================================================
   // SHADOWS
@@ -154,6 +162,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
     List<BoxShadow>? shadowGlow,
     Color? success,
     Color? warning,
+    Color? info,
     Duration? instant,
     Duration? fast,
     Duration? compiling,
@@ -171,6 +180,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       shadowGlow: shadowGlow ?? this.shadowGlow,
       success: success ?? this.success,
       warning: warning ?? this.warning,
+      info: info ?? this.info,
       instant: instant ?? this.instant,
       fast: fast ?? this.fast,
       compiling: compiling ?? this.compiling,
@@ -194,6 +204,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
       shadowGlow: t < 0.5 ? shadowGlow : other.shadowGlow,
       success: Color.lerp(success, other.success, t)!,
       warning: Color.lerp(warning, other.warning, t)!,
+      info: Color.lerp(info, other.info, t)!,
       instant: t < 0.5 ? instant : other.instant,
       fast: t < 0.5 ? fast : other.fast,
       compiling: t < 0.5 ? compiling : other.compiling,

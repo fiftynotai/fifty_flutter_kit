@@ -312,7 +312,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
   }
 
   /// Builds the prefix icon widget.
-  Widget? _buildPrefixIcon(ColorScheme colorScheme, bool isDark) {
+  Widget? _buildPrefixIcon(ColorScheme colorScheme) {
     final prefixText = _prefixText;
     if (prefixText != null) {
       return Padding(
@@ -325,7 +325,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
             fontWeight: FiftyTypography.medium,
             color: _isFocused
                 ? colorScheme.primary
-                : (isDark ? FiftyColors.slateGrey : Colors.grey[600]),
+                : colorScheme.onSurfaceVariant,
           ),
         ),
       );
@@ -376,14 +376,13 @@ class _FiftyTextFieldState extends State<FiftyTextField>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final hasPrefixText = _prefixText != null;
 
-    // Mode-aware colors
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final hintColor = isDark ? FiftyColors.slateGrey : Colors.grey[500];
+    // Theme-aware colors
+    final borderColor = colorScheme.outline;
+    final fillColor = colorScheme.surfaceContainerHighest;
+    final hintColor = colorScheme.onSurfaceVariant;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,7 +399,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
                   ? colorScheme.error
                   : (_isFocused
                       ? colorScheme.primary
-                      : (isDark ? FiftyColors.slateGrey : Colors.grey[600])),
+                      : colorScheme.onSurfaceVariant),
               letterSpacing: FiftyTypography.letterSpacingLabelMedium,
             ),
           ),
@@ -455,15 +454,15 @@ class _FiftyTextFieldState extends State<FiftyTextField>
                 fontWeight: FiftyTypography.regular,
                 color: hintColor,
               ),
-              prefixIcon: _buildPrefixIcon(colorScheme, isDark),
+              prefixIcon: _buildPrefixIcon(colorScheme),
               prefixIconConstraints: hasPrefixText
                   ? const BoxConstraints(minWidth: 24, minHeight: 0)
                   : null,
               prefixIconColor: _isFocused
                   ? colorScheme.primary
-                  : (isDark ? FiftyColors.slateGrey : Colors.grey[600]),
+                  : colorScheme.onSurfaceVariant,
               suffixIcon: _buildSuffixIcon(colorScheme),
-              suffixIconColor: isDark ? FiftyColors.slateGrey : Colors.grey[600],
+              suffixIconColor: colorScheme.onSurfaceVariant,
               filled: true,
               fillColor: fillColor,
               contentPadding: const EdgeInsets.symmetric(

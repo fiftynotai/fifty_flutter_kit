@@ -131,17 +131,14 @@ class _FiftySliderState extends State<FiftySlider> {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
 
-    final labelColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
-    final trackBackgroundColor = isDark
-        ? FiftyColors.slateGrey.withValues(alpha: 0.3)
-        : FiftyColors.borderLight;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    final labelColor = colorScheme.onSurfaceVariant;
+    final trackBackgroundColor = colorScheme.onSurfaceVariant.withValues(alpha: 0.3);
+    final borderColor = colorScheme.outline;
+    final fillColor = colorScheme.surfaceContainerHighest;
 
     const trackHeight = 4.0;
     const thumbSize = 20.0;

@@ -3,6 +3,7 @@
 /// Demonstrates form validation and field management.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -25,37 +26,12 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     return GetBuilder<FormsDemoViewModel>(
       builder: (viewModel) {
         final actions = Get.find<FormsDemoActions>();
-        return Scaffold(
-          backgroundColor: FiftyColors.darkBurgundy,
-          appBar: AppBar(
-            backgroundColor: FiftyColors.surfaceDark,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: FiftyColors.cream),
-              onPressed: actions.onBackTapped,
-            ),
-            title: const Text(
-              'FIFTY FORMS',
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodyLarge,
-                fontWeight: FontWeight.bold,
-                color: FiftyColors.cream,
-                letterSpacing: 2,
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.refresh, color: FiftyColors.cream),
-                onPressed: () => actions.onResetTapped(context),
-                tooltip: 'Reset Form',
-              ),
-            ],
-          ),
-          body: DemoScaffold(
-            child: viewModel.isSubmitted
-                ? _buildSuccessView(context, viewModel, actions)
-                : _buildFormView(context, viewModel, actions),
-          ),
+
+        return DemoScaffold(
+          title: 'Fifty Forms',
+          child: viewModel.isSubmitted
+              ? _buildSuccessView(context, viewModel, actions)
+              : _buildFormView(context, viewModel, actions),
         );
       },
     );
@@ -100,50 +76,60 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
           const SizedBox(height: FiftySpacing.md),
 
           // Password Field
-          FiftyTextField(
-            label: 'PASSWORD *',
-            hint: 'Enter a strong password',
-            controller: viewModel.passwordController,
-            prefix: const Icon(Icons.lock_outline),
-            suffix: IconButton(
-              icon: Icon(
-                viewModel.passwordVisible
-                    ? Icons.visibility_off
-                    : Icons.visibility,
-                color: FiftyColors.slateGrey,
-              ),
-              onPressed: actions.onTogglePasswordVisibility,
-            ),
-            obscureText: !viewModel.passwordVisible,
-            errorText: viewModel.passwordError,
-            onChanged: (_) => viewModel.update(),
+          Builder(
+            builder: (context) {
+              final colorScheme = Theme.of(context).colorScheme;
+              return FiftyTextField(
+                label: 'PASSWORD *',
+                hint: 'Enter a strong password',
+                controller: viewModel.passwordController,
+                prefix: const Icon(Icons.lock_outline),
+                suffix: IconButton(
+                  icon: Icon(
+                    viewModel.passwordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  onPressed: actions.onTogglePasswordVisibility,
+                ),
+                obscureText: !viewModel.passwordVisible,
+                errorText: viewModel.passwordError,
+                onChanged: (_) => viewModel.update(),
+              );
+            },
           ),
 
           // Password strength indicator
           if (viewModel.passwordController.text.isNotEmpty) ...[
             const SizedBox(height: FiftySpacing.sm),
-            _buildPasswordStrength(viewModel),
+            _buildPasswordStrength(context, viewModel),
           ],
           const SizedBox(height: FiftySpacing.md),
 
           // Confirm Password Field
-          FiftyTextField(
-            label: 'CONFIRM PASSWORD *',
-            hint: 'Re-enter your password',
-            controller: viewModel.confirmPasswordController,
-            prefix: const Icon(Icons.lock_outline),
-            suffix: IconButton(
-              icon: Icon(
-                viewModel.confirmPasswordVisible
-                    ? Icons.visibility_off
-                    : Icons.visibility,
-                color: FiftyColors.slateGrey,
-              ),
-              onPressed: actions.onToggleConfirmPasswordVisibility,
-            ),
-            obscureText: !viewModel.confirmPasswordVisible,
-            errorText: viewModel.confirmPasswordError,
-            onChanged: (_) => viewModel.update(),
+          Builder(
+            builder: (context) {
+              final colorScheme = Theme.of(context).colorScheme;
+              return FiftyTextField(
+                label: 'CONFIRM PASSWORD *',
+                hint: 'Re-enter your password',
+                controller: viewModel.confirmPasswordController,
+                prefix: const Icon(Icons.lock_outline),
+                suffix: IconButton(
+                  icon: Icon(
+                    viewModel.confirmPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  onPressed: actions.onToggleConfirmPasswordVisibility,
+                ),
+                obscureText: !viewModel.confirmPasswordVisible,
+                errorText: viewModel.confirmPasswordError,
+                onChanged: (_) => viewModel.update(),
+              );
+            },
           ),
           const SizedBox(height: FiftySpacing.md),
 
@@ -186,13 +172,21 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
           const SizedBox(height: FiftySpacing.lg),
 
           // Form info
-          _buildFormInfo(),
+          _buildFormInfo(context),
         ],
       ),
     );
   }
 
-  Widget _buildPasswordStrength(FormsDemoViewModel viewModel) {
+  Widget _buildPasswordStrength(BuildContext context, FormsDemoViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final strengthColor = viewModel.getPasswordStrengthColor(
+      viewModel.passwordStrength,
+      colorScheme,
+      fiftyTheme,
+    );
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.sm),
       child: Row(
@@ -202,10 +196,8 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               borderRadius: FiftyRadii.smRadius,
               child: LinearProgressIndicator(
                 value: viewModel.passwordStrength,
-                backgroundColor: FiftyColors.slateGrey.withValues(alpha: 0.3),
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  viewModel.passwordStrengthColor,
-                ),
+                backgroundColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
+                valueColor: AlwaysStoppedAnimation<Color>(strengthColor),
                 minHeight: 4,
               ),
             ),
@@ -217,7 +209,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
               fontWeight: FontWeight.bold,
-              color: viewModel.passwordStrengthColor,
+              color: strengthColor,
             ),
           ),
         ],
@@ -225,7 +217,9 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     );
   }
 
-  Widget _buildFormInfo() {
+  Widget _buildFormInfo(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Column(
@@ -235,32 +229,34 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             children: [
               Icon(
                 Icons.info_outline,
-                color: FiftyColors.cream.withValues(alpha: 0.5),
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 16,
               ),
               const SizedBox(width: FiftySpacing.sm),
-              const Text(
+              Text(
                 'VALIDATION RULES',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.cream,
+                  color: colorScheme.onSurface,
                 ),
               ),
             ],
           ),
           const SizedBox(height: FiftySpacing.sm),
-          _buildInfoItem('Name: 2+ characters, letters only'),
-          _buildInfoItem('Email: Valid email format'),
-          _buildInfoItem('Password: 8+ chars, uppercase, lowercase, number'),
-          _buildInfoItem('Phone & Age: Optional fields'),
+          _buildInfoItem(context, 'Name: 2+ characters, letters only'),
+          _buildInfoItem(context, 'Email: Valid email format'),
+          _buildInfoItem(context, 'Password: 8+ chars, uppercase, lowercase, number'),
+          _buildInfoItem(context, 'Phone & Age: Optional fields'),
         ],
       ),
     );
   }
 
-  Widget _buildInfoItem(String text) {
+  Widget _buildInfoItem(BuildContext context, String text) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.only(top: FiftySpacing.xs),
       child: Row(
@@ -269,7 +265,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
           Text(
             '\u2022',
             style: TextStyle(
-              color: FiftyColors.cream.withValues(alpha: 0.5),
+              color: colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(width: FiftySpacing.sm),
@@ -279,7 +275,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodySmall,
-                color: FiftyColors.cream.withValues(alpha: 0.7),
+                color: colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
           ),
@@ -294,6 +290,9 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     FormsDemoActions actions,
   ) {
     final data = viewModel.submittedData ?? {};
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return SingleChildScrollView(
       child: Column(
@@ -307,23 +306,23 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: FiftyColors.hunterGreen.withValues(alpha: 0.2),
+                    color: successColor.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.check_circle,
-                    color: FiftyColors.hunterGreen,
+                    color: successColor,
                     size: 48,
                   ),
                 ),
                 const SizedBox(height: FiftySpacing.lg),
-                const Text(
+                Text(
                   'REGISTRATION COMPLETE!',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.titleLarge,
                     fontWeight: FontWeight.bold,
-                    color: FiftyColors.cream,
+                    color: colorScheme.onSurface,
                     letterSpacing: 2,
                   ),
                 ),
@@ -333,7 +332,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyMedium,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -350,12 +349,12 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             padding: const EdgeInsets.all(FiftySpacing.md),
             child: Column(
               children: [
-                _buildDataRow('Name', data['name'] ?? '-'),
-                _buildDataRow('Email', data['email'] ?? '-'),
-                _buildDataRow('Phone', data['phone']?.isNotEmpty == true
+                _buildDataRow(context, 'Name', data['name'] ?? '-'),
+                _buildDataRow(context, 'Email', data['email'] ?? '-'),
+                _buildDataRow(context, 'Phone', data['phone']?.isNotEmpty == true
                     ? data['phone']!
                     : 'Not provided'),
-                _buildDataRow('Age', data['age']?.isNotEmpty == true
+                _buildDataRow(context, 'Age', data['age']?.isNotEmpty == true
                     ? data['age']!
                     : 'Not provided'),
               ],
@@ -377,7 +376,9 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     );
   }
 
-  Widget _buildDataRow(String label, String value) {
+  Widget _buildDataRow(BuildContext context, String label, String value) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: FiftySpacing.sm),
       child: Row(
@@ -390,17 +391,17 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodySmall,
-                color: FiftyColors.cream.withValues(alpha: 0.5),
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodyMedium,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
               ),
             ),
           ),

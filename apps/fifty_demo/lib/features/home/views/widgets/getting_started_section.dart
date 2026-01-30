@@ -98,6 +98,8 @@ class _ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       onTap: onTap,
       padding: const EdgeInsets.all(FiftySpacing.lg),
@@ -108,26 +110,26 @@ class _ActionCard extends StatelessWidget {
             width: _iconContainerSize,
             height: _iconContainerSize,
             decoration: BoxDecoration(
-              color: FiftyColors.burgundy.withValues(alpha: 0.1),
+              color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: FiftyRadii.mdRadius,
               border: Border.all(
-                color: FiftyColors.burgundy.withValues(alpha: 0.3),
+                color: colorScheme.primary.withValues(alpha: 0.3),
               ),
             ),
             child: Icon(
               icon,
-              color: FiftyColors.burgundy,
+              color: colorScheme.primary,
               size: _iconSize,
             ),
           ),
           const Spacer(),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyMedium,
               fontWeight: FontWeight.bold,
-              color: FiftyColors.cream,
+              color: colorScheme.onSurface,
               letterSpacing: 1.0,
             ),
           ),
@@ -137,7 +139,7 @@ class _ActionCard extends StatelessWidget {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
         ],

@@ -1,6 +1,7 @@
 /// Section Navigation Pill Widget
 ///
 /// Reusable navigation pill for section selection.
+/// Uses theme-aware colors for light/dark mode support.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 /// A styled navigation pill widget for section selection.
 ///
 /// Displays a selectable pill with icon and label, styled according
-/// to FDL v2 design tokens.
+/// to FDL v2 design tokens with theme-aware colors.
 class SectionNavPill extends StatelessWidget {
   /// Creates a section navigation pill.
   const SectionNavPill({
@@ -34,6 +35,8 @@ class SectionNavPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -43,11 +46,11 @@ class SectionNavPill extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isActive
-              ? FiftyColors.burgundy.withValues(alpha: 0.2)
+              ? colorScheme.primary.withValues(alpha: 0.2)
               : Colors.transparent,
           borderRadius: FiftyRadii.lgRadius,
           border: Border.all(
-            color: isActive ? FiftyColors.burgundy : FiftyColors.borderDark,
+            color: isActive ? colorScheme.primary : colorScheme.outline,
           ),
         ),
         child: Row(
@@ -56,7 +59,9 @@ class SectionNavPill extends StatelessWidget {
             Icon(
               icon,
               size: 16,
-              color: isActive ? FiftyColors.burgundy : FiftyColors.slateGrey,
+              color: isActive
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
             ),
             const SizedBox(width: FiftySpacing.xs),
             Text(
@@ -64,7 +69,9 @@ class SectionNavPill extends StatelessWidget {
               style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodySmall,
-                color: isActive ? FiftyColors.burgundy : FiftyColors.slateGrey,
+                color: isActive
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
               ),
             ),
           ],

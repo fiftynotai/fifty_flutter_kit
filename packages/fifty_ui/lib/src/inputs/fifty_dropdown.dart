@@ -153,8 +153,6 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
   OverlayEntry _createOverlayEntry() {
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return OverlayEntry(
       builder: (context) => Positioned(
@@ -181,7 +179,6 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                 items: widget.items,
                 selectedValue: widget.value,
                 onSelect: _selectItem,
-                isDark: isDark,
               ),
             ),
           ),
@@ -195,15 +192,14 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
 
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final labelColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
-    final hintColor = isDark ? FiftyColors.slateGrey : Colors.grey[500];
+    final borderColor = colorScheme.outline;
+    final fillColor = colorScheme.surfaceContainerHighest;
+    final labelColor = colorScheme.onSurfaceVariant;
+    final hintColor = colorScheme.onSurfaceVariant;
 
     return CompositedTransformTarget(
       link: _layerLink,
@@ -298,18 +294,17 @@ class _DropdownMenu<T> extends StatelessWidget {
     required this.items,
     required this.selectedValue,
     required this.onSelect,
-    required this.isDark,
   });
 
   final List<FiftyDropdownItem<T>> items;
   final T? selectedValue;
   final ValueChanged<FiftyDropdownItem<T>> onSelect;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
-    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final colorScheme = Theme.of(context).colorScheme;
+    final fillColor = colorScheme.surfaceContainerHighest;
+    final borderColor = colorScheme.outline;
 
     return Container(
       constraints: const BoxConstraints(maxHeight: 240),
@@ -336,7 +331,6 @@ class _DropdownMenu<T> extends StatelessWidget {
               item: item,
               isSelected: isSelected,
               onTap: () => onSelect(item),
-              isDark: isDark,
             );
           },
         ),
@@ -351,13 +345,11 @@ class _DropdownMenuItem<T> extends StatefulWidget {
     required this.item,
     required this.isSelected,
     required this.onTap,
-    required this.isDark,
   });
 
   final FiftyDropdownItem<T> item;
   final bool isSelected;
   final VoidCallback onTap;
-  final bool isDark;
 
   @override
   State<_DropdownMenuItem<T>> createState() => _DropdownMenuItemState<T>();
@@ -370,7 +362,7 @@ class _DropdownMenuItemState<T> extends State<_DropdownMenuItem<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final iconColor = widget.isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final iconColor = colorScheme.onSurfaceVariant;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),

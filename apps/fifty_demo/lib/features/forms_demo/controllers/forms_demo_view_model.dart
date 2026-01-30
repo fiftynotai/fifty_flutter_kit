@@ -4,6 +4,7 @@
 /// Demonstrates form validation and field management.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -357,11 +358,16 @@ class FormsDemoViewModel extends GetxController {
   }
 
   /// Gets password strength color.
-  Color get passwordStrengthColor {
-    final strength = passwordStrength;
-    if (strength < 0.3) return const Color(0xFF722F37); // burgundy
-    if (strength < 0.6) return const Color(0xFFF5A623); // warning
-    if (strength < 0.8) return const Color(0xFF3B82F6); // blue
-    return const Color(0xFF4A6741); // hunterGreen
+  ///
+  /// Accepts theme parameters for theme-aware colors.
+  Color getPasswordStrengthColor(
+    double strength,
+    ColorScheme colorScheme,
+    FiftyThemeExtension? fiftyTheme,
+  ) {
+    if (strength < 0.3) return colorScheme.primary;
+    if (strength < 0.6) return fiftyTheme?.warning ?? colorScheme.error;
+    if (strength < 0.8) return colorScheme.onSurfaceVariant;
+    return fiftyTheme?.success ?? colorScheme.tertiary;
   }
 }

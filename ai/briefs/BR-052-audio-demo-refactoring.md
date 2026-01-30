@@ -5,7 +5,7 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-01-30
 
 ---
@@ -141,9 +141,10 @@ _(Finished tasks)_
 
 ## Session State (Tactical - This Brief)
 
-**Current State:** COMMITTING
+**Current State:** COMPLETE
 **Active Agent:** none
-**Next Steps When Resuming:** Commit complete, update brief status to Done
+**Commit:** 8988dfa
+**Completed:** 2026-01-30
 **Last Updated:** 2026-01-30
 **Blockers:** None
 

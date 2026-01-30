@@ -4,6 +4,7 @@
 /// Demonstrates skill tree visualization and skill unlocking.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -323,13 +324,19 @@ class SkillTreeDemoViewModel extends GetxController {
   }
 
   /// Gets the color for a skill based on its status.
-  Color getSkillColor(DemoSkill skill) {
+  ///
+  /// Accepts theme parameters for theme-aware colors.
+  Color getSkillColor(
+    DemoSkill skill,
+    ColorScheme colorScheme,
+    FiftyThemeExtension? fiftyTheme,
+  ) {
     if (skill.isUnlocked) {
-      return const Color(0xFF4A6741); // hunterGreen
+      return fiftyTheme?.success ?? colorScheme.tertiary;
     }
     if (canUnlockSkill(skill)) {
-      return const Color(0xFF722F37); // burgundy
+      return colorScheme.primary;
     }
-    return const Color(0xFF6B7280); // slateGrey
+    return colorScheme.onSurfaceVariant;
   }
 }

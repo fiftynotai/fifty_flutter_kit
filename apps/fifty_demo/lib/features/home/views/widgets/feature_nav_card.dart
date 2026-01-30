@@ -33,6 +33,8 @@ class FeatureNavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: FiftyCard(
@@ -44,15 +46,15 @@ class FeatureNavCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: FiftyColors.burgundy.withValues(alpha: 0.1),
+                color: colorScheme.primary.withValues(alpha: 0.1),
                 borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(
-                  color: FiftyColors.burgundy.withValues(alpha: 0.3),
+                  color: colorScheme.primary.withValues(alpha: 0.3),
                 ),
               ),
               child: Icon(
                 icon,
-                color: FiftyColors.burgundy,
+                color: colorScheme.primary,
                 size: 24,
               ),
             ),
@@ -64,11 +66,11 @@ class FeatureNavCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodyLarge,
                       fontWeight: FontWeight.bold,
-                      color: FiftyColors.cream,
+                      color: colorScheme.onSurface,
                       letterSpacing: 1,
                     ),
                   ),
@@ -78,7 +80,7 @@ class FeatureNavCard extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -87,7 +89,7 @@ class FeatureNavCard extends StatelessWidget {
             // Arrow
             Icon(
               Icons.chevron_right,
-              color: FiftyColors.cream.withValues(alpha: 0.5),
+              color: colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ],
         ),

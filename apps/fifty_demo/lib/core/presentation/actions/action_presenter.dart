@@ -159,30 +159,33 @@ class ActionPresenter {
   ]) async {
     final result = await showFiftyDialog<bool>(
       context: context,
-      builder: (context) => FiftyDialog(
-        title: 'Confirm',
-        content: Text(
-          message,
-          style: const TextStyle(
-            fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.bodyMedium,
-            color: FiftyColors.cream,
+      builder: (dialogContext) {
+        final colorScheme = Theme.of(dialogContext).colorScheme;
+        return FiftyDialog(
+          title: 'Confirm',
+          content: Text(
+            message,
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyMedium,
+              color: colorScheme.onSurface,
+            ),
           ),
-        ),
-        showCloseButton: false,
-        actions: [
-          FiftyButton(
-            label: 'NO',
-            variant: FiftyButtonVariant.ghost,
-            onPressed: () => Navigator.pop(context, false),
-          ),
-          FiftyButton(
-            label: 'YES',
-            variant: FiftyButtonVariant.primary,
-            onPressed: () => Navigator.pop(context, true),
-          ),
-        ],
-      ),
+          showCloseButton: false,
+          actions: [
+            FiftyButton(
+              label: 'NO',
+              variant: FiftyButtonVariant.ghost,
+              onPressed: () => Navigator.pop(dialogContext, false),
+            ),
+            FiftyButton(
+              label: 'YES',
+              variant: FiftyButtonVariant.primary,
+              onPressed: () => Navigator.pop(dialogContext, true),
+            ),
+          ],
+        );
+      },
     );
     return result ?? false;
   }

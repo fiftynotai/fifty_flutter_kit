@@ -1,6 +1,7 @@
 /// Section Header Widget
 ///
 /// A styled section header for organizing demo content.
+/// Uses theme-aware colors for light/dark mode support.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 /// A section header widget.
 ///
 /// Displays a title with optional subtitle and trailing widget.
+/// Uses theme-aware colors via [ColorScheme].
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
     required this.title,
@@ -32,6 +34,8 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,18 +52,18 @@ class SectionHeader extends StatelessWidget {
                         width: 8,
                         height: 8,
                         margin: const EdgeInsets.only(right: FiftySpacing.sm),
-                        decoration: const BoxDecoration(
-                          color: FiftyColors.burgundy,
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary,
                           shape: BoxShape.circle,
                         ),
                       ),
                       Text(
                         title.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: FiftyTypography.fontFamily,
                           fontSize: FiftyTypography.bodyLarge,
                           fontWeight: FontWeight.bold,
-                          color: FiftyColors.burgundy,
+                          color: colorScheme.primary,
                           letterSpacing: 2,
                         ),
                       ),
@@ -72,7 +76,7 @@ class SectionHeader extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
-                        color: FiftyColors.cream.withValues(alpha: 0.7),
+                        color: colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -86,7 +90,7 @@ class SectionHeader extends StatelessWidget {
           const SizedBox(height: FiftySpacing.sm),
           Container(
             height: 1,
-            color: FiftyColors.borderDark,
+            color: colorScheme.outline,
           ),
         ],
         const SizedBox(height: FiftySpacing.md),

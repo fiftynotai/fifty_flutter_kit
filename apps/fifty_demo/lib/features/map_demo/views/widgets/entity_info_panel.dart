@@ -30,6 +30,8 @@ class EntityInfoPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.lg),
       child: Column(
@@ -40,13 +42,13 @@ class EntityInfoPanel extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'ENTITY INFO',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodyLarge,
                   fontWeight: FontWeight.bold,
-                  color: FiftyColors.burgundy,
+                  color: colorScheme.primary,
                   letterSpacing: 1,
                 ),
               ),
@@ -55,14 +57,14 @@ class EntityInfoPanel extends StatelessWidget {
                   onTap: onClose,
                   child: Icon(
                     Icons.close,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                     size: 20,
                   ),
                 ),
             ],
           ),
           const SizedBox(height: FiftySpacing.md),
-          Container(height: 1, color: FiftyColors.borderDark),
+          Container(height: 1, color: colorScheme.outline),
           const SizedBox(height: FiftySpacing.md),
           // Info rows
           _InfoRow(label: 'ID', value: entityId),
@@ -90,6 +92,8 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
@@ -100,15 +104,15 @@ class _InfoRow extends StatelessWidget {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream,
+              color: colorScheme.onSurface,
             ),
           ),
         ],

@@ -90,26 +90,24 @@ class _FiftyRadioCardState<T> extends State<FiftyRadioCard<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
-    final isDark = theme.brightness == Brightness.dark;
+    final fiftyTheme = theme.extension<FiftyThemeExtension>();
+    final colorScheme = theme.colorScheme;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
 
-    // Border colors per design
-    final unselectedBorderColor =
-        isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final selectedBorderColor =
-        isDark ? FiftyColors.powderBlush : FiftyColors.primary;
+    // Border colors per design - using theme colors
+    final unselectedBorderColor = colorScheme.outline;
+    final selectedBorderColor = fiftyTheme?.accent ?? colorScheme.primary;
 
-    // Background per design (surfaceDark/surfaceLight for card backgrounds)
-    final backgroundColor =
-        isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+    // Background per design - using theme colors
+    final backgroundColor = colorScheme.surfaceContainerHighest;
 
-    // Icon color per design - slateGrey works well in both modes
-    const iconColor = FiftyColors.slateGrey;
+    // Icon color per design - using theme colors
+    final iconColor = colorScheme.onSurfaceVariant;
 
     // Label color per design - colorScheme.onSurface is mode-aware
-    final labelColor = theme.colorScheme.onSurface;
+    final labelColor = colorScheme.onSurface;
 
     return Semantics(
       label: widget.label,

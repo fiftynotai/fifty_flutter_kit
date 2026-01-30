@@ -3,6 +3,7 @@
 /// Showcases FDL feedback components.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -50,18 +51,33 @@ class FeedbackSection extends StatelessWidget {
         // Status Badges
         const SectionLabel(label: 'STATUS BADGES'),
         const SizedBox(height: FiftySpacing.md),
-        const FiftyCard(
-          padding: EdgeInsets.all(FiftySpacing.lg),
-          child: Wrap(
-            spacing: FiftySpacing.md,
-            runSpacing: FiftySpacing.md,
-            children: [
-              _StatusBadge(label: 'ONLINE', color: FiftyColors.hunterGreen),
-              _StatusBadge(label: 'PENDING', color: FiftyColors.warning),
-              _StatusBadge(label: 'ERROR', color: FiftyColors.error),
-              _StatusBadge(label: 'OFFLINE', color: FiftyColors.slateGrey),
-            ],
-          ),
+        Builder(
+          builder: (context) {
+            final colorScheme = Theme.of(context).colorScheme;
+            final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+            return FiftyCard(
+              padding: const EdgeInsets.all(FiftySpacing.lg),
+              child: Wrap(
+                spacing: FiftySpacing.md,
+                runSpacing: FiftySpacing.md,
+                children: [
+                  _StatusBadge(
+                    label: 'ONLINE',
+                    color: fiftyTheme?.success ?? colorScheme.tertiary,
+                  ),
+                  _StatusBadge(
+                    label: 'PENDING',
+                    color: fiftyTheme?.warning ?? colorScheme.error,
+                  ),
+                  _StatusBadge(label: 'ERROR', color: colorScheme.error),
+                  _StatusBadge(
+                    label: 'OFFLINE',
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ],
+              ),
+            );
+          },
         ),
         const SizedBox(height: FiftySpacing.xl),
 
@@ -119,37 +135,42 @@ class FeedbackSection extends StatelessWidget {
         // Empty State
         const SectionLabel(label: 'EMPTY STATE'),
         const SizedBox(height: FiftySpacing.md),
-        const FiftyCard(
-          padding: EdgeInsets.all(FiftySpacing.xxl),
-          child: Center(
-            child: Column(
-              children: [
-                Icon(
-                  Icons.inbox,
-                  size: 48,
-                  color: FiftyColors.slateGrey,
+        Builder(
+          builder: (context) {
+            final colorScheme = Theme.of(context).colorScheme;
+            return FiftyCard(
+              padding: const EdgeInsets.all(FiftySpacing.xxl),
+              child: Center(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.inbox,
+                      size: 48,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(height: FiftySpacing.md),
+                    Text(
+                      'NO DATA FOUND',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodyLarge,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: FiftySpacing.xs),
+                    Text(
+                      'Check back later or try a different filter',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: FiftySpacing.md),
-                Text(
-                  'NO DATA FOUND',
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.bodyLarge,
-                    color: FiftyColors.slateGrey,
-                  ),
-                ),
-                SizedBox(height: FiftySpacing.xs),
-                Text(
-                  'Check back later or try a different filter',
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.slateGrey,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -179,34 +200,34 @@ class _LoadingIndicatorDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       children: [
         if (type == _LoadingType.spinner)
-          const SizedBox(
+          SizedBox(
             width: _spinnerSize,
             height: _spinnerSize,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(FiftyColors.burgundy),
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
             ),
           )
         else
           SizedBox(
             width: _progressWidth,
             child: LinearProgressIndicator(
-              backgroundColor: FiftyColors.borderDark,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                FiftyColors.burgundy,
-              ),
+              backgroundColor: colorScheme.outline,
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
             ),
           ),
         const SizedBox(height: FiftySpacing.sm),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.labelSmall,
-            color: FiftyColors.slateGrey,
+            color: colorScheme.onSurfaceVariant,
           ),
         ),
       ],

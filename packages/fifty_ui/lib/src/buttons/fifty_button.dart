@@ -191,8 +191,8 @@ class _FiftyButtonState extends State<FiftyButton>
     final fontSize = _getFontSize();
 
     final backgroundColor = _getBackgroundColor(colorScheme);
-    final foregroundColor = _getForegroundColor(colorScheme);
-    final borderColor = _getBorderColor(colorScheme);
+    final foregroundColor = _getForegroundColor(colorScheme, fifty);
+    final borderColor = _getBorderColor(colorScheme, fifty);
     final shadow = _getShadow();
 
     return Focus(
@@ -369,7 +369,7 @@ class _FiftyButtonState extends State<FiftyButton>
         case FiftyButtonVariant.danger:
           return colorScheme.primary.withValues(alpha: 0.3);
         case FiftyButtonVariant.secondary:
-          return FiftyColors.slateGrey.withValues(alpha: 0.3);
+          return colorScheme.onSurfaceVariant.withValues(alpha: 0.3);
         case FiftyButtonVariant.outline:
         case FiftyButtonVariant.ghost:
           return Colors.transparent;
@@ -380,7 +380,7 @@ class _FiftyButtonState extends State<FiftyButton>
       case FiftyButtonVariant.primary:
         return colorScheme.primary;
       case FiftyButtonVariant.secondary:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
       case FiftyButtonVariant.outline:
       case FiftyButtonVariant.ghost:
         return Colors.transparent;
@@ -389,17 +389,17 @@ class _FiftyButtonState extends State<FiftyButton>
     }
   }
 
-  Color _getForegroundColor(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
+  Color _getForegroundColor(
+    ColorScheme colorScheme,
+    FiftyThemeExtension? fiftyTheme,
+  ) {
     switch (widget.variant) {
       case FiftyButtonVariant.primary:
         return colorScheme.onPrimary;
       case FiftyButtonVariant.secondary:
         return Colors.white;
       case FiftyButtonVariant.outline:
-        // FDL v2: powder-blush in dark mode, primary in light mode
-        return isDark ? FiftyColors.powderBlush : colorScheme.primary;
+        return fiftyTheme?.accent ?? colorScheme.primary;
       case FiftyButtonVariant.ghost:
         return colorScheme.onSurface;
       case FiftyButtonVariant.danger:
@@ -407,17 +407,17 @@ class _FiftyButtonState extends State<FiftyButton>
     }
   }
 
-  Color? _getBorderColor(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
+  Color? _getBorderColor(
+    ColorScheme colorScheme,
+    FiftyThemeExtension? fiftyTheme,
+  ) {
     switch (widget.variant) {
       case FiftyButtonVariant.primary:
       case FiftyButtonVariant.secondary:
       case FiftyButtonVariant.danger:
         return null;
       case FiftyButtonVariant.outline:
-        // FDL v2: powder-blush in dark mode, primary in light mode
-        return isDark ? FiftyColors.powderBlush : colorScheme.primary;
+        return fiftyTheme?.accent ?? colorScheme.primary;
       case FiftyButtonVariant.ghost:
         return null;
     }

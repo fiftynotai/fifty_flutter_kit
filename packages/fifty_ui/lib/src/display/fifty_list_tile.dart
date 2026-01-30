@@ -97,8 +97,7 @@ class _FiftyListTileState extends State<FiftyListTile> {
         : Colors.black.withValues(alpha: 0.03);
 
     // Divider color
-    final dividerColor =
-        isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final dividerColor = colorScheme.outline;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -119,8 +118,8 @@ class _FiftyListTileState extends State<FiftyListTile> {
                 children: [
                   _buildLeading(colorScheme, fifty),
                   const SizedBox(width: FiftySpacing.lg),
-                  _buildContent(colorScheme, isDark),
-                  _buildTrailing(colorScheme, isDark),
+                  _buildContent(colorScheme),
+                  _buildTrailing(colorScheme),
                 ],
               ),
             ),
@@ -165,8 +164,8 @@ class _FiftyListTileState extends State<FiftyListTile> {
     );
   }
 
-  Widget _buildContent(ColorScheme colorScheme, bool isDark) {
-    final subtitleColor = isDark ? FiftyColors.slateGrey : Colors.grey[600]!;
+  Widget _buildContent(ColorScheme colorScheme) {
+    final subtitleColor = colorScheme.onSurfaceVariant;
 
     return Expanded(
       child: Column(
@@ -201,14 +200,12 @@ class _FiftyListTileState extends State<FiftyListTile> {
     );
   }
 
-  Widget _buildTrailing(ColorScheme colorScheme, bool isDark) {
+  Widget _buildTrailing(ColorScheme colorScheme) {
     if (widget.trailing != null) return widget.trailing!;
     if (widget.trailingText == null) return const SizedBox.shrink();
 
     final textColor = widget.trailingTextColor ?? colorScheme.onSurface;
-    final subtextColor = isDark
-        ? FiftyColors.slateGrey.withValues(alpha: 0.7)
-        : Colors.grey[400]!;
+    final subtextColor = colorScheme.onSurfaceVariant.withValues(alpha: 0.7);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,

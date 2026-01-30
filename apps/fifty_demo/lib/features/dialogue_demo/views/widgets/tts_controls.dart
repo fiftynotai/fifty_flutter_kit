@@ -26,6 +26,8 @@ class TtsControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.lg),
       child: Column(
@@ -38,7 +40,7 @@ class TtsControls extends StatelessWidget {
             onToggle: onToggleTts,
           ),
           const SizedBox(height: FiftySpacing.md),
-          Container(height: 1, color: FiftyColors.borderDark),
+          Container(height: 1, color: colorScheme.outline),
           const SizedBox(height: FiftySpacing.md),
           // Auto-advance Toggle
           _SettingRow(
@@ -68,6 +70,8 @@ class _SettingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -76,8 +80,8 @@ class _SettingRow extends StatelessWidget {
             Icon(
               icon,
               color: value
-                  ? FiftyColors.burgundy
-                  : FiftyColors.cream.withValues(alpha: 0.7),
+                  ? colorScheme.primary
+                  : colorScheme.onSurface.withValues(alpha: 0.7),
               size: 20,
             ),
             const SizedBox(width: FiftySpacing.sm),
@@ -87,8 +91,8 @@ class _SettingRow extends StatelessWidget {
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodyLarge,
                 color: value
-                    ? FiftyColors.cream
-                    : FiftyColors.cream.withValues(alpha: 0.7),
+                    ? colorScheme.onSurface
+                    : colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
           ],
@@ -100,11 +104,11 @@ class _SettingRow extends StatelessWidget {
             height: 24,
             decoration: BoxDecoration(
               color: value
-                  ? FiftyColors.burgundy.withValues(alpha: 0.2)
+                  ? colorScheme.primary.withValues(alpha: 0.2)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: value ? FiftyColors.burgundy : FiftyColors.borderDark,
+                color: value ? colorScheme.primary : colorScheme.outline,
               ),
             ),
             child: AnimatedAlign(
@@ -116,8 +120,8 @@ class _SettingRow extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: BoxDecoration(
                   color: value
-                      ? FiftyColors.burgundy
-                      : FiftyColors.cream.withValues(alpha: 0.7),
+                      ? colorScheme.primary
+                      : colorScheme.onSurface.withValues(alpha: 0.7),
                   shape: BoxShape.circle,
                 ),
               ),

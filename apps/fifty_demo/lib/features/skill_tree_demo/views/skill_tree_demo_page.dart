@@ -3,6 +3,7 @@
 /// Demonstrates skill tree visualization and skill unlocking.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -25,34 +26,10 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
     return GetBuilder<SkillTreeDemoViewModel>(
       builder: (viewModel) {
         final actions = Get.find<SkillTreeDemoActions>();
-        return Scaffold(
-          backgroundColor: FiftyColors.darkBurgundy,
-          appBar: AppBar(
-            backgroundColor: FiftyColors.surfaceDark,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: FiftyColors.cream),
-              onPressed: actions.onBackTapped,
-            ),
-            title: const Text(
-              'SKILL TREE',
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodyLarge,
-                fontWeight: FontWeight.bold,
-                color: FiftyColors.cream,
-                letterSpacing: 2,
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.refresh, color: FiftyColors.cream),
-                onPressed: () => actions.onResetTapped(context),
-                tooltip: 'Reset Skills',
-              ),
-            ],
-          ),
-          body: DemoScaffold(
-            child: SingleChildScrollView(
+
+        return DemoScaffold(
+          title: 'Skill Tree',
+          child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -65,7 +42,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                     title: 'Skill Branches',
                     subtitle: 'Select a branch to view skills',
                   ),
-                  _buildBranchTabs(viewModel, actions),
+                  _buildBranchTabs(context, viewModel, actions),
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Skill Tree View
@@ -74,7 +51,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                     subtitle:
                         '${viewModel.currentBranchSkills.where((s) => s.isUnlocked).length}/${viewModel.currentBranchSkills.length} unlocked',
                   ),
-                  _buildSkillTree(viewModel, actions),
+                  _buildSkillTree(context, viewModel, actions),
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Selected Skill Details
@@ -88,10 +65,9 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                 ],
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
   }
 
   Widget _buildStatsRow(
@@ -99,6 +75,8 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
     SkillTreeDemoViewModel viewModel,
     SkillTreeDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Row(
@@ -113,25 +91,25 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: FiftySpacing.xs),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.star,
-                      color: FiftyColors.burgundy,
+                      color: colorScheme.primary,
                       size: 24,
                     ),
                     const SizedBox(width: FiftySpacing.xs),
                     Text(
                       '${viewModel.skillPoints}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.titleLarge,
                         fontWeight: FontWeight.bold,
-                        color: FiftyColors.cream,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -142,28 +120,34 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
 
           // Unlocked Count
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'SKILLS UNLOCKED',
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
-                  ),
-                ),
-                const SizedBox(height: FiftySpacing.xs),
-                Text(
-                  '${viewModel.unlockedCount}/${viewModel.totalSkills}',
-                  style: const TextStyle(
-                    fontFamily: FiftyTypography.fontFamily,
-                    fontSize: FiftyTypography.titleLarge,
-                    fontWeight: FontWeight.bold,
-                    color: FiftyColors.hunterGreen,
-                  ),
-                ),
-              ],
+            child: Builder(
+              builder: (context) {
+                final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+                final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'SKILLS UNLOCKED',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
+                    ),
+                    const SizedBox(height: FiftySpacing.xs),
+                    Text(
+                      '${viewModel.unlockedCount}/${viewModel.totalSkills}',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.titleLarge,
+                        fontWeight: FontWeight.bold,
+                        color: successColor,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
 
@@ -179,9 +163,12 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
   }
 
   Widget _buildBranchTabs(
+    BuildContext context,
     SkillTreeDemoViewModel viewModel,
     SkillTreeDemoActions actions,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: SkillBranch.values.map((branch) {
         final isSelected = viewModel.selectedBranch == branch;
@@ -197,13 +184,13 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                 ),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? FiftyColors.burgundy
-                      : FiftyColors.surfaceDark,
+                      ? colorScheme.primary
+                      : colorScheme.surfaceContainerHighest,
                   borderRadius: FiftyRadii.mdRadius,
                   border: Border.all(
                     color: isSelected
-                        ? FiftyColors.burgundy
-                        : FiftyColors.borderDark,
+                        ? colorScheme.primary
+                        : colorScheme.outline,
                   ),
                 ),
                 child: Column(
@@ -211,8 +198,8 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                     Icon(
                       branch.icon,
                       color: isSelected
-                          ? FiftyColors.cream
-                          : FiftyColors.cream.withValues(alpha: 0.7),
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurface.withValues(alpha: 0.7),
                       size: 24,
                     ),
                     const SizedBox(height: FiftySpacing.xs),
@@ -224,8 +211,8 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                         fontWeight:
                             isSelected ? FontWeight.bold : FontWeight.normal,
                         color: isSelected
-                            ? FiftyColors.cream
-                            : FiftyColors.cream.withValues(alpha: 0.7),
+                            ? colorScheme.onPrimary
+                            : colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -239,10 +226,14 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
   }
 
   Widget _buildSkillTree(
+    BuildContext context,
     SkillTreeDemoViewModel viewModel,
     SkillTreeDemoActions actions,
   ) {
     final skills = viewModel.currentBranchSkills;
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
@@ -253,6 +244,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
             final index = entry.key;
             final skill = entry.value;
             final isSelected = viewModel.selectedSkill?.id == skill.id;
+            final skillColor = viewModel.getSkillColor(skill, colorScheme, fiftyTheme);
 
             // Calculate indent based on parent count
             final indent = skill.parentIds.isEmpty ? 0 : skill.parentIds.length;
@@ -267,8 +259,8 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                       width: 2,
                       height: 20,
                       color: skill.isUnlocked
-                          ? FiftyColors.hunterGreen
-                          : FiftyColors.borderDark,
+                          ? successColor
+                          : colorScheme.outline,
                     ),
                   ),
 
@@ -281,13 +273,13 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                       padding: const EdgeInsets.all(FiftySpacing.md),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? viewModel.getSkillColor(skill).withValues(alpha: 0.3)
-                            : FiftyColors.surfaceDark,
+                            ? skillColor.withValues(alpha: 0.3)
+                            : colorScheme.surfaceContainerHighest,
                         borderRadius: FiftyRadii.mdRadius,
                         border: Border.all(
                           color: isSelected
-                              ? viewModel.getSkillColor(skill)
-                              : FiftyColors.borderDark,
+                              ? skillColor
+                              : colorScheme.outline,
                           width: isSelected ? 2 : 1,
                         ),
                       ),
@@ -298,15 +290,13 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                             width: 48,
                             height: 48,
                             decoration: BoxDecoration(
-                              color: viewModel
-                                  .getSkillColor(skill)
-                                  .withValues(alpha: 0.2),
+                              color: skillColor.withValues(alpha: 0.2),
                               borderRadius:
                                   FiftyRadii.smRadius,
                             ),
                             child: Icon(
                               skill.icon,
-                              color: viewModel.getSkillColor(skill),
+                              color: skillColor,
                               size: 24,
                             ),
                           ),
@@ -319,11 +309,11 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                               children: [
                                 Text(
                                   skill.name.toUpperCase(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: FiftyTypography.fontFamily,
                                     fontSize: FiftyTypography.bodyMedium,
                                     fontWeight: FontWeight.bold,
-                                    color: FiftyColors.cream,
+                                    color: colorScheme.onSurface,
                                   ),
                                 ),
                                 const SizedBox(height: FiftySpacing.xs),
@@ -335,9 +325,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                         vertical: 2,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: viewModel
-                                            .getSkillColor(skill)
-                                            .withValues(alpha: 0.2),
+                                        color: skillColor.withValues(alpha: 0.2),
                                         borderRadius:
                                             FiftyRadii.smRadius,
                                       ),
@@ -346,7 +334,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                         style: TextStyle(
                                           fontFamily: FiftyTypography.fontFamily,
                                           fontSize: 10,
-                                          color: viewModel.getSkillColor(skill),
+                                          color: skillColor,
                                         ),
                                       ),
                                     ),
@@ -355,7 +343,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                       Icon(
                                         Icons.star,
                                         size: 12,
-                                        color: FiftyColors.cream
+                                        color: colorScheme.onSurface
                                             .withValues(alpha: 0.7),
                                       ),
                                       const SizedBox(width: 2),
@@ -364,7 +352,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                         style: TextStyle(
                                           fontFamily: FiftyTypography.fontFamily,
                                           fontSize: FiftyTypography.bodySmall,
-                                          color: FiftyColors.cream
+                                          color: colorScheme.onSurface
                                               .withValues(alpha: 0.7),
                                         ),
                                       ),
@@ -377,9 +365,9 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
 
                           // Selection indicator
                           if (isSelected)
-                            const Icon(
+                            Icon(
                               Icons.chevron_right,
-                              color: FiftyColors.cream,
+                              color: colorScheme.onSurface,
                             ),
                         ],
                       ),
@@ -401,6 +389,9 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
   ) {
     final skill = viewModel.selectedSkill!;
     final canUnlock = viewModel.canUnlockSkill(skill);
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final skillColor = viewModel.getSkillColor(skill, colorScheme, fiftyTheme);
 
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
@@ -414,12 +405,12 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: viewModel.getSkillColor(skill).withValues(alpha: 0.2),
+                  color: skillColor.withValues(alpha: 0.2),
                   borderRadius: FiftyRadii.mdRadius,
                 ),
                 child: Icon(
                   skill.icon,
-                  color: viewModel.getSkillColor(skill),
+                  color: skillColor,
                   size: 32,
                 ),
               ),
@@ -430,11 +421,11 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   children: [
                     Text(
                       skill.name.toUpperCase(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodyLarge,
                         fontWeight: FontWeight.bold,
-                        color: FiftyColors.cream,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     Text(
@@ -442,14 +433,14 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
-                        color: viewModel.getSkillColor(skill),
+                        color: skillColor,
                       ),
                     ),
                   ],
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.close, color: FiftyColors.cream),
+                icon: Icon(Icons.close, color: colorScheme.onSurface),
                 onPressed: actions.onClearSelection,
               ),
             ],
@@ -463,19 +454,19 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyMedium,
-              color: FiftyColors.cream.withValues(alpha: 0.8),
+              color: colorScheme.onSurface.withValues(alpha: 0.8),
             ),
           ),
 
           const SizedBox(height: FiftySpacing.md),
 
-          // Cost info
+          // Cost info (burgundy used as primary accent here)
           if (!skill.isUnlocked) ...[
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.star,
-                  color: FiftyColors.burgundy,
+                  color: colorScheme.primary,
                   size: 16,
                 ),
                 const SizedBox(width: FiftySpacing.xs),
@@ -484,17 +475,17 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(width: FiftySpacing.md),
                 if (!canUnlock && viewModel.skillPoints < skill.cost)
                   Text(
                     '(Need ${skill.cost - viewModel.skillPoints} more)',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.burgundy,
+                      color: colorScheme.primary,
                     ),
                   ),
               ],

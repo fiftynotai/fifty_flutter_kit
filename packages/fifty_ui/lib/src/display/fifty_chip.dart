@@ -71,7 +71,6 @@ class FiftyChip extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = _getAccentColor(fifty, colorScheme);
     final backgroundColor = selected
@@ -79,8 +78,8 @@ class FiftyChip extends StatelessWidget {
         : colorScheme.surfaceContainerHighest;
     final borderColor = selected
         ? accentColor
-        : (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
-    final deleteIconColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
+        : colorScheme.outline;
+    final deleteIconColor = colorScheme.onSurfaceVariant;
 
     return Material(
       color: Colors.transparent,

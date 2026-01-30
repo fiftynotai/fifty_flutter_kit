@@ -79,6 +79,8 @@ class _ResourceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       onTap: onTap,
       padding: const EdgeInsets.all(FiftySpacing.lg),
@@ -91,23 +93,23 @@ class _ResourceCard extends StatelessWidget {
               width: _iconContainerSize,
               height: _iconContainerSize,
               decoration: BoxDecoration(
-                color: FiftyColors.slateGrey.withValues(alpha: 0.15),
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.15),
                 borderRadius: FiftyRadii.smRadius,
               ),
               child: Icon(
                 icon,
-                color: FiftyColors.slateGrey,
+                color: colorScheme.onSurfaceVariant,
                 size: _iconSize,
               ),
             ),
             const SizedBox(height: FiftySpacing.sm),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.labelMedium,
                 fontWeight: FontWeight.bold,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
                 letterSpacing: 1.5,
               ),
             ),

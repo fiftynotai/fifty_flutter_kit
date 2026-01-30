@@ -58,13 +58,11 @@ class FiftyProgressBar extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveBackgroundColor = backgroundColor ??
-        (isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight);
+    final effectiveBackgroundColor = backgroundColor ?? colorScheme.surfaceContainerHighest;
     final effectiveForegroundColor = foregroundColor ?? colorScheme.primary;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final labelColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final borderColor = colorScheme.outline;
+    final labelColor = colorScheme.onSurfaceVariant;
     final clampedValue = value.clamp(0.0, 1.0);
     final percentage = (clampedValue * 100).round();
 

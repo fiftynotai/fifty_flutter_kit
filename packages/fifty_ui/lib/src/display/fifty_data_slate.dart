@@ -62,12 +62,10 @@ class FiftyDataSlate extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveKeyColor = keyColor ??
-        (isDark ? FiftyColors.slateGrey : Colors.grey[600]!);
+    final effectiveKeyColor = keyColor ?? colorScheme.onSurfaceVariant;
     final effectiveValueColor = valueColor ?? colorScheme.onSurface;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final borderColor = colorScheme.outline;
 
     return AnimatedContainer(
       duration: fifty.fast,

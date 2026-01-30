@@ -24,6 +24,8 @@ class SttControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.lg),
       child: Column(
@@ -39,21 +41,21 @@ class SttControls extends StatelessWidget {
                   height: 48,
                   decoration: BoxDecoration(
                     color: isListening
-                        ? FiftyColors.burgundy.withValues(alpha: 0.2)
+                        ? colorScheme.primary.withValues(alpha: 0.2)
                         : Colors.transparent,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isListening
-                          ? FiftyColors.burgundy
-                          : FiftyColors.borderDark,
+                          ? colorScheme.primary
+                          : colorScheme.outline,
                       width: 2,
                     ),
                   ),
                   child: Icon(
                     isListening ? Icons.mic : Icons.mic_none,
                     color: isListening
-                        ? FiftyColors.burgundy
-                        : FiftyColors.cream.withValues(alpha: 0.7),
+                        ? colorScheme.primary
+                        : colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ),
@@ -68,8 +70,8 @@ class SttControls extends StatelessWidget {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodyLarge,
                         color: isListening
-                            ? FiftyColors.burgundy
-                            : FiftyColors.cream.withValues(alpha: 0.7),
+                            ? colorScheme.primary
+                            : colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: FiftySpacing.xs),
@@ -78,7 +80,7 @@ class SttControls extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: 10,
-                        color: FiftyColors.cream.withValues(alpha: 0.7),
+                        color: colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -93,9 +95,9 @@ class SttControls extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
-                color: FiftyColors.darkBurgundy,
+                color: colorScheme.surface,
                 borderRadius: FiftyRadii.lgRadius,
-                border: Border.all(color: FiftyColors.borderDark),
+                border: Border.all(color: colorScheme.outline),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,16 +107,16 @@ class SttControls extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: 10,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
                   Text(
                     '"$recognizedText"',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodyLarge,
-                      color: FiftyColors.cream,
+                      color: colorScheme.onSurface,
                       fontStyle: FontStyle.italic,
                     ),
                   ),

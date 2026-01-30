@@ -4,25 +4,32 @@
 /// Demonstrates achievement tracking and unlocking.
 library;
 
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Achievement rarity levels.
+///
+/// TODO(theme): Consider refactoring to use theme-aware colors.
+/// This enum stores colors directly which doesn't support light/dark mode.
+/// Options:
+/// 1. Create a getRarityColor(ColorScheme, FiftyThemeExtension?) method in View
+/// 2. Store semantic color keys instead of actual colors
 enum AchievementRarity {
   /// Common achievements.
-  common('Common', Color(0xFF6B7280)),
+  common('Common', FiftyColors.slateGrey),
 
   /// Uncommon achievements.
-  uncommon('Uncommon', Color(0xFF4A6741)),
+  uncommon('Uncommon', FiftyColors.hunterGreen),
 
   /// Rare achievements.
-  rare('Rare', Color(0xFF3B82F6)),
+  rare('Rare', FiftyColors.slateGrey),
 
   /// Epic achievements.
-  epic('Epic', Color(0xFF8B5CF6)),
+  epic('Epic', FiftyColors.powderBlush),
 
   /// Legendary achievements.
-  legendary('Legendary', Color(0xFFF59E0B));
+  legendary('Legendary', FiftyColors.warning);
 
   const AchievementRarity(this.label, this.color);
 

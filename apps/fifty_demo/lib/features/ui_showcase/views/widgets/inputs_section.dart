@@ -23,6 +23,8 @@ class InputsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,10 +51,10 @@ class InputsSection extends StatelessWidget {
                 const SizedBox(height: FiftySpacing.sm),
                 Text(
                   'VALUE: "${viewModel.inputValue}"',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.slateGrey,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -69,12 +71,12 @@ class InputsSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'ENABLE FEATURE',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodyLarge,
-                  color: FiftyColors.cream,
+                  color: colorScheme.onSurface,
                 ),
               ),
               FiftySwitch(
@@ -94,12 +96,12 @@ class InputsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'VOLUME',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodyLarge,
-                  color: FiftyColors.cream,
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: FiftySpacing.md),
@@ -122,13 +124,13 @@ class InputsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'DISPLAY MODE',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.semiBold,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: FiftySpacing.md),
@@ -168,22 +170,22 @@ class InputsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'PRIMARY VARIANT',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.semiBold,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: FiftySpacing.sm),
-              const Text(
+              Text(
                 'Cream background with burgundy text',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: FiftySpacing.md),
@@ -198,22 +200,22 @@ class InputsSection extends StatelessWidget {
                 variant: FiftySegmentedControlVariant.primary,
               ),
               const SizedBox(height: FiftySpacing.xl),
-              const Text(
+              Text(
                 'SECONDARY VARIANT',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.semiBold,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: FiftySpacing.sm),
-              const Text(
+              Text(
                 'Slate-grey background with cream text',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: FiftySpacing.md),

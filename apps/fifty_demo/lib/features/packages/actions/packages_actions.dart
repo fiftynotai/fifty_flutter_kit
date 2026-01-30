@@ -8,11 +8,13 @@ import 'package:get/get.dart';
 
 import '../../../core/presentation/actions/action_presenter.dart';
 import '../../achievement_demo/views/achievement_demo_page.dart';
-import '../../dialogue_demo/views/dialogue_demo_page.dart';
+import '../../audio_demo/views/audio_demo_page.dart';
 import '../../forms_demo/views/forms_demo_page.dart';
 import '../../map_demo/views/map_demo_page.dart';
 import '../../printing_demo/views/printing_demo_page.dart';
+import '../../sentences_demo/views/sentences_demo_page.dart';
 import '../../skill_tree_demo/views/skill_tree_demo_page.dart';
+import '../../speech_demo/views/speech_demo_page.dart';
 import '../controllers/packages_view_model.dart';
 
 /// Actions for the packages hub feature.
@@ -60,10 +62,14 @@ class PackagesActions {
       case 'fifty_map_engine':
         Get.to<void>(() => const MapDemoPage());
         break;
-      case 'fifty_sentences_engine':
-      case 'fifty_speech_engine':
       case 'fifty_audio_engine':
-        Get.to<void>(() => const DialogueDemoPage());
+        Get.to<void>(() => const AudioDemoPage());
+        break;
+      case 'fifty_speech_engine':
+        Get.to<void>(() => const SpeechDemoPage());
+        break;
+      case 'fifty_sentences_engine':
+        Get.to<void>(() => const SentencesDemoPage());
         break;
       case 'fifty_printing_engine':
         Get.to<void>(() => const PrintingDemoPage());

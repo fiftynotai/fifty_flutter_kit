@@ -171,18 +171,17 @@ class _FiftySwitchState extends State<FiftySwitch>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
     final opacity = isEnabled ? 1.0 : 0.5;
 
-    // v2 color scheme - ON state uses slateGrey, NOT primary!
-    final trackOnColor = FiftyColors.slateGrey.withValues(alpha: 0.3);
-    final trackOffColor = FiftyColors.surfaceDark;
-    final thumbOnColor = FiftyColors.slateGrey;
+    // v2 color scheme - ON state uses onSurfaceVariant, NOT primary!
+    final trackOnColor = colorScheme.onSurfaceVariant.withValues(alpha: 0.3);
+    final trackOffColor = colorScheme.surfaceContainerHighest;
+    final thumbOnColor = colorScheme.onSurfaceVariant;
     final thumbOffColor = colorScheme.onSurfaceVariant;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final hoverBorderColor = FiftyColors.slateGrey;
+    final borderColor = colorScheme.outline;
+    final hoverBorderColor = colorScheme.onSurfaceVariant;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -215,7 +214,7 @@ class _FiftySwitchState extends State<FiftySwitch>
                       boxShadow: _isHovered
                           ? [
                               BoxShadow(
-                                color: FiftyColors.slateGrey.withValues(alpha: 0.3),
+                                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                                 blurRadius: 8,
                               ),
                             ]
@@ -237,7 +236,7 @@ class _FiftySwitchState extends State<FiftySwitch>
                                 boxShadow: widget.value
                                     ? [
                                         BoxShadow(
-                                          color: FiftyColors.slateGrey
+                                          color: colorScheme.onSurfaceVariant
                                               .withValues(alpha: 0.4),
                                           blurRadius: 8,
                                         ),

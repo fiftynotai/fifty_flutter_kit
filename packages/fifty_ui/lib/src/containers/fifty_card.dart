@@ -178,7 +178,6 @@ class _FiftyCardState extends State<FiftyCard>
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     final effectiveBorderRadius = _effectiveRadius;
     final effectiveBackgroundColor =
@@ -188,7 +187,7 @@ class _FiftyCardState extends State<FiftyCard>
 
     final borderColor = widget.selected || _showGlow
         ? colorScheme.primary
-        : (isDark ? FiftyColors.borderDark : FiftyColors.borderLight);
+        : colorScheme.outline;
     final borderWidth = widget.selected || _showGlow ? 2.0 : 1.0;
 
     // Determine shadow - use medium shadow by default
@@ -236,7 +235,7 @@ class _FiftyCardState extends State<FiftyCard>
                     return CustomPaint(
                       painter: _ScanlinePainter(
                         progress: _scanlineController.value,
-                        color: FiftyColors.burgundy.withValues(alpha: 0.3),
+                        color: colorScheme.primary.withValues(alpha: 0.3),
                       ),
                     );
                   },

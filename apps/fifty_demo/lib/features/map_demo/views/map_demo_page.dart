@@ -110,6 +110,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
     MapDemoActions actions,
   ) {
     final controller = viewModel.controller;
+    final colorScheme = Theme.of(context).colorScheme;
 
     // Show loading state
     if (viewModel.isMapLoading) {
@@ -121,9 +122,9 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularProgressIndicator(
+                CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    FiftyColors.burgundy,
+                    colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: FiftySpacing.md),
@@ -132,7 +133,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -155,7 +156,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                 Icon(
                   Icons.map_outlined,
                   size: 64,
-                  color: FiftyColors.cream.withValues(alpha: 0.7),
+                  color: colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
                 const SizedBox(height: FiftySpacing.md),
                 Text(
@@ -163,7 +164,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],

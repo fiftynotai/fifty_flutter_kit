@@ -1,7 +1,7 @@
 /// Fifty Demo App Shell
 ///
 /// Provides the main scaffold with GetX and bottom navigation.
-/// Uses FDL v2 colors and bottom navigation pattern.
+/// Uses theme-aware colors from ColorScheme for light/dark mode support.
 library;
 
 import 'package:fifty_theme/fifty_theme.dart';
@@ -13,7 +13,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 
 import '../core/bindings/initial_bindings.dart';
 import '../features/achievement_demo/achievement_demo_bindings.dart';
-import '../features/dialogue_demo/dialogue_demo_bindings.dart';
+import '../features/audio_demo/audio_demo_bindings.dart';
 import '../features/forms_demo/forms_demo_bindings.dart';
 import '../features/home/home_bindings.dart';
 import '../features/home/views/home_page.dart';
@@ -21,9 +21,11 @@ import '../features/map_demo/map_demo_bindings.dart';
 import '../features/packages/packages_bindings.dart';
 import '../features/packages/views/packages_page.dart';
 import '../features/printing_demo/printing_demo_bindings.dart';
+import '../features/sentences_demo/sentences_demo_bindings.dart';
 import '../features/settings/settings_bindings.dart';
 import '../features/settings/views/settings_page.dart';
 import '../features/skill_tree_demo/skill_tree_demo_bindings.dart';
+import '../features/speech_demo/speech_demo_bindings.dart';
 import '../features/ui_showcase/ui_showcase_bindings.dart';
 import '../features/ui_showcase/views/ui_showcase_page.dart';
 
@@ -32,7 +34,7 @@ import '../features/ui_showcase/views/ui_showcase_page.dart';
 /// Provides a tabbed interface for the four main sections:
 /// Home, Packages, UI Kit, and Settings.
 ///
-/// Uses FDL v2 colors (darkBurgundy, burgundy, cream, etc.).
+/// Uses theme-aware colors via [ColorScheme] for light/dark mode support.
 class FiftyDemoApp extends StatelessWidget {
   /// Creates the main demo app widget.
   const FiftyDemoApp({super.key});
@@ -41,16 +43,24 @@ class FiftyDemoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Fifty Demo',
-      theme: FiftyTheme.dark(),
+      theme: FiftyTheme.light(),
+      darkTheme: FiftyTheme.dark(),
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBindings(),
-      home: GlobalLoaderOverlay(
-        overlayColor: FiftyColors.darkBurgundy.withAlpha(200),
-        overlayWidgetBuilder: (_) => const Center(
-          child: _FdlLoadingIndicator(),
-        ),
-        child: const _DemoShell(),
-      ),
+      builder: (context, child) {
+        final colorScheme = Theme.of(context).colorScheme;
+        return GlobalLoaderOverlay(
+          overlayColor: colorScheme.surface.withAlpha(200),
+          overlayWidgetBuilder: (_) => Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+            ),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
+      home: const _DemoShell(),
     );
   }
 }
@@ -98,9 +108,11 @@ class _DemoShellState extends State<_DemoShell> {
     UiShowcaseBindings().dependencies();
     SettingsBindings().dependencies();
 
-    // Initialize legacy demo bindings (accessible from Packages hub)
+    // Initialize engine demo bindings (accessible from Packages hub)
     MapDemoBindings().dependencies();
-    DialogueDemoBindings().dependencies();
+    AudioDemoBindings().dependencies();
+    SpeechDemoBindings().dependencies();
+    SentencesDemoBindings().dependencies();
 
     // Initialize new demo bindings
     PrintingDemoBindings().dependencies();
@@ -113,14 +125,13 @@ class _DemoShellState extends State<_DemoShell> {
     });
   }
 
-  Widget _buildDot(bool active) {
+  Widget _buildDot(bool active, ColorScheme colorScheme, {bool onPrimary = false}) {
+    final baseColor = onPrimary ? colorScheme.onPrimary : colorScheme.onSurface;
     return Container(
       width: 8,
       height: 8,
       decoration: BoxDecoration(
-        color: active
-            ? FiftyColors.cream
-            : FiftyColors.cream.withValues(alpha: 0.3),
+        color: active ? baseColor : baseColor.withValues(alpha: 0.3),
         shape: BoxShape.circle,
       ),
     );
@@ -128,68 +139,75 @@ class _DemoShellState extends State<_DemoShell> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: FiftyColors.darkBurgundy,
-      body: SafeArea(
-        bottom: false, // Let bottom nav handle safe area
-        child: Column(
-          children: [
-            // Hero header card - only shown on Home tab
-            if (_selectedIndex == 0)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: FiftySpacing.lg,
-                  vertical: FiftySpacing.lg,
-                ),
-                child: FiftyCard(
-                  padding: EdgeInsets.zero,
-                  hasTexture: true,
-                  child: Container(
-                    height: _DemoShellState._heroCardHeight,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          FiftyColors.burgundy,
-                          FiftyColors.darkBurgundy,
-                        ],
-                      ),
-                      borderRadius: FiftyRadii.lgRadius,
+      backgroundColor: colorScheme.surface,
+      body: Stack(
+        children: [
+          // Main content
+          SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                // Hero header card - only shown on Home tab
+                // Note: Hero uses fixed brand colors (burgundy gradient) intentionally
+                if (_selectedIndex == 0)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: FiftySpacing.lg,
+                      vertical: FiftySpacing.lg,
                     ),
-                    child: Stack(
-                      children: [
-                        // Badge
-                        Positioned(
-                          top: FiftySpacing.md,
-                          left: FiftySpacing.md,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: FiftySpacing.sm,
-                              vertical: FiftySpacing.xs,
-                            ),
-                            decoration: BoxDecoration(
-                              color: FiftyColors.powderBlush.withValues(alpha: 0.2),
-                              borderRadius: FiftyRadii.smRadius,
-                              border: Border.all(
-                                color:
-                                    FiftyColors.powderBlush.withValues(alpha: 0.4),
-                              ),
-                            ),
-                            child: const Text(
-                              'FLUTTER KIT',
+                    child: FiftyCard(
+                      padding: EdgeInsets.zero,
+                      hasTexture: true,
+                      child: Container(
+                        height: _DemoShellState._heroCardHeight,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              colorScheme.primary,
+                              colorScheme.primary, // Both use primary for gradient
+                            ],
+                          ),
+                          borderRadius: FiftyRadii.lgRadius,
+                        ),
+                        child: Stack(
+                          children: [
+                            // Badge
+                            Positioned(
+                              top: FiftySpacing.md,
+                              left: FiftySpacing.md,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: FiftySpacing.sm,
+                                  vertical: FiftySpacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      colorScheme.onPrimary.withValues(alpha: 0.2),
+                                  borderRadius: FiftyRadii.smRadius,
+                                  border: Border.all(
+                                    color:
+                                        colorScheme.onPrimary.withValues(alpha: 0.4),
+                                  ),
+                                ),
+                                child: Text(
+                                  'FLUTTER KIT',
                               style: TextStyle(
                                 fontFamily: FiftyTypography.fontFamily,
                                 fontSize: FiftyTypography.labelSmall,
                                 fontWeight: FontWeight.bold,
-                                color: FiftyColors.cream,
+                                color: colorScheme.onPrimary,
                                 letterSpacing: 1,
                               ),
                             ),
                           ),
                         ),
                         // Title and subtitle
-                        const Positioned(
+                        Positioned(
                           bottom: FiftySpacing.lg,
                           left: FiftySpacing.md,
                           child: Column(
@@ -201,16 +219,16 @@ class _DemoShellState extends State<_DemoShell> {
                                   fontFamily: FiftyTypography.fontFamily,
                                   fontSize: FiftyTypography.displayMedium,
                                   fontWeight: FontWeight.bold,
-                                  color: FiftyColors.cream,
+                                  color: colorScheme.onPrimary,
                                 ),
                               ),
-                              SizedBox(height: FiftySpacing.xs),
+                              const SizedBox(height: FiftySpacing.xs),
                               Text(
                                 'Design System v2.0',
                                 style: TextStyle(
                                   fontFamily: FiftyTypography.fontFamily,
                                   fontSize: FiftyTypography.bodyMedium,
-                                  color: FiftyColors.cream,
+                                  color: colorScheme.onPrimary,
                                 ),
                               ),
                             ],
@@ -222,11 +240,11 @@ class _DemoShellState extends State<_DemoShell> {
                           right: FiftySpacing.md,
                           child: Row(
                             children: [
-                              _buildDot(true),
+                              _buildDot(true, colorScheme, onPrimary: true),
                               const SizedBox(width: FiftySpacing.xs),
-                              _buildDot(false),
+                              _buildDot(false, colorScheme, onPrimary: true),
                               const SizedBox(width: FiftySpacing.xs),
-                              _buildDot(false),
+                              _buildDot(false, colorScheme, onPrimary: true),
                             ],
                           ),
                         ),
@@ -251,57 +269,35 @@ class _DemoShellState extends State<_DemoShell> {
                         const SettingsPage(),
                       ],
                     )
-                  : const Center(
-                      child: _FdlLoadingIndicator(),
+                  : Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(colorScheme.primary),
+                      ),
                     ),
             ),
-          ],
-        ),
-      ),
-      // Bottom navigation bar
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: FiftyColors.surfaceDark,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: FiftySpacing.md,
-              vertical: FiftySpacing.sm,
-            ),
-            child: FiftyNavBar(
-              items: _navItems,
-              selectedIndex: _selectedIndex,
-              onItemSelected: (index) {
-                setState(() => _selectedIndex = index);
-              },
-              style: FiftyNavBarStyle.pill,
+              ],
             ),
           ),
-        ),
+          // Floating bottom navigation bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: FiftyNavBar(
+                items: _navItems,
+                selectedIndex: _selectedIndex,
+                onItemSelected: (index) {
+                  setState(() => _selectedIndex = index);
+                },
+                style: FiftyNavBarStyle.pill,
+              ),
+            ),
+          ),
+        ],
       ),
-    );
-  }
-}
-
-/// FDL-styled loading indicator.
-///
-/// A consistent loading indicator using FDL color tokens.
-class _FdlLoadingIndicator extends StatelessWidget {
-  const _FdlLoadingIndicator();
-
-  @override
-  Widget build(BuildContext context) {
-    return const CircularProgressIndicator(
-      valueColor: AlwaysStoppedAnimation<Color>(FiftyColors.burgundy),
     );
   }
 }

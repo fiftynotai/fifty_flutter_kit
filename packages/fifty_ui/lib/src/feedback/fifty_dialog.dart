@@ -65,11 +65,10 @@ class FiftyDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
-    final backgroundColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final closeIconColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final backgroundColor = colorScheme.surfaceContainerHighest;
+    final borderColor = colorScheme.outline;
+    final closeIconColor = colorScheme.onSurfaceVariant;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -186,10 +185,8 @@ Future<T?> showFiftyDialog<T>({
   required WidgetBuilder builder,
   bool barrierDismissible = true,
 }) {
-  final isDark = Theme.of(context).brightness == Brightness.dark;
-  final barrierColor = isDark
-      ? FiftyColors.darkBurgundy.withValues(alpha: 0.8)
-      : Colors.black.withValues(alpha: 0.5);
+  final colorScheme = Theme.of(context).colorScheme;
+  final barrierColor = colorScheme.scrim;
 
   return showGeneralDialog<T>(
     context: context,

@@ -4,6 +4,7 @@
 /// Organizes packages by category for easy navigation.
 library;
 
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class PackagesPage extends GetView<PackagesViewModel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Status summary
-                _buildStatusSummary(viewModel),
+                _buildStatusSummary(context, viewModel),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Package categories
@@ -47,7 +48,10 @@ class PackagesPage extends GetView<PackagesViewModel> {
     );
   }
 
-  Widget _buildStatusSummary(PackagesViewModel viewModel) {
+  Widget _buildStatusSummary(BuildContext context, PackagesViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
       child: Row(
@@ -55,18 +59,18 @@ class PackagesPage extends GetView<PackagesViewModel> {
           Container(
             width: 8,
             height: 8,
-            decoration: const BoxDecoration(
-              color: FiftyColors.hunterGreen,
+            decoration: BoxDecoration(
+              color: fiftyTheme?.success ?? colorScheme.tertiary,
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: FiftySpacing.sm),
           Text(
             '${viewModel.availableCount}/${viewModel.totalCount} DEMOS AVAILABLE',
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream,
+              color: colorScheme.onSurface,
             ),
           ),
         ],
@@ -108,6 +112,7 @@ class _PackageDemoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actions = Get.find<PackagesActions>();
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Opacity(
       opacity: package.isAvailable ? 1.0 : 0.5,
@@ -122,15 +127,15 @@ class _PackageDemoCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: package.isAvailable
-                    ? FiftyColors.burgundy.withValues(alpha: 0.2)
-                    : FiftyColors.slateGrey.withValues(alpha: 0.2),
+                    ? colorScheme.primary.withValues(alpha: 0.2)
+                    : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(FiftyRadii.sm),
               ),
               child: Icon(
                 package.icon,
                 color: package.isAvailable
-                    ? FiftyColors.burgundy
-                    : FiftyColors.slateGrey,
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
                 size: 24,
               ),
             ),
@@ -143,11 +148,11 @@ class _PackageDemoCard extends StatelessWidget {
                 children: [
                   Text(
                     package.name.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
                       fontWeight: FontWeight.w600,
-                      color: FiftyColors.cream,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
@@ -156,7 +161,7 @@ class _PackageDemoCard extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -171,22 +176,22 @@ class _PackageDemoCard extends StatelessWidget {
                   vertical: FiftySpacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: FiftyColors.slateGrey.withValues(alpha: 0.3),
+                  color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(FiftyRadii.sm),
                 ),
-                child: const Text(
+                child: Text(
                   'SOON',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: 10,
-                    color: FiftyColors.cream,
+                    color: colorScheme.onSurface,
                   ),
                 ),
               )
             else
-              const Icon(
+              Icon(
                 Icons.chevron_right,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
                 size: 20,
               ),
           ],

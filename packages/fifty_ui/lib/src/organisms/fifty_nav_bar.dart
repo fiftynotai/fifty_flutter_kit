@@ -95,7 +95,7 @@ class FiftyNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
+    // Floating nav bar with side margins only
     final effectiveMargin = margin ??
         EdgeInsets.symmetric(
           horizontal: style == FiftyNavBarStyle.pill
@@ -103,12 +103,9 @@ class FiftyNavBar extends StatelessWidget {
               : FiftySpacing.md,
         );
 
-    final backgroundColor = isDark
-        ? FiftyColors.darkBurgundy.withValues(alpha: 0.5)
-        : FiftyColors.surfaceLight.withValues(alpha: 0.8);
-    final borderColor = isDark
-        ? FiftyColors.slateGrey.withValues(alpha: 0.1)
-        : FiftyColors.borderLight;
+    // Solid surface background with border
+    final backgroundColor = colorScheme.surfaceContainerHighest;
+    final borderColor = colorScheme.outline;
 
     return Container(
       margin: effectiveMargin,
@@ -125,6 +122,13 @@ class FiftyNavBar extends StatelessWidget {
                 color: borderColor,
                 width: 1,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -135,7 +139,6 @@ class FiftyNavBar extends StatelessWidget {
                     isSelected: index == selectedIndex,
                     onTap: () => onItemSelected(index),
                     primaryColor: colorScheme.primary,
-                    isDark: isDark,
                   ),
                 );
               }),
@@ -153,14 +156,12 @@ class _FiftyNavBarItem extends StatefulWidget {
     required this.isSelected,
     required this.onTap,
     required this.primaryColor,
-    required this.isDark,
   });
 
   final FiftyNavItem item;
   final bool isSelected;
   final VoidCallback onTap;
   final Color primaryColor;
-  final bool isDark;
 
   @override
   State<_FiftyNavBarItem> createState() => _FiftyNavBarItemState();
@@ -175,8 +176,8 @@ class _FiftyNavBarItemState extends State<_FiftyNavBarItem> {
     final fifty = theme.extension<FiftyThemeExtension>()!;
     final colorScheme = theme.colorScheme;
 
-    final activeTextColor = widget.isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
-    final inactiveTextColor = widget.isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final activeTextColor = colorScheme.onSurface;
+    final inactiveTextColor = colorScheme.onSurfaceVariant;
 
     final textColor = widget.isSelected || _isHovered
         ? activeTextColor
