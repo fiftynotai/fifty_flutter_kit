@@ -623,10 +623,10 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
           Wrap(
             spacing: FiftySpacing.sm,
             runSpacing: FiftySpacing.sm,
-            children: viewModel.voiceLines.map((line) {
+            children: viewModel.voiceLines.map((voiceLine) {
               return FiftyButton(
-                label: line,
-                onPressed: () => actions.onPlayVoiceLine(context, line),
+                label: voiceLine.displayText,
+                onPressed: () => actions.onPlayVoiceLine(context, voiceLine),
                 variant: FiftyButtonVariant.secondary,
                 size: FiftyButtonSize.small,
               );

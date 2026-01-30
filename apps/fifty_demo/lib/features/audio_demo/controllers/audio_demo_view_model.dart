@@ -66,6 +66,20 @@ enum SoundEffect {
   final String assetPath;
 }
 
+/// Available voice lines for demonstration.
+enum VoiceLine {
+  welcome('Welcome, adventurer!', 'audio/voice/welcome.mp3'),
+  journey('The journey begins here.', 'audio/voice/journey.mp3'),
+  warning('Watch out for traps ahead.', 'audio/voice/warning.mp3'),
+  rareItem('You have found a rare item!', 'audio/voice/rare_item.mp3'),
+  questComplete('Quest completed successfully.', 'audio/voice/quest_complete.mp3');
+
+  const VoiceLine(this.displayText, this.assetPath);
+
+  final String displayText;
+  final String assetPath;
+}
+
 /// ViewModel for the audio demo feature.
 ///
 /// Manages BGM, SFX, and Voice channel states using the actual FiftyAudioEngine.
@@ -149,14 +163,8 @@ class AudioDemoViewModel extends GetxController {
   bool get voicePlaying => _voicePlaying;
   String get currentVoiceLine => _currentVoiceLine;
 
-  /// Demo voice lines (using SFX for demo since we don't have voice assets).
-  List<String> get voiceLines => const [
-        'Welcome, adventurer!',
-        'The journey begins here.',
-        'Watch out for traps ahead.',
-        'You have found a rare item!',
-        'Quest completed successfully.',
-      ];
+  /// Available voice lines with ElevenLabs generated audio.
+  List<VoiceLine> get voiceLines => VoiceLine.values;
 
   // ─────────────────────────────────────────────────────────────────────────
   // Master State
@@ -390,8 +398,8 @@ class AudioDemoViewModel extends GetxController {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Plays a voice line through the voice channel.
-  Future<void> playVoiceLine(String line) async {
-    _currentVoiceLine = line;
+  Future<void> playVoiceLine(VoiceLine voiceLine) async {
+    _currentVoiceLine = voiceLine.displayText;
     _voicePlaying = true;
     update();
 
@@ -411,8 +419,8 @@ class AudioDemoViewModel extends GetxController {
       update();
     };
 
-    // Play through voice channel (uses AssetSource configured in main.dart)
-    await _engine.voice.playVoice(SoundEffect.notification.assetPath, false);
+    // Play actual voice file through voice channel
+    await _engine.voice.playVoice(voiceLine.assetPath, false);
   }
 
   /// Stops voice playback.

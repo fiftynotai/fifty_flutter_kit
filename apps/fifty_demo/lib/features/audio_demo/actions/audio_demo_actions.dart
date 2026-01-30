@@ -100,10 +100,10 @@ class AudioDemoActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Called when a voice line is played.
-  Future<void> onPlayVoiceLine(BuildContext context, String line) async {
+  Future<void> onPlayVoiceLine(BuildContext context, VoiceLine voiceLine) async {
     await _presenter.actionHandlerWithoutLoading(
       () async {
-        await _viewModel.playVoiceLine(line);
+        await _viewModel.playVoiceLine(voiceLine);
       },
       context: context,
     );
