@@ -127,10 +127,10 @@ class FiftySegmentedControl<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
-    final containerColor = isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
+    final containerColor = colorScheme.surfaceContainerHighest;
+    final borderColor = colorScheme.outline;
 
     return Opacity(
       opacity: enabled ? 1.0 : 0.5,
@@ -149,7 +149,6 @@ class FiftySegmentedControl<T> extends StatelessWidget {
                     child: _FiftySegmentItem<T>(
                       segment: segment,
                       isSelected: isSelected,
-                      isDark: isDark,
                       variant: variant,
                       onTap: enabled ? () => onChanged(segment.value) : null,
                     ),
@@ -163,7 +162,6 @@ class FiftySegmentedControl<T> extends StatelessWidget {
                   return _FiftySegmentItem<T>(
                     segment: segment,
                     isSelected: isSelected,
-                    isDark: isDark,
                     variant: variant,
                     onTap: enabled ? () => onChanged(segment.value) : null,
                   );
@@ -179,27 +177,30 @@ class _FiftySegmentItem<T> extends StatelessWidget {
   const _FiftySegmentItem({
     required this.segment,
     required this.isSelected,
-    required this.isDark,
     required this.variant,
     required this.onTap,
   });
 
   final FiftySegment<T> segment;
   final bool isSelected;
-  final bool isDark;
   final FiftySegmentedControlVariant variant;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     // Active colors are variant-based (mode-independent)
+    // Primary: light background with primary text (for content filters)
+    // Secondary: muted background with light text (for system settings)
     final activeColor = variant == FiftySegmentedControlVariant.primary
-        ? FiftyColors.cream
-        : FiftyColors.slateGrey;
+        ? colorScheme.onPrimary
+        : colorScheme.onSurfaceVariant;
     final activeTextColor = variant == FiftySegmentedControlVariant.primary
-        ? FiftyColors.burgundy
-        : FiftyColors.cream;
-    final inactiveTextColor = isDark ? Colors.grey[400] : Colors.grey[600];
+        ? colorScheme.primary
+        : colorScheme.onPrimary;
+    final inactiveTextColor = colorScheme.onSurfaceVariant;
 
     return GestureDetector(
       onTap: onTap,
@@ -226,15 +227,19 @@ class _FiftySegmentItem<T> extends StatelessWidget {
               ),
               const SizedBox(width: FiftySpacing.sm),
             ],
-            Text(
-              segment.label,
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodyMedium,
-                fontWeight: isSelected
-                    ? FiftyTypography.semiBold
-                    : FiftyTypography.medium,
-                color: isSelected ? activeTextColor : inactiveTextColor,
+            Flexible(
+              child: Text(
+                segment.label,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyMedium,
+                  fontWeight: isSelected
+                      ? FiftyTypography.semiBold
+                      : FiftyTypography.medium,
+                  color: isSelected ? activeTextColor : inactiveTextColor,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
           ],
