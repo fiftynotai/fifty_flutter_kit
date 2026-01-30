@@ -3,7 +3,7 @@
 **Type:** Feature
 **Priority:** P2-Medium
 **Effort:** M
-**Status:** Ready
+**Status:** Done
 **Created:** 2026-01-30
 
 ---
