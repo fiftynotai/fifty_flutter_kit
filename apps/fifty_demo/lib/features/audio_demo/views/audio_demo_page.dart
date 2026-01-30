@@ -67,6 +67,14 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 _buildVoiceSection(context, viewModel, actions),
                 const SizedBox(height: FiftySpacing.xl),
 
+                // Fade Demo Section
+                const SectionHeader(
+                  title: 'Fade Effects',
+                  subtitle: 'Demonstrate volume fade presets',
+                ),
+                _buildFadeSection(context, viewModel, actions),
+                const SizedBox(height: FiftySpacing.xl),
+
                 // Reset Button
                 Center(
                   child: FiftyButton(
@@ -358,14 +366,27 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            viewModel.currentTrack.displayName,
-                            style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamily,
-                              fontSize: FiftyTypography.bodyMedium,
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onSurface,
-                            ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  viewModel.currentTrack.displayName,
+                                  style: TextStyle(
+                                    fontFamily: FiftyTypography.fontFamily,
+                                    fontSize: FiftyTypography.bodyMedium,
+                                    fontWeight: FontWeight.bold,
+                                    color: colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              // Loop indicator
+                              if (viewModel.loopEnabled)
+                                Icon(
+                                  Icons.repeat,
+                                  size: 14,
+                                  color: colorScheme.primary.withValues(alpha: 0.7),
+                                ),
+                            ],
                           ),
                           Text(
                             viewModel.currentTrack.assetPath.split('/').last,
@@ -403,6 +424,25 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Shuffle toggle
+              FiftyIconButton(
+                icon: Icons.shuffle,
+                tooltip: viewModel.shuffleEnabled ? 'Shuffle On' : 'Shuffle Off',
+                onPressed: actions.onToggleShuffle,
+                variant: viewModel.shuffleEnabled
+                    ? FiftyIconButtonVariant.secondary
+                    : FiftyIconButtonVariant.ghost,
+                size: FiftyIconButtonSize.small,
+              ),
+              const SizedBox(width: FiftySpacing.sm),
+              FiftyIconButton(
+                icon: Icons.skip_previous,
+                tooltip: 'Previous',
+                onPressed: actions.onSkipPrevious,
+                variant: FiftyIconButtonVariant.ghost,
+                size: FiftyIconButtonSize.medium,
+              ),
+              const SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: Icons.stop,
                 tooltip: 'Stop',
@@ -410,7 +450,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: FiftyIconButtonVariant.secondary,
                 size: FiftyIconButtonSize.medium,
               ),
-              const SizedBox(width: FiftySpacing.md),
+              const SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: viewModel.bgmPlaying ? Icons.pause : Icons.play_arrow,
                 tooltip: viewModel.bgmPlaying ? 'Pause' : 'Play',
@@ -418,7 +458,15 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: FiftyIconButtonVariant.primary,
                 size: FiftyIconButtonSize.large,
               ),
-              const SizedBox(width: FiftySpacing.md),
+              const SizedBox(width: FiftySpacing.sm),
+              FiftyIconButton(
+                icon: Icons.skip_next,
+                tooltip: 'Next',
+                onPressed: actions.onSkipNext,
+                variant: FiftyIconButtonVariant.ghost,
+                size: FiftyIconButtonSize.medium,
+              ),
+              const SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: viewModel.bgmMuted ? Icons.volume_off : Icons.volume_up,
                 tooltip: viewModel.bgmMuted ? 'Unmute' : 'Mute',
@@ -426,7 +474,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: viewModel.bgmMuted
                     ? FiftyIconButtonVariant.secondary
                     : FiftyIconButtonVariant.ghost,
-                size: FiftyIconButtonSize.medium,
+                size: FiftyIconButtonSize.small,
               ),
             ],
           ),
@@ -644,6 +692,170 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 size: FiftyButtonSize.small,
               ),
             ),
+          const SizedBox(height: FiftySpacing.md),
+
+          // Voice Ducking Toggle
+          Container(
+            padding: const EdgeInsets.all(FiftySpacing.sm),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: FiftyRadii.smRadius,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.tune,
+                  size: 16,
+                  color: colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
+                const SizedBox(width: FiftySpacing.sm),
+                Expanded(
+                  child: Text(
+                    'Auto-duck BGM',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+                FiftySwitch(
+                  value: viewModel.voiceDucking,
+                  onChanged: (_) => actions.onToggleVoiceDucking(),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFadeSection(
+    BuildContext context,
+    AudioDemoViewModel viewModel,
+    AudioDemoActions actions,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    // Define fade presets with their display info
+    const fadePresets = [
+      ('fast', 'Fast', '150ms'),
+      ('normal', 'Normal', '800ms'),
+      ('cinematic', 'Cinematic', '2s'),
+      ('ambient', 'Ambient', '3s'),
+    ];
+
+    return FiftyCard(
+      padding: const EdgeInsets.all(FiftySpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Info text
+          Container(
+            padding: const EdgeInsets.all(FiftySpacing.md),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: FiftyRadii.lgRadius,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  viewModel.isFading ? Icons.waves : Icons.info_outline,
+                  size: 20,
+                  color: viewModel.isFading
+                      ? colorScheme.primary
+                      : colorScheme.onSurface.withValues(alpha: 0.5),
+                ),
+                const SizedBox(width: FiftySpacing.sm),
+                Expanded(
+                  child: Text(
+                    viewModel.isFading
+                        ? 'Fading with ${viewModel.lastFadePreset ?? 'preset'}...'
+                        : 'Play BGM first, then tap a preset to see fade effect',
+                    style: TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodySmall,
+                      color: viewModel.isFading
+                          ? colorScheme.primary
+                          : colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.lg),
+
+          // Preset buttons
+          Text(
+            'FADE PRESETS',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
+              letterSpacing: 1,
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            mainAxisSpacing: FiftySpacing.sm,
+            crossAxisSpacing: FiftySpacing.sm,
+            childAspectRatio: 2.5,
+            children: fadePresets.map((preset) {
+              final (name, label, duration) = preset;
+              final isActive =
+                  viewModel.isFading && viewModel.lastFadePreset == name;
+              return GestureDetector(
+                onTap: viewModel.isFading || !viewModel.bgmPlaying
+                    ? null
+                    : () => actions.onDemonstrateFade(context, name),
+                child: Container(
+                  padding: const EdgeInsets.all(FiftySpacing.sm),
+                  decoration: BoxDecoration(
+                    color: isActive
+                        ? colorScheme.primary.withValues(alpha: 0.2)
+                        : colorScheme.surfaceContainerHighest,
+                    borderRadius: FiftyRadii.mdRadius,
+                    border: Border.all(
+                      color: isActive ? colorScheme.primary : colorScheme.outline,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        label.toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodySmall,
+                          fontWeight: FontWeight.bold,
+                          color: isActive
+                              ? colorScheme.primary
+                              : (!viewModel.bgmPlaying
+                                  ? colorScheme.onSurface.withValues(alpha: 0.3)
+                                  : colorScheme.onSurface),
+                        ),
+                      ),
+                      Text(
+                        duration,
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodySmall,
+                          color: isActive
+                              ? colorScheme.primary.withValues(alpha: 0.7)
+                              : colorScheme.onSurface.withValues(alpha: 0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ],
       ),
     );

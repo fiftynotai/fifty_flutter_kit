@@ -96,10 +96,16 @@ class AudioDemoViewModel extends GetxController {
   // ─────────────────────────────────────────────────────────────────────────
 
   AudioTrack _currentTrack = AudioTrack.exploration;
+  int _currentTrackIndex = 0;
   bool _bgmMuted = false;
   double _bgmVolume = 0.7;
+  bool _loopEnabled = true;
+  bool _shuffleEnabled = false;
 
   AudioTrack get currentTrack => _currentTrack;
+  int get currentTrackIndex => _currentTrackIndex;
+  bool get loopEnabled => _loopEnabled;
+  bool get shuffleEnabled => _shuffleEnabled;
   bool get bgmPlaying => _isInitialized && _engine.bgm.isPlaying;
   bool get bgmMuted => _bgmMuted;
   double get bgmVolume => _bgmVolume;
@@ -157,11 +163,13 @@ class AudioDemoViewModel extends GetxController {
   double _voiceVolume = 1.0;
   bool _voicePlaying = false;
   String _currentVoiceLine = '';
+  bool _voiceDucking = true;
 
   bool get voiceMuted => _voiceMuted;
   double get voiceVolume => _voiceVolume;
   bool get voicePlaying => _voicePlaying;
   String get currentVoiceLine => _currentVoiceLine;
+  bool get voiceDucking => _voiceDucking;
 
   /// Available voice lines with ElevenLabs generated audio.
   List<VoiceLine> get voiceLines => VoiceLine.values;
@@ -172,9 +180,13 @@ class AudioDemoViewModel extends GetxController {
 
   double _masterVolume = 1.0;
   bool _masterMuted = false;
+  bool _isFading = false;
+  String? _lastFadePreset;
 
   double get masterVolume => _masterVolume;
   bool get masterMuted => _masterMuted;
+  bool get isFading => _isFading;
+  String? get lastFadePreset => _lastFadePreset;
 
   // ─────────────────────────────────────────────────────────────────────────
   // Position Tracking State
@@ -221,6 +233,9 @@ class AudioDemoViewModel extends GetxController {
       await _engine.bgm.setVolume(_bgmVolume);
       await _engine.sfx.setVolume(_sfxVolume);
       await _engine.voice.setVolume(_voiceVolume);
+
+      // Set voice ducking preference
+      _engine.voice.withDucking = _voiceDucking;
 
       _isInitialized = true;
 
@@ -352,6 +367,52 @@ class AudioDemoViewModel extends GetxController {
     update();
   }
 
+  /// Skips to the next track in the playlist.
+  Future<void> skipNext() async {
+    if (!_isInitialized) return;
+
+    _currentTrackIndex = (_currentTrackIndex + 1) % AudioTrack.values.length;
+    _currentTrack = AudioTrack.values[_currentTrackIndex];
+    _bgmPosition = Duration.zero;
+
+    await _engine.bgm.playNext();
+    await _fetchDuration();
+    update();
+  }
+
+  /// Skips to the previous track or restarts current track.
+  ///
+  /// If within 3 seconds of track start, goes to previous track.
+  /// Otherwise, restarts the current track.
+  Future<void> skipPrevious() async {
+    if (!_isInitialized) return;
+
+    // If more than 3 seconds into the track, restart it
+    if (_bgmPosition.inSeconds > 3) {
+      _bgmPosition = Duration.zero;
+      await _engine.bgm.stop();
+      await _engine.bgm.play(_currentTrack.assetPath);
+      await _fetchDuration();
+    } else {
+      // Go to previous track
+      _currentTrackIndex =
+          (_currentTrackIndex - 1 + AudioTrack.values.length) %
+              AudioTrack.values.length;
+      _currentTrack = AudioTrack.values[_currentTrackIndex];
+      _bgmPosition = Duration.zero;
+
+      await _engine.bgm.playAtIndex(_currentTrackIndex);
+      await _fetchDuration();
+    }
+    update();
+  }
+
+  /// Toggles shuffle mode.
+  void toggleShuffle() {
+    _shuffleEnabled = !_shuffleEnabled;
+    update();
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // SFX Actions
   // ─────────────────────────────────────────────────────────────────────────
@@ -424,7 +485,10 @@ class AudioDemoViewModel extends GetxController {
   }
 
   /// Stops voice playback.
-  void stopVoice() {
+  Future<void> stopVoice() async {
+    if (_isInitialized) {
+      await _engine.voice.stop();
+    }
     _voicePlaying = false;
     _currentVoiceLine = '';
     update();
@@ -448,6 +512,15 @@ class AudioDemoViewModel extends GetxController {
     _voiceVolume = volume.clamp(0.0, 1.0);
     if (_isInitialized && !_voiceMuted) {
       await _engine.voice.setVolume(_voiceVolume);
+    }
+    update();
+  }
+
+  /// Toggles voice ducking (auto-lower BGM during voice).
+  void toggleVoiceDucking() {
+    _voiceDucking = !_voiceDucking;
+    if (_isInitialized) {
+      _engine.voice.withDucking = _voiceDucking;
     }
     update();
   }
@@ -484,8 +557,11 @@ class AudioDemoViewModel extends GetxController {
   /// Resets all audio to defaults.
   Future<void> resetAll() async {
     _currentTrack = AudioTrack.exploration;
+    _currentTrackIndex = 0;
     _bgmMuted = false;
     _bgmVolume = 0.7;
+    _loopEnabled = true;
+    _shuffleEnabled = false;
     _sfxMuted = false;
     _sfxVolume = 0.8;
     _selectedCategory = SfxCategory.ui;
@@ -494,15 +570,46 @@ class AudioDemoViewModel extends GetxController {
     _voiceVolume = 1.0;
     _voicePlaying = false;
     _currentVoiceLine = '';
+    _voiceDucking = true;
     _masterVolume = 1.0;
     _masterMuted = false;
+    _isFading = false;
+    _lastFadePreset = null;
 
     if (_isInitialized) {
       await _engine.stopAll();
       await _engine.bgm.setVolume(_bgmVolume);
       await _engine.sfx.setVolume(_sfxVolume);
       await _engine.voice.setVolume(_voiceVolume);
+      _engine.voice.withDucking = _voiceDucking;
     }
+    update();
+  }
+
+  /// Demonstrates a fade effect on the BGM channel.
+  ///
+  /// Fades out, then fades back in using the specified preset.
+  Future<void> demonstrateFade(String presetName) async {
+    if (!_isInitialized || _isFading) return;
+
+    _isFading = true;
+    _lastFadePreset = presetName;
+    update();
+
+    // Get the preset
+    final preset = switch (presetName) {
+      'fast' => FadePreset.fast,
+      'normal' => FadePreset.normal,
+      'cinematic' => FadePreset.cinematic,
+      'ambient' => FadePreset.ambient,
+      _ => FadePreset.normal,
+    };
+
+    // Fade out then fade in
+    await _engine.bgm.fadeOutVolume(preset);
+    await _engine.bgm.fadeInVolume(preset);
+
+    _isFading = false;
     update();
   }
 

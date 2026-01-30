@@ -66,6 +66,21 @@ class AudioDemoActions {
     await _viewModel.seekBgm(progress);
   }
 
+  /// Called when skip next button is tapped.
+  Future<void> onSkipNext() async {
+    await _viewModel.skipNext();
+  }
+
+  /// Called when skip previous button is tapped.
+  Future<void> onSkipPrevious() async {
+    await _viewModel.skipPrevious();
+  }
+
+  /// Called when shuffle toggle is tapped.
+  void onToggleShuffle() {
+    _viewModel.toggleShuffle();
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // SFX Actions
   // ─────────────────────────────────────────────────────────────────────────
@@ -110,8 +125,13 @@ class AudioDemoActions {
   }
 
   /// Called when voice playback is stopped.
-  void onStopVoice() {
-    _viewModel.stopVoice();
+  Future<void> onStopVoice() async {
+    await _viewModel.stopVoice();
+  }
+
+  /// Called when voice ducking toggle is changed.
+  void onToggleVoiceDucking() {
+    _viewModel.toggleVoiceDucking();
   }
 
   /// Called when voice mute is toggled.
@@ -141,5 +161,19 @@ class AudioDemoActions {
   /// Called when reset button is tapped.
   Future<void> onResetAll() async {
     await _viewModel.resetAll();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Fade Demo Actions
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Called when a fade preset is demonstrated.
+  Future<void> onDemonstrateFade(BuildContext context, String presetName) async {
+    await _presenter.actionHandlerWithoutLoading(
+      () async {
+        await _viewModel.demonstrateFade(presetName);
+      },
+      context: context,
+    );
   }
 }
