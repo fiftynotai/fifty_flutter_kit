@@ -447,17 +447,18 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Category Selector using FiftySegmentedControl
-          FiftySegmentedControl<SfxCategory>(
-            segments: viewModel.sfxCategories
-                .map((cat) => FiftySegment(
-                      value: cat,
-                      label: cat.displayName.toUpperCase(),
-                    ))
-                .toList(),
-            selected: viewModel.selectedCategory,
-            onChanged: actions.onSfxCategorySelected,
-            expanded: true,
+          // Category Selector using FiftyChip in Wrap layout
+          Wrap(
+            spacing: FiftySpacing.sm,
+            runSpacing: FiftySpacing.sm,
+            children: viewModel.sfxCategories.map((cat) {
+              final isSelected = cat == viewModel.selectedCategory;
+              return FiftyChip(
+                label: cat.displayName,
+                selected: isSelected,
+                onTap: () => actions.onSfxCategorySelected(cat),
+              );
+            }).toList(),
           ),
           const SizedBox(height: FiftySpacing.lg),
 
