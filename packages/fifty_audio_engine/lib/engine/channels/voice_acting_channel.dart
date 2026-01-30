@@ -103,12 +103,16 @@ class VoiceActingChannel extends BaseAudioChannel {
 
   /// **Play (Override)**
   ///
-  /// Starts playback from a [UrlSource]. This method **does not** trigger
-  /// ducking; call [playVoice] for duck/restore semantics.
+  /// Starts playback using the configured source builder. This method
+  /// **does not** trigger ducking; call [playVoice] for duck/restore semantics.
+  ///
+  /// By default uses the source builder set via [changeSource]. Call
+  /// `changeSource(AssetSource.new)` for bundled assets or
+  /// `changeSource(UrlSource.new)` for network audio (default).
   @override
   Future<void> play(String path) async {
     if (path.isEmpty) return;
-    await playFromSource(UrlSource(path));
+    await playFromSource(resolveSource(path));
   }
 
   // ───────────────────────────────────────────────────────────────────────────
