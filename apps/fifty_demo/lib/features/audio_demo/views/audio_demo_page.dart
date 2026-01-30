@@ -208,7 +208,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     return Row(
       children: [
         SizedBox(
-          width: 60,
+          width: 72,
           child: Row(
             children: [
               Icon(
@@ -219,14 +219,17 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     : color,
               ),
               const SizedBox(width: FiftySpacing.xs),
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamily,
-                  fontSize: FiftyTypography.bodySmall,
-                  color: isMuted
-                      ? colorScheme.onSurface.withValues(alpha: 0.3)
-                      : colorScheme.onSurface,
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    color: isMuted
+                        ? colorScheme.onSurface.withValues(alpha: 0.3)
+                        : colorScheme.onSurface,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -454,6 +457,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 .toList(),
             selected: viewModel.selectedCategory,
             onChanged: actions.onSfxCategorySelected,
+            expanded: true,
           ),
           const SizedBox(height: FiftySpacing.lg),
 
