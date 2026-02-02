@@ -331,13 +331,30 @@ class AudioDemoViewModel extends GetxController {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Selects a BGM track.
-  void selectTrack(AudioTrack track) {
+  ///
+  /// Uses the engine's playlist system via playAtIndex().
+  /// Since the playlist is loaded in AudioTrack enum order (not shuffled),
+  /// we can use the track's index directly.
+  Future<void> selectTrack(AudioTrack track) async {
     _currentTrack = track;
+    _currentTrackIndex = AudioTrack.values.indexOf(track);
     _bgmPosition = Duration.zero;
+    _volumeAppliedAfterPlay = false;
+
+    if (_isInitialized) {
+      // Use playAtIndex to play the selected track from the playlist
+      await _engine.bgm.playAtIndex(_currentTrackIndex);
+      await _fetchDuration();
+      await _ensureVolumeAfterPlay();
+    }
+
     update();
   }
 
   /// Toggles BGM playback.
+  ///
+  /// Uses the engine's playlist system - does NOT call play(path) directly.
+  /// The engine was initialized with a playlist, so we use resume/pause.
   Future<void> toggleBgmPlayback() async {
     if (!_isInitialized) return;
 
@@ -345,7 +362,8 @@ class AudioDemoViewModel extends GetxController {
       await _engine.bgm.pause();
     } else {
       _volumeAppliedAfterPlay = false;
-      await _engine.bgm.play(_currentTrack.assetPath);
+      // Use resume() to continue playlist playback, not play(path)
+      await _engine.bgm.resume();
       await _fetchDuration();
       // Apply volume AFTER play to prevent reset
       await _ensureVolumeAfterPlay();
@@ -354,10 +372,13 @@ class AudioDemoViewModel extends GetxController {
   }
 
   /// Plays BGM.
+  ///
+  /// Uses the engine's playlist system via resume().
   Future<void> playBgm() async {
     if (!_isInitialized) return;
     _volumeAppliedAfterPlay = false;
-    await _engine.bgm.play(_currentTrack.assetPath);
+    // Use resume() to continue playlist playback
+    await _engine.bgm.resume();
     await _fetchDuration();
     // Apply volume AFTER play to prevent reset
     await _ensureVolumeAfterPlay();
@@ -413,7 +434,8 @@ class AudioDemoViewModel extends GetxController {
       await _engine.bgm.stop();
       _bgmPosition = Duration.zero;
       _volumeAppliedAfterPlay = false;
-      await _engine.bgm.play(_currentTrack.assetPath);
+      // Use resume() to restart from playlist position
+      await _engine.bgm.resume();
       await _fetchDuration();
       await _ensureVolumeAfterPlay();
     }
@@ -460,7 +482,8 @@ class AudioDemoViewModel extends GetxController {
     if (_bgmPosition.inSeconds > 3) {
       _bgmPosition = Duration.zero;
       await _engine.bgm.stop();
-      await _engine.bgm.play(_currentTrack.assetPath);
+      // Use playAtIndex to restart from playlist, not play(path)
+      await _engine.bgm.playAtIndex(_currentTrackIndex);
       await _fetchDuration();
       await _ensureVolumeAfterPlay();
     } else {

@@ -114,9 +114,13 @@ class BgmChannel extends BaseAudioChannel {
   /// **Load Default Playlist**
   ///
   /// - Attempts to restore saved playlist & index from storage
-  /// - If nothing is saved, shuffles the provided [paths] and starts at 0
+  /// - If nothing is saved and [shuffle] is true, shuffles the playlist
   /// - Marks this channel as using the **default** playlist (persistent)
-  Future<void> loadDefaultPlaylist(List<String> paths) async {
+  ///
+  /// **Parameters:**
+  /// - [paths]: List of asset paths for the playlist
+  /// - [shuffle]: Whether to shuffle on first load (default: false)
+  Future<void> loadDefaultPlaylist(List<String> paths, {bool shuffle = false}) async {
     _isUsingDefaultPlaylist = true;
 
     final saved = _storage.getPlaylist();
@@ -126,7 +130,10 @@ class BgmChannel extends BaseAudioChannel {
       _currentPlaylist = saved;
       _index = index;
     } else {
-      _currentPlaylist = List.from(paths)..shuffle();
+      _currentPlaylist = List.from(paths);
+      if (shuffle) {
+        _currentPlaylist.shuffle();
+      }
       _index = 0;
       _storage.save(_currentPlaylist, _index);
     }
