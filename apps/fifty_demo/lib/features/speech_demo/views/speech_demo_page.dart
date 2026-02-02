@@ -39,6 +39,9 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                   _buildStatusRow(context, viewModel),
                   const SizedBox(height: FiftySpacing.xl),
 
+                  // Error Message
+                  _buildErrorCard(context, viewModel),
+
                   // TTS Section
                   const SectionHeader(
                     title: 'Text-to-Speech',
@@ -115,11 +118,46 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
           label: 'STT',
           state: !viewModel.sttEnabled
               ? StatusState.offline
-              : viewModel.isListening
-                  ? StatusState.loading
-                  : StatusState.ready,
+              : !viewModel.sttAvailable
+                  ? StatusState.offline
+                  : viewModel.isListening
+                      ? StatusState.loading
+                      : StatusState.ready,
         ),
       ],
+    );
+  }
+
+  Widget _buildErrorCard(BuildContext context, SpeechDemoViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    if (viewModel.errorMessage.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+      child: FiftyCard(
+        padding: const EdgeInsets.all(FiftySpacing.md),
+        child: Row(
+          children: [
+            Icon(
+              Icons.error_outline,
+              color: colorScheme.error,
+              size: 20,
+            ),
+            const SizedBox(width: FiftySpacing.sm),
+            Expanded(
+              child: Text(
+                viewModel.errorMessage,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodySmall,
+                  color: colorScheme.error,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

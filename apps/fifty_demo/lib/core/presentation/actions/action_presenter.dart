@@ -32,8 +32,11 @@ class ActionPresenter {
       if (context.mounted) {
         context.loaderOverlay.show();
       }
-    } catch (_) {
-      /* no overlay present; ignore */
+    } catch (e) {
+      // Overlay not present - log in debug mode for visibility
+      if (kDebugMode) {
+        debugPrint('[ActionPresenter] Failed to show loader overlay: $e');
+      }
     }
     try {
       // Execute the provided action.
@@ -61,8 +64,11 @@ class ActionPresenter {
         if (context.mounted) {
           context.loaderOverlay.hide();
         }
-      } catch (_) {
-        /* no overlay present; ignore */
+      } catch (e) {
+        // Overlay not present - log in debug mode for visibility
+        if (kDebugMode) {
+          debugPrint('[ActionPresenter] Failed to hide loader overlay: $e');
+        }
       }
     }
   }
@@ -113,8 +119,9 @@ class ActionPresenter {
     String message,
   ) async {
     if (kDebugMode) {
-      print(stackTrace); // Print stack trace in debug mode.
-      log(e.toString()); // Log the error message.
+      debugPrint('[ActionPresenter] Exception: $e');
+      debugPrint('[ActionPresenter] StackTrace: $stackTrace');
+      log(e.toString()); // Log to developer tools
     }
 
     // Display an error snackbar if context is available.

@@ -1,8 +1,10 @@
 /// Printing Demo Actions
 ///
 /// Handles user interactions for the printing demo feature.
+/// Uses real fifty_printing_engine for Bluetooth printer operations.
 library;
 
+import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +13,7 @@ import '../controllers/printing_demo_view_model.dart';
 
 /// Actions for the printing demo feature.
 ///
-/// Provides printer discovery and print actions.
+/// Provides real Bluetooth printer discovery, registration, and print actions.
 class PrintingDemoActions {
   /// Creates printing demo actions with required dependencies.
   PrintingDemoActions(this._viewModel, this._presenter);
@@ -23,19 +25,62 @@ class PrintingDemoActions {
   static PrintingDemoActions get instance => Get.find<PrintingDemoActions>();
 
   // ---------------------------------------------------------------------------
+  // Permissions Actions
+  // ---------------------------------------------------------------------------
+
+  /// Called when open settings button is tapped.
+  Future<void> onOpenSettingsTapped(BuildContext context) async {
+    await _viewModel.openSettings();
+  }
+
+  // ---------------------------------------------------------------------------
   // Discovery Actions
   // ---------------------------------------------------------------------------
 
   /// Called when discover printers button is tapped.
   Future<void> onDiscoverTapped(BuildContext context) async {
-    await _presenter.actionHandler(context, () async {
-      await _viewModel.discoverPrinters();
-    });
+    // Don't use actionHandler to avoid loader overlay during discovery
+    await _viewModel.discoverPrinters();
   }
 
-  /// Called when a printer is selected.
-  void onPrinterSelected(MockPrinterDevice? printer) {
-    _viewModel.selectPrinter(printer);
+  /// Called when a discovered printer is tapped (to register it).
+  void onDiscoveredPrinterTapped(BuildContext context, DiscoveredPrinter discovered) {
+    _viewModel.registerPrinter(discovered);
+    _presenter.showSuccessSnackBar(
+      context,
+      'Printer Added',
+      '${discovered.name} has been registered',
+    );
+  }
+
+  /// Called when a registered printer is tapped (to select it).
+  void onRegisteredPrinterTapped(BuildContext context, PrinterDevice printer) {
+    _viewModel.selectPrinter(printer.id);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Connection Actions
+  // ---------------------------------------------------------------------------
+
+  /// Called when connect button is tapped.
+  Future<void> onConnectTapped(BuildContext context) async {
+    await _presenter.actionHandler(context, () async {
+      final success = await _viewModel.connectPrinter();
+
+      if (success) {
+        _presenter.showSuccessSnackBar(
+          context,
+          'Connected',
+          'Printer connected successfully',
+        );
+      } else {
+        _presenter.showErrorSnackBar(
+          context,
+          'Connection Failed',
+          _viewModel.errorMessage ?? 'Could not connect to printer',
+        );
+      }
+    });
   }
 
   // ---------------------------------------------------------------------------
@@ -47,17 +92,17 @@ class PrintingDemoActions {
     await _presenter.actionHandler(context, () async {
       final result = await _viewModel.printTicket();
 
-      if (result.success) {
+      if (result != null && result.isSuccess) {
         _presenter.showSuccessSnackBar(
           context,
           'Print Sent',
-          result.message,
+          'Ticket sent to ${_viewModel.selectedPrinter?.name}',
         );
-      } else {
+      } else if (result != null) {
         _presenter.showErrorSnackBar(
           context,
           'Print Failed',
-          result.message,
+          _viewModel.errorMessage ?? 'Could not print ticket',
         );
       }
     });

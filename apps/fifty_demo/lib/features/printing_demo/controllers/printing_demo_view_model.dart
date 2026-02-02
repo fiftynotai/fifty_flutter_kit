@@ -1,109 +1,58 @@
 /// Printing Demo ViewModel
 ///
 /// Business logic for the printing demo feature.
-/// Demonstrates printer discovery and ticket printing.
+/// Demonstrates real printer discovery and ticket printing using fifty_printing_engine.
 library;
 
+import 'dart:async';
+import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// Mock printer device for demo purposes.
-class MockPrinterDevice {
-  /// Creates a mock printer device.
-  const MockPrinterDevice({
-    required this.id,
-    required this.name,
-    required this.type,
-    required this.status,
-  });
-
-  /// Unique printer identifier.
-  final String id;
-
-  /// Display name of the printer.
-  final String name;
-
-  /// Connection type (WiFi/Bluetooth).
-  final PrinterConnectionType type;
-
-  /// Current printer status.
-  final PrinterStatus status;
-
-  /// Icon for this printer type.
-  IconData get icon {
-    switch (type) {
-      case PrinterConnectionType.wifi:
-        return Icons.wifi;
-      case PrinterConnectionType.bluetooth:
-        return Icons.bluetooth;
-      case PrinterConnectionType.usb:
-        return Icons.usb;
-    }
-  }
-}
-
-/// Printer connection types.
-enum PrinterConnectionType {
-  /// WiFi network printer.
-  wifi,
-
-  /// Bluetooth printer.
-  bluetooth,
-
-  /// USB connected printer.
-  usb,
-}
-
-/// Printer status states.
-enum PrinterStatus {
-  /// Printer is online and ready.
-  online,
-
-  /// Printer is offline.
-  offline,
-
-  /// Printer is busy.
-  busy,
-
-  /// Printer has an error.
-  error,
-}
-
-/// Print job result.
-class PrintResult {
-  /// Creates a print result.
-  const PrintResult({
-    required this.success,
-    required this.message,
-    this.jobId,
-  });
-
-  /// Whether the print was successful.
-  final bool success;
-
-  /// Result message.
-  final String message;
-
-  /// Job ID if successful.
-  final String? jobId;
-}
-
 /// ViewModel for the printing demo feature.
 ///
-/// Manages printer discovery and print job state.
+/// Manages printer discovery and print job state using the real
+/// [PrintingEngine] from fifty_printing_engine package.
+///
+/// **Note:** Engine access is lazy to avoid crashes on iOS during app startup.
+/// The engine is only accessed when the user explicitly interacts with printing.
 class PrintingDemoViewModel extends GetxController {
+  /// The printing engine instance (lazy access to avoid startup crashes).
+  PrintingEngine? _engine;
+  PrintingEngine get engine {
+    _engine ??= PrintingEngine.instance;
+    return _engine!;
+  }
+
+  /// Subscription to printer status events.
+  StreamSubscription<PrinterStatusEvent>? _statusSubscription;
+
+  /// Whether the engine has been initialized.
+  final _engineInitialized = false.obs;
+  bool get engineInitialized => _engineInitialized.value;
+
   /// Whether discovery is in progress.
   final _isDiscovering = false.obs;
   bool get isDiscovering => _isDiscovering.value;
 
-  /// Discovered printers.
-  final _printers = <MockPrinterDevice>[].obs;
-  List<MockPrinterDevice> get printers => _printers;
+  /// Discovered printers (from Bluetooth scan).
+  final _discoveredPrinters = <DiscoveredPrinter>[].obs;
+  List<DiscoveredPrinter> get discoveredPrinters => _discoveredPrinters;
 
-  /// Currently selected printer.
-  final _selectedPrinter = Rxn<MockPrinterDevice>();
-  MockPrinterDevice? get selectedPrinter => _selectedPrinter.value;
+  /// Registered printers (added to engine).
+  List<PrinterDevice> get registeredPrinters =>
+      _engineInitialized.value ? engine.getAvailablePrinters() : [];
+
+  /// Currently selected printer for printing.
+  final _selectedPrinterId = Rxn<String>();
+  String? get selectedPrinterId => _selectedPrinterId.value;
+
+  /// Gets the selected printer device.
+  PrinterDevice? get selectedPrinter {
+    if (selectedPrinterId == null || !_engineInitialized.value) return null;
+    return registeredPrinters.firstWhereOrNull((p) => p.id == selectedPrinterId);
+  }
 
   /// Whether a print is in progress.
   final _isPrinting = false.obs;
@@ -112,6 +61,14 @@ class PrintingDemoViewModel extends GetxController {
   /// Last print result.
   final _lastResult = Rxn<PrintResult>();
   PrintResult? get lastResult => _lastResult.value;
+
+  /// Error message from last operation.
+  final _errorMessage = Rxn<String>();
+  String? get errorMessage => _errorMessage.value;
+
+  /// Whether Bluetooth permissions are granted.
+  final _hasPermissions = false.obs;
+  bool get hasPermissions => _hasPermissions.value;
 
   /// Sample ticket content lines.
   List<String> get sampleTicketLines => [
@@ -134,55 +91,156 @@ class PrintingDemoViewModel extends GetxController {
     '================================',
   ];
 
+  @override
+  void onClose() {
+    _statusSubscription?.cancel();
+    super.onClose();
+  }
+
+  /// Initializes the printing engine (called lazily when user interacts).
+  Future<void> _ensureEngineInitialized() async {
+    if (_engineInitialized.value) return;
+
+    try {
+      // Access engine (triggers lazy initialization)
+      final eng = engine;
+
+      // Subscribe to status events
+      _statusSubscription = eng.statusStream.listen((event) {
+        update();
+      });
+
+      // Check permissions
+      _hasPermissions.value = await eng.hasBluetoothPermissions();
+      _engineInitialized.value = true;
+    } catch (e) {
+      _errorMessage.value = 'Printing engine not available: $e';
+      _hasPermissions.value = false;
+    }
+    update();
+  }
+
   // ---------------------------------------------------------------------------
   // Discovery
   // ---------------------------------------------------------------------------
 
-  /// Starts printer discovery (simulated).
+  /// Requests Bluetooth permissions.
+  Future<bool> requestPermissions() async {
+    await _ensureEngineInitialized();
+    _errorMessage.value = null;
+    try {
+      await engine.requestBluetoothPermissions();
+      _hasPermissions.value = true;
+      update();
+      return true;
+    } catch (e) {
+      _errorMessage.value = e.toString();
+      _hasPermissions.value = false;
+      update();
+      return false;
+    }
+  }
+
+  /// Opens Bluetooth settings for manual permission grant.
+  Future<void> openSettings() async {
+    await _ensureEngineInitialized();
+    await engine.openBluetoothSettings();
+  }
+
+  /// Starts Bluetooth printer discovery.
   Future<void> discoverPrinters() async {
+    await _ensureEngineInitialized();
+
     _isDiscovering.value = true;
-    _printers.clear();
+    _errorMessage.value = null;
+    _discoveredPrinters.clear();
     update();
 
-    // Simulate discovery delay
-    await Future<void>.delayed(const Duration(milliseconds: 1500));
+    try {
+      // Check if Bluetooth is enabled
+      final bluetoothEnabled = await engine.isBluetoothEnabled();
+      if (!bluetoothEnabled) {
+        _errorMessage.value = 'Bluetooth is not enabled. Please enable Bluetooth.';
+        _isDiscovering.value = false;
+        update();
+        return;
+      }
 
-    // Add mock discovered printers
-    _printers.addAll([
-      const MockPrinterDevice(
-        id: 'printer-1',
-        name: 'Office Printer (WiFi)',
-        type: PrinterConnectionType.wifi,
-        status: PrinterStatus.online,
-      ),
-      const MockPrinterDevice(
-        id: 'printer-2',
-        name: 'Portable BT Printer',
-        type: PrinterConnectionType.bluetooth,
-        status: PrinterStatus.online,
-      ),
-      const MockPrinterDevice(
-        id: 'printer-3',
-        name: 'Kitchen Printer',
-        type: PrinterConnectionType.wifi,
-        status: PrinterStatus.busy,
-      ),
-      const MockPrinterDevice(
-        id: 'printer-4',
-        name: 'USB Receipt Printer',
-        type: PrinterConnectionType.usb,
-        status: PrinterStatus.offline,
-      ),
-    ]);
+      // Scan for Bluetooth printers
+      final printers = await engine.scanBluetoothPrinters(
+        filterPrintersOnly: false, // Show all devices for demo
+      );
+
+      _discoveredPrinters.addAll(printers);
+    } catch (e) {
+      _errorMessage.value = e.toString();
+    }
 
     _isDiscovering.value = false;
     update();
   }
 
+  /// Registers a discovered printer with the engine.
+  void registerPrinter(DiscoveredPrinter discovered) {
+    final id = 'printer-${DateTime.now().millisecondsSinceEpoch}';
+    final device = discovered.toDevice(
+      id: id,
+      role: PrinterRole.receipt,
+      defaultCopies: 1,
+      paperSize: PaperSize.mm80,
+    );
+
+    engine.registerPrinter(device);
+    _selectedPrinterId.value = id;
+    _errorMessage.value = null;
+    update();
+  }
+
+  /// Removes a registered printer from the engine.
+  void removePrinter(String printerId) {
+    engine.removePrinter(printerId);
+    if (_selectedPrinterId.value == printerId) {
+      _selectedPrinterId.value = null;
+    }
+    update();
+  }
+
   /// Selects a printer for printing.
-  void selectPrinter(MockPrinterDevice? printer) {
-    _selectedPrinter.value = printer;
+  void selectPrinter(String? printerId) {
+    _selectedPrinterId.value = printerId;
     _lastResult.value = null;
+    _errorMessage.value = null;
+    update();
+  }
+
+  /// Connects to the selected printer.
+  Future<bool> connectPrinter() async {
+    final printer = selectedPrinter;
+    if (printer == null) return false;
+
+    _errorMessage.value = null;
+    update();
+
+    try {
+      final success = await printer.connect();
+      if (!success) {
+        _errorMessage.value = 'Failed to connect to ${printer.name}';
+      }
+      update();
+      return success;
+    } catch (e) {
+      _errorMessage.value = 'Connection error: $e';
+      update();
+      return false;
+    }
+  }
+
+  /// Disconnects from the selected printer.
+  Future<void> disconnectPrinter() async {
+    final printer = selectedPrinter;
+    if (printer == null) return;
+
+    await printer.disconnect();
     update();
   }
 
@@ -190,47 +248,116 @@ class PrintingDemoViewModel extends GetxController {
   // Printing
   // ---------------------------------------------------------------------------
 
-  /// Prints a sample ticket (simulated).
-  Future<PrintResult> printTicket() async {
+  /// Prints a sample ticket to the selected printer.
+  Future<PrintResult?> printTicket() async {
     if (selectedPrinter == null) {
-      const result = PrintResult(
-        success: false,
-        message: 'No printer selected',
-      );
-      _lastResult.value = result;
+      _errorMessage.value = 'No printer selected';
       update();
-      return result;
-    }
-
-    if (selectedPrinter!.status != PrinterStatus.online) {
-      final result = PrintResult(
-        success: false,
-        message: 'Printer ${selectedPrinter!.name} is not available',
-      );
-      _lastResult.value = result;
-      update();
-      return result;
+      return null;
     }
 
     _isPrinting.value = true;
     _lastResult.value = null;
+    _errorMessage.value = null;
     update();
 
-    // Simulate print delay
-    await Future<void>.delayed(const Duration(milliseconds: 2000));
+    try {
+      // Load capability profile for ESC/POS commands
+      final profile = await CapabilityProfile.load();
 
-    final jobId = 'JOB-${DateTime.now().millisecondsSinceEpoch}';
-    final result = PrintResult(
-      success: true,
-      message: 'Print job sent to ${selectedPrinter!.name}',
-      jobId: jobId,
-    );
+      // Create the ticket
+      final ticket = PrintTicket(PaperSize.mm80, profile);
+
+      // Build the receipt content
+      ticket.text(
+        'FIFTY DEMO RECEIPT',
+        styles: const PosStyles(
+          align: PosAlign.center,
+          bold: true,
+          height: PosTextSize.size2,
+          width: PosTextSize.size2,
+        ),
+      );
+      ticket.feed(1);
+
+      ticket.text(
+        DateTime.now().toString().substring(0, 19),
+        styles: const PosStyles(align: PosAlign.center),
+      );
+      ticket.feed(1);
+
+      ticket.hr();
+
+      // Items
+      ticket.row([
+        PosColumn(text: 'Coffee (Large)', width: 8),
+        PosColumn(
+          text: '\$4.50',
+          width: 4,
+          styles: const PosStyles(align: PosAlign.right),
+        ),
+      ]);
+      ticket.row([
+        PosColumn(text: 'Croissant', width: 8),
+        PosColumn(
+          text: '\$3.25',
+          width: 4,
+          styles: const PosStyles(align: PosAlign.right),
+        ),
+      ]);
+      ticket.row([
+        PosColumn(text: 'Tip', width: 8),
+        PosColumn(
+          text: '\$1.25',
+          width: 4,
+          styles: const PosStyles(align: PosAlign.right),
+        ),
+      ]);
+
+      ticket.hr();
+
+      ticket.row([
+        PosColumn(
+          text: 'TOTAL',
+          width: 8,
+          styles: const PosStyles(bold: true),
+        ),
+        PosColumn(
+          text: '\$9.00',
+          width: 4,
+          styles: const PosStyles(align: PosAlign.right, bold: true),
+        ),
+      ]);
+
+      ticket.feed(2);
+
+      ticket.text(
+        'Thank you for visiting!',
+        styles: const PosStyles(align: PosAlign.center),
+      );
+
+      ticket.feed(2);
+      ticket.cut();
+
+      // Print using the engine
+      final result = await engine.print(
+        ticket: ticket,
+        targetPrinterIds: [selectedPrinterId!],
+      );
+
+      _lastResult.value = result;
+
+      if (!result.isSuccess) {
+        _errorMessage.value = 'Print failed: ${result.failedCount} printer(s) failed';
+      }
+    } catch (e) {
+      _errorMessage.value = 'Print error: $e';
+    }
 
     _isPrinting.value = false;
-    _lastResult.value = result;
     update();
 
-    return result;
+    return _lastResult.value;
   }
 
   // ---------------------------------------------------------------------------
@@ -239,17 +366,37 @@ class PrintingDemoViewModel extends GetxController {
 
   /// Status label for discovery state.
   String get discoveryStatusLabel {
-    if (isDiscovering) return 'DISCOVERING';
-    if (printers.isEmpty) return 'NO PRINTERS';
-    return '${printers.length} FOUND';
+    if (isDiscovering) return 'SCANNING';
+    if (discoveredPrinters.isEmpty && registeredPrinters.isEmpty) {
+      return 'NO PRINTERS';
+    }
+    return '${registeredPrinters.length} REGISTERED';
   }
 
   /// Status label for print state.
   String get printStatusLabel {
     if (isPrinting) return 'PRINTING';
-    if (lastResult?.success == true) return 'SENT';
-    if (lastResult?.success == false) return 'FAILED';
+    if (lastResult?.isSuccess == true) return 'SENT';
+    if (lastResult != null && !lastResult!.isSuccess) return 'FAILED';
     return 'READY';
+  }
+
+  /// Gets display label for printer status.
+  String getStatusLabel(PrinterStatus status) {
+    switch (status) {
+      case PrinterStatus.connected:
+        return 'CONNECTED';
+      case PrinterStatus.connecting:
+        return 'CONNECTING';
+      case PrinterStatus.disconnected:
+        return 'DISCONNECTED';
+      case PrinterStatus.printing:
+        return 'PRINTING';
+      case PrinterStatus.error:
+        return 'ERROR';
+      case PrinterStatus.healthCheckFailed:
+        return 'OFFLINE';
+    }
   }
 
   /// Gets color for printer status.
@@ -261,28 +408,28 @@ class PrintingDemoViewModel extends GetxController {
     FiftyThemeExtension? fiftyTheme,
   ) {
     switch (status) {
-      case PrinterStatus.online:
+      case PrinterStatus.connected:
         return fiftyTheme?.success ?? colorScheme.tertiary;
-      case PrinterStatus.busy:
-        return fiftyTheme?.warning ?? colorScheme.error;
-      case PrinterStatus.offline:
+      case PrinterStatus.connecting:
+      case PrinterStatus.printing:
+        return colorScheme.primary;
+      case PrinterStatus.disconnected:
         return colorScheme.onSurfaceVariant;
       case PrinterStatus.error:
-        return colorScheme.primary;
+      case PrinterStatus.healthCheckFailed:
+        return fiftyTheme?.warning ?? colorScheme.error;
     }
   }
 
-  /// Gets label for printer status.
-  String getStatusLabel(PrinterStatus status) {
-    switch (status) {
-      case PrinterStatus.online:
-        return 'ONLINE';
-      case PrinterStatus.busy:
-        return 'BUSY';
-      case PrinterStatus.offline:
-        return 'OFFLINE';
-      case PrinterStatus.error:
-        return 'ERROR';
+  /// Gets icon for printer type.
+  IconData getPrinterTypeIcon(PrinterType type) {
+    switch (type) {
+      case PrinterType.bluetooth:
+        return Icons.bluetooth;
+      case PrinterType.wifi:
+        return Icons.wifi;
+      case PrinterType.usb:
+        return Icons.usb;
     }
   }
 }

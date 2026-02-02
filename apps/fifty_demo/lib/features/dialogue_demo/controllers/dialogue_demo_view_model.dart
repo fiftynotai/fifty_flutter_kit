@@ -20,11 +20,20 @@ class DialogueDemoViewModel extends GetxController {
   final DialogueOrchestrator _orchestrator;
   String _selectedDialogue = 'Introduction';
 
+  /// Worker subscription for orchestrator changes.
+  Worker? _orchestratorWorker;
+
   @override
   void onInit() {
     super.onInit();
     // Listen to orchestrator changes
-    ever(_orchestrator.obs, (_) => update());
+    _orchestratorWorker = ever(_orchestrator.obs, (_) => update());
+  }
+
+  @override
+  void onClose() {
+    _orchestratorWorker?.dispose();
+    super.onClose();
   }
 
   // ─────────────────────────────────────────────────────────────────────────

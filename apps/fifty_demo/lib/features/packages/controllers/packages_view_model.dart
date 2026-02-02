@@ -61,6 +61,9 @@ enum PackageCategory {
 /// ViewModel for the packages hub feature.
 ///
 /// Provides package listings organized by category.
+///
+/// **Note:** No `onClose()` override needed. This ViewModel holds only static
+/// const data with no subscriptions, timers, or mutable state to clean up.
 class PackagesViewModel extends GetxController {
   /// All available package demos.
   static const List<PackageDemo> allPackages = [

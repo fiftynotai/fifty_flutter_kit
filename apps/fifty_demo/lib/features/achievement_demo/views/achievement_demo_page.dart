@@ -14,6 +14,42 @@ import '../../../shared/widgets/section_header.dart';
 import '../actions/achievement_demo_actions.dart';
 import '../controllers/achievement_demo_view_model.dart';
 
+/// Extension to provide theme-aware colors for achievement rarities.
+///
+/// Resolves rarity colors based on the current theme (dark/light mode).
+/// Uses FiftyThemeExtension when available, falls back to ColorScheme.
+extension AchievementRarityColors on AchievementRarity {
+  /// Gets the theme-aware color for this rarity.
+  ///
+  /// In dark mode: Uses vibrant colors for visibility
+  /// In light mode: Uses slightly muted variants
+  Color getColor(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    switch (this) {
+      case AchievementRarity.common:
+        // Neutral grey - uses surface variant
+        return isDark
+            ? colorScheme.onSurfaceVariant
+            : colorScheme.outline;
+      case AchievementRarity.uncommon:
+        // Green tint - uses success color
+        return fiftyTheme?.success ?? colorScheme.tertiary;
+      case AchievementRarity.rare:
+        // Blue tint - uses primary
+        return colorScheme.primary;
+      case AchievementRarity.epic:
+        // Purple/pink - uses secondary
+        return colorScheme.secondary;
+      case AchievementRarity.legendary:
+        // Gold/orange - uses warning or tertiary
+        return fiftyTheme?.warning ?? FiftyColors.warning;
+    }
+  }
+}
+
 /// Achievement demo page widget.
 ///
 /// Shows achievement list with event triggers.
@@ -135,6 +171,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
               final count =
                   viewModel.getByRarity(rarity).where((a) => a.isUnlocked).length;
               final total = viewModel.getByRarity(rarity).length;
+              final rarityColor = rarity.getColor(context);
 
               if (total == 0) return const SizedBox.shrink();
 
@@ -145,7 +182,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: rarity.color.withValues(alpha: 0.2),
+                        color: rarityColor.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Center(
@@ -155,7 +192,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                             fontFamily: FiftyTypography.fontFamily,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: rarity.color,
+                            color: rarityColor,
                           ),
                         ),
                       ),
@@ -266,6 +303,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
     final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
     final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
+    final rarityColor = achievement.rarity.getColor(context);
 
     return Positioned.fill(
       child: GestureDetector(
@@ -283,11 +321,11 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: achievement.rarity.color.withValues(alpha: 0.2),
+                      color: rarityColor.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: achievement.rarity.color.withValues(alpha: 0.5),
+                          color: rarityColor.withValues(alpha: 0.5),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -295,7 +333,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                     ),
                     child: Icon(
                       achievement.icon,
-                      color: achievement.rarity.color,
+                      color: rarityColor,
                       size: 40,
                     ),
                   ),
@@ -332,7 +370,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       vertical: FiftySpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: achievement.rarity.color.withValues(alpha: 0.2),
+                      color: rarityColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(FiftyRadii.sm),
                     ),
                     child: Text(
@@ -341,7 +379,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
                         fontWeight: FontWeight.bold,
-                        color: achievement.rarity.color,
+                        color: rarityColor,
                       ),
                     ),
                   ),
@@ -387,6 +425,7 @@ class _AchievementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final rarityColor = achievement.rarity.getColor(context);
 
     return Opacity(
       opacity: achievement.isUnlocked ? 1.0 : 0.6,
@@ -400,14 +439,14 @@ class _AchievementCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: achievement.isUnlocked
-                    ? achievement.rarity.color.withValues(alpha: 0.2)
+                    ? rarityColor.withValues(alpha: 0.2)
                     : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(FiftyRadii.sm),
               ),
               child: Icon(
                 achievement.isUnlocked ? achievement.icon : Icons.lock_outline,
                 color: achievement.isUnlocked
-                    ? achievement.rarity.color
+                    ? rarityColor
                     : colorScheme.onSurfaceVariant,
                 size: 24,
               ),
@@ -438,7 +477,7 @@ class _AchievementCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: achievement.rarity.color.withValues(alpha: 0.2),
+                          color: rarityColor.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(FiftyRadii.sm),
                         ),
                         child: Text(
@@ -446,7 +485,7 @@ class _AchievementCard extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: FiftyTypography.fontFamily,
                             fontSize: 10,
-                            color: achievement.rarity.color,
+                            color: rarityColor,
                           ),
                         ),
                       ),
@@ -475,7 +514,7 @@ class _AchievementCard extends StatelessWidget {
                               backgroundColor:
                                   colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                achievement.rarity.color,
+                                rarityColor,
                               ),
                               minHeight: 4,
                             ),

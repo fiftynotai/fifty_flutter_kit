@@ -18,11 +18,20 @@ class MapDemoViewModel extends GetxController {
 
   final MapAudioCoordinator _coordinator;
 
+  /// Worker subscription for coordinator changes.
+  Worker? _coordinatorWorker;
+
   @override
   void onInit() {
     super.onInit();
     // Listen to coordinator changes
-    ever(_coordinator.obs, (_) => update());
+    _coordinatorWorker = ever(_coordinator.obs, (_) => update());
+  }
+
+  @override
+  void onClose() {
+    _coordinatorWorker?.dispose();
+    super.onClose();
   }
 
   // ─────────────────────────────────────────────────────────────────────────

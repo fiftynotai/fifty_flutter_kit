@@ -1,8 +1,10 @@
 /// Printing Demo Page
 ///
-/// Demonstrates printing engine with printer discovery and ticket printing.
+/// Demonstrates printing engine with real Bluetooth printer discovery
+/// and ESC/POS ticket printing using fifty_printing_engine.
 library;
 
+import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
@@ -17,7 +19,7 @@ import '../controllers/printing_demo_view_model.dart';
 
 /// Printing demo page widget.
 ///
-/// Shows printer discovery and print functionality.
+/// Shows Bluetooth printer discovery, registration, and real print functionality.
 class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
   /// Creates a printing demo page.
   const PrintingDemoPage({super.key});
@@ -31,71 +33,182 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
         return DemoScaffold(
           title: 'Printing Engine',
           child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Status Row
-                  Row(
-                    children: [
-                      StatusIndicator(
-                        label: 'DISCOVERY',
-                        state: viewModel.isDiscovering
-                            ? StatusState.loading
-                            : (viewModel.printers.isNotEmpty
-                                ? StatusState.ready
-                                : StatusState.idle),
-                      ),
-                      const SizedBox(width: FiftySpacing.lg),
-                      StatusIndicator(
-                        label: 'PRINT',
-                        state: viewModel.isPrinting
-                            ? StatusState.loading
-                            : (viewModel.lastResult?.success == true
-                                ? StatusState.ready
-                                : StatusState.idle),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: FiftySpacing.xl),
-
-                  // Discovery Section
-                  const SectionHeader(
-                    title: 'Printer Discovery',
-                    subtitle: 'Find available printers',
-                  ),
-                  _buildDiscoverySection(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
-
-                  // Printers List Section
-                  if (viewModel.printers.isNotEmpty) ...[
-                    SectionHeader(
-                      title: 'Available Printers',
-                      subtitle: '${viewModel.printers.length} printers found',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Status Row
+                Row(
+                  children: [
+                    StatusIndicator(
+                      label: 'DISCOVERY',
+                      state: viewModel.isDiscovering
+                          ? StatusState.loading
+                          : (viewModel.registeredPrinters.isNotEmpty
+                              ? StatusState.ready
+                              : StatusState.idle),
                     ),
-                    _buildPrintersList(context, viewModel, actions),
-                    const SizedBox(height: FiftySpacing.xl),
+                    const SizedBox(width: FiftySpacing.lg),
+                    StatusIndicator(
+                      label: 'PRINT',
+                      state: viewModel.isPrinting
+                          ? StatusState.loading
+                          : (viewModel.lastResult?.isSuccess == true
+                              ? StatusState.ready
+                              : StatusState.idle),
+                    ),
                   ],
+                ),
+                const SizedBox(height: FiftySpacing.xl),
 
-                  // Ticket Preview Section
-                  const SectionHeader(
-                    title: 'Ticket Preview',
-                    subtitle: 'Sample receipt ticket',
-                  ),
-                  _buildTicketPreview(context, viewModel),
-                  const SizedBox(height: FiftySpacing.xl),
-
-                  // Print Section
-                  const SectionHeader(
-                    title: 'Print',
-                    subtitle: 'Send to selected printer',
-                  ),
-                  _buildPrintSection(context, viewModel, actions),
+                // Error Message
+                if (viewModel.errorMessage != null) ...[
+                  _buildErrorCard(context, viewModel),
+                  const SizedBox(height: FiftySpacing.md),
                 ],
+
+                // Permissions Section (if not granted)
+                if (!viewModel.hasPermissions) ...[
+                  _buildPermissionsSection(context, viewModel, actions),
+                  const SizedBox(height: FiftySpacing.xl),
+                ],
+
+                // Discovery Section
+                const SectionHeader(
+                  title: 'Bluetooth Discovery',
+                  subtitle: 'Scan for nearby Bluetooth printers',
+                ),
+                _buildDiscoverySection(context, viewModel, actions),
+                const SizedBox(height: FiftySpacing.xl),
+
+                // Discovered Printers (not yet registered)
+                if (viewModel.discoveredPrinters.isNotEmpty) ...[
+                  SectionHeader(
+                    title: 'Discovered Devices',
+                    subtitle: '${viewModel.discoveredPrinters.length} found - tap to add',
+                  ),
+                  _buildDiscoveredPrintersList(context, viewModel, actions),
+                  const SizedBox(height: FiftySpacing.xl),
+                ],
+
+                // Registered Printers
+                if (viewModel.registeredPrinters.isNotEmpty) ...[
+                  SectionHeader(
+                    title: 'Registered Printers',
+                    subtitle: '${viewModel.registeredPrinters.length} available',
+                  ),
+                  _buildRegisteredPrintersList(context, viewModel, actions),
+                  const SizedBox(height: FiftySpacing.xl),
+                ],
+
+                // Ticket Preview Section
+                const SectionHeader(
+                  title: 'Ticket Preview',
+                  subtitle: 'Sample receipt ticket',
+                ),
+                _buildTicketPreview(context, viewModel),
+                const SizedBox(height: FiftySpacing.xl),
+
+                // Print Section
+                const SectionHeader(
+                  title: 'Print',
+                  subtitle: 'Send to selected printer',
+                ),
+                _buildPrintSection(context, viewModel, actions),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildErrorCard(BuildContext context, PrintingDemoViewModel viewModel) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return FiftyCard(
+      padding: const EdgeInsets.all(FiftySpacing.md),
+      child: Row(
+        children: [
+          Icon(
+            Icons.error_outline,
+            color: colorScheme.error,
+            size: 20,
+          ),
+          const SizedBox(width: FiftySpacing.sm),
+          Expanded(
+            child: Text(
+              viewModel.errorMessage!,
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
+                color: colorScheme.error,
               ),
             ),
-          );
-        },
-      );
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPermissionsSection(
+    BuildContext context,
+    PrintingDemoViewModel viewModel,
+    PrintingDemoActions actions,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
+    final warningColor = fiftyTheme?.warning ?? colorScheme.error;
+
+    return FiftyCard(
+      padding: const EdgeInsets.all(FiftySpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.bluetooth_disabled,
+                color: warningColor,
+                size: 24,
+              ),
+              const SizedBox(width: FiftySpacing.sm),
+              Expanded(
+                child: Text(
+                  'Bluetooth Permissions Required',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyMedium,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: FiftySpacing.sm),
+          Text(
+            'Grant Bluetooth permissions to discover and connect to thermal printers.',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: FiftySpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: FiftyButton(
+                  label: 'OPEN SETTINGS',
+                  variant: FiftyButtonVariant.secondary,
+                  onPressed: () => actions.onOpenSettingsTapped(context),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildDiscoverySection(
@@ -115,10 +228,10 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
               children: [
                 Text(
                   viewModel.isDiscovering
-                      ? 'Searching for printers...'
-                      : viewModel.printers.isEmpty
-                          ? 'Tap to discover nearby printers'
-                          : '${viewModel.printers.length} printers discovered',
+                      ? 'Scanning for Bluetooth devices...'
+                      : viewModel.discoveredPrinters.isEmpty
+                          ? 'Tap to scan for nearby printers'
+                          : '${viewModel.discoveredPrinters.length} devices found',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyMedium,
@@ -129,7 +242,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
             ),
           ),
           FiftyButton(
-            label: viewModel.isDiscovering ? 'SEARCHING...' : 'DISCOVER',
+            label: viewModel.isDiscovering ? 'SCANNING...' : 'SCAN',
             variant: FiftyButtonVariant.secondary,
             loading: viewModel.isDiscovering,
             onPressed: viewModel.isDiscovering
@@ -141,7 +254,97 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     );
   }
 
-  Widget _buildPrintersList(
+  Widget _buildDiscoveredPrintersList(
+    BuildContext context,
+    PrintingDemoViewModel viewModel,
+    PrintingDemoActions actions,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      children: viewModel.discoveredPrinters.map((discovered) {
+        // Check if already registered
+        final isRegistered = viewModel.registeredPrinters.any(
+          (p) => p is BluetoothPrinterDevice && p.macAddress == discovered.macAddress,
+        );
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          child: FiftyCard(
+            padding: const EdgeInsets.all(FiftySpacing.md),
+            onTap: isRegistered ? null : () => actions.onDiscoveredPrinterTapped(context, discovered),
+            child: Opacity(
+              opacity: isRegistered ? 0.5 : 1.0,
+              child: Row(
+                children: [
+                  // Bluetooth icon
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: colorScheme.primary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(FiftyRadii.sm),
+                    ),
+                    child: Icon(
+                      Icons.bluetooth,
+                      color: colorScheme.primary,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: FiftySpacing.md),
+
+                  // Device info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          discovered.name.isNotEmpty ? discovered.name : 'Unknown Device',
+                          style: TextStyle(
+                            fontFamily: FiftyTypography.fontFamily,
+                            fontSize: FiftyTypography.bodyMedium,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: FiftySpacing.xs),
+                        Text(
+                          discovered.macAddress,
+                          style: TextStyle(
+                            fontFamily: FiftyTypography.fontFamily,
+                            fontSize: FiftyTypography.bodySmall,
+                            color: colorScheme.onSurface.withValues(alpha: 0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Add button or registered indicator
+                  if (isRegistered)
+                    Text(
+                      'ADDED',
+                      style: TextStyle(
+                        fontFamily: FiftyTypography.fontFamily,
+                        fontSize: FiftyTypography.bodySmall,
+                        color: colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
+                    )
+                  else
+                    Icon(
+                      Icons.add_circle_outline,
+                      color: colorScheme.primary,
+                      size: 24,
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildRegisteredPrintersList(
     BuildContext context,
     PrintingDemoViewModel viewModel,
     PrintingDemoActions actions,
@@ -151,9 +354,9 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return Column(
-      children: viewModel.printers.map((printer) {
-        final isSelected = viewModel.selectedPrinter?.id == printer.id;
-        final isOnline = printer.status == PrinterStatus.online;
+      children: viewModel.registeredPrinters.map((printer) {
+        final isSelected = viewModel.selectedPrinterId == printer.id;
+        final isConnected = printer.status == PrinterStatus.connected;
         final statusColor = viewModel.getStatusColor(
           printer.status,
           colorScheme,
@@ -164,87 +367,90 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
           padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
           child: FiftyCard(
             padding: const EdgeInsets.all(FiftySpacing.md),
-            onTap: isOnline ? () => actions.onPrinterSelected(printer) : null,
-            child: Opacity(
-              opacity: isOnline ? 1.0 : 0.5,
-              child: Row(
-                children: [
-                  // Connection type icon
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? colorScheme.primary.withValues(alpha: 0.3)
-                          : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(FiftyRadii.sm),
-                    ),
-                    child: Icon(
-                      printer.icon,
-                      color: isSelected
-                          ? colorScheme.primary
-                          : colorScheme.onSurfaceVariant,
-                      size: 20,
-                    ),
+            onTap: () => actions.onRegisteredPrinterTapped(context, printer),
+            child: Row(
+              children: [
+                // Printer type icon
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? colorScheme.primary.withValues(alpha: 0.3)
+                        : colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(FiftyRadii.sm),
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  child: Icon(
+                    viewModel.getPrinterTypeIcon(printer.type),
+                    color: isSelected
+                        ? colorScheme.primary
+                        : colorScheme.onSurfaceVariant,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: FiftySpacing.md),
 
-                  // Printer info
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          printer.name,
-                          style: TextStyle(
-                            fontFamily: FiftyTypography.fontFamily,
-                            fontSize: FiftyTypography.bodyMedium,
-                            fontWeight:
-                                isSelected ? FontWeight.bold : FontWeight.normal,
-                            color: colorScheme.onSurface,
+                // Printer info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        printer.name,
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodyMedium,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: FiftySpacing.xs),
+                      Row(
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: statusColor,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: FiftySpacing.xs),
-                        Row(
-                          children: [
-                            Container(
-                              width: 6,
-                              height: 6,
-                              decoration: BoxDecoration(
-                                color: statusColor,
-                                shape: BoxShape.circle,
-                              ),
+                          const SizedBox(width: FiftySpacing.xs),
+                          Text(
+                            viewModel.getStatusLabel(printer.status),
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
+                              color: statusColor,
                             ),
-                            const SizedBox(width: FiftySpacing.xs),
-                            Text(
-                              viewModel.getStatusLabel(printer.status),
-                              style: TextStyle(
-                                fontFamily: FiftyTypography.fontFamily,
-                                fontSize: FiftyTypography.bodySmall,
-                                color: statusColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
+                ),
 
-                  // Selection indicator
-                  if (isSelected)
-                    Icon(
-                      Icons.check_circle,
-                      color: successColor,
-                      size: 24,
-                    )
-                  else if (isOnline)
-                    Icon(
-                      Icons.radio_button_unchecked,
-                      color: colorScheme.onSurface.withValues(alpha: 0.3),
-                      size: 24,
-                    ),
-                ],
-              ),
+                // Connect/Selection indicator
+                if (isSelected && !isConnected)
+                  FiftyButton(
+                    label: 'CONNECT',
+                    variant: FiftyButtonVariant.secondary,
+                    size: FiftyButtonSize.small,
+                    onPressed: () => actions.onConnectTapped(context),
+                  )
+                else if (isSelected && isConnected)
+                  Icon(
+                    Icons.check_circle,
+                    color: successColor,
+                    size: 24,
+                  )
+                else
+                  Icon(
+                    Icons.radio_button_unchecked,
+                    color: colorScheme.onSurface.withValues(alpha: 0.3),
+                    size: 24,
+                  ),
+              ],
             ),
           ),
         );
@@ -290,7 +496,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
     final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
     final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
-    final errorColor = colorScheme.primary; // burgundy maps to primary
+    final errorColor = colorScheme.error;
 
     return FiftyCard(
       padding: const EdgeInsets.all(FiftySpacing.md),
@@ -327,7 +533,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
             Container(
               padding: const EdgeInsets.all(FiftySpacing.sm),
               decoration: BoxDecoration(
-                color: viewModel.lastResult!.success
+                color: viewModel.lastResult!.isSuccess
                     ? successColor.withValues(alpha: 0.2)
                     : errorColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(FiftyRadii.sm),
@@ -335,24 +541,22 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
               child: Row(
                 children: [
                   Icon(
-                    viewModel.lastResult!.success
+                    viewModel.lastResult!.isSuccess
                         ? Icons.check_circle_outline
                         : Icons.error_outline,
-                    color: viewModel.lastResult!.success
-                        ? successColor
-                        : errorColor,
+                    color: viewModel.lastResult!.isSuccess ? successColor : errorColor,
                     size: 16,
                   ),
                   const SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: Text(
-                      viewModel.lastResult!.message,
+                      viewModel.lastResult!.isSuccess
+                          ? 'Print sent successfully!'
+                          : 'Print failed (${viewModel.lastResult!.failedCount} failed)',
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
-                        color: viewModel.lastResult!.success
-                            ? successColor
-                            : errorColor,
+                        color: viewModel.lastResult!.isSuccess ? successColor : errorColor,
                       ),
                     ),
                   ),

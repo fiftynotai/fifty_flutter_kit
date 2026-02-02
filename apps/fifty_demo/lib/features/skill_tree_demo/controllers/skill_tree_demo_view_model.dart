@@ -66,6 +66,9 @@ enum SkillBranch {
 /// ViewModel for the skill tree demo feature.
 ///
 /// Manages skill tree state and unlocking logic.
+///
+/// **Note:** No `onClose()` override needed. Rx observables and Map collections
+/// are auto-disposed by GetX. No external subscriptions, timers, or controllers.
 class SkillTreeDemoViewModel extends GetxController {
   /// Available skill points.
   final _skillPoints = 10.obs;

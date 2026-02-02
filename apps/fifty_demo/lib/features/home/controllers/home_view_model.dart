@@ -42,6 +42,9 @@ class PackageStatus {
 /// ViewModel for the home feature.
 ///
 /// Provides ecosystem status and navigation state.
+///
+/// **Note:** No `onClose()` override needed. Services are injected dependencies
+/// managed by their own bindings. RxBool observables are auto-disposed by GetX.
 class HomeViewModel extends GetxController {
   HomeViewModel({
     required AudioIntegrationService audioService,

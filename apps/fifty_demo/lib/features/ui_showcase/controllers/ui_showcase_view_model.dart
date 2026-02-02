@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 /// ViewModel for the UI showcase feature.
 ///
 /// Provides state for showcasing FDL components.
+///
+/// **Note:** No `onClose()` override needed. This ViewModel holds only primitive
+/// state values with no subscriptions, timers, or external resources to clean up.
 class UiShowcaseViewModel extends GetxController {
   UiShowcaseViewModel();
 

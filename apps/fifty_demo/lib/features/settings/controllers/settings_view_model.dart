@@ -26,6 +26,9 @@ enum AppThemeMode {
 /// Manages theme selection, app info, and user preferences.
 /// Persists theme preference via [ThemeService] and applies
 /// changes using [Get.changeThemeMode].
+///
+/// **Note:** No `onClose()` override needed. Rx observables are auto-disposed
+/// by GetX. ThemeService is injected and managed by its own binding lifecycle.
 class SettingsViewModel extends GetxController {
   /// Theme persistence service.
   final ThemeService _themeService;

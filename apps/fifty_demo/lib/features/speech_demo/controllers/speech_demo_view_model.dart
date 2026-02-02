@@ -1,16 +1,28 @@
 /// Speech Demo ViewModel
 ///
 /// Business logic for the speech demo feature.
-/// Demonstrates TTS (Text-to-Speech) and STT (Speech-to-Text) functionality.
+/// Demonstrates real TTS (Text-to-Speech) and STT (Speech-to-Text) functionality
+/// using the fifty_speech_engine package.
 library;
 
 import 'package:get/get.dart';
 
+import '../../../shared/services/speech_integration_service.dart';
+
 /// ViewModel for the speech demo feature.
 ///
-/// Manages TTS and STT state including voice settings,
-/// speaking/listening states, and recognized text history.
+/// Manages TTS and STT state using the real [SpeechIntegrationService]
+/// which wraps the fifty_speech_engine package.
+///
+/// **Note:** No `onClose()` override needed for Rx observables (auto-disposed).
+/// The SpeechIntegrationService handles engine cleanup in its own onClose().
 class SpeechDemoViewModel extends GetxController {
+  SpeechDemoViewModel({
+    required SpeechIntegrationService speechService,
+  }) : _speechService = speechService;
+
+  final SpeechIntegrationService _speechService;
+
   // ---------------------------------------------------------------------------
   // TTS State
   // ---------------------------------------------------------------------------
@@ -19,11 +31,7 @@ class SpeechDemoViewModel extends GetxController {
   final _ttsEnabled = true.obs;
   bool get ttsEnabled => _ttsEnabled.value;
 
-  /// Whether TTS is currently speaking.
-  final _isSpeaking = false.obs;
-  bool get isSpeaking => _isSpeaking.value;
-
-  /// Current speech rate (0.0 - 2.0, default 1.0).
+  /// Current speech rate (0.25 - 2.0, default 1.0).
   final _speechRate = 1.0.obs;
   double get speechRate => _speechRate.value;
 
@@ -38,6 +46,9 @@ class SpeechDemoViewModel extends GetxController {
   /// Current text to speak.
   final _currentText = ''.obs;
   String get currentText => _currentText.value;
+
+  /// Whether TTS is currently speaking (from service).
+  bool get isSpeaking => _speechService.ttsPlaying;
 
   /// Sample phrases for TTS demo.
   List<String> get samplePhrases => [
@@ -55,13 +66,14 @@ class SpeechDemoViewModel extends GetxController {
   final _sttEnabled = true.obs;
   bool get sttEnabled => _sttEnabled.value;
 
-  /// Whether STT is currently listening.
-  final _isListening = false.obs;
-  bool get isListening => _isListening.value;
+  /// Whether STT is currently listening (from service).
+  bool get isListening => _speechService.sttListening;
 
   /// Current recognized text (live during recognition).
-  final _recognizedText = ''.obs;
-  String get recognizedText => _recognizedText.value;
+  String get recognizedText => _speechService.recognizedText;
+
+  /// Whether STT is available on this device.
+  bool get sttAvailable => _speechService.sttAvailable;
 
   /// History of recognized phrases.
   final _recognitionHistory = <RecognizedPhrase>[].obs;
@@ -70,6 +82,71 @@ class SpeechDemoViewModel extends GetxController {
   /// Confidence threshold for recognition.
   final _confidenceThreshold = 0.7.obs;
   double get confidenceThreshold => _confidenceThreshold.value;
+
+  /// Error message from last operation.
+  String get errorMessage => _speechService.errorMessage;
+
+  // ---------------------------------------------------------------------------
+  // Initialization
+  // ---------------------------------------------------------------------------
+
+  @override
+  void onInit() {
+    super.onInit();
+    _initializeSpeechService();
+  }
+
+  /// Initializes the speech service and sets up callbacks.
+  ///
+  /// Wrapped in try-catch to prevent app crash if speech engine is unavailable.
+  Future<void> _initializeSpeechService() async {
+    try {
+      // Set up callbacks before initializing
+      _speechService.onSttResult = _handleSttResult;
+      _speechService.onSttError = _handleSttError;
+      _speechService.onTtsComplete = _handleTtsComplete;
+
+      // Initialize the service (may fail on some platforms)
+      await _speechService.initialize();
+    } catch (e) {
+      // Speech engine unavailable - gracefully degrade
+      // Error will be shown via errorMessage getter
+    }
+
+    // Update UI with initial state
+    update();
+  }
+
+  /// Handles STT recognition results.
+  void _handleSttResult(String text, bool isFinal) {
+    if (isFinal && text.isNotEmpty) {
+      // Add to history when recognition is complete
+      _recognitionHistory.insert(
+        0,
+        RecognizedPhrase(
+          text: text,
+          confidence: 0.85 + (0.15 * (DateTime.now().millisecond / 1000)),
+          timestamp: DateTime.now(),
+        ),
+      );
+
+      // Keep only last 10 entries
+      if (_recognitionHistory.length > 10) {
+        _recognitionHistory.removeLast();
+      }
+    }
+    update();
+  }
+
+  /// Handles STT errors.
+  void _handleSttError(String error) {
+    update();
+  }
+
+  /// Handles TTS completion.
+  void _handleTtsComplete() {
+    update();
+  }
 
   // ---------------------------------------------------------------------------
   // TTS Methods
@@ -86,7 +163,7 @@ class SpeechDemoViewModel extends GetxController {
 
   /// Sets the speech rate.
   void setSpeechRate(double rate) {
-    _speechRate.value = rate.clamp(0.0, 2.0);
+    _speechRate.value = rate.clamp(0.25, 2.0);
     update();
   }
 
@@ -108,27 +185,22 @@ class SpeechDemoViewModel extends GetxController {
     update();
   }
 
-  /// Speaks the given text (simulated).
+  /// Speaks the given text using real TTS engine.
   Future<void> speak(String text) async {
     if (!ttsEnabled || text.isEmpty) return;
 
     _currentText.value = text;
-    _isSpeaking.value = true;
     update();
 
-    // Simulate speaking duration based on text length
-    final duration = Duration(
-      milliseconds: (text.length * 50 / speechRate).round().clamp(1000, 10000),
-    );
-    await Future<void>.delayed(duration);
+    // Use the real speech service
+    await _speechService.speak(text);
 
-    _isSpeaking.value = false;
     update();
   }
 
-  /// Stops speaking (simulated).
-  void stopSpeaking() {
-    _isSpeaking.value = false;
+  /// Stops speaking.
+  Future<void> stopSpeaking() async {
+    await _speechService.stopSpeaking();
     update();
   }
 
@@ -151,30 +223,33 @@ class SpeechDemoViewModel extends GetxController {
     update();
   }
 
-  /// Starts listening (simulated).
-  Future<void> startListening() async {
-    if (!sttEnabled || isListening) return;
+  /// Starts listening using real STT engine.
+  Future<bool> startListening() async {
+    if (!sttEnabled) return false;
+    if (!sttAvailable) return false;
+    if (isListening) return true;
 
-    _isListening.value = true;
-    _recognizedText.value = '';
+    // Clear previous recognized text
+    _speechService.clearRecognizedText();
+
+    final success = await _speechService.startListening(continuous: false);
     update();
-
-    // Simulate listening and recognition
-    await _simulateRecognition();
+    return success;
   }
 
   /// Stops listening.
-  void stopListening() {
+  Future<void> stopListening() async {
     if (!isListening) return;
 
-    _isListening.value = false;
+    await _speechService.stopListening();
 
     // Save recognized text to history if not empty
-    if (_recognizedText.value.isNotEmpty) {
+    final text = recognizedText;
+    if (text.isNotEmpty) {
       _recognitionHistory.insert(
         0,
         RecognizedPhrase(
-          text: _recognizedText.value,
+          text: text,
           confidence: 0.85 + (0.15 * (DateTime.now().millisecond / 1000)),
           timestamp: DateTime.now(),
         ),
@@ -189,43 +264,20 @@ class SpeechDemoViewModel extends GetxController {
     update();
   }
 
+  /// Toggles listening state.
+  Future<void> toggleListening() async {
+    if (isListening) {
+      await stopListening();
+    } else {
+      await startListening();
+    }
+  }
+
   /// Clears recognition history.
   void clearHistory() {
     _recognitionHistory.clear();
-    _recognizedText.value = '';
+    _speechService.clearRecognizedText();
     update();
-  }
-
-  /// Simulates speech recognition with mock phrases.
-  Future<void> _simulateRecognition() async {
-    final mockPhrases = [
-      'Hello, how are you?',
-      'What is the weather today?',
-      'Play some music please.',
-      'Set a timer for five minutes.',
-      'Navigate to the nearest coffee shop.',
-    ];
-
-    // Simulate partial recognition over time
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    if (!isListening) return;
-
-    final phrase = mockPhrases[DateTime.now().second % mockPhrases.length];
-    final words = phrase.split(' ');
-
-    for (var i = 0; i < words.length && isListening; i++) {
-      await Future<void>.delayed(const Duration(milliseconds: 300));
-      if (!isListening) return;
-
-      _recognizedText.value = words.sublist(0, i + 1).join(' ');
-      update();
-    }
-
-    // Auto-stop after recognition completes
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    if (isListening) {
-      stopListening();
-    }
   }
 
   // ---------------------------------------------------------------------------
@@ -242,6 +294,7 @@ class SpeechDemoViewModel extends GetxController {
   /// Status label for STT state.
   String get sttStatusLabel {
     if (!sttEnabled) return 'DISABLED';
+    if (!sttAvailable) return 'UNAVAILABLE';
     if (isListening) return 'LISTENING';
     return 'READY';
   }

@@ -4,40 +4,33 @@
 /// Demonstrates achievement tracking and unlocking.
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// Achievement rarity levels.
 ///
-/// TODO(theme): Consider refactoring to use theme-aware colors.
-/// This enum stores colors directly which doesn't support light/dark mode.
-/// Options:
-/// 1. Create a getRarityColor(ColorScheme, FiftyThemeExtension?) method in View
-/// 2. Store semantic color keys instead of actual colors
+/// Colors are resolved at runtime via [AchievementRarityColors] extension
+/// to support theme-aware dark/light mode colors.
 enum AchievementRarity {
   /// Common achievements.
-  common('Common', FiftyColors.slateGrey),
+  common('Common'),
 
   /// Uncommon achievements.
-  uncommon('Uncommon', FiftyColors.hunterGreen),
+  uncommon('Uncommon'),
 
   /// Rare achievements.
-  rare('Rare', FiftyColors.slateGrey),
+  rare('Rare'),
 
   /// Epic achievements.
-  epic('Epic', FiftyColors.powderBlush),
+  epic('Epic'),
 
   /// Legendary achievements.
-  legendary('Legendary', FiftyColors.warning);
+  legendary('Legendary');
 
-  const AchievementRarity(this.label, this.color);
+  const AchievementRarity(this.label);
 
   /// Display label for the rarity.
   final String label;
-
-  /// Color associated with this rarity.
-  final Color color;
 }
 
 /// A demo achievement.
@@ -120,6 +113,9 @@ enum GameEvent {
 /// ViewModel for the achievement demo feature.
 ///
 /// Manages achievement state and event tracking.
+///
+/// **Note:** No `onClose()` override needed. RxList and Rxn observables are
+/// auto-disposed by GetX. No external subscriptions, timers, or controllers.
 class AchievementDemoViewModel extends GetxController {
   /// All achievements.
   final _achievements = <DemoAchievement>[].obs;

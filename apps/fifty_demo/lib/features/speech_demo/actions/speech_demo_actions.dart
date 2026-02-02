@@ -1,6 +1,7 @@
 /// Speech Demo Actions
 ///
 /// Handles user interactions for the speech demo feature.
+/// Uses real fifty_speech_engine for TTS and STT operations.
 library;
 
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import '../controllers/speech_demo_view_model.dart';
 
 /// Actions for the speech demo feature.
 ///
-/// Provides TTS and STT control actions.
+/// Provides TTS and STT control actions using real speech engine.
 class SpeechDemoActions {
   /// Creates speech demo actions with required dependencies.
   SpeechDemoActions(this._viewModel, this._presenter);
@@ -43,17 +44,37 @@ class SpeechDemoActions {
     }
 
     await _viewModel.speak(text);
+
+    // Check for errors after speaking
+    if (_viewModel.errorMessage.isNotEmpty) {
+      if (context.mounted) {
+        _presenter.showErrorSnackBar(
+          context,
+          'TTS Error',
+          _viewModel.errorMessage,
+        );
+      }
+    }
   }
 
   /// Called when stop speaking button is tapped.
-  void onStopSpeakingTapped() {
-    _viewModel.stopSpeaking();
+  Future<void> onStopSpeakingTapped() async {
+    await _viewModel.stopSpeaking();
   }
 
   /// Called when a preset phrase is tapped.
   Future<void> onPresetPhraseTapped(BuildContext context, String phrase) async {
     _viewModel.setCurrentText(phrase);
     await _viewModel.speak(phrase);
+
+    // Check for errors after speaking
+    if (_viewModel.errorMessage.isNotEmpty && context.mounted) {
+      _presenter.showErrorSnackBar(
+        context,
+        'TTS Error',
+        _viewModel.errorMessage,
+      );
+    }
   }
 
   /// Called when speech rate slider changes.
@@ -92,10 +113,30 @@ class SpeechDemoActions {
 
   /// Called when microphone button is tapped.
   Future<void> onMicTapped(BuildContext context) async {
+    // Check STT availability first
+    if (!_viewModel.sttAvailable) {
+      _presenter.showErrorSnackBar(
+        context,
+        'STT Unavailable',
+        'Speech recognition is not available on this device',
+      );
+      return;
+    }
+
     if (_viewModel.isListening) {
-      _viewModel.stopListening();
+      await _viewModel.stopListening();
     } else {
-      await _viewModel.startListening();
+      final success = await _viewModel.startListening();
+
+      if (!success && context.mounted) {
+        _presenter.showErrorSnackBar(
+          context,
+          'STT Error',
+          _viewModel.errorMessage.isNotEmpty
+              ? _viewModel.errorMessage
+              : 'Failed to start listening',
+        );
+      }
     }
   }
 

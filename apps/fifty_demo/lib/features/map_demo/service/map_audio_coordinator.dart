@@ -3,6 +3,7 @@
 /// Coordinates map engine with audio engine for integrated experience.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/services/audio_integration_service.dart';
@@ -61,8 +62,9 @@ class MapAudioCoordinator extends GetxController {
       await _mapService.loadMapFromAssets('assets/maps/demo_map.json');
     } catch (e) {
       // Log error but continue - audio still works without map
-      // ignore: avoid_print
-      print('[MapAudioCoordinator] Failed to load map: $e');
+      if (kDebugMode) {
+        debugPrint('[MapAudioCoordinator] Failed to load map: $e');
+      }
     }
 
     update();

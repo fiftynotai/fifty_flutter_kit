@@ -90,7 +90,9 @@ class AudioIntegrationService extends GetxController {
       await _engine.bgm.setVolume(_bgmVolume);
       await _engine.bgm.play(url);
     } catch (e) {
-      debugPrint('BGM playback error: $e');
+      if (kDebugMode) {
+        debugPrint('BGM playback error: $e');
+      }
     }
   }
 
@@ -141,7 +143,9 @@ class AudioIntegrationService extends GetxController {
       await _engine.sfx.setVolume(_sfxVolume);
       await _engine.sfx.play(url);
     } catch (e) {
-      debugPrint('SFX playback error: $e');
+      if (kDebugMode) {
+        debugPrint('SFX playback error: $e');
+      }
     }
   }
 
@@ -174,7 +178,9 @@ class AudioIntegrationService extends GetxController {
       await _engine.voice.setVolume(_voiceVolume);
       await _engine.voice.playVoice(url);
     } catch (e) {
-      debugPrint('Voice playback error: $e');
+      if (kDebugMode) {
+        debugPrint('Voice playback error: $e');
+      }
     }
   }
 

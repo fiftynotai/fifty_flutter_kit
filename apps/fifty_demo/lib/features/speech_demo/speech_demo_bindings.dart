@@ -6,26 +6,38 @@ library;
 import 'package:get/get.dart';
 
 import '../../core/presentation/actions/action_presenter.dart';
+import '../../shared/services/speech_integration_service.dart';
 import 'actions/speech_demo_actions.dart';
 import 'controllers/speech_demo_view_model.dart';
 
 /// Registers Speech Demo feature dependencies.
 ///
 /// **Registered Dependencies**:
+/// - [SpeechIntegrationService] - Speech engine wrapper (TTS/STT)
 /// - [SpeechDemoViewModel] - Business logic for speech demo
 /// - [SpeechDemoActions] - Action handlers for speech demo
 class SpeechDemoBindings implements Bindings {
   @override
   void dependencies() {
-    // Register ViewModel (permanent for state persistence)
-    if (!Get.isRegistered<SpeechDemoViewModel>()) {
-      Get.put<SpeechDemoViewModel>(
-        SpeechDemoViewModel(),
+    // 1. Register Service (if not already registered)
+    if (!Get.isRegistered<SpeechIntegrationService>()) {
+      Get.put<SpeechIntegrationService>(
+        SpeechIntegrationService(),
         permanent: true,
       );
     }
 
-    // Register Actions
+    // 2. Register ViewModel (depends on Service)
+    if (!Get.isRegistered<SpeechDemoViewModel>()) {
+      Get.put<SpeechDemoViewModel>(
+        SpeechDemoViewModel(
+          speechService: Get.find<SpeechIntegrationService>(),
+        ),
+        permanent: true,
+      );
+    }
+
+    // 3. Register Actions (depends on ViewModel)
     if (!Get.isRegistered<SpeechDemoActions>()) {
       Get.lazyPut<SpeechDemoActions>(
         () => SpeechDemoActions(
@@ -44,6 +56,9 @@ class SpeechDemoBindings implements Bindings {
     }
     if (Get.isRegistered<SpeechDemoViewModel>()) {
       Get.delete<SpeechDemoViewModel>(force: true);
+    }
+    if (Get.isRegistered<SpeechIntegrationService>()) {
+      Get.delete<SpeechIntegrationService>(force: true);
     }
   }
 }
