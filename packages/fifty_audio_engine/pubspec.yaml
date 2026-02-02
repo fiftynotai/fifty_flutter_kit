@@ -15,6 +15,10 @@ dependencies:
   get_storage: ^2.1.1
   fifty_tokens:
     path: ../fifty_tokens
+  fifty_theme:
+    path: ../fifty_theme
+  fifty_ui:
+    path: ../fifty_ui
   flutter_web_plugins:
     sdk: flutter
   plugin_platform_interface: ^2.0.2

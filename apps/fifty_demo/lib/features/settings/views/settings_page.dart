@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
 import '../controllers/settings_view_model.dart';
 
 /// Settings page widget.
@@ -31,7 +30,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Theme Settings
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Appearance',
                   subtitle: 'Theme and display settings',
                 ),
@@ -39,7 +38,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // App Information
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'App Info',
                   subtitle: 'Version and build details',
                 ),
@@ -47,7 +46,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // About
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'About',
                   subtitle: 'Fifty Flutter Kit',
                 ),

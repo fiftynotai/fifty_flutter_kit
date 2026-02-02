@@ -18,6 +18,14 @@ dependencies:
   speech_to_text: ^7.1.0
   flutter_tts: ^4.2.3
 
+  # FDL Foundation (for widgets)
+  fifty_tokens:
+    path: ../fifty_tokens
+  fifty_theme:
+    path: ../fifty_theme
+  fifty_ui:
+    path: ../fifty_ui
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

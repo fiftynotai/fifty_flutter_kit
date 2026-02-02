@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
 import '../actions/speech_demo_actions.dart';
 import '../controllers/speech_demo_view_model.dart';
 
@@ -43,7 +41,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                   _buildErrorCard(context, viewModel),
 
                   // TTS Section
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Text-to-Speech',
                     subtitle: 'Convert text to spoken audio',
                   ),
@@ -51,7 +49,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Voice Settings Section
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Voice Settings',
                     subtitle: 'Adjust rate, pitch, and volume',
                   ),
@@ -59,7 +57,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Preset Phrases Section
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Sample Phrases',
                     subtitle: 'Tap to speak a preset phrase',
                   ),
@@ -67,7 +65,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // STT Section
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Speech-to-Text',
                     subtitle: 'Convert spoken audio to text',
                   ),
@@ -76,7 +74,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
 
                   // Recognition History Section
                   if (viewModel.recognitionHistory.isNotEmpty) ...[
-                    SectionHeader(
+                    FiftySectionHeader(
                       title: 'Recognition History',
                       subtitle: '${viewModel.recognitionHistory.length} phrases',
                       trailing: TextButton(
@@ -105,24 +103,24 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
   Widget _buildStatusRow(BuildContext context, SpeechDemoViewModel viewModel) {
     return Row(
       children: [
-        StatusIndicator(
+        FiftyStatusIndicator(
           label: 'TTS',
           state: !viewModel.ttsEnabled
-              ? StatusState.offline
+              ? FiftyStatusState.offline
               : viewModel.isSpeaking
-                  ? StatusState.loading
-                  : StatusState.ready,
+                  ? FiftyStatusState.loading
+                  : FiftyStatusState.ready,
         ),
         const SizedBox(width: FiftySpacing.lg),
-        StatusIndicator(
+        FiftyStatusIndicator(
           label: 'STT',
           state: !viewModel.sttEnabled
-              ? StatusState.offline
+              ? FiftyStatusState.offline
               : !viewModel.sttAvailable
-                  ? StatusState.offline
+                  ? FiftyStatusState.offline
                   : viewModel.isListening
-                      ? StatusState.loading
-                      : StatusState.ready,
+                      ? FiftyStatusState.loading
+                      : FiftyStatusState.ready,
         ),
       ],
     );

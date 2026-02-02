@@ -2,6 +2,9 @@ import 'dart:ui';
 import 'tts/tts_manager.dart';
 import 'stt/stt_manager.dart';
 
+// Export widgets
+export 'src/widgets/widgets.dart';
+
 /// **FiftySpeechEngine**
 ///
 /// A unified interface that combines both **Text-to-Speech (TTS)** and **Speech-to-Text (STT)**

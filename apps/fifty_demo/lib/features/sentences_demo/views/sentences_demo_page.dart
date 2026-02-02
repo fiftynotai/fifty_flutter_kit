@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
 import '../actions/sentences_demo_actions.dart';
 import '../controllers/sentences_demo_view_model.dart';
 import '../service/demo_sentences.dart';
@@ -40,7 +38,7 @@ class SentencesDemoPage extends GetView<SentencesDemoViewModel> {
                   const SizedBox(height: FiftySpacing.lg),
 
                   // Dialogue Selection
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Select Dialogue',
                     subtitle: 'Choose a preset dialogue sequence',
                   ),
@@ -48,7 +46,7 @@ class SentencesDemoPage extends GetView<SentencesDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Sentence Display
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Dialogue Display',
                     subtitle: 'Tap to advance or skip typing',
                   ),
@@ -64,7 +62,7 @@ class SentencesDemoPage extends GetView<SentencesDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Queue Panel
-                  SectionHeader(
+                  FiftySectionHeader(
                     title: 'Sentence Queue',
                     subtitle: '${viewModel.sentences.length} sentences',
                   ),
@@ -78,28 +76,28 @@ class SentencesDemoPage extends GetView<SentencesDemoViewModel> {
   }
 
   Widget _buildStatusBar(BuildContext context, SentencesDemoViewModel viewModel) {
-    final StatusState state;
+    final FiftyStatusState state;
     final String label;
 
     switch (viewModel.playbackState) {
       case PlaybackState.idle:
-        state = StatusState.idle;
+        state = FiftyStatusState.idle;
         label = 'SENTENCES';
       case PlaybackState.typing:
-        state = StatusState.loading;
+        state = FiftyStatusState.loading;
         label = 'TYPING';
       case PlaybackState.waiting:
-        state = StatusState.ready;
+        state = FiftyStatusState.ready;
         label = 'WAITING';
       case PlaybackState.playing:
-        state = StatusState.ready;
+        state = FiftyStatusState.ready;
         label = 'PLAYING';
     }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        StatusIndicator(label: label, state: state),
+        FiftyStatusIndicator(label: label, state: state),
         if (viewModel.isAutoAdvanceEnabled)
           _buildAutoAdvanceBadge(context),
       ],

@@ -9,12 +9,11 @@ import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:fifty_audio_engine/fifty_audio_engine.dart';
+
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
 import '../actions/map_demo_actions.dart';
 import '../controllers/map_demo_view_model.dart';
-import 'widgets/audio_controls.dart';
 import 'widgets/map_controls.dart';
 
 /// Map demo page widget.
@@ -43,29 +42,29 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                 // Status Row
                 Row(
                   children: [
-                    StatusIndicator(
+                    FiftyStatusIndicator(
                       label: 'AUDIO',
                       state: viewModel.isInitialized
                           ? (viewModel.bgmPlaying
-                              ? StatusState.ready
-                              : StatusState.idle)
-                          : StatusState.loading,
+                              ? FiftyStatusState.ready
+                              : FiftyStatusState.idle)
+                          : FiftyStatusState.loading,
                     ),
                     const SizedBox(width: FiftySpacing.lg),
-                    const StatusIndicator(
+                    const FiftyStatusIndicator(
                       label: 'MAP',
-                      state: StatusState.ready,
+                      state: FiftyStatusState.ready,
                     ),
                   ],
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Audio Controls Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Audio Controls',
                   subtitle: 'BGM and SFX integration',
                 ),
-                AudioControlsWidget(
+                AudioControlsPanel(
                   bgmEnabled: viewModel.bgmEnabled,
                   sfxEnabled: viewModel.sfxEnabled,
                   bgmPlaying: viewModel.bgmPlaying,
@@ -78,7 +77,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Map Controls Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Camera Controls',
                   subtitle: 'Map navigation',
                 ),
@@ -90,7 +89,7 @@ class MapDemoPage extends GetView<MapDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Map Preview Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Map Preview',
                   subtitle: 'Interactive grid map',
                 ),

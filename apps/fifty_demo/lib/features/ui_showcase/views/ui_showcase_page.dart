@@ -4,12 +4,11 @@
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/section_nav_pill.dart';
 import '../controllers/ui_showcase_view_model.dart';
 import 'widgets/buttons_section.dart';
 import 'widgets/display_section.dart';
@@ -32,7 +31,7 @@ class UiShowcasePage extends GetView<UiShowcaseViewModel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Section Navigation
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Component Library',
                   subtitle: 'Fifty Design Language',
                 ),
@@ -86,7 +85,7 @@ class _SectionNav extends StatelessWidget {
       spacing: FiftySpacing.sm,
       runSpacing: FiftySpacing.sm,
       children: sections.map((section) {
-        return SectionNavPill(
+        return FiftyNavPill(
           label: section.label,
           icon: IconData(section.icon, fontFamily: 'MaterialIcons'),
           isActive: section.id == activeSection,

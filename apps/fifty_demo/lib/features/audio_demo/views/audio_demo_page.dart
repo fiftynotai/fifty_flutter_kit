@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
 import '../actions/audio_demo_actions.dart';
 import '../controllers/audio_demo_view_model.dart';
 
@@ -36,7 +34,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Channel Mixer Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Channel Mixer',
                   subtitle: 'Master volume and mute controls',
                 ),
@@ -44,7 +42,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // BGM Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Background Music',
                   subtitle: 'Track selection and playback controls',
                 ),
@@ -52,7 +50,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // SFX Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Sound Effects',
                   subtitle: 'Trigger sound effects by category',
                 ),
@@ -60,7 +58,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Voice Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Voice Channel',
                   subtitle: 'Voice line playback',
                 ),
@@ -68,7 +66,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Fade Demo Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Fade Effects',
                   subtitle: 'Demonstrate volume fade presets',
                 ),
@@ -100,14 +98,14 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StatusIndicator(
+              FiftyStatusIndicator(
                 label: 'BGM',
-                state: viewModel.bgmPlaying ? StatusState.ready : StatusState.idle,
+                state: viewModel.bgmPlaying ? FiftyStatusState.ready : FiftyStatusState.idle,
               ),
               const SizedBox(width: FiftySpacing.lg),
-              StatusIndicator(
+              FiftyStatusIndicator(
                 label: 'SFX',
-                state: viewModel.sfxMuted ? StatusState.idle : StatusState.ready,
+                state: viewModel.sfxMuted ? FiftyStatusState.idle : FiftyStatusState.ready,
               ),
             ],
           ),
@@ -116,14 +114,14 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StatusIndicator(
+              FiftyStatusIndicator(
                 label: 'VOICE',
-                state: viewModel.voicePlaying ? StatusState.loading : StatusState.idle,
+                state: viewModel.voicePlaying ? FiftyStatusState.loading : FiftyStatusState.idle,
               ),
               const SizedBox(width: FiftySpacing.lg),
-              StatusIndicator(
+              FiftyStatusIndicator(
                 label: 'MASTER',
-                state: viewModel.masterMuted ? StatusState.error : StatusState.ready,
+                state: viewModel.masterMuted ? FiftyStatusState.error : FiftyStatusState.ready,
               ),
             ],
           ),

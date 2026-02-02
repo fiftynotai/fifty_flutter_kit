@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
 import '../../dialogue_demo/views/dialogue_demo_page.dart';
 import '../../map_demo/views/map_demo_page.dart';
 import '../controllers/home_view_model.dart';
@@ -54,7 +53,7 @@ class HomePage extends GetView<HomeViewModel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Getting Started Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Getting Started',
                   subtitle: 'Quick actions',
                 ),
@@ -67,7 +66,7 @@ class HomePage extends GetView<HomeViewModel> {
                 const SizedBox(height: FiftySpacing.xxl),
 
                 // What's New Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: "What's New",
                   subtitle: 'Recent updates',
                 ),
@@ -75,7 +74,7 @@ class HomePage extends GetView<HomeViewModel> {
                 const SizedBox(height: FiftySpacing.xxl),
 
                 // Resources Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Resources',
                   subtitle: 'External links',
                 ),
@@ -83,7 +82,7 @@ class HomePage extends GetView<HomeViewModel> {
                 const SizedBox(height: FiftySpacing.xxl),
 
                 // System Info Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'System Info',
                   subtitle: 'Application details',
                 ),

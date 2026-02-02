@@ -96,6 +96,7 @@ library;
 // Buttons
 export 'src/buttons/fifty_button.dart';
 export 'src/buttons/fifty_icon_button.dart';
+export 'src/buttons/fifty_labeled_icon_button.dart';
 
 // Inputs
 export 'src/inputs/fifty_dropdown.dart';
@@ -107,6 +108,7 @@ export 'src/inputs/fifty_radio.dart';
 export 'src/inputs/fifty_radio_card.dart';
 
 // Controls (NEW in v2)
+export 'src/controls/fifty_nav_pill.dart';
 export 'src/controls/fifty_segmented_control.dart';
 
 // Containers
@@ -118,11 +120,15 @@ export 'src/display/fifty_badge.dart';
 export 'src/display/fifty_chip.dart';
 export 'src/display/fifty_data_slate.dart';
 export 'src/display/fifty_divider.dart';
+export 'src/display/fifty_info_row.dart';
+export 'src/display/fifty_list_tile.dart';
 export 'src/display/fifty_loading_indicator.dart';
 export 'src/display/fifty_progress_bar.dart';
-export 'src/display/fifty_stat_card.dart';
-export 'src/display/fifty_list_tile.dart';
 export 'src/display/fifty_progress_card.dart';
+export 'src/display/fifty_section_header.dart';
+export 'src/display/fifty_settings_row.dart';
+export 'src/display/fifty_stat_card.dart';
+export 'src/display/fifty_status_indicator.dart';
 
 // Feedback
 export 'src/feedback/fifty_dialog.dart';
@@ -137,6 +143,7 @@ export 'src/organisms/fifty_nav_bar.dart';
 export 'src/molecules/fifty_code_block.dart';
 
 // Utils
+export 'src/utils/fifty_cursor.dart';
 export 'src/utils/glitch_effect.dart';
 export 'src/utils/glow_container.dart';
 export 'src/utils/halftone_painter.dart';

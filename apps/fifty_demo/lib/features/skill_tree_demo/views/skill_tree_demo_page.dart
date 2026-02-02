@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
 import '../actions/skill_tree_demo_actions.dart';
 import '../controllers/skill_tree_demo_view_model.dart';
 
@@ -38,7 +37,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Branch Tabs
-                  const SectionHeader(
+                  const FiftySectionHeader(
                     title: 'Skill Branches',
                     subtitle: 'Select a branch to view skills',
                   ),
@@ -46,7 +45,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   const SizedBox(height: FiftySpacing.xl),
 
                   // Skill Tree View
-                  SectionHeader(
+                  FiftySectionHeader(
                     title: viewModel.selectedBranch.label,
                     subtitle:
                         '${viewModel.currentBranchSkills.where((s) => s.isUnlocked).length}/${viewModel.currentBranchSkills.length} unlocked',
@@ -56,7 +55,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
 
                   // Selected Skill Details
                   if (viewModel.selectedSkill != null) ...[
-                    const SectionHeader(
+                    const FiftySectionHeader(
                       title: 'Skill Details',
                       subtitle: 'Selected skill information',
                     ),

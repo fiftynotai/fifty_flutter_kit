@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
 import '../actions/printing_demo_actions.dart';
 import '../controllers/printing_demo_view_model.dart';
 
@@ -39,22 +37,22 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 // Status Row
                 Row(
                   children: [
-                    StatusIndicator(
+                    FiftyStatusIndicator(
                       label: 'DISCOVERY',
                       state: viewModel.isDiscovering
-                          ? StatusState.loading
+                          ? FiftyStatusState.loading
                           : (viewModel.registeredPrinters.isNotEmpty
-                              ? StatusState.ready
-                              : StatusState.idle),
+                              ? FiftyStatusState.ready
+                              : FiftyStatusState.idle),
                     ),
                     const SizedBox(width: FiftySpacing.lg),
-                    StatusIndicator(
+                    FiftyStatusIndicator(
                       label: 'PRINT',
                       state: viewModel.isPrinting
-                          ? StatusState.loading
+                          ? FiftyStatusState.loading
                           : (viewModel.lastResult?.isSuccess == true
-                              ? StatusState.ready
-                              : StatusState.idle),
+                              ? FiftyStatusState.ready
+                              : FiftyStatusState.idle),
                     ),
                   ],
                 ),
@@ -73,7 +71,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 ],
 
                 // Discovery Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Bluetooth Discovery',
                   subtitle: 'Scan for nearby Bluetooth printers',
                 ),
@@ -82,7 +80,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
 
                 // Discovered Printers (not yet registered)
                 if (viewModel.discoveredPrinters.isNotEmpty) ...[
-                  SectionHeader(
+                  FiftySectionHeader(
                     title: 'Discovered Devices',
                     subtitle: '${viewModel.discoveredPrinters.length} found - tap to add',
                   ),
@@ -92,7 +90,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
 
                 // Registered Printers
                 if (viewModel.registeredPrinters.isNotEmpty) ...[
-                  SectionHeader(
+                  FiftySectionHeader(
                     title: 'Registered Printers',
                     subtitle: '${viewModel.registeredPrinters.length} available',
                   ),
@@ -101,7 +99,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 ],
 
                 // Ticket Preview Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Ticket Preview',
                   subtitle: 'Sample receipt ticket',
                 ),
@@ -109,7 +107,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Print Section
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Print',
                   subtitle: 'Send to selected printer',
                 ),

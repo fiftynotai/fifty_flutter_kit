@@ -3,19 +3,16 @@
 /// Demonstrates sentence engine with speech integration.
 library;
 
+import 'package:fifty_speech_engine/fifty_speech_engine.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
-import '../../../shared/widgets/status_indicator.dart';
 import '../actions/dialogue_demo_actions.dart';
 import '../controllers/dialogue_demo_view_model.dart';
 import 'widgets/dialogue_display.dart';
-import 'widgets/stt_controls.dart';
-import 'widgets/tts_controls.dart';
 
 /// Dialogue demo page widget.
 ///
@@ -45,18 +42,18 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 // Status Row
                 Row(
                   children: [
-                    StatusIndicator(
+                    FiftyStatusIndicator(
                       label: 'TTS',
                       state: viewModel.ttsEnabled
-                          ? StatusState.ready
-                          : StatusState.idle,
+                          ? FiftyStatusState.ready
+                          : FiftyStatusState.idle,
                     ),
                     const SizedBox(width: FiftySpacing.lg),
-                    StatusIndicator(
+                    FiftyStatusIndicator(
                       label: 'STT',
                       state: viewModel.sttListening
-                          ? StatusState.loading
-                          : StatusState.idle,
+                          ? FiftyStatusState.loading
+                          : FiftyStatusState.idle,
                     ),
                     const SizedBox(width: FiftySpacing.lg),
                     Builder(
@@ -77,7 +74,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Dialogue Selection
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Select Dialogue',
                   subtitle: 'Choose a demo dialogue',
                 ),
@@ -125,7 +122,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Dialogue Display
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Dialogue',
                   subtitle: 'Tap to advance',
                 ),
@@ -152,7 +149,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Playback Controls
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Playback',
                   subtitle: 'Dialogue controls',
                 ),
@@ -188,27 +185,36 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                 const SizedBox(height: FiftySpacing.xl),
 
                 // TTS Controls
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Text-to-Speech',
                   subtitle: 'TTS settings',
                 ),
-                TtsControls(
+                SpeechTtsControls(
                   enabled: viewModel.ttsEnabled,
-                  autoAdvance: viewModel.autoAdvance,
-                  onToggleTts: actions.onToggleTts,
-                  onToggleAutoAdvance: actions.onToggleAutoAdvance,
+                  onEnabledChanged: (_) => actions.onToggleTts(),
+                ),
+                // Auto-advance toggle (not part of SpeechTtsControls)
+                const SizedBox(height: FiftySpacing.sm),
+                FiftySettingsRow(
+                  icon: Icons.fast_forward,
+                  label: 'AUTO-ADVANCE',
+                  value: viewModel.autoAdvance,
+                  onChanged: (_) => actions.onToggleAutoAdvance(),
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // STT Controls
-                const SectionHeader(
+                const FiftySectionHeader(
                   title: 'Speech-to-Text',
                   subtitle: 'Voice commands',
                 ),
-                SttControls(
+                SpeechSttControls(
+                  enabled: true,
+                  onEnabledChanged: (_) {},
                   isListening: viewModel.sttListening,
+                  onListenPressed: () => actions.onMicTapped(context),
                   recognizedText: viewModel.recognizedText,
-                  onMicTapped: () => actions.onMicTapped(context),
+                  hintText: 'Commands: "next", "previous", "skip", "stop"',
                 ),
               ],
             ),

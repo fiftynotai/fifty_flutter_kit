@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
 import '../actions/forms_demo_actions.dart';
 import '../controllers/forms_demo_view_model.dart';
 
@@ -47,7 +46,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
-          const SectionHeader(
+          const FiftySectionHeader(
             title: 'Registration Form',
             subtitle: 'Demo of fifty_forms validation',
           ),
@@ -341,7 +340,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
           const SizedBox(height: FiftySpacing.xl),
 
           // Submitted Data
-          const SectionHeader(
+          const FiftySectionHeader(
             title: 'Submitted Data',
             subtitle: 'Form values captured',
           ),

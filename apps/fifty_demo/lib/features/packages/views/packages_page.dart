@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
 import '../actions/packages_actions.dart';
 import '../controllers/packages_view_model.dart';
 
@@ -88,7 +87,7 @@ class PackagesPage extends GetView<PackagesViewModel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionHeader(
+        FiftySectionHeader(
           title: category.label.toUpperCase(),
           subtitle: '${packages.length} packages',
         ),

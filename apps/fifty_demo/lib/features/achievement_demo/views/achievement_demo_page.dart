@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../shared/widgets/demo_scaffold.dart';
-import '../../../shared/widgets/section_header.dart';
 import '../actions/achievement_demo_actions.dart';
 import '../controllers/achievement_demo_view_model.dart';
 
@@ -82,7 +81,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       const SizedBox(height: FiftySpacing.xl),
 
                       // Event Triggers
-                      const SectionHeader(
+                      const FiftySectionHeader(
                         title: 'Event Triggers',
                         subtitle: 'Tap to trigger game events',
                       ),
@@ -90,7 +89,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
                       const SizedBox(height: FiftySpacing.xl),
 
                       // Achievement List
-                      SectionHeader(
+                      FiftySectionHeader(
                         title: 'Achievements',
                         subtitle:
                             '${viewModel.unlockedCount}/${viewModel.totalCount} unlocked',

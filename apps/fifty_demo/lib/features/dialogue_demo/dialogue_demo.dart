@@ -11,5 +11,3 @@ export 'views/dialogue_demo_page.dart';
 export 'views/widgets/choice_buttons.dart';
 export 'views/widgets/dialogue_display.dart';
 export 'views/widgets/sentence_queue_panel.dart';
-export 'views/widgets/stt_controls.dart';
-export 'views/widgets/tts_controls.dart';
