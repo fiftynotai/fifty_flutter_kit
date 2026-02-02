@@ -196,6 +196,9 @@ class AudioDemoViewModel extends GetxController {
   Duration _bgmDuration = Duration.zero;
   StreamSubscription<Duration>? _positionSubscription;
 
+  /// Whether volume has been applied after play (prevents reset issue).
+  bool _volumeAppliedAfterPlay = false;
+
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization
   // ─────────────────────────────────────────────────────────────────────────
@@ -245,6 +248,10 @@ class AudioDemoViewModel extends GetxController {
         update();
       });
 
+      // Wire up track completion callbacks for auto-play next
+      _engine.bgm.onDefaultPlaylistComplete = _handlePlaylistComplete;
+      _engine.bgm.onTrackAboutToChange = _handleTrackAboutToChange;
+
       update();
     } catch (e) {
       // Engine initialization failed - demo will show mock state
@@ -261,6 +268,45 @@ class AudioDemoViewModel extends GetxController {
       _bgmDuration = duration;
       update();
     }
+  }
+
+  /// Handles playlist completion callback from engine.
+  ///
+  /// Called when the playlist loops back to the beginning.
+  void _handlePlaylistComplete() {
+    // Reset track index to beginning
+    _currentTrackIndex = 0;
+    _currentTrack = AudioTrack.values[_currentTrackIndex];
+    _bgmPosition = Duration.zero;
+    update();
+  }
+
+  /// Handles track about to change callback from engine.
+  ///
+  /// Called right before crossfade to next track - sync UI state.
+  void _handleTrackAboutToChange() {
+    // Pre-emptively update track index for UI responsiveness
+    final nextIndex = (_currentTrackIndex + 1) % AudioTrack.values.length;
+    _currentTrackIndex = nextIndex;
+    _currentTrack = AudioTrack.values[_currentTrackIndex];
+    _bgmPosition = Duration.zero;
+    _volumeAppliedAfterPlay = false;
+    update();
+  }
+
+  /// Ensures volume is applied after playback starts.
+  ///
+  /// Fixes the volume reset issue by applying volume AFTER play().
+  Future<void> _ensureVolumeAfterPlay() async {
+    if (!_isInitialized || _volumeAppliedAfterPlay) return;
+
+    // Small delay to ensure player is ready
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+
+    if (!_bgmMuted) {
+      await _engine.bgm.setVolume(_bgmVolume);
+    }
+    _volumeAppliedAfterPlay = true;
   }
 
   /// Register SFX groups for each category.
@@ -298,8 +344,11 @@ class AudioDemoViewModel extends GetxController {
     if (_engine.bgm.isPlaying) {
       await _engine.bgm.pause();
     } else {
+      _volumeAppliedAfterPlay = false;
       await _engine.bgm.play(_currentTrack.assetPath);
       await _fetchDuration();
+      // Apply volume AFTER play to prevent reset
+      await _ensureVolumeAfterPlay();
     }
     update();
   }
@@ -307,8 +356,11 @@ class AudioDemoViewModel extends GetxController {
   /// Plays BGM.
   Future<void> playBgm() async {
     if (!_isInitialized) return;
+    _volumeAppliedAfterPlay = false;
     await _engine.bgm.play(_currentTrack.assetPath);
     await _fetchDuration();
+    // Apply volume AFTER play to prevent reset
+    await _ensureVolumeAfterPlay();
     update();
   }
 
@@ -360,8 +412,10 @@ class AudioDemoViewModel extends GetxController {
     if (progress < 0.1) {
       await _engine.bgm.stop();
       _bgmPosition = Duration.zero;
+      _volumeAppliedAfterPlay = false;
       await _engine.bgm.play(_currentTrack.assetPath);
       await _fetchDuration();
+      await _ensureVolumeAfterPlay();
     }
 
     update();
@@ -371,12 +425,25 @@ class AudioDemoViewModel extends GetxController {
   Future<void> skipNext() async {
     if (!_isInitialized) return;
 
-    _currentTrackIndex = (_currentTrackIndex + 1) % AudioTrack.values.length;
+    // Respect shuffle mode
+    if (_shuffleEnabled) {
+      // Pick random track (excluding current)
+      final availableIndices = List.generate(
+        AudioTrack.values.length,
+        (i) => i,
+      ).where((i) => i != _currentTrackIndex).toList();
+      availableIndices.shuffle();
+      _currentTrackIndex = availableIndices.first;
+    } else {
+      _currentTrackIndex = (_currentTrackIndex + 1) % AudioTrack.values.length;
+    }
     _currentTrack = AudioTrack.values[_currentTrackIndex];
     _bgmPosition = Duration.zero;
+    _volumeAppliedAfterPlay = false;
 
     await _engine.bgm.playNext();
     await _fetchDuration();
+    await _ensureVolumeAfterPlay();
     update();
   }
 
@@ -387,12 +454,15 @@ class AudioDemoViewModel extends GetxController {
   Future<void> skipPrevious() async {
     if (!_isInitialized) return;
 
+    _volumeAppliedAfterPlay = false;
+
     // If more than 3 seconds into the track, restart it
     if (_bgmPosition.inSeconds > 3) {
       _bgmPosition = Duration.zero;
       await _engine.bgm.stop();
       await _engine.bgm.play(_currentTrack.assetPath);
       await _fetchDuration();
+      await _ensureVolumeAfterPlay();
     } else {
       // Go to previous track
       _currentTrackIndex =
@@ -403,6 +473,7 @@ class AudioDemoViewModel extends GetxController {
 
       await _engine.bgm.playAtIndex(_currentTrackIndex);
       await _fetchDuration();
+      await _ensureVolumeAfterPlay();
     }
     update();
   }

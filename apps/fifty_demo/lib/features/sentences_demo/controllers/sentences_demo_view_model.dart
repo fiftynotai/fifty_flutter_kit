@@ -1,34 +1,53 @@
 /// Sentences Demo ViewModel
 ///
 /// Business logic for the sentences demo feature.
-/// Demonstrates sentence queue management and typewriter effect.
+/// Demonstrates all SentenceEngine features including:
+/// - write, read, wait, ask, navigate modes
+/// - Combined read + write
+/// - Order-based queue sorting
+/// - Processing status tracking
+/// - Pause/resume controls
 library;
 
 import 'dart:async';
 
+import 'package:fifty_sentences_engine/fifty_sentences_engine.dart';
 import 'package:get/get.dart';
 
+import '../../../shared/services/speech_integration_service.dart';
 import '../service/demo_sentences.dart';
 
-/// Playback state for the sentence engine.
-enum PlaybackState {
-  /// Engine is idle, not playing.
+/// Processing status mapped from SentenceEngine.
+enum DemoProcessingStatus {
   idle,
-
-  /// Currently typing a sentence.
-  typing,
-
-  /// Finished typing, waiting for user input or auto-advance.
-  waiting,
-
-  /// Auto-advancing through sentences.
-  playing,
+  processing,
+  paused,
+  cancelled,
+  completed,
 }
 
 /// ViewModel for the sentences demo feature.
 ///
-/// Manages sentence queue, typewriter effect, and playback controls.
+/// Manages sentence queue, typewriter effect, and playback controls
+/// using the actual SentenceEngine from fifty_sentences_engine.
 class SentencesDemoViewModel extends GetxController {
+  SentencesDemoViewModel({
+    SpeechIntegrationService? speechService,
+  }) : _speechService = speechService;
+
+  /// Optional speech service for TTS in read mode.
+  final SpeechIntegrationService? _speechService;
+
+  /// The sentence engine instance.
+  late final SentenceEngine _engine;
+
+  /// The sentence interpreter for handling instructions.
+  late final SentenceInterpreter _interpreter;
+
+  // ---------------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------------
+
   /// The list of sentences in the queue.
   final _sentences = <DemoSentence>[].obs;
   List<DemoSentence> get sentences => _sentences;
@@ -41,17 +60,37 @@ class SentencesDemoViewModel extends GetxController {
   final _displayedText = ''.obs;
   String get displayedText => _displayedText.value;
 
-  /// The current playback state.
-  final _playbackState = PlaybackState.idle.obs;
-  PlaybackState get playbackState => _playbackState.value;
+  /// The current processing status.
+  final _processingStatus = DemoProcessingStatus.idle.obs;
+  DemoProcessingStatus get processingStatus => _processingStatus.value;
 
   /// Whether auto-advance is enabled.
   final _isAutoAdvanceEnabled = false.obs;
   bool get isAutoAdvanceEnabled => _isAutoAdvanceEnabled.value;
 
-  /// The currently selected dialogue name.
+  /// The currently selected demo mode.
+  final _selectedMode = DemoMode.write.obs;
+  DemoMode get selectedMode => _selectedMode.value;
+
+  /// The currently selected dialogue name (legacy).
   final _selectedDialogue = 'Introduction'.obs;
   String get selectedDialogue => _selectedDialogue.value;
+
+  /// Current phase for navigate mode.
+  final _currentPhase = ''.obs;
+  String get currentPhase => _currentPhase.value;
+
+  /// Last selected choice in ask mode.
+  final _lastSelectedChoice = ''.obs;
+  String get lastSelectedChoice => _lastSelectedChoice.value;
+
+  /// Available choices for current ask sentence.
+  final _currentChoices = <String>[].obs;
+  List<String> get currentChoices => _currentChoices;
+
+  /// Whether TTS is enabled for read mode.
+  final _ttsEnabled = true.obs;
+  bool get ttsEnabled => _ttsEnabled.value;
 
   /// Typing speed in milliseconds per character.
   final int _typingSpeedMs = 30;
@@ -79,10 +118,15 @@ class SentencesDemoViewModel extends GetxController {
   bool get hasPrevious => _currentIndex.value > 0;
 
   /// Whether the engine is currently typing.
-  bool get isTyping => _playbackState.value == PlaybackState.typing;
+  bool get isTyping => _processingStatus.value == DemoProcessingStatus.processing;
+
+  /// Whether the engine is paused.
+  bool get isPaused => _processingStatus.value == DemoProcessingStatus.paused;
 
   /// Whether the engine is playing (auto-advancing).
-  bool get isPlaying => _playbackState.value == PlaybackState.playing;
+  bool get isPlaying =>
+      _processingStatus.value == DemoProcessingStatus.processing &&
+      _isAutoAdvanceEnabled.value;
 
   /// Progress through the queue (0.0 to 1.0).
   double get progress =>
@@ -99,6 +143,25 @@ class SentencesDemoViewModel extends GetxController {
   bool get isAtEnd =>
       _sentences.isNotEmpty && _currentIndex.value >= _sentences.length - 1;
 
+  /// Whether currently waiting for user input.
+  bool get isWaitingForInput =>
+      _processingStatus.value == DemoProcessingStatus.paused &&
+      currentSentence?.waitForUserInput == true;
+
+  /// Whether currently showing choices.
+  bool get isShowingChoices => _currentChoices.isNotEmpty;
+
+  /// Status label for the processing state.
+  String get statusLabel {
+    return switch (_processingStatus.value) {
+      DemoProcessingStatus.idle => 'IDLE',
+      DemoProcessingStatus.processing => 'PROCESSING',
+      DemoProcessingStatus.paused => isWaitingForInput ? 'WAITING' : 'PAUSED',
+      DemoProcessingStatus.cancelled => 'CANCELLED',
+      DemoProcessingStatus.completed => 'COMPLETED',
+    };
+  }
+
   // ---------------------------------------------------------------------------
   // Initialization
   // ---------------------------------------------------------------------------
@@ -106,18 +169,160 @@ class SentencesDemoViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadDialogue(_selectedDialogue.value);
+    _initializeEngine();
+    _loadMode(_selectedMode.value);
+  }
+
+  /// Initializes the SentenceEngine and SentenceInterpreter.
+  void _initializeEngine() {
+    // Create the engine with callbacks
+    _engine = SentenceEngine(
+      onStatusChange: _handleStatusChange,
+      onSentencesChanged: _handleSentencesChanged,
+      onProcessingIndexChanged: _handleIndexChanged,
+    );
+
+    // Create the interpreter with handlers for each instruction type
+    _interpreter = SentenceInterpreter(
+      engine: _engine,
+      onRead: _handleRead,
+      onWrite: _handleWrite,
+      onAsk: _handleAsk,
+      onWait: _handleWait,
+      onNavigate: _handleNavigate,
+      onUnhandled: _handleUnhandled,
+    );
+
+    // Register the interpreter with the engine
+    _engine.registerInterpreter(_interpreter);
   }
 
   @override
   void onClose() {
     _typingTimer?.cancel();
     _autoAdvanceTimer?.cancel();
+    _engine.dispose();
     super.onClose();
   }
 
   // ---------------------------------------------------------------------------
-  // Dialogue Selection
+  // Engine Handlers
+  // ---------------------------------------------------------------------------
+
+  /// Handles status changes from the engine.
+  void _handleStatusChange(ProcessingStatus status) {
+    _processingStatus.value = switch (status) {
+      ProcessingStatus.idle => DemoProcessingStatus.idle,
+      ProcessingStatus.processing => DemoProcessingStatus.processing,
+      ProcessingStatus.paused => DemoProcessingStatus.paused,
+      ProcessingStatus.cancelled => DemoProcessingStatus.cancelled,
+      ProcessingStatus.completed => DemoProcessingStatus.completed,
+    };
+    update();
+  }
+
+  /// Handles sentence list changes from the engine.
+  void _handleSentencesChanged(List<BaseSentenceModel> sentences) {
+    // Engine tracks processed sentences, we track all sentences
+    update();
+  }
+
+  /// Handles processing index changes from the engine.
+  void _handleIndexChanged(int index) {
+    // Engine index is 1-based for current processing, we use 0-based
+    update();
+  }
+
+  /// Handles read instruction (TTS).
+  Future<void> _handleRead(String text) async {
+    final speechService = _speechService;
+    if (_ttsEnabled.value && speechService != null) {
+      await speechService.speak(text);
+    }
+  }
+
+  /// Handles write instruction (display text).
+  Future<void> _handleWrite(BaseSentenceModel sentence) async {
+    // Start typewriter effect
+    await _typeText(sentence.text);
+    _engine.addSentenceToWritten(sentence);
+  }
+
+  /// Handles ask instruction (show choices).
+  Future<void> _handleAsk(BaseSentenceModel sentence) async {
+    // Display the question
+    await _typeText(sentence.text);
+
+    // Show choices and pause
+    _currentChoices.clear();
+    _currentChoices.addAll(sentence.choices.cast<String>());
+    _engine.pause();
+    update();
+
+    // Wait for user to select a choice
+    await _engine.pauseUntilUserContinues();
+  }
+
+  /// Handles wait instruction (pause until tap).
+  Future<void> _handleWait(BaseSentenceModel sentence) async {
+    // Display text first
+    await _typeText(sentence.text);
+
+    // Then wait for user input
+    await _engine.pauseUntilUserContinues();
+  }
+
+  /// Handles navigate instruction (phase transition).
+  Future<void> _handleNavigate(BaseSentenceModel sentence) async {
+    if (sentence.phase != null) {
+      _currentPhase.value = sentence.phase!;
+    }
+    update();
+  }
+
+  /// Handles unhandled instructions.
+  Future<void> _handleUnhandled(BaseSentenceModel sentence) async {
+    // Default to write behavior
+    await _typeText(sentence.text);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Mode Selection
+  // ---------------------------------------------------------------------------
+
+  /// Selects a demo mode and loads its sentences.
+  void selectMode(DemoMode mode) {
+    _selectedMode.value = mode;
+    _loadMode(mode);
+  }
+
+  void _loadMode(DemoMode mode) {
+    // Stop any ongoing playback
+    _stopPlayback();
+
+    // Get sentences for the mode
+    var sentences = DemoSentences.forMode(mode);
+
+    // For order queue mode, sort by order
+    if (mode == DemoMode.orderQueue) {
+      sentences = List.from(sentences)
+        ..sort((a, b) => (a.order ?? 0).compareTo(b.order ?? 0));
+    }
+
+    // Load new sentences
+    _sentences.clear();
+    _sentences.addAll(sentences);
+    _currentIndex.value = 0;
+    _displayedText.value = '';
+    _currentChoices.clear();
+    _currentPhase.value = '';
+    _processingStatus.value = DemoProcessingStatus.idle;
+
+    update();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Legacy Dialogue Selection (backward compatibility)
   // ---------------------------------------------------------------------------
 
   /// Loads a dialogue by name.
@@ -132,15 +337,14 @@ class SentencesDemoViewModel extends GetxController {
     final sentences = DemoSentences.all[dialogueName];
     if (sentences == null) return;
 
-    // Stop any ongoing playback
     _stopPlayback();
 
-    // Load new sentences
     _sentences.clear();
     _sentences.addAll(sentences);
     _currentIndex.value = 0;
     _displayedText.value = '';
-    _playbackState.value = PlaybackState.idle;
+    _currentChoices.clear();
+    _processingStatus.value = DemoProcessingStatus.idle;
 
     update();
   }
@@ -154,7 +358,7 @@ class SentencesDemoViewModel extends GetxController {
     if (_sentences.isEmpty) return;
 
     _isAutoAdvanceEnabled.value = true;
-    _playbackState.value = PlaybackState.playing;
+    _processingStatus.value = DemoProcessingStatus.processing;
     _startTyping();
   }
 
@@ -162,11 +366,21 @@ class SentencesDemoViewModel extends GetxController {
   void pause() {
     _isAutoAdvanceEnabled.value = false;
     _autoAdvanceTimer?.cancel();
+    _engine.pause();
 
-    if (_playbackState.value == PlaybackState.playing) {
-      _playbackState.value = PlaybackState.waiting;
+    if (_processingStatus.value == DemoProcessingStatus.processing) {
+      _processingStatus.value = DemoProcessingStatus.paused;
     }
 
+    update();
+  }
+
+  /// Resumes playback.
+  void resume() {
+    _engine.resume();
+    if (_processingStatus.value == DemoProcessingStatus.paused) {
+      _processingStatus.value = DemoProcessingStatus.processing;
+    }
     update();
   }
 
@@ -183,7 +397,7 @@ class SentencesDemoViewModel extends GetxController {
   void next() {
     if (!hasNext) {
       // At end of queue
-      _playbackState.value = PlaybackState.idle;
+      _processingStatus.value = DemoProcessingStatus.completed;
       _isAutoAdvanceEnabled.value = false;
       update();
       return;
@@ -191,12 +405,13 @@ class SentencesDemoViewModel extends GetxController {
 
     _typingTimer?.cancel();
     _autoAdvanceTimer?.cancel();
+    _currentChoices.clear();
 
     _currentIndex.value++;
     _displayedText.value = '';
 
     if (_isAutoAdvanceEnabled.value) {
-      _playbackState.value = PlaybackState.playing;
+      _processingStatus.value = DemoProcessingStatus.processing;
     }
 
     _startTyping();
@@ -208,6 +423,7 @@ class SentencesDemoViewModel extends GetxController {
 
     _typingTimer?.cancel();
     _autoAdvanceTimer?.cancel();
+    _currentChoices.clear();
 
     _currentIndex.value--;
     _displayedText.value = '';
@@ -216,16 +432,44 @@ class SentencesDemoViewModel extends GetxController {
   }
 
   /// Handles tap on the dialogue display.
-  ///
-  /// If typing, completes the sentence. Otherwise, advances to next.
   void onDialogueTap() {
     if (isTyping) {
-      // Skip typing animation
       _skipTyping();
+    } else if (isWaitingForInput) {
+      continueAfterInput();
     } else if (hasNext) {
-      // Advance to next sentence
       next();
     }
+  }
+
+  /// Continues after user input (for wait mode).
+  void continueAfterInput() {
+    _engine.continueAfterUserInput();
+    _currentChoices.clear();
+
+    if (hasNext) {
+      next();
+    } else {
+      _processingStatus.value = DemoProcessingStatus.completed;
+      _isAutoAdvanceEnabled.value = false;
+    }
+
+    update();
+  }
+
+  /// Handles choice selection in ask mode.
+  void selectChoice(String choice) {
+    _lastSelectedChoice.value = choice;
+    _currentChoices.clear();
+    _engine.continueAfterUserInput();
+
+    if (hasNext) {
+      next();
+    } else {
+      _processingStatus.value = DemoProcessingStatus.completed;
+    }
+
+    update();
   }
 
   /// Jumps to a specific sentence in the queue.
@@ -234,6 +478,7 @@ class SentencesDemoViewModel extends GetxController {
 
     _typingTimer?.cancel();
     _autoAdvanceTimer?.cancel();
+    _currentChoices.clear();
 
     _currentIndex.value = index;
     _displayedText.value = '';
@@ -247,9 +492,13 @@ class SentencesDemoViewModel extends GetxController {
 
     _currentIndex.value = 0;
     _displayedText.value = '';
-    _playbackState.value = PlaybackState.idle;
+    _currentChoices.clear();
+    _currentPhase.value = '';
+    _lastSelectedChoice.value = '';
+    _processingStatus.value = DemoProcessingStatus.idle;
     _isAutoAdvanceEnabled.value = false;
 
+    _engine.reset();
     update();
   }
 
@@ -260,9 +509,16 @@ class SentencesDemoViewModel extends GetxController {
     _sentences.clear();
     _currentIndex.value = 0;
     _displayedText.value = '';
-    _playbackState.value = PlaybackState.idle;
+    _currentChoices.clear();
+    _processingStatus.value = DemoProcessingStatus.idle;
     _isAutoAdvanceEnabled.value = false;
 
+    update();
+  }
+
+  /// Toggles TTS for read mode.
+  void toggleTts() {
+    _ttsEnabled.value = !_ttsEnabled.value;
     update();
   }
 
@@ -274,13 +530,14 @@ class SentencesDemoViewModel extends GetxController {
     _typingTimer?.cancel();
     _autoAdvanceTimer?.cancel();
     _isAutoAdvanceEnabled.value = false;
+    _engine.cancel();
   }
 
   void _startTyping() {
     final sentence = currentSentence;
     if (sentence == null) return;
 
-    _playbackState.value = PlaybackState.typing;
+    _processingStatus.value = DemoProcessingStatus.processing;
     _displayedText.value = '';
     var charIndex = 0;
 
@@ -298,7 +555,35 @@ class SentencesDemoViewModel extends GetxController {
       },
     );
 
+    // Handle TTS for read instructions
+    if (sentence.instruction.contains('read') && _ttsEnabled.value) {
+      _handleRead(sentence.text);
+    }
+
     update();
+  }
+
+  Future<void> _typeText(String text) async {
+    final completer = Completer<void>();
+
+    _displayedText.value = '';
+    var charIndex = 0;
+
+    _typingTimer = Timer.periodic(
+      Duration(milliseconds: _typingSpeedMs),
+      (timer) {
+        if (charIndex < text.length) {
+          _displayedText.value = text.substring(0, charIndex + 1);
+          charIndex++;
+          update();
+        } else {
+          timer.cancel();
+          completer.complete();
+        }
+      },
+    );
+
+    return completer.future;
   }
 
   void _skipTyping() {
@@ -311,11 +596,27 @@ class SentencesDemoViewModel extends GetxController {
   }
 
   void _onTypingComplete() {
+    final sentence = currentSentence;
+
+    // Check if waiting for user input
+    if (sentence?.waitForUserInput == true) {
+      _processingStatus.value = DemoProcessingStatus.paused;
+
+      // Show choices if this is an ask instruction
+      if (sentence!.choices.isNotEmpty) {
+        _currentChoices.clear();
+        _currentChoices.addAll(sentence.choices);
+      }
+
+      update();
+      return;
+    }
+
     if (_isAutoAdvanceEnabled.value) {
-      _playbackState.value = PlaybackState.playing;
+      _processingStatus.value = DemoProcessingStatus.processing;
       _scheduleAutoAdvance();
     } else {
-      _playbackState.value = PlaybackState.waiting;
+      _processingStatus.value = DemoProcessingStatus.paused;
     }
     update();
   }
@@ -330,7 +631,7 @@ class SentencesDemoViewModel extends GetxController {
         if (_isAutoAdvanceEnabled.value && hasNext) {
           next();
         } else {
-          _playbackState.value = PlaybackState.idle;
+          _processingStatus.value = DemoProcessingStatus.completed;
           _isAutoAdvanceEnabled.value = false;
           update();
         }

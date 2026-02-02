@@ -4,6 +4,7 @@
 /// Provides real TTS and STT functionality.
 library;
 
+import 'dart:io';
 import 'dart:ui';
 import 'package:fifty_speech_engine/fifty_speech_engine.dart';
 import 'package:flutter/foundation.dart';
@@ -21,10 +22,15 @@ class SpeechIntegrationService extends GetxController {
 
   bool _initialized = false;
   bool _sttAvailable = false;
+  bool _sttInitialized = false;
   String _recognizedText = '';
   String _errorMessage = '';
   String _language = 'en-US';
   Locale _locale = const Locale('en', 'US');
+
+  /// Number of STT initialization retries attempted.
+  int _sttInitRetries = 0;
+  static const int _maxSttRetries = 3;
 
   /// Callback for STT results (partial and final).
   void Function(String text, bool isFinal)? onSttResult;
@@ -74,14 +80,15 @@ class SpeechIntegrationService extends GetxController {
       // Initialize both TTS and STT
       await _engine!.initialize();
 
-      // Check STT availability
-      _sttAvailable = _engine!.stt.isAvailable;
+      // Initialize STT separately with retries
+      await _initializeStt();
 
       _initialized = true;
 
       if (kDebugMode) {
         debugPrint('[SpeechIntegrationService] Initialized successfully');
         debugPrint('[SpeechIntegrationService] STT available: $_sttAvailable');
+        debugPrint('[SpeechIntegrationService] STT initialized: $_sttInitialized');
       }
     } catch (e) {
       _errorMessage = 'Failed to initialize speech engine: $e';
@@ -93,6 +100,95 @@ class SpeechIntegrationService extends GetxController {
 
     update();
     return true;
+  }
+
+  /// Initializes STT with retry logic.
+  ///
+  /// STT initialization can fail on first attempt, especially on Android
+  /// where permissions may not be granted yet. This method retries up to
+  /// [_maxSttRetries] times with exponential backoff.
+  Future<void> _initializeStt() async {
+    _sttInitRetries = 0;
+
+    while (_sttInitRetries < _maxSttRetries) {
+      try {
+        // Check if STT is available from the engine
+        _sttAvailable = _engine!.stt.isAvailable;
+
+        if (_sttAvailable) {
+          _sttInitialized = true;
+          _errorMessage = '';
+          return;
+        }
+
+        // If not available, wait and retry
+        _sttInitRetries++;
+
+        if (_sttInitRetries < _maxSttRetries) {
+          // Exponential backoff: 200ms, 400ms, 800ms
+          final delay = Duration(milliseconds: 200 * (1 << _sttInitRetries));
+          if (kDebugMode) {
+            debugPrint(
+              '[SpeechIntegrationService] STT not available, retry $_sttInitRetries/$_maxSttRetries in ${delay.inMilliseconds}ms',
+            );
+          }
+          await Future<void>.delayed(delay);
+
+          // Re-check availability after delay
+          _sttAvailable = _engine!.stt.isAvailable;
+          if (_sttAvailable) {
+            _sttInitialized = true;
+            _errorMessage = '';
+            return;
+          }
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          debugPrint('[SpeechIntegrationService] STT init attempt $_sttInitRetries failed: $e');
+        }
+        _sttInitRetries++;
+      }
+    }
+
+    // All retries exhausted - set appropriate error message
+    _sttInitialized = false;
+    _sttAvailable = false;
+    _errorMessage = _getSttUnavailableReason();
+  }
+
+  /// Returns a user-friendly reason why STT is unavailable.
+  String _getSttUnavailableReason() {
+    // Check platform-specific reasons
+    if (kIsWeb) {
+      return 'Speech recognition has limited browser support. Try Chrome or Edge.';
+    }
+
+    try {
+      if (Platform.isIOS) {
+        return 'Speech recognition requires microphone permission. Check Settings > Privacy > Microphone.';
+      } else if (Platform.isAndroid) {
+        return 'Speech recognition requires microphone permission. Grant permission when prompted.';
+      } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+        return 'Speech recognition may not be available on desktop. Try mobile device.';
+      }
+    } catch (_) {
+      // Platform check failed (likely web)
+    }
+
+    return 'Speech recognition is not available on this device.';
+  }
+
+  /// Attempts to re-initialize STT after permission changes.
+  Future<bool> retryInitializeStt() async {
+    if (!_initialized || _engine == null) {
+      return false;
+    }
+
+    _sttInitRetries = 0;
+    _errorMessage = '';
+    await _initializeStt();
+    update();
+    return _sttAvailable;
   }
 
   /// Handles STT recognition results.
@@ -195,8 +291,19 @@ class SpeechIntegrationService extends GetxController {
       return false;
     }
 
+    // If STT was not available during init, try one more time
+    if (!_sttAvailable && !_sttInitialized) {
+      if (kDebugMode) {
+        debugPrint('[SpeechIntegrationService] STT not initialized, retrying...');
+      }
+      await _initializeStt();
+    }
+
     if (!_sttAvailable) {
-      _errorMessage = 'Speech recognition not available on this device';
+      // Provide specific error message based on platform
+      if (_errorMessage.isEmpty) {
+        _errorMessage = _getSttUnavailableReason();
+      }
       update();
       return false;
     }
@@ -214,7 +321,17 @@ class SpeechIntegrationService extends GetxController {
       update();
       return true;
     } catch (e) {
-      _errorMessage = 'Failed to start listening: $e';
+      // Parse specific error types
+      final errorStr = e.toString().toLowerCase();
+      if (errorStr.contains('permission')) {
+        _errorMessage = 'Microphone permission denied. Enable in device settings.';
+      } else if (errorStr.contains('busy') || errorStr.contains('in use')) {
+        _errorMessage = 'Microphone is in use by another app. Close other apps and retry.';
+      } else if (errorStr.contains('network') || errorStr.contains('internet')) {
+        _errorMessage = 'Network error. Check your internet connection.';
+      } else {
+        _errorMessage = 'Failed to start listening: $e';
+      }
       if (kDebugMode) {
         debugPrint('[SpeechIntegrationService] Start listening error: $e');
       }

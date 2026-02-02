@@ -6,6 +6,7 @@ library;
 import 'package:get/get.dart';
 
 import '../../core/presentation/actions/action_presenter.dart';
+import '../../shared/services/speech_integration_service.dart';
 import 'actions/sentences_demo_actions.dart';
 import 'controllers/sentences_demo_view_model.dart';
 
@@ -17,10 +18,16 @@ import 'controllers/sentences_demo_view_model.dart';
 class SentencesDemoBindings implements Bindings {
   @override
   void dependencies() {
+    // Get speech service if available (for TTS in read mode)
+    SpeechIntegrationService? speechService;
+    if (Get.isRegistered<SpeechIntegrationService>()) {
+      speechService = Get.find<SpeechIntegrationService>();
+    }
+
     // Register ViewModel (permanent for state persistence)
     if (!Get.isRegistered<SentencesDemoViewModel>()) {
       Get.put<SentencesDemoViewModel>(
-        SentencesDemoViewModel(),
+        SentencesDemoViewModel(speechService: speechService),
         permanent: true,
       );
     }

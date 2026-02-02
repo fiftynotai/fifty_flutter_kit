@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../core/presentation/actions/action_presenter.dart';
 import '../controllers/sentences_demo_view_model.dart';
+import '../service/demo_sentences.dart';
 
 /// Actions for the sentences demo feature.
 ///
@@ -24,7 +25,21 @@ class SentencesDemoActions {
       Get.find<SentencesDemoActions>();
 
   // ---------------------------------------------------------------------------
-  // Dialogue Selection
+  // Mode Selection
+  // ---------------------------------------------------------------------------
+
+  /// Called when a demo mode is selected.
+  void onModeSelected(BuildContext context, DemoMode mode) {
+    _viewModel.selectMode(mode);
+    _presenter.showSuccessSnackBar(
+      context,
+      'Mode Changed',
+      'Loaded "${mode.displayName}" demo',
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Dialogue Selection (Legacy)
   // ---------------------------------------------------------------------------
 
   /// Called when a dialogue is selected.
@@ -104,6 +119,30 @@ class SentencesDemoActions {
         'All sentences have been removed.',
       );
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Choice Selection
+  // ---------------------------------------------------------------------------
+
+  /// Called when a choice is selected in ask mode.
+  void onChoiceSelected(BuildContext context, String choice) {
+    _viewModel.selectChoice(choice);
+    _presenter.showSuccessSnackBar(
+      context,
+      'Choice Selected',
+      'You chose: "$choice"',
+    );
+  }
+
+  /// Called when continue button is tapped (for wait mode).
+  void onContinueTapped() {
+    _viewModel.continueAfterInput();
+  }
+
+  /// Called when TTS toggle is changed.
+  void onTtsToggled() {
+    _viewModel.toggleTts();
   }
 
   // ---------------------------------------------------------------------------
