@@ -304,23 +304,56 @@ await engine.speak('Welcome back!');
 | Linux | Yes | Limited | STT requires libspeechd |
 | Web | Yes | Yes | Browser-dependent |
 
-### Required Permissions
+### Platform Configuration
 
-**Android** (`AndroidManifest.xml`):
+#### Android
+
+Add to `android/app/src/main/AndroidManifest.xml`:
+
 ```xml
-<uses-permission android:name="android.permission.RECORD_AUDIO"/>
-<uses-permission android:name="android.permission.INTERNET"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Speech Recognition Permissions -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application>
+        <!-- ... your application config ... -->
+    </application>
+
+    <!-- Required for Android 11+ (API 30+) package visibility -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
+        </intent>
+    </queries>
+</manifest>
 ```
 
-**iOS** (`Info.plist`):
+**Important Notes:**
+- `RECORD_AUDIO` is required for STT to function
+- The `<queries>` block is **required for Android 11+** (API 30+) due to package visibility restrictions
+- Without the queries block, `stt.initialize()` will return `false` on Android 11+ devices
+
+#### iOS
+
+Add to `ios/Runner/Info.plist`:
+
 ```xml
-<key>NSMicrophoneUsageDescription</key>
-<string>Required for voice commands</string>
 <key>NSSpeechRecognitionUsageDescription</key>
-<string>Required for speech recognition</string>
+<string>This app uses speech recognition for voice commands.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This app uses the microphone for speech recognition.</string>
 ```
 
-**macOS** (`*.entitlements`):
+**Important Notes:**
+- Both keys are **required** - iOS will crash without them
+- Customize the description strings for your app's use case
+- Users must grant permission when prompted
+
+#### macOS
+
+Add to `macos/Runner/*.entitlements` (both Debug and Release):
+
 ```xml
 <key>com.apple.security.device.audio-input</key>
 <true/>
