@@ -210,9 +210,27 @@ class BgmChannel extends BaseAudioChannel {
   /// 4) persists if default
   /// 5) plays next track
   /// 6) fades to stored target volume
+  ///
+  /// **Note:** If duration is not available (track still loading), this method
+  /// will retry up to [_maxDurationRetries] times with delays.
   void _scheduleCrossfade() async {
     final targetVolume = _storage.bgmVolume;
-    final duration = await getDuration();
+
+    // Retry getting duration - it may not be available immediately after play()
+    Duration? duration;
+    for (int retry = 0; retry < _maxDurationRetries; retry++) {
+      duration = await getDuration();
+      if (duration != null && duration > _crossfadeOffset) break;
+
+      // Wait before retrying (track may still be loading)
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+
+      // Check if we're still playing - stop retrying if not
+      if (!isActive || !isPlaying) return;
+    }
+
+    // If duration is still not available or too short, skip crossfade scheduling
+    // The track will loop (due to ReleaseMode.loop) but won't auto-advance
     if (duration == null || duration <= _crossfadeOffset) return;
 
     final fadeTriggerTime = duration - _crossfadeOffset;
@@ -236,6 +254,9 @@ class BgmChannel extends BaseAudioChannel {
       }
     });
   }
+
+  /// Maximum retries to get track duration during crossfade scheduling.
+  static const int _maxDurationRetries = 6;
 
   // ───────────────────────────────────────────────────────────────────────────
   // Persistence-aware Controls
