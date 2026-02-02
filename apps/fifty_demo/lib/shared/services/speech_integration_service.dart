@@ -107,17 +107,25 @@ class SpeechIntegrationService extends GetxController {
   /// STT initialization can fail on first attempt, especially on Android
   /// where permissions may not be granted yet. This method retries up to
   /// [_maxSttRetries] times with exponential backoff.
+  ///
+  /// IMPORTANT: Must call `stt.initialize()` to actually initialize STT.
+  /// Just reading `stt.isAvailable` won't work - the flag is only set
+  /// after `initialize()` is called.
   Future<void> _initializeStt() async {
     _sttInitRetries = 0;
 
     while (_sttInitRetries < _maxSttRetries) {
       try {
-        // Check if STT is available from the engine
-        _sttAvailable = _engine!.stt.isAvailable;
+        // CRITICAL: Actually call initialize() - not just read isAvailable!
+        // The isAvailable flag is only set AFTER initialize() completes.
+        _sttAvailable = await _engine!.stt.initialize();
 
         if (_sttAvailable) {
           _sttInitialized = true;
           _errorMessage = '';
+          if (kDebugMode) {
+            debugPrint('[SpeechIntegrationService] STT initialized successfully');
+          }
           return;
         }
 
@@ -133,20 +141,17 @@ class SpeechIntegrationService extends GetxController {
             );
           }
           await Future<void>.delayed(delay);
-
-          // Re-check availability after delay
-          _sttAvailable = _engine!.stt.isAvailable;
-          if (_sttAvailable) {
-            _sttInitialized = true;
-            _errorMessage = '';
-            return;
-          }
         }
       } catch (e) {
         if (kDebugMode) {
           debugPrint('[SpeechIntegrationService] STT init attempt $_sttInitRetries failed: $e');
         }
         _sttInitRetries++;
+
+        if (_sttInitRetries < _maxSttRetries) {
+          final delay = Duration(milliseconds: 200 * (1 << _sttInitRetries));
+          await Future<void>.delayed(delay);
+        }
       }
     }
 
@@ -154,6 +159,9 @@ class SpeechIntegrationService extends GetxController {
     _sttInitialized = false;
     _sttAvailable = false;
     _errorMessage = _getSttUnavailableReason();
+    if (kDebugMode) {
+      debugPrint('[SpeechIntegrationService] STT initialization failed after $_maxSttRetries retries: $_errorMessage');
+    }
   }
 
   /// Returns a user-friendly reason why STT is unavailable.
