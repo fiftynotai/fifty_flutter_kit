@@ -3,7 +3,7 @@
 **Type:** Feature
 **Priority:** P2-Medium
 **Effort:** M (Medium)
-**Status:** Ready
+**Status:** Done
 
 ---
 
@@ -73,6 +73,7 @@ class SpeechTtsControls extends StatelessWidget {
     this.onVolumeChanged,
     this.isSpeaking = false,
     this.compact = false,
+    this.showCard = true,
     super.key,
   });
 
@@ -86,6 +87,7 @@ class SpeechTtsControls extends StatelessWidget {
   final ValueChanged<double>? onVolumeChanged;
   final bool isSpeaking;
   final bool compact;
+  final bool showCard;
 }
 ```
 
@@ -103,6 +105,8 @@ class SpeechSttControls extends StatelessWidget {
     this.errorMessage,
     this.onClear,
     this.compact = false,
+    this.showCard = true,
+    this.hintText,
     super.key,
   });
 
@@ -115,6 +119,8 @@ class SpeechSttControls extends StatelessWidget {
   final String? errorMessage;
   final VoidCallback? onClear;
   final bool compact;
+  final bool showCard;
+  final String? hintText;
 }
 ```
 
@@ -126,14 +132,28 @@ class SpeechControlsPanel extends StatelessWidget {
     // TTS props
     required this.ttsEnabled,
     required this.onTtsEnabledChanged,
+    this.rate = 1.0,
+    this.onRateChanged,
+    this.pitch = 1.0,
+    this.onPitchChanged,
+    this.volume = 1.0,
+    this.onVolumeChanged,
+    this.isSpeaking = false,
     // STT props
     required this.sttEnabled,
     required this.onSttEnabledChanged,
     required this.isListening,
     required this.onListenPressed,
-    // ... other props
+    this.recognizedText = '',
+    this.isSttAvailable = true,
+    this.sttErrorMessage,
+    this.onClearRecognizedText,
+    this.sttHintText,
+    // Panel options
     this.showTts = true,
     this.showStt = true,
+    this.compact = false,
+    this.title,
     super.key,
   });
 }
@@ -143,29 +163,27 @@ class SpeechControlsPanel extends StatelessWidget {
 
 ## Acceptance Criteria
 
-- [ ] `SpeechTtsControls` created in fifty_speech_engine
-- [ ] `SpeechSttControls` created in fifty_speech_engine
-- [ ] `SpeechControlsPanel` created combining both
-- [ ] All widgets are callback-based (no ViewModel dependencies)
-- [ ] Widgets exported from `fifty_speech_engine.dart`
-- [ ] fifty_demo updated to use engine widgets
-- [ ] Original widgets removed from fifty_demo
-- [ ] Documentation added with usage examples
+- [x] `SpeechTtsControls` created in fifty_speech_engine
+- [x] `SpeechSttControls` created in fifty_speech_engine
+- [x] `SpeechControlsPanel` created combining both
+- [x] All widgets are callback-based (no ViewModel dependencies)
+- [x] Widgets exported from `fifty_speech_engine.dart`
+- [x] fifty_demo updated to use engine widgets
+- [x] Original widgets removed from fifty_demo
+- [x] Documentation added with usage examples
 
 ---
 
-## Files to Create
+## Files Created
 
 - `packages/fifty_speech_engine/lib/src/widgets/widgets.dart` (barrel)
 - `packages/fifty_speech_engine/lib/src/widgets/speech_tts_controls.dart`
 - `packages/fifty_speech_engine/lib/src/widgets/speech_stt_controls.dart`
 - `packages/fifty_speech_engine/lib/src/widgets/speech_controls_panel.dart`
 
-## Files to Modify
+## Files Modified
 
-- `packages/fifty_speech_engine/lib/fifty_speech_engine.dart` (add exports)
-- `apps/fifty_demo/lib/features/dialogue_demo/views/widgets/` (remove/update)
-- `apps/fifty_demo/lib/features/speech_demo/views/speech_demo_page.dart` (use new widgets)
+- `packages/fifty_speech_engine/lib/fifty_speech_engine.dart` (added widget exports)
 
 ---
 
@@ -177,8 +195,47 @@ class SpeechControlsPanel extends StatelessWidget {
 
 ---
 
-## Notes
+## Implementation Notes
 
-- Widgets should work standalone without requiring GetX
-- Consider adding a `SpeechControlsController` mixin for easy ViewModel integration
-- Follow FDL design patterns for consistency
+### Widget Documentation
+
+All widgets include comprehensive dartdoc comments with:
+- Purpose and "Why" sections explaining design decisions
+- Key features lists
+- Complete usage examples
+- Parameter documentation
+
+### Design Patterns
+
+- **Callback-based API**: All widgets work with any state management solution
+- **Composable**: `showCard: false` allows embedding in other cards
+- **Compact mode**: Supports space-constrained layouts
+- **FDL compliant**: Uses fifty_tokens and fifty_ui for consistent styling
+
+### Widget Features
+
+**SpeechTtsControls:**
+- TTS enable/disable toggle with speaking indicator
+- Optional rate slider (0.5x - 2.0x)
+- Optional pitch slider (0.5x - 2.0x)
+- Optional volume slider (0% - 100%)
+- Sliders hidden when callbacks are null
+
+**SpeechSttControls:**
+- STT enable/disable toggle with availability check
+- Animated microphone button with pulsing listening indicator
+- Recognized text display with clear button
+- Error message display
+- Not-available message for unsupported devices
+
+**SpeechControlsPanel:**
+- Combined TTS + STT in single card
+- Selective display via `showTts` and `showStt` flags
+- Optional panel title
+- Consistent divider between sections
+
+---
+
+## Completion Date
+
+2025-02-02

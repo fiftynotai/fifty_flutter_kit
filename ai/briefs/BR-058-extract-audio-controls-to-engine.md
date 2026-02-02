@@ -3,7 +3,7 @@
 **Type:** Feature
 **Priority:** P3-Low
 **Effort:** S (Small)
-**Status:** Ready
+**Status:** Done
 
 ---
 
@@ -52,42 +52,27 @@ Extract `AudioControlsWidget` from fifty_demo to fifty_audio_engine package as a
 class AudioControlsPanel extends StatelessWidget {
   const AudioControlsPanel({
     // BGM controls
-    this.bgmEnabled = true,
-    this.onBgmEnabledChanged,
-    this.bgmVolume = 1.0,
+    required this.bgmEnabled,
+    required this.bgmPlaying,
+    required this.onPlayBgm,
+    required this.onStopBgm,
+    required this.onToggleBgm,
+    this.bgmVolume,
     this.onBgmVolumeChanged,
-    this.showBgmVolume = false,
 
     // SFX controls
-    this.sfxEnabled = true,
-    this.onSfxEnabledChanged,
-    this.sfxVolume = 1.0,
+    required this.sfxEnabled,
+    required this.onToggleSfx,
+    required this.onTestSfx,
+    this.sfxVolume,
     this.onSfxVolumeChanged,
-    this.showSfxVolume = false,
 
     // Layout
     this.compact = false,
+    this.showCard = true,
     this.title,
     super.key,
   });
-
-  // BGM
-  final bool bgmEnabled;
-  final ValueChanged<bool>? onBgmEnabledChanged;
-  final double bgmVolume;
-  final ValueChanged<double>? onBgmVolumeChanged;
-  final bool showBgmVolume;
-
-  // SFX
-  final bool sfxEnabled;
-  final ValueChanged<bool>? onSfxEnabledChanged;
-  final double sfxVolume;
-  final ValueChanged<double>? onSfxVolumeChanged;
-  final bool showSfxVolume;
-
-  // Layout
-  final bool compact;
-  final String? title;
 }
 ```
 
@@ -95,39 +80,42 @@ class AudioControlsPanel extends StatelessWidget {
 
 ## Acceptance Criteria
 
-- [ ] `AudioControlsPanel` created in fifty_audio_engine
-- [ ] Widget is callback-based (no ViewModel dependencies)
-- [ ] Exported from `fifty_audio_engine.dart`
-- [ ] fifty_demo updated to use engine widget
-- [ ] Original widget removed from fifty_demo
-- [ ] Documentation with usage examples
+- [x] `AudioControlsPanel` created in fifty_audio_engine
+- [x] Widget is callback-based (no ViewModel dependencies)
+- [x] Exported from `fifty_audio_engine.dart`
+- [x] fifty_demo updated to use engine widget
+- [x] Original widget removed from fifty_demo
+- [x] Documentation with usage examples
 
 ---
 
-## Files to Create
+## Files Created
 
 - `packages/fifty_audio_engine/lib/src/widgets/widgets.dart` (barrel)
 - `packages/fifty_audio_engine/lib/src/widgets/audio_controls_panel.dart`
 
-## Files to Modify
+## Files Modified
 
-- `packages/fifty_audio_engine/lib/fifty_audio_engine.dart` (add export)
-- `apps/fifty_demo/lib/features/map_demo/views/widgets/audio_controls.dart` (remove)
-- `apps/fifty_demo/lib/features/map_demo/views/map_demo_page.dart` (update import)
-- `apps/fifty_demo/lib/features/audio_demo/views/audio_demo_page.dart` (potentially use)
+- `packages/fifty_audio_engine/lib/fifty_audio_engine.dart` (added widgets export)
+- `apps/fifty_demo/lib/features/map_demo/views/map_demo_page.dart` (uses engine widget)
 
 ---
 
 ## Dependencies
 
-- fifty_ui (FiftySwitch, FiftySlider, FiftyCard)
-- fifty_tokens (spacing, typography)
-- fifty_theme (theme-aware colors)
+- fifty_ui (FiftyButton, FiftyCard)
+- fifty_tokens (FiftySpacing, FiftyTypography, FiftyRadii)
+- fifty_theme (FiftyThemeExtension)
 
 ---
 
-## Notes
+## Implementation Notes
 
-- Simpler than speech controls - single widget
-- Consider adding master volume control option
-- Could add preset buttons (mute all, reset defaults)
+The widget provides:
+
+- **BGM Controls**: Play/Stop button, enable/disable toggle with status indicator
+- **SFX Controls**: Test button, enable/disable toggle with status indicator
+- **Volume Sliders**: Optional sliders shown when volume value and callback are provided
+- **Compact Mode**: Reduced spacing for space-constrained layouts
+- **Card Wrapper**: Optional FiftyCard wrapper (can be disabled for embedding)
+- **FDL Compliant**: Uses Fifty Design Language tokens throughout

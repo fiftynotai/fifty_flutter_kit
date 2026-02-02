@@ -3,7 +3,7 @@
 **Type:** Feature
 **Priority:** P3-Low
 **Effort:** M (Medium)
-**Status:** Ready
+**Status:** Done
 
 ---
 
@@ -40,14 +40,15 @@ Promote utility widgets from fifty_demo to fifty_ui: `SectionNavPill`, `_Setting
      - Icon + label pill
      - Active/inactive states
      - Horizontal scrollable list support
-   - **Note:** Evaluate overlap with FiftyChip - may extend instead
+   - **Note:** Evaluated - FiftyNavPill kept separate from FiftyChip (different use cases)
 
 3. **FiftyLabeledIconButton** (from `_ControlButton`)
    - Source: `apps/fifty_demo/lib/features/map_demo/views/widgets/map_controls.dart`
    - Destination: `packages/fifty_ui/lib/src/buttons/fifty_labeled_icon_button.dart`
    - Features:
      - Circular icon with label below
-     - Size variants
+     - Size variants (small, medium, large)
+     - Style variants (filled, outlined, ghost)
      - Disabled/selected states
 
 4. **FiftyInfoRow** (from `_InfoRow`)
@@ -57,7 +58,8 @@ Promote utility widgets from fifty_demo to fifty_ui: `SectionNavPill`, `_Setting
      - Key-value row display
      - Optional icon
      - Value color customization
-   - **Note:** Evaluate if FiftyDataSlate covers this use case
+     - Custom label/value styles
+   - **Note:** Evaluated - FiftyInfoRow kept separate from FiftyDataSlate (lightweight vs panel)
 
 5. **FiftyCursor** (from `_TypingCursor`)
    - Source: `apps/fifty_demo/lib/features/dialogue_demo/views/widgets/dialogue_display.dart`
@@ -84,26 +86,42 @@ class FiftySettingsRow extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onChanged,
-    this.icon,
     this.subtitle,
+    this.icon,
+    this.iconColor,
     this.trailingText,
     this.enabled = true,
+    this.switchSize = FiftySwitchSize.medium,
     super.key,
   });
 
   final String label;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-  final IconData? icon;
   final String? subtitle;
+  final IconData? icon;
+  final Color? iconColor;
   final String? trailingText;
+  final bool value;
+  final ValueChanged<bool>? onChanged;
   final bool enabled;
+  final FiftySwitchSize switchSize;
 }
 ```
 
 ### FiftyNavPill API
 
 ```dart
+class FiftyNavPillItem {
+  const FiftyNavPillItem({
+    required this.id,
+    required this.label,
+    this.icon,
+  });
+
+  final String id;
+  final String label;
+  final IconData? icon;
+}
+
 class FiftyNavPill extends StatelessWidget {
   const FiftyNavPill({
     required this.label,
@@ -111,32 +129,33 @@ class FiftyNavPill extends StatelessWidget {
     required this.onTap,
     this.icon,
     this.activeColor,
-    this.inactiveColor,
     super.key,
   });
 
   final String label;
+  final IconData? icon;
   final bool isActive;
   final VoidCallback onTap;
-  final IconData? icon;
   final Color? activeColor;
-  final Color? inactiveColor;
 }
 
-// Helper for horizontal pill lists
 class FiftyNavPillBar extends StatelessWidget {
   const FiftyNavPillBar({
     required this.items,
-    required this.selectedIndex,
+    required this.selectedId,
     required this.onSelected,
-    this.scrollable = true,
+    this.activeColor,
+    this.spacing = FiftySpacing.sm,
+    this.padding,
     super.key,
   });
 
   final List<FiftyNavPillItem> items;
-  final int selectedIndex;
-  final ValueChanged<int> onSelected;
-  final bool scrollable;
+  final String selectedId;
+  final ValueChanged<String> onSelected;
+  final Color? activeColor;
+  final double spacing;
+  final EdgeInsets? padding;
 }
 ```
 
@@ -144,26 +163,29 @@ class FiftyNavPillBar extends StatelessWidget {
 
 ```dart
 enum FiftyLabeledIconButtonSize { small, medium, large }
+enum FiftyLabeledIconButtonStyle { filled, outlined, ghost }
 
 class FiftyLabeledIconButton extends StatelessWidget {
   const FiftyLabeledIconButton({
     required this.icon,
-    required this.label,
     required this.onPressed,
+    this.label,
     this.size = FiftyLabeledIconButtonSize.medium,
+    this.style = FiftyLabeledIconButtonStyle.filled,
     this.isSelected = false,
-    this.isDisabled = false,
     this.color,
+    this.enabled = true,
     super.key,
   });
 
   final IconData icon;
-  final String label;
+  final String? label;
   final VoidCallback? onPressed;
   final FiftyLabeledIconButtonSize size;
+  final FiftyLabeledIconButtonStyle style;
   final bool isSelected;
-  final bool isDisabled;
   final Color? color;
+  final bool enabled;
 }
 ```
 
@@ -177,6 +199,8 @@ class FiftyInfoRow extends StatelessWidget {
     this.icon,
     this.valueColor,
     this.onTap,
+    this.labelStyle,
+    this.valueStyle,
     super.key,
   });
 
@@ -185,6 +209,8 @@ class FiftyInfoRow extends StatelessWidget {
   final IconData? icon;
   final Color? valueColor;
   final VoidCallback? onTap;
+  final TextStyle? labelStyle;
+  final TextStyle? valueStyle;
 }
 ```
 
@@ -194,8 +220,8 @@ class FiftyInfoRow extends StatelessWidget {
 class FiftyCursor extends StatefulWidget {
   const FiftyCursor({
     this.color,
-    this.width = 2.0,
-    this.height = 20.0,
+    this.width = 2,
+    this.height = 20,
     this.blinkDuration = const Duration(milliseconds: 500),
     super.key,
   });
@@ -211,17 +237,17 @@ class FiftyCursor extends StatefulWidget {
 
 ## Acceptance Criteria
 
-- [ ] All 5 widgets created in fifty_ui
-- [ ] Exported from `fifty_ui.dart` barrel
-- [ ] Documented with dartdoc comments
-- [ ] Duplicate widgets consolidated in fifty_demo
-- [ ] fifty_demo updated to use new components
-- [ ] FiftyNavPill evaluated against FiftyChip for overlap
-- [ ] FiftyInfoRow evaluated against FiftyDataSlate for overlap
+- [x] All 5 widgets created in fifty_ui
+- [x] Exported from `fifty_ui.dart` barrel
+- [x] Documented with dartdoc comments
+- [x] Duplicate widgets consolidated in fifty_demo
+- [x] fifty_demo updated to use new components
+- [x] FiftyNavPill evaluated against FiftyChip for overlap
+- [x] FiftyInfoRow evaluated against FiftyDataSlate for overlap
 
 ---
 
-## Files to Create
+## Files Created
 
 - `packages/fifty_ui/lib/src/display/fifty_settings_row.dart`
 - `packages/fifty_ui/lib/src/display/fifty_info_row.dart`
@@ -229,17 +255,17 @@ class FiftyCursor extends StatefulWidget {
 - `packages/fifty_ui/lib/src/buttons/fifty_labeled_icon_button.dart`
 - `packages/fifty_ui/lib/src/utils/fifty_cursor.dart`
 
-## Files to Modify
+## Files Modified
 
-- `packages/fifty_ui/lib/fifty_ui.dart` (add exports)
-- `packages/fifty_ui/lib/src/display/display.dart` (add to barrel)
-- `packages/fifty_ui/lib/src/controls/controls.dart` (add to barrel)
-- `packages/fifty_ui/lib/src/buttons/buttons.dart` (add to barrel)
-- Multiple fifty_demo files (update imports, remove duplicates)
+- `packages/fifty_ui/lib/fifty_ui.dart` (added exports)
+- `packages/fifty_ui/lib/src/display/display.dart` (added to barrel)
+- `packages/fifty_ui/lib/src/controls/controls.dart` (added to barrel)
+- `packages/fifty_ui/lib/src/buttons/buttons.dart` (added to barrel)
+- Multiple fifty_demo files (updated imports, removed duplicates)
 
 ---
 
-## Files to Remove (after migration)
+## Files Removed (after migration)
 
 - `apps/fifty_demo/lib/shared/widgets/section_nav_pill.dart`
 - Duplicate `_ControlButton` in 3 files
@@ -251,7 +277,7 @@ class FiftyCursor extends StatefulWidget {
 
 - fifty_tokens (spacing, typography)
 - fifty_theme (theme-aware colors)
-- BR-055 should be completed first (establishes patterns)
+- BR-055 completed first (established patterns)
 
 ---
 
@@ -260,17 +286,26 @@ class FiftyCursor extends StatefulWidget {
 ### FiftyNavPill vs FiftyChip
 - FiftyChip: Tag/label display, not selectable in group
 - FiftyNavPill: Navigation selection, group selection support
-- **Recommendation:** Keep separate - different use cases
+- **Decision:** Keep separate - different use cases
 
 ### FiftyInfoRow vs FiftyDataSlate
 - FiftyDataSlate: Multiple key-value pairs in a panel
 - FiftyInfoRow: Single key-value row, more lightweight
-- **Recommendation:** Keep separate - FiftyInfoRow for simple rows, FiftyDataSlate for panels
+- **Decision:** Keep separate - FiftyInfoRow for simple rows, FiftyDataSlate for panels
 
 ---
 
-## Notes
+## Implementation Notes
 
-- Lower priority than BR-055 and BR-056
-- Can be implemented incrementally (one widget at a time)
-- Consider adding storybook/catalog entries for each component
+All widgets follow FDL v2 design patterns:
+- Theme-aware colors via `Theme.of(context).colorScheme`
+- Consistent spacing using `FiftySpacing` tokens
+- Typography using `FiftyTypography` constants
+- Border radii using `FiftyRadii` constants
+- Comprehensive dartdoc with usage examples
+
+---
+
+## Completion Date
+
+2026-02-02

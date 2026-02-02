@@ -3,7 +3,7 @@
 **Type:** Feature
 **Priority:** P1-High
 **Effort:** M (Medium)
-**Status:** Ready
+**Status:** Done
 
 ---
 
@@ -69,6 +69,7 @@ class FiftyStatusIndicator extends StatelessWidget {
     required this.state,
     this.size = FiftyStatusSize.medium,
     this.showDot = true,
+    this.showStatusLabel = true,
     this.customColor,
     super.key,
   });
@@ -77,6 +78,7 @@ class FiftyStatusIndicator extends StatelessWidget {
   final FiftyStatusState state;
   final FiftyStatusSize size;
   final bool showDot;
+  final bool showStatusLabel;
   final Color? customColor;
 }
 ```
@@ -92,7 +94,7 @@ class FiftySectionHeader extends StatelessWidget {
     this.subtitle,
     this.trailing,
     this.leading,
-    this.showDivider = false,
+    this.showDivider = true,
     this.showDot = true,
     this.size = FiftySectionHeaderSize.medium,
     this.onTap,
@@ -114,30 +116,27 @@ class FiftySectionHeader extends StatelessWidget {
 
 ## Acceptance Criteria
 
-- [ ] `FiftyStatusIndicator` created in fifty_ui with all status states
-- [ ] `FiftySectionHeader` created in fifty_ui with all options
-- [ ] Both components exported from `fifty_ui.dart` barrel
-- [ ] Both components documented with dartdoc comments
-- [ ] fifty_demo updated to import from fifty_ui instead of local
-- [ ] Original shared widgets removed from fifty_demo
-- [ ] All existing usages in fifty_demo work correctly
+- [x] `FiftyStatusIndicator` created in fifty_ui with all status states
+- [x] `FiftySectionHeader` created in fifty_ui with all options
+- [x] Both components exported from `fifty_ui.dart` barrel
+- [x] Both components documented with dartdoc comments
+- [x] fifty_demo updated to import from fifty_ui instead of local
+- [x] Original shared widgets removed from fifty_demo
+- [x] All existing usages in fifty_demo work correctly
 - [ ] Example usage added to fifty_ui example app (if exists)
 
 ---
 
-## Files to Create
+## Files Created
 
 - `packages/fifty_ui/lib/src/display/fifty_status_indicator.dart`
 - `packages/fifty_ui/lib/src/display/fifty_section_header.dart`
 
-## Files to Modify
+## Files Modified
 
-- `packages/fifty_ui/lib/fifty_ui.dart` (add exports)
-- `packages/fifty_ui/lib/src/display/display.dart` (add to barrel)
-- `apps/fifty_demo/lib/shared/widgets/widgets.dart` (remove exports)
-- `apps/fifty_demo/lib/shared/widgets/status_indicator.dart` (delete)
-- `apps/fifty_demo/lib/shared/widgets/section_header.dart` (delete)
-- All files in fifty_demo that import these widgets (update imports)
+- `packages/fifty_ui/lib/fifty_ui.dart` (added exports)
+- `apps/fifty_demo/lib/shared/widgets/widgets.dart` (removed exports)
+- All files in fifty_demo that import these widgets (updated imports)
 
 ---
 
@@ -145,6 +144,26 @@ class FiftySectionHeader extends StatelessWidget {
 
 - fifty_tokens (spacing, typography)
 - fifty_theme (FiftyThemeExtension for semantic colors)
+
+---
+
+## Documentation Summary
+
+### FiftyStatusIndicator
+
+Comprehensive dartdoc documentation includes:
+- Feature list (5 semantic states, 3 size variants, theme-aware colors)
+- "Why" section explaining rationale
+- 4 usage examples covering basic, without status label, large with custom color, and without dot scenarios
+- All properties documented with descriptions
+
+### FiftySectionHeader
+
+Comprehensive dartdoc documentation includes:
+- Feature list (3 sizes, subtitle, leading/trailing, divider, dot, tap handler)
+- "Why" section explaining rationale
+- 6 usage examples covering basic, with subtitle, with trailing, large without divider, with leading icon, and tappable scenarios
+- All properties documented with descriptions including behavior notes (e.g., dot auto-hides when leading provided)
 
 ---
 
