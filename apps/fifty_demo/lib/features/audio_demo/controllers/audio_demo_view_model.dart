@@ -11,9 +11,10 @@ import 'package:get/get.dart';
 
 /// Available audio tracks for BGM demonstration.
 enum AudioTrack {
-  exploration('Exploration', 'audio/bgm/exploration.mp3'),
-  combat('Combat', 'audio/bgm/combat.mp3'),
-  peaceful('Peaceful', 'audio/bgm/peaceful.mp3');
+  clockworkGrove('Clockwork Grove', 'audio/bgm/clockwork_grove.mp3'),
+  clockworkGroveAlt('Clockwork Grove II', 'audio/bgm/clockwork_grove_alt.mp3'),
+  pathOfFirstLight('Path of the First Light', 'audio/bgm/path_of_first_light.mp3'),
+  pathOfFirstLightAlt('Path of the First Light II', 'audio/bgm/path_of_first_light_alt.mp3');
 
   const AudioTrack(this.displayName, this.assetPath);
 
@@ -95,7 +96,7 @@ class AudioDemoViewModel extends GetxController {
   // BGM State
   // ─────────────────────────────────────────────────────────────────────────
 
-  AudioTrack _currentTrack = AudioTrack.exploration;
+  AudioTrack _currentTrack = AudioTrack.clockworkGrove;
   int _currentTrackIndex = 0;
   bool _bgmMuted = false;
   double _bgmVolume = 0.7;
@@ -433,23 +434,15 @@ class AudioDemoViewModel extends GetxController {
   }
 
   /// Seeks to position in track (0.0 - 1.0).
-  ///
-  /// Note: Full seek requires engine enhancement. Currently restarts track
-  /// if seeking to beginning (< 10%).
   Future<void> seekBgm(double progress) async {
     if (!_isInitialized || _bgmDuration.inMilliseconds == 0) return;
 
-    // Only support restart for now (engine doesn't expose seek)
-    if (progress < 0.1) {
-      await _engine.bgm.stop();
-      _bgmPosition = Duration.zero;
-      _volumeAppliedAfterPlay = false;
-      // Use playAtIndex() to restart track (works after stop)
-      await _engine.bgm.playAtIndex(_currentTrackIndex);
-      await _fetchDuration();
-      await _ensureVolumeAfterPlay();
-    }
+    final targetPosition = Duration(
+      milliseconds: (progress * _bgmDuration.inMilliseconds).toInt(),
+    );
 
+    await _engine.bgm.seek(targetPosition);
+    _bgmPosition = targetPosition;
     update();
   }
 
@@ -660,7 +653,7 @@ class AudioDemoViewModel extends GetxController {
 
   /// Resets all audio to defaults.
   Future<void> resetAll() async {
-    _currentTrack = AudioTrack.exploration;
+    _currentTrack = AudioTrack.clockworkGrove;
     _currentTrackIndex = 0;
     _bgmMuted = false;
     _bgmVolume = 0.7;

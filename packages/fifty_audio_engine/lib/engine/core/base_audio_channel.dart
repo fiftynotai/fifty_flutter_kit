@@ -276,6 +276,14 @@ abstract class BaseAudioChannel {
     await _player.stop();
   }
 
+  /// **Seek**
+  ///
+  /// Seek to a specific position in the current track.
+  Future<void> seek(Duration position) async {
+    FiftyAudioLogger.log('Seek to: ${position.inMilliseconds}ms');
+    await _player.seek(position);
+  }
+
   // ───────────────────────────────────────────────────────────────────────────
   // Volume & Mute
   // ───────────────────────────────────────────────────────────────────────────

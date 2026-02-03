@@ -288,9 +288,9 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Track Selector
+          // Playlist Header
           Text(
-            'SELECT TRACK',
+            'PLAYLIST',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
@@ -299,46 +299,31 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
-          Wrap(
-            spacing: FiftySpacing.sm,
-            runSpacing: FiftySpacing.sm,
-            children: viewModel.availableTracks.map((track) {
-              final isSelected = track == viewModel.currentTrack;
-              return GestureDetector(
+
+          // Track List (vertical scrollable)
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: viewModel.availableTracks.length,
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: FiftySpacing.sm),
+            itemBuilder: (context, index) {
+              final track = viewModel.availableTracks[index];
+              final isCurrentTrack = track == viewModel.currentTrack;
+              final isPlaying = isCurrentTrack && viewModel.bgmPlaying;
+
+              return _buildTrackRow(
+                context: context,
+                track: track,
+                isCurrentTrack: isCurrentTrack,
+                isPlaying: isPlaying,
                 onTap: () => actions.onTrackSelected(track),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: FiftySpacing.md,
-                    vertical: FiftySpacing.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? colorScheme.primary.withValues(alpha: 0.2)
-                        : Colors.transparent,
-                    borderRadius: FiftyRadii.lgRadius,
-                    border: Border.all(
-                      color: isSelected
-                          ? colorScheme.primary
-                          : colorScheme.outline,
-                    ),
-                  ),
-                  child: Text(
-                    track.displayName.toUpperCase(),
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamily,
-                      fontSize: FiftyTypography.bodySmall,
-                      color: isSelected
-                          ? colorScheme.primary
-                          : colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ),
               );
-            }).toList(),
+            },
           ),
           const SizedBox(height: FiftySpacing.lg),
 
-          // Now Playing
+          // Now Playing Progress
           Container(
             padding: const EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
@@ -348,55 +333,29 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Track info and time
                 Row(
                   children: [
-                    Icon(
-                      viewModel.bgmPlaying
-                          ? Icons.play_circle_filled
-                          : Icons.play_circle_outline,
-                      color: viewModel.bgmPlaying
-                          ? colorScheme.primary
-                          : colorScheme.onSurface.withValues(alpha: 0.5),
-                      size: 24,
-                    ),
-                    const SizedBox(width: FiftySpacing.sm),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  viewModel.currentTrack.displayName,
-                                  style: TextStyle(
-                                    fontFamily: FiftyTypography.fontFamily,
-                                    fontSize: FiftyTypography.bodyMedium,
-                                    fontWeight: FontWeight.bold,
-                                    color: colorScheme.onSurface,
-                                  ),
-                                ),
-                              ),
-                              // Loop indicator
-                              if (viewModel.loopEnabled)
-                                Icon(
-                                  Icons.repeat,
-                                  size: 14,
-                                  color: colorScheme.primary.withValues(alpha: 0.7),
-                                ),
-                            ],
-                          ),
-                          Text(
-                            viewModel.currentTrack.assetPath.split('/').last,
-                            style: TextStyle(
-                              fontFamily: FiftyTypography.fontFamily,
-                              fontSize: FiftyTypography.bodySmall,
-                              color: colorScheme.onSurface.withValues(alpha: 0.5),
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        viewModel.currentTrack.displayName,
+                        style: TextStyle(
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodyMedium,
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                     ),
+                    if (viewModel.loopEnabled)
+                      Padding(
+                        padding: const EdgeInsets.only(right: FiftySpacing.sm),
+                        child: Icon(
+                          Icons.repeat,
+                          size: 14,
+                          color: colorScheme.primary.withValues(alpha: 0.7),
+                        ),
+                      ),
                     Text(
                       '${viewModel.bgmPositionLabel} / ${viewModel.bgmDurationLabel}',
                       style: TextStyle(
@@ -477,6 +436,85 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  /// Builds a single track row for the playlist.
+  Widget _buildTrackRow({
+    required BuildContext context,
+    required AudioTrack track,
+    required bool isCurrentTrack,
+    required bool isPlaying,
+    required VoidCallback onTap,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    // Use burgundy for currently playing track highlight
+    final highlightColor = isCurrentTrack
+        ? FiftyColors.burgundy
+        : colorScheme.onSurface.withValues(alpha: 0.7);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: FiftySpacing.md,
+          vertical: FiftySpacing.sm,
+        ),
+        decoration: BoxDecoration(
+          color: isCurrentTrack
+              ? FiftyColors.burgundy.withValues(alpha: 0.15)
+              : colorScheme.surfaceContainerHighest,
+          borderRadius: FiftyRadii.mdRadius,
+          border: Border.all(
+            color: isCurrentTrack
+                ? FiftyColors.burgundy
+                : colorScheme.outline,
+            width: isCurrentTrack ? 1.5 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            // Play/current indicator
+            SizedBox(
+              width: 24,
+              child: Icon(
+                isPlaying
+                    ? Icons.play_arrow
+                    : (isCurrentTrack ? Icons.radio_button_checked : Icons.music_note),
+                size: 18,
+                color: highlightColor,
+              ),
+            ),
+            const SizedBox(width: FiftySpacing.sm),
+
+            // Track title
+            Expanded(
+              child: Text(
+                track.displayName,
+                style: TextStyle(
+                  fontFamily: FiftyTypography.fontFamily,
+                  fontSize: FiftyTypography.bodyMedium,
+                  fontWeight: isCurrentTrack ? FontWeight.bold : FontWeight.normal,
+                  color: isCurrentTrack
+                      ? FiftyColors.burgundy
+                      : colorScheme.onSurface,
+                ),
+              ),
+            ),
+
+            // Duration placeholder (tracks don't have pre-known duration)
+            Text(
+              '--:--',
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
