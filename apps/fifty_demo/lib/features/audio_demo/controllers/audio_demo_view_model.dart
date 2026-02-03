@@ -223,10 +223,16 @@ class AudioDemoViewModel extends GetxController {
         alreadyInitialized = false;
       }
 
+      // Get BGM track paths
+      final bgmPaths = AudioTrack.values.map((t) => t.assetPath).toList();
+
       if (!alreadyInitialized) {
         // Initialize the engine with BGM playlist
-        final bgmPaths = AudioTrack.values.map((t) => t.assetPath).toList();
         await _engine.initialize(bgmPaths);
+      } else {
+        // Engine already initialized - ensure playlist is loaded
+        // (playlist may be empty if engine was initialized elsewhere)
+        await _engine.bgm.loadDefaultPlaylist(bgmPaths);
       }
 
       // Register SFX groups
