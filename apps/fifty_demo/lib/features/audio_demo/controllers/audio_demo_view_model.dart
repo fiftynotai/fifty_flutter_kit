@@ -196,6 +196,7 @@ class AudioDemoViewModel extends GetxController {
   Duration _bgmPosition = Duration.zero;
   Duration _bgmDuration = Duration.zero;
   StreamSubscription<Duration>? _positionSubscription;
+  StreamSubscription<Duration>? _durationSubscription;
 
   /// Whether volume has been applied after play (prevents reset issue).
   bool _volumeAppliedAfterPlay = false;
@@ -252,6 +253,12 @@ class AudioDemoViewModel extends GetxController {
       // Subscribe to BGM position updates
       _positionSubscription = _engine.bgm.onPositionChanged.listen((position) {
         _bgmPosition = position;
+        update();
+      });
+
+      // Subscribe to BGM duration updates (fires when track changes)
+      _durationSubscription = _engine.bgm.onDurationChanged.listen((duration) {
+        _bgmDuration = duration;
         update();
       });
 
@@ -712,9 +719,11 @@ class AudioDemoViewModel extends GetxController {
 
   @override
   void onClose() {
-    // Cancel position subscription
+    // Cancel stream subscriptions
     _positionSubscription?.cancel();
     _positionSubscription = null;
+    _durationSubscription?.cancel();
+    _durationSubscription = null;
 
     // Stop all audio when leaving the demo
     if (_isInitialized) {

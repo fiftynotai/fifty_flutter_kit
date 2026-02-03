@@ -328,7 +328,56 @@ Future<bool> playAndWait(String path, {...})
 /// Streams
 Stream<bool> get onIsPlayingChanged
 Stream<Duration> get onPositionChanged
+Stream<Duration> get onDurationChanged
 Stream<void> get onPlayerComplete
+```
+
+### Reactive Streams
+
+All channels expose reactive streams for building responsive UIs:
+
+| Stream | Type | Description |
+|--------|------|-------------|
+| `onIsPlayingChanged` | `Stream<bool>` | Emits when playback starts or stops |
+| `onPositionChanged` | `Stream<Duration>` | Emits current playback position continuously |
+| `onDurationChanged` | `Stream<Duration>` | Emits when duration becomes available or changes |
+| `onPlayerComplete` | `Stream<void>` | Emits when the current track completes |
+
+**Duration Stream Example:**
+
+The `onDurationChanged` stream is useful for UIs that need to update when tracks change, such as progress bars or time displays:
+
+```dart
+// Subscribe to duration updates
+final bgm = FiftyAudioEngine.instance.bgm;
+
+bgm.onDurationChanged.listen((duration) {
+  print('Track duration: ${duration.inSeconds}s');
+  // Update your progress bar max value
+  setState(() {
+    _totalDuration = duration;
+  });
+});
+
+// Combine with position for a complete progress indicator
+StreamBuilder<Duration>(
+  stream: bgm.onPositionChanged,
+  builder: (context, positionSnapshot) {
+    return StreamBuilder<Duration>(
+      stream: bgm.onDurationChanged,
+      builder: (context, durationSnapshot) {
+        final position = positionSnapshot.data ?? Duration.zero;
+        final duration = durationSnapshot.data ?? Duration.zero;
+
+        final progress = duration.inMilliseconds > 0
+            ? position.inMilliseconds / duration.inMilliseconds
+            : 0.0;
+
+        return LinearProgressIndicator(value: progress);
+      },
+    );
+  },
+);
 ```
 
 ---

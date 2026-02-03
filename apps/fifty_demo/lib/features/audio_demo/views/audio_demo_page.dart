@@ -367,11 +367,10 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   ],
                 ),
                 const SizedBox(height: FiftySpacing.sm),
-                // Progress bar - use onChangeEnd to seek only when user releases
+                // Progress bar
                 FiftySlider(
                   value: viewModel.bgmProgress,
-                  onChanged: null, // Don't seek during drag
-                  onChangeEnd: actions.onBgmSeek, // Seek when user releases
+                  onChanged: actions.onBgmSeek,
                 ),
               ],
             ),

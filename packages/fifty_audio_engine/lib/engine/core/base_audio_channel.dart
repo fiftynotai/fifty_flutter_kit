@@ -201,6 +201,11 @@ abstract class BaseAudioChannel {
   /// **Current Media Duration**
   Future<Duration?> getDuration() => _player.getDuration();
 
+  /// **Duration Stream**
+  ///
+  /// Emits the duration when it becomes available or changes (e.g., new track).
+  Stream<Duration> get onDurationChanged => _player.onDurationChanged;
+
   /// **Position Stream**
   ///
   /// Emits the playback position of the current media.
