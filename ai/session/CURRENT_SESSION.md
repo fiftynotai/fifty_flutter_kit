@@ -1,130 +1,69 @@
 # Current Session
 
-**Status:** COMPLETE
-**Last Updated:** 2026-02-02
-**Completed Briefs:** BR-059, BR-060, BR-061
-**Sprint:** Bug Fix & Feature Demo Sprint
+**Status:** REST MODE
+**Last Updated:** 2026-02-03
+**Active Brief:** None
+**Goal:** N/A
 
 ---
 
-## Parallel Implementation Sprint - COMPLETE
+## Last Session Summary
 
-**Mission:** Implement 3 briefs in parallel targeting different modules
-**Coordinator:** CONDUCTOR (multi-agent-coordinator)
+### BR-062: Audio Showcase BGM Playlist Refactor (COMPLETED)
 
-### Sprint Briefs
+**Status:** Done (implementation pre-existed)
 
-| Brief | Module | Type | Priority | Status |
-|-------|--------|------|----------|--------|
-| BR-059 | audio_demo | Bug Fix | P2 | DONE |
-| BR-060 | speech_demo | Bug Fix | P2 | DONE |
-| BR-061 | sentences_demo | Feature | P2 | DONE |
+The refactor from direct `play(path)` calls to playlist-based methods was already implemented in commit `5850801`. Analysis confirmed:
 
-### Workflow Phases
+**Code Changes Already Present:**
+- `_engine.initialize(bgmPaths)` - Playlist loaded on init
+- `onDefaultPlaylistComplete` and `onTrackAboutToChange` callbacks wired
+- `selectTrack()` uses `playAtIndex()` instead of `play(path)`
+- `toggleBgmPlayback()` uses `resume()`/`pause()`
+- `skipNext()` uses `playNext()`
+- `skipPrevious()` uses `playAtIndex()`
+- `_ensureVolumeAfterPlay()` handles volume persistence
 
-| Phase | Agents | Status |
-|-------|--------|--------|
-| 1. PLANNING | planner x3 (parallel) | DONE |
-| 2. BUILDING | coder x3 (parallel) | DONE |
-| 3. TESTING | tester x1 | DONE |
-| 4. REVIEWING | reviewer x1 | DONE |
-| 5. COMMIT | orchestrator | READY |
+**All acceptance criteria verified in code.**
 
----
+### Previous Sprint (BR-059, BR-060, BR-061)
 
-## Implementation Summary
-
-### BR-059: BGM Playback Issues - FIXED
-
-**File:** `/Users/m.elamin/StudioProjects/fifty_eco_system/apps/fifty_demo/lib/features/audio_demo/controllers/audio_demo_view_model.dart`
-
-**Root Cause:** Volume was set BEFORE play(), but engine resets volume on play(). Track completion callbacks were not wired.
-
-**Fix:**
-1. Added `_volumeAppliedAfterPlay` flag
-2. Added `_ensureVolumeAfterPlay()` - applies volume AFTER play with 100ms delay
-3. Wired `onDefaultPlaylistComplete` and `onTrackAboutToChange` callbacks
-4. Added shuffle support in `skipNext()`
-
-### BR-060: STT Unavailable Error - FIXED
-
-**File:** `/Users/m.elamin/StudioProjects/fifty_eco_system/apps/fifty_demo/lib/shared/services/speech_integration_service.dart`
-
-**Root Cause:** STT availability was checked once without retries, and error messages were generic.
-
-**Fix:**
-1. Added `_initializeStt()` with exponential backoff retry (3 attempts)
-2. Added `_getSttUnavailableReason()` for platform-specific error messages
-3. Added `retryInitializeStt()` for manual retry
-4. Enhanced `startListening()` error parsing
-
-### BR-061: Sentence Engine Full Demo - IMPLEMENTED
-
-**Files Modified:**
-- `demo_sentences.dart` - DemoMode enum, all instruction type sentences
-- `sentences_demo_view_model.dart` - SentenceEngine/Interpreter integration
-- `sentences_demo_bindings.dart` - SpeechIntegrationService injection
-- `sentences_demo_actions.dart` - Mode, choice, TTS actions
-- `sentences_demo_page.dart` - Mode selector, choice buttons, phase indicator, TTS toggle
-
-**Features Added:**
-- 7 demo modes: write, read, wait, ask, navigate, combined, orderQueue
-- Full SentenceEngine integration with all handlers
-- TTS toggle for read/combined modes
-- Choice buttons for ask mode
-- Continue button for wait mode
-- Phase indicator for navigate mode
-- Instruction badge showing current instruction type
+Committed previously:
+- BR-059: BGM volume/auto-play (architectural fix via BR-062)
+- BR-060: STT unavailable error (fixed)
+- BR-061: Sentence engine demo coverage (implemented)
 
 ---
 
-## Agent Log
+## Pending Work
 
-| Timestamp | Agent | Brief | Action | Result |
-|-----------|-------|-------|--------|--------|
-| 2026-02-02 | coordinator | All | Sprint init | Brief statuses updated to In Progress |
-| 2026-02-02 | planner | All | Analysis | Root causes identified |
-| 2026-02-02 | coder | BR-059 | Implementation | Volume fix + auto-play callbacks |
-| 2026-02-02 | coder | BR-060 | Implementation | STT retry logic + platform errors |
-| 2026-02-02 | coder | BR-061 | Implementation | Full engine demo coverage |
-| 2026-02-02 | tester | All | Analysis | Code structure verified |
-| 2026-02-02 | reviewer | All | Review | Checklist passed |
-| 2026-02-02 | coordinator | All | Complete | All briefs marked Done |
-
----
-
-## Commit Ready
-
-**Commit Message:**
-```
-feat(fifty_demo): parallel sprint - audio, speech, sentences fixes
-
-BR-059: Fix BGM volume reset and auto-play next track
-- Apply volume after play with delay to prevent reset
-- Wire onDefaultPlaylistComplete and onTrackAboutToChange callbacks
-- Add shuffle support in skipNext
-
-BR-060: Fix STT "not available" error
-- Add retry logic with exponential backoff (3 attempts)
-- Add platform-specific error messages
-- Add retryInitializeStt for manual retry
-
-BR-061: Full sentence engine demo coverage
-- Add all 7 demo modes (write, read, wait, ask, navigate, combined, orderQueue)
-- Integrate real SentenceEngine and SentenceInterpreter
-- Add TTS toggle, choice buttons, phase indicator
-- Update UI with mode selector and instruction badges
-
-closes #BR-059, #BR-060, #BR-061
-```
+No active briefs. System in REST MODE.
 
 ---
 
 ## Next Steps When Resuming
 
-1. Run `flutter analyze` to verify no compilation errors
-2. Run `flutter test` if tests exist
-3. Create git commit with above message
-4. Archive completed briefs
+1. **Manual testing recommended** - Verify BGM playback in audio demo
+2. **Check for new briefs** - `list briefs`
+3. **Review brief inventory** - `what should I work on next?`
+
+---
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `apps/fifty_demo/lib/features/audio_demo/controllers/audio_demo_view_model.dart` | BGM refactor complete |
+| `packages/fifty_audio_engine/lib/engine/channels/bgm_channel.dart` | Playlist system reference |
+
+---
+
+## Agent Log
+
+| Timestamp | Agent | Action | Result |
+|-----------|-------|--------|--------|
+| 2026-02-03 | orchestrator | HUNT BR-062 | Implementation already complete |
+| 2026-02-03 | orchestrator | Analysis | All acceptance criteria verified |
+| 2026-02-03 | orchestrator | Brief update | Status → Done |
 
 ---
