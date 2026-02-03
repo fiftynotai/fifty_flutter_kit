@@ -114,6 +114,7 @@ class BgmChannel extends BaseAudioChannel {
   /// **Load Default Playlist**
   ///
   /// - Attempts to restore saved playlist & index from storage
+  /// - If saved paths don't match provided paths, uses new paths (tracks changed)
   /// - If nothing is saved and [shuffle] is true, shuffles the playlist
   /// - Marks this channel as using the **default** playlist (persistent)
   ///
@@ -126,10 +127,17 @@ class BgmChannel extends BaseAudioChannel {
     final saved = _storage.getPlaylist();
     final index = _storage.getIndex();
 
-    if (saved != null && saved.isNotEmpty && index != null) {
+    // Check if saved playlist matches the new paths (detect track changes)
+    final savedMatchesPaths = saved != null &&
+        saved.length == paths.length &&
+        saved.every((p) => paths.contains(p));
+
+    if (saved != null && saved.isNotEmpty && index != null && savedMatchesPaths) {
+      // Restore from storage only if paths match
       _currentPlaylist = saved;
       _index = index;
     } else {
+      // Tracks changed or no saved data - use new paths
       _currentPlaylist = List.from(paths);
       if (shuffle) {
         _currentPlaylist.shuffle();
