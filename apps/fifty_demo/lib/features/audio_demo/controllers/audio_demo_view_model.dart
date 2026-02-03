@@ -354,7 +354,8 @@ class AudioDemoViewModel extends GetxController {
   /// Toggles BGM playback.
   ///
   /// Uses the engine's playlist system - does NOT call play(path) directly.
-  /// The engine was initialized with a playlist, so we use resume/pause.
+  /// Uses playAtIndex() to ensure playback starts even if player was stopped
+  /// (resume() only works for paused players, not stopped ones).
   Future<void> toggleBgmPlayback() async {
     if (!_isInitialized) return;
 
@@ -362,8 +363,9 @@ class AudioDemoViewModel extends GetxController {
       await _engine.bgm.pause();
     } else {
       _volumeAppliedAfterPlay = false;
-      // Use resume() to continue playlist playback, not play(path)
-      await _engine.bgm.resume();
+      // Use playAtIndex() to start/restart playback - works for both
+      // paused and stopped states (resume() only works when paused)
+      await _engine.bgm.playAtIndex(_currentTrackIndex);
       await _fetchDuration();
       // Apply volume AFTER play to prevent reset
       await _ensureVolumeAfterPlay();
@@ -373,12 +375,14 @@ class AudioDemoViewModel extends GetxController {
 
   /// Plays BGM.
   ///
-  /// Uses the engine's playlist system via resume().
+  /// Uses the engine's playlist system via playAtIndex().
+  /// This works for both stopped and paused states.
   Future<void> playBgm() async {
     if (!_isInitialized) return;
     _volumeAppliedAfterPlay = false;
-    // Use resume() to continue playlist playback
-    await _engine.bgm.resume();
+    // Use playAtIndex() to start playback - works for both
+    // paused and stopped states (resume() only works when paused)
+    await _engine.bgm.playAtIndex(_currentTrackIndex);
     await _fetchDuration();
     // Apply volume AFTER play to prevent reset
     await _ensureVolumeAfterPlay();
@@ -434,8 +438,8 @@ class AudioDemoViewModel extends GetxController {
       await _engine.bgm.stop();
       _bgmPosition = Duration.zero;
       _volumeAppliedAfterPlay = false;
-      // Use resume() to restart from playlist position
-      await _engine.bgm.resume();
+      // Use playAtIndex() to restart track (works after stop)
+      await _engine.bgm.playAtIndex(_currentTrackIndex);
       await _fetchDuration();
       await _ensureVolumeAfterPlay();
     }
