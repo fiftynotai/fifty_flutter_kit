@@ -28,6 +28,7 @@ class FiftySlider extends StatefulWidget {
     super.key,
     required this.value,
     required this.onChanged,
+    this.onChangeEnd,
     this.min = 0.0,
     this.max = 1.0,
     this.divisions,
@@ -40,8 +41,14 @@ class FiftySlider extends StatefulWidget {
   /// Current value of the slider.
   final double value;
 
-  /// Callback when the value changes.
+  /// Callback when the value changes (during drag for live feedback).
   final ValueChanged<double>? onChanged;
+
+  /// Callback when the user finishes changing the value (on drag end or tap).
+  ///
+  /// Use this for actions that should only happen once the user commits
+  /// to a value, such as seeking in audio/video playback.
+  final ValueChanged<double>? onChangeEnd;
 
   /// Minimum value.
   final double min;
@@ -109,10 +116,12 @@ class _FiftySliderState extends State<FiftySlider> {
 
   void _handleDragEnd(DragEndDetails details) {
     setState(() => _isDragging = false);
+    // Call onChangeEnd with the current value when drag finishes
+    widget.onChangeEnd?.call(widget.value);
   }
 
   void _handleTap(TapUpDetails details, double trackWidth) {
-    if (!widget.enabled || widget.onChanged == null) return;
+    if (!widget.enabled) return;
 
     final localPosition = details.localPosition.dx;
     final newNormalized = (localPosition / trackWidth).clamp(0.0, 1.0);
@@ -123,7 +132,12 @@ class _FiftySliderState extends State<FiftySlider> {
       newValue = (newValue / step).round() * step;
     }
 
-    widget.onChanged!(newValue.clamp(widget.min, widget.max));
+    final clampedValue = newValue.clamp(widget.min, widget.max);
+
+    // Call onChanged for immediate feedback
+    widget.onChanged?.call(clampedValue);
+    // Call onChangeEnd for committed action
+    widget.onChangeEnd?.call(clampedValue);
   }
 
   @override
