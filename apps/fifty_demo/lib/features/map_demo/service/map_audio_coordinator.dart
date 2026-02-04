@@ -3,27 +3,34 @@
 /// Coordinates map engine with audio engine for integrated experience.
 library;
 
+import 'dart:async';
+
+import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
-import '../../../shared/services/audio_integration_service.dart';
 import '../../../shared/services/map_integration_service.dart';
 
 /// Coordinates map interactions with audio playback.
 ///
-/// Plays BGM during exploration and SFX on entity interactions.
+/// Uses FiftyAudioEngine directly for seamless integration with the
+/// Fifty Flutter Kit audio system. Shares playlist state with other
+/// features using the same engine singleton.
 class MapAudioCoordinator extends GetxController {
   MapAudioCoordinator({
-    required AudioIntegrationService audioService,
     required MapIntegrationService mapService,
-  })  : _audioService = audioService,
-        _mapService = mapService;
+  }) : _mapService = mapService;
 
-  final AudioIntegrationService _audioService;
+  /// Direct access to the audio engine singleton.
+  FiftyAudioEngine get _engine => FiftyAudioEngine.instance;
+
   final MapIntegrationService _mapService;
 
   bool _bgmEnabled = true;
   bool _sfxEnabled = true;
+
+  /// Subscription to BGM playing state changes for reactive UI updates.
+  StreamSubscription<bool>? _bgmPlayingSubscription;
 
   // ─────────────────────────────────────────────────────────────────────────
   // Getters
@@ -31,16 +38,8 @@ class MapAudioCoordinator extends GetxController {
 
   bool get bgmEnabled => _bgmEnabled;
   bool get sfxEnabled => _sfxEnabled;
-  bool get bgmPlaying => _audioService.bgmPlaying;
-  AudioIntegrationService get audioService => _audioService;
+  bool get bgmPlaying => _engine.bgm.isPlaying;
   MapIntegrationService get mapService => _mapService;
-
-  // Sample BGM tracks for demo
-  static const List<String> bgmTracks = [
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-  ];
 
   // Local SFX assets (AssetSource prepends 'assets/' automatically)
   static const Map<String, String> sfxSounds = {
@@ -49,17 +48,35 @@ class MapAudioCoordinator extends GetxController {
     'select': 'audio/sfx/select.mp3',
   };
 
+  // Default BGM playlist (shared with Audio Demo)
+  static const List<String> _defaultBgmPlaylist = [
+    'audio/bgm/clockwork_grove.mp3',
+    'audio/bgm/clockwork_grove_alt.mp3',
+    'audio/bgm/path_of_first_light.mp3',
+    'audio/bgm/path_of_first_light_alt.mp3',
+  ];
+
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Initializes the coordinator, audio service, and loads map from assets.
+  /// Initializes the coordinator and loads map from assets.
+  ///
+  /// Note: FiftyAudioEngine is initialized in main.dart before DI setup.
+  /// Ensures the default BGM playlist is loaded so play works even if
+  /// Audio Demo was never visited.
   Future<void> initialize() async {
-    await _audioService.initialize();
+    // Subscribe to BGM playing state for reactive UI updates
+    _bgmPlayingSubscription = _engine.bgm.onIsPlayingChanged.listen((_) {
+      update();
+    });
+
+    // Ensure default playlist is loaded (idempotent - safe to call multiple times)
+    await _engine.bgm.loadDefaultPlaylist(_defaultBgmPlaylist);
 
     // Load map from assets
     try {
-      await _mapService.loadMapFromAssets('assets/maps/demo_map.json');
+      await _mapService.loadMapFromAssets('assets/maps/fdl_demo_map.json');
     } catch (e) {
       // Log error but continue - audio still works without map
       if (kDebugMode) {
@@ -70,29 +87,38 @@ class MapAudioCoordinator extends GetxController {
     update();
   }
 
+  @override
+  void onClose() {
+    _bgmPlayingSubscription?.cancel();
+    super.onClose();
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // BGM Controls
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Starts exploration BGM.
-  Future<void> startExplorationBgm({int trackIndex = 0}) async {
-    if (!_bgmEnabled) return;
-    final url = bgmTracks[trackIndex % bgmTracks.length];
-    await _audioService.playBgm(url);
+  /// Pauses currently playing BGM (from playlist).
+  Future<void> pauseBgm() async {
+    await _engine.bgm.pause();
     update();
   }
 
-  /// Stops exploration BGM.
-  Future<void> stopExplorationBgm() async {
-    await _audioService.stopBgm();
+  /// Resumes or starts BGM playback from playlist.
+  ///
+  /// Uses [resumeDefaultPlaylist] which works whether audio was paused
+  /// or never started. This ensures the play button works regardless
+  /// of whether the user visited Audio Demo first.
+  Future<void> resumeBgm() async {
+    if (!_bgmEnabled) return;
+    await _engine.bgm.resumeDefaultPlaylist();
     update();
   }
 
   /// Toggles BGM on/off.
   void toggleBgm() {
     _bgmEnabled = !_bgmEnabled;
-    if (!_bgmEnabled && _audioService.bgmPlaying) {
-      _audioService.stopBgm();
+    if (!_bgmEnabled && _engine.bgm.isPlaying) {
+      _engine.bgm.pause();
     }
     update();
   }
@@ -105,21 +131,21 @@ class MapAudioCoordinator extends GetxController {
   Future<void> playEntityTapSfx() async {
     if (!_sfxEnabled) return;
     final path = sfxSounds['click']!;
-    await _audioService.playSfx(path);
+    await _engine.sfx.play(path);
   }
 
   /// Plays entity hover SFX.
   Future<void> playEntityHoverSfx() async {
     if (!_sfxEnabled) return;
     final path = sfxSounds['hover']!;
-    await _audioService.playSfx(path);
+    await _engine.sfx.play(path);
   }
 
   /// Plays selection SFX.
   Future<void> playSelectSfx() async {
     if (!_sfxEnabled) return;
     final path = sfxSounds['select']!;
-    await _audioService.playSfx(path);
+    await _engine.sfx.play(path);
   }
 
   /// Toggles SFX on/off.
@@ -155,6 +181,78 @@ class MapAudioCoordinator extends GetxController {
   /// Centers the camera.
   void onCenterCamera() {
     _mapService.centerCamera();
+    update();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Entity Controls
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Adds a test entity to the map.
+  void onAddEntity() {
+    _mapService.addTestEntity();
+    update();
+  }
+
+  /// Removes the last test entity from the map.
+  void onRemoveEntity() {
+    _mapService.removeTestEntity();
+    update();
+  }
+
+  /// Focuses camera on the last test entity.
+  void onFocusEntity() {
+    _mapService.focusOnTestEntity();
+    update();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Map Controls
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Refreshes the map display.
+  void onRefresh() {
+    _mapService.refreshMap();
+    update();
+  }
+
+  /// Reloads the map from JSON.
+  Future<void> onReload() async {
+    await _mapService.reloadMap();
+    update();
+  }
+
+  /// Clears all entities from the map.
+  void onClear() {
+    _mapService.clearEntities();
+    update();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Movement Controls
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Moves the selected entity up.
+  void onMoveUp() {
+    _mapService.moveUp();
+    update();
+  }
+
+  /// Moves the selected entity down.
+  void onMoveDown() {
+    _mapService.moveDown();
+    update();
+  }
+
+  /// Moves the selected entity left.
+  void onMoveLeft() {
+    _mapService.moveLeft();
+    update();
+  }
+
+  /// Moves the selected entity right.
+  void onMoveRight() {
+    _mapService.moveRight();
     update();
   }
 }

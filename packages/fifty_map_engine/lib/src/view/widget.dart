@@ -60,6 +60,15 @@ class _FiftyMapWidgetState extends State<FiftyMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: widget.controller.game);
+    // Use LayoutBuilder to ensure the game widget fills available space
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth,
+          height: constraints.maxHeight,
+          child: GameWidget(game: widget.controller.game),
+        );
+      },
+    );
   }
 }

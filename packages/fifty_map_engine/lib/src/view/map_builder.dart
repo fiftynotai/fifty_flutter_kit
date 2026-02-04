@@ -143,16 +143,12 @@ class FiftyMapBuilder extends FlameGame
 
   /// **Sets up world, camera, and initial entities.**
   ///
-  /// - Creates a fixed-resolution [CameraComponent] sized to [size].
+  /// - Creates a [CameraComponent] that adapts to viewport size.
   /// - Centers the viewfinder and positions it at the origin.
   /// - Adds [world] and [cameraComponent] to the tree.
   /// - Spawns [initialEntities], if any.
   void initializeGame() {
-    cameraComponent = CameraComponent.withFixedResolution(
-      world: world,
-      width: size.x,
-      height: size.y,
-    );
+    cameraComponent = CameraComponent(world: world);
     cameraComponent.viewfinder
       ..anchor = Anchor.center
       ..position = Vector2.zero();

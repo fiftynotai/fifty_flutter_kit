@@ -84,8 +84,8 @@ abstract class FiftyBaseComponent extends SpriteComponent
     // Add hitbox for passive collisions
     add(RectangleHitbox(collisionType: CollisionType.passive));
 
-    // Spawn event marker if applicable
-    if (model.event != null) {
+    // Spawn event marker if applicable (event components don't spawn child events)
+    if (model.event != null && this is! FiftyEventComponent) {
       eventComponent = FiftyEventComponent(model: model);
       game.world.add(eventComponent!);
     }

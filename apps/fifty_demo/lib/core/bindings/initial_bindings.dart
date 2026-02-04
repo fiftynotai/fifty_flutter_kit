@@ -69,7 +69,6 @@ class InitialBindings extends Bindings {
 
     Get.lazyPut<MapAudioCoordinator>(
       () => MapAudioCoordinator(
-        audioService: Get.find<AudioIntegrationService>(),
         mapService: Get.find<MapIntegrationService>(),
       ),
       fenix: true,

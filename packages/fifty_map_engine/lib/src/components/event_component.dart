@@ -43,8 +43,8 @@ class FiftyEventComponent extends FiftyBaseComponent {
     // Icon selection & optional sizing
     image.Image iconImage;
     if (model.event!.type == FiftyEventType.basic) {
-      // half-size for basic events
-      size = Vector2(size.x * 0.5, size.y);
+      // half-size for basic events (scale both dimensions to keep aspect ratio)
+      size = Vector2(size.x * 0.5, size.y * 0.5);
       iconImage = game.images.fromCache('events/basic.png');
     } else if (model.event!.type == FiftyEventType.npc) {
       iconImage = game.images.fromCache('events/npc.png');

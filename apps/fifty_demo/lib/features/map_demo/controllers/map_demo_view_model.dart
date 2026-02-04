@@ -42,7 +42,9 @@ class MapDemoViewModel extends GetxController {
   bool get bgmEnabled => _coordinator.bgmEnabled;
   bool get sfxEnabled => _coordinator.sfxEnabled;
   bool get bgmPlaying => _coordinator.bgmPlaying;
-  bool get isInitialized => _coordinator.audioService.isInitialized;
+
+  /// Audio engine is always initialized in main.dart before UI loads.
+  bool get isInitialized => true;
 
   /// Map controller for FiftyMapWidget.
   FiftyMapController? get controller => _coordinator.mapService.controller;

@@ -1,0 +1,281 @@
+[
+  {
+    "id": "room-hall-001",
+    "type": "room",
+    "asset": "rooms/room_hall.png",
+    "grid_position": {"x": 10.0, "y": 16.0},
+    "size": {"width": 8, "height": 8},
+    "zIndex": 0,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "The Great Hall", "description": "Entry chamber with welcoming braziers"}
+  },
+  {
+    "id": "room-throne-002",
+    "type": "room",
+    "asset": "rooms/room_throne.png",
+    "grid_position": {"x": 0.0, "y": 16.0},
+    "size": {"width": 8, "height": 8},
+    "zIndex": 0,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Throne Room", "description": "The seat of power, guarded by a stone sentinel"}
+  },
+  {
+    "id": "room-study-003",
+    "type": "room",
+    "asset": "rooms/room_study.png",
+    "grid_position": {"x": 10.0, "y": 8.0},
+    "size": {"width": 8, "height": 8},
+    "zIndex": 0,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "The Study", "description": "A library of ancient knowledge"}
+  },
+  {
+    "id": "room-garden-004",
+    "type": "room",
+    "asset": "rooms/room_garden.png",
+    "grid_position": {"x": 0.0, "y": 8.0},
+    "size": {"width": 8, "height": 8},
+    "zIndex": 0,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "The Garden", "description": "An indoor garden with mystical flora"}
+  },
+  {
+    "id": "room-cellar-005",
+    "type": "room",
+    "asset": "rooms/room_cellar.png",
+    "grid_position": {"x": 10.0, "y": 0.0},
+    "size": {"width": 8, "height": 8},
+    "zIndex": 0,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "The Cellar", "description": "Storage area with hidden treasures"}
+  },
+  {
+    "id": "room-sanctuary-006",
+    "type": "room",
+    "asset": "rooms/room_sanctuary.png",
+    "grid_position": {"x": 0.0, "y": 0.0},
+    "size": {"width": 8, "height": 8},
+    "zIndex": 0,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "The Sanctuary", "description": "A peaceful place of rest and reflection"}
+  },
+  {
+    "id": "hero-001",
+    "type": "character",
+    "asset": "characters/hero.png",
+    "grid_position": {"x": 14.0, "y": 19.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 10,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Hero", "description": "The brave adventurer"}
+  },
+  {
+    "id": "sentinel-throne-001",
+    "type": "monster",
+    "asset": "creatures/stone_sentinel.png",
+    "grid_position": {"x": 3.0, "y": 19.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 5,
+    "quarter_turns": 0,
+    "event": {
+      "event_text": "Guardian",
+      "event_type": "npc"
+    },
+    "components": [],
+    "metadata": {"name": "Stone Sentinel", "description": "Guardian of the throne"}
+  },
+  {
+    "id": "sentinel-cellar-001",
+    "type": "monster",
+    "asset": "creatures/stone_sentinel.png",
+    "grid_position": {"x": 15.0, "y": 3.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 5,
+    "quarter_turns": 0,
+    "event": {
+      "event_text": "Warden",
+      "event_type": "npc"
+    },
+    "components": [],
+    "metadata": {"name": "Stone Sentinel", "description": "Warden of the cellar"}
+  },
+  {
+    "id": "brazier-hall-001",
+    "type": "furniture",
+    "asset": "furniture/brazier.png",
+    "grid_position": {"x": 11.0, "y": 22.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Brazier", "description": "Provides warmth and light"}
+  },
+  {
+    "id": "brazier-hall-002",
+    "type": "furniture",
+    "asset": "furniture/brazier.png",
+    "grid_position": {"x": 16.0, "y": 22.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Brazier", "description": "Provides warmth and light"}
+  },
+  {
+    "id": "brazier-throne-001",
+    "type": "furniture",
+    "asset": "furniture/brazier.png",
+    "grid_position": {"x": 4.0, "y": 22.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Brazier", "description": "Royal lighting"}
+  },
+  {
+    "id": "chest-cellar-001",
+    "type": "furniture",
+    "asset": "furniture/chest.png",
+    "grid_position": {"x": 12.0, "y": 5.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": {
+      "event_text": "Open",
+      "event_type": "basic"
+    },
+    "components": [],
+    "metadata": {"name": "Treasure Chest", "description": "Contains valuable items"}
+  },
+  {
+    "id": "chest-study-001",
+    "type": "furniture",
+    "asset": "furniture/chest.png",
+    "grid_position": {"x": 16.0, "y": 10.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": {
+      "event_text": "Open",
+      "event_type": "basic"
+    },
+    "components": [],
+    "metadata": {"name": "Book Chest", "description": "Holds ancient tomes"}
+  },
+  {
+    "id": "pedestal-sanctuary-001",
+    "type": "furniture",
+    "asset": "furniture/pedestal.png",
+    "grid_position": {"x": 4.0, "y": 4.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Pedestal", "description": "Displays a sacred artifact"}
+  },
+  {
+    "id": "pedestal-garden-001",
+    "type": "furniture",
+    "asset": "furniture/pedestal.png",
+    "grid_position": {"x": 4.0, "y": 12.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 3,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"name": "Pedestal", "description": "Holds a mystical plant"}
+  },
+  {
+    "id": "event-quest-throne",
+    "type": "event",
+    "asset": "events/event_quest.png",
+    "grid_position": {"x": 4.0, "y": 17.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 8,
+    "quarter_turns": 0,
+    "event": {
+      "event_text": "Quest",
+      "event_type": "masterOfShadow"
+    },
+    "components": [],
+    "metadata": {"description": "Main quest objective marker"}
+  },
+  {
+    "id": "door-hall-throne",
+    "type": "furniture",
+    "asset": "furniture/door.png",
+    "grid_position": {"x": 8.5, "y": 19.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 4,
+    "quarter_turns": 1,
+    "event": null,
+    "components": [],
+    "metadata": {"connects": ["room-hall-001", "room-throne-002"]}
+  },
+  {
+    "id": "door-hall-study",
+    "type": "furniture",
+    "asset": "furniture/door.png",
+    "grid_position": {"x": 13.0, "y": 15.5},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 4,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"connects": ["room-hall-001", "room-study-003"]}
+  },
+  {
+    "id": "door-study-garden",
+    "type": "furniture",
+    "asset": "furniture/door.png",
+    "grid_position": {"x": 8.5, "y": 11.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 4,
+    "quarter_turns": 1,
+    "event": null,
+    "components": [],
+    "metadata": {"connects": ["room-study-003", "room-garden-004"]}
+  },
+  {
+    "id": "door-study-cellar",
+    "type": "furniture",
+    "asset": "furniture/door.png",
+    "grid_position": {"x": 13.0, "y": 7.5},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 4,
+    "quarter_turns": 0,
+    "event": null,
+    "components": [],
+    "metadata": {"connects": ["room-study-003", "room-cellar-005"]}
+  },
+  {
+    "id": "door-cellar-sanctuary",
+    "type": "furniture",
+    "asset": "furniture/door.png",
+    "grid_position": {"x": 8.5, "y": 3.0},
+    "size": {"width": 1, "height": 1},
+    "zIndex": 4,
+    "quarter_turns": 1,
+    "event": null,
+    "components": [],
+    "metadata": {"connects": ["room-cellar-005", "room-sanctuary-006"]}
+  }
+]

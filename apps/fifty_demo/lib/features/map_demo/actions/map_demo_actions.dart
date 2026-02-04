@@ -38,19 +38,16 @@ class MapDemoActions {
   // ─────────────────────────────────────────────────────────────────────────
 
   /// Called when play BGM button is tapped.
+  /// Resumes paused playlist audio (no loading dialog - instant feedback).
   Future<void> onPlayBgmTapped(BuildContext context) async {
-    await _presenter.actionHandler(context, () async {
-      await _viewModel.coordinator.startExplorationBgm();
-      _viewModel.update();
-    });
+    await _viewModel.coordinator.resumeBgm();
+    _viewModel.update();
   }
 
-  /// Called when stop BGM button is tapped.
+  /// Called when pause BGM button is tapped (no loading dialog).
   Future<void> onStopBgmTapped(BuildContext context) async {
-    await _presenter.actionHandler(context, () async {
-      await _viewModel.coordinator.stopExplorationBgm();
-      _viewModel.update();
-    });
+    await _viewModel.coordinator.pauseBgm();
+    _viewModel.update();
   }
 
   /// Called when BGM toggle is tapped.
@@ -69,11 +66,9 @@ class MapDemoActions {
     _viewModel.update();
   }
 
-  /// Called to test SFX.
+  /// Called to test SFX (no loading dialog).
   Future<void> onTestSfxTapped(BuildContext context) async {
-    await _presenter.actionHandler(context, () async {
-      await _viewModel.coordinator.playEntityTapSfx();
-    });
+    await _viewModel.coordinator.playEntityTapSfx();
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -99,10 +94,76 @@ class MapDemoActions {
   // Entity Actions
   // ─────────────────────────────────────────────────────────────────────────
 
-  /// Called when a map entity is tapped.
+  /// Called when a map entity is tapped (no loading dialog - instant SFX).
   Future<void> onEntityTapped(BuildContext context, String entityId) async {
+    await _viewModel.coordinator.onEntityTapped(entityId);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Entity Actions
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Called when add entity button is tapped.
+  void onAddEntityTapped() {
+    _viewModel.coordinator.onAddEntity();
+    _viewModel.update();
+  }
+
+  /// Called when remove entity button is tapped.
+  void onRemoveEntityTapped() {
+    _viewModel.coordinator.onRemoveEntity();
+    _viewModel.update();
+  }
+
+  /// Called when focus entity button is tapped.
+  void onFocusEntityTapped() {
+    _viewModel.coordinator.onFocusEntity();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Map Actions
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Called when refresh button is tapped.
+  void onRefreshTapped() {
+    _viewModel.coordinator.onRefresh();
+  }
+
+  /// Called when reload button is tapped.
+  Future<void> onReloadTapped(BuildContext context) async {
     await _presenter.actionHandler(context, () async {
-      await _viewModel.coordinator.onEntityTapped(entityId);
+      await _viewModel.coordinator.onReload();
+      _viewModel.update();
     });
+  }
+
+  /// Called when clear button is tapped.
+  void onClearTapped() {
+    _viewModel.coordinator.onClear();
+    _viewModel.update();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Movement Actions
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// Called when move up button is tapped.
+  void onMoveUpTapped() {
+    _viewModel.coordinator.onMoveUp();
+  }
+
+  /// Called when move down button is tapped.
+  void onMoveDownTapped() {
+    _viewModel.coordinator.onMoveDown();
+  }
+
+  /// Called when move left button is tapped.
+  void onMoveLeftTapped() {
+    _viewModel.coordinator.onMoveLeft();
+  }
+
+  /// Called when move right button is tapped.
+  void onMoveRightTapped() {
+    _viewModel.coordinator.onMoveRight();
   }
 }

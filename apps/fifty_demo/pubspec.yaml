@@ -58,8 +58,9 @@ flutter:
     - assets/images/
     - assets/images/rooms/
     - assets/images/furniture/
-    - assets/images/monsters/
     - assets/images/characters/
+    - assets/images/creatures/
+    - assets/images/events/
     - assets/audio/
     - assets/audio/bgm/
     - assets/audio/sfx/
