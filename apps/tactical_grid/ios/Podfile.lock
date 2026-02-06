@@ -1,0 +1,42 @@
+PODS:
+  - audioplayers_darwin (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - fifty_audio_engine (0.7.0):
+    - Flutter
+  - fifty_map_engine (0.1.0):
+    - Flutter
+  - Flutter (1.0.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/darwin`)
+  - fifty_audio_engine (from `.symlinks/plugins/fifty_audio_engine/ios`)
+  - fifty_map_engine (from `.symlinks/plugins/fifty_map_engine/ios`)
+  - Flutter (from `Flutter`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+
+EXTERNAL SOURCES:
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/darwin"
+  fifty_audio_engine:
+    :path: ".symlinks/plugins/fifty_audio_engine/ios"
+  fifty_map_engine:
+    :path: ".symlinks/plugins/fifty_map_engine/ios"
+  Flutter:
+    :path: Flutter
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+
+SPEC CHECKSUMS:
+  audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
+  fifty_audio_engine: 066d31530f72f012e071f327b1a347c71f0a529c
+  fifty_map_engine: 865723c815d9a2a63acc7f3734eb2c8d251379d8
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
+
+PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
+
+COCOAPODS: 1.16.2

@@ -1,0 +1,45 @@
+name: tactical_grid
+description: Turn-based tactics game showcasing fifty_flutter_kit
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Fifty Flutter Kit
+  fifty_tokens:
+    path: ../../packages/fifty_tokens
+  fifty_theme:
+    path: ../../packages/fifty_theme
+  fifty_ui:
+    path: ../../packages/fifty_ui
+  fifty_achievement_engine:
+    path: ../../packages/fifty_achievement_engine
+  fifty_audio_engine:
+    path: ../../packages/fifty_audio_engine
+  fifty_map_engine:
+    path: ../../packages/fifty_map_engine
+  # Audio
+  audioplayers: ^6.0.0
+  # State management
+  get: ^4.6.6
+  loader_overlay: ^4.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/units/
+    - assets/images/board/
+    - assets/audio/
+    - assets/audio/bgm/
+    - assets/audio/sfx/
+    - assets/maps/
