@@ -93,6 +93,7 @@ class BoardWidget extends GetView<BattleViewModel> {
                       : null;
 
               return GridView.builder(
+                padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: _boardSize,
