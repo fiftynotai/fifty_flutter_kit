@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import '../../features/achievements/achievement_bindings.dart';
 import '../../features/achievements/views/achievement_page.dart';
 import '../../features/battle/battle_bindings.dart';
+import '../../features/battle/models/game_state.dart';
 import '../../features/battle/views/battle_page.dart';
 import '../../features/menu/menu_page.dart';
 
@@ -74,7 +75,19 @@ class RouteManager {
   }
 
   /// Navigate to battle screen.
-  static Future<dynamic>? toBattle() => to(battleRoute);
+  ///
+  /// **Parameters:**
+  /// - [gameMode]: The game mode to start with (defaults to local multiplayer).
+  /// - [aiDifficulty]: AI difficulty level for vs AI mode (defaults to easy).
+  static Future<dynamic>? toBattle({
+    GameMode gameMode = GameMode.localMultiplayer,
+    AIDifficulty aiDifficulty = AIDifficulty.easy,
+  }) {
+    return to(battleRoute, arguments: {
+      'gameMode': gameMode,
+      'aiDifficulty': aiDifficulty,
+    });
+  }
 
   /// Navigate to settings.
   static Future<dynamic>? toSettings() => to(settingsRoute);

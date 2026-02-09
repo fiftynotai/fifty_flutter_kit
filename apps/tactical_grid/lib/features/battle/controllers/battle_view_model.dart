@@ -99,6 +99,18 @@ class BattleViewModel extends GetxController {
   /// Whether a unit is currently selected.
   bool get hasSelection => gameState.value.hasSelection;
 
+  /// The current game mode (local multiplayer or vs AI).
+  GameMode get gameMode => gameState.value.gameMode;
+
+  /// The current AI difficulty level.
+  AIDifficulty get aiDifficulty => gameState.value.aiDifficulty;
+
+  /// Whether it is currently the AI's turn.
+  ///
+  /// Returns `true` when the game mode is [GameMode.vsAI] and it is
+  /// not the player's turn.
+  bool get isAITurn => !isPlayerTurn && gameMode == GameMode.vsAI;
+
   /// Valid target positions for the selected unit's ability.
   List<GridPosition> get abilityTargets => gameState.value.abilityTargets;
 
@@ -135,11 +147,24 @@ class BattleViewModel extends GetxController {
   // Lifecycle
   // ---------------------------------------------------------------
 
-  /// Initializes the controller by starting a fresh game.
+  /// Initializes the controller by reading route arguments for game mode
+  /// and starting a new game.
+  ///
+  /// Expects `Get.arguments` to be a `Map<String, dynamic>` with optional
+  /// keys `'gameMode'` ([GameMode]) and `'aiDifficulty'` ([AIDifficulty]).
+  /// Falls back to local multiplayer with easy AI if not provided.
   @override
   void onInit() {
     super.onInit();
-    startNewGame();
+    final args = Get.arguments;
+    if (args is Map<String, dynamic>) {
+      final mode = args['gameMode'] as GameMode? ?? GameMode.localMultiplayer;
+      final difficulty =
+          args['aiDifficulty'] as AIDifficulty? ?? AIDifficulty.easy;
+      startNewGameWithMode(mode, difficulty);
+    } else {
+      startNewGame();
+    }
   }
 
   // ---------------------------------------------------------------
@@ -152,6 +177,21 @@ class BattleViewModel extends GetxController {
   /// to restart after a game over.
   void startNewGame() {
     gameState.value = _gameLogic.startNewGame();
+  }
+
+  /// Starts a new game with the specified [mode] and [difficulty].
+  ///
+  /// Creates the initial game state and applies the given game mode
+  /// and AI difficulty settings via [copyWith].
+  ///
+  /// **Parameters:**
+  /// - [mode]: The game mode (local multiplayer or vs AI).
+  /// - [difficulty]: The AI difficulty level for vs AI mode.
+  void startNewGameWithMode(GameMode mode, AIDifficulty difficulty) {
+    gameState.value = _gameLogic.startNewGame().copyWith(
+      gameMode: mode,
+      aiDifficulty: difficulty,
+    );
   }
 
   /// Selects the unit with the given [unitId].

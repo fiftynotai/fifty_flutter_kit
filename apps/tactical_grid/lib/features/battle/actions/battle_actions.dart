@@ -31,6 +31,7 @@ import '../../../core/routes/route_manager.dart';
 import '../../achievements/achievement_actions.dart';
 import '../controllers/battle_view_model.dart';
 import '../models/models.dart';
+import '../services/ai_turn_executor.dart';
 import '../services/audio_coordinator.dart';
 
 /// UX orchestration layer for the tactical battle screen.
@@ -58,9 +59,18 @@ class BattleActions {
   /// Achievement tracking for battle events.
   final AchievementActions? _achievements;
 
+  /// AI turn executor for vs-AI mode. Nullable so existing code
+  /// continues to work when no executor is provided.
+  final AITurnExecutor? _aiExecutor;
+
   /// Creates a [BattleActions] instance with required dependencies.
-  BattleActions(this._viewModel, this._audio, this._presenter,
-      [this._achievements]);
+  BattleActions(
+    this._viewModel,
+    this._audio,
+    this._presenter, [
+    this._achievements,
+    this._aiExecutor,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Tile Interaction
@@ -77,6 +87,9 @@ class BattleActions {
   ///    the move.
   /// 4. Otherwise, deselect.
   void onTileTapped(BuildContext context, GridPosition position) {
+    // Block player input while AI is executing its turn.
+    if (_aiExecutor?.isExecuting.value == true) return;
+
     final state = _viewModel.gameState.value;
     if (state.isGameOver) return;
 
@@ -141,6 +154,9 @@ class BattleActions {
   /// - Capture SFX plays if the target is defeated.
   /// - Victory/defeat dialog is shown if the game ends.
   void onAttackUnit(BuildContext context, String targetUnitId) {
+    // Block player input while AI is executing its turn.
+    if (_aiExecutor?.isExecuting.value == true) return;
+
     _presenter.actionHandlerWithoutLoading(
       () async {
         // Capture unit info before state mutation.
@@ -222,6 +238,9 @@ class BattleActions {
   /// Delegates to the ViewModel, plays the turn-end SFX, and provides a
   /// brief snackbar notification indicating the turn change.
   void onEndTurn(BuildContext context) {
+    // Block player input while AI is executing its turn.
+    if (_aiExecutor?.isExecuting.value == true) return;
+
     _viewModel.endTurn();
     _audio.playTurnEndSfx();
 
@@ -234,6 +253,22 @@ class BattleActions {
         variant: FiftySnackbarVariant.info,
       );
     }
+
+    // Trigger AI turn if applicable.
+    if (_viewModel.isAITurn && _aiExecutor != null) {
+      _aiExecutor!.executeAITurn().then((_) {
+        // Check game over after AI turn completes.
+        if (_viewModel.isGameOver && context.mounted) {
+          final state = _viewModel.gameState.value;
+          if (state.result == GameResult.playerWin) {
+            _trackVictoryAchievements(state);
+            _showVictoryDialog(context);
+          } else if (state.result == GameResult.enemyWin) {
+            _showDefeatDialog(context);
+          }
+        }
+      });
+    }
   }
 
   /// Ends the selected unit's turn without performing further actions.
@@ -241,6 +276,9 @@ class BattleActions {
   /// The unit is marked as having used both its move and action for this
   /// turn. Plays a selection SFX to acknowledge the wait command.
   void onWaitUnit(BuildContext context) {
+    // Block player input while AI is executing its turn.
+    if (_aiExecutor?.isExecuting.value == true) return;
+
     _viewModel.waitUnit();
     _audio.playSelectSfx();
   }
@@ -255,6 +293,9 @@ class BattleActions {
   /// For position-target abilities (Shoot, Fireball), enters ability targeting
   /// mode so the player can tap a target tile on the board.
   void onAbilityButtonPressed(BuildContext context) {
+    // Block player input while AI is executing its turn.
+    if (_aiExecutor?.isExecuting.value == true) return;
+
     final ability = _viewModel.selectedAbility;
     if (ability == null || !ability.isReady) return;
 
@@ -285,6 +326,9 @@ class BattleActions {
   /// On failure: shows error snackbar.
   /// Always resets ability targeting mode when done.
   void onUseAbility(BuildContext context, {GridPosition? targetPosition}) {
+    // Block player input while AI is executing its turn.
+    if (_aiExecutor?.isExecuting.value == true) return;
+
     _presenter.actionHandlerWithoutLoading(
       () async {
         final result = _viewModel.useAbility(targetPosition: targetPosition);
@@ -343,7 +387,10 @@ class BattleActions {
   ///
   /// Initializes game state via the ViewModel and begins battle BGM.
   void onStartGame(BuildContext context) {
-    _viewModel.startNewGame();
+    _viewModel.startNewGameWithMode(
+      _viewModel.gameMode,
+      _viewModel.aiDifficulty,
+    );
     _audio.playBattleBgm();
   }
 

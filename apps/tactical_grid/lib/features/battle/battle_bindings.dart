@@ -23,6 +23,8 @@ import '../achievements/achievement_actions.dart';
 import '../achievements/achievement_view_model.dart';
 import 'actions/battle_actions.dart';
 import 'controllers/battle_view_model.dart';
+import 'services/ai_service.dart';
+import 'services/ai_turn_executor.dart';
 import 'services/audio_coordinator.dart';
 import 'services/game_logic_service.dart';
 
@@ -47,13 +49,27 @@ class BattleBindings extends Bindings {
       () => BattleAudioCoordinator(),
       fenix: true,
     );
+    Get.lazyPut<AIService>(
+      () => const AIService(),
+      fenix: true,
+    );
 
     // 2. ViewModel
     Get.put<BattleViewModel>(
       BattleViewModel(Get.find<GameLogicService>()),
     );
 
-    // 3. Achievement tracking
+    // 3. AI Turn Executor (depends on ViewModel, Audio, AIService)
+    Get.lazyPut<AITurnExecutor>(
+      () => AITurnExecutor(
+        Get.find<BattleViewModel>(),
+        Get.find<BattleAudioCoordinator>(),
+        Get.find<AIService>(),
+      ),
+      fenix: true,
+    );
+
+    // 4. Achievement tracking
     Get.lazyPut<AchievementActions>(
       () => AchievementActions(
         Get.find<AchievementViewModel>(),
@@ -62,13 +78,14 @@ class BattleBindings extends Bindings {
       fenix: true,
     );
 
-    // 4. Actions
+    // 5. Actions
     Get.lazyPut<BattleActions>(
       () => BattleActions(
         Get.find<BattleViewModel>(),
         Get.find<BattleAudioCoordinator>(),
         ActionPresenter(),
         Get.find<AchievementActions>(),
+        Get.find<AITurnExecutor>(),
       ),
       fenix: true,
     );

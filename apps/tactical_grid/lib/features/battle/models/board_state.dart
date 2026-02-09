@@ -34,6 +34,16 @@ class BoardState {
     return null;
   }
 
+  /// Get unit by its unique [id], or null if not found.
+  ///
+  /// Unlike [getUnitAt], this searches by ID and includes dead units.
+  Unit? getUnitById(String id) {
+    for (final unit in units) {
+      if (unit.id == id) return unit;
+    }
+    return null;
+  }
+
   /// Get all valid move positions for a unit.
   List<GridPosition> getValidMoves(Unit unit) {
     if (!unit.canMove) return [];

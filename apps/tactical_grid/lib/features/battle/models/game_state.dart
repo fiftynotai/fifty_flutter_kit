@@ -7,6 +7,27 @@ import 'board_state.dart';
 import 'position.dart';
 import 'unit.dart';
 
+/// Game mode selection.
+enum GameMode {
+  /// Two players share one device, taking turns.
+  localMultiplayer,
+
+  /// Player vs AI opponent.
+  vsAI,
+}
+
+/// AI difficulty levels for the vsAI game mode.
+enum AIDifficulty {
+  /// Random valid moves. No tactical awareness.
+  easy,
+
+  /// Prioritizes attacking. Targets low-HP enemies. Moves toward threats.
+  medium,
+
+  /// Score-based evaluation. Considers damage, safety, abilities, commander protection.
+  hard,
+}
+
 /// Current phase of the game.
 enum GamePhase {
   /// Game setup / placement phase.
@@ -68,6 +89,12 @@ class GameState {
   /// Valid target positions for the selected unit's ability.
   final List<GridPosition> abilityTargets;
 
+  /// The current game mode (local multiplayer or vs AI).
+  final GameMode gameMode;
+
+  /// AI difficulty level (only relevant when [gameMode] is [GameMode.vsAI]).
+  final AIDifficulty aiDifficulty;
+
   const GameState({
     required this.board,
     required this.isPlayerTurn,
@@ -78,6 +105,8 @@ class GameState {
     this.validMoves = const [],
     this.attackTargets = const [],
     this.abilityTargets = const [],
+    this.gameMode = GameMode.localMultiplayer,
+    this.aiDifficulty = AIDifficulty.easy,
   });
 
   /// Create initial game state with starting army positions.
@@ -157,6 +186,8 @@ class GameState {
       turnNumber: 1,
       phase: GamePhase.playing,
       result: GameResult.none,
+      gameMode: GameMode.localMultiplayer,
+      aiDifficulty: AIDifficulty.easy,
     );
   }
 
@@ -173,7 +204,11 @@ class GameState {
   }
 
   /// Display label for the current turn.
-  String get turnLabel => isPlayerTurn ? 'PLAYER 1' : 'PLAYER 2';
+  String get turnLabel {
+    if (isPlayerTurn) return 'PLAYER 1';
+    if (gameMode == GameMode.vsAI) return 'ENEMY AI';
+    return 'PLAYER 2';
+  }
 
   /// Whether the game is over.
   bool get isGameOver => phase == GamePhase.gameOver;
@@ -192,6 +227,8 @@ class GameState {
     List<GridPosition>? validMoves,
     List<Unit>? attackTargets,
     List<GridPosition>? abilityTargets,
+    GameMode? gameMode,
+    AIDifficulty? aiDifficulty,
     bool clearSelection = false,
   }) {
     return GameState(
@@ -206,6 +243,8 @@ class GameState {
           clearSelection ? const [] : (attackTargets ?? this.attackTargets),
       abilityTargets:
           clearSelection ? const [] : (abilityTargets ?? this.abilityTargets),
+      gameMode: gameMode ?? this.gameMode,
+      aiDifficulty: aiDifficulty ?? this.aiDifficulty,
     );
   }
 

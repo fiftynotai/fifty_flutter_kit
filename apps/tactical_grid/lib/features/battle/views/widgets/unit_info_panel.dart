@@ -39,6 +39,7 @@ import '../../actions/battle_actions.dart';
 import '../../controllers/battle_view_model.dart';
 import '../../models/ability.dart';
 import '../../models/unit.dart';
+import '../../services/ai_turn_executor.dart';
 
 /// Bottom panel that shows selected unit info and action buttons.
 ///
@@ -65,6 +66,7 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
   @override
   Widget build(BuildContext context) {
     final actions = Get.find<BattleActions>();
+    final aiExecutor = Get.find<AITurnExecutor>();
 
     return Container(
       width: double.infinity,
@@ -85,6 +87,7 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
         top: false,
         child: Obx(() {
           final selectedUnit = controller.selectedUnit;
+          final isAIExecuting = aiExecutor.isExecuting.value;
 
           if (selectedUnit != null) {
             return _SelectedUnitLayout(
@@ -92,10 +95,14 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
               attackTargets: controller.attackTargets,
               canUseAbility: controller.canUseAbility,
               actions: actions,
+              isAIExecuting: isAIExecuting,
             );
           }
 
-          return _EmptySelectionLayout(actions: actions);
+          return _EmptySelectionLayout(
+            actions: actions,
+            isAIExecuting: isAIExecuting,
+          );
         }),
       ),
     );
@@ -106,6 +113,9 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
 ///
 /// Shows the unit's avatar, name, stats, HP bar, ability info, and action
 /// buttons (Attack, Ability, Wait, End Turn).
+///
+/// When [isAIExecuting] is `true`, the action buttons row is replaced with
+/// an "ENEMY TURN" label to prevent player interaction.
 class _SelectedUnitLayout extends StatelessWidget {
   /// Creates a [_SelectedUnitLayout] for the given [unit].
   const _SelectedUnitLayout({
@@ -113,6 +123,7 @@ class _SelectedUnitLayout extends StatelessWidget {
     required this.attackTargets,
     required this.canUseAbility,
     required this.actions,
+    this.isAIExecuting = false,
   });
 
   /// The currently selected unit.
@@ -126,6 +137,9 @@ class _SelectedUnitLayout extends StatelessWidget {
 
   /// Battle actions for handling button presses.
   final BattleActions actions;
+
+  /// Whether the AI is currently executing its turn.
+  final bool isAIExecuting;
 
   @override
   Widget build(BuildContext context) {
@@ -195,57 +209,60 @@ class _SelectedUnitLayout extends StatelessWidget {
 
         const SizedBox(height: FiftySpacing.md),
 
-        // -- Bottom row: action buttons --
-        Row(
-          children: [
-            // Attack button
-            FiftyButton(
-              label: 'ATTACK',
-              variant: FiftyButtonVariant.primary,
-              size: FiftyButtonSize.small,
-              icon: Icons.gps_fixed_rounded,
-              disabled: attackTargets.isEmpty,
-              onPressed: attackTargets.isEmpty
-                  ? null
-                  : () => _onAttackPressed(context),
-            ),
-
-            const SizedBox(width: FiftySpacing.sm),
-
-            // Ability button (only for active abilities).
-            if (ability != null && !ability.isPassive)
-              Padding(
-                padding: const EdgeInsets.only(right: FiftySpacing.sm),
-                child: FiftyButton(
-                  label: _abilityButtonLabel(ability),
-                  variant: FiftyButtonVariant.outline,
-                  size: FiftyButtonSize.small,
-                  disabled: !canUseAbility,
-                  onPressed: canUseAbility
-                      ? () => actions.onAbilityButtonPressed(context)
-                      : null,
-                ),
+        // -- Bottom row: action buttons or AI turn label --
+        if (isAIExecuting)
+          const _EnemyTurnLabel()
+        else
+          Row(
+            children: [
+              // Attack button
+              FiftyButton(
+                label: 'ATTACK',
+                variant: FiftyButtonVariant.primary,
+                size: FiftyButtonSize.small,
+                icon: Icons.gps_fixed_rounded,
+                disabled: attackTargets.isEmpty,
+                onPressed: attackTargets.isEmpty
+                    ? null
+                    : () => _onAttackPressed(context),
               ),
 
-            // Wait button
-            FiftyButton(
-              label: 'WAIT',
-              variant: FiftyButtonVariant.ghost,
-              size: FiftyButtonSize.small,
-              onPressed: () => actions.onWaitUnit(context),
-            ),
+              const SizedBox(width: FiftySpacing.sm),
 
-            const Spacer(),
+              // Ability button (only for active abilities).
+              if (ability != null && !ability.isPassive)
+                Padding(
+                  padding: const EdgeInsets.only(right: FiftySpacing.sm),
+                  child: FiftyButton(
+                    label: _abilityButtonLabel(ability),
+                    variant: FiftyButtonVariant.outline,
+                    size: FiftyButtonSize.small,
+                    disabled: !canUseAbility,
+                    onPressed: canUseAbility
+                        ? () => actions.onAbilityButtonPressed(context)
+                        : null,
+                  ),
+                ),
 
-            // End Turn button
-            FiftyButton(
-              label: 'END TURN',
-              variant: FiftyButtonVariant.outline,
-              size: FiftyButtonSize.medium,
-              onPressed: () => actions.onEndTurn(context),
-            ),
-          ],
-        ),
+              // Wait button
+              FiftyButton(
+                label: 'WAIT',
+                variant: FiftyButtonVariant.ghost,
+                size: FiftyButtonSize.small,
+                onPressed: () => actions.onWaitUnit(context),
+              ),
+
+              const Spacer(),
+
+              // End Turn button
+              FiftyButton(
+                label: 'END TURN',
+                variant: FiftyButtonVariant.outline,
+                size: FiftyButtonSize.medium,
+                onPressed: () => actions.onEndTurn(context),
+              ),
+            ],
+          ),
       ],
     );
   }
@@ -276,15 +293,27 @@ class _SelectedUnitLayout extends StatelessWidget {
 /// Layout displayed when no unit is selected.
 ///
 /// Shows a centered prompt message and the End Turn button.
+/// When [isAIExecuting] is `true`, shows "ENEMY TURN..." instead of the
+/// normal prompt and hides the End Turn button.
 class _EmptySelectionLayout extends StatelessWidget {
   /// Creates an [_EmptySelectionLayout] with the given [actions].
-  const _EmptySelectionLayout({required this.actions});
+  const _EmptySelectionLayout({
+    required this.actions,
+    this.isAIExecuting = false,
+  });
 
   /// Battle actions for handling button presses.
   final BattleActions actions;
 
+  /// Whether the AI is currently executing its turn.
+  final bool isAIExecuting;
+
   @override
   Widget build(BuildContext context) {
+    if (isAIExecuting) {
+      return const _EnemyTurnLabel();
+    }
+
     return Row(
       children: [
         // Prompt message
@@ -518,3 +547,31 @@ String _movementDescription(UnitType type) => switch (type) {
       UnitType.mage => '2 tiles (diagonal)',
       UnitType.scout => '3 tiles (any)',
     };
+
+/// Label displayed during the AI's turn in place of action buttons.
+///
+/// Shows "ENEMY TURN..." in a subdued style to indicate the player
+/// cannot interact with the board.
+class _EnemyTurnLabel extends StatelessWidget {
+  const _EnemyTurnLabel();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            'ENEMY TURN...',
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodyMedium,
+              fontWeight: FiftyTypography.medium,
+              color: FiftyColors.powderBlush.withAlpha(180),
+              letterSpacing: FiftyTypography.letterSpacingLabel,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

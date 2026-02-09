@@ -28,6 +28,7 @@ import 'package:get/get.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../actions/battle_actions.dart';
 import '../../controllers/battle_view_model.dart';
+import '../../services/ai_turn_executor.dart';
 import '../../services/audio_coordinator.dart';
 
 /// Top bar showing turn info, active player indicator, and utility controls.
@@ -55,6 +56,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
   Widget build(BuildContext context) {
     final actions = Get.find<BattleActions>();
     final audio = Get.find<BattleAudioCoordinator>();
+    final aiExecutor = Get.find<AITurnExecutor>();
 
     return Container(
       width: double.infinity,
@@ -79,6 +81,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
           final turnLabel = controller.turnLabel;
           final dotColor =
               isPlayerTurn ? AppTheme.playerColor : AppTheme.enemyColor;
+          final isAIExecuting = aiExecutor.isExecuting.value;
 
           return Row(
             children: [
@@ -96,11 +99,14 @@ class TurnIndicator extends GetView<BattleViewModel> {
 
               const SizedBox(width: FiftySpacing.md),
 
-              // -- Player indicator --
-              _PlayerIndicator(
-                label: turnLabel,
-                dotColor: dotColor,
-              ),
+              // -- Player indicator or AI thinking label --
+              if (isAIExecuting)
+                const _AIThinkingLabel()
+              else
+                _PlayerIndicator(
+                  label: turnLabel,
+                  dotColor: dotColor,
+                ),
 
               const Spacer(),
 
@@ -208,6 +214,52 @@ class _PlayerIndicator extends StatelessWidget {
             fontSize: FiftyTypography.bodyMedium,
             fontWeight: FiftyTypography.medium,
             color: FiftyColors.cream,
+            letterSpacing: FiftyTypography.letterSpacingLabel,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Label displayed when the AI is executing its turn.
+///
+/// Shows "ENEMY THINKING..." in a pulsing style with an animated dot
+/// indicator to convey that the AI is actively processing.
+class _AIThinkingLabel extends StatelessWidget {
+  const _AIThinkingLabel();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Pulsing dot indicator
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: FiftyColors.powderBlush,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: FiftyColors.powderBlush.withAlpha(120),
+                blurRadius: 6,
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: FiftySpacing.sm),
+
+        // Thinking label
+        Text(
+          'ENEMY THINKING...',
+          style: TextStyle(
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.bodyMedium,
+            fontWeight: FiftyTypography.medium,
+            color: FiftyColors.powderBlush,
             letterSpacing: FiftyTypography.letterSpacingLabel,
           ),
         ),
