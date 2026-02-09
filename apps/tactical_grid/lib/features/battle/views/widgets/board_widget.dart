@@ -87,10 +87,18 @@ class BoardWidget extends GetView<BattleViewModel> {
                   : <GridPosition>{};
 
               // Get animation service for hiding animated units.
+              // Read reactive lists HERE (in the Obx body) so the Obx
+              // rebuilds when animations start/complete. Reads inside
+              // itemBuilder execute during layout, outside Obx tracking.
               final AnimationService? animService =
                   Get.isRegistered<AnimationService>()
                       ? Get.find<AnimationService>()
                       : null;
+              final animatingIds = animService?.activeAnimations
+                  .map((e) => e.unitId)
+                  .toSet() ?? <String>{};
+              final flashIds = animService?.flashingUnitIds.toSet()
+                  ?? <String>{};
 
               return GridView.builder(
                 padding: EdgeInsets.zero,
@@ -108,15 +116,13 @@ class BoardWidget extends GetView<BattleViewModel> {
                   // Hide unit from grid tile if it is being animated
                   // (the overlay shows it instead).
                   final unitAtPos = (rawUnit != null &&
-                          animService != null &&
-                          animService.isUnitAnimating(rawUnit.id))
+                          animatingIds.contains(rawUnit.id))
                       ? null
                       : rawUnit;
 
                   // Check if this unit should show an impact flash.
                   final isFlashing = rawUnit != null &&
-                      animService != null &&
-                      animService.flashingUnitIds.contains(rawUnit.id);
+                      flashIds.contains(rawUnit.id);
 
                   final isSelected = selectedUnit != null &&
                       selectedUnit.position == position;
