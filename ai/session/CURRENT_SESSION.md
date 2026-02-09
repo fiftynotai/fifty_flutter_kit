@@ -10,7 +10,7 @@
 
 ### BR-071 - Tactical Grid Game
 - **Status:** In Progress
-- **Phase:** Priority 1-3 DONE, Priority 4-5 pending
+- **Phase:** Priority 1-4 DONE, Priority 5 pending
 - **Asset blocker:** Unit art blocked on igris-ai/BR-014 (Higgsfield MCP Server)
 
 ---
@@ -42,11 +42,14 @@
 - 216 tests passing (35 new), 978 lines added across 6 files
 - Code reviewed: APPROVED
 
-### Priority 4: Animations (~1.5 days)
-- Unit movement animation (slide to tile)
-- Attack animation
-- Damage pop-up text
-- Unit defeat animation
+### Priority 4: Animations - DONE
+- **Commit:** (pending) feat(tactical_grid): add battle animations
+- AnimationService: reactive animation management with Completers
+- Move animation (300ms slide), attack animation (400ms lunge), damage popup (800ms), defeat animation (500ms)
+- Stack overlay architecture: GridView for tiles, overlay for animated sprites
+- Impact flash effect (150ms), input blocking during animations
+- Integrated into BattleActions (player) and AITurnExecutor (AI)
+- 244 tests passing (28 new), ~1200 lines added across 8 files
 
 ### Priority 5: Voice Announcer (~1-2 days)
 - Event-to-voice mapping for key events
@@ -62,6 +65,24 @@
 ---
 
 ## Last Session (2026-02-09)
+
+### Priority 4: Animations - Complete
+- Created AnimationService (GetxController): reactive animation management with Completers
+- AnimationType enum: move, attack, damage, defeat
+- AnimationEvent data class with Completer-backed futures for await support
+- Play methods: playMoveAnimation (300ms), playAttackAnimation (400ms), playDamagePopup (800ms), playDefeatAnimation (500ms)
+- completeAnimation() called by widgets when animation controllers finish
+- isUnitAnimating() for hiding units from GridView during animation
+- triggerFlash() for 150ms impact flash overlay
+- Created UnitSpriteWidget: shared renderer extracted from _TileUnitSprite
+- Created AnimatedUnitSprite: move (slide), attack (lunge), defeat (fade+scale+rotate)
+- Created DamagePopup: floating "-N" with pop-in overshoot, rise, fade
+- Created AnimatedBoardOverlay: Stack overlay positioning animated widgets at grid coordinates
+- Modified BoardWidget: Stack architecture, hide animating units, flash support
+- Modified BattleActions: animation guards, move/attack/ability animation sequences
+- Modified AITurnExecutor: animation triggers for AI moves/attacks/abilities
+- Modified BattleBindings: AnimationService DI registration
+- 244 tests passing (28 new), ~1200 lines added across 8 files
 
 ### Priority 3: Turn Timer - Complete
 - Created TurnTimerService with reactive countdown (RxInt remainingSeconds, RxBool isRunning)
@@ -109,14 +130,14 @@
 ## Previous Work
 
 **BR-074 (Igris Birth Chamber):** Committed
-**BR-071 (Tactical Grid):** Core MVP complete, Priority 1-3 complete
+**BR-071 (Tactical Grid):** Core MVP complete, Priority 1-4 complete
 
 ---
 
 ## Next Steps
 
-1. Continue BR-071 - implement Priority 4: Animations
-2. Then Priority 5: Voice Announcer
+1. Continue BR-071 - implement Priority 5: Voice Announcer
+2. After igris-ai/BR-014: generate unit art and additional audio assets
 3. After igris-ai/BR-014: generate unit art and additional audio assets
 4. Final polish pass with all assets
 
@@ -125,5 +146,5 @@
 ## Resume Command
 
 ```
-implement BR-071 - start with Priority 4: Animations
+implement BR-071 - start with Priority 5: Voice Announcer
 ```

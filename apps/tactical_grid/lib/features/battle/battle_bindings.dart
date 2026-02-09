@@ -26,6 +26,7 @@ import 'controllers/battle_view_model.dart';
 import 'services/ai_service.dart';
 import 'services/ai_turn_executor.dart';
 import 'services/audio_coordinator.dart';
+import 'services/animation_service.dart';
 import 'services/game_logic_service.dart';
 import 'services/turn_timer_service.dart';
 
@@ -54,18 +55,20 @@ class BattleBindings extends Bindings {
       () => const AIService(),
       fenix: true,
     );
+    Get.put<AnimationService>(AnimationService());
 
     // 2. ViewModel
     Get.put<BattleViewModel>(
       BattleViewModel(Get.find<GameLogicService>()),
     );
 
-    // 3. AI Turn Executor (depends on ViewModel, Audio, AIService)
+    // 3. AI Turn Executor (depends on ViewModel, Audio, AIService, AnimationService)
     Get.lazyPut<AITurnExecutor>(
       () => AITurnExecutor(
         Get.find<BattleViewModel>(),
         Get.find<BattleAudioCoordinator>(),
         Get.find<AIService>(),
+        Get.find<AnimationService>(),
       ),
       fenix: true,
     );
@@ -94,6 +97,7 @@ class BattleBindings extends Bindings {
         Get.find<AchievementActions>(),
         Get.find<AITurnExecutor>(),
         Get.find<TurnTimerService>(),
+        Get.find<AnimationService>(),
       ),
       fenix: true,
     );

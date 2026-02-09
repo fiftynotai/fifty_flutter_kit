@@ -25,7 +25,6 @@
 /// ```
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +32,9 @@ import '../../../../core/theme/app_theme.dart';
 import '../../actions/battle_actions.dart';
 import '../../controllers/battle_view_model.dart';
 import '../../models/models.dart';
+import '../../services/animation_service.dart';
+import 'animated_board_overlay.dart';
+import 'unit_sprite_widget.dart';
 
 /// The 8x8 tactical game board.
 ///
@@ -62,7 +64,10 @@ class BoardWidget extends GetView<BattleViewModel> {
           child: SizedBox(
             width: tileSize * _boardSize,
             height: tileSize * _boardSize,
-            child: Obx(() {
+            child: Stack(
+              children: [
+                // Base grid.
+                Obx(() {
               final state = controller.gameState.value;
               final selectedUnit = state.selectedUnit;
               final validMoves = state.validMoves.toSet();
@@ -81,6 +86,12 @@ class BoardWidget extends GetView<BattleViewModel> {
                   ? state.abilityTargets.toSet()
                   : <GridPosition>{};
 
+              // Get animation service for hiding animated units.
+              final AnimationService? animService =
+                  Get.isRegistered<AnimationService>()
+                      ? Get.find<AnimationService>()
+                      : null;
+
               return GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -91,7 +102,20 @@ class BoardWidget extends GetView<BattleViewModel> {
                   final x = index % _boardSize;
                   final y = index ~/ _boardSize;
                   final position = GridPosition(x, y);
-                  final unitAtPos = state.board.getUnitAt(position);
+                  final rawUnit = state.board.getUnitAt(position);
+
+                  // Hide unit from grid tile if it is being animated
+                  // (the overlay shows it instead).
+                  final unitAtPos = (rawUnit != null &&
+                          animService != null &&
+                          animService.isUnitAnimating(rawUnit.id))
+                      ? null
+                      : rawUnit;
+
+                  // Check if this unit should show an impact flash.
+                  final isFlashing = rawUnit != null &&
+                      animService != null &&
+                      animService.flashingUnitIds.contains(rawUnit.id);
 
                   final isSelected = selectedUnit != null &&
                       selectedUnit.position == position;
@@ -107,12 +131,20 @@ class BoardWidget extends GetView<BattleViewModel> {
                     isAttackTarget: isAttackTarget,
                     isAbilityTarget: isAbilityTarget,
                     isSelected: isSelected,
+                    showFlash: isFlashing,
                     tileSize: tileSize,
                     onTap: () => actions.onTileTapped(context, position),
                   );
                 },
               );
             }),
+
+                // Animation overlay.
+                Positioned.fill(
+                  child: AnimatedBoardOverlay(tileSize: tileSize),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -147,6 +179,9 @@ class _BoardTile extends StatelessWidget {
   /// Whether this tile contains the currently selected unit.
   final bool isSelected;
 
+  /// Whether to show an impact flash overlay on the unit sprite.
+  final bool showFlash;
+
   /// Side length of the tile in logical pixels.
   final double tileSize;
 
@@ -160,6 +195,7 @@ class _BoardTile extends StatelessWidget {
     required this.isAttackTarget,
     required this.isAbilityTarget,
     required this.isSelected,
+    required this.showFlash,
     required this.tileSize,
     required this.onTap,
   });
@@ -226,10 +262,11 @@ class _BoardTile extends StatelessWidget {
             // Unit sprite placeholder.
             if (unit != null)
               Center(
-                child: _TileUnitSprite(
+                child: UnitSpriteWidget(
                   unit: unit!,
                   tileSize: tileSize,
                   isAttackTarget: isAttackTarget,
+                  showFlash: showFlash,
                 ),
               ),
           ],
@@ -239,101 +276,3 @@ class _BoardTile extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Tile Unit Sprite
-// ---------------------------------------------------------------------------
-
-/// Placeholder unit sprite rendered as a coloured circle with the unit type
-/// initial letter.
-///
-/// - Player units use [AppTheme.playerColor] (burgundy).
-/// - Enemy units use [AppTheme.enemyColor] (slate grey).
-/// - Attack targets receive a pulsing border in [AppTheme.attackRangeColor].
-class _TileUnitSprite extends StatelessWidget {
-  /// The unit to render.
-  final Unit unit;
-
-  /// Size of the containing tile (used to scale the sprite).
-  final double tileSize;
-
-  /// Whether this unit is an active attack target.
-  final bool isAttackTarget;
-
-  const _TileUnitSprite({
-    required this.unit,
-    required this.tileSize,
-    required this.isAttackTarget,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final spriteSize = tileSize * 0.7;
-    final color = unit.isPlayer ? AppTheme.playerColor : AppTheme.enemyColor;
-
-    final initial = switch (unit.type) {
-      UnitType.commander => 'C',
-      UnitType.knight => 'K',
-      UnitType.shield => 'S',
-      UnitType.archer => 'A',
-      UnitType.mage => 'M',
-      UnitType.scout => 'R',
-    };
-
-    return Container(
-      width: spriteSize,
-      height: spriteSize,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: isAttackTarget
-              ? AppTheme.attackRangeColor
-              : FiftyColors.cream.withAlpha(80),
-          width: isAttackTarget ? 2.5 : 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: color.withAlpha(100),
-            blurRadius: 4,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Unit type initial.
-          Text(
-            initial,
-            style: TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: spriteSize * 0.38,
-              fontWeight: FiftyTypography.extraBold,
-              color: FiftyColors.cream,
-              height: 1,
-            ),
-          ),
-
-          // Small HP indicator beneath the initial.
-          if (unit.hp < unit.maxHp)
-            Padding(
-              padding: const EdgeInsets.only(top: 1),
-              child: Text(
-                '${unit.hp}',
-                style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamily,
-                  fontSize: spriteSize * 0.2,
-                  fontWeight: FiftyTypography.bold,
-                  color: unit.hpRatio > 0.5
-                      ? FiftyColors.cream
-                      : FiftyColors.powderBlush,
-                  height: 1,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}

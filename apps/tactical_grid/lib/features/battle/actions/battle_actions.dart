@@ -33,6 +33,7 @@ import '../controllers/battle_view_model.dart';
 import '../models/models.dart';
 import '../services/ai_turn_executor.dart';
 import '../services/audio_coordinator.dart';
+import '../services/animation_service.dart';
 import '../services/turn_timer_service.dart';
 
 /// UX orchestration layer for the tactical battle screen.
@@ -68,6 +69,10 @@ class BattleActions {
   /// code continues to work when no timer is provided.
   final TurnTimerService? _timerService;
 
+  /// Animation service for coordinating visual animation effects.
+  /// Nullable so existing code works without it.
+  final AnimationService? _animationService;
+
   /// Creates a [BattleActions] instance with required dependencies.
   BattleActions(
     this._viewModel,
@@ -76,6 +81,7 @@ class BattleActions {
     this._achievements,
     this._aiExecutor,
     this._timerService,
+    this._animationService,
   ]) {
     _setupTimerCallbacks();
   }
@@ -127,6 +133,24 @@ class BattleActions {
   }
 
   // ---------------------------------------------------------------------------
+  // Animation Helpers
+  // ---------------------------------------------------------------------------
+
+  /// Executes a move with optional animation.
+  Future<void> _handleMoveWithAnimation(
+    GameState state,
+    GridPosition position,
+  ) async {
+    final fromPos = state.selectedUnit!.position;
+    final unitId = state.selectedUnit!.id;
+    final animFuture =
+        _animationService?.playMoveAnimation(unitId, fromPos, position);
+    _viewModel.moveSelectedUnit(position);
+    _audio.playMoveSfx();
+    if (animFuture != null) await animFuture;
+  }
+
+  // ---------------------------------------------------------------------------
   // Tile Interaction
   // ---------------------------------------------------------------------------
 
@@ -141,6 +165,8 @@ class BattleActions {
   ///    the move.
   /// 4. Otherwise, deselect.
   void onTileTapped(BuildContext context, GridPosition position) {
+    // Block player input while an animation is playing.
+    if (_animationService?.isAnimating ?? false) return;
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -176,8 +202,7 @@ class BattleActions {
 
     // Case 2: A unit is selected and the tapped position is a valid move.
     if (state.hasSelection && state.validMoves.contains(position)) {
-      _viewModel.moveSelectedUnit(position);
-      _audio.playMoveSfx();
+      _handleMoveWithAnimation(state, position);
       return;
     }
 
@@ -208,6 +233,8 @@ class BattleActions {
   /// - Capture SFX plays if the target is defeated.
   /// - Victory/defeat dialog is shown if the game ends.
   void onAttackUnit(BuildContext context, String targetUnitId) {
+    // Block player input while an animation is playing.
+    if (_animationService?.isAnimating ?? false) return;
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -231,6 +258,27 @@ class BattleActions {
             );
           }
           return;
+        }
+
+        // --- Animation sequence ---
+        final anim = _animationService;
+        if (anim != null && attacker != null && target != null) {
+          // 1. Attack lunge animation.
+          await anim.playAttackAnimation(
+            attacker.id,
+            attacker.position,
+            target.position,
+          );
+          // 2. Impact flash on target.
+          anim.triggerFlash(target.id);
+          // 3. Damage popup.
+          if (result.damageDealt != null && result.damageDealt! > 0) {
+            await anim.playDamagePopup(target.position, result.damageDealt!);
+          }
+          // 4. Defeat animation.
+          if (result.targetDefeated == true) {
+            await anim.playDefeatAnimation(target.id, target.position);
+          }
         }
 
         // Play attack SFX.
@@ -288,6 +336,8 @@ class BattleActions {
   /// the turn change. Restarts the timer for the next player turn (or
   /// after the AI turn completes in vs-AI mode).
   void onEndTurn(BuildContext context) {
+    // Block player input while an animation is playing.
+    if (_animationService?.isAnimating ?? false) return;
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -331,6 +381,8 @@ class BattleActions {
   /// The unit is marked as having used both its move and action for this
   /// turn. Plays a selection SFX to acknowledge the wait command.
   void onWaitUnit(BuildContext context) {
+    // Block player input while an animation is playing.
+    if (_animationService?.isAnimating ?? false) return;
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -348,6 +400,8 @@ class BattleActions {
   /// For position-target abilities (Shoot, Fireball), enters ability targeting
   /// mode so the player can tap a target tile on the board.
   void onAbilityButtonPressed(BuildContext context) {
+    // Block player input while an animation is playing.
+    if (_animationService?.isAnimating ?? false) return;
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -381,6 +435,8 @@ class BattleActions {
   /// On failure: shows error snackbar.
   /// Always resets ability targeting mode when done.
   void onUseAbility(BuildContext context, {GridPosition? targetPosition}) {
+    // Block player input while an animation is playing.
+    if (_animationService?.isAnimating ?? false) return;
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -398,6 +454,28 @@ class BattleActions {
             );
           }
           return;
+        }
+
+        // --- Animation for damaging abilities ---
+        final anim = _animationService;
+        if (anim != null &&
+            result.damageDealt != null &&
+            result.damageDealt! > 0) {
+          if (targetPosition != null) {
+            await anim.playDamagePopup(targetPosition, result.damageDealt!);
+          }
+          // Check for any defeated units from AoE (e.g. Fireball).
+          if (result.affectedUnitIds != null) {
+            for (final affectedId in result.affectedUnitIds!) {
+              final affectedUnit = _viewModel.board.getUnitById(affectedId);
+              if (affectedUnit != null && affectedUnit.isDead) {
+                await anim.playDefeatAnimation(
+                  affectedId,
+                  affectedUnit.position,
+                );
+              }
+            }
+          }
         }
 
         // Play ability SFX (reuse attack SFX for damaging abilities).
