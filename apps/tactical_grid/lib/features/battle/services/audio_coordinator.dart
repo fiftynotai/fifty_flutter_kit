@@ -53,22 +53,22 @@ abstract final class _BattleAudioAssets {
     'audio/sfx/sword_slash.mp3',
   ];
   static const List<String> captureSfx = [
-    'audio/sfx/hit.mp3',
+    'audio/sfx/unit_defeat.mp3',
   ];
   static const List<String> turnEndSfx = [
-    'audio/sfx/notification.mp3',
+    'audio/sfx/turn_change.mp3',
   ];
   static const List<String> abilitySfx = [
-    'audio/sfx/sword_slash.mp3',
+    'audio/sfx/ability_activate.mp3',
   ];
   static const List<String> achievementSfx = [
     'audio/sfx/achievement_unlock.mp3',
   ];
   static const List<String> timerWarningSfx = [
-    'audio/sfx/click.mp3',
+    'audio/sfx/timer_tick.mp3',
   ];
   static const List<String> timerAlarmSfx = [
-    'audio/sfx/notification.mp3',
+    'audio/sfx/timer_critical.mp3',
   ];
 }
 
