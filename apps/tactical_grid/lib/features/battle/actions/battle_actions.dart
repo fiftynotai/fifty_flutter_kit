@@ -33,6 +33,7 @@ import '../controllers/battle_view_model.dart';
 import '../models/models.dart';
 import '../services/ai_turn_executor.dart';
 import '../services/audio_coordinator.dart';
+import '../services/turn_timer_service.dart';
 
 /// UX orchestration layer for the tactical battle screen.
 ///
@@ -63,6 +64,10 @@ class BattleActions {
   /// continues to work when no executor is provided.
   final AITurnExecutor? _aiExecutor;
 
+  /// Turn timer service for countdown management. Nullable so existing
+  /// code continues to work when no timer is provided.
+  final TurnTimerService? _timerService;
+
   /// Creates a [BattleActions] instance with required dependencies.
   BattleActions(
     this._viewModel,
@@ -70,7 +75,56 @@ class BattleActions {
     this._presenter, [
     this._achievements,
     this._aiExecutor,
-  ]);
+    this._timerService,
+  ]) {
+    _setupTimerCallbacks();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Timer Integration
+  // ---------------------------------------------------------------------------
+
+  /// Wires up timer callbacks for expiry, warning, and critical audio cues.
+  void _setupTimerCallbacks() {
+    final timer = _timerService;
+    if (timer == null) return;
+
+    timer.onWarning = () => _audio.playTimerWarningSfx();
+    timer.onCritical = () => _audio.playTimerAlarmSfx();
+    timer.onTimerExpired = _onTimerExpired;
+  }
+
+  /// Handles timer expiry by auto-ending the current turn.
+  ///
+  /// When the timer runs out, the current turn is ended automatically.
+  /// If the game is in vs-AI mode, the AI turn is triggered afterward.
+  void _onTimerExpired() {
+    if (_aiExecutor?.isExecuting.value == true) return;
+    if (_viewModel.isGameOver) return;
+
+    // Auto-skip: end the current turn.
+    _viewModel.endTurn();
+    _audio.playTurnEndSfx();
+
+    // Trigger AI if applicable.
+    if (_viewModel.isAITurn && _aiExecutor != null) {
+      _aiExecutor!.executeAITurn().then((_) {
+        if (!_viewModel.isGameOver) {
+          _timerService?.startTurn();
+        }
+      });
+    } else if (!_viewModel.isGameOver) {
+      _timerService?.startTurn();
+    }
+  }
+
+  /// Starts the timer for the current turn if applicable.
+  void _startTimerForCurrentTurn() {
+    if (_viewModel.isGameOver) return;
+    // Do not start timer during AI turns.
+    if (_viewModel.isAITurn) return;
+    _timerService?.startTurn();
+  }
 
   // ---------------------------------------------------------------------------
   // Tile Interaction
@@ -210,14 +264,8 @@ class BattleActions {
         }
 
         // Check for game over after the attack.
-        final state = _viewModel.gameState.value;
-        if (state.isGameOver && context.mounted) {
-          if (state.result == GameResult.playerWin) {
-            _trackVictoryAchievements(state);
-            _showVictoryDialog(context);
-          } else if (state.result == GameResult.enemyWin) {
-            _showDefeatDialog(context);
-          }
+        if (_viewModel.isGameOver && context.mounted) {
+          _handleGameOver(context);
         }
 
         // Show achievement unlock popup if one was triggered.
@@ -235,11 +283,16 @@ class BattleActions {
 
   /// Ends the current player's turn.
   ///
-  /// Delegates to the ViewModel, plays the turn-end SFX, and provides a
-  /// brief snackbar notification indicating the turn change.
+  /// Cancels the running timer, delegates to the ViewModel, plays the
+  /// turn-end SFX, and provides a brief snackbar notification indicating
+  /// the turn change. Restarts the timer for the next player turn (or
+  /// after the AI turn completes in vs-AI mode).
   void onEndTurn(BuildContext context) {
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
+
+    // Cancel timer before ending turn.
+    _timerService?.cancel();
 
     _viewModel.endTurn();
     _audio.playTurnEndSfx();
@@ -257,17 +310,19 @@ class BattleActions {
     // Trigger AI turn if applicable.
     if (_viewModel.isAITurn && _aiExecutor != null) {
       _aiExecutor!.executeAITurn().then((_) {
+        // Start timer for player after AI turn completes.
+        if (!_viewModel.isGameOver) {
+          _timerService?.startTurn();
+        }
+
         // Check game over after AI turn completes.
         if (_viewModel.isGameOver && context.mounted) {
-          final state = _viewModel.gameState.value;
-          if (state.result == GameResult.playerWin) {
-            _trackVictoryAchievements(state);
-            _showVictoryDialog(context);
-          } else if (state.result == GameResult.enemyWin) {
-            _showDefeatDialog(context);
-          }
+          _handleGameOver(context);
         }
       });
+    } else if (!_viewModel.isGameOver) {
+      // Local multiplayer: start timer for the next player.
+      _timerService?.startTurn();
     }
   }
 
@@ -360,14 +415,8 @@ class BattleActions {
         }
 
         // Check for game over (Shoot / Fireball can kill a Commander).
-        final state = _viewModel.gameState.value;
-        if (state.isGameOver && context.mounted) {
-          if (state.result == GameResult.playerWin) {
-            _trackVictoryAchievements(state);
-            _showVictoryDialog(context);
-          } else if (state.result == GameResult.enemyWin) {
-            _showDefeatDialog(context);
-          }
+        if (_viewModel.isGameOver && context.mounted) {
+          _handleGameOver(context);
         }
 
         // Show achievement unlock popup if one was triggered.
@@ -385,21 +434,24 @@ class BattleActions {
 
   /// Starts a new game.
   ///
-  /// Initializes game state via the ViewModel and begins battle BGM.
+  /// Initializes game state via the ViewModel, begins battle BGM,
+  /// and starts the turn timer for the first turn.
   void onStartGame(BuildContext context) {
     _viewModel.startNewGameWithMode(
       _viewModel.gameMode,
       _viewModel.aiDifficulty,
     );
     _audio.playBattleBgm();
+    _startTimerForCurrentTurn();
   }
 
   /// Called when the battle page is first displayed.
   ///
-  /// Starts background music without resetting the game (the ViewModel
-  /// already calls [startNewGame] in its [onInit]).
+  /// Starts background music and the turn timer without resetting the
+  /// game (the ViewModel already calls [startNewGame] in its [onInit]).
   void onBattleEnter() {
     _audio.playBattleBgm();
+    _startTimerForCurrentTurn();
   }
 
   /// Tracks victory-related achievement events.
@@ -414,10 +466,26 @@ class BattleActions {
     );
   }
 
+  /// Handles game-over state by cancelling the timer and showing
+  /// the appropriate victory or defeat dialog.
+  ///
+  /// **Parameters:**
+  /// - [context]: The current [BuildContext] for dialog display.
+  void _handleGameOver(BuildContext context) {
+    _timerService?.cancel();
+    final state = _viewModel.gameState.value;
+    if (state.result == GameResult.playerWin) {
+      _trackVictoryAchievements(state);
+      _showVictoryDialog(context);
+    } else if (state.result == GameResult.enemyWin) {
+      _showDefeatDialog(context);
+    }
+  }
+
   /// Exits the current game and navigates back to the main menu.
   ///
-  /// Shows a confirmation dialog before exiting. If confirmed, stops BGM
-  /// and navigates to the menu route.
+  /// Shows a confirmation dialog before exiting. If confirmed, stops BGM,
+  /// cancels the timer, and navigates to the menu route.
   void onExitGame(BuildContext context) {
     _presenter.actionHandlerWithoutLoading(
       () async {
@@ -429,6 +497,7 @@ class BattleActions {
         );
 
         if (confirmed) {
+          _timerService?.cancel();
           await _audio.stopBgm();
           RouteManager.toMenu();
         }

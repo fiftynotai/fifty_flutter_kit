@@ -34,6 +34,8 @@ abstract final class _BattleAudioAssets {
   static const String turnEndGroup = 'battle_turn_end';
   static const String abilityGroup = 'battle_ability';
   static const String achievementGroup = 'battle_achievement';
+  static const String timerWarningGroup = 'battle_timer_warning';
+  static const String timerAlarmGroup = 'battle_timer_alarm';
 
   /// SFX asset paths.
   static const List<String> selectSfx = [
@@ -56,6 +58,12 @@ abstract final class _BattleAudioAssets {
   ];
   static const List<String> achievementSfx = [
     'audio/sfx/achievement_unlock.mp3',
+  ];
+  static const List<String> timerWarningSfx = [
+    'audio/sfx/click.mp3',
+  ];
+  static const List<String> timerAlarmSfx = [
+    'audio/sfx/notification.mp3',
   ];
 }
 
@@ -111,7 +119,11 @@ class BattleAudioCoordinator extends GetxController {
         ..registerGroup(
             _BattleAudioAssets.turnEndGroup, _BattleAudioAssets.turnEndSfx)
         ..registerGroup(_BattleAudioAssets.achievementGroup,
-            _BattleAudioAssets.achievementSfx);
+            _BattleAudioAssets.achievementSfx)
+        ..registerGroup(_BattleAudioAssets.timerWarningGroup,
+            _BattleAudioAssets.timerWarningSfx)
+        ..registerGroup(_BattleAudioAssets.timerAlarmGroup,
+            _BattleAudioAssets.timerAlarmSfx);
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[BattleAudioCoordinator] Failed to register SFX groups: $e');
@@ -242,6 +254,30 @@ class BattleAudioCoordinator extends GetxController {
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[BattleAudioCoordinator] Failed to play turn end SFX: $e');
+      }
+    }
+  }
+
+  /// Plays the timer warning sound effect (10-second warning zone).
+  Future<void> playTimerWarningSfx() async {
+    try {
+      await _engine.sfx.playGroup(_BattleAudioAssets.timerWarningGroup);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to play timer warning SFX: $e');
+      }
+    }
+  }
+
+  /// Plays the timer alarm sound effect (5-second critical zone).
+  Future<void> playTimerAlarmSfx() async {
+    try {
+      await _engine.sfx.playGroup(_BattleAudioAssets.timerAlarmGroup);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to play timer alarm SFX: $e');
       }
     }
   }

@@ -30,6 +30,7 @@ import '../../actions/battle_actions.dart';
 import '../../controllers/battle_view_model.dart';
 import '../../services/ai_turn_executor.dart';
 import '../../services/audio_coordinator.dart';
+import '../../services/turn_timer_service.dart';
 
 /// Top bar showing turn info, active player indicator, and utility controls.
 ///
@@ -57,13 +58,10 @@ class TurnIndicator extends GetView<BattleViewModel> {
     final actions = Get.find<BattleActions>();
     final audio = Get.find<BattleAudioCoordinator>();
     final aiExecutor = Get.find<AITurnExecutor>();
+    final timerService = Get.find<TurnTimerService>();
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: FiftySpacing.md,
-        vertical: FiftySpacing.sm,
-      ),
       decoration: BoxDecoration(
         color: Colors.black.withAlpha(180),
         border: Border(
@@ -75,66 +73,88 @@ class TurnIndicator extends GetView<BattleViewModel> {
       ),
       child: SafeArea(
         bottom: false,
-        child: Obx(() {
-          final turnNumber = controller.turnNumber;
-          final isPlayerTurn = controller.isPlayerTurn;
-          final turnLabel = controller.turnLabel;
-          final dotColor =
-              isPlayerTurn ? AppTheme.playerColor : AppTheme.enemyColor;
-          final isAIExecuting = aiExecutor.isExecuting.value;
-
-          return Row(
-            children: [
-              // -- Turn number --
-              _TurnBadge(turnNumber: turnNumber),
-
-              const SizedBox(width: FiftySpacing.md),
-
-              // -- Vertical divider --
-              Container(
-                width: 1,
-                height: 20,
-                color: FiftyColors.slateGrey.withAlpha(80),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // -- Top row: turn info + controls --
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: FiftySpacing.md,
+                vertical: FiftySpacing.sm,
               ),
+              child: Obx(() {
+                final turnNumber = controller.turnNumber;
+                final isPlayerTurn = controller.isPlayerTurn;
+                final turnLabel = controller.turnLabel;
+                final dotColor =
+                    isPlayerTurn ? AppTheme.playerColor : AppTheme.enemyColor;
+                final isAIExecuting = aiExecutor.isExecuting.value;
 
-              const SizedBox(width: FiftySpacing.md),
+                return Row(
+                  children: [
+                    // -- Turn number --
+                    _TurnBadge(turnNumber: turnNumber),
 
-              // -- Player indicator or AI thinking label --
-              if (isAIExecuting)
-                const _AIThinkingLabel()
-              else
-                _PlayerIndicator(
-                  label: turnLabel,
-                  dotColor: dotColor,
-                ),
+                    const SizedBox(width: FiftySpacing.md),
 
-              const Spacer(),
+                    // -- Vertical divider --
+                    Container(
+                      width: 1,
+                      height: 20,
+                      color: FiftyColors.slateGrey.withAlpha(80),
+                    ),
 
-              // -- Audio mute toggle --
-              Obx(() {
-                final isMuted = audio.isMuted;
-                return FiftyIconButton(
-                  icon: isMuted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
-                  tooltip: isMuted ? 'Unmute audio' : 'Mute audio',
-                  variant: FiftyIconButtonVariant.ghost,
-                  size: FiftyIconButtonSize.small,
-                  onPressed: () => audio.toggleMute(),
+                    const SizedBox(width: FiftySpacing.md),
+
+                    // -- Player indicator or AI thinking label --
+                    if (isAIExecuting)
+                      const _AIThinkingLabel()
+                    else
+                      _PlayerIndicator(
+                        label: turnLabel,
+                        dotColor: dotColor,
+                      ),
+
+                    const Spacer(),
+
+                    // -- Timer countdown text --
+                    _TimerCountdown(timerService: timerService),
+
+                    const SizedBox(width: FiftySpacing.sm),
+
+                    // -- Audio mute toggle --
+                    Obx(() {
+                      final isMuted = audio.isMuted;
+                      return FiftyIconButton(
+                        icon: isMuted
+                            ? Icons.volume_off_rounded
+                            : Icons.volume_up_rounded,
+                        tooltip: isMuted ? 'Unmute audio' : 'Mute audio',
+                        variant: FiftyIconButtonVariant.ghost,
+                        size: FiftyIconButtonSize.small,
+                        onPressed: () => audio.toggleMute(),
+                      );
+                    }),
+
+                    const SizedBox(width: FiftySpacing.xs),
+
+                    // -- Exit button --
+                    FiftyIconButton(
+                      icon: Icons.close_rounded,
+                      tooltip: 'Exit battle',
+                      variant: FiftyIconButtonVariant.ghost,
+                      size: FiftyIconButtonSize.small,
+                      onPressed: () => actions.onExitGame(context),
+                    ),
+                  ],
                 );
               }),
+            ),
 
-              const SizedBox(width: FiftySpacing.xs),
-
-              // -- Exit button --
-              FiftyIconButton(
-                icon: Icons.close_rounded,
-                tooltip: 'Exit battle',
-                variant: FiftyIconButtonVariant.ghost,
-                size: FiftyIconButtonSize.small,
-                onPressed: () => actions.onExitGame(context),
-              ),
-            ],
-          );
-        }),
+            // -- Timer progress bar --
+            _TimerBar(timerService: timerService),
+          ],
+        ),
       ),
     );
   }
@@ -266,4 +286,112 @@ class _AIThinkingLabel extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Displays the remaining turn time as a compact countdown text.
+///
+/// Shows the time in "M:SS" format. Color transitions based on the
+/// timer zone:
+/// - Normal: [FiftyColors.cream]
+/// - Warning (<=10s): [Colors.amber]
+/// - Critical (<=5s): [Colors.red]
+///
+/// Hidden when the timer is not running and has no remaining time.
+class _TimerCountdown extends StatelessWidget {
+  /// Creates a [_TimerCountdown] widget.
+  const _TimerCountdown({required this.timerService});
+
+  /// The timer service to observe.
+  final TurnTimerService timerService;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final seconds = timerService.remainingSeconds.value;
+      final isRunning = timerService.isRunning.value;
+
+      if (!isRunning && seconds <= 0) return const SizedBox.shrink();
+
+      final minutes = seconds ~/ 60;
+      final secs = seconds % 60;
+      final timeText = '$minutes:${secs.toString().padLeft(2, '0')}';
+      final color = _timerColor(seconds);
+
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.timer_outlined,
+            size: 14,
+            color: color,
+          ),
+          const SizedBox(width: FiftySpacing.xs),
+          Text(
+            timeText,
+            style: TextStyle(
+              fontFamily: FiftyTypography.fontFamily,
+              fontSize: FiftyTypography.bodySmall,
+              fontWeight: FiftyTypography.bold,
+              color: color,
+              letterSpacing: FiftyTypography.letterSpacingLabel,
+            ),
+          ),
+        ],
+      );
+    });
+  }
+}
+
+/// Displays a horizontal progress bar that counts down with the turn timer.
+///
+/// Color transitions:
+/// - Normal: [AppTheme.accentColor] (powder blush)
+/// - Warning (<=10s): [Colors.amber]
+/// - Critical (<=5s): [Colors.red]
+///
+/// Hidden when the timer is not running and has no remaining time.
+class _TimerBar extends StatelessWidget {
+  /// Creates a [_TimerBar] widget.
+  const _TimerBar({required this.timerService});
+
+  /// The timer service to observe.
+  final TurnTimerService timerService;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final seconds = timerService.remainingSeconds.value;
+      final isRunning = timerService.isRunning.value;
+
+      if (!isRunning && seconds <= 0) return const SizedBox.shrink();
+
+      final progress = timerService.progress;
+      final color = _timerColor(seconds);
+
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(1),
+        child: LinearProgressIndicator(
+          value: progress,
+          backgroundColor: Colors.black.withAlpha(60),
+          valueColor: AlwaysStoppedAnimation<Color>(color),
+          minHeight: 3,
+        ),
+      );
+    });
+  }
+}
+
+/// Returns the appropriate color for the timer based on remaining [seconds].
+///
+/// - Critical (<=5s): Red
+/// - Warning (<=10s): Amber
+/// - Normal: Accent color (powder blush / cream)
+Color _timerColor(int seconds) {
+  if (seconds <= TurnTimerService.criticalThreshold && seconds > 0) {
+    return Colors.red;
+  }
+  if (seconds <= TurnTimerService.warningThreshold) {
+    return Colors.amber;
+  }
+  return FiftyColors.cream;
 }

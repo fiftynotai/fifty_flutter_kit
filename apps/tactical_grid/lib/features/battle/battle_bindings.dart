@@ -27,6 +27,7 @@ import 'services/ai_service.dart';
 import 'services/ai_turn_executor.dart';
 import 'services/audio_coordinator.dart';
 import 'services/game_logic_service.dart';
+import 'services/turn_timer_service.dart';
 
 /// Registers all battle feature dependencies in the GetX container.
 ///
@@ -69,7 +70,13 @@ class BattleBindings extends Bindings {
       fenix: true,
     );
 
-    // 4. Achievement tracking
+    // 4. Turn Timer
+    Get.lazyPut<TurnTimerService>(
+      () => TurnTimerService(),
+      fenix: true,
+    );
+
+    // 5. Achievement tracking (depends on AchievementViewModel from app bindings)
     Get.lazyPut<AchievementActions>(
       () => AchievementActions(
         Get.find<AchievementViewModel>(),
@@ -78,7 +85,7 @@ class BattleBindings extends Bindings {
       fenix: true,
     );
 
-    // 5. Actions
+    // 6. Actions
     Get.lazyPut<BattleActions>(
       () => BattleActions(
         Get.find<BattleViewModel>(),
@@ -86,6 +93,7 @@ class BattleBindings extends Bindings {
         ActionPresenter(),
         Get.find<AchievementActions>(),
         Get.find<AITurnExecutor>(),
+        Get.find<TurnTimerService>(),
       ),
       fenix: true,
     );
