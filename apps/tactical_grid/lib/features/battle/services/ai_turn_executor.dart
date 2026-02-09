@@ -180,10 +180,25 @@ class AITurnExecutor {
     }
 
     await _audio.playAttackSfx();
+
+    if (result.targetDefeated == true && target != null) {
+      _audio.announceUnitCaptured(target.type);
+    }
+
+    // Check if player's commander is in danger after AI attack.
+    final playerCommander = _viewModel.board.playerCommander;
+    if (playerCommander != null &&
+        playerCommander.isAlive &&
+        playerCommander.hp <= 2) {
+      _audio.announceCommanderInDanger();
+    }
   }
 
   /// Executes an ability action: select unit, pause, use ability.
   Future<void> _executeAbility(AIAction action) async {
+    final selectedUnit = _viewModel.board.getUnitById(action.unitId);
+    final abilityType = selectedUnit?.ability?.type;
+
     _viewModel.selectUnit(action.unitId);
     await _audio.playSelectSfx();
     await Future<void>.delayed(const Duration(milliseconds: _selectDelayMs));
@@ -206,6 +221,10 @@ class AITurnExecutor {
     }
 
     await _audio.playAbilitySfx();
+
+    if (abilityType != null) {
+      _audio.announceAbilityUsed(abilityType);
+    }
   }
 
   /// Executes a move-then-attack combo with sub-step delay.
@@ -246,12 +265,23 @@ class AITurnExecutor {
     }
 
     await _audio.playAttackSfx();
+
+    if (result.targetDefeated == true && target != null) {
+      _audio.announceUnitCaptured(target.type);
+    }
+
+    // Check if player's commander is in danger after AI attack.
+    final playerCmdr = _viewModel.board.playerCommander;
+    if (playerCmdr != null && playerCmdr.isAlive && playerCmdr.hp <= 2) {
+      _audio.announceCommanderInDanger();
+    }
   }
 
   /// Executes a move-then-ability combo with sub-step delay.
   Future<void> _executeMoveAndAbility(AIAction action) async {
     // Step 1: Select and move with animation.
     final unit = _viewModel.board.getUnitById(action.unitId);
+    final abilityType = unit?.ability?.type;
     _viewModel.selectUnit(action.unitId);
     await _audio.playSelectSfx();
     await Future<void>.delayed(const Duration(milliseconds: _selectDelayMs));
@@ -287,6 +317,10 @@ class AITurnExecutor {
     }
 
     await _audio.playAbilitySfx();
+
+    if (abilityType != null) {
+      _audio.announceAbilityUsed(abilityType);
+    }
   }
 
   /// Executes a wait action: select unit briefly, then deselect.

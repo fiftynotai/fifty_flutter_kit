@@ -29,6 +29,7 @@ import 'services/audio_coordinator.dart';
 import 'services/animation_service.dart';
 import 'services/game_logic_service.dart';
 import 'services/turn_timer_service.dart';
+import 'services/voice_announcer_service.dart';
 
 /// Registers all battle feature dependencies in the GetX container.
 ///
@@ -47,8 +48,12 @@ class BattleBindings extends Bindings {
       () => const GameLogicService(),
       fenix: true,
     );
+    Get.lazyPut<VoiceAnnouncerService>(
+      () => VoiceAnnouncerService(),
+      fenix: true,
+    );
     Get.lazyPut<BattleAudioCoordinator>(
-      () => BattleAudioCoordinator(),
+      () => BattleAudioCoordinator(Get.find<VoiceAnnouncerService>()),
       fenix: true,
     );
     Get.lazyPut<AIService>(

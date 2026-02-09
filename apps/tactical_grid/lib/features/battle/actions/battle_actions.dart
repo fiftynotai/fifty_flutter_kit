@@ -95,7 +95,10 @@ class BattleActions {
     final timer = _timerService;
     if (timer == null) return;
 
-    timer.onWarning = () => _audio.playTimerWarningSfx();
+    timer.onWarning = () {
+      _audio.playTimerWarningSfx();
+      _audio.announceTurnWarning();
+    };
     timer.onCritical = () => _audio.playTimerAlarmSfx();
     timer.onTimerExpired = _onTimerExpired;
   }
@@ -284,9 +287,12 @@ class BattleActions {
         // Play attack SFX.
         await _audio.playAttackSfx();
 
-        // Play capture SFX if the target was defeated.
+        // Play capture SFX and announce if the target was defeated.
         if (result.targetDefeated == true) {
           await _audio.playCaptureSfx();
+          if (target != null) {
+            _audio.announceUnitCaptured(target.type);
+          }
         }
 
         // Track achievement events.
@@ -314,6 +320,14 @@ class BattleActions {
         // Check for game over after the attack.
         if (_viewModel.isGameOver && context.mounted) {
           _handleGameOver(context);
+        }
+
+        // Check if player's commander is in danger (low HP).
+        if (!_viewModel.isGameOver) {
+          final commander = _viewModel.board.playerCommander;
+          if (commander != null && commander.isAlive && commander.hp <= 2) {
+            _audio.announceCommanderInDanger();
+          }
         }
 
         // Show achievement unlock popup if one was triggered.
@@ -442,6 +456,9 @@ class BattleActions {
 
     _presenter.actionHandlerWithoutLoading(
       () async {
+        // Capture ability type before state mutation for voice announcement.
+        final usedAbilityType = _viewModel.selectedAbility?.type;
+
         final result = _viewModel.useAbility(targetPosition: targetPosition);
         _viewModel.isAbilityTargeting.value = false;
 
@@ -480,6 +497,11 @@ class BattleActions {
 
         // Play ability SFX (reuse attack SFX for damaging abilities).
         await _audio.playAbilitySfx();
+
+        // Announce ability used via voice.
+        if (usedAbilityType != null) {
+          _audio.announceAbilityUsed(usedAbilityType);
+        }
 
         // Show success feedback.
         if (context.mounted) {
@@ -520,6 +542,7 @@ class BattleActions {
       _viewModel.aiDifficulty,
     );
     _audio.playBattleBgm();
+    _audio.announceMatchStart();
     _startTimerForCurrentTurn();
   }
 
@@ -529,6 +552,7 @@ class BattleActions {
   /// game (the ViewModel already calls [startNewGame] in its [onInit]).
   void onBattleEnter() {
     _audio.playBattleBgm();
+    _audio.announceMatchStart();
     _startTimerForCurrentTurn();
   }
 
@@ -591,6 +615,7 @@ class BattleActions {
   /// Shows the victory dialog when the player wins.
   void _showVictoryDialog(BuildContext context) {
     _audio.stopBgm();
+    _audio.announceVictory();
 
     showFiftyDialog<void>(
       context: context,
@@ -635,6 +660,7 @@ class BattleActions {
   /// Shows the defeat dialog when the player loses.
   void _showDefeatDialog(BuildContext context) {
     _audio.stopBgm();
+    _audio.announceDefeat();
 
     showFiftyDialog<void>(
       context: context,

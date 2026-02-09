@@ -15,9 +15,14 @@
 /// ```
 library;
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+
+import '../models/ability.dart';
+import '../models/unit.dart';
+import 'voice_announcer_service.dart';
 
 /// Audio asset path constants for the battle feature.
 abstract final class _BattleAudioAssets {
@@ -83,6 +88,17 @@ abstract final class _BattleAudioAssets {
 /// game-specific semantics. The [BattleActions] layer calls into this
 /// coordinator; it never touches [FiftyAudioEngine] directly.
 class BattleAudioCoordinator extends GetxController {
+  /// Creates a [BattleAudioCoordinator].
+  ///
+  /// [voiceAnnouncer] is an optional [VoiceAnnouncerService] for voice-over
+  /// announcements. When provided, the coordinator exposes convenience
+  /// methods (`announceMatchStart`, `announceVictory`, etc.) that delegate
+  /// to the announcer. When `null`, voice announcements are silently skipped.
+  BattleAudioCoordinator([this._voiceAnnouncer]);
+
+  /// Optional voice announcer for battle event voice-overs.
+  final VoiceAnnouncerService? _voiceAnnouncer;
+
   /// Direct access to the audio engine singleton.
   FiftyAudioEngine get _engine => FiftyAudioEngine.instance;
 
@@ -100,6 +116,7 @@ class BattleAudioCoordinator extends GetxController {
   void onInit() {
     super.onInit();
     _registerSfxGroups();
+    _configureVoiceChannel();
   }
 
   /// Registers all battle SFX groups with the engine's SFX channel.
@@ -290,6 +307,143 @@ class BattleAudioCoordinator extends GetxController {
       if (kDebugMode) {
         debugPrint(
             '[BattleAudioCoordinator] Failed to play achievement SFX: $e');
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Voice Channel Configuration
+  // ---------------------------------------------------------------------------
+
+  /// Configures the voice channel to use asset-based source resolution.
+  ///
+  /// By default the voice channel resolves paths as URLs. Since battle
+  /// voice lines are bundled assets, we switch the source builder to
+  /// [AssetSource] so that `playVoice('audio/voice/victory.mp3')` loads
+  /// from the Flutter asset bundle instead of attempting a network fetch.
+  void _configureVoiceChannel() {
+    try {
+      _engine.voice.changeSource(AssetSource.new);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to configure voice channel: $e');
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Voice Announcements
+  // ---------------------------------------------------------------------------
+
+  /// Announces the start of a new match.
+  ///
+  /// Delegates to [VoiceAnnouncerService.announce] with
+  /// [BattleAnnouncerEvent.matchStart]. Silently skipped if no voice
+  /// announcer was provided.
+  Future<void> announceMatchStart() async {
+    try {
+      await _voiceAnnouncer?.announce(BattleAnnouncerEvent.matchStart);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce match start: $e');
+      }
+    }
+  }
+
+  /// Announces that a unit has been captured (defeated).
+  ///
+  /// [unitType] specifies which unit was captured, allowing the announcer
+  /// to select a unit-specific voice line.
+  Future<void> announceUnitCaptured(UnitType unitType) async {
+    try {
+      await _voiceAnnouncer?.announce(
+        BattleAnnouncerEvent.unitCaptured,
+        unitType: unitType,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce unit captured: $e');
+      }
+    }
+  }
+
+  /// Announces that an ability has been used.
+  ///
+  /// [abilityType] specifies which ability was activated, allowing the
+  /// announcer to select an ability-specific voice line.
+  Future<void> announceAbilityUsed(AbilityType abilityType) async {
+    try {
+      await _voiceAnnouncer?.announce(
+        BattleAnnouncerEvent.abilityUsed,
+        abilityType: abilityType,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce ability used: $e');
+      }
+    }
+  }
+
+  /// Announces that the commander is in danger (low HP).
+  Future<void> announceCommanderInDanger() async {
+    try {
+      await _voiceAnnouncer?.announce(BattleAnnouncerEvent.commanderInDanger);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce commander in danger: $e');
+      }
+    }
+  }
+
+  /// Announces that an objective tile has been secured.
+  Future<void> announceObjectiveSecured() async {
+    try {
+      await _voiceAnnouncer?.announce(BattleAnnouncerEvent.objectiveSecured);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce objective secured: $e');
+      }
+    }
+  }
+
+  /// Announces a turn timer warning (time is running low).
+  Future<void> announceTurnWarning() async {
+    try {
+      await _voiceAnnouncer?.announce(BattleAnnouncerEvent.turnWarning);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce turn warning: $e');
+      }
+    }
+  }
+
+  /// Announces victory for the current player.
+  Future<void> announceVictory() async {
+    try {
+      await _voiceAnnouncer?.announce(BattleAnnouncerEvent.victory);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce victory: $e');
+      }
+    }
+  }
+
+  /// Announces defeat for the current player.
+  Future<void> announceDefeat() async {
+    try {
+      await _voiceAnnouncer?.announce(BattleAnnouncerEvent.defeat);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(
+            '[BattleAudioCoordinator] Failed to announce defeat: $e');
       }
     }
   }
