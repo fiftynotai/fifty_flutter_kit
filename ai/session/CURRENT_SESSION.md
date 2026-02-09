@@ -10,7 +10,7 @@
 
 ### BR-071 - Tactical Grid Game
 - **Status:** In Progress
-- **Phase:** Priority 1 DONE, Priority 2-5 pending
+- **Phase:** Priority 1-2 DONE, Priority 3-5 pending
 - **Asset blocker:** Unit art blocked on igris-ai/BR-014 (Higgsfield MCP Server)
 
 ---
@@ -24,11 +24,13 @@
 - Cooldown tracking, ability targeting mode, UI buttons
 - 119 tests passing, 2423 lines added across 17 files
 
-### Priority 2: AI Opponent (~2-3 days)
-- AI service with move strategy and target selection
-- Difficulty levels (Easy/Medium/Hard)
-- Auto-play enemy turns with natural delay
-- Unlocks solo gameplay
+### Priority 2: AI Opponent - DONE
+- **Commit:** `8ac033c` feat(tactical_grid): add AI opponent with three difficulty levels
+- AIService (stateless): Easy (random), Medium (priority-based), Hard (score-based)
+- AITurnExecutor with visual delays between actions
+- Game mode selection bottom sheet (LOCAL 1v1 / VS AI + difficulty)
+- Player input blocked during AI turn, "ENEMY THINKING..." indicator
+- 181 tests passing, 2710 lines added across 19 files
 
 ### Priority 3: Turn Timer (~1 day)
 - 60-second countdown timer (configurable)
@@ -57,6 +59,19 @@
 
 ## Last Session (2026-02-09)
 
+### Priority 2: AI Opponent - Complete
+- Created AIService with 3 difficulty levels (Easy: random, Medium: priority-based, Hard: score-based)
+- Created AITurnExecutor with async visual delays (800ms thinking, 600ms between actions)
+- Added GameMode (localMultiplayer, vsAI) and AIDifficulty enums to GameState
+- Added AIAction model with 6 action types (move, attack, ability, moveAndAttack, moveAndAbility, wait)
+- Integrated into BattleActions: triggers AI after endTurn, blocks all player inputs during AI turn
+- Added game mode selection bottom sheet to menu with VS AI difficulty picker
+- Turn indicator shows "ENEMY THINKING..." during AI execution
+- Unit info panel hides action buttons during enemy turn
+- Fixed PLAY AGAIN to preserve game mode (caught in review)
+- 181 tests passing (62 new), 2710 lines added
+- Code reviewed: APPROVED
+
 ### Priority 1: Unit Types & Abilities - Complete
 - Added 3 new unit types: Archer (orthogonal range 2), Mage (diagonal range 2), Scout (any direction range 3)
 - Created Ability model with AbilityType enum, cooldown tracking, factory constructors
@@ -73,6 +88,9 @@
 
 ## Recently Completed
 
+### BR-071 Priority 2 - AI Opponent
+- **Commit:** `8ac033c` feat(tactical_grid): add AI opponent with three difficulty levels
+
 ### BR-071 Priority 1 - Unit Types & Abilities
 - **Commit:** `911675d` feat(tactical_grid): add unit types and ability system
 
@@ -84,15 +102,15 @@
 ## Previous Work
 
 **BR-074 (Igris Birth Chamber):** Committed
-**BR-071 (Tactical Grid):** Core MVP complete, Priority 1 complete
+**BR-071 (Tactical Grid):** Core MVP complete, Priority 1-2 complete
 
 ---
 
 ## Next Steps
 
-1. Continue BR-071 - implement Priority 2: AI Opponent
-2. Then Priority 3: Turn Timer
-3. Then Priority 4: Animations
+1. Continue BR-071 - implement Priority 3: Turn Timer
+2. Then Priority 4: Animations
+3. Then Priority 5: Voice Announcer
 4. After igris-ai/BR-014: generate unit art and additional audio assets
 5. Final polish pass with all assets
 
@@ -101,5 +119,5 @@
 ## Resume Command
 
 ```
-implement BR-071 - start with Priority 2: AI Opponent
+implement BR-071 - start with Priority 3: Turn Timer
 ```
