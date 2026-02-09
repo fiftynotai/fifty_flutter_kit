@@ -30,6 +30,9 @@ abstract final class _BattleAudioAssets {
   static const List<String> bgmTracks = [
     'audio/bgm/battle_theme.mp3',
   ];
+  static const String victoryBgm = 'audio/bgm/victory_fanfare.mp3';
+  static const String defeatBgm = 'audio/bgm/defeat_theme.mp3';
+  static const String menuBgm = 'audio/bgm/menu_theme.mp3';
 
   /// SFX group identifiers.
   static const String selectGroup = 'battle_select';
@@ -38,6 +41,11 @@ abstract final class _BattleAudioAssets {
   static const String captureGroup = 'battle_capture';
   static const String turnEndGroup = 'battle_turn_end';
   static const String abilityGroup = 'battle_ability';
+  static const String abilityRallyGroup = 'battle_ability_rally';
+  static const String abilityShootGroup = 'battle_ability_shoot';
+  static const String abilityFireballGroup = 'battle_ability_fireball';
+  static const String abilityBlockGroup = 'battle_ability_block';
+  static const String abilityRevealGroup = 'battle_ability_reveal';
   static const String achievementGroup = 'battle_achievement';
   static const String timerWarningGroup = 'battle_timer_warning';
   static const String timerAlarmGroup = 'battle_timer_alarm';
@@ -61,6 +69,11 @@ abstract final class _BattleAudioAssets {
   static const List<String> abilitySfx = [
     'audio/sfx/ability_activate.mp3',
   ];
+  static const List<String> abilityRallySfx = ['audio/sfx/rally_horn.mp3'];
+  static const List<String> abilityShootSfx = ['audio/sfx/arrow_shot.mp3'];
+  static const List<String> abilityFireballSfx = ['audio/sfx/fireball_cast.mp3'];
+  static const List<String> abilityBlockSfx = ['audio/sfx/shield_block.mp3'];
+  static const List<String> abilityRevealSfx = ['audio/sfx/reveal_pulse.mp3'];
   static const List<String> achievementSfx = [
     'audio/sfx/achievement_unlock.mp3',
   ];
@@ -133,6 +146,11 @@ class BattleAudioCoordinator extends GetxController {
             _BattleAudioAssets.captureGroup, _BattleAudioAssets.captureSfx)
         ..registerGroup(
             _BattleAudioAssets.abilityGroup, _BattleAudioAssets.abilitySfx)
+        ..registerGroup(_BattleAudioAssets.abilityRallyGroup, _BattleAudioAssets.abilityRallySfx)
+        ..registerGroup(_BattleAudioAssets.abilityShootGroup, _BattleAudioAssets.abilityShootSfx)
+        ..registerGroup(_BattleAudioAssets.abilityFireballGroup, _BattleAudioAssets.abilityFireballSfx)
+        ..registerGroup(_BattleAudioAssets.abilityBlockGroup, _BattleAudioAssets.abilityBlockSfx)
+        ..registerGroup(_BattleAudioAssets.abilityRevealGroup, _BattleAudioAssets.abilityRevealSfx)
         ..registerGroup(
             _BattleAudioAssets.turnEndGroup, _BattleAudioAssets.turnEndSfx)
         ..registerGroup(_BattleAudioAssets.achievementGroup,
@@ -205,6 +223,54 @@ class BattleAudioCoordinator extends GetxController {
     }
   }
 
+  /// Plays the victory fanfare BGM.
+  ///
+  /// Used when the player wins the match. Loads a single-track playlist
+  /// with [_BattleAudioAssets.victoryBgm] and plays it once.
+  Future<void> playVictoryBgm() async {
+    try {
+      await _engine.bgm.setVolume(0.5);
+      await _engine.bgm.loadDefaultPlaylist([_BattleAudioAssets.victoryBgm]);
+      await _engine.bgm.resumeDefaultPlaylist();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[BattleAudioCoordinator] Failed to play victory BGM: $e');
+      }
+    }
+  }
+
+  /// Plays the defeat theme BGM.
+  ///
+  /// Used when the player loses the match. Loads a single-track playlist
+  /// with [_BattleAudioAssets.defeatBgm] and plays it once.
+  Future<void> playDefeatBgm() async {
+    try {
+      await _engine.bgm.setVolume(0.5);
+      await _engine.bgm.loadDefaultPlaylist([_BattleAudioAssets.defeatBgm]);
+      await _engine.bgm.resumeDefaultPlaylist();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[BattleAudioCoordinator] Failed to play defeat BGM: $e');
+      }
+    }
+  }
+
+  /// Plays the menu theme BGM.
+  ///
+  /// Used on the main menu screen. Loads a single-track playlist
+  /// with [_BattleAudioAssets.menuBgm] and plays it.
+  Future<void> playMenuBgm() async {
+    try {
+      await _engine.bgm.setVolume(0.3);
+      await _engine.bgm.loadDefaultPlaylist([_BattleAudioAssets.menuBgm]);
+      await _engine.bgm.resumeDefaultPlaylist();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[BattleAudioCoordinator] Failed to play menu BGM: $e');
+      }
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // SFX Events
   // ---------------------------------------------------------------------------
@@ -243,9 +309,21 @@ class BattleAudioCoordinator extends GetxController {
   }
 
   /// Plays the ability activation sound effect.
-  Future<void> playAbilitySfx() async {
+  ///
+  /// When [abilityType] is provided, plays the ability-specific SFX
+  /// (e.g., rally_horn for Rally). Falls back to the generic activation
+  /// sound if no specific SFX is mapped.
+  Future<void> playAbilitySfx([AbilityType? abilityType]) async {
     try {
-      await _engine.sfx.playGroup(_BattleAudioAssets.abilityGroup);
+      final group = switch (abilityType) {
+        AbilityType.rally => _BattleAudioAssets.abilityRallyGroup,
+        AbilityType.shoot => _BattleAudioAssets.abilityShootGroup,
+        AbilityType.fireball => _BattleAudioAssets.abilityFireballGroup,
+        AbilityType.block => _BattleAudioAssets.abilityBlockGroup,
+        AbilityType.reveal => _BattleAudioAssets.abilityRevealGroup,
+        _ => _BattleAudioAssets.abilityGroup,
+      };
+      await _engine.sfx.playGroup(group);
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[BattleAudioCoordinator] Failed to play ability SFX: $e');

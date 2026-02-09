@@ -10,8 +10,8 @@
 
 ### BR-071 - Tactical Grid Game
 - **Status:** In Progress
-- **Phase:** Priority 1-5 DONE, Audio assets DONE
-- **Remaining:** Unit sprite art + board textures (Higgsfield MCP now available)
+- **Phase:** Priority 1-5 DONE, Audio assets DONE, Art assets DONE, Code Integration DONE
+- **Remaining:** Commit + final verification
 
 ---
 
@@ -80,21 +80,23 @@
 
 ## BR-071 Remaining Work
 
-### Unit Sprite Art (Higgsfield MCP - NOW AVAILABLE)
-- 6 player unit sprites (64x64): Commander, Knight, Shield, Archer, Mage, Scout
-- 6 enemy unit sprites (64x64): same types, different color scheme
-- Output: `assets/images/units/`
+### Unit Sprite Art - DONE
+- 6 player unit sprites (burgundy #88292f): Commander, Knight, Shield, Archer, Mage, Scout
+- 6 enemy unit sprites (slate grey #335c67): Commander, Knight, Shield, Archer, Mage, Scout
+- Generated via Higgsfield FLUX.2 Pro, pixel art 64x64 style
+- Output: `assets/images/units/` (12 PNG files)
 
-### Board Textures (Higgsfield MCP - NOW AVAILABLE)
-- Tile backgrounds, grid overlays
-- Output: `assets/images/board/`
+### Board Textures - DONE
+- 6 tile textures: tile_dark, tile_light, tile_objective, tile_powerup, tile_obstacle, tile_trap
+- Generated via Higgsfield FLUX.2 Pro, pixel art 64x64 style
+- Output: `assets/images/board/` (6 PNG files)
 
-### Code Integration After Art
-- Wire victory_fanfare.mp3 and defeat_theme.mp3 into audio coordinator (play on game end)
-- Wire menu_theme.mp3 into menu screen
-- Wire ability-specific SFX (rally_horn, arrow_shot, fireball_cast, shield_block, reveal_pulse) per ability type
-- Replace colored-square unit rendering with sprite images
-- Final polish pass
+### Code Integration - DONE
+- Wired victory_fanfare.mp3 and defeat_theme.mp3 into audio coordinator (play on game end)
+- Wired menu_theme.mp3 into menu screen (plays on enter, stops on navigate away)
+- Wired ability-specific SFX (rally_horn, arrow_shot, fireball_cast, shield_block, reveal_pulse) per ability type
+- Replaced colored-circle unit rendering with PNG sprite images via ClipOval + Image.asset
+- 278 tests passing, 4 files modified
 
 ---
 
@@ -148,16 +150,14 @@
 
 ## Next Steps
 
-1. **USE HIGGSFIELD MCP** to generate unit sprite art (6 player + 6 enemy, 64x64)
-2. **USE HIGGSFIELD MCP** to generate board textures
-3. Wire sprites into unit rendering (replace colored squares)
-4. Wire remaining audio: victory/defeat BGM, menu BGM, ability-specific SFX
-5. Final polish pass with all assets
+1. Commit code integration changes
+2. Final polish pass (board tile textures optional)
+3. Mark BR-071 as Done
 
 ---
 
 ## Resume Command
 
 ```
-BR-071 - all 5 priorities + audio assets complete. Next: generate unit sprites and board textures via Higgsfield MCP, then wire remaining audio and sprites into code.
+BR-071 - all 5 priorities + audio + art + code integration complete. Ready for commit. 278 tests passing. 4 files changed: audio_coordinator (ability SFX + victory/defeat/menu BGM), battle_actions (BGM wiring + ability SFX passthrough), unit_sprite_widget (PNG sprites), menu_page (menu BGM).
 ```

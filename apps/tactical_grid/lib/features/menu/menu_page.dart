@@ -4,6 +4,7 @@
 /// and version info. Uses FDL tokens throughout for consistent theming.
 library;
 
+import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,53 @@ import '../battle/models/game_state.dart';
 /// - PLAY button (primary, navigates to battle)
 /// - SETTINGS button (outline, navigates to settings)
 /// - Version label at the bottom
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   /// Creates the main menu page.
   const MenuPage({super.key});
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  /// Menu BGM asset path.
+  static const String _menuBgmPath = 'audio/bgm/menu_theme.mp3';
+
+  @override
+  void initState() {
+    super.initState();
+    _playMenuBgm();
+  }
+
+  @override
+  void dispose() {
+    _stopMenuBgm();
+    super.dispose();
+  }
+
+  /// Starts menu background music at a comfortable volume.
+  ///
+  /// Uses [FiftyAudioEngine] directly instead of [BattleAudioCoordinator]
+  /// since the battle bindings may not be registered on the menu screen.
+  Future<void> _playMenuBgm() async {
+    try {
+      final engine = FiftyAudioEngine.instance;
+      await engine.bgm.setVolume(0.3);
+      await engine.bgm.loadDefaultPlaylist([_menuBgmPath]);
+      await engine.bgm.resumeDefaultPlaylist();
+    } catch (_) {
+      // Silently ignore audio failures on menu.
+    }
+  }
+
+  /// Stops menu BGM when navigating away.
+  void _stopMenuBgm() {
+    try {
+      FiftyAudioEngine.instance.bgm.stop();
+    } catch (_) {
+      // Silently ignore.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

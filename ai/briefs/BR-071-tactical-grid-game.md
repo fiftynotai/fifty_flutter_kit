@@ -2,7 +2,7 @@
 
 **Type:** Feature / New App
 **Priority:** P1 - High
-**Status:** Ready
+**Status:** In Progress
 **Effort:** L - Large
 **Module:** apps/tactical_grid (new)
 **Created:** 2026-02-04
@@ -464,3 +464,13 @@ class GameState {
 This game is designed as a **showcase app** for the fifty_flutter_kit ecosystem. Every feature should demonstrate a kit capability. When in doubt, prioritize showing off the packages over adding game complexity.
 
 The FDL aesthetic should make this feel premium and unique - not another generic mobile game.
+
+### Asset Generation Dependency
+
+**Unit art generation is blocked on igris-ai/BR-014 (Higgsfield MCP Server).**
+
+The existing Higgsfield MCP only supports the Soul model, which is currently offline. igris-ai/BR-014 builds a new MCP server using the official `higgsfield-client` SDK with access to all models (Nano Banana Pro, Seedream 4.5, FLUX.2, etc.). Once BR-014 is complete:
+- Generate 6 player unit sprites (burgundy #88292f theme)
+- Generate 6 enemy unit sprites (slate grey #335c67 theme)
+- Generate board textures and UI elements
+- Use Nano Banana Pro or Seedream for best quality at 64x64 icon-style sprites

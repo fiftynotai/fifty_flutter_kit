@@ -496,7 +496,7 @@ class BattleActions {
         }
 
         // Play ability SFX (reuse attack SFX for damaging abilities).
-        await _audio.playAbilitySfx();
+        await _audio.playAbilitySfx(usedAbilityType);
 
         // Announce ability used via voice.
         if (usedAbilityType != null) {
@@ -615,6 +615,7 @@ class BattleActions {
   /// Shows the victory dialog when the player wins.
   void _showVictoryDialog(BuildContext context) {
     _audio.stopBgm();
+    _audio.playVictoryBgm();
     _audio.announceVictory();
 
     showFiftyDialog<void>(
@@ -660,6 +661,7 @@ class BattleActions {
   /// Shows the defeat dialog when the player loses.
   void _showDefeatDialog(BuildContext context) {
     _audio.stopBgm();
+    _audio.playDefeatBgm();
     _audio.announceDefeat();
 
     showFiftyDialog<void>(
