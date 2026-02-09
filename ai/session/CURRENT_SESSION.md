@@ -10,7 +10,7 @@
 
 ### BR-071 - Tactical Grid Game
 - **Status:** In Progress
-- **Phase:** Priority 1-4 DONE, Priority 5 pending
+- **Phase:** Priority 1-5 DONE (all non-MCP features complete)
 - **Asset blocker:** Unit art blocked on igris-ai/BR-014 (Higgsfield MCP Server)
 
 ---
@@ -51,10 +51,16 @@
 - Integrated into BattleActions (player) and AITurnExecutor (AI)
 - 244 tests passing (28 new), ~1200 lines added across 8 files
 
-### Priority 5: Voice Announcer (~1-2 days)
-- Event-to-voice mapping for key events
-- BGM ducking during announcer lines
-- TTS or pre-recorded voice lines
+### Priority 5: Voice Announcer - DONE
+- **Commit:** (pending) feat(tactical_grid): add voice announcer with BGM ducking
+- VoiceAnnouncerService: event-to-voice-asset mapping, skip-if-busy policy, 2s cooldown
+- 8 battle events: matchStart, unitCaptured, abilityUsed, commanderInDanger, objectiveSecured, turnWarning, victory, defeat
+- Per-unit-type capture lines (6 types), per-ability lines (5 active abilities)
+- BattleAudioCoordinator: 8 voice announcement convenience methods, voice channel asset source config
+- Integrated into BattleActions (player events) and AITurnExecutor (AI events)
+- BGM ducking handled automatically by FiftyAudioEngine voice channel
+- 278 tests passing (34 new), ~500 lines added across 8 files
+- Code reviewed: APPROVED
 
 ### Blocked on igris-ai/BR-014 (MCP)
 - Unit sprite art (6 player + 6 enemy, 64x64)
@@ -65,6 +71,21 @@
 ---
 
 ## Last Session (2026-02-09)
+
+### Priority 5: Voice Announcer - Complete
+- Created VoiceAnnouncerService (plain Dart class, not GetxController)
+- BattleAnnouncerEvent enum: 8 battle events
+- _VoiceAssets: 17 voice asset path constants (per-unit capture, per-ability usage, generic events)
+- Skip-if-busy policy: _isPlaying guard with 2-second cooldown via Future.delayed
+- Testability: constructor-injected playVoice callback (mock in tests, engine in production)
+- Extended BattleAudioCoordinator: 8 announce*() convenience methods + voice channel AssetSource config
+- Updated BattleBindings: VoiceAnnouncerService DI registration before AudioCoordinator
+- Wired into BattleActions: match start, unit captured, ability used, commander in danger, turn warning, victory, defeat
+- Wired into AITurnExecutor: unit captured, ability used, commander in danger (for AI-triggered events)
+- Reviewer fix applied: capture abilityType before state mutation in onUseAbility()
+- Created assets/audio/voice/ directory (voice files pending asset generation via BR-014)
+- 278 tests passing (34 new), ~500 lines across 8 files
+- Code reviewed: APPROVED
 
 ### Priority 4: Animations - Complete
 - Created AnimationService (GetxController): reactive animation management with Completers
@@ -113,6 +134,12 @@
 
 ## Recently Completed
 
+### BR-071 Priority 5 - Voice Announcer
+- **Commit:** (pending) feat(tactical_grid): add voice announcer with BGM ducking
+
+### BR-071 Priority 4 - Animations
+- **Commit:** (pending) feat(tactical_grid): add battle animations
+
 ### BR-071 Priority 3 - Turn Timer
 - **Commit:** `11c0995` feat(tactical_grid): add turn timer with auto-skip and audio cues
 
@@ -136,15 +163,15 @@
 
 ## Next Steps
 
-1. Continue BR-071 - implement Priority 5: Voice Announcer
-2. After igris-ai/BR-014: generate unit art and additional audio assets
-3. After igris-ai/BR-014: generate unit art and additional audio assets
-4. Final polish pass with all assets
+1. After igris-ai/BR-014: generate voice assets (17 files for assets/audio/voice/)
+2. After igris-ai/BR-014: generate unit sprite art and additional audio assets
+3. Final polish pass with all assets
+4. Consider BR-071 enhancements: army builder, settings screen, voice commands
 
 ---
 
 ## Resume Command
 
 ```
-implement BR-071 - start with Priority 5: Voice Announcer
+BR-071 - all 5 priorities complete. Remaining: asset generation (blocked on BR-014) and polish.
 ```
