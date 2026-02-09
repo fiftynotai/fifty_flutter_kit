@@ -8,6 +8,7 @@
 /// ```
 library;
 
+export 'ability.dart';
 export 'board_state.dart';
 export 'game_state.dart';
 export 'move.dart';

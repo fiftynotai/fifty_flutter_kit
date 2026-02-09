@@ -34,6 +34,21 @@ class AttackOutcome {
   const AttackOutcome({required this.result, required this.state});
 }
 
+/// Result container for ability operations.
+///
+/// Bundles the [ActionResult] (success/failure, affected units) together
+/// with the updated [GameState] after applying the ability effect.
+class AbilityOutcome {
+  /// The result details of the ability action.
+  final ActionResult result;
+
+  /// The updated game state after the ability was applied.
+  final GameState state;
+
+  /// Creates an [AbilityOutcome] with the given [result] and [state].
+  const AbilityOutcome({required this.result, required this.state});
+}
+
 /// Stateless game logic service for the tactical battle system.
 ///
 /// Implements all game rules as pure functions that take a [GameState]
@@ -112,11 +127,13 @@ class GameLogicService {
 
     final validMoves = state.board.getValidMoves(unit);
     final attackTargets = state.board.getAttackTargets(unit);
+    final abilityTargets = state.board.getAbilityTargets(unit);
 
     return state.copyWith(
       selectedUnit: unit,
       validMoves: validMoves,
       attackTargets: attackTargets,
+      abilityTargets: abilityTargets,
     );
   }
 
@@ -182,13 +199,15 @@ class GameLogicService {
     unit.position = target;
     unit.hasMovedThisTurn = true;
 
-    // Recalculate attack targets from the new position.
+    // Recalculate attack targets and ability targets from the new position.
     final attackTargets = state.board.getAttackTargets(unit);
+    final abilityTargets = state.board.getAbilityTargets(unit);
 
     return state.copyWith(
       selectedUnit: unit,
       validMoves: const [],
       attackTargets: attackTargets,
+      abilityTargets: abilityTargets,
     );
   }
 
@@ -261,9 +280,27 @@ class GameLogicService {
       );
     }
 
+    // Calculate damage with ability modifiers.
+    int damage = attacker.effectiveAttack;
+
+    // Knight Charge: +2 damage if moved this turn.
+    if (attacker.type == UnitType.knight && attacker.hasMovedThisTurn) {
+      damage += 2;
+    }
+
+    // Shield Block: 50% damage reduction (rounded up).
+    if (targetUnit.isBlocking) {
+      damage = (damage / 2).ceil();
+    }
+
     // Apply damage.
-    final damageDealt = targetUnit.takeDamage(attacker.attack);
+    final damageDealt = targetUnit.takeDamage(damage);
     attacker.hasActedThisTurn = true;
+
+    // Block consumed after absorbing a hit.
+    if (targetUnit.isBlocking) {
+      targetUnit.isBlocking = false;
+    }
 
     final targetDefeated = targetUnit.isDead;
     final action = GameAction.attack(attacker.id, targetUnitId);
@@ -297,6 +334,251 @@ class GameLogicService {
   }
 
   // ---------------------------------------------------------------------------
+  // Abilities
+  // ---------------------------------------------------------------------------
+
+  /// Executes the selected unit's ability.
+  ///
+  /// Validates that:
+  /// - The game is not over
+  /// - A unit is currently selected
+  /// - The unit can act and has a ready ability
+  /// - The ability is not passive
+  ///
+  /// Delegates to ability-specific handlers based on [AbilityType].
+  ///
+  /// **Parameters:**
+  /// - [state]: The current game state (must have a selected unit).
+  /// - [targetPosition]: Target position for targeted abilities (Shoot, Fireball, Reveal).
+  ///
+  /// **Returns:**
+  /// An [AbilityOutcome] containing the [ActionResult] and updated [GameState].
+  AbilityOutcome executeAbility(GameState state, {GridPosition? targetPosition}) {
+    final unit = state.selectedUnit;
+
+    // Validate unit state.
+    if (state.isGameOver ||
+        unit == null ||
+        !unit.canAct ||
+        unit.ability == null ||
+        !unit.ability!.isReady) {
+      return AbilityOutcome(
+        result: ActionResult.failure(
+          GameAction.ability(
+            unit?.id ?? '',
+            unit?.ability?.type ?? AbilityType.rally,
+          ),
+          'Cannot use ability.',
+        ),
+        state: state,
+      );
+    }
+
+    switch (unit.ability!.type) {
+      case AbilityType.rally:
+        return _executeRally(state, unit);
+      case AbilityType.charge:
+        // Passive -- should never be manually triggered.
+        return AbilityOutcome(
+          result: ActionResult.failure(
+            GameAction.ability(unit.id, AbilityType.charge),
+            'Charge is a passive ability.',
+          ),
+          state: state,
+        );
+      case AbilityType.block:
+        return _executeBlock(state, unit);
+      case AbilityType.shoot:
+        return _executeShoot(state, unit, targetPosition);
+      case AbilityType.fireball:
+        return _executeFireball(state, unit, targetPosition);
+      case AbilityType.reveal:
+        return _executeReveal(state, unit);
+    }
+  }
+
+  /// Executes Rally: +1 ATK to adjacent allied units.
+  AbilityOutcome _executeRally(GameState state, Unit unit) {
+    final action = GameAction.ability(unit.id, AbilityType.rally);
+
+    // Find adjacent allied units.
+    final adjacentPositions = unit.position.getAdjacentPositions().toSet();
+    final affectedUnits = state.board.units
+        .where((u) =>
+            u.isAlive &&
+            u.isPlayer == unit.isPlayer &&
+            u.id != unit.id &&
+            adjacentPositions.contains(u.position))
+        .toList();
+
+    // Apply +1 ATK bonus.
+    for (final ally in affectedUnits) {
+      ally.attackBonus += 1;
+    }
+
+    // Activate cooldown and mark as acted.
+    unit.ability!.activate();
+    unit.hasActedThisTurn = true;
+
+    return AbilityOutcome(
+      result: ActionResult.success(
+        action,
+        affectedUnitIds: affectedUnits.map((u) => u.id).toList(),
+      ),
+      state: state.copyWith(clearSelection: true),
+    );
+  }
+
+  /// Executes Block: sets the unit to blocking stance (50% damage reduction).
+  AbilityOutcome _executeBlock(GameState state, Unit unit) {
+    final action = GameAction.ability(unit.id, AbilityType.block);
+
+    unit.isBlocking = true;
+    unit.ability!.activate();
+    unit.hasActedThisTurn = true;
+
+    return AbilityOutcome(
+      result: ActionResult.success(action),
+      state: state.copyWith(clearSelection: true),
+    );
+  }
+
+  /// Executes Shoot: ranged attack at a target position.
+  AbilityOutcome _executeShoot(
+    GameState state,
+    Unit unit,
+    GridPosition? targetPosition,
+  ) {
+    final action = GameAction.ability(
+      unit.id,
+      AbilityType.shoot,
+      targetPosition: targetPosition,
+    );
+
+    // Validate target position.
+    if (targetPosition == null ||
+        !state.abilityTargets.contains(targetPosition)) {
+      return AbilityOutcome(
+        result: ActionResult.failure(action, 'Invalid shoot target.'),
+        state: state,
+      );
+    }
+
+    // Find enemy unit at target position.
+    final targetUnit = state.board.getUnitAt(targetPosition);
+    if (targetUnit == null || targetUnit.isPlayer == unit.isPlayer) {
+      return AbilityOutcome(
+        result: ActionResult.failure(action, 'No enemy at target position.'),
+        state: state,
+      );
+    }
+
+    // Deal damage equal to the unit's effective attack.
+    final damageDealt = targetUnit.takeDamage(unit.effectiveAttack);
+
+    // Activate cooldown and mark as acted.
+    unit.ability!.activate();
+    unit.hasActedThisTurn = true;
+
+    // Check win condition.
+    final winResult = state.checkWinCondition();
+
+    GameState updatedState;
+    if (winResult != GameResult.none) {
+      updatedState = state.copyWith(
+        phase: GamePhase.gameOver,
+        result: winResult,
+        clearSelection: true,
+      );
+    } else {
+      updatedState = state.copyWith(clearSelection: true);
+    }
+
+    return AbilityOutcome(
+      result: ActionResult.success(
+        action,
+        damage: damageDealt,
+        defeated: targetUnit.isDead,
+      ),
+      state: updatedState,
+    );
+  }
+
+  /// Executes Fireball: 1 damage to all units in a 3x3 area.
+  AbilityOutcome _executeFireball(
+    GameState state,
+    Unit unit,
+    GridPosition? targetPosition,
+  ) {
+    final action = GameAction.ability(
+      unit.id,
+      AbilityType.fireball,
+      targetPosition: targetPosition,
+    );
+
+    // Validate target position.
+    if (targetPosition == null ||
+        !state.abilityTargets.contains(targetPosition)) {
+      return AbilityOutcome(
+        result: ActionResult.failure(action, 'Invalid fireball target.'),
+        state: state,
+      );
+    }
+
+    // Find ALL units (friend and foe) in 3x3 area (Chebyshev distance <= 1 from target).
+    final affectedUnits = state.board.units.where((u) {
+      if (!u.isAlive) return false;
+      final dx = (u.position.x - targetPosition.x).abs();
+      final dy = (u.position.y - targetPosition.y).abs();
+      return dx <= 1 && dy <= 1;
+    }).toList();
+
+    // Deal 1 damage to each.
+    for (final target in affectedUnits) {
+      target.takeDamage(1);
+    }
+
+    // Activate cooldown and mark as acted.
+    unit.ability!.activate();
+    unit.hasActedThisTurn = true;
+
+    // Check win condition after all damage.
+    final winResult = state.checkWinCondition();
+
+    GameState updatedState;
+    if (winResult != GameResult.none) {
+      updatedState = state.copyWith(
+        phase: GamePhase.gameOver,
+        result: winResult,
+        clearSelection: true,
+      );
+    } else {
+      updatedState = state.copyWith(clearSelection: true);
+    }
+
+    return AbilityOutcome(
+      result: ActionResult.success(
+        action,
+        affectedUnitIds: affectedUnits.map((u) => u.id).toList(),
+      ),
+      state: updatedState,
+    );
+  }
+
+  /// Executes Reveal: placeholder ability that activates cooldown.
+  AbilityOutcome _executeReveal(GameState state, Unit unit) {
+    final action = GameAction.ability(unit.id, AbilityType.reveal);
+
+    unit.ability!.activate();
+    unit.hasActedThisTurn = true;
+
+    return AbilityOutcome(
+      result: ActionResult.success(action),
+      state: state.copyWith(clearSelection: true),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
   // Turn Management
   // ---------------------------------------------------------------------------
 
@@ -323,9 +605,14 @@ class GameLogicService {
   GameState endTurn(GameState state) {
     if (state.isGameOver) return state;
 
-    // Reset current player's units.
+    // Tick cooldowns for the player whose turn is ending.
     final currentPlayerUnits = state.board.units
         .where((u) => u.isPlayer == state.isPlayerTurn && u.isAlive);
+    for (final unit in currentPlayerUnits) {
+      unit.ability?.tickCooldown();
+    }
+
+    // Reset current player's units turn state.
     for (final unit in currentPlayerUnits) {
       unit.resetTurnState();
     }

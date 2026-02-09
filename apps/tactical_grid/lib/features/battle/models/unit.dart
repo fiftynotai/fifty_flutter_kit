@@ -4,6 +4,7 @@
 /// Supports three unit types: Commander, Knight, Shield.
 library;
 
+import 'ability.dart';
 import 'position.dart';
 
 /// Unit types available in the game.
@@ -16,6 +17,15 @@ enum UnitType {
 
   /// Tank unit. HP 4, ATK 1, moves 1 tile any direction.
   shield,
+
+  /// Ranged unit. HP 2, ATK 2, moves 2 tiles orthogonally.
+  archer,
+
+  /// Magic unit. HP 2, ATK 2, moves 2 tiles diagonally.
+  mage,
+
+  /// Recon unit. HP 2, ATK 1, moves 3 tiles any direction.
+  scout,
 }
 
 /// A game unit with stats and position on the tactical board.
@@ -59,6 +69,15 @@ class Unit {
   /// Whether this unit has performed an action (attack/ability) this turn.
   bool hasActedThisTurn;
 
+  /// The ability assigned to this unit, or null if none.
+  Ability? ability;
+
+  /// Whether this unit is currently in a blocking stance (50% damage reduction).
+  bool isBlocking;
+
+  /// Temporary attack bonus applied this turn (e.g., from Rally).
+  int attackBonus;
+
   Unit({
     required this.id,
     required this.type,
@@ -69,9 +88,16 @@ class Unit {
     required this.position,
     this.hasMovedThisTurn = false,
     this.hasActedThisTurn = false,
+    this.ability,
+    this.isBlocking = false,
+    this.attackBonus = 0,
   });
 
+  /// Effective attack value including temporary bonuses.
+  int get effectiveAttack => attack + attackBonus;
+
   /// Creates a Commander unit. HP 5, ATK 2, Movement 1 tile any direction.
+  /// Ability: Rally (+1 ATK to adjacent allies).
   factory Unit.commander({
     required String id,
     required bool isPlayer,
@@ -85,10 +111,12 @@ class Unit {
       maxHp: 5,
       attack: 2,
       position: position,
+      ability: Ability.rally(),
     );
   }
 
   /// Creates a Knight unit. HP 3, ATK 3, Movement L-shape.
+  /// Ability: Charge (passive +2 damage if moved this turn).
   factory Unit.knight({
     required String id,
     required bool isPlayer,
@@ -102,10 +130,12 @@ class Unit {
       maxHp: 3,
       attack: 3,
       position: position,
+      ability: Ability.charge(),
     );
   }
 
   /// Creates a Shield unit. HP 4, ATK 1, Movement 1 tile any direction.
+  /// Ability: Block (take 50% damage next hit).
   factory Unit.shield({
     required String id,
     required bool isPlayer,
@@ -119,6 +149,64 @@ class Unit {
       maxHp: 4,
       attack: 1,
       position: position,
+      ability: Ability.block(),
+    );
+  }
+
+  /// Creates an Archer unit. HP 2, ATK 2, Movement 2 tiles orthogonally.
+  /// Ability: Shoot (ranged attack at distance 3).
+  factory Unit.archer({
+    required String id,
+    required bool isPlayer,
+    required GridPosition position,
+  }) {
+    return Unit(
+      id: id,
+      type: UnitType.archer,
+      isPlayer: isPlayer,
+      hp: 2,
+      maxHp: 2,
+      attack: 2,
+      position: position,
+      ability: Ability.shoot(),
+    );
+  }
+
+  /// Creates a Mage unit. HP 2, ATK 2, Movement 2 tiles diagonally.
+  /// Ability: Fireball (1 damage to 3x3 area).
+  factory Unit.mage({
+    required String id,
+    required bool isPlayer,
+    required GridPosition position,
+  }) {
+    return Unit(
+      id: id,
+      type: UnitType.mage,
+      isPlayer: isPlayer,
+      hp: 2,
+      maxHp: 2,
+      attack: 2,
+      position: position,
+      ability: Ability.fireball(),
+    );
+  }
+
+  /// Creates a Scout unit. HP 2, ATK 1, Movement 3 tiles any direction.
+  /// Ability: Reveal (show traps in 2-tile radius).
+  factory Unit.scout({
+    required String id,
+    required bool isPlayer,
+    required GridPosition position,
+  }) {
+    return Unit(
+      id: id,
+      type: UnitType.scout,
+      isPlayer: isPlayer,
+      hp: 2,
+      maxHp: 2,
+      attack: 1,
+      position: position,
+      ability: Ability.reveal(),
     );
   }
 
@@ -138,6 +226,8 @@ class Unit {
   int get movementRange => switch (type) {
         UnitType.commander || UnitType.shield => 1,
         UnitType.knight => 3,
+        UnitType.archer || UnitType.mage => 2,
+        UnitType.scout => 3,
       };
 
   /// Human-readable display name.
@@ -145,6 +235,9 @@ class Unit {
         UnitType.commander => 'Commander',
         UnitType.knight => 'Knight',
         UnitType.shield => 'Shield',
+        UnitType.archer => 'Archer',
+        UnitType.mage => 'Mage',
+        UnitType.scout => 'Scout',
       };
 
   /// Asset path for the unit sprite.
@@ -164,6 +257,9 @@ class Unit {
     final potentialMoves = switch (type) {
       UnitType.commander || UnitType.shield => position.getAdjacentPositions(),
       UnitType.knight => position.getKnightMovePositions(),
+      UnitType.archer => position.getOrthogonalPositions(2, occupied),
+      UnitType.mage => position.getDiagonalPositions(2, occupied),
+      UnitType.scout => position.getAnyDirectionPositions(3, occupied),
     };
 
     return potentialMoves.where((pos) => !occupied.contains(pos)).toList();
@@ -186,9 +282,13 @@ class Unit {
   }
 
   /// Reset turn state for a new turn.
+  ///
+  /// Clears movement/action flags and temporary combat modifiers.
   void resetTurnState() {
     hasMovedThisTurn = false;
     hasActedThisTurn = false;
+    attackBonus = 0;
+    isBlocking = false;
   }
 
   /// Create a copy with optional field overrides.
@@ -202,6 +302,9 @@ class Unit {
     GridPosition? position,
     bool? hasMovedThisTurn,
     bool? hasActedThisTurn,
+    Ability? ability,
+    bool? isBlocking,
+    int? attackBonus,
   }) {
     return Unit(
       id: id ?? this.id,
@@ -213,6 +316,9 @@ class Unit {
       position: position ?? this.position,
       hasMovedThisTurn: hasMovedThisTurn ?? this.hasMovedThisTurn,
       hasActedThisTurn: hasActedThisTurn ?? this.hasActedThisTurn,
+      ability: ability ?? this.ability?.copyWith(),
+      isBlocking: isBlocking ?? this.isBlocking,
+      attackBonus: attackBonus ?? this.attackBonus,
     );
   }
 

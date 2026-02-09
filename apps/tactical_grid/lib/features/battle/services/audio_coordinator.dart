@@ -32,6 +32,7 @@ abstract final class _BattleAudioAssets {
   static const String attackGroup = 'battle_attack';
   static const String captureGroup = 'battle_capture';
   static const String turnEndGroup = 'battle_turn_end';
+  static const String abilityGroup = 'battle_ability';
   static const String achievementGroup = 'battle_achievement';
 
   /// SFX asset paths.
@@ -49,6 +50,9 @@ abstract final class _BattleAudioAssets {
   ];
   static const List<String> turnEndSfx = [
     'audio/sfx/notification.mp3',
+  ];
+  static const List<String> abilitySfx = [
+    'audio/sfx/sword_slash.mp3',
   ];
   static const List<String> achievementSfx = [
     'audio/sfx/achievement_unlock.mp3',
@@ -102,6 +106,8 @@ class BattleAudioCoordinator extends GetxController {
             _BattleAudioAssets.attackGroup, _BattleAudioAssets.attackSfx)
         ..registerGroup(
             _BattleAudioAssets.captureGroup, _BattleAudioAssets.captureSfx)
+        ..registerGroup(
+            _BattleAudioAssets.abilityGroup, _BattleAudioAssets.abilitySfx)
         ..registerGroup(
             _BattleAudioAssets.turnEndGroup, _BattleAudioAssets.turnEndSfx)
         ..registerGroup(_BattleAudioAssets.achievementGroup,
@@ -203,6 +209,17 @@ class BattleAudioCoordinator extends GetxController {
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[BattleAudioCoordinator] Failed to play attack SFX: $e');
+      }
+    }
+  }
+
+  /// Plays the ability activation sound effect.
+  Future<void> playAbilitySfx() async {
+    try {
+      await _engine.sfx.playGroup(_BattleAudioAssets.abilityGroup);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('[BattleAudioCoordinator] Failed to play ability SFX: $e');
       }
     }
   }

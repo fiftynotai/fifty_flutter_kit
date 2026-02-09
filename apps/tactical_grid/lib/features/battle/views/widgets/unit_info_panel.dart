@@ -37,6 +37,7 @@ import 'package:get/get.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../actions/battle_actions.dart';
 import '../../controllers/battle_view_model.dart';
+import '../../models/ability.dart';
 import '../../models/unit.dart';
 
 /// Bottom panel that shows selected unit info and action buttons.
@@ -89,6 +90,7 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
             return _SelectedUnitLayout(
               unit: selectedUnit,
               attackTargets: controller.attackTargets,
+              canUseAbility: controller.canUseAbility,
               actions: actions,
             );
           }
@@ -102,12 +104,14 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
 
 /// Layout displayed when a unit is selected.
 ///
-/// Shows the unit's avatar, name, stats, HP bar, and action buttons.
+/// Shows the unit's avatar, name, stats, HP bar, ability info, and action
+/// buttons (Attack, Ability, Wait, End Turn).
 class _SelectedUnitLayout extends StatelessWidget {
   /// Creates a [_SelectedUnitLayout] for the given [unit].
   const _SelectedUnitLayout({
     required this.unit,
     required this.attackTargets,
+    required this.canUseAbility,
     required this.actions,
   });
 
@@ -117,11 +121,16 @@ class _SelectedUnitLayout extends StatelessWidget {
   /// Available attack targets for the selected unit.
   final List<Unit> attackTargets;
 
+  /// Whether the unit's ability can be activated right now.
+  final bool canUseAbility;
+
   /// Battle actions for handling button presses.
   final BattleActions actions;
 
   @override
   Widget build(BuildContext context) {
+    final ability = unit.ability;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -168,6 +177,12 @@ class _SelectedUnitLayout extends StatelessWidget {
                     ],
                   ),
 
+                  const SizedBox(height: FiftySpacing.xs),
+
+                  // Ability info
+                  if (ability != null)
+                    _AbilityStatusLabel(ability: ability),
+
                   const SizedBox(height: FiftySpacing.sm),
 
                   // HP bar
@@ -196,6 +211,21 @@ class _SelectedUnitLayout extends StatelessWidget {
             ),
 
             const SizedBox(width: FiftySpacing.sm),
+
+            // Ability button (only for active abilities).
+            if (ability != null && !ability.isPassive)
+              Padding(
+                padding: const EdgeInsets.only(right: FiftySpacing.sm),
+                child: FiftyButton(
+                  label: _abilityButtonLabel(ability),
+                  variant: FiftyButtonVariant.outline,
+                  size: FiftyButtonSize.small,
+                  disabled: !canUseAbility,
+                  onPressed: canUseAbility
+                      ? () => actions.onAbilityButtonPressed(context)
+                      : null,
+                ),
+              ),
 
             // Wait button
             FiftyButton(
@@ -229,6 +259,17 @@ class _SelectedUnitLayout extends StatelessWidget {
     if (attackTargets.isNotEmpty) {
       actions.onAttackUnit(context, attackTargets.first.id);
     }
+  }
+
+  /// Returns the ability button label text.
+  ///
+  /// Shows ability name in uppercase, with cooldown count when on cooldown.
+  String _abilityButtonLabel(Ability ability) {
+    final name = ability.name.toUpperCase();
+    if (ability.currentCooldown > 0) {
+      return '$name (${ability.currentCooldown})';
+    }
+    return name;
   }
 }
 
@@ -363,6 +404,48 @@ class _StatLabel extends StatelessWidget {
   }
 }
 
+/// Displays the ability name and status (passive, ready, or cooldown).
+///
+/// Examples:
+/// - "Charge (passive)"
+/// - "Rally - Ready"
+/// - "Block (CD: 2)"
+class _AbilityStatusLabel extends StatelessWidget {
+  /// Creates an [_AbilityStatusLabel] for the given [ability].
+  const _AbilityStatusLabel({required this.ability});
+
+  /// The ability to describe.
+  final Ability ability;
+
+  @override
+  Widget build(BuildContext context) {
+    final String statusText;
+    final Color statusColor;
+
+    if (ability.isPassive) {
+      statusText = '${ability.name} (passive)';
+      statusColor = FiftyColors.slateGrey;
+    } else if (ability.isReady) {
+      statusText = '${ability.name} - Ready';
+      statusColor = FiftyColors.hunterGreen;
+    } else {
+      statusText = '${ability.name} (CD: ${ability.currentCooldown})';
+      statusColor = FiftyColors.powderBlush;
+    }
+
+    return Text(
+      statusText,
+      style: TextStyle(
+        fontFamily: FiftyTypography.fontFamily,
+        fontSize: FiftyTypography.labelSmall,
+        fontWeight: FiftyTypography.medium,
+        color: statusColor.withAlpha(200),
+        letterSpacing: FiftyTypography.letterSpacingLabel,
+      ),
+    );
+  }
+}
+
 /// HP bar for the selected unit using [FiftyProgressBar].
 ///
 /// **Color logic:**
@@ -431,4 +514,7 @@ String _movementDescription(UnitType type) => switch (type) {
       UnitType.commander => '1 tile (any)',
       UnitType.knight => 'L-shape',
       UnitType.shield => '1 tile (any)',
+      UnitType.archer => '2 tiles (orthogonal)',
+      UnitType.mage => '2 tiles (diagonal)',
+      UnitType.scout => '3 tiles (any)',
     };

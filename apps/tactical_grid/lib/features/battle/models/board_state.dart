@@ -3,6 +3,7 @@
 /// Represents the state of the 8x8 game board including all units.
 library;
 
+import 'ability.dart';
 import 'position.dart';
 import 'unit.dart';
 
@@ -70,6 +71,65 @@ class BoardState {
 
   /// Total number of living units.
   int get aliveUnitCount => units.where((u) => u.isAlive).length;
+
+  /// Get valid target positions for a unit's ability.
+  ///
+  /// Returns empty list if the unit cannot act, has no ability, or the ability
+  /// is not ready or is passive. Targeting rules depend on the ability type.
+  List<GridPosition> getAbilityTargets(Unit unit) {
+    if (!unit.canAct) return [];
+
+    final ability = unit.ability;
+    if (ability == null || !ability.isReady || ability.isPassive) return [];
+
+    switch (ability.type) {
+      case AbilityType.rally:
+        // Adjacent allied units that are alive.
+        return unit.position
+            .getAdjacentPositions()
+            .where((pos) {
+              final target = getUnitAt(pos);
+              return target != null &&
+                  target.isAlive &&
+                  target.isPlayer == unit.isPlayer;
+            })
+            .toList();
+
+      case AbilityType.charge:
+        // Passive ability -- no board targeting needed.
+        return [];
+
+      case AbilityType.block:
+        // Self-target -- no board targeting needed.
+        return [];
+
+      case AbilityType.shoot:
+        // Enemy units within Chebyshev distance 2-3 (ranged only, not adjacent).
+        return units
+            .where((target) =>
+                target.isAlive &&
+                target.isPlayer != unit.isPlayer &&
+                _chebyshevDistance(unit.position, target.position) >= 2 &&
+                _chebyshevDistance(unit.position, target.position) <= 3)
+            .map((target) => target.position)
+            .toList();
+
+      case AbilityType.fireball:
+        // All valid board positions within Chebyshev distance 3 of the unit.
+        return unit.position.getPositionsInRadius(3);
+
+      case AbilityType.reveal:
+        // Positions within Chebyshev distance 2 (placeholder).
+        return unit.position.getPositionsInRadius(2);
+    }
+  }
+
+  /// Computes the Chebyshev distance between two positions.
+  static int _chebyshevDistance(GridPosition a, GridPosition b) {
+    final dx = (a.x - b.x).abs();
+    final dy = (a.y - b.y).abs();
+    return dx > dy ? dx : dy;
+  }
 
   /// Create a deep copy of the board state.
   BoardState copyWith({List<Unit>? units}) {

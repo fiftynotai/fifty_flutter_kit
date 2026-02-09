@@ -69,6 +69,7 @@ class BattleActions {
   /// Handles a user tap on a board tile at [position].
   ///
   /// **Logic flow:**
+  /// 0. If in ability targeting mode: use ability on valid target or cancel.
   /// 1. If a friendly unit is at [position] and no unit is selected (or a
   ///    different unit is selected), select it.
   /// 2. If the same unit is already selected, deselect it.
@@ -78,6 +79,15 @@ class BattleActions {
   void onTileTapped(BuildContext context, GridPosition position) {
     final state = _viewModel.gameState.value;
     if (state.isGameOver) return;
+
+    // Case 0: Ability targeting mode -- intercept tile taps.
+    if (_viewModel.isAbilityTargeting.value) {
+      if (state.abilityTargets.contains(position)) {
+        onUseAbility(context, targetPosition: position);
+      }
+      _viewModel.isAbilityTargeting.value = false;
+      return;
+    }
 
     final unitAtPosition = state.board.getUnitAt(position);
 
@@ -236,6 +246,96 @@ class BattleActions {
   }
 
   // ---------------------------------------------------------------------------
+  // Abilities
+  // ---------------------------------------------------------------------------
+
+  /// Handles the ability button press in the unit info panel.
+  ///
+  /// For self-target abilities (Block, Rally, Reveal), executes immediately.
+  /// For position-target abilities (Shoot, Fireball), enters ability targeting
+  /// mode so the player can tap a target tile on the board.
+  void onAbilityButtonPressed(BuildContext context) {
+    final ability = _viewModel.selectedAbility;
+    if (ability == null || !ability.isReady) return;
+
+    switch (ability.type) {
+      // Self-target / no-position abilities: execute immediately.
+      case AbilityType.block:
+      case AbilityType.rally:
+      case AbilityType.reveal:
+        onUseAbility(context);
+        break;
+
+      // Position-target abilities: enter targeting mode.
+      case AbilityType.shoot:
+      case AbilityType.fireball:
+        _viewModel.isAbilityTargeting.value = true;
+        _audio.playSelectSfx();
+        break;
+
+      // Passive -- should not be reachable from the UI.
+      case AbilityType.charge:
+        break;
+    }
+  }
+
+  /// Executes the selected unit's ability, optionally at a [targetPosition].
+  ///
+  /// On success: plays ability SFX, shows feedback, checks game over.
+  /// On failure: shows error snackbar.
+  /// Always resets ability targeting mode when done.
+  void onUseAbility(BuildContext context, {GridPosition? targetPosition}) {
+    _presenter.actionHandlerWithoutLoading(
+      () async {
+        final result = _viewModel.useAbility(targetPosition: targetPosition);
+        _viewModel.isAbilityTargeting.value = false;
+
+        if (!result.success) {
+          if (context.mounted) {
+            _presenter.showErrorSnackBar(
+              context,
+              'Ability Failed',
+              result.errorMessage ?? 'Cannot use ability.',
+            );
+          }
+          return;
+        }
+
+        // Play ability SFX (reuse attack SFX for damaging abilities).
+        await _audio.playAbilitySfx();
+
+        // Show success feedback.
+        if (context.mounted) {
+          final abilityName =
+              _viewModel.selectedAbility?.name ?? 'Ability';
+          final damage = result.damageDealt;
+          final msg = damage != null && damage > 0
+              ? '$abilityName: $damage damage dealt!'
+              : '$abilityName activated!';
+          _presenter.showSuccessSnackBar(context, abilityName, msg);
+        }
+
+        // Check for game over (Shoot / Fireball can kill a Commander).
+        final state = _viewModel.gameState.value;
+        if (state.isGameOver && context.mounted) {
+          if (state.result == GameResult.playerWin) {
+            _trackVictoryAchievements(state);
+            _showVictoryDialog(context);
+          } else if (state.result == GameResult.enemyWin) {
+            _showDefeatDialog(context);
+          }
+        }
+
+        // Show achievement unlock popup if one was triggered.
+        if (context.mounted) {
+          _achievements?.showUnlockPopupIfNeeded(context);
+        }
+      },
+      context: context,
+    );
+  }
+
+  // ---------------------------------------------------------------------------
   // Game Lifecycle
   // ---------------------------------------------------------------------------
 
@@ -260,7 +360,7 @@ class BattleActions {
     final achievements = _achievements;
     if (achievements == null) return;
 
-    final noUnitsLost = state.board.playerUnits.length == 5;
+    final noUnitsLost = state.board.playerUnits.length == 6;
     achievements.trackGameWon(
       turnNumber: state.turnNumber,
       noUnitsLost: noUnitsLost,

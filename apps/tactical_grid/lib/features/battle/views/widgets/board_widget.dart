@@ -74,6 +74,13 @@ class BoardWidget extends GetView<BattleViewModel> {
                 attackPositions.add(target.position);
               }
 
+              // Ability target positions (only relevant in targeting mode).
+              final isAbilityTargeting =
+                  controller.isAbilityTargeting.value;
+              final abilityTargetPositions = isAbilityTargeting
+                  ? state.abilityTargets.toSet()
+                  : <GridPosition>{};
+
               return GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -90,12 +97,15 @@ class BoardWidget extends GetView<BattleViewModel> {
                       selectedUnit.position == position;
                   final isValidMove = validMoves.contains(position);
                   final isAttackTarget = attackPositions.contains(position);
+                  final isAbilityTarget =
+                      abilityTargetPositions.contains(position);
 
                   return _BoardTile(
                     position: position,
                     unit: unitAtPos,
                     isValidMove: isValidMove,
                     isAttackTarget: isAttackTarget,
+                    isAbilityTarget: isAbilityTarget,
                     isSelected: isSelected,
                     tileSize: tileSize,
                     onTap: () => actions.onTileTapped(context, position),
@@ -116,8 +126,8 @@ class BoardWidget extends GetView<BattleViewModel> {
 
 /// A single cell on the 8x8 board.
 ///
-/// Renders the tile background, optional overlays for move/attack highlights,
-/// a selection border, and a unit placeholder sprite when occupied.
+/// Renders the tile background, optional overlays for move/attack/ability
+/// highlights, a selection border, and a unit placeholder sprite when occupied.
 class _BoardTile extends StatelessWidget {
   /// Grid position of this tile.
   final GridPosition position;
@@ -130,6 +140,9 @@ class _BoardTile extends StatelessWidget {
 
   /// Whether this tile contains a unit that is a valid attack target.
   final bool isAttackTarget;
+
+  /// Whether this tile is a valid ability target position.
+  final bool isAbilityTarget;
 
   /// Whether this tile contains the currently selected unit.
   final bool isSelected;
@@ -145,6 +158,7 @@ class _BoardTile extends StatelessWidget {
     required this.unit,
     required this.isValidMove,
     required this.isAttackTarget,
+    required this.isAbilityTarget,
     required this.isSelected,
     required this.tileSize,
     required this.onTap,
@@ -185,6 +199,14 @@ class _BoardTile extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   color: AppTheme.attackRangeColor.withAlpha(102), // ~40%
+                ),
+              ),
+
+            // Ability target overlay (purple/magenta tint).
+            if (isAbilityTarget)
+              Positioned.fill(
+                child: Container(
+                  color: AppTheme.accentColor.withAlpha(80),
                 ),
               ),
 
@@ -252,6 +274,9 @@ class _TileUnitSprite extends StatelessWidget {
       UnitType.commander => 'C',
       UnitType.knight => 'K',
       UnitType.shield => 'S',
+      UnitType.archer => 'A',
+      UnitType.mage => 'M',
+      UnitType.scout => 'R',
     };
 
     return Container(

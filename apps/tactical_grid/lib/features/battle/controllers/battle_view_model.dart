@@ -59,6 +59,12 @@ class BattleViewModel extends GetxController {
   /// triggers a reactive rebuild.
   final Rx<GameState> gameState = GameState.initial().obs;
 
+  /// Whether the UI is currently in ability targeting mode.
+  ///
+  /// When `true`, tile taps should be interpreted as ability target
+  /// selections instead of normal move/attack interactions.
+  final RxBool isAbilityTargeting = false.obs;
+
   // ---------------------------------------------------------------
   // Computed Getters (UI Binding)
   // ---------------------------------------------------------------
@@ -92,6 +98,25 @@ class BattleViewModel extends GetxController {
 
   /// Whether a unit is currently selected.
   bool get hasSelection => gameState.value.hasSelection;
+
+  /// Valid target positions for the selected unit's ability.
+  List<GridPosition> get abilityTargets => gameState.value.abilityTargets;
+
+  /// The selected unit's ability, or `null` if no unit is selected
+  /// or the unit has no ability.
+  Ability? get selectedAbility => selectedUnit?.ability;
+
+  /// Whether the selected unit can use its ability right now.
+  ///
+  /// Returns `false` if no unit is selected, the unit cannot act,
+  /// has no ability, the ability is passive, or it is on cooldown.
+  bool get canUseAbility {
+    final unit = selectedUnit;
+    if (unit == null || !unit.canAct) return false;
+    final ability = unit.ability;
+    if (ability == null || ability.isPassive) return false;
+    return ability.isReady;
+  }
 
   /// Display label for the current turn (e.g. "PLAYER 1").
   String get turnLabel => gameState.value.turnLabel;
@@ -185,6 +210,26 @@ class BattleViewModel extends GetxController {
     gameState.value = _gameLogic.endTurn(gameState.value);
   }
 
+  /// Executes the selected unit's ability, optionally targeting a position.
+  ///
+  /// Delegates to [GameLogicService.executeAbility] and updates reactive
+  /// state. Returns the [ActionResult] so the Actions layer can provide
+  /// appropriate audio/UI feedback.
+  ///
+  /// **Parameters:**
+  /// - [targetPosition]: Grid position for targeted abilities (Shoot, Fireball).
+  ///
+  /// **Returns:**
+  /// An [ActionResult] describing the outcome.
+  ActionResult useAbility({GridPosition? targetPosition}) {
+    final outcome = _gameLogic.executeAbility(
+      gameState.value,
+      targetPosition: targetPosition,
+    );
+    gameState.value = outcome.state;
+    return outcome.result;
+  }
+
   /// Skips the selected unit's remaining actions for this turn.
   ///
   /// Marks the selected unit as having moved and acted, then
@@ -233,5 +278,25 @@ class BattleViewModel extends GetxController {
     final unit = board.units.where((u) => u.id == unitId).firstOrNull;
     if (unit == null) return false;
     return unit.isPlayer == isPlayerTurn;
+  }
+
+  /// Checks whether the given [pos] is a valid ability target
+  /// for the currently selected unit.
+  ///
+  /// **Parameters:**
+  /// - [pos]: The board position to check.
+  ///
+  /// **Returns:**
+  /// `true` if the position is in the current [abilityTargets] list.
+  bool isAbilityTargetPosition(GridPosition pos) {
+    return abilityTargets.contains(pos);
+  }
+
+  /// Cancels ability targeting mode.
+  ///
+  /// Sets [isAbilityTargeting] to `false`, returning tile taps to
+  /// their normal move/attack behavior.
+  void cancelAbilityTargeting() {
+    isAbilityTargeting.value = false;
   }
 }

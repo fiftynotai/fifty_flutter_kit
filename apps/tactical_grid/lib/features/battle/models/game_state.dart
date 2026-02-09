@@ -65,6 +65,9 @@ class GameState {
   /// Units that can be attacked by the selected unit.
   final List<Unit> attackTargets;
 
+  /// Valid target positions for the selected unit's ability.
+  final List<GridPosition> abilityTargets;
+
   const GameState({
     required this.board,
     required this.isPlayerTurn,
@@ -74,12 +77,13 @@ class GameState {
     this.selectedUnit,
     this.validMoves = const [],
     this.attackTargets = const [],
+    this.abilityTargets = const [],
   });
 
   /// Create initial game state with starting army positions.
   ///
   /// Player units on bottom rows (6-7), enemy units on top rows (0-1).
-  /// Each side gets: 1 Commander, 2 Knights, 2 Shields.
+  /// Each side gets: 1 Commander, 2 Knights, 1 Shield, 1 Archer, 1 Mage.
   factory GameState.initial() {
     final units = <Unit>[
       // Player units (bottom of board)
@@ -96,17 +100,22 @@ class GameState {
       Unit.knight(
         id: 'p_knight_2',
         isPlayer: true,
-        position: const GridPosition(6, 7),
+        position: const GridPosition(5, 7),
       ),
       Unit.shield(
         id: 'p_shield_1',
         isPlayer: true,
         position: const GridPosition(2, 6),
       ),
-      Unit.shield(
-        id: 'p_shield_2',
+      Unit.archer(
+        id: 'p_archer_1',
         isPlayer: true,
-        position: const GridPosition(5, 6),
+        position: const GridPosition(4, 6),
+      ),
+      Unit.mage(
+        id: 'p_mage_1',
+        isPlayer: true,
+        position: const GridPosition(6, 6),
       ),
 
       // Enemy units (top of board)
@@ -118,7 +127,7 @@ class GameState {
       Unit.knight(
         id: 'e_knight_1',
         isPlayer: false,
-        position: const GridPosition(1, 0),
+        position: const GridPosition(2, 0),
       ),
       Unit.knight(
         id: 'e_knight_2',
@@ -128,12 +137,17 @@ class GameState {
       Unit.shield(
         id: 'e_shield_1',
         isPlayer: false,
-        position: const GridPosition(2, 1),
+        position: const GridPosition(3, 1),
       ),
-      Unit.shield(
-        id: 'e_shield_2',
+      Unit.archer(
+        id: 'e_archer_1',
         isPlayer: false,
         position: const GridPosition(5, 1),
+      ),
+      Unit.mage(
+        id: 'e_mage_1',
+        isPlayer: false,
+        position: const GridPosition(1, 1),
       ),
     ];
 
@@ -177,6 +191,7 @@ class GameState {
     Unit? selectedUnit,
     List<GridPosition>? validMoves,
     List<Unit>? attackTargets,
+    List<GridPosition>? abilityTargets,
     bool clearSelection = false,
   }) {
     return GameState(
@@ -189,6 +204,8 @@ class GameState {
       validMoves: clearSelection ? const [] : (validMoves ?? this.validMoves),
       attackTargets:
           clearSelection ? const [] : (attackTargets ?? this.attackTargets),
+      abilityTargets:
+          clearSelection ? const [] : (abilityTargets ?? this.abilityTargets),
     );
   }
 

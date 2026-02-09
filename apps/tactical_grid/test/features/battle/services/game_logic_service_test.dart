@@ -28,15 +28,16 @@ void main() {
       expect(state.isPlayerTurn, true);
     });
 
-    test('creates 10 total units (5 per side)', () {
+    test('creates 12 total units (6 per side)', () {
       final state = service.startNewGame();
 
-      expect(state.board.units.length, 10);
-      expect(state.board.playerUnits.length, 5);
-      expect(state.board.enemyUnits.length, 5);
+      expect(state.board.units.length, 12);
+      expect(state.board.playerUnits.length, 6);
+      expect(state.board.enemyUnits.length, 6);
     });
 
-    test('each side has 1 commander, 2 knights, 2 shields', () {
+    test('each side has 1 commander, 2 knights, 1 shield, 1 archer, 1 mage',
+        () {
       final state = service.startNewGame();
 
       final playerUnits = state.board.playerUnits;
@@ -52,7 +53,15 @@ void main() {
       );
       expect(
         playerUnits.where((u) => u.type == UnitType.shield).length,
-        2,
+        1,
+      );
+      expect(
+        playerUnits.where((u) => u.type == UnitType.archer).length,
+        1,
+      );
+      expect(
+        playerUnits.where((u) => u.type == UnitType.mage).length,
+        1,
       );
 
       expect(
@@ -65,7 +74,15 @@ void main() {
       );
       expect(
         enemyUnits.where((u) => u.type == UnitType.shield).length,
-        2,
+        1,
+      );
+      expect(
+        enemyUnits.where((u) => u.type == UnitType.archer).length,
+        1,
+      );
+      expect(
+        enemyUnits.where((u) => u.type == UnitType.mage).length,
+        1,
       );
     });
 
@@ -1108,6 +1125,598 @@ void main() {
           state.board.units.firstWhere((u) => u.id == 'p_shield_1');
       expect(shield.hasMovedThisTurn, true);
       expect(shield.hasActedThisTurn, true);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Knight Charge Passive (+2 damage when moved)
+  // ---------------------------------------------------------------------------
+
+  group('knight charge passive', () {
+    test('knight deals +2 damage when has moved this turn', () {
+      // Place a player knight adjacent to an enemy commander (HP 5, enough to
+      // absorb the full 5 damage without clamping).
+      final units = <Unit>[
+        Unit.knight(
+          id: 'p_knight_1',
+          isPlayer: true,
+          position: const GridPosition(4, 4),
+        ),
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(0, 7),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(4, 3),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      // Mark knight as having moved this turn to trigger charge passive.
+      final knight =
+          state.board.units.firstWhere((u) => u.id == 'p_knight_1');
+      knight.hasMovedThisTurn = true;
+
+      final enemyCommander =
+          state.board.units.firstWhere((u) => u.id == 'e_commander');
+      final hpBefore = enemyCommander.hp; // Commander HP = 5
+
+      state = service.selectUnit(state, 'p_knight_1');
+      expect(state.attackTargets.any((t) => t.id == 'e_commander'), true);
+
+      final outcome = service.executeAttack(state, 'e_commander');
+
+      expect(outcome.result.success, true);
+      // Knight ATK(3) + charge bonus(2) = 5 damage.
+      expect(outcome.result.damageDealt, 5);
+      expect(enemyCommander.hp, hpBefore - 5);
+    });
+
+    test('knight deals normal damage when has not moved', () {
+      // Knight adjacent to enemy, but has NOT moved this turn.
+      final units = <Unit>[
+        Unit.knight(
+          id: 'p_knight_1',
+          isPlayer: true,
+          position: const GridPosition(4, 4),
+        ),
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(0, 7),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.shield(
+          id: 'e_shield_1',
+          isPlayer: false,
+          position: const GridPosition(4, 3),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      final enemyShield =
+          state.board.units.firstWhere((u) => u.id == 'e_shield_1');
+      final hpBefore = enemyShield.hp; // Shield HP = 4
+
+      state = service.selectUnit(state, 'p_knight_1');
+      expect(state.attackTargets.any((t) => t.id == 'e_shield_1'), true);
+
+      final outcome = service.executeAttack(state, 'e_shield_1');
+
+      expect(outcome.result.success, true);
+      // Knight ATK(3) only -- no charge bonus since not moved.
+      expect(outcome.result.damageDealt, 3);
+      expect(enemyShield.hp, hpBefore - 3);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Shield Block (50% damage reduction, consumed on hit)
+  // ---------------------------------------------------------------------------
+
+  group('shield block ability', () {
+    test('shield block halves incoming damage', () {
+      // Player commander attacks a blocking enemy shield.
+      final units = <Unit>[
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(3, 3),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.shield(
+          id: 'e_shield_1',
+          isPlayer: false,
+          position: const GridPosition(3, 2),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      // Activate block on the enemy shield.
+      final enemyShield =
+          state.board.units.firstWhere((u) => u.id == 'e_shield_1');
+      enemyShield.isBlocking = true;
+
+      final hpBefore = enemyShield.hp; // Shield HP = 4
+
+      state = service.selectUnit(state, 'p_commander');
+      final outcome = service.executeAttack(state, 'e_shield_1');
+
+      expect(outcome.result.success, true);
+      // Commander ATK = 2, blocked: ceil(2 / 2) = 1.
+      expect(outcome.result.damageDealt, 1);
+      expect(enemyShield.hp, hpBefore - 1);
+    });
+
+    test('shield block is consumed after one hit', () {
+      // Two attacks: first blocked, second unblocked.
+      final units = <Unit>[
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(3, 3),
+        ),
+        Unit.knight(
+          id: 'p_knight_1',
+          isPlayer: true,
+          position: const GridPosition(3, 4),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.shield(
+          id: 'e_shield_1',
+          isPlayer: false,
+          position: const GridPosition(3, 2),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      // Activate block on the enemy shield.
+      final enemyShield =
+          state.board.units.firstWhere((u) => u.id == 'e_shield_1');
+      enemyShield.isBlocking = true;
+
+      // First attack (blocked): commander ATK 2 -> ceil(2/2) = 1 damage.
+      state = service.selectUnit(state, 'p_commander');
+      final firstOutcome = service.executeAttack(state, 'e_shield_1');
+      expect(firstOutcome.result.success, true);
+      expect(firstOutcome.result.damageDealt, 1);
+
+      // Verify block is consumed.
+      expect(enemyShield.isBlocking, false);
+
+      state = firstOutcome.state;
+
+      // Second attack from knight (adjacent at (3,4) to shield at (3,2) is
+      // not adjacent -- distance is 2). Place knight adjacent to shield.
+      final knight =
+          state.board.units.firstWhere((u) => u.id == 'p_knight_1');
+      knight.position = const GridPosition(2, 2);
+      knight.hasMovedThisTurn = false;
+      knight.hasActedThisTurn = false;
+
+      state = service.selectUnit(state, 'p_knight_1');
+      expect(state.attackTargets.any((t) => t.id == 'e_shield_1'), true);
+
+      final secondOutcome = service.executeAttack(state, 'e_shield_1');
+
+      expect(secondOutcome.result.success, true);
+      // Knight ATK = 3, NO block reduction (consumed), no charge (not moved).
+      expect(secondOutcome.result.damageDealt, 3);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Fireball AoE (3x3 area, 1 damage, friendly fire)
+  // ---------------------------------------------------------------------------
+
+  group('fireball ability', () {
+    test('fireball deals 1 damage to units in 3x3 area', () {
+      // Place a mage and several enemy units in a cluster.
+      final units = <Unit>[
+        Unit.mage(
+          id: 'p_mage_1',
+          isPlayer: true,
+          position: const GridPosition(1, 5),
+        ),
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(0, 7),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.knight(
+          id: 'e_knight_1',
+          isPlayer: false,
+          position: const GridPosition(4, 3),
+        ),
+        Unit.knight(
+          id: 'e_knight_2',
+          isPlayer: false,
+          position: const GridPosition(3, 2),
+        ),
+        Unit.shield(
+          id: 'e_shield_1',
+          isPlayer: false,
+          position: const GridPosition(4, 2),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      // Record HP before.
+      final eKnight1 =
+          state.board.units.firstWhere((u) => u.id == 'e_knight_1');
+      final eKnight2 =
+          state.board.units.firstWhere((u) => u.id == 'e_knight_2');
+      final eShield =
+          state.board.units.firstWhere((u) => u.id == 'e_shield_1');
+      final hpK1Before = eKnight1.hp; // 3
+      final hpK2Before = eKnight2.hp; // 3
+      final hpShieldBefore = eShield.hp; // 4
+
+      // Select mage and use fireball targeting (4,3) center.
+      // 3x3 around (4,3): x in [3,5], y in [2,4].
+      // e_knight_1 at (4,3) -- in area.
+      // e_knight_2 at (3,2) -- in area.
+      // e_shield_1 at (4,2) -- in area.
+      state = service.selectUnit(state, 'p_mage_1');
+
+      // Verify (4,3) is a valid fireball target for mage at (1,5).
+      // Chebyshev distance from (1,5) to (4,3) = max(3, 2) = 3 -- within range.
+      expect(state.abilityTargets.contains(const GridPosition(4, 3)), true);
+
+      final outcome = service.executeAbility(
+        state,
+        targetPosition: const GridPosition(4, 3),
+      );
+
+      expect(outcome.result.success, true);
+      expect(outcome.result.affectedUnitIds, isNotNull);
+      expect(outcome.result.affectedUnitIds!.length, 3);
+      expect(
+        outcome.result.affectedUnitIds!,
+        containsAll(['e_knight_1', 'e_knight_2', 'e_shield_1']),
+      );
+
+      // Each unit took 1 damage.
+      expect(eKnight1.hp, hpK1Before - 1);
+      expect(eKnight2.hp, hpK2Before - 1);
+      expect(eShield.hp, hpShieldBefore - 1);
+    });
+
+    test('fireball hits friendly units in area', () {
+      // Place a mage, a friendly knight, and an enemy knight near each other.
+      final units = <Unit>[
+        Unit.mage(
+          id: 'p_mage_1',
+          isPlayer: true,
+          position: const GridPosition(1, 5),
+        ),
+        Unit.knight(
+          id: 'p_knight_1',
+          isPlayer: true,
+          position: const GridPosition(4, 3),
+        ),
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(0, 7),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.knight(
+          id: 'e_knight_1',
+          isPlayer: false,
+          position: const GridPosition(4, 2),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      final pKnight =
+          state.board.units.firstWhere((u) => u.id == 'p_knight_1');
+      final eKnight =
+          state.board.units.firstWhere((u) => u.id == 'e_knight_1');
+      final pKnightHpBefore = pKnight.hp; // 3
+      final eKnightHpBefore = eKnight.hp; // 3
+
+      // Select mage and fireball at (4,3) center.
+      // 3x3 around (4,3): both p_knight_1 at (4,3) and e_knight_1 at (4,2) are in area.
+      state = service.selectUnit(state, 'p_mage_1');
+
+      final outcome = service.executeAbility(
+        state,
+        targetPosition: const GridPosition(4, 3),
+      );
+
+      expect(outcome.result.success, true);
+      expect(outcome.result.affectedUnitIds, isNotNull);
+      // Both the friendly knight and the enemy knight are hit.
+      expect(outcome.result.affectedUnitIds!.contains('p_knight_1'), true);
+      expect(outcome.result.affectedUnitIds!.contains('e_knight_1'), true);
+
+      // Both took 1 damage (friendly fire).
+      expect(pKnight.hp, pKnightHpBefore - 1);
+      expect(eKnight.hp, eKnightHpBefore - 1);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Shoot Ranged Attack
+  // ---------------------------------------------------------------------------
+
+  group('shoot ability', () {
+    test('archer shoot attacks enemy at range', () {
+      // Place archer and enemy within Chebyshev distance 2-3.
+      final units = <Unit>[
+        Unit.archer(
+          id: 'p_archer_1',
+          isPlayer: true,
+          position: const GridPosition(3, 5),
+        ),
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(0, 7),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.shield(
+          id: 'e_shield_1',
+          isPlayer: false,
+          position: const GridPosition(3, 3),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      final enemyShield =
+          state.board.units.firstWhere((u) => u.id == 'e_shield_1');
+      final hpBefore = enemyShield.hp; // 4
+
+      // Archer at (3,5), enemy shield at (3,3).
+      // Chebyshev distance = max(0, 2) = 2 -- within shoot range 2-3.
+      state = service.selectUnit(state, 'p_archer_1');
+      expect(
+        state.abilityTargets.contains(const GridPosition(3, 3)),
+        true,
+      );
+
+      final outcome = service.executeAbility(
+        state,
+        targetPosition: const GridPosition(3, 3),
+      );
+
+      expect(outcome.result.success, true);
+      // Archer ATK = 2.
+      expect(outcome.result.damageDealt, 2);
+      expect(enemyShield.hp, hpBefore - 2);
+    });
+
+    test('shoot ability goes on cooldown after use', () {
+      final units = <Unit>[
+        Unit.archer(
+          id: 'p_archer_1',
+          isPlayer: true,
+          position: const GridPosition(3, 5),
+        ),
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(0, 7),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(7, 0),
+        ),
+        Unit.shield(
+          id: 'e_shield_1',
+          isPlayer: false,
+          position: const GridPosition(3, 3),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      final archer =
+          state.board.units.firstWhere((u) => u.id == 'p_archer_1');
+
+      // Verify ability is ready before use.
+      expect(archer.ability!.isReady, true);
+      expect(archer.ability!.currentCooldown, 0);
+
+      state = service.selectUnit(state, 'p_archer_1');
+
+      service.executeAbility(
+        state,
+        targetPosition: const GridPosition(3, 3),
+      );
+
+      // After shooting, ability should be on cooldown.
+      expect(archer.ability!.currentCooldown, archer.ability!.cooldownMax);
+      expect(archer.ability!.currentCooldown, 2); // Shoot cooldownMax = 2.
+      expect(archer.ability!.isReady, false);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Rally Buff
+  // ---------------------------------------------------------------------------
+
+  group('rally ability', () {
+    test('rally grants +1 attackBonus to adjacent allies', () {
+      // Commander surrounded by two adjacent allies.
+      final units = <Unit>[
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(4, 4),
+        ),
+        Unit.knight(
+          id: 'p_knight_1',
+          isPlayer: true,
+          position: const GridPosition(4, 3),
+        ),
+        Unit.shield(
+          id: 'p_shield_1',
+          isPlayer: true,
+          position: const GridPosition(5, 4),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(0, 0),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      final pKnight =
+          state.board.units.firstWhere((u) => u.id == 'p_knight_1');
+      final pShield =
+          state.board.units.firstWhere((u) => u.id == 'p_shield_1');
+
+      // Verify no bonus before rally.
+      expect(pKnight.attackBonus, 0);
+      expect(pShield.attackBonus, 0);
+
+      state = service.selectUnit(state, 'p_commander');
+
+      final outcome = service.executeAbility(state);
+
+      expect(outcome.result.success, true);
+      expect(outcome.result.affectedUnitIds, isNotNull);
+      expect(
+        outcome.result.affectedUnitIds!,
+        containsAll(['p_knight_1', 'p_shield_1']),
+      );
+
+      // Both adjacent allies got +1 attackBonus.
+      expect(pKnight.attackBonus, 1);
+      expect(pShield.attackBonus, 1);
+    });
+
+    test('rally does not affect enemies or non-adjacent allies', () {
+      // Commander with a distant ally and an adjacent enemy.
+      final units = <Unit>[
+        Unit.commander(
+          id: 'p_commander',
+          isPlayer: true,
+          position: const GridPosition(4, 4),
+        ),
+        Unit.knight(
+          id: 'p_knight_1',
+          isPlayer: true,
+          position: const GridPosition(0, 0),
+        ),
+        Unit.commander(
+          id: 'e_commander',
+          isPlayer: false,
+          position: const GridPosition(4, 3),
+        ),
+      ];
+      var state = GameState(
+        board: BoardState(units: units),
+        isPlayerTurn: true,
+        turnNumber: 1,
+        phase: GamePhase.playing,
+        result: GameResult.none,
+      );
+
+      final pKnight =
+          state.board.units.firstWhere((u) => u.id == 'p_knight_1');
+      final eCommander =
+          state.board.units.firstWhere((u) => u.id == 'e_commander');
+
+      state = service.selectUnit(state, 'p_commander');
+
+      final outcome = service.executeAbility(state);
+
+      expect(outcome.result.success, true);
+      // No units should be affected (knight is too far, enemy is not an ally).
+      expect(
+        outcome.result.affectedUnitIds,
+        isEmpty,
+      );
+
+      // Neither unit received a bonus.
+      expect(pKnight.attackBonus, 0);
+      expect(eCommander.attackBonus, 0);
     });
   });
 }

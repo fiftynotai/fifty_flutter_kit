@@ -3,6 +3,7 @@
 /// Represents a game action (move, attack, or wait) and its result.
 library;
 
+import 'ability.dart';
 import 'position.dart';
 
 /// Type of action a unit can take.
@@ -15,6 +16,9 @@ enum ActionType {
 
   /// Skip action (do nothing).
   wait,
+
+  /// Use a special ability.
+  ability,
 }
 
 /// A game action performed by a unit.
@@ -37,11 +41,15 @@ class GameAction {
   /// Target unit ID (for attack actions).
   final String? targetUnitId;
 
+  /// Ability type (for ability actions).
+  final AbilityType? abilityType;
+
   const GameAction({
     required this.unitId,
     required this.type,
     this.targetPosition,
     this.targetUnitId,
+    this.abilityType,
   });
 
   /// Create a move action.
@@ -70,6 +78,20 @@ class GameAction {
     );
   }
 
+  /// Create an ability action.
+  factory GameAction.ability(
+    String unitId,
+    AbilityType abilityType, {
+    GridPosition? targetPosition,
+  }) {
+    return GameAction(
+      unitId: unitId,
+      type: ActionType.ability,
+      abilityType: abilityType,
+      targetPosition: targetPosition,
+    );
+  }
+
   /// Whether this is a move action.
   bool get isMove => type == ActionType.move;
 
@@ -78,6 +100,9 @@ class GameAction {
 
   /// Whether this is a wait action.
   bool get isWait => type == ActionType.wait;
+
+  /// Whether this is an ability action.
+  bool get isAbility => type == ActionType.ability;
 
   @override
   String toString() => 'GameAction($unitId, ${type.name}, '
@@ -101,21 +126,31 @@ class ActionResult {
   /// Error message if the action failed.
   final String? errorMessage;
 
+  /// IDs of units affected by this action (for AoE abilities like Fireball and Rally).
+  final List<String>? affectedUnitIds;
+
   const ActionResult({
     required this.action,
     required this.success,
     this.damageDealt,
     this.targetDefeated,
     this.errorMessage,
+    this.affectedUnitIds,
   });
 
   /// Create a successful result.
-  factory ActionResult.success(GameAction action, {int? damage, bool? defeated}) {
+  factory ActionResult.success(
+    GameAction action, {
+    int? damage,
+    bool? defeated,
+    List<String>? affectedUnitIds,
+  }) {
     return ActionResult(
       action: action,
       success: true,
       damageDealt: damage,
       targetDefeated: defeated,
+      affectedUnitIds: affectedUnitIds,
     );
   }
 
