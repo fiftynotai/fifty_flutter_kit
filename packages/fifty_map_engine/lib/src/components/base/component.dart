@@ -20,7 +20,7 @@ import 'model.dart';
 ///
 /// **Key Features:**
 /// - Loads sprite from [model.asset]
-/// - Calculates pixel [position] (flipped vertically) and applies [quarterTurns]
+/// - Calculates pixel [position] (top-down coordinates) and applies [quarterTurns]
 /// - Sets [priority] via [model.zIndex] or default type priorities
 /// - Attaches a [RectangleHitbox] for passive collisions
 /// - Spawns a [FiftyEventComponent] if [model.event] is present
@@ -68,8 +68,8 @@ abstract class FiftyBaseComponent extends SpriteComponent
     // Load sprite
     sprite = Sprite(game.images.fromCache(model.asset));
 
-    // Calculate position (flip Y-axis for Flame coordinate system)
-    position = Vector2(model.x, game.size.y - model.y);
+    // Calculate position (top-down coordinates, no Y-flip)
+    position = Vector2(model.x, model.y);
 
     // Apply rotation if needed
     if (model.quarterTurns > 0) {
@@ -114,8 +114,8 @@ abstract class FiftyBaseComponent extends SpriteComponent
   }
 
   @override
-  void onLongTapDown(TapDownEvent event) {
-    super.onLongTapDown(event);
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
     game.onEntityTap.call(model);
   }
 
@@ -159,8 +159,6 @@ class FiftyMovableComponent extends FiftyBaseComponent {
     model = newModel;
     final distance = newPosition.distanceTo(position);
     final duration = distance / speed;
-    // Flip Y for Flame coordinates
-    newPosition.y = game.size.y - newPosition.y;
     add(
       MoveToEffect(
         newPosition,
@@ -187,7 +185,7 @@ class FiftyMovableComponent extends FiftyBaseComponent {
   /// - [steps]: number of tiles to move
   /// - [speed]: pixels per second
   void moveUp(double steps, {double speed = 200}) {
-    model.gridPosition.y = model.gridPosition.y + steps;
+    model.gridPosition.y = model.gridPosition.y - steps;
     final newPosition =
         Vector2(position.x, position.y - (steps * FiftyMapConfig.blockSize));
     _directMove(newPosition, speed: speed);
@@ -195,7 +193,7 @@ class FiftyMovableComponent extends FiftyBaseComponent {
 
   /// **Moves the entity down by [steps] grid blocks.**
   void moveDown(double steps, {double speed = 200}) {
-    model.gridPosition.y = model.gridPosition.y - steps;
+    model.gridPosition.y = model.gridPosition.y + steps;
     final newPosition =
         Vector2(position.x, position.y + (steps * FiftyMapConfig.blockSize));
     _directMove(newPosition, speed: speed);

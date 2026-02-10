@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:fifty_map_engine/src/animation/sprite_animation_config.dart';
 import 'package:fifty_map_engine/src/components/base/extension.dart';
 import 'package:fifty_map_engine/src/config/map_config.dart';
 import 'package:flame/components.dart';
@@ -161,6 +162,13 @@ class FiftyMapEntity {
   final List<FiftyMapEntity> components;
   final Map<String, dynamic>? metadata;
 
+  /// Optional sprite sheet animation configuration.
+  ///
+  /// When set, the spawner uses [AnimatedEntityComponent] instead of
+  /// [FiftyMovableComponent] to render this entity with frame-by-frame
+  /// sprite animation.
+  final SpriteAnimationConfig? spriteAnimation;
+
   /// **Creates a map entity.**
   ///
   /// - [id]: unique id
@@ -189,6 +197,7 @@ class FiftyMapEntity {
     this.event,
     this.components = const [],
     this.metadata,
+    this.spriteAnimation,
     double? x,
     double? y,
   })  : x = x ?? gridPosition.x * FiftyMapConfig.blockSize,

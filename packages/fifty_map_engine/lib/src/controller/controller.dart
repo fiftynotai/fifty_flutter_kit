@@ -3,6 +3,23 @@ import 'package:fifty_map_engine/src/components/base/extension.dart';
 import 'package:fifty_map_engine/src/components/base/model.dart';
 import 'package:fifty_map_engine/src/components/base/component.dart';
 import 'package:fifty_map_engine/src/view/map_builder.dart';
+import 'package:fifty_map_engine/src/grid/grid_position.dart';
+import 'package:fifty_map_engine/src/grid/tile_grid.dart';
+import 'package:fifty_map_engine/src/grid/tile_overlay.dart';
+import 'package:fifty_map_engine/src/grid/coordinate_adapter.dart';
+import 'package:fifty_map_engine/src/components/overlays/overlay_manager.dart';
+import 'package:fifty_map_engine/src/components/decorators/entity_decorator.dart';
+import 'package:fifty_map_engine/src/components/decorators/health_bar_component.dart';
+import 'package:fifty_map_engine/src/components/decorators/selection_ring_component.dart';
+import 'package:fifty_map_engine/src/components/decorators/team_border_component.dart';
+import 'package:fifty_map_engine/src/components/decorators/status_icon_component.dart';
+import 'package:fifty_map_engine/src/components/effects/floating_text_component.dart';
+import 'package:fifty_map_engine/src/input/input_manager.dart';
+import 'package:fifty_map_engine/src/animation/animation_queue.dart';
+import 'package:fifty_map_engine/src/pathfinding/grid_graph.dart';
+import 'package:fifty_map_engine/src/pathfinding/pathfinder.dart';
+import 'package:fifty_map_engine/src/pathfinding/movement_range.dart';
+import 'dart:ui' show Color;
 
 /// **FiftyMapController**
 ///
@@ -241,5 +258,210 @@ class FiftyMapController {
   void zoomOut() {
     if (!isBound) return;
     game.zoomOut();
+  }
+
+  // --- v2 Grid Systems ---
+
+  /// Overlay manager for tile highlights.
+  OverlayManager? _overlayManager;
+
+  /// Input manager for blocking state.
+  InputManager? _inputManager;
+
+  /// Animation queue for sequential animations.
+  AnimationQueue? _animationQueue;
+
+  // Overlay Methods
+
+  /// Highlights tiles at [positions] with the given [overlay] style.
+  void highlightTiles(List<GridPosition> positions, TileOverlay overlay) {
+    if (!isBound) return;
+    _overlayManager ??= OverlayManager();
+    _overlayManager!.addOverlays(positions, overlay, game.world);
+  }
+
+  /// Clears overlays by [group]. If null, clears ALL overlays.
+  void clearHighlights({String? group}) {
+    if (_overlayManager == null) return;
+    if (group != null) {
+      _overlayManager!.clearGroup(group);
+    } else {
+      _overlayManager!.clearAll();
+    }
+  }
+
+  /// Sets a single tile as selected (yellow highlight). Pass null to deselect.
+  void setSelection(GridPosition? position) {
+    clearHighlights(group: 'selection');
+    if (position != null) {
+      highlightTiles([position], HighlightStyle.selection);
+    }
+  }
+
+  // Decorator Methods
+
+  /// Adds an HP bar to the entity with [entityId].
+  void updateHP(String entityId, double ratio, {Color? color}) {
+    if (!isBound) return;
+    final comp = _game!.getComponentById(entityId);
+    if (comp == null) return;
+
+    // Find existing HP bar or create new one
+    final existing = comp.children.whereType<HealthBarComponent>().firstOrNull;
+    if (existing != null) {
+      existing.ratio = ratio;
+    } else {
+      comp.add(HealthBarComponent(
+        ratio: ratio,
+        foregroundColor: color ?? const Color(0xFF4CAF50),
+      ));
+    }
+  }
+
+  /// Sets or removes selection ring on entity with [entityId].
+  void setSelected(String entityId, {bool selected = true, Color? color}) {
+    if (!isBound) return;
+    final comp = _game!.getComponentById(entityId);
+    if (comp == null) return;
+
+    // Remove existing ring
+    comp.children
+        .whereType<SelectionRingComponent>()
+        .toList()
+        .forEach((r) => r.removeFromParent());
+
+    if (selected) {
+      comp.add(SelectionRingComponent(color: color ?? const Color(0xFFFFC107)));
+    }
+  }
+
+  /// Sets team color border on entity with [entityId].
+  void setTeamColor(String entityId, Color color) {
+    if (!isBound) return;
+    final comp = _game!.getComponentById(entityId);
+    if (comp == null) return;
+
+    // Remove existing team border
+    comp.children
+        .whereType<TeamBorderComponent>()
+        .toList()
+        .forEach((r) => r.removeFromParent());
+    comp.add(TeamBorderComponent(color: color));
+  }
+
+  /// Adds a status icon to entity with [entityId].
+  void addStatusIcon(String entityId, String label, {Color? color}) {
+    if (!isBound) return;
+    final comp = _game!.getComponentById(entityId);
+    if (comp == null) return;
+    comp.add(StatusIconComponent(
+      label: label,
+      color: color ?? const Color(0xFF9C27B0),
+    ));
+  }
+
+  /// Removes all decorators from entity with [entityId].
+  void removeDecorators(String entityId) {
+    if (!isBound) return;
+    final comp = _game!.getComponentById(entityId);
+    if (comp == null) return;
+    comp.children
+        .whereType<EntityDecorator>()
+        .toList()
+        .forEach((d) => d.removeFromParent());
+  }
+
+  // Animation & Effects Methods
+
+  /// Shows floating text at a grid position (e.g., damage popup).
+  void showFloatingText(
+    GridPosition position,
+    String text, {
+    Color? color,
+    double? fontSize,
+    double? duration,
+  }) {
+    if (!isBound) return;
+    game.world.add(FloatingTextComponent(
+      text: text,
+      position: CoordinateAdapter.gridToCenterPixel(position),
+      color: color ?? const Color(0xFFFF0000),
+      fontSize: fontSize ?? 20.0,
+      duration: duration ?? 1.0,
+    ));
+  }
+
+  /// Whether animations are currently running.
+  bool get isAnimating => _animationQueue?.isRunning ?? false;
+
+  /// The input manager for this controller.
+  InputManager get inputManager {
+    _inputManager ??= InputManager();
+    return _inputManager!;
+  }
+
+  /// Queues an animation entry. Input is automatically blocked during animations.
+  void queueAnimation(AnimationEntry entry) {
+    _ensureAnimationQueue();
+    _animationQueue!.enqueue(entry);
+  }
+
+  /// Queues multiple animation entries.
+  void queueAnimations(List<AnimationEntry> entries) {
+    _ensureAnimationQueue();
+    _animationQueue!.enqueueAll(entries);
+  }
+
+  /// Cancels all pending animations.
+  void cancelAnimations() {
+    _animationQueue?.cancel();
+  }
+
+  void _ensureAnimationQueue() {
+    _animationQueue ??= AnimationQueue(
+      onStart: () => inputManager.block(),
+      onComplete: () => inputManager.unblock(),
+    );
+  }
+
+  // Pathfinding Methods
+
+  /// Finds the shortest path from [from] to [to] on the given [grid].
+  ///
+  /// Returns the path as a list of positions (start to goal inclusive),
+  /// or null if no path exists.
+  List<GridPosition>? findPath(
+    GridPosition from,
+    GridPosition to, {
+    required TileGrid grid,
+    Set<GridPosition>? blocked,
+    bool diagonal = false,
+  }) {
+    final graph = GridGraph(
+      grid: grid,
+      blocked: blocked ?? const {},
+      diagonal: diagonal,
+    );
+    return Pathfinder.findPath(start: from, goal: to, graph: graph);
+  }
+
+  /// Returns all positions reachable from [from] within [budget] movement points.
+  Set<GridPosition> getMovementRange(
+    GridPosition from, {
+    required double budget,
+    required TileGrid grid,
+    Set<GridPosition>? blocked,
+    bool diagonal = false,
+  }) {
+    final graph = GridGraph(
+      grid: grid,
+      blocked: blocked ?? const {},
+      diagonal: diagonal,
+    );
+    return MovementRange.reachable(
+      start: from,
+      budget: budget,
+      graph: graph,
+    );
   }
 }

@@ -4,12 +4,16 @@
 /// behind higher values, ensuring correct layering of rooms, entities, and UI.
 ///
 /// **Priority Levels:**
+/// - [tileGrid] (-10): tile grid ground layer (below everything)
 /// - [background] (0): room backgrounds and terrain
+/// - [tileOverlay] (5): tile overlays (highlights, selection)
 /// - [furniture] (10): static objects like furniture and props
 /// - [door] (20): doors and entryways
 /// - [monster] (30): enemy entities
 /// - [character] (40): player characters and friendly NPCs
 /// - [event] (50): event markers and overlays (quest points, icons)
+/// - [decorator] (60): entity decorators (HP bars, selection rings)
+/// - [floatingEffect] (70): floating effects (damage popups)
 /// - [uiOverlay] (100): UI elements above all map entities (menus, dialogs)
 class FiftyRenderPriority {
   FiftyRenderPriority._();
@@ -32,6 +36,18 @@ class FiftyRenderPriority {
   /// Event markers and overlays
   static const int event = 50;
 
+  /// Entity decorators (HP bars, selection rings - above entities)
+  static const int decorator = 60;
+
+  /// Floating effects (damage popups - above decorators)
+  static const int floatingEffect = 70;
+
   /// UI overlays (menus, dialogs)
   static const int uiOverlay = 100;
+
+  /// Tile grid (ground layer, below everything)
+  static const int tileGrid = -10;
+
+  /// Tile overlays (highlights, selection - above tiles, below entities)
+  static const int tileOverlay = 5;
 }

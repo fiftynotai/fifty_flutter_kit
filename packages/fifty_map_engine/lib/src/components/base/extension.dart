@@ -1,3 +1,4 @@
+import 'package:fifty_map_engine/src/animation/sprite_animation_config.dart';
 import 'package:fifty_map_engine/src/config/map_config.dart';
 import 'package:flame/components.dart';
 import 'model.dart';
@@ -44,6 +45,7 @@ extension FiftyMapEntityExtension on FiftyMapEntity {
     FiftyMapEvent? event,
     List<FiftyMapEntity>? components,
     Map<String, dynamic>? metadata,
+    SpriteAnimationConfig? spriteAnimation,
   }) {
     return FiftyMapEntity(
       id: id ?? this.id,
@@ -60,6 +62,7 @@ extension FiftyMapEntityExtension on FiftyMapEntity {
       event: event ?? this.event,
       components: components ?? this.components,
       metadata: metadata ?? this.metadata,
+      spriteAnimation: spriteAnimation ?? this.spriteAnimation,
     );
   }
 

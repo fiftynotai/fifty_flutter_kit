@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:fifty_map_engine/fifty_map_engine.dart';
 
-/// **FiftyMapWidget**
-///
+/// Callback for tile tap events.
+typedef FiftyTileTapCallback = void Function(GridPosition position);
+
 /// High-level Flutter widget that embeds the interactive Fifty map.
 ///
-/// This widget:
-/// - Binds the provided [FiftyMapController] to a new [FiftyMapBuilder]
-/// - Initializes with optional [initialEntities]
-/// - Forwards tap events via [onEntityTap]
+/// Supports two modes:
+/// - **Legacy mode:** Entities only (rooms, characters, etc.)
+/// - **Grid mode:** Tile grid with overlays, tap handling, entities on top
 ///
-/// **Usage:**
+/// Usage (grid mode):
 /// ```dart
-/// final controller = FiftyMapController();
 /// FiftyMapWidget(
-///   initialEntities: myEntities,
-///   onEntityTap: (entity) => print('Tapped $entity'),
+///   grid: myGrid,
 ///   controller: controller,
+///   onEntityTap: (entity) => handleEntityTap(entity),
+///   onTileTap: (pos) => handleTileTap(pos),
 /// )
 /// ```
 class FiftyMapWidget extends StatefulWidget {
@@ -30,16 +30,25 @@ class FiftyMapWidget extends StatefulWidget {
   /// Controller for dynamic map manipulation.
   final FiftyMapController controller;
 
-  /// Creates a [FiftyMapWidget].
+  /// Optional tile grid for grid-based games.
   ///
-  /// - [initialEntities]: optional preloaded entities (defaults to empty)
-  /// - [onEntityTap]: required tap callback
-  /// - [controller]: required map engine controller
+  /// When provided, the map renders a tile grid with overlays.
+  /// When null, operates in legacy entity-only mode.
+  final TileGrid? grid;
+
+  /// Callback for when any tile is tapped (occupied or empty).
+  ///
+  /// Only fires in grid mode (when [grid] is provided).
+  final FiftyTileTapCallback? onTileTap;
+
+  /// Creates a [FiftyMapWidget].
   const FiftyMapWidget({
     super.key,
     this.initialEntities = const [],
     required this.onEntityTap,
     required this.controller,
+    this.grid,
+    this.onTileTap,
   });
 
   @override
@@ -54,13 +63,14 @@ class _FiftyMapWidgetState extends State<FiftyMapWidget> {
       FiftyMapBuilder(
         initialEntities: widget.initialEntities,
         onEntityTap: widget.onEntityTap,
+        grid: widget.grid,
+        onTileTap: widget.onTileTap,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Use LayoutBuilder to ensure the game widget fills available space
     return LayoutBuilder(
       builder: (context, constraints) {
         return SizedBox(

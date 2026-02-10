@@ -1,5 +1,6 @@
 import 'package:fifty_map_engine/src/components/event_component.dart';
 import 'package:fifty_map_engine/src/components/room_component.dart';
+import 'package:fifty_map_engine/src/components/sprites/animated_entity_component.dart';
 import 'package:fifty_map_engine/src/utils/logger.dart';
 import 'component.dart';
 import 'model.dart';
@@ -59,6 +60,14 @@ class FiftyEntitySpawner {
     final customBuilder = _customSpawners[model.type];
     if (customBuilder != null) {
       return customBuilder(model);
+    }
+
+    // If sprite animation is configured, use AnimatedEntityComponent
+    if (model.spriteAnimation != null) {
+      return AnimatedEntityComponent(
+        model: model,
+        animConfig: model.spriteAnimation!,
+      );
     }
 
     // Native type matching

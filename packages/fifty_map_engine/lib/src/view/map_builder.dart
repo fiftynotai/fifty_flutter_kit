@@ -8,6 +8,11 @@ import 'package:fifty_map_engine/src/components/base/model.dart';
 import 'package:fifty_map_engine/src/components/base/component.dart';
 import 'package:fifty_map_engine/src/components/base/spawner.dart';
 import 'package:fifty_map_engine/src/services/asset_loader_service.dart';
+import 'package:fifty_map_engine/src/grid/grid_position.dart';
+import 'package:fifty_map_engine/src/grid/tile_grid.dart';
+import 'package:fifty_map_engine/src/components/tiles/tile_grid_component.dart';
+import 'package:fifty_map_engine/src/input/tap_resolver.dart';
+import 'package:fifty_map_engine/src/view/widget.dart' show FiftyTileTapCallback;
 
 /// **FiftyMapBuilder**
 ///
@@ -70,6 +75,15 @@ class FiftyMapBuilder extends FlameGame
   /// Typically passed down to entity components that forward tap events.
   final FiftyMapTapCallback onEntityTap;
 
+  /// Optional tile grid for grid mode.
+  final TileGrid? grid;
+
+  /// Optional callback for tile taps.
+  final FiftyTileTapCallback? onTileTap;
+
+  /// Internal grid component.
+  TileGridComponent? _tileGridComponent;
+
   /// **World container** for map entity components.
   ///
   /// The world holds renderable children (rooms, furniture, characters, etc.).
@@ -128,6 +142,8 @@ class FiftyMapBuilder extends FlameGame
   FiftyMapBuilder({
     this.initialEntities = const [],
     required this.onEntityTap,
+    this.grid,
+    this.onTileTap,
   }) : world = World();
 
   // Lifecycle
@@ -154,6 +170,13 @@ class FiftyMapBuilder extends FlameGame
       ..position = Vector2.zero();
 
     addAll([world, cameraComponent]);
+
+    // Render tile grid if provided
+    if (grid != null) {
+      _tileGridComponent = TileGridComponent(grid: grid!);
+      world.add(_tileGridComponent!);
+    }
+
     addEntities(initialEntities);
   }
 
@@ -380,6 +403,24 @@ class FiftyMapBuilder extends FlameGame
     _pointerPositions.remove(pointerId);
     if (_activePointers.length < 2) _initialPinchDistance = 0.0;
     super.onDragCancel(pointerId);
+  }
+
+  /// **Handles tap-up events for global tile tap resolution.**
+  ///
+  /// In grid mode, converts the tap position to a [GridPosition] and invokes
+  /// [onTileTap] if the tap lands within grid bounds.
+  @override
+  void onTapUp(TapUpInfo info) {
+    super.onTapUp(info);
+    // Handle tile taps in grid mode
+    if (grid != null && onTileTap != null) {
+      final worldPos = cameraComponent.viewfinder.transform
+          .globalToLocal(info.eventPosition.global);
+      final gridPos = TapResolver.resolve(worldPos, grid!);
+      if (gridPos != null) {
+        onTileTap!(gridPos);
+      }
+    }
   }
 
   /// **Background color** for the game surface.

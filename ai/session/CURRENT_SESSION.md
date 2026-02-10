@@ -1,163 +1,94 @@
 # Current Session
 
 **Status:** Active
-**Last Updated:** 2026-02-09
-**Active Brief:** BR-071 (Tactical Grid - gameplay features)
+**Last Updated:** 2026-02-10
+**Active Briefs:** BR-076 (blocked), BR-077 (next)
 
 ---
 
 ## Active Briefs
 
+### BR-077 - fifty_map_engine v2 Upgrade
+- **Status:** In Progress (all phases built, pending commit)
+- **Priority:** P1-High
+- **Effort:** XL
+- **Phase:** All 8 build phases COMPLETE, 119 tests passing, zero analyzer issues
+- **Blocks:** BR-076
+- **Summary:** Upgrade map engine from room-based navigator to full grid game toolkit. All systems built: tile grid, overlays, entity decorators, instant tap, animation queue, sprite animation, A* pathfinding, BFS movement range. Public API hides Flame. 22 new source files, 7 modified files, 119 tests.
+
+### BR-076 - Tactical Grid → fifty_map_engine Migration
+- **Status:** In Progress (BLOCKED by BR-077)
+- **Priority:** P1-High
+- **Effort:** L
+- **Phase:** Planning complete, awaiting engine upgrade
+- **Plan:** ai/plans/BR-076-plan.md
+- **Summary:** Migrate tactical grid from GridView.builder to fifty_map_engine. Blocked until engine can handle tiles, overlays, and instant tap.
+
 ### BR-071 - Tactical Grid Game
 - **Status:** In Progress
-- **Phase:** Priority 1-5 DONE, Audio assets DONE, Art assets DONE, Code Integration DONE
-- **Remaining:** Commit + final verification
+- **Phase:** All 5 priorities + audio + art + code integration DONE
+- **Remaining:** Commit integration changes, then blocked on BR-076 for map engine migration
 
 ---
 
-## BR-071 Completed Work
+## Session Activity (2026-02-10)
 
-### Priority 1: Unit Types & Abilities - DONE
-- **Commit:** `911675d` feat(tactical_grid): add unit types and ability system
-- Added Archer, Mage, Scout unit types with unique movement patterns
-- Full ability system: Rally, Charge (passive), Block, Shoot, Fireball, Reveal
-- Cooldown tracking, ability targeting mode, UI buttons
-- 119 tests passing, 2423 lines added across 17 files
+### Research & Planning
+- Investigated tactical grid rendering: confirmed GridView.builder used, fifty_map_engine dependency unused
+- Deep audit of fifty_map_engine: identified 3 critical gaps (no tiles, no overlays, long-press input)
+- Researched industry standards for tile-based game engines (Flame tilemaps, tactical RPG patterns)
+- Architectural decision: one package, not separate sprite/tile packages. Flame hidden as implementation detail.
+- Registered BR-076 (tactical grid migration) - P1, L effort
+- Created migration plan (ai/plans/BR-076-plan.md) - hybrid approach initially proposed
+- Monarch rejected hybrid approach: engine should handle everything natively
+- Registered BR-077 (engine v2 upgrade) - P1, XL effort, 49 tasks across 9 phases
+- BR-076 plan will be revised after BR-077 ships (pure engine approach, no Flutter overlay workarounds)
 
-### Priority 2: AI Opponent - DONE
-- **Commit:** `8ac033c` feat(tactical_grid): add AI opponent with three difficulty levels
-- AIService (stateless): Easy (random), Medium (priority-based), Hard (score-based)
-- AITurnExecutor with visual delays between actions
-- Game mode selection bottom sheet (LOCAL 1v1 / VS AI + difficulty)
-- Player input blocked during AI turn, "ENEMY THINKING..." indicator
-- 181 tests passing, 2710 lines added across 19 files
-
-### Priority 3: Turn Timer - DONE
-- **Commit:** `11c0995` feat(tactical_grid): add turn timer with auto-skip and audio cues
-- TurnTimerService: reactive countdown with pause/resume/cancel, configurable duration
-- Audio cues: warning SFX at 10s, alarm SFX at 5s
-- Auto-skip turn on expiry via callback
-- Timer pauses during AI turns
-- Visual countdown bar with color transitions (cream -> amber -> red)
-- 216 tests passing (35 new), 978 lines added across 6 files
-
-### Priority 4: Animations - DONE
-- **Commit:** `357ff23` feat(tactical_grid): add battle animations
-- AnimationService: reactive animation management with Completers
-- Move animation (300ms slide), attack animation (400ms lunge), damage popup (800ms), defeat animation (500ms)
-- Stack overlay architecture: GridView for tiles, overlay for animated sprites
-- Impact flash effect (150ms), input blocking during animations
-- 244 tests passing (28 new), ~1200 lines added across 8 files
-
-### Priority 5: Voice Announcer - DONE
-- **Commit:** `42fc78b` feat(tactical_grid): add voice announcer with BGM ducking
-- VoiceAnnouncerService: event-to-voice-asset mapping, skip-if-busy policy, 2s cooldown
-- 8 battle events with per-unit-type capture lines and per-ability lines
-- BattleAudioCoordinator: 8 voice announcement convenience methods
-- 278 tests passing (34 new), ~500 lines added across 8 files
-
-### Audio Asset Generation - DONE
-- **Commit:** `9a215d6` feat(tactical_grid): add battle voice announcer audio assets
-- **Voice lines (19 files):** ElevenLabs TTS, Daniel voice, eleven_multilingual_v2 model
-  - 3 match events (match_start, victory, defeat)
-  - 7 unit capture lines (6 types + generic)
-  - 6 ability lines (5 active + generic)
-  - 3 status lines (commander_in_danger, objective_secured, turn_warning)
-- **SFX (16 files):** ElevenLabs Sound Effects API, eleven_text_to_sound_v2
-  - 6 core battle SFX (click, footsteps, sword_slash, hit, notification, achievement_unlock)
-  - 6 ability SFX (ability_activate, rally_horn, arrow_shot, fireball_cast, shield_block, reveal_pulse)
-  - 2 timer SFX (timer_tick, timer_critical)
-  - 2 match SFX (turn_change, unit_defeat)
-- **BGM (4 tracks):** Generated via Suno
-  - battle_theme.mp3 (60s, loopable battle music)
-  - menu_theme.mp3 (45s, loopable strategic planning music)
-  - victory_fanfare.mp3 (15s, triumphant fanfare)
-  - defeat_theme.mp3 (15s, somber defeat theme)
-- **Audio coordinator updated:** Replaced placeholder SFX mappings with proper generated assets
-- **Generation scripts:** tools/generate_battle_voice.sh, tools/generate_battle_sfx.sh, tools/generate_battle_bgm.sh
+### Key Decisions
+1. **No hybrid approach** - Engine handles tiles, overlays, input, decorators natively. No Flutter overlay workarounds.
+2. **One package** - Tiles, entities, overlays, sprites, pathfinding all in fifty_map_engine. No separate sprite package.
+3. **Hide Flame** - Public API uses GridPosition, TileGrid, etc. Consumers never import Flame.
+4. **Additive upgrade** - Existing room/entity system preserved. Zero breaking changes.
+5. **Sprite animation included** - Sprite sheets and state machines go in map engine (no standalone use case for sprites without grid).
 
 ---
 
-## BR-071 Remaining Work
+## Dependency Chain
 
-### Unit Sprite Art - DONE
-- 6 player unit sprites (burgundy #88292f): Commander, Knight, Shield, Archer, Mage, Scout
-- 6 enemy unit sprites (slate grey #335c67): Commander, Knight, Shield, Archer, Mage, Scout
-- Generated via Higgsfield FLUX.2 Pro, pixel art 64x64 style
-- Output: `assets/images/units/` (12 PNG files)
-
-### Board Textures - DONE
-- 6 tile textures: tile_dark, tile_light, tile_objective, tile_powerup, tile_obstacle, tile_trap
-- Generated via Higgsfield FLUX.2 Pro, pixel art 64x64 style
-- Output: `assets/images/board/` (6 PNG files)
-
-### Code Integration - DONE
-- Wired victory_fanfare.mp3 and defeat_theme.mp3 into audio coordinator (play on game end)
-- Wired menu_theme.mp3 into menu screen (plays on enter, stops on navigate away)
-- Wired ability-specific SFX (rally_horn, arrow_shot, fireball_cast, shield_block, reveal_pulse) per ability type
-- Replaced colored-circle unit rendering with PNG sprite images via ClipOval + Image.asset
-- 278 tests passing, 4 files modified
-
----
-
-## Last Session (2026-02-09)
-
-### Audio Asset Generation - Complete
-- Generated 19 voice lines via ElevenLabs TTS (Daniel voice, eleven_multilingual_v2)
-- Generated 16 SFX via ElevenLabs Sound Effects API
-- Generated 4 BGM tracks via Suno
-- Updated audio coordinator: replaced all placeholder SFX with proper generated assets
-- Created 3 reusable generation scripts in tools/
-- 278 tests passing
-
-### Priority 5: Voice Announcer - Complete
-- Created VoiceAnnouncerService with skip-if-busy policy
-- Extended BattleAudioCoordinator with 8 announce methods
-- Wired into BattleActions and AITurnExecutor
-- Reviewer fix: capture abilityType before state mutation
-
----
-
-## Recently Completed
-
-### Audio Assets
-- **Commit:** `9a215d6` feat(tactical_grid): add battle voice announcer audio assets
-- **Commit:** (pending) SFX + BGM assets and coordinator update
-
-### BR-071 Priority 5 - Voice Announcer
-- **Commit:** `42fc78b` feat(tactical_grid): add voice announcer with BGM ducking
-
-### BR-071 Priority 4 - Animations
-- **Commit:** `357ff23` feat(tactical_grid): add battle animations
-
-### BR-071 Priority 3 - Turn Timer
-- **Commit:** `11c0995` feat(tactical_grid): add turn timer with auto-skip and audio cues
-
-### BR-071 Priority 2 - AI Opponent
-- **Commit:** `8ac033c` feat(tactical_grid): add AI opponent with three difficulty levels
-
-### BR-071 Priority 1 - Unit Types & Abilities
-- **Commit:** `911675d` feat(tactical_grid): add unit types and ability system
+```
+BR-077 (engine upgrade) → BR-076 (tactical grid migration) → BR-071 (complete)
+```
 
 ---
 
 ## Previous Work
 
-**BR-075 (Sneaker Marketplace Website):** Committed (`b476cba`)
-**BR-074 (Igris Birth Chamber):** Committed
+### BR-071 Completed Priorities (2026-02-09 and earlier)
+- **P1 Unit Types & Abilities:** `911675d` - Archer, Mage, Scout, full ability system
+- **P2 AI Opponent:** `8ac033c` - 3 difficulty levels, visual AI turns
+- **P3 Turn Timer:** `11c0995` - Countdown with audio cues, auto-skip
+- **P4 Animations:** `357ff23` - Move, attack, damage popup, defeat animations
+- **P5 Voice Announcer:** `42fc78b` - 8 battle events, BGM ducking
+- **Audio Assets:** `9a215d6` - 19 voice lines, 16 SFX, 4 BGM tracks
+- **Art Assets:** 12 unit sprites, 6 tile textures (Higgsfield FLUX.2 Pro)
+- **Code Integration:** Wired audio + sprites into game. 278 tests passing.
+
+### Other Completed
+- **BR-075 (Sneaker Marketplace Website):** Committed (`b476cba`)
+- **BR-074 (Igris Birth Chamber):** Committed
 
 ---
 
 ## Next Steps
 
-1. Commit code integration changes
-2. Final polish pass (board tile textures optional)
-3. Mark BR-071 as Done
+1. **Hunt BR-077** - Upgrade fifty_map_engine to v2 (grid game toolkit)
+2. After BR-077 ships: Revise BR-076 plan (pure engine, no hybrid)
+3. After BR-076 ships: Commit BR-071 final integration + mark Done
 
 ---
 
 ## Resume Command
 
 ```
-BR-071 - all 5 priorities + audio + art + code integration complete. Ready for commit. 278 tests passing. 4 files changed: audio_coordinator (ability SFX + victory/defeat/menu BGM), battle_actions (BGM wiring + ability SFX passthrough), unit_sprite_widget (PNG sprites), menu_page (menu BGM).
+Session focus: fifty_map_engine v2 upgrade (BR-077). Engine needs tile system, overlays, instant tap, entity decorators, animation queue, sprite animation, pathfinding. 49 tasks, 9 phases. BR-076 (tactical grid migration) blocked until engine ships. BR-071 code integration changes pending commit.
 ```
