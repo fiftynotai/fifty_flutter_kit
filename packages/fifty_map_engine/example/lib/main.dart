@@ -317,22 +317,10 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
 
   // --- Tap handlers ---
 
-  void _onEntityTap(FiftyMapEntity entity) {
-    if (_state.winner != null) return;
-    if (_controller.isAnimating || _controller.inputManager.isBlocked) return;
-    final unit = _state.units.where((u) => u.id == entity.id).firstOrNull;
-    if (unit == null) return;
-    final isOwnTeam =
-        (unit.isBlue && _state.isBlueTeam) || (!unit.isBlue && !_state.isBlueTeam);
-    if (isOwnTeam) {
-      _selectUnit(unit);
-    } else {
-      // Tapped enemy - check if in attack range
-      if (_state.attackTargets.contains(unit.position)) {
-        _attackUnit(unit);
-      }
-    }
-  }
+  // Entity taps fire on TapDown (press) while tile taps fire on TapUp
+  // (release). Using both causes race conditions when the finger shifts
+  // between press and release, so all game logic is handled in _onTileTap.
+  void _onEntityTap(FiftyMapEntity entity) {}
 
   void _onTileTap(GridPosition pos) {
     if (_state.winner != null) return;
