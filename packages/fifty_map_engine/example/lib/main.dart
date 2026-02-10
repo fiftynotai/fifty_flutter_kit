@@ -309,6 +309,10 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
       _controller.updateHP(unit.id, unit.hp / unit.maxHp);
       _controller.addStatusIcon(unit.id, unit.label);
     }
+    // Zoom out to fit grid, then center camera on entities
+    _controller.zoomOut();
+    _controller.zoomOut();
+    _controller.centerMap();
   }
 
   // --- Tap handlers ---

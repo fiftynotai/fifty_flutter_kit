@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 import 'package:fifty_map_engine/src/components/base/extension.dart';
 import 'package:fifty_map_engine/src/components/base/priority.dart';
 import 'package:fifty_map_engine/src/components/event_component.dart';
@@ -65,9 +66,15 @@ abstract class FiftyBaseComponent extends SpriteComponent
       priority = FiftyRenderPriority.event;
     }
 
-    // Load sprite (skip if no asset registered)
+    // Load sprite or create transparent placeholder
     if (model.asset.isNotEmpty) {
       sprite = Sprite(game.images.fromCache(model.asset));
+    } else {
+      final recorder = ui.PictureRecorder();
+      ui.Canvas(recorder, const Rect.fromLTWH(0, 0, 1, 1));
+      final picture = recorder.endRecording();
+      final image = await picture.toImage(1, 1);
+      sprite = Sprite(image);
     }
 
     // Calculate position (top-down coordinates, no Y-flip)
