@@ -49,9 +49,7 @@ class FiftyAssetLoader {
   /// Call this once during `onLoad()` or app startup. Throws an exception
   /// if nothing was registered.
   static Future<void> loadAll(Images images) async {
-    if (_registeredAssets.isEmpty) {
-      throw Exception('[FiftyAssetLoader] No assets registered for loading.');
-    }
+    if (_registeredAssets.isEmpty) return;
     await images.loadAll(_registeredAssets.toList());
   }
 

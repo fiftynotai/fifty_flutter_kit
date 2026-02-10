@@ -1,5 +1,5 @@
 name: fifty_map_engine_example
-description: "Demonstrates fifty_map_engine with Fifty Design Language styling"
+description: "Tactical Skirmish Sandbox - fifty_map_engine v2 showcase"
 publish_to: 'none'
 
 environment:
@@ -11,14 +11,6 @@ dependencies:
     sdk: flutter
   fifty_map_engine:
     path: ../
-  fifty_tokens:
-    path: ../../fifty_tokens
-  fifty_theme:
-    path: ../../fifty_theme
-  fifty_ui:
-    path: ../../fifty_ui
-  provider: ^6.1.2
-  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:
@@ -27,11 +19,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/images/
-    - assets/images/rooms/
-    - assets/images/furniture/
-    - assets/images/monsters/
-    - assets/images/events/
-    - assets/images/characters/
-    - assets/maps/

@@ -65,8 +65,10 @@ abstract class FiftyBaseComponent extends SpriteComponent
       priority = FiftyRenderPriority.event;
     }
 
-    // Load sprite
-    sprite = Sprite(game.images.fromCache(model.asset));
+    // Load sprite (skip if no asset registered)
+    if (model.asset.isNotEmpty) {
+      sprite = Sprite(game.images.fromCache(model.asset));
+    }
 
     // Calculate position (top-down coordinates, no Y-flip)
     position = Vector2(model.x, model.y);
