@@ -373,4 +373,131 @@ void main() {
       expect(range.contains(const GridPosition(3, 3)), isTrue); // diagonal
     });
   });
+
+  // --- Sandbox map BFS verification (Issue 6) ---
+  group('MovementRange - Sandbox map layout', () {
+    late TileGrid sandboxGrid;
+    late TileType sandboxGrass;
+    late TileType sandboxForest;
+    late TileType sandboxWater;
+    late TileType sandboxWall;
+
+    setUp(() {
+      sandboxGrass = const TileType(
+        id: 'grass',
+        color: Color(0xFF4CAF50),
+        walkable: true,
+        movementCost: 1.0,
+      );
+      sandboxForest = const TileType(
+        id: 'forest',
+        color: Color(0xFF2E7D32),
+        walkable: true,
+        movementCost: 2.0,
+      );
+      sandboxWater = const TileType(
+        id: 'water',
+        color: Color(0xFF1565C0),
+        walkable: false,
+      );
+      sandboxWall = const TileType(
+        id: 'wall',
+        color: Color(0xFF5D4037),
+        walkable: false,
+      );
+
+      sandboxGrid = TileGrid(width: 10, height: 8);
+      sandboxGrid.fill(sandboxGrass);
+      // Forests: (3,1)-(4,2)
+      sandboxGrid.fillRect(const GridPosition(3, 1), 2, 2, sandboxForest);
+      // Forests: (6,4)-(7,5)
+      sandboxGrid.fillRect(const GridPosition(6, 4), 2, 2, sandboxForest);
+      // Water: (4,3)-(5,4)
+      sandboxGrid.fillRect(const GridPosition(4, 3), 2, 2, sandboxWater);
+      // Walls
+      for (final p in [
+        const GridPosition(0, 0),
+        const GridPosition(9, 7),
+        const GridPosition(5, 0),
+        const GridPosition(4, 7),
+      ]) {
+        sandboxGrid.setTile(p, sandboxWall);
+      }
+    });
+
+    test('warrior (budget 3) from (1,2) cannot reach forest beyond budget', () {
+      // Blue warrior starts at (1,2) with move budget 3.
+      // Forest tiles at (3,1) and (3,2) cost 2.0 to enter.
+      // Path to (3,1): (1,2)->(2,2)->(2,1)->(3,1) = 1+1+2 = 4 > 3.
+      // So (3,1) should NOT be reachable with budget 3.
+      final blocked = <GridPosition>{};
+      final graph = GridGraph(grid: sandboxGrid, blocked: blocked);
+      final range = MovementRange.reachable(
+        start: const GridPosition(1, 2),
+        budget: 3,
+        graph: graph,
+      );
+
+      // (3,1) costs at least 4 to reach (2 grass + 1 forest entry)
+      expect(range.contains(const GridPosition(3, 1)), isFalse);
+      // But (2,1) should be reachable (cost 2: grass steps)
+      expect(range.contains(const GridPosition(2, 1)), isTrue);
+      // (4,2) is also unreachable: path must go through (3,2) forest (cost 2)
+      // e.g. (1,2)->(2,2)->(3,2) = 1+2 = 3, then (3,2)->(4,2) = 3+1 = 4 > 3
+      expect(range.contains(const GridPosition(4, 2)), isFalse);
+    });
+
+    test('warrior (budget 3) from (1,2) includes expected grass tiles', () {
+      final graph = GridGraph(grid: sandboxGrid);
+      final range = MovementRange.reachable(
+        start: const GridPosition(1, 2),
+        budget: 3,
+        graph: graph,
+      );
+
+      // Origin always included
+      expect(range.contains(const GridPosition(1, 2)), isTrue);
+      // Pure grass tiles within manhattan distance 3
+      expect(range.contains(const GridPosition(0, 2)), isTrue); // cost 1
+      expect(range.contains(const GridPosition(1, 3)), isTrue); // cost 1
+      expect(range.contains(const GridPosition(1, 1)), isTrue); // cost 1
+      expect(range.contains(const GridPosition(2, 2)), isTrue); // cost 1
+      expect(range.contains(const GridPosition(0, 1)), isTrue); // cost 2
+      expect(range.contains(const GridPosition(1, 4)), isTrue); // cost 2
+      expect(range.contains(const GridPosition(2, 3)), isTrue); // cost 2
+      expect(range.contains(const GridPosition(0, 3)), isTrue); // cost 2
+      expect(range.contains(const GridPosition(1, 5)), isTrue); // cost 3
+      // Wall at (0,0) is not reachable
+      expect(range.contains(const GridPosition(0, 0)), isFalse);
+    });
+
+    test('water tiles are impassable and block BFS expansion', () {
+      // Water at (4,3)-(5,4). A unit at (3,3) with budget 2 should not
+      // pass through water to reach (6,3).
+      final graph = GridGraph(grid: sandboxGrid);
+      final range = MovementRange.reachable(
+        start: const GridPosition(3, 3),
+        budget: 2,
+        graph: graph,
+      );
+
+      // Water tiles never reachable
+      expect(range.contains(const GridPosition(4, 3)), isFalse);
+      expect(range.contains(const GridPosition(5, 3)), isFalse);
+      expect(range.contains(const GridPosition(4, 4)), isFalse);
+      expect(range.contains(const GridPosition(5, 4)), isFalse);
+
+      // Tiles on the other side of water not reachable with budget 2
+      expect(range.contains(const GridPosition(6, 3)), isFalse);
+
+      // But tiles going around (up or down) should be reachable if cost allows
+      // (3,3)->(3,2) cost 1 (forest entry = 2, so actually cost 2)
+      // Actually (3,2) is forest, so entering costs 2.
+      // (3,3)->(3,2) = 2.0 (forest), then (3,2)->(2,2) = 1.0 => total 3 > 2
+      // So (2,2) is not reachable from (3,3) with budget 2
+      expect(range.contains(const GridPosition(3, 2)), isTrue); // forest, cost 2
+      expect(range.contains(const GridPosition(2, 3)), isTrue); // grass, cost 1
+      expect(range.contains(const GridPosition(3, 4)), isTrue); // grass, cost 1
+    });
+  });
 }

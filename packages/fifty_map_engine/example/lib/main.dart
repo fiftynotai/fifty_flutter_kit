@@ -187,6 +187,9 @@ class GameState {
   bool hasAttacked;
   String? winner;
 
+  /// Units that have already acted (moved/attacked) this turn.
+  Set<String> usedUnits;
+
   /// Positions currently shown as valid moves.
   Set<GridPosition> moveTargets;
 
@@ -199,6 +202,7 @@ class GameState {
         hasAttacked = false,
         selectedUnitId = null,
         winner = null,
+        usedUnits = {},
         moveTargets = {},
         attackTargets = {};
 
@@ -268,6 +272,7 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
   late TileGrid _grid;
   late GameState _state;
   bool _decoratorsApplied = false;
+  bool _isMoving = false;
 
   static const _blueColor = Color(0xFF2196F3);
   static const _redColor = Color(0xFFF44336);
@@ -324,6 +329,7 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
 
   void _onTileTap(GridPosition pos) {
     if (_state.winner != null) return;
+    if (_isMoving) return;
     if (_controller.isAnimating || _controller.inputManager.isBlocked) return;
 
     // Own unit at this tile?
@@ -332,7 +338,10 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
       final isOwn = (unitHere.isBlue && _state.isBlueTeam) ||
           (!unitHere.isBlue && !_state.isBlueTeam);
       if (isOwn) {
-        _selectUnit(unitHere);
+        // Don't allow selecting units that already acted this turn
+        if (!_state.usedUnits.contains(unitHere.id)) {
+          _selectUnit(unitHere);
+        }
         return;
       }
       // Enemy at this tile - check attack range
@@ -425,6 +434,9 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
   void _moveUnit(GridPosition target) {
     final unit = _state.selectedUnit;
     if (unit == null) return;
+    if (!_state.moveTargets.contains(target)) return;
+
+    _isMoving = true;
 
     // A* pathfinding to compute the optimal route
     final blocked = _state.occupiedPositions.difference({unit.position});
@@ -434,7 +446,10 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
       grid: _grid,
       blocked: blocked,
     );
-    if (path == null || path.length < 2) return;
+    if (path == null || path.length < 2) {
+      _isMoving = false;
+      return;
+    }
 
     _controller.clearHighlights(group: 'validMoves');
 
@@ -447,18 +462,20 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
           final entity = _controller.getEntityById(unit.id);
           if (entity == null) return;
           _controller.move(entity, step.x.toDouble(), step.y.toDouble());
-          await Future<void>.delayed(const Duration(milliseconds: 250));
+          await Future<void>.delayed(const Duration(milliseconds: 350));
         },
         onComplete: isLast
             ? () {
                 setState(() {
                   unit.position = target;
                   _state.hasMoved = true;
+                  _state.usedUnits.add(unit.id);
                   _state.moveTargets = {};
+                  _state.attackTargets = {};
                 });
-                // Show attack range from new position
-                _controller.clearHighlights(group: 'attackRange');
-                _showAttackRange(unit);
+                _isMoving = false;
+                _deselectUnit();
+                _checkAutoTurnSwitch();
               }
             : null,
       ));
@@ -553,6 +570,7 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
       _state.isBlueTeam = !_state.isBlueTeam;
       _state.hasMoved = false;
       _state.hasAttacked = false;
+      _state.usedUnits = {};
       _state.moveTargets = {};
       _state.attackTargets = {};
     });
@@ -568,11 +586,25 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
     }
   }
 
+  void _checkAutoTurnSwitch() {
+    final friendlyUnits = _state.units
+        .where((u) => u.isBlue == _state.isBlueTeam)
+        .toList();
+    if (_state.usedUnits.length >= friendlyUnits.length) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted && _state.winner == null) {
+          _endTurn();
+        }
+      });
+    }
+  }
+
   void _restart() {
     _controller.clearHighlights();
     _controller.cancelAnimations();
     _controller.clear();
     _decoratorsApplied = false;
+    _isMoving = false;
     setState(() {
       _state = GameState(units: _initialUnits());
     });
