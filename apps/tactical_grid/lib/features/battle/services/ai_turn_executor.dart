@@ -168,6 +168,7 @@ class AITurnExecutor {
           map_engine.GridPosition(action.moveTarget!.x, action.moveTarget!.y),
           grid: grid,
           blocked: occupied,
+          diagonal: true,
         );
         _viewModel.moveSelectedUnit(action.moveTarget!);
         await _audio.playMoveSfx();
@@ -186,6 +187,20 @@ class AITurnExecutor {
               onComplete: isLast ? () => completer.complete() : null,
             ));
           }
+          await completer.future;
+        } else {
+          // Direct move: no intermediate path (L-shape, blocked, or adjacent).
+          final completer = Completer<void>();
+          controller.queueAnimation(map_engine.AnimationEntry(
+            execute: () async {
+              final entity = controller.getEntityById(action.unitId);
+              if (entity == null) return;
+              controller.move(entity, action.moveTarget!.x.toDouble(),
+                  action.moveTarget!.y.toDouble());
+              await Future<void>.delayed(const Duration(milliseconds: 300));
+            },
+            onComplete: () => completer.complete(),
+          ));
           await completer.future;
         }
       } else {
@@ -429,6 +444,7 @@ class AITurnExecutor {
           map_engine.GridPosition(action.moveTarget!.x, action.moveTarget!.y),
           grid: grid,
           blocked: occupied,
+          diagonal: true,
         );
         _viewModel.moveSelectedUnit(action.moveTarget!);
         await _audio.playMoveSfx();
@@ -447,6 +463,20 @@ class AITurnExecutor {
               onComplete: isLast ? () => completer.complete() : null,
             ));
           }
+          await completer.future;
+        } else {
+          // Direct move: no intermediate path (L-shape, blocked, or adjacent).
+          final completer = Completer<void>();
+          controller.queueAnimation(map_engine.AnimationEntry(
+            execute: () async {
+              final entity = controller.getEntityById(action.unitId);
+              if (entity == null) return;
+              controller.move(entity, action.moveTarget!.x.toDouble(),
+                  action.moveTarget!.y.toDouble());
+              await Future<void>.delayed(const Duration(milliseconds: 300));
+            },
+            onComplete: () => completer.complete(),
+          ));
           await completer.future;
         }
       } else {
@@ -589,6 +619,7 @@ class AITurnExecutor {
           map_engine.GridPosition(action.moveTarget!.x, action.moveTarget!.y),
           grid: grid,
           blocked: occupied,
+          diagonal: true,
         );
         _viewModel.moveSelectedUnit(action.moveTarget!);
         await _audio.playMoveSfx();
@@ -607,6 +638,20 @@ class AITurnExecutor {
               onComplete: isLast ? () => completer.complete() : null,
             ));
           }
+          await completer.future;
+        } else {
+          // Direct move: no intermediate path (L-shape, blocked, or adjacent).
+          final completer = Completer<void>();
+          controller.queueAnimation(map_engine.AnimationEntry(
+            execute: () async {
+              final entity = controller.getEntityById(action.unitId);
+              if (entity == null) return;
+              controller.move(entity, action.moveTarget!.x.toDouble(),
+                  action.moveTarget!.y.toDouble());
+              await Future<void>.delayed(const Duration(milliseconds: 300));
+            },
+            onComplete: () => completer.complete(),
+          ));
           await completer.future;
         }
       } else {

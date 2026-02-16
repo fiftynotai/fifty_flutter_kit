@@ -167,12 +167,13 @@ class BattleActions {
           .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
           .toSet();
 
-      // A* pathfinding.
+      // A* pathfinding (diagonal enabled so diagonal/L-shape moves can route).
       final path = controller.findPath(
         map_engine.GridPosition(fromPos.x, fromPos.y),
         map_engine.GridPosition(position.x, position.y),
         grid: grid,
         blocked: occupied,
+        diagonal: true,
       );
 
       // Update game state immediately (game logic moves the unit).
@@ -197,6 +198,22 @@ class BattleActions {
           ));
         }
 
+        await completer.future;
+      } else {
+        // No intermediate path (L-shape jump, blocked, or adjacent step).
+        // Move the engine component directly to the target tile so it stays
+        // in sync with the game state that was already updated above.
+        final completer = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry(
+          execute: () async {
+            final entity = controller.getEntityById(unitId);
+            if (entity == null) return;
+            controller.move(
+                entity, position.x.toDouble(), position.y.toDouble());
+            await Future<void>.delayed(const Duration(milliseconds: 300));
+          },
+          onComplete: () => completer.complete(),
+        ));
         await completer.future;
       }
       return;

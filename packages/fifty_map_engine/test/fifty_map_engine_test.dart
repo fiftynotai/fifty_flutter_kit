@@ -30,9 +30,10 @@ void main() {
         blockSize: FiftyBlockSize(1, 1),
       );
 
-      // Position should be gridPosition * blockSize (64.0)
+      // Position: x = gridX * blockSize, y = (gridY + blockHeight) * blockSize
+      // (bottomLeft anchor requires height offset so entity aligns with tile)
       expect(entity.x, equals(2 * 64.0));
-      expect(entity.y, equals(3 * 64.0));
+      expect(entity.y, equals((3 + 1) * 64.0));
     });
 
     test('calculates size from block size', () {
@@ -188,7 +189,7 @@ void main() {
       expect(moved.gridPosition.x, equals(5));
       expect(moved.gridPosition.y, equals(3));
       expect(moved.x, equals(5 * 64.0));
-      expect(moved.y, equals(3 * 64.0));
+      expect(moved.y, equals((3 + 1) * 64.0));
     });
 
     test('entityType returns correct type', () {

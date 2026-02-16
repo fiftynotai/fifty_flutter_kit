@@ -77,6 +77,12 @@ class FiftyMapBuilder extends FlameGame
   /// Optional callback for tile taps.
   final FiftyTileTapCallback? onTileTap;
 
+  /// Whether an entity component already forwarded a tile tap for the
+  /// current pointer gesture. Prevents double-fire: entity [onTapDown]
+  /// fires on press while game [onTapUp] fires on release — both call
+  /// [onTileTap], which can cause toggle-select to immediately undo itself.
+  bool entityHandledTileTap = false;
+
   /// Internal grid component.
   TileGridComponent? _tileGridComponent;
 
@@ -408,6 +414,11 @@ class FiftyMapBuilder extends FlameGame
   @override
   void onTapUp(TapUpInfo info) {
     super.onTapUp(info);
+    // Skip if the entity's onTapDown already forwarded this tap.
+    if (entityHandledTileTap) {
+      entityHandledTileTap = false;
+      return;
+    }
     // Handle tile taps in grid mode
     if (grid != null && onTileTap != null) {
       final worldPos = cameraComponent.viewfinder.transform

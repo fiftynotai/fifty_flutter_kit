@@ -251,10 +251,23 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
       );
     }
 
-    // Centre camera on the board.
-    _controller.zoomOut();
-    _controller.zoomOut();
-    _controller.centerMap();
+    // Centre camera on the board (may not be ready on slow platforms).
+    _centerCamera();
+  }
+
+  /// Zooms out and centres the camera.
+  ///
+  /// Retries if the engine camera is not yet initialised (e.g. web where
+  /// asset loading takes longer than the post-frame callback delay).
+  void _centerCamera() {
+    try {
+      _controller.zoomOut();
+      _controller.zoomOut();
+      _controller.centerMap();
+    } catch (_) {
+      // Camera not ready yet; retry shortly.
+      Future.delayed(const Duration(milliseconds: 300), _centerCamera);
+    }
   }
 
   // -----------------------------------------------------------------------

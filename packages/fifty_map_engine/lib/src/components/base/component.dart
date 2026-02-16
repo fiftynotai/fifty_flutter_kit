@@ -5,6 +5,7 @@ import 'package:fifty_map_engine/src/components/base/priority.dart';
 import 'package:fifty_map_engine/src/components/event_component.dart';
 import 'package:fifty_map_engine/src/components/text_component.dart';
 import 'package:fifty_map_engine/src/config/map_config.dart';
+import 'package:fifty_map_engine/src/grid/grid_position.dart';
 import 'package:fifty_map_engine/src/view/map_builder.dart';
 import 'package:fifty_map_engine/src/utils/utils.dart';
 import 'package:flame/collisions.dart';
@@ -126,6 +127,21 @@ abstract class FiftyBaseComponent extends SpriteComponent
   void onTapDown(TapDownEvent event) {
     super.onTapDown(event);
     game.onEntityTap.call(model);
+
+    // Forward to tile tap handler so taps on entity sprites also trigger
+    // tile selection in grid mode. Mark the gesture as handled so the
+    // game-level onTapUp does not fire onTileTap a second time (which
+    // would cause toggle-select to immediately undo the selection).
+    if (game.grid != null && game.onTileTap != null) {
+      final gridPos = GridPosition(
+        model.gridPosition.x.toInt(),
+        model.gridPosition.y.toInt(),
+      );
+      if (game.grid!.isValid(gridPos)) {
+        game.entityHandledTileTap = true;
+        game.onTileTap!(gridPos);
+      }
+    }
   }
 
   /// **Hook to spawn nested child entities**
@@ -166,7 +182,17 @@ class FiftyMovableComponent extends FiftyBaseComponent {
   void moveTo(Vector2 newPosition, FiftyMapEntity newModel,
       {double speed = 200}) {
     model = newModel;
+
+    // Remove any running move effects so only one animates at a time.
+    // Without this, queued step-by-step movements can overlap because
+    // the step delay (200ms) is shorter than the effect duration (~320ms).
+    children.whereType<MoveToEffect>().forEach((e) => e.removeFromParent());
+
     final distance = newPosition.distanceTo(position);
+    if (distance < 0.01) {
+      eventComponent?.moveWithParent(newModel);
+      return;
+    }
     final duration = distance / speed;
     add(
       MoveToEffect(
@@ -179,7 +205,9 @@ class FiftyMovableComponent extends FiftyBaseComponent {
 
   /// **Direct movement without child sync.**
   void _directMove(Vector2 newPosition, {double speed = 200}) {
+    children.whereType<MoveToEffect>().forEach((e) => e.removeFromParent());
     final distance = newPosition.distanceTo(position);
+    if (distance < 0.01) return;
     final duration = distance / speed;
     add(
       MoveToEffect(
