@@ -201,7 +201,7 @@ class FiftyMapEntity {
     double? x,
     double? y,
   })  : x = x ?? gridPosition.x * FiftyMapConfig.blockSize,
-        y = y ?? (gridPosition.y + blockSize.height) * FiftyMapConfig.blockSize;
+        y = y ?? gridPosition.y * FiftyMapConfig.blockSize;
 
   /// Pixel position vector.
   Vector2 get position => Vector2(x, y);

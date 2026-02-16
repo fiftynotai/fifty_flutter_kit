@@ -80,7 +80,7 @@ extension FiftyMapEntityExtension on FiftyMapEntity {
     return copyWith(
       gridPosition: gridPosition,
       x: gridPosition.x * FiftyMapConfig.blockSize,
-      y: (gridPosition.y + blockSize.height) * FiftyMapConfig.blockSize,
+      y: gridPosition.y * FiftyMapConfig.blockSize,
     );
   }
 

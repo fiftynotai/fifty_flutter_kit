@@ -49,7 +49,7 @@ abstract class FiftyBaseComponent extends SpriteComponent
     required this.model,
   }) : super(
           size: model.size,
-          anchor: Anchor.bottomLeft,
+          anchor: Anchor.topLeft,
         );
 
   @override
