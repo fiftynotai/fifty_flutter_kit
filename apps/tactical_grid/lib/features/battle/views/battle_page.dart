@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../actions/battle_actions.dart';
-import 'widgets/board_widget.dart';
+import 'widgets/engine_board_widget.dart';
 import 'widgets/turn_indicator.dart';
 import 'widgets/unit_info_panel.dart';
 
@@ -55,7 +55,7 @@ class _BattlePageState extends State<BattlePage> {
       body: Column(
         children: [
           const TurnIndicator(),
-          const Expanded(child: BoardWidget()),
+          const Expanded(child: EngineBoardWidget()),
           const UnitInfoPanel(),
         ],
       ),

@@ -16,6 +16,8 @@ library;
 
 import 'dart:async';
 
+import 'package:fifty_map_engine/fifty_map_engine.dart' as map_engine;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/battle_view_model.dart';
@@ -142,22 +144,72 @@ class AITurnExecutor {
   }
 
   /// Executes a simple move action: select unit, pause, move.
+  ///
+  /// Uses the engine's A* pathfinding and [AnimationQueue] when the
+  /// [FiftyMapController] is available, otherwise falls back to the
+  /// old [AnimationService].
   Future<void> _executeMove(AIAction action) async {
     final unit = _viewModel.board.getUnitById(action.unitId);
     _viewModel.selectUnit(action.unitId);
     await _audio.playSelectSfx();
     await Future<void>.delayed(const Duration(milliseconds: _selectDelayMs));
 
-    final fromPos = unit?.position;
-    final animFuture = (fromPos != null && _animationService != null)
-        ? _animationService!.playMoveAnimation(action.unitId, fromPos, action.moveTarget!)
-        : null;
-    _viewModel.moveSelectedUnit(action.moveTarget!);
-    await _audio.playMoveSfx();
-    if (animFuture != null) await animFuture;
+    if (Get.isRegistered<map_engine.FiftyMapController>()) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+      final grid = Get.find<map_engine.TileGrid>();
+      final fromPos = unit?.position;
+      if (fromPos != null) {
+        final occupied = _viewModel.gameState.value.board.units
+            .where((u) => u.isAlive && u.id != action.unitId)
+            .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
+            .toSet();
+        final path = controller.findPath(
+          map_engine.GridPosition(fromPos.x, fromPos.y),
+          map_engine.GridPosition(action.moveTarget!.x, action.moveTarget!.y),
+          grid: grid,
+          blocked: occupied,
+        );
+        _viewModel.moveSelectedUnit(action.moveTarget!);
+        await _audio.playMoveSfx();
+        if (path != null && path.length > 1) {
+          final completer = Completer<void>();
+          for (int i = 1; i < path.length; i++) {
+            final step = path[i];
+            final isLast = i == path.length - 1;
+            controller.queueAnimation(map_engine.AnimationEntry(
+              execute: () async {
+                final entity = controller.getEntityById(action.unitId);
+                if (entity == null) return;
+                controller.move(entity, step.x.toDouble(), step.y.toDouble());
+                await Future<void>.delayed(const Duration(milliseconds: 200));
+              },
+              onComplete: isLast ? () => completer.complete() : null,
+            ));
+          }
+          await completer.future;
+        }
+      } else {
+        _viewModel.moveSelectedUnit(action.moveTarget!);
+        await _audio.playMoveSfx();
+      }
+    } else {
+      // Fallback: old AnimationService.
+      final fromPos = unit?.position;
+      final animFuture = (fromPos != null && _animationService != null)
+          ? _animationService!
+              .playMoveAnimation(action.unitId, fromPos, action.moveTarget!)
+          : null;
+      _viewModel.moveSelectedUnit(action.moveTarget!);
+      await _audio.playMoveSfx();
+      if (animFuture != null) await animFuture;
+    }
   }
 
   /// Executes a simple attack action: select unit, pause, attack.
+  ///
+  /// Uses the engine's attack lunge, floating text, HP update, and defeat
+  /// animations when the [FiftyMapController] is available, otherwise
+  /// falls back to the old [AnimationService].
   Future<void> _executeAttack(AIAction action) async {
     final attacker = _viewModel.board.getUnitById(action.unitId);
     final target = _viewModel.board.getUnitById(action.attackTargetId!);
@@ -167,15 +219,78 @@ class AITurnExecutor {
 
     final result = _viewModel.attackUnit(action.attackTargetId!);
 
-    final anim = _animationService;
-    if (anim != null && attacker != null && target != null) {
-      await anim.playAttackAnimation(attacker.id, attacker.position, target.position);
-      anim.triggerFlash(target.id);
-      if (result.damageDealt != null && result.damageDealt! > 0) {
-        await anim.playDamagePopup(target.position, result.damageDealt!);
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        attacker != null &&
+        target != null) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+
+      // 1. Attack lunge animation.
+      final attackerComp = controller.getComponentById(attacker.id);
+      if (attackerComp is map_engine.FiftyMovableComponent) {
+        final c = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry.timed(
+          action: () => attackerComp.attack(),
+          duration: const Duration(milliseconds: 400),
+          onComplete: () => c.complete(),
+        ));
+        await c.future;
       }
+
+      // 2. Damage popup + HP bar update.
+      if (result.damageDealt != null && result.damageDealt! > 0) {
+        final c = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry.timed(
+          action: () {
+            controller.showFloatingText(
+              map_engine.GridPosition(target.position.x, target.position.y),
+              '-${result.damageDealt}',
+              color: const Color(0xFFFFFF00),
+              fontSize: 24,
+            );
+            controller.updateHP(
+              target.id,
+              target.hp.toDouble() / target.maxHp.toDouble(),
+            );
+          },
+          duration: const Duration(milliseconds: 800),
+          onComplete: () => c.complete(),
+        ));
+        await c.future;
+      }
+
+      // 3. Defeat animation (if killed).
       if (result.targetDefeated == true) {
-        await anim.playDefeatAnimation(target.id, target.position);
+        final targetComp = controller.getComponentById(target.id);
+        if (targetComp is map_engine.FiftyMovableComponent) {
+          final c = Completer<void>();
+          controller.queueAnimation(map_engine.AnimationEntry(
+            execute: () async {
+              targetComp.die();
+              await Future<void>.delayed(const Duration(milliseconds: 600));
+            },
+            onComplete: () {
+              final e = controller.getEntityById(target.id);
+              if (e != null) controller.removeEntity(e);
+              controller.removeDecorators(target.id);
+              c.complete();
+            },
+          ));
+          await c.future;
+        }
+      }
+    } else {
+      // Fallback: old AnimationService.
+      final anim = _animationService;
+      if (anim != null && attacker != null && target != null) {
+        await anim.playAttackAnimation(
+            attacker.id, attacker.position, target.position);
+        anim.triggerFlash(target.id);
+        if (result.damageDealt != null && result.damageDealt! > 0) {
+          await anim.playDamagePopup(target.position, result.damageDealt!);
+        }
+        if (result.targetDefeated == true) {
+          await anim.playDefeatAnimation(target.id, target.position);
+        }
       }
     }
 
@@ -195,6 +310,10 @@ class AITurnExecutor {
   }
 
   /// Executes an ability action: select unit, pause, use ability.
+  ///
+  /// Uses the engine's floating text and defeat animations when the
+  /// [FiftyMapController] is available, otherwise falls back to the
+  /// old [AnimationService].
   Future<void> _executeAbility(AIAction action) async {
     final selectedUnit = _viewModel.board.getUnitById(action.unitId);
     final abilityType = selectedUnit?.ability?.type;
@@ -205,16 +324,73 @@ class AITurnExecutor {
 
     final result = _viewModel.useAbility(targetPosition: action.abilityTarget);
 
-    final anim = _animationService;
-    if (anim != null && result.damageDealt != null && result.damageDealt! > 0) {
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        result.damageDealt != null &&
+        result.damageDealt! > 0) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+
+      // Damage popup at target position.
       if (action.abilityTarget != null) {
-        await anim.playDamagePopup(action.abilityTarget!, result.damageDealt!);
+        final c = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry.timed(
+          action: () {
+            controller.showFloatingText(
+              map_engine.GridPosition(
+                  action.abilityTarget!.x, action.abilityTarget!.y),
+              '-${result.damageDealt}',
+              color: const Color(0xFFFFFF00),
+              fontSize: 24,
+            );
+          },
+          duration: const Duration(milliseconds: 800),
+          onComplete: () => c.complete(),
+        ));
+        await c.future;
       }
+
+      // Defeat animations for any killed units.
       if (result.affectedUnitIds != null) {
         for (final affectedId in result.affectedUnitIds!) {
           final affectedUnit = _viewModel.board.getUnitById(affectedId);
           if (affectedUnit != null && affectedUnit.isDead) {
-            await anim.playDefeatAnimation(affectedId, affectedUnit.position);
+            final comp = controller.getComponentById(affectedId);
+            if (comp is map_engine.FiftyMovableComponent) {
+              final c = Completer<void>();
+              controller.queueAnimation(map_engine.AnimationEntry(
+                execute: () async {
+                  comp.die();
+                  await Future<void>.delayed(
+                      const Duration(milliseconds: 600));
+                },
+                onComplete: () {
+                  final entity = controller.getEntityById(affectedId);
+                  if (entity != null) controller.removeEntity(entity);
+                  controller.removeDecorators(affectedId);
+                  c.complete();
+                },
+              ));
+              await c.future;
+            }
+          }
+        }
+      }
+    } else {
+      // Fallback: old AnimationService.
+      final anim = _animationService;
+      if (anim != null &&
+          result.damageDealt != null &&
+          result.damageDealt! > 0) {
+        if (action.abilityTarget != null) {
+          await anim.playDamagePopup(
+              action.abilityTarget!, result.damageDealt!);
+        }
+        if (result.affectedUnitIds != null) {
+          for (final affectedId in result.affectedUnitIds!) {
+            final affectedUnit = _viewModel.board.getUnitById(affectedId);
+            if (affectedUnit != null && affectedUnit.isDead) {
+              await anim.playDefeatAnimation(
+                  affectedId, affectedUnit.position);
+            }
           }
         }
       }
@@ -228,6 +404,10 @@ class AITurnExecutor {
   }
 
   /// Executes a move-then-attack combo with sub-step delay.
+  ///
+  /// Uses engine A* pathfinding for the move and engine attack lunge,
+  /// floating text, HP update, and defeat animations for the attack
+  /// when the [FiftyMapController] is available.
   Future<void> _executeMoveAndAttack(AIAction action) async {
     // Step 1: Select and move with animation.
     final unit = _viewModel.board.getUnitById(action.unitId);
@@ -235,13 +415,55 @@ class AITurnExecutor {
     await _audio.playSelectSfx();
     await Future<void>.delayed(const Duration(milliseconds: _selectDelayMs));
 
-    final fromPos = unit?.position;
-    final moveAnimFuture = (fromPos != null && _animationService != null)
-        ? _animationService!.playMoveAnimation(action.unitId, fromPos, action.moveTarget!)
-        : null;
-    _viewModel.moveSelectedUnit(action.moveTarget!);
-    await _audio.playMoveSfx();
-    if (moveAnimFuture != null) await moveAnimFuture;
+    if (Get.isRegistered<map_engine.FiftyMapController>()) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+      final grid = Get.find<map_engine.TileGrid>();
+      final fromPos = unit?.position;
+      if (fromPos != null) {
+        final occupied = _viewModel.gameState.value.board.units
+            .where((u) => u.isAlive && u.id != action.unitId)
+            .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
+            .toSet();
+        final path = controller.findPath(
+          map_engine.GridPosition(fromPos.x, fromPos.y),
+          map_engine.GridPosition(action.moveTarget!.x, action.moveTarget!.y),
+          grid: grid,
+          blocked: occupied,
+        );
+        _viewModel.moveSelectedUnit(action.moveTarget!);
+        await _audio.playMoveSfx();
+        if (path != null && path.length > 1) {
+          final completer = Completer<void>();
+          for (int i = 1; i < path.length; i++) {
+            final step = path[i];
+            final isLast = i == path.length - 1;
+            controller.queueAnimation(map_engine.AnimationEntry(
+              execute: () async {
+                final entity = controller.getEntityById(action.unitId);
+                if (entity == null) return;
+                controller.move(entity, step.x.toDouble(), step.y.toDouble());
+                await Future<void>.delayed(const Duration(milliseconds: 200));
+              },
+              onComplete: isLast ? () => completer.complete() : null,
+            ));
+          }
+          await completer.future;
+        }
+      } else {
+        _viewModel.moveSelectedUnit(action.moveTarget!);
+        await _audio.playMoveSfx();
+      }
+    } else {
+      // Fallback: old AnimationService for move.
+      final fromPos = unit?.position;
+      final moveAnimFuture = (fromPos != null && _animationService != null)
+          ? _animationService!
+              .playMoveAnimation(action.unitId, fromPos, action.moveTarget!)
+          : null;
+      _viewModel.moveSelectedUnit(action.moveTarget!);
+      await _audio.playMoveSfx();
+      if (moveAnimFuture != null) await moveAnimFuture;
+    }
     await Future<void>.delayed(const Duration(milliseconds: _subStepDelayMs));
 
     // Step 2: Re-select and attack with animation.
@@ -252,15 +474,78 @@ class AITurnExecutor {
 
     final result = _viewModel.attackUnit(action.attackTargetId!);
 
-    final anim = _animationService;
-    if (anim != null && attacker != null && target != null) {
-      await anim.playAttackAnimation(attacker.id, attacker.position, target.position);
-      anim.triggerFlash(target.id);
-      if (result.damageDealt != null && result.damageDealt! > 0) {
-        await anim.playDamagePopup(target.position, result.damageDealt!);
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        attacker != null &&
+        target != null) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+
+      // 1. Attack lunge animation.
+      final attackerComp = controller.getComponentById(attacker.id);
+      if (attackerComp is map_engine.FiftyMovableComponent) {
+        final c = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry.timed(
+          action: () => attackerComp.attack(),
+          duration: const Duration(milliseconds: 400),
+          onComplete: () => c.complete(),
+        ));
+        await c.future;
       }
+
+      // 2. Damage popup + HP bar update.
+      if (result.damageDealt != null && result.damageDealt! > 0) {
+        final c = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry.timed(
+          action: () {
+            controller.showFloatingText(
+              map_engine.GridPosition(target.position.x, target.position.y),
+              '-${result.damageDealt}',
+              color: const Color(0xFFFFFF00),
+              fontSize: 24,
+            );
+            controller.updateHP(
+              target.id,
+              target.hp.toDouble() / target.maxHp.toDouble(),
+            );
+          },
+          duration: const Duration(milliseconds: 800),
+          onComplete: () => c.complete(),
+        ));
+        await c.future;
+      }
+
+      // 3. Defeat animation (if killed).
       if (result.targetDefeated == true) {
-        await anim.playDefeatAnimation(target.id, target.position);
+        final targetComp = controller.getComponentById(target.id);
+        if (targetComp is map_engine.FiftyMovableComponent) {
+          final c = Completer<void>();
+          controller.queueAnimation(map_engine.AnimationEntry(
+            execute: () async {
+              targetComp.die();
+              await Future<void>.delayed(const Duration(milliseconds: 600));
+            },
+            onComplete: () {
+              final e = controller.getEntityById(target.id);
+              if (e != null) controller.removeEntity(e);
+              controller.removeDecorators(target.id);
+              c.complete();
+            },
+          ));
+          await c.future;
+        }
+      }
+    } else {
+      // Fallback: old AnimationService for attack.
+      final anim = _animationService;
+      if (anim != null && attacker != null && target != null) {
+        await anim.playAttackAnimation(
+            attacker.id, attacker.position, target.position);
+        anim.triggerFlash(target.id);
+        if (result.damageDealt != null && result.damageDealt! > 0) {
+          await anim.playDamagePopup(target.position, result.damageDealt!);
+        }
+        if (result.targetDefeated == true) {
+          await anim.playDefeatAnimation(target.id, target.position);
+        }
       }
     }
 
@@ -278,6 +563,10 @@ class AITurnExecutor {
   }
 
   /// Executes a move-then-ability combo with sub-step delay.
+  ///
+  /// Uses engine A* pathfinding for the move and engine floating text
+  /// and defeat animations for the ability when the [FiftyMapController]
+  /// is available.
   Future<void> _executeMoveAndAbility(AIAction action) async {
     // Step 1: Select and move with animation.
     final unit = _viewModel.board.getUnitById(action.unitId);
@@ -286,13 +575,55 @@ class AITurnExecutor {
     await _audio.playSelectSfx();
     await Future<void>.delayed(const Duration(milliseconds: _selectDelayMs));
 
-    final fromPos = unit?.position;
-    final moveAnimFuture = (fromPos != null && _animationService != null)
-        ? _animationService!.playMoveAnimation(action.unitId, fromPos, action.moveTarget!)
-        : null;
-    _viewModel.moveSelectedUnit(action.moveTarget!);
-    await _audio.playMoveSfx();
-    if (moveAnimFuture != null) await moveAnimFuture;
+    if (Get.isRegistered<map_engine.FiftyMapController>()) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+      final grid = Get.find<map_engine.TileGrid>();
+      final fromPos = unit?.position;
+      if (fromPos != null) {
+        final occupied = _viewModel.gameState.value.board.units
+            .where((u) => u.isAlive && u.id != action.unitId)
+            .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
+            .toSet();
+        final path = controller.findPath(
+          map_engine.GridPosition(fromPos.x, fromPos.y),
+          map_engine.GridPosition(action.moveTarget!.x, action.moveTarget!.y),
+          grid: grid,
+          blocked: occupied,
+        );
+        _viewModel.moveSelectedUnit(action.moveTarget!);
+        await _audio.playMoveSfx();
+        if (path != null && path.length > 1) {
+          final completer = Completer<void>();
+          for (int i = 1; i < path.length; i++) {
+            final step = path[i];
+            final isLast = i == path.length - 1;
+            controller.queueAnimation(map_engine.AnimationEntry(
+              execute: () async {
+                final entity = controller.getEntityById(action.unitId);
+                if (entity == null) return;
+                controller.move(entity, step.x.toDouble(), step.y.toDouble());
+                await Future<void>.delayed(const Duration(milliseconds: 200));
+              },
+              onComplete: isLast ? () => completer.complete() : null,
+            ));
+          }
+          await completer.future;
+        }
+      } else {
+        _viewModel.moveSelectedUnit(action.moveTarget!);
+        await _audio.playMoveSfx();
+      }
+    } else {
+      // Fallback: old AnimationService for move.
+      final fromPos = unit?.position;
+      final moveAnimFuture = (fromPos != null && _animationService != null)
+          ? _animationService!
+              .playMoveAnimation(action.unitId, fromPos, action.moveTarget!)
+          : null;
+      _viewModel.moveSelectedUnit(action.moveTarget!);
+      await _audio.playMoveSfx();
+      if (moveAnimFuture != null) await moveAnimFuture;
+    }
     await Future<void>.delayed(const Duration(milliseconds: _subStepDelayMs));
 
     // Step 2: Re-select and use ability with animation.
@@ -301,16 +632,73 @@ class AITurnExecutor {
 
     final result = _viewModel.useAbility(targetPosition: action.abilityTarget);
 
-    final anim = _animationService;
-    if (anim != null && result.damageDealt != null && result.damageDealt! > 0) {
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        result.damageDealt != null &&
+        result.damageDealt! > 0) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+
+      // Damage popup at target position.
       if (action.abilityTarget != null) {
-        await anim.playDamagePopup(action.abilityTarget!, result.damageDealt!);
+        final c = Completer<void>();
+        controller.queueAnimation(map_engine.AnimationEntry.timed(
+          action: () {
+            controller.showFloatingText(
+              map_engine.GridPosition(
+                  action.abilityTarget!.x, action.abilityTarget!.y),
+              '-${result.damageDealt}',
+              color: const Color(0xFFFFFF00),
+              fontSize: 24,
+            );
+          },
+          duration: const Duration(milliseconds: 800),
+          onComplete: () => c.complete(),
+        ));
+        await c.future;
       }
+
+      // Defeat animations for any killed units.
       if (result.affectedUnitIds != null) {
         for (final affectedId in result.affectedUnitIds!) {
           final affectedUnit = _viewModel.board.getUnitById(affectedId);
           if (affectedUnit != null && affectedUnit.isDead) {
-            await anim.playDefeatAnimation(affectedId, affectedUnit.position);
+            final comp = controller.getComponentById(affectedId);
+            if (comp is map_engine.FiftyMovableComponent) {
+              final c = Completer<void>();
+              controller.queueAnimation(map_engine.AnimationEntry(
+                execute: () async {
+                  comp.die();
+                  await Future<void>.delayed(
+                      const Duration(milliseconds: 600));
+                },
+                onComplete: () {
+                  final entity = controller.getEntityById(affectedId);
+                  if (entity != null) controller.removeEntity(entity);
+                  controller.removeDecorators(affectedId);
+                  c.complete();
+                },
+              ));
+              await c.future;
+            }
+          }
+        }
+      }
+    } else {
+      // Fallback: old AnimationService for ability.
+      final anim = _animationService;
+      if (anim != null &&
+          result.damageDealt != null &&
+          result.damageDealt! > 0) {
+        if (action.abilityTarget != null) {
+          await anim.playDamagePopup(
+              action.abilityTarget!, result.damageDealt!);
+        }
+        if (result.affectedUnitIds != null) {
+          for (final affectedId in result.affectedUnitIds!) {
+            final affectedUnit = _viewModel.board.getUnitById(affectedId);
+            if (affectedUnit != null && affectedUnit.isDead) {
+              await anim.playDefeatAnimation(
+                  affectedId, affectedUnit.position);
+            }
           }
         }
       }

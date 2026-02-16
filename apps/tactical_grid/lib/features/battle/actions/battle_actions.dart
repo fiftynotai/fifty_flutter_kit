@@ -22,9 +22,13 @@
 /// ```
 library;
 
+import 'dart:async';
+
+import 'package:fifty_map_engine/fifty_map_engine.dart' as map_engine;
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../core/presentation/actions/action_presenter.dart';
 import '../../../core/routes/route_manager.dart';
@@ -139,13 +143,66 @@ class BattleActions {
   // Animation Helpers
   // ---------------------------------------------------------------------------
 
-  /// Executes a move with optional animation.
+  /// Executes a move with engine animation (A* pathfinding + AnimationQueue).
+  ///
+  /// If the engine controller is available (registered via GetX by
+  /// [EngineBoardWidget]), uses the engine's [map_engine.AnimationQueue] to
+  /// animate the unit along an A* path step by step. Falls back to the old
+  /// [AnimationService] if the engine is not registered (e.g. in tests).
   Future<void> _handleMoveWithAnimation(
     GameState state,
     GridPosition position,
   ) async {
     final fromPos = state.selectedUnit!.position;
     final unitId = state.selectedUnit!.id;
+
+    // Try engine-based animation.
+    if (Get.isRegistered<map_engine.FiftyMapController>()) {
+      final controller = Get.find<map_engine.FiftyMapController>();
+      final grid = Get.find<map_engine.TileGrid>();
+
+      // Compute occupied positions (excluding the moving unit).
+      final occupied = state.board.units
+          .where((u) => u.isAlive && u.id != unitId)
+          .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
+          .toSet();
+
+      // A* pathfinding.
+      final path = controller.findPath(
+        map_engine.GridPosition(fromPos.x, fromPos.y),
+        map_engine.GridPosition(position.x, position.y),
+        grid: grid,
+        blocked: occupied,
+      );
+
+      // Update game state immediately (game logic moves the unit).
+      _viewModel.moveSelectedUnit(position);
+      _audio.playMoveSfx();
+
+      // Animate along the path if one was found.
+      if (path != null && path.length > 1) {
+        final completer = Completer<void>();
+
+        for (int i = 1; i < path.length; i++) {
+          final step = path[i];
+          final isLast = i == path.length - 1;
+          controller.queueAnimation(map_engine.AnimationEntry(
+            execute: () async {
+              final entity = controller.getEntityById(unitId);
+              if (entity == null) return;
+              controller.move(entity, step.x.toDouble(), step.y.toDouble());
+              await Future<void>.delayed(const Duration(milliseconds: 200));
+            },
+            onComplete: isLast ? () => completer.complete() : null,
+          ));
+        }
+
+        await completer.future;
+      }
+      return;
+    }
+
+    // Fallback: old animation service (used in tests without the engine).
     final animFuture =
         _animationService?.playMoveAnimation(unitId, fromPos, position);
     _viewModel.moveSelectedUnit(position);
@@ -170,6 +227,10 @@ class BattleActions {
   void onTileTapped(BuildContext context, GridPosition position) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        Get.find<map_engine.FiftyMapController>().isAnimating) {
+      return;
+    }
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -238,6 +299,10 @@ class BattleActions {
   void onAttackUnit(BuildContext context, String targetUnitId) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        Get.find<map_engine.FiftyMapController>().isAnimating) {
+      return;
+    }
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -264,23 +329,88 @@ class BattleActions {
         }
 
         // --- Animation sequence ---
-        final anim = _animationService;
-        if (anim != null && attacker != null && target != null) {
+        // Try engine-based animation.
+        if (Get.isRegistered<map_engine.FiftyMapController>() &&
+            attacker != null &&
+            target != null) {
+          final controller = Get.find<map_engine.FiftyMapController>();
+
           // 1. Attack lunge animation.
-          await anim.playAttackAnimation(
-            attacker.id,
-            attacker.position,
-            target.position,
-          );
-          // 2. Impact flash on target.
-          anim.triggerFlash(target.id);
-          // 3. Damage popup.
-          if (result.damageDealt != null && result.damageDealt! > 0) {
-            await anim.playDamagePopup(target.position, result.damageDealt!);
+          final attackerComp = controller.getComponentById(attacker.id);
+          if (attackerComp is map_engine.FiftyMovableComponent) {
+            final attackCompleter = Completer<void>();
+            controller.queueAnimation(map_engine.AnimationEntry.timed(
+              action: () => attackerComp.attack(),
+              duration: const Duration(milliseconds: 400),
+              onComplete: () => attackCompleter.complete(),
+            ));
+            await attackCompleter.future;
           }
-          // 4. Defeat animation.
+
+          // 2. Damage popup + HP bar update.
+          if (result.damageDealt != null && result.damageDealt! > 0) {
+            final popupCompleter = Completer<void>();
+            controller.queueAnimation(map_engine.AnimationEntry.timed(
+              action: () {
+                controller.showFloatingText(
+                  map_engine.GridPosition(
+                      target.position.x, target.position.y),
+                  '-${result.damageDealt}',
+                  color: const Color(0xFFFFFF00), // Yellow
+                  fontSize: 24,
+                );
+                controller.updateHP(
+                  target.id,
+                  target.hp.toDouble() / target.maxHp.toDouble(),
+                );
+              },
+              duration: const Duration(milliseconds: 800),
+              onComplete: () => popupCompleter.complete(),
+            ));
+            await popupCompleter.future;
+          }
+
+          // 3. Defeat animation (if killed).
           if (result.targetDefeated == true) {
-            await anim.playDefeatAnimation(target.id, target.position);
+            final targetComp = controller.getComponentById(target.id);
+            if (targetComp is map_engine.FiftyMovableComponent) {
+              final defeatCompleter = Completer<void>();
+              controller.queueAnimation(map_engine.AnimationEntry(
+                execute: () async {
+                  targetComp.die();
+                  await Future<void>.delayed(
+                      const Duration(milliseconds: 600));
+                },
+                onComplete: () {
+                  final targetEntity =
+                      controller.getEntityById(target.id);
+                  if (targetEntity != null) {
+                    controller.removeEntity(targetEntity);
+                  }
+                  controller.removeDecorators(target.id);
+                  defeatCompleter.complete();
+                },
+              ));
+              await defeatCompleter.future;
+            }
+          }
+        } else {
+          // Fallback: old AnimationService.
+          final anim = _animationService;
+          if (anim != null && attacker != null && target != null) {
+            await anim.playAttackAnimation(
+              attacker.id,
+              attacker.position,
+              target.position,
+            );
+            anim.triggerFlash(target.id);
+            if (result.damageDealt != null && result.damageDealt! > 0) {
+              await anim.playDamagePopup(
+                  target.position, result.damageDealt!);
+            }
+            if (result.targetDefeated == true) {
+              await anim.playDefeatAnimation(target.id, target.position);
+            }
           }
         }
 
@@ -352,6 +482,10 @@ class BattleActions {
   void onEndTurn(BuildContext context) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        Get.find<map_engine.FiftyMapController>().isAnimating) {
+      return;
+    }
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -397,6 +531,10 @@ class BattleActions {
   void onWaitUnit(BuildContext context) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        Get.find<map_engine.FiftyMapController>().isAnimating) {
+      return;
+    }
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -416,6 +554,10 @@ class BattleActions {
   void onAbilityButtonPressed(BuildContext context) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        Get.find<map_engine.FiftyMapController>().isAnimating) {
+      return;
+    }
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -451,6 +593,10 @@ class BattleActions {
   void onUseAbility(BuildContext context, {GridPosition? targetPosition}) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
+    if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        Get.find<map_engine.FiftyMapController>().isAnimating) {
+      return;
+    }
     // Block player input while AI is executing its turn.
     if (_aiExecutor?.isExecuting.value == true) return;
 
@@ -474,22 +620,80 @@ class BattleActions {
         }
 
         // --- Animation for damaging abilities ---
-        final anim = _animationService;
-        if (anim != null &&
+        if (Get.isRegistered<map_engine.FiftyMapController>() &&
             result.damageDealt != null &&
             result.damageDealt! > 0) {
+          final controller = Get.find<map_engine.FiftyMapController>();
+
+          // Damage popup at target position.
           if (targetPosition != null) {
-            await anim.playDamagePopup(targetPosition, result.damageDealt!);
+            final popupCompleter = Completer<void>();
+            controller.queueAnimation(map_engine.AnimationEntry.timed(
+              action: () {
+                controller.showFloatingText(
+                  map_engine.GridPosition(
+                      targetPosition.x, targetPosition.y),
+                  '-${result.damageDealt}',
+                  color: const Color(0xFFFFFF00),
+                  fontSize: 24,
+                );
+              },
+              duration: const Duration(milliseconds: 800),
+              onComplete: () => popupCompleter.complete(),
+            ));
+            await popupCompleter.future;
           }
-          // Check for any defeated units from AoE (e.g. Fireball).
+
+          // Defeat animations for any killed units.
           if (result.affectedUnitIds != null) {
             for (final affectedId in result.affectedUnitIds!) {
-              final affectedUnit = _viewModel.board.getUnitById(affectedId);
+              final affectedUnit =
+                  _viewModel.board.getUnitById(affectedId);
               if (affectedUnit != null && affectedUnit.isDead) {
-                await anim.playDefeatAnimation(
-                  affectedId,
-                  affectedUnit.position,
-                );
+                final comp = controller.getComponentById(affectedId);
+                if (comp is map_engine.FiftyMovableComponent) {
+                  final defeatCompleter = Completer<void>();
+                  controller.queueAnimation(map_engine.AnimationEntry(
+                    execute: () async {
+                      comp.die();
+                      await Future<void>.delayed(
+                          const Duration(milliseconds: 600));
+                    },
+                    onComplete: () {
+                      final entity =
+                          controller.getEntityById(affectedId);
+                      if (entity != null) {
+                        controller.removeEntity(entity);
+                      }
+                      controller.removeDecorators(affectedId);
+                      defeatCompleter.complete();
+                    },
+                  ));
+                  await defeatCompleter.future;
+                }
+              }
+            }
+          }
+        } else {
+          // Fallback: old AnimationService.
+          final anim = _animationService;
+          if (anim != null &&
+              result.damageDealt != null &&
+              result.damageDealt! > 0) {
+            if (targetPosition != null) {
+              await anim.playDamagePopup(
+                  targetPosition, result.damageDealt!);
+            }
+            if (result.affectedUnitIds != null) {
+              for (final affectedId in result.affectedUnitIds!) {
+                final affectedUnit =
+                    _viewModel.board.getUnitById(affectedId);
+                if (affectedUnit != null && affectedUnit.isDead) {
+                  await anim.playDefeatAnimation(
+                    affectedId,
+                    affectedUnit.position,
+                  );
+                }
               }
             }
           }
