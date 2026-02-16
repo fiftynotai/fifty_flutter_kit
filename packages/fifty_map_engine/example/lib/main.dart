@@ -393,7 +393,13 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
       )..remove(unit.position);
 
       if (reachable.isNotEmpty) {
-        _controller.highlightTiles(reachable.toList(), HighlightStyle.validMove);
+        _controller.highlightTiles(
+            reachable.toList(),
+            HighlightStyle.custom(
+              color: const Color(0xFF00BCD4),
+              opacity: 0.55,
+              group: 'validMoves',
+            ));
       }
       setState(() => _state.moveTargets = reachable);
     }
@@ -412,7 +418,12 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
     }
     if (atkPositions.isNotEmpty) {
       _controller.highlightTiles(
-          atkPositions.toList(), HighlightStyle.attackRange);
+          atkPositions.toList(),
+          HighlightStyle.custom(
+            color: const Color(0xFFF44336),
+            opacity: 0.55,
+            group: 'attackRange',
+          ));
     }
     setState(() => _state.attackTargets = atkPositions);
   }
@@ -591,8 +602,11 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
         .where((u) => u.isBlue == _state.isBlueTeam)
         .toList();
     if (_state.usedUnits.length >= friendlyUnits.length) {
+      final wasBlueTeam = _state.isBlueTeam;
       Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted && _state.winner == null) {
+        if (mounted &&
+            _state.winner == null &&
+            _state.isBlueTeam == wasBlueTeam) {
           _endTurn();
         }
       });
