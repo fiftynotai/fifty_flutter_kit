@@ -54,10 +54,6 @@ import 'package:fifty_map_engine/src/view/widget.dart' show FiftyTileTapCallback
 /// ```
 ///
 /// **Known Limitations & Tips:**
-/// - [`centerMap`] and [`centerOnEntity`] compute a *speed* from
-///   `distance / duration.inSeconds`. If you pass sub-second durations, the
-///   integer seconds may evaluate to `0`, producing very high speeds.
-///   Prefer whole seconds or refactor to milliseconds if you need finer control.
 /// - If you want to suppress taps during drags, handle that in the entity
 ///   components (e.g., guard tap handlers when a drag is active) or use a
 ///   higher-level gesture gate.
@@ -468,8 +464,9 @@ class FiftyMapBuilder extends FlameGame
     final currentPos = cameraComponent.viewfinder.position;
     final distance = currentPos.distanceTo(center);
 
-    // NOTE: uses seconds (integer). Prefer whole seconds to avoid `0` division.
-    final speed = distance / duration.inSeconds;
+    if (distance < 0.01) return; // Already centered
+
+    final speed = distance / (duration.inMilliseconds / 1000.0);
 
     // Align center to camera viewport so it looks centered on screen.
     cameraComponent.moveTo(center, speed: speed);
@@ -486,8 +483,9 @@ class FiftyMapBuilder extends FlameGame
       final current = cameraComponent.viewfinder.position;
       final distance = current.distanceTo(target);
 
-      // NOTE: uses seconds (integer). Prefer whole seconds to avoid `0` division.
-      final speed = distance / duration.inSeconds;
+      if (distance < 0.01) return; // Already on entity
+
+      final speed = distance / (duration.inMilliseconds / 1000.0);
       cameraComponent.moveTo(target, speed: speed);
     }
   }
