@@ -52,6 +52,22 @@ abstract class FiftyBaseComponent extends SpriteComponent
           anchor: Anchor.topLeft,
         );
 
+  /// Constrains tap detection to the entity's tile footprint.
+  ///
+  /// Entity sprites may render visually larger than their tile bounds
+  /// (e.g., tall character art on a 1x1 tile). This override ensures
+  /// taps only register within the tile area, preventing oversized
+  /// hitboxes from intercepting taps meant for adjacent tiles.
+  @override
+  bool containsLocalPoint(Vector2 point) {
+    final tileWidth = model.blockSize.width * FiftyMapConfig.blockSize;
+    final tileHeight = model.blockSize.height * FiftyMapConfig.blockSize;
+    return point.x >= 0 &&
+        point.x < tileWidth &&
+        point.y >= 0 &&
+        point.y < tileHeight;
+  }
+
   @override
   Future<void> onLoad() async {
     // Set render priority
