@@ -1,41 +1,10 @@
 # Fifty Printing Engine
 
-Production-grade Flutter package for multi-printer ESC/POS printing with Bluetooth and WiFi support.
+Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-**Part of the Fifty Flutter Kit** - A collection of high-quality Flutter packages for building enterprise-grade applications.
-
----
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Core Concepts](#core-concepts)
-  - [PrintingEngine](#printingengine)
-  - [PrinterDevice](#printerdevice)
-  - [PrintTicket](#printticket)
-  - [PrintingStrategy](#printingstrategy)
-- [Printing Strategies](#printing-strategies)
-  - [PrintToAllStrategy](#printtoallstrategy)
-  - [RoleBasedRoutingStrategy](#rolebasedroutingstrategy)
-  - [SelectPerPrintStrategy](#selectperprintstrategy)
-- [Printer Management](#printer-management)
-  - [Registering Printers](#registering-printers)
-  - [Bluetooth Discovery](#bluetooth-discovery)
-  - [Connecting and Disconnecting](#connecting-and-disconnecting)
-  - [Health Checks](#health-checks)
-  - [Status Monitoring](#status-monitoring)
-- [Configuration](#configuration)
-  - [Paper Sizes](#paper-sizes)
-  - [Printer Roles](#printer-roles)
-  - [Copy Control](#copy-control)
-  - [Persistence](#persistence-exportimport)
-- [Usage Examples](#usage-examples)
-- [API Reference](#api-reference)
-- [Platform Setup](#platform-setup)
-- [Part of Fifty Flutter Kit](#part-of-fifty-flutter-kit)
-- [License](#license)
+| Home | Printer Management | Test Print | Ticket Builder |
+|:----:|:------------------:|:----------:|:--------------:|
+| ![Home](screenshots/home_light.png) | ![Printers](screenshots/printer_management_light.png) | ![Test](screenshots/test_print_light.png) | ![Builder](screenshots/ticket_builder_light.png) |
 
 ---
 
@@ -69,6 +38,8 @@ Then run:
 ```bash
 flutter pub get
 ```
+
+**Dependencies:** `escpos` (ESC/POS ticket generation), `print_bluetooth_thermal` (Bluetooth thermal printer support), `permission_handler` (Bluetooth permission handling), Dart sockets (WiFi/network printer support, built-in).
 
 ---
 
@@ -109,7 +80,40 @@ void main() async {
 
 ---
 
-## Core Concepts
+## Architecture
+
+```
+PrintingEngine (Singleton)
+    |
+    +-- PrinterDevice (Abstract)
+    |       +-- BluetoothPrinterDevice
+    |       +-- WiFiPrinterDevice
+    |
+    +-- PrintingStrategy (Abstract)
+    |       +-- PrintToAllStrategy
+    |       +-- RoleBasedRoutingStrategy
+    |       +-- SelectPerPrintStrategy
+    |
+    +-- PrintTicket
+    |       ESC/POS ticket with paper size tracking
+    |
+    +-- Health Monitor
+            Periodic and manual health checks
+```
+
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| `PrintingEngine` | Singleton orchestrator for all printer operations |
+| `PrinterDevice` | Abstract base for Bluetooth and WiFi printer implementations |
+| `PrintTicket` | ESC/POS ticket wrapper with paper size tracking |
+| `PrintingStrategy` | Abstract routing strategy (print-to-all, role-based, select-per-print) |
+| `PrintResult` | Aggregated result with per-printer success/failure details |
+
+---
+
+## API Reference
 
 ### PrintingEngine
 
@@ -134,6 +138,41 @@ final result = await engine.print(ticket: ticket);
 - Bluetooth discovery and permissions
 - Configuration export/import
 - Health check scheduling
+
+| Method | Description |
+|--------|-------------|
+| `instance` | Singleton instance |
+| `registerPrinter(device)` | Register a printer |
+| `updatePrinter(id, device)` | Update printer config (preserves connection) |
+| `removePrinter(id)` | Remove a printer |
+| `clear()` | Remove all printers |
+| `reset()` | Reset all configs to defaults |
+| `getAvailablePrinters({filterByStatus})` | Get all/filtered printers |
+| `getPrintersByRole(role)` | Get printers by role |
+| `setPrintingMode(mode)` | Set routing mode |
+| `setRoleMapping(role, ids)` | Configure role mapping |
+| `getRoleMapping(role)` | Get role mapping |
+| `setPrinterSelectionCallback(callback)` | Set SelectPerPrint callback |
+| `print({ticket, copies, targetRole, targetPrinterIds, regenerator})` | Print a ticket |
+| `scanBluetoothPrinters({filterPrintersOnly})` | Discover Bluetooth printers |
+| `requestBluetoothPermissions()` | Check/request permissions |
+| `isBluetoothEnabled()` | Check Bluetooth enabled |
+| `hasBluetoothPermissions()` | Check permissions granted |
+| `openBluetoothSettings()` | Open app settings |
+| `enableHealthChecks({interval})` | Enable periodic health checks |
+| `disableHealthChecks()` | Disable health checks |
+| `checkPrinterHealth(id)` | Manual health check |
+| `checkAllPrinters()` | Check all printers |
+| `exportConfiguration()` | Export config as JSON |
+| `importConfiguration(config)` | Import config from JSON |
+| `dispose()` | Clean up resources |
+
+| Property | Description |
+|----------|-------------|
+| `statusStream` | Stream of printer status events |
+| `printingMode` | Current routing mode |
+| `roleMappings` | Current role mappings |
+| `selectionCallback` | Registered selection callback |
 
 ### PrinterDevice
 
@@ -167,6 +206,7 @@ final wifiPrinter = WiFiPrinterDevice(
 ```
 
 **Properties:**
+
 | Property | Type | Description |
 |----------|------|-------------|
 | `id` | String | Unique identifier |
@@ -214,20 +254,11 @@ ticket.cut();
 - `barcode()` - Barcodes
 - `image()` - Images
 
-### PrintingStrategy
+### Printing Strategies
 
 Abstract base class for routing strategies. Determines which printers receive a print job and aggregates results.
 
-Built-in strategies:
-- `PrintToAllStrategy` - Print to all registered printers
-- `RoleBasedRoutingStrategy` - Route by printer role
-- `SelectPerPrintStrategy` - User selects printers per job
-
----
-
-## Printing Strategies
-
-### PrintToAllStrategy
+#### PrintToAllStrategy
 
 Sends print jobs to all registered printers. Ignores role hints.
 
@@ -240,7 +271,7 @@ await engine.print(ticket: ticket);
 
 **Use Case:** Small setups where every printer should receive every ticket.
 
-### RoleBasedRoutingStrategy
+#### RoleBasedRoutingStrategy
 
 Routes print jobs based on printer roles. Printers with `PrinterRole.both` receive all role-targeted jobs.
 
@@ -262,7 +293,7 @@ await engine.print(
 
 **Use Case:** Restaurant/retail with dedicated kitchen and receipt printers.
 
-### SelectPerPrintStrategy
+#### SelectPerPrintStrategy
 
 Prompts user to select printers for each print job via callback. Requires registering a selection callback.
 
@@ -288,11 +319,9 @@ await engine.print(
 
 **Use Case:** Flexible setups where operators choose destination per job.
 
----
+### Printer Management
 
-## Printer Management
-
-### Registering Printers
+#### Registering Printers
 
 ```dart
 // Register Bluetooth printer
@@ -331,7 +360,7 @@ engine.removePrinter('bt-1');
 engine.clear();
 ```
 
-### Bluetooth Discovery
+#### Bluetooth Discovery
 
 ```dart
 try {
@@ -365,7 +394,7 @@ try {
 - **Android 12+:** Requires Bluetooth and Nearby Devices permissions. Package checks but cannot request (Android limitation). Throws helpful error directing to App Settings.
 - **iOS:** Permission dialog shown automatically when scanning. Uses `NSBluetoothAlwaysUsageDescription` from Info.plist.
 
-### Connecting and Disconnecting
+#### Connecting and Disconnecting
 
 Printers auto-connect when printing. Manual control available:
 
@@ -383,6 +412,7 @@ if (printer.status == PrinterStatus.connected) {
 ```
 
 **Printer Status Values:**
+
 | Status | Description |
 |--------|-------------|
 | `disconnected` | Not connected |
@@ -392,7 +422,7 @@ if (printer.status == PrinterStatus.connected) {
 | `error` | Connection or print error |
 | `healthCheckFailed` | Health check failed |
 
-### Health Checks
+#### Health Checks
 
 ```dart
 // Enable periodic health checks (every 5 minutes)
@@ -409,7 +439,7 @@ final results = await engine.checkAllPrinters();
 // Returns: {'printer-1': true, 'printer-2': false}
 ```
 
-### Status Monitoring
+#### Status Monitoring
 
 ```dart
 // Listen to status events
@@ -422,11 +452,9 @@ engine.statusStream.listen((event) {
 });
 ```
 
----
+### Configuration
 
-## Configuration
-
-### Paper Sizes
+#### Paper Sizes
 
 ```dart
 // 58mm paper (compact receipts)
@@ -460,7 +488,7 @@ await engine.print(
 );
 ```
 
-### Printer Roles
+#### Printer Roles
 
 ```dart
 enum PrinterRole {
@@ -480,7 +508,7 @@ engine.setRoleMapping(PrinterRole.receipt, ['wifi-1']);
 final kitchenIds = engine.getRoleMapping(PrinterRole.kitchen);
 ```
 
-### Copy Control
+#### Copy Control
 
 ```dart
 // Per-printer default copies
@@ -505,7 +533,7 @@ await engine.print(
 );
 ```
 
-### Persistence (Export/Import)
+#### Persistence
 
 The package is in-memory only. Use export/import for persistence with your preferred storage:
 
@@ -531,9 +559,30 @@ if (configJson != null) {
 
 **Storage Options:** shared_preferences, get_storage, Hive, SQLite, backend API - your choice.
 
+### PrintResult
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `totalPrinters` | int | Total printers attempted |
+| `successCount` | int | Successful prints |
+| `failedCount` | int | Failed prints |
+| `results` | Map | Per-printer results |
+| `isSuccess` | bool | All succeeded |
+| `isPartialSuccess` | bool | Some succeeded |
+| `isFailure` | bool | All failed |
+
+### PrinterResult
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `printerId` | String | Printer ID |
+| `success` | bool | Print succeeded |
+| `errorMessage` | String? | Error description |
+| `duration` | Duration | Time taken |
+
 ---
 
-## Usage Examples
+## Usage Patterns
 
 ### Complete Kitchen/Receipt Setup
 
@@ -703,71 +752,18 @@ engine.removePrinter('printer-id'); // Now it won't be attempted
 
 ---
 
-## API Reference
+## Platform Support
 
-### PrintingEngine
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     | Bluetooth + WiFi. Requires permissions |
+| iOS      | Yes     | Bluetooth + WiFi. Requires plist entries |
+| macOS    | Partial | WiFi only |
+| Linux    | Partial | WiFi only |
+| Windows  | Partial | WiFi only |
+| Web      | No      | No printer access |
 
-| Method | Description |
-|--------|-------------|
-| `instance` | Singleton instance |
-| `registerPrinter(device)` | Register a printer |
-| `updatePrinter(id, device)` | Update printer config (preserves connection) |
-| `removePrinter(id)` | Remove a printer |
-| `clear()` | Remove all printers |
-| `reset()` | Reset all configs to defaults |
-| `getAvailablePrinters({filterByStatus})` | Get all/filtered printers |
-| `getPrintersByRole(role)` | Get printers by role |
-| `setPrintingMode(mode)` | Set routing mode |
-| `setRoleMapping(role, ids)` | Configure role mapping |
-| `getRoleMapping(role)` | Get role mapping |
-| `setPrinterSelectionCallback(callback)` | Set SelectPerPrint callback |
-| `print({ticket, copies, targetRole, targetPrinterIds, regenerator})` | Print a ticket |
-| `scanBluetoothPrinters({filterPrintersOnly})` | Discover Bluetooth printers |
-| `requestBluetoothPermissions()` | Check/request permissions |
-| `isBluetoothEnabled()` | Check Bluetooth enabled |
-| `hasBluetoothPermissions()` | Check permissions granted |
-| `openBluetoothSettings()` | Open app settings |
-| `enableHealthChecks({interval})` | Enable periodic health checks |
-| `disableHealthChecks()` | Disable health checks |
-| `checkPrinterHealth(id)` | Manual health check |
-| `checkAllPrinters()` | Check all printers |
-| `exportConfiguration()` | Export config as JSON |
-| `importConfiguration(config)` | Import config from JSON |
-| `dispose()` | Clean up resources |
-
-| Property | Description |
-|----------|-------------|
-| `statusStream` | Stream of printer status events |
-| `printingMode` | Current routing mode |
-| `roleMappings` | Current role mappings |
-| `selectionCallback` | Registered selection callback |
-
-### PrintResult
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `totalPrinters` | int | Total printers attempted |
-| `successCount` | int | Successful prints |
-| `failedCount` | int | Failed prints |
-| `results` | Map | Per-printer results |
-| `isSuccess` | bool | All succeeded |
-| `isPartialSuccess` | bool | Some succeeded |
-| `isFailure` | bool | All failed |
-
-### PrinterResult
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `printerId` | String | Printer ID |
-| `success` | bool | Print succeeded |
-| `errorMessage` | String? | Error description |
-| `duration` | Duration | Time taken |
-
----
-
-## Platform Setup
-
-### Android
+### Android Setup
 
 Add to `android/app/src/main/AndroidManifest.xml`:
 
@@ -779,7 +775,7 @@ Add to `android/app/src/main/AndroidManifest.xml`:
 <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
 ```
 
-### iOS
+### iOS Setup
 
 Add to `ios/Runner/Info.plist`:
 
@@ -792,50 +788,24 @@ Add to `ios/Runner/Info.plist`:
 
 ---
 
-## Part of Fifty Flutter Kit
+## Fifty Design Language Integration
 
-This package is part of the Fifty Flutter Kit:
+This package is part of Fifty Flutter Kit:
 
-| Package | Description |
-|---------|-------------|
-| **fifty_tokens** | Design tokens for consistent UI |
-| **fifty_theme** | Theme system |
-| **fifty_ui** | UI component library |
-| **fifty_cache** | HTTP caching |
-| **fifty_storage** | Secure storage |
-| **fifty_utils** | Utilities and helpers |
-| **fifty_connectivity** | Network monitoring |
-| **fifty_audio_engine** | Audio playback |
-| **fifty_speech_engine** | Text-to-speech |
-| **fifty_sentences_engine** | Dynamic sentence building |
-| **fifty_map_engine** | Map integration |
-| **fifty_printing_engine** | Multi-printer support (this package) |
+- **Consistent naming** - PrintingEngine follows Fifty Flutter Kit patterns
+- **Storage-agnostic** - Export/import works with any Fifty storage solution
+- **Compatible packages** - Works alongside `fifty_ui` for printer management UIs
 
 ---
 
-## Dependencies
+## Version
 
-| Package | Purpose |
-|---------|---------|
-| `escpos` | ESC/POS ticket generation |
-| `print_bluetooth_thermal` | Bluetooth thermal printer support |
-| `permission_handler` | Bluetooth permission handling |
-| Dart sockets | WiFi/network printer support (built-in) |
+1.0.0
 
 ---
-
-## Screenshots
-
-| Home | Printer Management | Test Print | Ticket Builder |
-|:----:|:------------------:|:----------:|:--------------:|
-| ![Home](screenshots/home_light.png) | ![Printers](screenshots/printer_management_light.png) | ![Test](screenshots/test_print_light.png) | ![Builder](screenshots/ticket_builder_light.png) |
 
 ## License
 
-MIT License - see LICENSE file
+MIT License - see [LICENSE](LICENSE) for details.
 
----
-
-## Contributing
-
-Contributions welcome! Please open an issue or submit a PR at [github.com/fiftynotai/fifty_flutter_kit](https://github.com/fiftynotai/fifty_flutter_kit).
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

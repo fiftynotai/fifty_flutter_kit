@@ -1,24 +1,22 @@
 # Fifty Speech Engine
 
-A unified speech interface for Flutter games and applications. Provides both Text-to-Speech (TTS) and Speech-to-Text (STT) capabilities.
+A unified speech interface for Flutter games and applications with TTS and STT capabilities. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+
+| TTS Panel | STT Panel |
+|:---------:|:---------:|
+| ![TTS](screenshots/tts_panel_light.png) | ![STT](screenshots/stt_panel_light.png) |
 
 ---
 
-## Overview
+## Features
 
-Fifty Speech Engine combines TTS and STT into a single, easy-to-use interface:
-
-| Feature | Description | Use Case |
-|---------|-------------|----------|
-| **TTS** | Text-to-Speech synthesis | Game narration, accessibility |
-| **STT** | Speech-to-Text recognition | Voice commands, dictation |
-
-Key features:
-- Unified API for both TTS and STT
-- Locale-aware configuration
-- Continuous listening mode for dictation
-- Result queueing to prevent overlap
-- Callback-based result handling
+- **Unified API** - Single interface for both Text-to-Speech and Speech-to-Text
+- **Text-to-Speech** - Speech synthesis for game narration and accessibility
+- **Speech-to-Text** - Voice recognition for commands and dictation
+- **Locale-Aware** - Multi-language configuration with runtime switching
+- **Continuous Listening** - Dictation mode for longer voice input
+- **Result Queueing** - Prevents overlap in speech recognition results
+- **Callback-Based** - Clean async result handling
 
 ---
 
@@ -224,7 +222,7 @@ SpeechResultModel.partial(text)
 
 ---
 
-## Advanced Usage
+## Usage Patterns
 
 ### Voice Commands
 
@@ -291,6 +289,16 @@ await engine.speak('Hola, bienvenido al juego!');
 await engine.tts.changeLanguage('en-US');
 await engine.speak('Welcome back!');
 ```
+
+### Best Practices
+
+1. **Initialize once** - Call `initialize()` at app startup
+2. **Handle errors** - Always provide `onSttError` callback
+3. **Check availability** - Use `stt.isAvailable` before listening
+4. **Clean up** - Call `dispose()` when done
+5. **Request permissions** - Handle microphone permissions before STT
+
+The [example directory](example/) contains a complete demo app with MVVM + Actions architecture, TTS/STT panels, language selection for 9 languages, and FDL styling.
 
 ---
 
@@ -361,24 +369,6 @@ Add to `macos/Runner/*.entitlements` (both Debug and Release):
 
 ---
 
-## Example App
-
-See the [example directory](example/) for a complete demo app showcasing:
-
-- MVVM + Actions architecture pattern
-- TTS panel with text input and controls
-- STT panel with continuous/single-phrase modes
-- Language selection (9 languages)
-- FDL styling with fifty_ui components
-
-```bash
-cd example
-flutter pub get
-flutter run
-```
-
----
-
 ## Fifty Design Language Integration
 
 This package is part of Fifty Flutter Kit:
@@ -389,27 +379,11 @@ This package is part of Fifty Flutter Kit:
 
 ---
 
-## Best Practices
-
-1. **Initialize once** - Call `initialize()` at app startup
-2. **Handle errors** - Always provide `onSttError` callback
-3. **Check availability** - Use `stt.isAvailable` before listening
-4. **Clean up** - Call `dispose()` when done
-5. **Request permissions** - Handle microphone permissions before STT
-
----
-
 ## Version
 
 **Current:** 0.1.0
 
 ---
-
-## Screenshots
-
-| TTS Panel | STT Panel |
-|:---------:|:---------:|
-| ![TTS](screenshots/tts_panel_light.png) | ![STT](screenshots/stt_panel_light.png) |
 
 ## License
 

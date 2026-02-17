@@ -1,11 +1,12 @@
 # Fifty Skill Tree
 
-Interactive skill tree widget for Flutter games - customizable, animated, and game-ready.
+Interactive skill tree widget for Flutter games — customizable, animated, and game-ready. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-[![Pub Version](https://img.shields.io/pub/v/fifty_skill_tree)](https://pub.dev/packages/fifty_skill_tree)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+| Home | Basic Tree | Node Unlock | RPG Skill Tree |
+|:----:|:----------:|:-----------:|:--------------:|
+| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_tree_light.png) | ![Unlock](screenshots/node_unlock_light.png) | ![RPG](screenshots/rpg_skill_tree_light.png) |
 
-Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+---
 
 ## Features
 
@@ -18,6 +19,8 @@ Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit)
 - **Mobile-Friendly** - Touch interactions with pan and pinch-to-zoom support
 - **Fully Customizable Theming** - Dark/light preset themes, FDL integration, and full customization support
 - **Generic Data Support** - Attach any custom data to skill nodes
+
+---
 
 ## Installation
 
@@ -33,6 +36,8 @@ Then run:
 ```bash
 flutter pub get
 ```
+
+---
 
 ## Quick Start
 
@@ -113,132 +118,62 @@ SkillTreeView<void>(
 )
 ```
 
-## Layouts
+---
 
-### Vertical Layout (Default)
+## Architecture
 
-Traditional top-to-bottom skill tree layout.
-
-```dart
-SkillTreeView(
-  controller: controller,
-  layout: const VerticalTreeLayout(),
-)
+```
+SkillTreeView<T> (Widget)
+    |
+    +-- SkillTreeController<T>
+    |       State management, unlock logic, point tracking
+    |
+    +-- SkillTree<T>
+    |       +-- SkillNode<T> (nodes with conditions, costs, levels)
+    |       +-- SkillConnection (prerequisite relationships)
+    |
+    +-- TreeLayout (Abstract)
+    |       +-- VerticalTreeLayout
+    |       +-- HorizontalTreeLayout
+    |       +-- RadialTreeLayout
+    |       +-- GridLayout
+    |       +-- CustomLayout
+    |
+    +-- SkillTreeTheme
+            Visual styling (dark/light/custom/FDL defaults)
 ```
 
-### Horizontal Layout
+### Core Components
 
-Left-to-right skill tree layout.
+| Component | Description |
+|-----------|-------------|
+| `SkillTree<T>` | Container for nodes and connections |
+| `SkillNode<T>` | Individual skill with costs, levels, prerequisites |
+| `SkillConnection` | Defines relationships between nodes |
+| `SkillTreeController<T>` | State management, unlock logic, serialization |
+| `SkillTreeView<T>` | Widget that renders the tree with interactions |
+| `SkillTreeTheme` | Visual styling configuration |
 
-```dart
-SkillTreeView(
-  controller: controller,
-  layout: const HorizontalTreeLayout(),
-)
-```
+---
 
-### Radial Layout
+## API Reference
 
-Circular layout with skills radiating from center.
-
-```dart
-SkillTreeView(
-  controller: controller,
-  layout: const RadialTreeLayout(
-    startAngle: -90, // Start from top
-    sweepAngle: 360, // Full circle
-  ),
-)
-```
-
-### Grid Layout
-
-Organize skills in a grid pattern.
+### SkillTree
 
 ```dart
-SkillTreeView(
-  controller: controller,
-  layout: const GridLayout(
-    columns: 4,
-    rows: 3,
-  ),
-)
-```
-
-### Custom Layout
-
-Provide your own positioning logic.
-
-```dart
-SkillTreeView(
-  controller: controller,
-  layout: CustomLayout(
-    positionBuilder: (node, index, total, size) {
-      // Return custom Offset for each node
-      return Offset(node.position?.dx ?? 0, node.position?.dy ?? 0);
-    },
-  ),
-)
-```
-
-## Theming
-
-### Built-in Themes
-
-```dart
-// Dark theme (default)
-final theme = SkillTreeTheme.dark();
-
-// Light theme
-final theme = SkillTreeTheme.light();
-```
-
-When no theme is provided, the widgets use **FDL (Fifty Design Language)** defaults automatically.
-
-### Custom Theme
-
-```dart
-final customTheme = SkillTreeTheme(
-  // Node colors by state
-  lockedNodeColor: Colors.grey[800]!,
-  lockedNodeBorderColor: Colors.grey[600]!,
-  availableNodeColor: Colors.blue[900]!,
-  availableNodeBorderColor: Colors.blue[400]!,
-  unlockedNodeColor: Colors.green[900]!,
-  unlockedNodeBorderColor: Colors.green[400]!,
-  maxedNodeColor: Colors.amber[900]!,
-  maxedNodeBorderColor: Colors.amber[400]!,
-
-  // Connection colors
-  connectionLockedColor: Colors.grey[600]!,
-  connectionUnlockedColor: Colors.green[400]!,
-
-  // Sizes
-  nodeRadius: 28.0,
-  nodeBorderWidth: 2.0,
-  connectionWidth: 2.0,
-);
-```
-
-### Apply Theme
-
-```dart
-// At creation
-final controller = SkillTreeController(
-  tree: tree,
-  theme: customTheme,
+final tree = SkillTree<void>(
+  id: 'warrior',
+  name: 'Warrior Skills',
 );
 
-// Or update later
-controller.setTheme(SkillTreeTheme.light());
-
-// Or revert to FDL defaults
-controller.setTheme(null);
+tree.addNode(node);
+tree.addConnection(connection);
+tree.addPoints(10);
 ```
 
-## Skill Nodes
+### SkillNode
 
-### Basic Node
+**Basic Node:**
 
 ```dart
 SkillNode(
@@ -249,43 +184,7 @@ SkillNode(
 )
 ```
 
-### Multi-Level Node
-
-```dart
-SkillNode(
-  id: 'fireball',
-  name: 'Fireball',
-  maxLevel: 5,
-  costs: [1, 1, 2, 2, 3], // Cost for each level
-)
-```
-
-### Node with Custom Data
-
-```dart
-// Define your data class
-class AbilityData {
-  final int damage;
-  final double cooldown;
-
-  AbilityData({required this.damage, required this.cooldown});
-}
-
-// Create typed tree and node
-final tree = SkillTree<AbilityData>(id: 'mage', name: 'Mage Skills');
-
-tree.addNode(SkillNode<AbilityData>(
-  id: 'fireball',
-  name: 'Fireball',
-  data: AbilityData(damage: 50, cooldown: 2.0),
-));
-
-// Access data later
-final node = tree.getNode('fireball');
-print('Damage: ${node?.data?.damage}');
-```
-
-### Node Types
+**Node Types:**
 
 ```dart
 SkillNode(
@@ -298,9 +197,9 @@ SkillNode(
 )
 ```
 
-## Connections
+### SkillConnection
 
-### Basic Connection
+**Basic Connection:**
 
 ```dart
 tree.addConnection(SkillConnection(
@@ -309,7 +208,7 @@ tree.addConnection(SkillConnection(
 ));
 ```
 
-### Connection Types
+**Connection Types:**
 
 ```dart
 // Required connection (must unlock parent first)
@@ -334,9 +233,159 @@ SkillConnection(
 )
 ```
 
-## Serialization
+### SkillTreeController
 
-### Save Progress
+```dart
+final controller = SkillTreeController<void>(
+  tree: tree,
+  theme: SkillTreeTheme.dark(),
+);
+
+controller.addListener(() {
+  print('Points: ${controller.availablePoints}');
+});
+```
+
+### SkillTreeView
+
+```dart
+SkillTreeView<void>(
+  controller: controller,
+  layout: const VerticalTreeLayout(),
+  onNodeTap: (node) {
+    controller.unlock(node.id);
+  },
+  onNodeLongPress: (node) {
+    showSkillDetails(context, node);
+  },
+)
+```
+
+### SkillTreeTheme
+
+**Built-in Themes:**
+
+```dart
+// Dark theme (default)
+final theme = SkillTreeTheme.dark();
+
+// Light theme
+final theme = SkillTreeTheme.light();
+```
+
+When no theme is provided, the widgets use **FDL (Fifty Design Language)** defaults automatically.
+
+**Custom Theme:**
+
+```dart
+final customTheme = SkillTreeTheme(
+  // Node colors by state
+  lockedNodeColor: Colors.grey[800]!,
+  lockedNodeBorderColor: Colors.grey[600]!,
+  availableNodeColor: Colors.blue[900]!,
+  availableNodeBorderColor: Colors.blue[400]!,
+  unlockedNodeColor: Colors.green[900]!,
+  unlockedNodeBorderColor: Colors.green[400]!,
+  maxedNodeColor: Colors.amber[900]!,
+  maxedNodeBorderColor: Colors.amber[400]!,
+
+  // Connection colors
+  connectionLockedColor: Colors.grey[600]!,
+  connectionUnlockedColor: Colors.green[400]!,
+
+  // Sizes
+  nodeRadius: 28.0,
+  nodeBorderWidth: 2.0,
+  connectionWidth: 2.0,
+);
+```
+
+**Apply Theme:**
+
+```dart
+// At creation
+final controller = SkillTreeController(
+  tree: tree,
+  theme: customTheme,
+);
+
+// Or update later
+controller.setTheme(SkillTreeTheme.light());
+
+// Or revert to FDL defaults
+controller.setTheme(null);
+```
+
+### Layouts
+
+**Vertical Layout (Default)** - Traditional top-to-bottom skill tree layout:
+
+```dart
+SkillTreeView(
+  controller: controller,
+  layout: const VerticalTreeLayout(),
+)
+```
+
+**Horizontal Layout** - Left-to-right skill tree layout:
+
+```dart
+SkillTreeView(
+  controller: controller,
+  layout: const HorizontalTreeLayout(),
+)
+```
+
+**Radial Layout** - Circular layout with skills radiating from center:
+
+```dart
+SkillTreeView(
+  controller: controller,
+  layout: const RadialTreeLayout(
+    startAngle: -90, // Start from top
+    sweepAngle: 360, // Full circle
+  ),
+)
+```
+
+**Grid Layout** - Organize skills in a grid pattern:
+
+```dart
+SkillTreeView(
+  controller: controller,
+  layout: const GridLayout(
+    columns: 4,
+    rows: 3,
+  ),
+)
+```
+
+**Custom Layout** - Provide your own positioning logic:
+
+```dart
+SkillTreeView(
+  controller: controller,
+  layout: CustomLayout(
+    positionBuilder: (node, index, total, size) {
+      // Return custom Offset for each node
+      return Offset(node.position?.dx ?? 0, node.position?.dy ?? 0);
+    },
+  ),
+)
+```
+
+### Enums
+
+| Enum | Values |
+|------|--------|
+| `SkillState` | `locked`, `available`, `unlocked`, `maxed` |
+| `SkillType` | `passive`, `active`, `ultimate`, `keystone`, `minor` |
+| `ConnectionType` | `required`, `optional`, `exclusive` |
+| `ConnectionStyle` | `solid`, `dashed`, `animated` |
+
+### Serialization
+
+**Save Progress:**
 
 ```dart
 // Export only progress (compact, for save games)
@@ -348,7 +397,7 @@ await saveToFile(jsonString);
 final fullExport = controller.exportTree();
 ```
 
-### Load Progress
+**Load Progress:**
 
 ```dart
 final jsonString = await loadFromFile();
@@ -356,7 +405,7 @@ final progress = jsonDecode(jsonString) as Map<String, dynamic>;
 controller.importProgress(progress);
 ```
 
-### Example Progress JSON
+**Example Progress JSON:**
 
 ```json
 {
@@ -369,9 +418,11 @@ controller.importProgress(progress);
 }
 ```
 
-## Interactions
+---
 
-### Node Callbacks
+## Usage Patterns
+
+### Node Interactions
 
 ```dart
 SkillTreeView(
@@ -421,7 +472,7 @@ controller.focusNode(
 controller.resetView();
 ```
 
-## Point Management
+### Point Management
 
 ```dart
 // Add points (e.g., on level up)
@@ -438,7 +489,7 @@ print('Available: ${controller.availablePoints}');
 print('Spent: ${controller.spentPoints}');
 ```
 
-## Unlocking Skills
+### Unlocking Skills
 
 ```dart
 // Attempt to unlock
@@ -470,7 +521,7 @@ if (result.success) {
 }
 ```
 
-## Reset Functions
+### Reset Functions
 
 ```dart
 // Reset entire tree (refunds all points)
@@ -480,7 +531,7 @@ controller.reset();
 controller.resetNode('fireball');
 ```
 
-## Custom Node Widget
+### Custom Node Widget
 
 ```dart
 SkillTreeView(
@@ -505,71 +556,75 @@ SkillTreeView(
 )
 ```
 
-## FDL Integration
+### Multi-Level Nodes
 
-This package integrates seamlessly with the **Fifty Design Language (FDL)**:
-
-```yaml
-dependencies:
-  fifty_skill_tree: ^0.1.0
-  fifty_theme: ^0.1.0    # Theme system
-  fifty_tokens: ^0.2.0   # Design tokens
-  fifty_ui: ^0.5.0       # UI components
+```dart
+SkillNode(
+  id: 'fireball',
+  name: 'Fireball',
+  maxLevel: 5,
+  costs: [1, 1, 2, 2, 3], // Cost for each level
+)
 ```
 
-The example app demonstrates full FDL integration with themed UI, consistent spacing, and branded components.
+### Node with Custom Data
 
-## API Reference
+```dart
+// Define your data class
+class AbilityData {
+  final int damage;
+  final double cooldown;
 
-### Core Classes
+  AbilityData({required this.damage, required this.cooldown});
+}
 
-| Class | Description |
-|-------|-------------|
-| `SkillNode<T>` | Represents a single skill in the tree |
-| `SkillTree<T>` | Container for nodes and connections |
-| `SkillConnection` | Defines relationships between nodes |
-| `SkillTreeController<T>` | Manages state and interactions |
-| `SkillTreeView<T>` | Widget that renders the tree |
-| `SkillTreeTheme` | Visual styling configuration |
+// Create typed tree and node
+final tree = SkillTree<AbilityData>(id: 'mage', name: 'Mage Skills');
 
-### Enums
+tree.addNode(SkillNode<AbilityData>(
+  id: 'fireball',
+  name: 'Fireball',
+  data: AbilityData(damage: 50, cooldown: 2.0),
+));
 
-| Enum | Values |
-|------|--------|
-| `SkillState` | `locked`, `available`, `unlocked`, `maxed` |
-| `SkillType` | `passive`, `active`, `ultimate`, `keystone`, `minor` |
-| `ConnectionType` | `required`, `optional`, `exclusive` |
-| `ConnectionStyle` | `solid`, `dashed`, `animated` |
+// Access data later
+final node = tree.getNode('fireball');
+print('Damage: ${node?.data?.damage}');
+```
 
-### Layouts
+---
 
-| Layout | Description |
-|--------|-------------|
-| `VerticalTreeLayout` | Top-to-bottom tree |
-| `HorizontalTreeLayout` | Left-to-right tree |
-| `RadialTreeLayout` | Circular/radial layout |
-| `GridLayout` | Grid-based positioning |
-| `CustomLayout` | User-defined positioning |
+## Platform Support
 
-## Example
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     |       |
 
-See the [example](example/) directory for complete demo applications including:
+---
 
-- Basic skill tree with linear progression
-- RPG-style multi-branch skill tree
-- Strategy game tech tree
-- MOBA-style talent tree
+## Fifty Design Language Integration
 
-## Screenshots
+This package is part of Fifty Flutter Kit:
 
-| Home | Basic Tree | Node Unlock | RPG Skill Tree |
-|:----:|:----------:|:-----------:|:--------------:|
-| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_tree_light.png) | ![Unlock](screenshots/node_unlock_light.png) | ![RPG](screenshots/rpg_skill_tree_light.png) |
+- **FDL defaults** - When no theme is provided, widgets use Fifty Design Language defaults automatically
+- **Theme presets** - Built-in dark/light themes, or full custom theming
+- **Token alignment** - Compatible with `fifty_tokens`, `fifty_theme`, `fifty_ui`
+
+---
+
+## Version
+
+0.1.0
+
+---
 
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
----
-
-Built with care by [Fifty.ai](https://fifty.ai)
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

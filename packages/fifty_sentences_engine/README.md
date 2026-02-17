@@ -1,8 +1,12 @@
 # Fifty Sentences Engine
 
-A sentence processing engine for Flutter games and interactive applications. Part of Fifty Flutter Kit.
+A sentence processing engine for Flutter games and interactive applications. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-Provides a complete sentence processing system enabling narration, player interaction, and navigation control in visual novels, interactive fiction, and narrative games.
+| Sentence Queue | Dialogue Choices | Narration |
+|:--------------:|:----------------:|:---------:|
+| ![Queue](screenshots/sentence_queue_light.png) | ![Choices](screenshots/dialogue_choices_light.png) | ![Narration](screenshots/dialogue_narration_light.png) |
+
+---
 
 ## Features
 
@@ -11,17 +15,9 @@ Provides a complete sentence processing system enabling narration, player intera
 - **SentenceQueue** - Optimized queue with order-based sorting
 - **SafeSentenceWriter** - Deduplication for idempotent sentence rendering
 - **BaseSentenceModel** - Abstract interface for custom sentence models
+- **Complete sentence processing system** - Enables narration, player interaction, and navigation control in visual novels, interactive fiction, and narrative games
 
-## Platform Support
-
-| Platform | Support |
-|----------|---------|
-| Android  | Yes     |
-| iOS      | Yes     |
-| macOS    | Yes     |
-| Linux    | Yes     |
-| Windows  | Yes     |
-| Web      | Yes     |
+---
 
 ## Installation
 
@@ -39,6 +35,8 @@ dependencies:
   fifty_sentences_engine:
     path: ../fifty_sentences_engine
 ```
+
+---
 
 ## Quick Start
 
@@ -148,6 +146,38 @@ await engine.process(
   onInterrupted: () => print('Processing was interrupted'),
 );
 ```
+
+---
+
+## Architecture
+
+```
+SentenceEngine
+    |
+    +-- SentenceQueue
+    |       Order-based sorting, push/pop operations
+    |
+    +-- SentenceInterpreter
+    |       Instruction parsing, handler delegation
+    |
+    +-- SafeSentenceWriter
+    |       Deduplication for idempotent rendering
+    |
+    +-- ProcessingStatus
+            State machine: idle → processing → completed
+```
+
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| `SentenceEngine` | Core processor managing sentence execution flow |
+| `SentenceInterpreter` | Instruction parser and handler delegator |
+| `SentenceQueue` | Optimized queue with order-based sorting |
+| `SafeSentenceWriter` | Deduplication for idempotent sentence rendering |
+| `BaseSentenceModel` | Abstract interface for custom sentence models |
+
+---
 
 ## API Reference
 
@@ -304,6 +334,8 @@ abstract class BaseSentenceModel {
 }
 ```
 
+---
+
 ## Usage Patterns
 
 ### Tap to Continue
@@ -384,6 +416,23 @@ final interpreter = SentenceInterpreter(
 );
 ```
 
+### With Audio Engine
+
+```dart
+import 'package:fifty_audio_engine/fifty_audio_engine.dart';
+
+final interpreter = SentenceInterpreter(
+  engine: engine,
+  onNavigate: (sentence) async {
+    // Play transition sound
+    await audioEngine.playSfx('transition.mp3');
+
+    // Change BGM for new phase
+    await audioEngine.playBgm('${sentence.phase}_theme.mp3');
+  },
+);
+```
+
 ### Order-Based Processing
 
 ```dart
@@ -401,100 +450,31 @@ while (queue.isNotEmpty) {
 }
 ```
 
-## Integration with Fifty Flutter Kit
+---
 
-### With fifty_speech_engine
+## Platform Support
 
-```dart
-import 'package:fifty_sentences_engine/fifty_sentences_engine.dart';
-import 'package:fifty_speech_engine/fifty_speech_engine.dart';
+| Platform | Support |
+|----------|---------|
+| Android  | Yes     |
+| iOS      | Yes     |
+| macOS    | Yes     |
+| Linux    | Yes     |
+| Windows  | Yes     |
+| Web      | Yes     |
 
-class NarrativeService {
-  final sentenceEngine = SentenceEngine();
-  final speechEngine = FiftySpeechEngine();
+---
 
-  void initialize() {
-    final interpreter = SentenceInterpreter(
-      engine: sentenceEngine,
-      onRead: (text) => speechEngine.speak(text),
-      onWrite: (s) async => sentenceEngine.addSentenceToWritten(s),
-    );
+## Fifty Design Language Integration
 
-    sentenceEngine.registerInterpreter(interpreter);
-  }
-}
-```
+This package is part of Fifty Flutter Kit:
 
-### With fifty_audio_engine
+- **Consistent naming** - All classes follow Fifty Flutter Kit patterns
+- **fifty_speech_engine** - TTS integration for read instructions
+- **fifty_audio_engine** - Sound effects for navigation transitions
+- **Compatible packages** - Works alongside all Fifty Flutter Kit packages
 
-```dart
-import 'package:fifty_audio_engine/fifty_audio_engine.dart';
-
-final interpreter = SentenceInterpreter(
-  engine: engine,
-  onNavigate: (sentence) async {
-    // Play transition sound
-    await audioEngine.playSfx('transition.mp3');
-
-    // Change BGM for new phase
-    await audioEngine.playBgm('${sentence.phase}_theme.mp3');
-  },
-);
-```
-
-## Testing
-
-```dart
-import 'package:flutter_test/flutter_test.dart';
-import 'package:fifty_sentences_engine/fifty_sentences_engine.dart';
-
-void main() {
-  test('SentenceEngine processes sentences in order', () async {
-    final engine = SentenceEngine();
-    final processed = <String>[];
-
-    final interpreter = SentenceInterpreter(
-      engine: engine,
-      onWrite: (s) async => processed.add(s.text),
-    );
-    engine.registerInterpreter(interpreter);
-
-    engine.enqueue([
-      TestSentence(text: 'First'),
-      TestSentence(text: 'Second'),
-    ]);
-
-    await engine.process();
-
-    expect(processed, ['First', 'Second']);
-  });
-
-  test('SentenceQueue sorts by order', () {
-    final queue = SentenceQueue();
-
-    queue.pushOrdered(TestSentence(text: 'C', order: 3));
-    queue.pushOrdered(TestSentence(text: 'A', order: 1));
-    queue.pushOrdered(TestSentence(text: 'B', order: 2));
-
-    expect(queue.pop().text, 'A');
-    expect(queue.pop().text, 'B');
-    expect(queue.pop().text, 'C');
-  });
-
-  test('SafeSentenceWriter prevents duplicates', () async {
-    final written = <String>[];
-    final writer = SafeSentenceWriter(
-      (s) async => written.add(s.text),
-    );
-
-    final sentence = TestSentence(text: 'Hello');
-    await writer.write(sentence);
-    await writer.write(sentence); // Duplicate, should be ignored
-
-    expect(written, ['Hello']);
-  });
-}
-```
+---
 
 ## Migration from erune_sentences_engine
 
@@ -526,16 +506,16 @@ If migrating from the original package:
    engine.sentences; // Regular List
    ```
 
-## Screenshots
+---
 
-| Sentence Queue | Dialogue Choices | Narration |
-|:--------------:|:----------------:|:---------:|
-| ![Queue](screenshots/sentence_queue_light.png) | ![Choices](screenshots/dialogue_choices_light.png) | ![Narration](screenshots/dialogue_narration_light.png) |
+## Version
+
+0.1.0
+
+---
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
-## Contributing
-
-Part of Fifty Flutter Kit. See the main repository for contribution guidelines.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

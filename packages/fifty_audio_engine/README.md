@@ -1,24 +1,23 @@
 # Fifty Audio Engine
 
-A modular, reactive audio system for Flutter games and applications. Built for Fifty Flutter Kit.
+A modular, reactive audio system for Flutter games and applications. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+
+| BGM Player | SFX Player | Voice Player | Global Controls |
+|:----------:|:----------:|:------------:|:---------------:|
+| ![BGM](screenshots/bgm_player_light.png) | ![SFX](screenshots/sfx_player_light.png) | ![Voice](screenshots/voice_player_light.png) | ![Global](screenshots/global_controls_light.png) |
 
 ---
 
-## Overview
+## Features
 
-Fifty Audio Engine provides a three-channel audio architecture designed for games and interactive applications:
-
-| Channel | Purpose | Optimization |
-|---------|---------|--------------|
-| **BGM** | Background music | Crossfade, playlist, loop |
-| **SFX** | Sound effects | Low-latency pooling |
-| **Voice** | Voice acting / VO | BGM ducking |
-
-All channels share:
-- Persistent volume and state via `GetStorage`
-- Fade presets aligned with `FiftyMotion` tokens
-- Platform-specific audio context configuration
-- Lifecycle-aware pause/resume behavior
+- **Three-Channel Architecture** - BGM (crossfade, playlist, loop), SFX (low-latency pooling), Voice (BGM ducking)
+- **Persistent State** - Volume and state persisted via GetStorage
+- **FiftyMotion Integration** - Fade presets aligned with motion tokens
+- **Platform Audio Contexts** - Per-channel audio context configuration
+- **Lifecycle Awareness** - Automatic pause/resume with app lifecycle
+- **Reactive Streams** - Real-time playback state via streams
+- **Sound Groups** - Register and play random variations with throttling
+- **Crossfade** - Automatic BGM crossfade 3 seconds before track end
 
 ---
 
@@ -122,8 +121,6 @@ SfxChannel get sfx
 VoiceActingChannel get voice
 ```
 
----
-
 ### BgmChannel
 
 Background music with playlist management.
@@ -157,8 +154,6 @@ VoidCallback? onTrackAboutToChange       // Fired before crossfade
 - Shuffle and index persistence across sessions
 - Custom vs default playlist distinction
 - Loop mode by default
-
----
 
 ### SfxChannel
 
@@ -207,8 +202,6 @@ sfx.registerGroup('click', [
 await sfx.playGroup('click');
 ```
 
----
-
 ### VoiceActingChannel
 
 Voice-over playback with automatic BGM ducking.
@@ -237,8 +230,6 @@ Future<void> Function()? onCompleted  // Called on natural completion
 3. Voice completes or stops
 4. `onRestore` fires - BGM returns to original volume
 
----
-
 ### FadePreset
 
 Reusable fade configurations integrated with FiftyMotion tokens.
@@ -266,8 +257,6 @@ await bgm.withFade(
 );
 ```
 
----
-
 ### GlobalFadePresets
 
 Semantic aliases for common scenarios.
@@ -283,9 +272,7 @@ GlobalFadePresets.voiceDuckingIn    // normal
 GlobalFadePresets.levelTransition   // normal
 ```
 
----
-
-## BaseAudioChannel
+### BaseAudioChannel
 
 Abstract base class providing shared functionality.
 
@@ -382,7 +369,7 @@ StreamBuilder<Duration>(
 
 ---
 
-## Advanced Usage
+## Usage Patterns
 
 ### Source Swapping
 
@@ -435,6 +422,21 @@ await voice.playAndWait('https://cdn.example.com/vo/intro.mp3');
 await voice.waitUntilStopped();
 ```
 
+### Persistence
+
+All channel states are persisted via `GetStorage`:
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `fifty_audio_bgm_volume` | double | BGM volume (0.0-1.0) |
+| `fifty_audio_sfx_volume` | double | SFX volume |
+| `fifty_audio_voice_volume` | double | Voice volume |
+| `fifty_audio_bgm_active` | bool | BGM enabled flag |
+| `fifty_audio_sfx_active` | bool | SFX enabled flag |
+| `fifty_audio_voice_active` | bool | Voice enabled flag |
+| `fifty_audio_playlist` | List | Current BGM playlist |
+| `fifty_audio_index` | int | Current track index |
+
 ---
 
 ## Platform Support
@@ -460,34 +462,11 @@ This package is part of Fifty Flutter Kit:
 
 ---
 
-## Persistence
-
-All channel states are persisted via `GetStorage`:
-
-| Key | Type | Description |
-|-----|------|-------------|
-| `fifty_audio_bgm_volume` | double | BGM volume (0.0-1.0) |
-| `fifty_audio_sfx_volume` | double | SFX volume |
-| `fifty_audio_voice_volume` | double | Voice volume |
-| `fifty_audio_bgm_active` | bool | BGM enabled flag |
-| `fifty_audio_sfx_active` | bool | SFX enabled flag |
-| `fifty_audio_voice_active` | bool | Voice enabled flag |
-| `fifty_audio_playlist` | List | Current BGM playlist |
-| `fifty_audio_index` | int | Current track index |
-
----
-
 ## Version
 
 **Current:** 0.7.0
 
 ---
-
-## Screenshots
-
-| BGM Player | SFX Player | Voice Player | Global Controls |
-|:----------:|:----------:|:------------:|:---------------:|
-| ![BGM](screenshots/bgm_player_light.png) | ![SFX](screenshots/sfx_player_light.png) | ![Voice](screenshots/voice_player_light.png) | ![Global](screenshots/global_controls_light.png) |
 
 ## License
 

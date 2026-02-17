@@ -1,34 +1,24 @@
 # Fifty Map Engine
 
-Flame-based interactive grid map rendering for Flutter games. Part of Fifty Flutter Kit.
+Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-[![Pub Version](https://img.shields.io/pub/v/fifty_map_engine)](https://pub.dev/packages/fifty_map_engine)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+| Tactical Overview | Unit Selection & Pathfinding |
+|:-----------------:|:---------------------------:|
+| ![Overview](screenshots/tactical_overview_light.png) | ![Selection](screenshots/unit_selection_light.png) |
 
 ---
 
-## Overview
+## Features
 
-Fifty Map Engine provides a complete tile-based map rendering solution built on the Flame game engine:
-
-| Feature | Description | Use Case |
-|---------|-------------|----------|
-| **Tile Rendering** | Grid-based map with sprites | Dungeon crawlers, strategy games |
-| **Camera Controls** | Smooth pan and pinch-to-zoom | Map exploration, tactical view |
-| **Entity Management** | Spawn, update, remove lifecycle | Character movement, room loading |
-| **Movement Animation** | Animated transitions for movables | Character walking, monster AI |
-| **Event Markers** | Overlay icons with alignment | Quest points, NPC indicators |
-
-Key features:
-- Tile-based grid map rendering with Flame game engine
-- Smooth pan and pinch-to-zoom camera controls
-- Entity lifecycle management (spawn, update, remove)
-- Support for multiple entity types (rooms, characters, monsters, furniture, events)
-- Movement animations for movable entities
-- Event markers with customizable alignment
-- Asset loading and caching
-- JSON-based map serialization/deserialization
-- Multi-platform support (Android, iOS, macOS, Linux, Windows, Web)
+- **Tile Rendering** - Grid-based map with sprites for dungeon crawlers and strategy games
+- **Camera Controls** - Smooth pan and pinch-to-zoom for map exploration
+- **Entity Management** - Spawn, update, remove lifecycle for characters, rooms, monsters
+- **Movement Animation** - Animated transitions for movable entities
+- **Event Markers** - Overlay icons with customizable alignment
+- **Asset Loading** - Registration-based asset loading and caching
+- **JSON Serialization** - Map serialization/deserialization for level design
+- **Custom Entity Types** - Register custom spawners for game-specific entities
+- **Multi-Platform** - Full support for Android, iOS, macOS, Linux, Windows, and Web
 
 ---
 
@@ -343,9 +333,9 @@ FiftyEventAlignment.bottomLeft   FiftyEventAlignment.bottomCenter   FiftyEventAl
 
 ---
 
-## Component Classes
+### Component Classes
 
-### FiftyBaseComponent
+#### FiftyBaseComponent
 
 Abstract base for all entity components.
 
@@ -369,9 +359,7 @@ abstract class FiftyBaseComponent extends SpriteComponent
 - Spawns event/text overlays if present
 - Forwards taps to game handler
 
----
-
-### FiftyStaticComponent
+#### FiftyStaticComponent
 
 Component for static, non-moving entities (furniture, doors).
 
@@ -381,9 +369,7 @@ final component = FiftyStaticComponent(model: entity);
 
 Inherits all base behaviors with no additional logic.
 
----
-
-### FiftyMovableComponent
+#### FiftyMovableComponent
 
 Component for movable entities (characters, monsters).
 
@@ -410,9 +396,7 @@ await component.swapSprite('characters/hero_battle.png');
 - Speed is in pixels per second (default: 200)
 - Event overlays automatically follow parent movement
 
----
-
-### FiftyRoomComponent
+#### FiftyRoomComponent
 
 Container component that spawns child entities.
 
@@ -421,9 +405,7 @@ final room = FiftyRoomComponent(model: roomEntity);
 // Child entities in model.components are auto-spawned
 ```
 
----
-
-### FiftyEventComponent
+#### FiftyEventComponent
 
 Event marker overlay component.
 
@@ -432,9 +414,7 @@ final event = FiftyEventComponent(model: entity);
 event.moveWithParent(newModel);  // Follow parent movement
 ```
 
----
-
-### FiftyTextComponent
+#### FiftyTextComponent
 
 Text overlay component for entity labels.
 
@@ -444,9 +424,9 @@ Text overlay component for entity labels.
 
 ---
 
-## Services
+### Services
 
-### FiftyAssetLoader
+#### FiftyAssetLoader
 
 Asset registration and loading.
 
@@ -470,9 +450,7 @@ FiftyAssetLoader.reset();
 - Duplicates are automatically ignored
 - Throws exception if loadAll() called with empty registry
 
----
-
-### FiftyMapLoader
+#### FiftyMapLoader
 
 Map JSON loading and serialization.
 
@@ -487,9 +465,7 @@ final entities = FiftyMapLoader.loadFromJsonString(jsonString);
 final json = FiftyMapLoader.toJsonString(entities);
 ```
 
----
-
-### FiftyEntitySpawner
+#### FiftyEntitySpawner
 
 Factory for spawning map entity components.
 
@@ -507,9 +483,9 @@ FiftyEntitySpawner.register(
 
 ---
 
-## Extensions
+### Extensions
 
-### FiftyMapEntityExtension
+#### FiftyMapEntityExtension
 
 ```dart
 /// Clone with overrides
@@ -533,7 +509,7 @@ entity.isMovable;      // true if character or monster
 
 ---
 
-## Map JSON Format
+### Map JSON Format
 
 ```json
 [
@@ -571,9 +547,9 @@ entity.isMovable;      // true if character or monster
 
 ---
 
-## Configuration
+### Configuration
 
-### Grid Configuration
+#### Grid Configuration
 
 The default block size is 64 pixels. Access via:
 
@@ -581,7 +557,7 @@ The default block size is 64 pixels. Access via:
 FiftyMapConfig.blockSize  // 64.0
 ```
 
-### Render Priorities
+#### Render Priorities
 
 Default render priorities (higher = on top):
 
@@ -599,7 +575,7 @@ Override with `zIndex` in FiftyMapEntity.
 
 ---
 
-## Coordinate System
+### Coordinate System
 
 - **Grid coordinates**: Tile-based `(x, y)` where `(0, 0)` is bottom-left
 - **Pixel coordinates**: `gridPosition * FiftyMapConfig.blockSize`
@@ -607,7 +583,74 @@ Override with `zIndex` in FiftyMapEntity.
 
 ---
 
-## Custom Entity Types
+## Usage Patterns
+
+### Loading Maps Dynamically
+
+```dart
+// Load from JSON file
+final entities = await FiftyMapLoader.loadFromAssets('assets/maps/dungeon.json');
+
+// Clear existing and load new
+controller.clear();
+controller.addEntities(entities);
+controller.centerMap();
+```
+
+---
+
+### Character Movement with Collision Checks
+
+```dart
+void moveCharacter(FiftyMapEntity character, double x, double y) {
+  // Get destination cell
+  final targetPos = Vector2(x, y);
+
+  // Check for obstacles (custom logic)
+  final blocked = checkCollision(targetPos);
+
+  if (!blocked) {
+    controller.move(character, x, y);
+  }
+}
+```
+
+---
+
+### Event Marker Interaction
+
+```dart
+FiftyMapWidget(
+  controller: controller,
+  initialEntities: entities,
+  onEntityTap: (entity) {
+    if (entity.event != null && !entity.event!.clicked) {
+      // Mark event as acknowledged
+      entity.event!.clicked = true;
+
+      // Show quest dialog
+      showQuestDialog(entity.event!.text);
+    }
+  },
+);
+```
+
+---
+
+### Camera Animation Sequences
+
+```dart
+// Pan through locations
+await controller.centerOnEntity(entrance, duration: Duration(seconds: 1));
+await Future.delayed(Duration(milliseconds: 500));
+await controller.centerOnEntity(treasure, duration: Duration(seconds: 2));
+await Future.delayed(Duration(milliseconds: 500));
+await controller.centerOnEntity(exit, duration: Duration(seconds: 1));
+```
+
+---
+
+### Custom Entity Types
 
 Register custom entity types with the spawner:
 
@@ -644,64 +687,16 @@ final trap = FiftyMapEntity(
 
 ---
 
-## Advanced Usage
+### Best Practices
 
-### Loading Maps Dynamically
+1. **Register assets first** - Call `FiftyAssetLoader.registerAssets()` before game starts
+2. **Use controller methods** - Prefer controller over direct game access
+3. **Check isBound** - Verify controller is bound before operations
+4. **Clean up properly** - Call `controller.unbind()` when disposing
+5. **Use grid coordinates** - Movement methods use tile units, not pixels
+6. **Leverage custom types** - Register custom spawners for game-specific entities
 
-```dart
-// Load from JSON file
-final entities = await FiftyMapLoader.loadFromAssets('assets/maps/dungeon.json');
-
-// Clear existing and load new
-controller.clear();
-controller.addEntities(entities);
-controller.centerMap();
-```
-
-### Character Movement with Collision Checks
-
-```dart
-void moveCharacter(FiftyMapEntity character, double x, double y) {
-  // Get destination cell
-  final targetPos = Vector2(x, y);
-
-  // Check for obstacles (custom logic)
-  final blocked = checkCollision(targetPos);
-
-  if (!blocked) {
-    controller.move(character, x, y);
-  }
-}
-```
-
-### Event Marker Interaction
-
-```dart
-FiftyMapWidget(
-  controller: controller,
-  initialEntities: entities,
-  onEntityTap: (entity) {
-    if (entity.event != null && !entity.event!.clicked) {
-      // Mark event as acknowledged
-      entity.event!.clicked = true;
-
-      // Show quest dialog
-      showQuestDialog(entity.event!.text);
-    }
-  },
-);
-```
-
-### Camera Animation Sequences
-
-```dart
-// Pan through locations
-await controller.centerOnEntity(entrance, duration: Duration(seconds: 1));
-await Future.delayed(Duration(milliseconds: 500));
-await controller.centerOnEntity(treasure, duration: Duration(seconds: 2));
-await Future.delayed(Duration(milliseconds: 500));
-await controller.centerOnEntity(exit, duration: Duration(seconds: 1));
-```
+See the [example directory](example/) for a complete tactical skirmish sandbox showcasing tile grid rendering, camera controls, entity spawning with team decorators, A* pathfinding, animation queues, and tap interaction.
 
 ---
 
@@ -728,48 +723,11 @@ This package is part of Fifty Flutter Kit:
 
 ---
 
-## Example App
-
-See the [example directory](example/) for a complete tactical skirmish sandbox showcasing:
-
-- Tile grid rendering with multiple tile types
-- Camera pan and pinch-to-zoom controls
-- Entity spawning with team decorators (HP bars, team borders, status icons)
-- A* pathfinding and BFS movement range
-- Animation queue with step-by-step movement
-- Floating text damage popups
-- Tile and entity tap interaction
-
-```bash
-cd example
-flutter pub get
-flutter run
-```
-
----
-
-## Best Practices
-
-1. **Register assets first** - Call `FiftyAssetLoader.registerAssets()` before game starts
-2. **Use controller methods** - Prefer controller over direct game access
-3. **Check isBound** - Verify controller is bound before operations
-4. **Clean up properly** - Call `controller.unbind()` when disposing
-5. **Use grid coordinates** - Movement methods use tile units, not pixels
-6. **Leverage custom types** - Register custom spawners for game-specific entities
-
----
-
 ## Version
 
 **Current:** 0.1.0
 
 ---
-
-## Screenshots
-
-| Tactical Overview | Unit Selection & Pathfinding |
-|:-----------------:|:---------------------------:|
-| ![Overview](screenshots/tactical_overview_light.png) | ![Selection](screenshots/unit_selection_light.png) |
 
 ## License
 

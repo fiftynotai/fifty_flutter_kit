@@ -1,6 +1,12 @@
-# fifty_achievement_engine
+# Fifty Achievement Engine
 
-Achievement system for Flutter games with condition-based unlocks, progress tracking, and FDL-compliant UI.
+Achievement system for Flutter games with condition-based unlocks, progress tracking, and FDL-compliant UI. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+
+| Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
+|:----:|:------------------:|:-------------------:|:----------------:|
+| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_achievements_light.png) | ![Unlocked](screenshots/achievement_unlocked_light.png) | ![RPG](screenshots/rpg_achievements_light.png) |
+
+---
 
 ## Features
 
@@ -13,6 +19,8 @@ Achievement system for Flutter games with condition-based unlocks, progress trac
 - **Serialization** - JSON save/load for game persistence
 - **FDL-Compliant UI** - Styled widgets using Fifty Design Language
 
+---
+
 ## Installation
 
 ```yaml
@@ -23,6 +31,8 @@ dependencies:
   fifty_tokens:
     path: ../fifty_tokens
 ```
+
+---
 
 ## Quick Start
 
@@ -63,97 +73,42 @@ final progress = controller.getProgress('kill_100');
 print('${(progress * 100).toStringAsFixed(0)}%'); // e.g., "45%"
 ```
 
-## Condition Types
+---
 
-### EventCondition
+## Architecture
 
-Triggered when a specific event occurs at least once.
-
-```dart
-// Unlock when player finishes the tutorial
-EventCondition('tutorial_completed')
+```
+AchievementController<T>
+    |
+    +-- achievements: List<Achievement<T>>
+    |       Condition-based unlock, rarity, prerequisites
+    |
+    +-- Event/Stat Tracking
+    |       trackEvent(), updateStat(), incrementStat()
+    |
+    +-- Progress Engine
+    |       Real-time progress (0.0-1.0), state machine
+    |
+    +-- Serialization
+            exportProgress(), importProgress(), packs
 ```
 
-### CountCondition
+### Core Components
 
-Requires an event to occur a specific number of times.
+| Component | Description |
+|-----------|-------------|
+| `AchievementController` | Main controller managing achievements, tracking events/stats, unlock logic |
+| `Achievement` | Data model with conditions, prerequisites, rarity, points |
+| `AchievementCondition` | Abstract base for condition types |
+| `AchievementSerializer` | JSON serialization for save/load and packs |
 
-```dart
-// Kill 100 enemies
-CountCondition('enemy_killed', target: 100)
-```
+---
 
-### ThresholdCondition
+## API Reference
 
-Satisfied when a stat reaches a target value.
+### AchievementController
 
-```dart
-// Reach level 50
-ThresholdCondition('player_level', target: 50)
-
-// Deal 10,000 damage total
-ThresholdCondition('total_damage', target: 10000)
-
-// With comparison operators
-ThresholdCondition(
-  'health',
-  target: 1,
-  operator: ThresholdOperator.lessOrEqual, // Survive at 1 HP
-)
-```
-
-### CompositeCondition
-
-Combines multiple conditions with AND/OR logic.
-
-```dart
-// Kill 100 enemies AND reach level 50
-CompositeCondition.and([
-  CountCondition('enemy_killed', target: 100),
-  ThresholdCondition('player_level', target: 50),
-])
-
-// Complete tutorial OR skip tutorial
-CompositeCondition.or([
-  EventCondition('tutorial_completed'),
-  EventCondition('tutorial_skipped'),
-])
-```
-
-### TimeCondition
-
-Time-based challenges.
-
-```dart
-// Play for 10 hours total
-TimeCondition(Duration(hours: 10))
-
-// Survive for 30 minutes in survival mode
-TimeCondition(
-  Duration(minutes: 30),
-  duringEvent: 'survival_mode_active',
-)
-```
-
-### SequenceCondition
-
-Requires events to occur in a specific order.
-
-```dart
-// Execute a specific combo
-SequenceCondition(
-  ['light_attack', 'light_attack', 'heavy_attack'],
-  strict: true, // Must be consecutive
-)
-
-// Complete story chapters in order
-SequenceCondition(
-  ['chapter_1', 'chapter_2', 'chapter_3'],
-  strict: false, // Other events allowed between
-)
-```
-
-## Tracking Events & Stats
+#### Tracking Events & Stats
 
 ```dart
 // Track single event
@@ -175,7 +130,7 @@ controller.resetTracking();
 controller.reset();
 ```
 
-## Achievement States
+#### Achievement States
 
 ```dart
 enum AchievementState {
@@ -192,7 +147,7 @@ if (state == AchievementState.available) {
 }
 ```
 
-## Progress Details
+#### Progress Details
 
 ```dart
 // Simple progress (0.0 to 1.0)
@@ -205,7 +160,192 @@ print('${details.percentage * 100}%');         // "45%"
 print('State: ${details.state.displayName}');  // "In Progress"
 ```
 
-## Custom Achievement Data
+#### Serialization
+
+##### Save Progress
+
+```dart
+// Export all progress data
+final progressJson = controller.exportProgress();
+await saveToFile(jsonEncode(progressJson));
+```
+
+##### Load Progress
+
+```dart
+// Import saved progress
+final savedData = await loadFromFile();
+final progressJson = jsonDecode(savedData) as Map<String, dynamic>;
+controller.importProgress(progressJson);
+```
+
+### Condition Types
+
+#### EventCondition
+
+Triggered when a specific event occurs at least once.
+
+```dart
+// Unlock when player finishes the tutorial
+EventCondition('tutorial_completed')
+```
+
+#### CountCondition
+
+Requires an event to occur a specific number of times.
+
+```dart
+// Kill 100 enemies
+CountCondition('enemy_killed', target: 100)
+```
+
+#### ThresholdCondition
+
+Satisfied when a stat reaches a target value.
+
+```dart
+// Reach level 50
+ThresholdCondition('player_level', target: 50)
+
+// Deal 10,000 damage total
+ThresholdCondition('total_damage', target: 10000)
+
+// With comparison operators
+ThresholdCondition(
+  'health',
+  target: 1,
+  operator: ThresholdOperator.lessOrEqual, // Survive at 1 HP
+)
+```
+
+#### CompositeCondition
+
+Combines multiple conditions with AND/OR logic.
+
+```dart
+// Kill 100 enemies AND reach level 50
+CompositeCondition.and([
+  CountCondition('enemy_killed', target: 100),
+  ThresholdCondition('player_level', target: 50),
+])
+
+// Complete tutorial OR skip tutorial
+CompositeCondition.or([
+  EventCondition('tutorial_completed'),
+  EventCondition('tutorial_skipped'),
+])
+```
+
+#### TimeCondition
+
+Time-based challenges.
+
+```dart
+// Play for 10 hours total
+TimeCondition(Duration(hours: 10))
+
+// Survive for 30 minutes in survival mode
+TimeCondition(
+  Duration(minutes: 30),
+  duringEvent: 'survival_mode_active',
+)
+```
+
+#### SequenceCondition
+
+Requires events to occur in a specific order.
+
+```dart
+// Execute a specific combo
+SequenceCondition(
+  ['light_attack', 'light_attack', 'heavy_attack'],
+  strict: true, // Must be consecutive
+)
+
+// Complete story chapters in order
+SequenceCondition(
+  ['chapter_1', 'chapter_2', 'chapter_3'],
+  strict: false, // Other events allowed between
+)
+```
+
+### Widgets
+
+#### AchievementCard
+
+Display a single achievement with progress.
+
+```dart
+AchievementCard(
+  achievement: myAchievement,
+  progress: 0.75,
+  state: AchievementState.available,
+  onTap: () => showDetails(myAchievement),
+)
+```
+
+#### AchievementList
+
+Scrollable list with filtering support.
+
+```dart
+AchievementList(
+  controller: controller,
+  filter: AchievementFilter.available, // all, available, unlocked, locked
+  rarityFilter: AchievementRarity.rare, // Optional rarity filter
+  categoryFilter: 'Combat',             // Optional category filter
+  onTap: (achievement) => showDetails(achievement),
+)
+```
+
+#### AchievementPopup
+
+Animated unlock notification.
+
+```dart
+controller.onUnlock = (achievement) {
+  showOverlay(
+    context: context,
+    builder: (context) => AchievementPopup(
+      achievement: achievement,
+      duration: Duration(seconds: 4),
+      onDismiss: () => hideOverlay(),
+    ),
+  );
+};
+```
+
+> **Note:** `AchievementPopup` includes an internal `Material` wrapper with `MaterialType.transparency` to ensure proper text rendering when displayed via Flutter's `Overlay`. This prevents the yellow underline text issue that occurs when `Text` widgets lack a `Material` ancestor.
+
+#### AchievementSummary
+
+Overall progress statistics.
+
+```dart
+AchievementSummary(
+  controller: controller,
+  showRarityBreakdown: true,
+  showCategoryBreakdown: true,
+)
+```
+
+#### AchievementProgressBar
+
+Standalone progress bar.
+
+```dart
+AchievementProgressBar(
+  progress: 0.75,
+  height: 8,
+  foregroundColor: Colors.green,
+)
+```
+
+---
+
+## Usage Patterns
+
+### Custom Achievement Data
 
 Attach game-specific data to achievements:
 
@@ -237,97 +377,6 @@ final controller = AchievementController<RewardData>(
 );
 ```
 
-## Widgets
-
-### AchievementCard
-
-Display a single achievement with progress.
-
-```dart
-AchievementCard(
-  achievement: myAchievement,
-  progress: 0.75,
-  state: AchievementState.available,
-  onTap: () => showDetails(myAchievement),
-)
-```
-
-### AchievementList
-
-Scrollable list with filtering support.
-
-```dart
-AchievementList(
-  controller: controller,
-  filter: AchievementFilter.available, // all, available, unlocked, locked
-  rarityFilter: AchievementRarity.rare, // Optional rarity filter
-  categoryFilter: 'Combat',             // Optional category filter
-  onTap: (achievement) => showDetails(achievement),
-)
-```
-
-### AchievementPopup
-
-Animated unlock notification.
-
-```dart
-controller.onUnlock = (achievement) {
-  showOverlay(
-    context: context,
-    builder: (context) => AchievementPopup(
-      achievement: achievement,
-      duration: Duration(seconds: 4),
-      onDismiss: () => hideOverlay(),
-    ),
-  );
-};
-```
-
-> **Note:** `AchievementPopup` includes an internal `Material` wrapper with `MaterialType.transparency` to ensure proper text rendering when displayed via Flutter's `Overlay`. This prevents the yellow underline text issue that occurs when `Text` widgets lack a `Material` ancestor.
-
-### AchievementSummary
-
-Overall progress statistics.
-
-```dart
-AchievementSummary(
-  controller: controller,
-  showRarityBreakdown: true,
-  showCategoryBreakdown: true,
-)
-```
-
-### AchievementProgressBar
-
-Standalone progress bar.
-
-```dart
-AchievementProgressBar(
-  progress: 0.75,
-  height: 8,
-  foregroundColor: Colors.green,
-)
-```
-
-## Serialization
-
-### Save Progress
-
-```dart
-// Export all progress data
-final progressJson = controller.exportProgress();
-await saveToFile(jsonEncode(progressJson));
-```
-
-### Load Progress
-
-```dart
-// Import saved progress
-final savedData = await loadFromFile();
-final progressJson = jsonDecode(savedData) as Map<String, dynamic>;
-controller.importProgress(progressJson);
-```
-
 ### Achievement Packs
 
 Serialize achievement definitions for modding or DLC:
@@ -349,7 +398,7 @@ final pack = AchievementSerializer.deserializePack<RewardData>(
 controller.addAchievements(pack.achievements);
 ```
 
-## Filtering & Querying
+### Filtering & Querying
 
 ```dart
 // By state
@@ -372,22 +421,29 @@ print('Earned points: ${controller.earnedPoints}');
 print('Completion: ${(controller.completionPercentage * 100).toStringAsFixed(1)}%');
 ```
 
-## Theme Support
+---
 
-All widgets are theme-aware and use `Theme.of(context).colorScheme` for colors:
+## Platform Support
 
-- Text colors from `colorScheme.onSurface`
-- Background colors from `colorScheme.surfaceContainerHighest`
-- Primary accents from `colorScheme.primary`
-- Borders from `colorScheme.outline`
-- Rarity colors (common, uncommon, rare, epic, legendary) use intentional semantic colors
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     |       |
 
-Layout tokens from FDL:
+---
 
-- Spacing from `FiftySpacing`
-- Typography from `FiftyTypography`
-- Radii from `FiftyRadii`
-- Motion from `FiftyMotion`
+## Fifty Design Language Integration
+
+This package is part of Fifty Flutter Kit:
+
+- **Theme-aware widgets** - All widgets use `Theme.of(context).colorScheme` for colors (`onSurface` for text, `surfaceContainerHighest` for backgrounds, `primary` for accents, `outline` for borders)
+- **FDL token alignment** - Spacing from `FiftySpacing`, typography from `FiftyTypography`, radii from `FiftyRadii`, motion from `FiftyMotion`
+- **Rarity semantic colors** - Common, Uncommon, Rare, Epic, Legendary use intentional semantic colors
+- **Compatible packages** - Works with `fifty_tokens`, `fifty_theme`, `fifty_ui`
 
 Optional color overrides are provided as widget parameters:
 
@@ -400,12 +456,16 @@ AchievementCard(
 )
 ```
 
-## Screenshots
+---
 
-| Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
-|:----:|:------------------:|:-------------------:|:----------------:|
-| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_achievements_light.png) | ![Unlocked](screenshots/achievement_unlocked_light.png) | ![RPG](screenshots/rpg_achievements_light.png) |
+## Version
+
+**Current:** 0.1.1
+
+---
 
 ## License
 
-Part of the Fifty Flutter Kit.
+MIT License - see [LICENSE](LICENSE) for details.
+
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
