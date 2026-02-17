@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
         title: const Text('Ticket Builder'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Instructions Card
           FiftyCard(
@@ -43,7 +44,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
               children: [
                 Icon(Icons.info_outline,
                     color: colorScheme.onPrimaryContainer),
-                const SizedBox(width: 12),
+                const SizedBox(width: FiftySpacing.md),
                 Expanded(
                   child: Text(
                     'Build a custom ticket with text formatting',
@@ -57,7 +58,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: FiftySpacing.lg),
 
           // Text Input
           FiftyCard(
@@ -65,7 +66,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FiftySectionHeader(
+                const FiftySectionHeader(
                   title: 'Text Content',
                   showDivider: false,
                 ),
@@ -79,7 +80,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: FiftySpacing.lg),
 
           // Formatting Options
           FiftyCard(
@@ -87,14 +88,14 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FiftySectionHeader(
+                const FiftySectionHeader(
                   title: 'Formatting',
                   showDivider: false,
                 ),
 
                 // Bold and Underline
                 Wrap(
-                  spacing: 8,
+                  spacing: FiftySpacing.sm,
                   children: [
                     FilterChip(
                       label: const Text('Bold'),
@@ -117,10 +118,10 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                   ],
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: FiftySpacing.lg),
 
                 // Text Size
-                FiftySectionHeader(
+                const FiftySectionHeader(
                   title: 'Text Size',
                   size: FiftySectionHeaderSize.small,
                   showDivider: false,
@@ -150,10 +151,10 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                   expanded: true,
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: FiftySpacing.lg),
 
                 // Alignment
-                FiftySectionHeader(
+                const FiftySectionHeader(
                   title: 'Alignment',
                   size: FiftySectionHeaderSize.small,
                   showDivider: false,
@@ -189,7 +190,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: FiftySpacing.xxl),
 
           // Print Button
           FiftyButton(
@@ -199,7 +200,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             expanded: true,
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: FiftySpacing.lg),
 
           // Preview Card
           FiftyCard(
@@ -207,16 +208,16 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FiftySectionHeader(
+                const FiftySectionHeader(
                   title: 'Preview',
                   showDivider: false,
                 ),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(FiftySpacing.lg),
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: FiftyRadii.lgRadius,
                     border: Border.all(color: colorScheme.outline),
                   ),
                   child: Text(

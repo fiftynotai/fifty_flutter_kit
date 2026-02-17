@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -216,7 +217,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
       body: _printers.isEmpty
           ? _buildEmptyState()
           : ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(FiftySpacing.lg),
               itemCount: _printers.length,
               itemBuilder: (context, index) {
                 final printer = _printers[index];
@@ -242,7 +243,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(FiftySpacing.xxxl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -251,7 +252,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
               size: 80,
               color: colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: FiftySpacing.xxl),
             Text(
               'No Printers Registered',
               style:
@@ -259,7 +260,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
                         color: colorScheme.onSurfaceVariant,
                       ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: FiftySpacing.md),
             Text(
               'Add your first Bluetooth or WiFi printer to get started',
               textAlign: TextAlign.center,

@@ -1,3 +1,4 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Printing Engine Example'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Header
           FiftyCard(
@@ -28,14 +29,14 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: FiftySpacing.sm),
                 Text(
                   'Production-grade Flutter package for multi-printer ESC/POS printing',
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: FiftySpacing.lg),
                 Text(
                   'Version: 1.0.0',
                   style: textTheme.bodySmall?.copyWith(
@@ -46,10 +47,10 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: FiftySpacing.xxl),
 
           // Features
-          FiftySectionHeader(
+          const FiftySectionHeader(
             title: 'Features',
             size: FiftySectionHeaderSize.large,
           ),
@@ -94,10 +95,10 @@ class HomeScreen extends StatelessWidget {
                 'Per-printer success/failure details with error messages',
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: FiftySpacing.xxl),
 
           // Quick Start
-          FiftySectionHeader(
+          const FiftySectionHeader(
             title: 'Quick Start',
             size: FiftySectionHeaderSize.large,
           ),
@@ -122,7 +123,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: FiftySpacing.xxl),
 
           // Navigation Hint
           FiftyCard(
@@ -132,7 +133,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Icon(Icons.info_outline,
                     color: colorScheme.onPrimaryContainer),
-                const SizedBox(width: 12),
+                const SizedBox(width: FiftySpacing.md),
                 Expanded(
                   child: Text(
                     'Use the bottom navigation to explore different features',
@@ -169,7 +170,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: FiftySpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: FiftySpacing.xs),
               Text(
                 description,
                 style: TextStyle(

@@ -1,6 +1,8 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
+import '../utils/printer_status_utils.dart';
 
 class PrinterListItem extends StatelessWidget {
   final PrinterDevice printer;
@@ -27,7 +29,7 @@ class PrinterListItem extends StatelessWidget {
 
     return FiftyCard(
       scanlineOnHover: false,
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,7 +47,7 @@ class PrinterListItem extends StatelessWidget {
                   color: colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: FiftySpacing.md),
 
               // Name and Status
               Expanded(
@@ -59,10 +61,10 @@ class PrinterListItem extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: FiftySpacing.xs),
                     FiftyStatusIndicator(
                       label: _getStatusText(status),
-                      state: _mapStatus(status),
+                      state: mapPrinterStatus(status),
                       showStatusLabel: false,
                       size: FiftyStatusSize.small,
                     ),
@@ -79,7 +81,7 @@ class PrinterListItem extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: FiftySpacing.md),
 
           // Details
           _buildDetailRow(
@@ -119,12 +121,12 @@ class PrinterListItem extends StatelessWidget {
             '${printer.defaultCopies}',
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: FiftySpacing.lg),
 
           // Action Buttons
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: FiftySpacing.sm,
+            runSpacing: FiftySpacing.sm,
             children: [
               if (!isConnected)
                 FiftyButton(
@@ -160,11 +162,11 @@ class PrinterListItem extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
       child: Row(
         children: [
           Icon(icon, size: 16, color: colorScheme.onSurfaceVariant),
-          const SizedBox(width: 8),
+          const SizedBox(width: FiftySpacing.sm),
           Text(
             '$label: ',
             style: TextStyle(
@@ -185,23 +187,6 @@ class PrinterListItem extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  FiftyStatusState _mapStatus(PrinterStatus status) {
-    switch (status) {
-      case PrinterStatus.connected:
-        return FiftyStatusState.ready;
-      case PrinterStatus.printing:
-        return FiftyStatusState.loading;
-      case PrinterStatus.connecting:
-        return FiftyStatusState.loading;
-      case PrinterStatus.error:
-        return FiftyStatusState.error;
-      case PrinterStatus.healthCheckFailed:
-        return FiftyStatusState.error;
-      case PrinterStatus.disconnected:
-        return FiftyStatusState.offline;
-    }
   }
 
   String _getStatusText(PrinterStatus status) {

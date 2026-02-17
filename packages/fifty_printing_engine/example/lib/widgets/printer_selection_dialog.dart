@@ -1,6 +1,8 @@
+import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
+import '../utils/printer_status_utils.dart';
 
 class PrinterSelectionDialog extends StatefulWidget {
   final List<PrinterDevice> availablePrinters;
@@ -23,23 +25,6 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
     _selectedPrinterIds.addAll(widget.availablePrinters.map((p) => p.id));
   }
 
-  FiftyStatusState _mapStatus(PrinterStatus status) {
-    switch (status) {
-      case PrinterStatus.connected:
-        return FiftyStatusState.ready;
-      case PrinterStatus.printing:
-        return FiftyStatusState.loading;
-      case PrinterStatus.connecting:
-        return FiftyStatusState.loading;
-      case PrinterStatus.error:
-        return FiftyStatusState.error;
-      case PrinterStatus.healthCheckFailed:
-        return FiftyStatusState.error;
-      case PrinterStatus.disconnected:
-        return FiftyStatusState.offline;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -57,7 +42,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
               style: TextStyle(color: colorScheme.onSurfaceVariant),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: FiftySpacing.lg),
 
             Flexible(
               child: ListView.builder(
@@ -69,7 +54,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                       _selectedPrinterIds.contains(printer.id);
 
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
                     child: FiftyCard(
                       scanlineOnHover: false,
                       onTap: () {
@@ -96,7 +81,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                               });
                             },
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: FiftySpacing.md),
                           Expanded(
                             child: Column(
                               crossAxisAlignment:
@@ -107,10 +92,10 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: FiftySpacing.xs),
                                 Wrap(
-                                  spacing: 8,
-                                  runSpacing: 4,
+                                  spacing: FiftySpacing.sm,
+                                  runSpacing: FiftySpacing.xs,
                                   children: [
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -124,7 +109,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                                           color: colorScheme
                                               .onSurfaceVariant,
                                         ),
-                                        const SizedBox(width: 4),
+                                        const SizedBox(width: FiftySpacing.xs),
                                         Text(
                                           printer.type ==
                                                   PrinterType.bluetooth
@@ -151,7 +136,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                           ),
                           FiftyStatusIndicator(
                             label: '',
-                            state: _mapStatus(printer.status),
+                            state: mapPrinterStatus(printer.status),
                             showStatusLabel: false,
                             size: FiftyStatusSize.small,
                           ),
