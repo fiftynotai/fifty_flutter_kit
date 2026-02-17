@@ -340,8 +340,8 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
       );
     }
 
-    // Ability target highlights (purple).
-    if (state.abilityTargets.isNotEmpty) {
+    // Re-apply ability highlights if targeting mode is active.
+    if (_viewModel.isAbilityTargeting.value && state.abilityTargets.isNotEmpty) {
       _controller.highlightTiles(
         state.abilityTargets
             .map((p) => map_engine.GridPosition(p.x, p.y))
@@ -392,10 +392,20 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
 
   /// Handles changes to ability targeting mode.
   ///
-  /// When ability targeting is cancelled, clears the ability target
-  /// highlights from the board.
+  /// When activated, renders ability target highlights on the board.
+  /// When deactivated, clears them.
   void _onAbilityTargetingChanged(bool isTargeting) {
-    if (!isTargeting) {
+    if (isTargeting) {
+      final state = _viewModel.gameState.value;
+      if (state.abilityTargets.isNotEmpty) {
+        _controller.highlightTiles(
+          state.abilityTargets
+              .map((p) => map_engine.GridPosition(p.x, p.y))
+              .toList(),
+          map_engine.HighlightStyle.abilityTarget,
+        );
+      }
+    } else {
       _controller.clearHighlights(group: 'abilityTarget');
     }
   }
