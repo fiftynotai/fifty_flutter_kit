@@ -141,7 +141,7 @@ class AchievementCard<T> extends StatelessWidget {
                       ? FiftyTypography.bodyMedium
                       : FiftyTypography.titleSmall,
                   fontWeight: FiftyTypography.bold,
-                  color: FiftyColors.cream.withValues(alpha: 0.5),
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
               const SizedBox(height: FiftySpacing.xs),
@@ -150,7 +150,7 @@ class AchievementCard<T> extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.cream.withValues(alpha: 0.3),
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
               ),
             ],
@@ -181,7 +181,7 @@ class AchievementCard<T> extends StatelessWidget {
                             ? FiftyTypography.bodyMedium
                             : FiftyTypography.titleSmall,
                         fontWeight: FiftyTypography.bold,
-                        color: FiftyColors.cream,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -198,7 +198,7 @@ class AchievementCard<T> extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
