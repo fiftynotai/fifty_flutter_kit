@@ -329,7 +329,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                       child: FiftyButton(
                         label: 'EASY',
                         variant: FiftyButtonVariant.ghost,
-                        size: FiftyButtonSize.medium,
+                        size: FiftyButtonSize.small,
                         onPressed: () => _startAIGame(AIDifficulty.easy),
                       ),
                     ),
@@ -338,7 +338,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                       child: FiftyButton(
                         label: 'MEDIUM',
                         variant: FiftyButtonVariant.ghost,
-                        size: FiftyButtonSize.medium,
+                        size: FiftyButtonSize.small,
                         onPressed: () => _startAIGame(AIDifficulty.medium),
                       ),
                     ),
@@ -347,7 +347,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                       child: FiftyButton(
                         label: 'HARD',
                         variant: FiftyButtonVariant.ghost,
-                        size: FiftyButtonSize.medium,
+                        size: FiftyButtonSize.small,
                         onPressed: () => _startAIGame(AIDifficulty.hard),
                       ),
                     ),
