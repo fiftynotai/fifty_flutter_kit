@@ -12,7 +12,27 @@ None. All briefs completed and committed.
 
 ---
 
+## Queued Briefs
+
+### BR-103 - Printing Engine Example FDL Migration & fifty_ui Adoption
+- **Status:** Ready
+- **Priority:** P2-Medium
+- **Effort:** M (2-3d)
+- **Scope:** Migrate printing_engine example to consume fifty_ui components, eliminate hardcoded colors, enforce DRY, promote general widgets to fifty_ui
+- **Files:** 12 dart files across screens, widgets, examples
+
+---
+
 ## Completed Briefs (This Session - 2026-02-17)
+
+### Unified FDL README Template (all 7 engine packages)
+- **Status:** Done (uncommitted)
+- **Phase:** Complete — all 7 engine READMEs rewritten to unified template
+- **Summary:** 7 coder agents deployed in parallel rewrote READMEs for: fifty_achievement_engine, fifty_audio_engine, fifty_map_engine, fifty_sentences_engine, fifty_speech_engine, fifty_printing_engine, fifty_skill_tree. All verified: 10/10 standard sections, 2/2 branding refs, zero non-standard headers. Template saved to `ai/context/readme_template.md`.
+- **Verification:**
+  - `grep -cE "^## (Features|...)" packages/*/README.md` — 10/10 all packages
+  - `grep -c "Part of \[Fifty Flutter Kit\]"` — exactly 2 per README
+  - Zero non-standard `##` sections (except allowed Migration in sentences_engine)
 
 ### BR-093 - Achievement Card Text Theme Awareness
 - **Status:** Done (`1426703`)
@@ -38,40 +58,31 @@ None. All briefs completed and committed.
 - **Priority:** P2-Medium
 - **Effort:** S
 - **Phase:** Complete — 9 hardcoded dark color refs replaced with colorScheme tokens across 4 widget files
-- **Summary:** `AchievementCard`, `AchievementSummary`, `AchievementPopup`, `AchievementProgressBar` now use `Theme.of(context).colorScheme` tokens (`surfaceContainerHighest`, `surface`, `outline`, `onSurface`) instead of hardcoded `FiftyColors.surfaceDark`/`darkBurgundy`/`borderDark`/`Colors.white`. Cards adapt to light/dark theme. Constructor overrides preserved. 382/382 tactical_grid tests passing.
 
 ### BR-090 - Tactical Grid Settings Page
 - **Status:** Done (`9e1f506`)
 - **Priority:** P2-Medium
 - **Effort:** M
 - **Phase:** Complete — full MVVM+Actions settings module with audio/gameplay/display sections
-- **Summary:** 9 new files (model, service, viewmodel, actions, bindings, page, 3 section widgets), 7 modified files. Audio volumes persist via AudioStorage, non-audio via GetStorage. Removed hardcoded volume overrides from AudioCoordinator/MenuPage. Made TurnTimerService thresholds configurable. Theme switching via Get.changeThemeMode(). 101 new tests. 382/382 tactical_grid tests passing.
 
 ### Theme Awareness Fixes (post BR-090)
 - **Status:** Done (`7788862`, `2029ba8`)
 - **Phase:** Complete — light/dark mode working across all tactical_grid pages
-- **Summary:** Two commits:
-  - `7788862` — Replaced `FiftyColors.darkBurgundy` with `colorScheme.surface` and `FiftyColors.cream` with `colorScheme.onSurface` across 9 files (menu, settings, achievements, battle, HUD widgets)
-  - `2029ba8` — Made battle HUD bars (TurnIndicator, UnitInfoPanel) fully theme-aware: replaced `Colors.black.withAlpha(180)` overlay with `colorScheme.surface`, text with `colorScheme.onSurface`
-- **Verified:** All pages (menu, settings, achievements, battle) tested on iOS simulator in both light and dark mode. 382/382 tests passing.
 
 ### BR-089 - AI Turn Freezes After Killing a Player Unit
 - **Status:** Done (`7df9768`)
 - **Priority:** P0-Critical
 - **Effort:** S
-- **Phase:** Complete — try/catch on onComplete in AnimationQueue + try/finally on all defeat Completers
 
 ### BR-088 - Archer Shoot No Target Highlights
 - **Status:** Done (`457e5ed`)
 - **Priority:** P2-Medium
 - **Effort:** S
-- **Phase:** Complete — guard abilityTargets.isEmpty before entering targeting mode
 
 ### BR-087 - AI Difficulty "MEDIUM" Label Wraps to Two Lines
 - **Status:** Done (`336528c`)
 - **Priority:** P3-Low
 - **Effort:** S
-- **Phase:** Complete — changed difficulty buttons from FiftyButtonSize.medium to .small
 
 ---
 
@@ -130,6 +141,18 @@ None. All briefs completed and committed.
 
 ## Session Activity (2026-02-17)
 
+### Unified FDL README Template Sprint
+- **Scope:** All 7 engine package READMEs
+- **Method:** 7 coder agents deployed in parallel (wave 1: 4, wave 2: 3)
+- **Result:** All 7 READMEs rewritten to unified template with 10 standard sections
+- **Template saved:** `ai/context/readme_template.md`
+- **Awaiting commit**
+
+### BR-103 Registered
+- **Brief:** Printing Engine Example FDL Migration & fifty_ui Adoption
+- **Status:** Ready (not started)
+- **Supersedes:** UI-008
+
 ### BR-093 + BR-094 — Parallel Hunt
 - **BR-093 (`1426703`):** 4 `FiftyColors.cream` text refs in `achievement_card.dart` → `colorScheme.onSurface`. Readable in both themes.
 - **BR-094 (`74a44ff`):** Re-export `AssetSource`/`Source` from `fifty_audio_engine`. Removed `audioplayers` dep + 2 imports from `tactical_grid`.
@@ -157,26 +180,6 @@ None. All briefs completed and committed.
 
 ---
 
-## Dependency Chain
-
-```
-BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DONE] -> BR-082 (Y-axis bug) [DONE] -> BR-083 (hitbox) [DONE] -> BR-084 (tap offset) [DONE]
-                              BR-078 (example) [DONE]                                                                                             BR-085 (highlight) [DONE]
-                              BR-080 (assets) [DONE]                                                                                              BR-086 (kill freeze) [DONE]
-                              BR-081 (centerMap fix) [DONE]
-                                                                                                                                                  BR-087 (medium label) [DONE]
-                                                                                                                                                  BR-088 (archer shoot) [DONE]
-                                                                                                                                                  BR-089 (AI freeze) [DONE]
-                                                                                                                                                  BR-090 (settings page) [DONE]
-                                                                                                                                                  Theme fixes [DONE]
-                                                                                                                                                  BR-091 (achievement engine) [DONE]
-                                                                                                                                                  BR-092 (README + screenshots) [DONE]
-                                                                                                                                                  BR-093 (achievement text) [DONE]
-                                                                                                                                                  BR-094 (remove audioplayers) [DONE]
-```
-
----
-
 ## Previous Work
 
 ### BR-071 Completed Priorities (2026-02-09 and earlier)
@@ -197,17 +200,14 @@ BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DON
 
 ## Next Steps
 
-All queued briefs complete. Session at rest.
-
-Potential future work:
-- Audit other engine packages for remaining hardcoded colors
-- Additional tactical_grid features (multiplayer, new unit types, campaign mode)
-- Package version bumps and releases
+- **Uncommitted:** 7 engine README rewrites + readme_template.md + BR-103 brief — awaiting commit
+- **Queued:** BR-103 (Printing Engine Example FDL Migration) — Ready
+- **Future:** Audit remaining example apps for FDL compliance, version bumps, pub.dev releases
 
 ---
 
 ## Resume Command
 
 ```
-Session REST. All briefs done: BR-071 (a731a7d), BR-093 (1426703), BR-094 (74a44ff) + 11 prior briefs. README rebrand complete across all package READMEs (fifty.dev → Fifty Flutter Kit). 382/382 tests passing. No active work. Ready for new briefs.
+Session REST. README template sprint complete: 7 engine READMEs rewritten to unified FDL template (uncommitted). Template saved at ai/context/readme_template.md. BR-103 registered (printing_engine example FDL migration, Ready). Prior briefs: BR-071 (a731a7d), BR-093 (1426703), BR-094 (74a44ff) + 11 prior. 382/382 tests passing.
 ```
