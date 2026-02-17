@@ -51,15 +51,17 @@ class AchievementSummary<T> extends StatelessWidget {
         return Container(
           padding: EdgeInsets.all(compact ? FiftySpacing.md : FiftySpacing.lg),
           decoration: BoxDecoration(
-            color: backgroundColor ?? FiftyColors.surfaceDark,
+            color: backgroundColor ??
+                Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: FiftyRadii.lgRadius,
-            border: Border.all(color: FiftyColors.borderDark),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildHeader(),
+              _buildHeader(context),
               const SizedBox(height: FiftySpacing.md),
               _buildProgressSection(),
               if (showRarityBreakdown) ...[
@@ -78,7 +80,7 @@ class AchievementSummary<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     final unlockedCount = controller.unlockedAchievements.length;
     final totalCount = controller.achievements.length;
 
@@ -101,7 +103,7 @@ class AchievementSummary<T> extends StatelessWidget {
           child: Icon(
             Icons.emoji_events,
             size: compact ? 20 : 24,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         const SizedBox(width: FiftySpacing.md),

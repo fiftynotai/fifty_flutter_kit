@@ -104,7 +104,8 @@ class AchievementCard<T> extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(compact ? FiftySpacing.sm : FiftySpacing.md),
           decoration: BoxDecoration(
-            color: backgroundColor ?? FiftyColors.surfaceDark,
+            color: backgroundColor ??
+                Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: FiftyRadii.lgRadius,
             border: Border.all(
               color: borderColor ??
@@ -114,16 +115,18 @@ class AchievementCard<T> extends StatelessWidget {
               width: state.isComplete ? 2 : 1,
             ),
           ),
-          child: _isHiddenAndLocked ? _buildHiddenContent() : _buildContent(),
+          child: _isHiddenAndLocked
+              ? _buildHiddenContent(context)
+              : _buildContent(context),
         ),
       ),
     );
   }
 
-  Widget _buildHiddenContent() {
+  Widget _buildHiddenContent(BuildContext context) {
     return Row(
       children: [
-        _buildIcon(Icons.help_outline),
+        _buildIcon(context, Icons.help_outline),
         SizedBox(width: compact ? FiftySpacing.sm : FiftySpacing.md),
         Expanded(
           child: Column(
@@ -157,10 +160,10 @@ class AchievementCard<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Row(
       children: [
-        _buildIcon(achievement.icon ?? Icons.emoji_events),
+        _buildIcon(context, achievement.icon ?? Icons.emoji_events),
         SizedBox(width: compact ? FiftySpacing.sm : FiftySpacing.md),
         Expanded(
           child: Column(
@@ -247,15 +250,16 @@ class AchievementCard<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(IconData iconData) {
+  Widget _buildIcon(BuildContext context, IconData iconData) {
     final size = compact ? 40.0 : 48.0;
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         color: state.isComplete
             ? _rarityColor.withValues(alpha: 0.2)
-            : FiftyColors.darkBurgundy,
+            : colorScheme.surface,
         borderRadius: FiftyRadii.mdRadius,
         border: Border.all(
           color: state.isComplete
@@ -268,7 +272,7 @@ class AchievementCard<T> extends StatelessWidget {
         size: compact ? 20 : 24,
         color: state.isComplete
             ? _rarityColor
-            : FiftyColors.cream.withValues(alpha: 0.5),
+            : colorScheme.onSurface.withValues(alpha: 0.5),
       ),
     );
   }

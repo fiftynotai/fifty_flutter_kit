@@ -57,7 +57,8 @@ class AchievementProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final clampedProgress = progress.clamp(0.0, 1.0);
     final radius = borderRadius ?? FiftyRadii.smRadius;
-    final bgColor = backgroundColor ?? FiftyColors.surfaceDark;
+    final bgColor =
+        backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest;
     final fgColor = foregroundColor ?? FiftyColors.burgundy;
 
     return Column(

@@ -164,7 +164,8 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
               padding: const EdgeInsets.all(FiftySpacing.md),
               constraints: const BoxConstraints(maxWidth: 400),
               decoration: BoxDecoration(
-                color: widget.backgroundColor ?? FiftyColors.surfaceDark,
+                color: widget.backgroundColor ??
+                    Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(color: _rarityColor, width: 2),
                 boxShadow: [
@@ -183,7 +184,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildIcon(),
+                  _buildIcon(context),
                   const SizedBox(width: FiftySpacing.md),
                   Flexible(child: _buildContent()),
                 ],
@@ -196,7 +197,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
     );
   }
 
-  Widget _buildIcon() {
+  Widget _buildIcon(BuildContext context) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 600),
@@ -231,7 +232,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
         child: Icon(
           widget.achievement.icon ?? Icons.emoji_events,
           size: 28,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
