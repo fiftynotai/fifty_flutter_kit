@@ -63,7 +63,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.black.withAlpha(180),
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
             color: FiftyColors.burgundy.withAlpha(50),
@@ -372,7 +372,7 @@ class _TimerBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(1),
         child: LinearProgressIndicator(
           value: progress,
-          backgroundColor: Colors.black.withAlpha(60),
+          backgroundColor: Theme.of(context).colorScheme.onSurface.withAlpha(30),
           valueColor: AlwaysStoppedAnimation<Color>(color),
           minHeight: 3,
         ),

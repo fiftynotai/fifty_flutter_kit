@@ -75,7 +75,7 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
         vertical: FiftySpacing.md,
       ),
       decoration: BoxDecoration(
-        color: Colors.black.withAlpha(180),
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           top: BorderSide(
             color: FiftyColors.burgundy.withAlpha(50),
