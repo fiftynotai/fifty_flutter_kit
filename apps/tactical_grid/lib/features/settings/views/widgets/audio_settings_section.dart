@@ -128,8 +128,8 @@ class _VolumeSliderRow extends StatelessWidget {
                 fontSize: FiftyTypography.labelMedium,
                 fontWeight: FiftyTypography.bold,
                 color: enabled
-                    ? FiftyColors.cream
-                    : FiftyColors.cream.withAlpha(100),
+                    ? Theme.of(context).colorScheme.onSurface
+                    : Theme.of(context).colorScheme.onSurface.withAlpha(100),
                 letterSpacing: FiftyTypography.letterSpacingLabelMedium,
               ),
             ),

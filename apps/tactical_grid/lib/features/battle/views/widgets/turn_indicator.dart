@@ -174,11 +174,11 @@ class _TurnBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'TURN $turnNumber',
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: FiftyTypography.fontFamily,
         fontSize: FiftyTypography.labelLarge,
         fontWeight: FiftyTypography.bold,
-        color: FiftyColors.cream,
+        color: Theme.of(context).colorScheme.onSurface,
         letterSpacing: FiftyTypography.letterSpacingLabel,
       ),
     );
@@ -229,11 +229,11 @@ class _PlayerIndicator extends StatelessWidget {
         // Player label
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodyMedium,
             fontWeight: FiftyTypography.medium,
-            color: FiftyColors.cream,
+            color: Theme.of(context).colorScheme.onSurface,
             letterSpacing: FiftyTypography.letterSpacingLabel,
           ),
         ),
@@ -315,7 +315,7 @@ class _TimerCountdown extends StatelessWidget {
       final minutes = seconds ~/ 60;
       final secs = seconds % 60;
       final timeText = '$minutes:${secs.toString().padLeft(2, '0')}';
-      final color = _timerColor(seconds, timerService);
+      final color = _timerColor(seconds, timerService, context);
 
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -366,7 +366,7 @@ class _TimerBar extends StatelessWidget {
       if (!isRunning && seconds <= 0) return const SizedBox.shrink();
 
       final progress = timerService.progress;
-      final color = _timerColor(seconds, timerService);
+      final color = _timerColor(seconds, timerService, context);
 
       return ClipRRect(
         borderRadius: BorderRadius.circular(1),
@@ -389,12 +389,12 @@ class _TimerBar extends StatelessWidget {
 /// - Critical (<=criticalThreshold): Red
 /// - Warning (<=warningThreshold): Amber
 /// - Normal: Accent color (cream)
-Color _timerColor(int seconds, TurnTimerService timer) {
+Color _timerColor(int seconds, TurnTimerService timer, BuildContext context) {
   if (seconds <= timer.criticalThreshold && seconds > 0) {
     return Colors.red;
   }
   if (seconds <= timer.warningThreshold) {
     return Colors.amber;
   }
-  return FiftyColors.cream;
+  return Theme.of(context).colorScheme.onSurface;
 }

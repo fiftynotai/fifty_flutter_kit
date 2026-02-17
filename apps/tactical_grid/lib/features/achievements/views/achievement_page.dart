@@ -21,7 +21,7 @@ class AchievementPage extends StatelessWidget {
     final vm = Get.find<AchievementViewModel>();
 
     return Scaffold(
-      backgroundColor: FiftyColors.darkBurgundy,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -46,7 +46,7 @@ class AchievementPage extends StatelessWidget {
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.displayMedium,
                       fontWeight: FiftyTypography.bold,
-                      color: FiftyColors.cream,
+                      color: Theme.of(context).colorScheme.onSurface,
                       letterSpacing: FiftyTypography.letterSpacingDisplay,
                     ),
                   ),

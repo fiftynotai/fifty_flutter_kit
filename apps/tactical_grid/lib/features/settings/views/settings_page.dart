@@ -40,7 +40,7 @@ class SettingsPage extends StatelessWidget {
     final actions = Get.find<SettingsActions>();
 
     return Scaffold(
-      backgroundColor: FiftyColors.darkBurgundy,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -66,7 +66,7 @@ class SettingsPage extends StatelessWidget {
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.titleLarge,
                       fontWeight: FiftyTypography.bold,
-                      color: FiftyColors.cream,
+                      color: Theme.of(context).colorScheme.onSurface,
                       letterSpacing: FiftyTypography.letterSpacingLabel,
                     ),
                   ),

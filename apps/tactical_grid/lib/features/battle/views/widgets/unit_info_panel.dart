@@ -165,11 +165,11 @@ class _SelectedUnitLayout extends StatelessWidget {
                   // Unit name
                   Text(
                     unit.displayName.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.labelLarge,
                       fontWeight: FiftyTypography.bold,
-                      color: FiftyColors.cream,
+                      color: Theme.of(context).colorScheme.onSurface,
                       letterSpacing: FiftyTypography.letterSpacingLabel,
                     ),
                   ),
@@ -378,11 +378,11 @@ class _UnitAvatar extends StatelessWidget {
       child: Center(
         child: Text(
           initial,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.titleLarge,
             fontWeight: FiftyTypography.bold,
-            color: FiftyColors.cream,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ),
@@ -421,11 +421,11 @@ class _StatLabel extends StatelessWidget {
         ),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodySmall,
             fontWeight: FiftyTypography.bold,
-            color: FiftyColors.cream,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],

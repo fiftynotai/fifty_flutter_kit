@@ -47,7 +47,7 @@ class DisplaySettingsSection extends StatelessWidget {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.labelMedium,
               fontWeight: FiftyTypography.bold,
-              color: FiftyColors.cream,
+              color: Theme.of(context).colorScheme.onSurface,
               letterSpacing: FiftyTypography.letterSpacingLabelMedium,
             ),
           ),

@@ -19,7 +19,6 @@
 /// ```
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,7 +50,7 @@ class _BattlePageState extends State<BattlePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiftyColors.darkBurgundy,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         children: [
           const TurnIndicator(),

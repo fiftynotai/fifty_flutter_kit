@@ -71,7 +71,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiftyColors.darkBurgundy,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -112,7 +112,7 @@ class _TitleSection extends StatelessWidget {
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.displayLarge,
             fontWeight: FiftyTypography.extraBold,
-            color: FiftyColors.cream,
+            color: Theme.of(context).colorScheme.onSurface,
             letterSpacing: FiftyTypography.letterSpacingDisplay,
             height: FiftyTypography.lineHeightDisplay,
           ),
@@ -123,7 +123,7 @@ class _TitleSection extends StatelessWidget {
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.displayLarge,
             fontWeight: FiftyTypography.extraBold,
-            color: FiftyColors.cream,
+            color: Theme.of(context).colorScheme.onSurface,
             letterSpacing: FiftyTypography.letterSpacingDisplay,
             height: FiftyTypography.lineHeightDisplay,
           ),
@@ -216,7 +216,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
         vertical: FiftySpacing.xl,
       ),
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(FiftySpacing.lg),
         ),
@@ -239,7 +239,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.titleLarge,
                 fontWeight: FiftyTypography.bold,
-                color: FiftyColors.cream,
+                color: Theme.of(context).colorScheme.onSurface,
                 letterSpacing: FiftyTypography.letterSpacingLabel,
               ),
             ),
