@@ -16,6 +16,7 @@ class PrintingEngineExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Printing Engine Example',
+      debugShowCheckedModeBanner: false,
       theme: FiftyTheme.light(),
       darkTheme: FiftyTheme.dark(),
       home: const MainNavigationScreen(),

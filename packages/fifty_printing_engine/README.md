@@ -4,7 +4,7 @@ Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support.
 
 | Home | Printer Management | Test Print | Ticket Builder |
 |:----:|:------------------:|:----------:|:--------------:|
-| ![Home](screenshots/home_light.png) | ![Printers](screenshots/printer_management_light.png) | ![Test](screenshots/test_print_light.png) | ![Builder](screenshots/ticket_builder_light.png) |
+| <img src="screenshots/home_dark.png" width="200"> | <img src="screenshots/printer_management_dark.png" width="200"> | <img src="screenshots/test_print_dark.png" width="200"> | <img src="screenshots/ticket_builder_dark.png" width="200"> |
 
 ---
 
