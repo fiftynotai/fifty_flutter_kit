@@ -592,6 +592,16 @@ class BattleActions {
       // Position-target abilities: enter targeting mode.
       case AbilityType.shoot:
       case AbilityType.fireball:
+        if (_viewModel.abilityTargets.isEmpty) {
+          if (context.mounted) {
+            _presenter.showErrorSnackBar(
+              context,
+              'No Targets',
+              'No valid targets in range.',
+            );
+          }
+          return;
+        }
         _viewModel.isAbilityTargeting.value = true;
         _audio.playSelectSfx();
         break;
