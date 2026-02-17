@@ -1,12 +1,56 @@
 # Current Session
 
 **Status:** Active
-**Last Updated:** 2026-02-16
+**Last Updated:** 2026-02-17
 **Active Briefs:** BR-071 (pending final commit)
 
 ---
 
 ## Active Briefs
+
+### BR-091 - Achievement Engine Theme Awareness
+- **Status:** Done (`5f0650b`)
+- **Priority:** P2-Medium
+- **Effort:** S
+- **Phase:** Complete — 9 hardcoded dark color refs replaced with colorScheme tokens across 4 widget files
+- **Summary:** `AchievementCard`, `AchievementSummary`, `AchievementPopup`, `AchievementProgressBar` now use `Theme.of(context).colorScheme` tokens (`surfaceContainerHighest`, `surface`, `outline`, `onSurface`) instead of hardcoded `FiftyColors.surfaceDark`/`darkBurgundy`/`borderDark`/`Colors.white`. Cards adapt to light/dark theme. Constructor overrides preserved. 382/382 tactical_grid tests passing.
+
+### BR-090 - Tactical Grid Settings Page
+- **Status:** Done (`9e1f506`)
+- **Priority:** P2-Medium
+- **Effort:** M
+- **Phase:** Complete — full MVVM+Actions settings module with audio/gameplay/display sections
+- **Summary:** 9 new files (model, service, viewmodel, actions, bindings, page, 3 section widgets), 7 modified files. Audio volumes persist via AudioStorage, non-audio via GetStorage. Removed hardcoded volume overrides from AudioCoordinator/MenuPage. Made TurnTimerService thresholds configurable. Theme switching via Get.changeThemeMode(). 101 new tests. 382/382 tactical_grid tests passing.
+
+### Theme Awareness Fixes (post BR-090)
+- **Status:** Done (`7788862`, `2029ba8`)
+- **Phase:** Complete — light/dark mode working across all tactical_grid pages
+- **Summary:** Two commits:
+  - `7788862` — Replaced `FiftyColors.darkBurgundy` with `colorScheme.surface` and `FiftyColors.cream` with `colorScheme.onSurface` across 9 files (menu, settings, achievements, battle, HUD widgets)
+  - `2029ba8` — Made battle HUD bars (TurnIndicator, UnitInfoPanel) fully theme-aware: replaced `Colors.black.withAlpha(180)` overlay with `colorScheme.surface`, text with `colorScheme.onSurface`
+- **Verified:** All pages (menu, settings, achievements, battle) tested on iOS simulator in both light and dark mode. 382/382 tests passing.
+- **Finding:** Achievement cards still dark in light mode — root cause is `fifty_achievement_engine` package using hardcoded dark colors (separate from tactical_grid). Registered as BR-091.
+
+### BR-089 - AI Turn Freezes After Killing a Player Unit
+- **Status:** Done (`7df9768`)
+- **Priority:** P0-Critical
+- **Effort:** S
+- **Phase:** Complete — try/catch on onComplete in AnimationQueue + try/finally on all defeat Completers
+- **Summary:** `AnimationQueue._processQueue()` wrapped `entry.execute()` in try/catch but left `entry.onComplete?.call()` unprotected. If onComplete threw (e.g. from `removeEntity` after `die()` already removed the component via `RemoveEffect`), the Completer in `ai_turn_executor.dart` orphaned and `await c.future` hung forever — blocking all player input. Fixed at two layers: engine-level try/catch on `onComplete`, and app-level try/finally on all 4 defeat animation callbacks to guarantee `c.complete()`. 2 new tests added. 425/425 tests passing.
+
+### BR-088 - Archer Shoot No Target Highlights
+- **Status:** Done (`457e5ed`)
+- **Priority:** P2-Medium
+- **Effort:** S
+- **Phase:** Complete — guard abilityTargets.isEmpty before entering targeting mode
+- **Summary:** `onAbilityButtonPressed` entered targeting mode even when `abilityTargets` was empty (no enemies at Chebyshev distance 2-3). Added guard to check `abilityTargets.isEmpty` before entering targeting mode for Shoot/Fireball; shows "No valid targets in range" snackbar when empty. 3 new tests added. 423/423 tests passing.
+
+### BR-087 - AI Difficulty "MEDIUM" Label Wraps to Two Lines
+- **Status:** Done (`336528c`)
+- **Priority:** P3-Low
+- **Effort:** S
+- **Phase:** Complete — changed difficulty buttons from FiftyButtonSize.medium to .small
+- **Summary:** Three `Expanded` buttons in a 280px `Row` with medium size left ~88px per button — insufficient for "MEDIUM" text. Changed all three difficulty buttons to `FiftyButtonSize.small`. 281/281 tests passing.
 
 ### BR-071 - Tactical Grid Game
 - **Status:** In Progress
@@ -16,10 +60,28 @@
 
 ---
 
-## Completed Briefs (This Session - 2026-02-16)
+## Completed Briefs (This Session - 2026-02-17)
+
+### BR-086 - Animation Queue Exception Freezes Game After Kill
+- **Status:** Done (`2656e8c`)
+- **Priority:** P1-High
+- **Effort:** S
+- **Phase:** Complete — try/catch/finally in _processQueue()
+- **Summary:** `AnimationQueue._processQueue()` had no exception handling around `entry.execute()`. If a defeat animation threw, `_isRunning` stayed true forever and `inputManager.unblock()` never fired, freezing the game. Wrapped execute in try/catch (log and continue) with cleanup in finally block. 3 new tests added. 420/420 tests passing (142 engine + 278 tactical_grid).
+
+### BR-085 - Mage Ability Highlight Occludes Movement
+- **Status:** Done (`c308923`)
+- **Priority:** P2-Medium
+- **Effort:** S
+- **Phase:** Complete — gated ability highlights behind isAbilityTargeting
+- **Summary:** Ability range highlights (purple) rendered on initial unit selection, occluding movement highlights (green). Removed ability target block from `_syncHighlights()`, added rendering to `_onAbilityTargetingChanged()` (show on activate, clear on deactivate), added re-apply guard for state changes during targeting. 417/417 tests passing.
+
+---
+
+## Completed Briefs (Previous Session - 2026-02-16)
 
 ### BR-084 - Tile Tap Y-Offset (global vs widget)
-- **Status:** Done
+- **Status:** Done (`0d930df`)
 - **Priority:** P1-High
 - **Effort:** S
 - **Phase:** Complete — 3-line fix in map_builder.dart
@@ -37,122 +99,104 @@
 - **Priority:** P0-Critical
 - **Effort:** M
 - **Phase:** Complete - fix committed + verified on iOS simulator
-- **Summary:** Units moved in opposite Y-direction from tap target. Root cause: `Anchor.bottomLeft` + extra `blockSize.height` in Y formula caused entities to render one tile below their grid position, inverting perceived movement. Fix: changed anchor to `Anchor.topLeft` and simplified Y formula to `gridPosition.y * blockSize`. Changed 3 production files (component.dart, model.dart, extension.dart) + 1 test file. 400 tests passing (278+122).
-- **Verification:** Automated simulator testing confirmed 4 directional moves all correct:
-  - UP: (2,6)→(3,5), (3,5)→(3,4), (3,4)→(2,3) — Y decreased each time
-  - DOWN: (2,3)→(3,4) — Y increased
-- **Finding:** Discovered entity sprite oversized hitbox bug (tracked in BR-083)
+- **Summary:** Units moved in opposite Y-direction from tap target. Root cause: `Anchor.bottomLeft` + extra `blockSize.height` in Y formula caused entities to render one tile below their grid position, inverting perceived movement. Fix: changed anchor to `Anchor.topLeft` and simplified Y formula to `gridPosition.y * blockSize`. 400 tests passing.
 
 ### BR-076 - Tactical Grid -> fifty_map_engine Migration
 - **Status:** Done (`8a456ef`, `c69ae5f`)
 - **Priority:** P1-High
 - **Effort:** M
 - **Phase:** All 8 phases complete + bug fixes committed
-- **Summary:** Full migration from GridView.builder to fifty_map_engine v2. 1 file created (engine_board_widget.dart), 3 files modified (battle_page.dart, battle_actions.dart, ai_turn_executor.dart), 5 files deleted (old widgets). Bug fixes: Y-axis entity positioning, tap double-fire guard, A* diagonal pathfinding, MoveToEffect overlap, camera retry. 400 tests passing (278+122).
+- **Summary:** Full migration from GridView.builder to fifty_map_engine v2. 1 file created (engine_board_widget.dart), 3 files modified, 5 files deleted. 400 tests passing.
 
 ### BR-081 - centerMap() Zero Speed Crash
 - **Status:** Done (`9b0b621`)
 - **Priority:** P2-Medium
 - **Effort:** S
 - **Phase:** Complete - guard added for zero-distance + millisecond precision
-- **Summary:** Fixed debug-mode crash in `centerMap()` and `centerOnEntity()` when camera already at target position. Added `distance < 0.01` early return guard and switched from `inSeconds` (integer truncation) to `inMilliseconds / 1000.0`. 122 tests passing.
 
 ### BR-080 - Tactical Skirmish Asset Integration
 - **Status:** Done (`bcdd69f`)
 - **Priority:** P2-Medium
 - **Effort:** M
 - **Phase:** Complete - all 4 phases implemented, tested on simulator
-- **Summary:** Replaced colored rectangles with actual tile images and character sprites. Copied 10 assets (6 unit sprites + 4 tile textures) from tactical_grid app. Updated TileType with `asset` paths, added `UnitData.spritePath` getter, registered assets with FiftyAssetLoader. Decorators (team borders, HP bars, labels) layer correctly on sprites. 122 tests passing.
 
 ---
 
-## Completed Briefs (Previous Sessions)
+## Completed Briefs (Earlier Sessions)
 
 ### BR-079 - Tactical Skirmish Sandbox Bugfixes
 - **Status:** Done (`0d82bdf`, `c0c23ec`)
-- **Priority:** P1-High
-- **Effort:** M
-- **Phase:** Complete - 6 gameplay bugs fixed (engine + example)
-- **Summary:** Fixed BFS movement range, tile snapping, rapid-click guard, auto-deselect after move, auto turn switch, highlight visibility. 122 tests passing.
 
 ### BR-078 - Tactical Skirmish Sandbox Example
 - **Status:** Done (`38fab7b`, `d77e872`, `35ea325`)
-- **Priority:** P1-High
-- **Effort:** M
-- **Phase:** Complete - implemented, runtime-fixed, tap race condition fixed
-- **Summary:** Replaced old multi-file example with single-file tactical skirmish sandbox demonstrating 19/21 v2 features. Fixed Flame sprite assertion (transparent placeholder), camera centering, and TapDown/TapUp race condition.
 
 ### BR-077 - fifty_map_engine v2 Upgrade
 - **Status:** Done (`6c13e9d`)
-- **Priority:** P1-High
-- **Effort:** XL
-- **Phase:** All 9 phases complete, committed
-- **Unblocked:** BR-076
-- **Summary:** Engine upgraded to v2 grid game toolkit. Tile grid, overlays, entity decorators, instant tap, animation queue, sprite animation, A* pathfinding, BFS movement range. 40 files, +4101 lines, 119 tests.
 
 ---
 
-## Session Activity (2026-02-16)
+## Session Activity (2026-02-17)
 
-### BR-082 Fix + Verification
-- **Fix committed:** `0912a6e` — Anchor.bottomLeft→topLeft, removed +blockSize.height from Y formulas
-- **Automated simulator testing:** Launched tactical_grid on iPhone 15 Pro, played through 5 turns
-- **Movement verified:** UP, DOWN, and DIAGONAL moves all resolve correctly
-- **Timer temporarily set to 9999 during testing, restored to 60 after**
-- **Debug prints added during testing, removed after**
-- **Both temporary files verified clean (zero git diff)**
+### BR-085 Implementation + Commit
+- **Fix:** Removed ability target highlights from `_syncHighlights()`, added rendering to `_onAbilityTargetingChanged()`, added re-apply guard for state changes during targeting
+- **Review:** APPROVE — reviewer flagged race condition (clearHighlights wipes ability overlays during targeting), patched pre-commit
+- **Tests:** 417/417 passing
+- **Commit:** `c308923`
 
-### BR-083 Registered
-- Discovered during BR-082 simulator testing
-- Enemy shield sprite at (3,1) intercepts taps across ~3 rows of column 3
-- y=275 to y=306 all resolve to entity sprite (3,1) instead of tile resolver
-- Registered as P2-Medium bug with S effort estimate
+### BR-086 Implementation + Commit
+- **Fix:** Wrapped `entry.execute()` in try/catch inside `_processQueue()`, moved `_isRunning = false` and `onComplete?.call()` to finally block
+- **Tests:** 3 new tests (exception resilience), 420/420 passing (142 engine + 278 tactical_grid)
+- **Commit:** `2656e8c`
 
-### BR-076 Implementation (All 8 Phases)
-- **Phase 1+2:** Created `engine_board_widget.dart` with TileGrid(8,8), checkerboard, asset registration, entity building from Unit model, decorator setup (team borders, HP bars, status icons), camera centering
-- **Phase 3:** Added GetX workers for reactive state sync - highlights (validMoves, attackTargets, abilityTargets), selection ring, HP bar updates
-- **Phase 4:** Wired A* pathfinding + AnimationQueue for engine-based movement in BattleActions, registered controller/grid with GetX
-- **Phase 5:** Replaced combat animation sequences (attack lunge, damage popup, defeat) with engine animations using Completer pattern
-- **Phase 6:** Added game restart detection via `_lastTurnNumber` tracking, `_rebuildEngineEntities()` for full entity/decorator reset. Upgraded AITurnExecutor with engine animations for all 6 action types
-- **Phase 7:** Deleted 5 old widget files (board_widget, unit_sprite_widget, animated_board_overlay, animated_unit_sprite, damage_popup)
-- **Phase 8:** Final verification - `dart analyze` clean (0 errors), `flutter test` 278/278 passing
-- Modified battle_page.dart to swap BoardWidget -> EngineBoardWidget
+### BR-087 + BR-088 Registered + Implemented
+- **BR-087:** AI difficulty "MEDIUM" label wraps to two lines (P3, S) — Done `336528c`
+- **BR-088:** Archer shoot ability doesn't highlight targets (P2, S) — Done `457e5ed`
 
-### BR-076 Bug Fixes (post-migration)
-- Fixed entity Y-position formula: `(gridY + blockHeight) * blockSize`
-- Added tap double-fire guard (`entityHandledTileTap` flag)
-- Enabled A* diagonal pathfinding + fallback direct-move
-- Added MoveToEffect cleanup to prevent animation overlap
-- Added camera centering retry for slow web platforms
-- Commit: `c69ae5f`
+### BR-089 Implementation + Commit
+- **Fix:** try/catch on onComplete in AnimationQueue + try/finally on all defeat Completers
+- **Tests:** 2 new tests, 425/425 passing
+- **Commit:** `7df9768`
 
-### BR-080 Implementation
-- Copied 10 assets from tactical_grid to example app (6 unit sprites + 4 tile images)
-- Updated pubspec.yaml with asset declarations
-- Added `asset` paths to all 4 TileType constants (grass, forest, water, wall)
-- Added `UnitData.spritePath` getter mapping team+class to sprite file
-- Registered all 10 assets with `FiftyAssetLoader.registerAssets()`
-- Updated entity creation to use `u.spritePath` instead of empty string
-- Verified on iPhone 15 Pro simulator: tiles render with textures, units show character sprites
-- Commit: `bcdd69f`
+### BR-090 Implementation + Commit
+- **Full settings page:** 9 new files, 7 modified, 101 new tests
+- **Commit:** `9e1f506`
+- **Smoke test:** PASS on iOS simulator (all sections, persistence, reset)
 
-### BR-081 Registered + Fixed
-- Discovered during debug-mode `flutter run` - Flame assertion crash when `centerMap()` computes speed=0
-- Root cause: `distance / duration.inSeconds` = 0/1 = 0 when camera already centered
-- Fixed both `centerMap()` and `centerOnEntity()` with distance guard + millisecond precision
-- Removed outdated limitation docs from class comment
-- Verified on simulator: app launches without crash
-- Commit: `9b0b621`
+### Theme Awareness Fixes
+- **Round 1 (`7788862`):** Replaced hardcoded `FiftyColors.darkBurgundy`/`cream` with `colorScheme.surface`/`onSurface` across 9 files (settings page, menu, achievements, battle, HUD widgets)
+- **Round 2 (`2029ba8`):** Made battle HUD bars fully theme-aware — replaced `Colors.black.withAlpha(180)` overlay with `colorScheme.surface`, text with `colorScheme.onSurface`
+- **Smoke test:** All pages verified on iOS simulator in light + dark mode
+- **Finding:** Achievement cards still dark — `fifty_achievement_engine` uses hardcoded `FiftyColors.surfaceDark`. Registered BR-091.
+
+### BR-091 Implementation + Commit
+- **Fix:** Replaced 9 hardcoded dark color refs (`FiftyColors.surfaceDark`, `darkBurgundy`, `borderDark`, `Colors.white`) with `Theme.of(context).colorScheme` tokens across 4 widget files in `fifty_achievement_engine`
+- **Context threading:** Added `BuildContext` param to `_buildIcon()`, `_buildContent()`, `_buildHiddenContent()`, `_buildHeader()` helpers
+- **Review:** APPROVE — all 9 replacements match brief table, rarity/shadow/cream colors untouched, constructor overrides preserved
+- **Tests:** 382/382 tactical_grid passing, 0 analyzer errors
+- **Smoke test:** PASS on iOS simulator — light mode cards have light surface backgrounds, dark mode identical to pre-fix
+- **Commit:** `5f0650b`
+
+### BR-092 Implementation + Commit
+- **README:** Full README.md with hero screenshot, feature list, unit roster, screenshots (9 total — dark+light for menu/settings/achievements, battle gameplay+unit selected, game mode sheet), architecture overview, tech stack, getting started, tests, credits
+- **Screenshots:** Captured on iPhone 15 Pro simulator via mobile MCP tools
+- **Commit:** pending
 
 ---
 
 ## Dependency Chain
 
 ```
-BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DONE] -> BR-082 (Y-axis bug) [DONE] -> BR-071 (complete)
-                              BR-078 (example) [DONE]                                    BR-083 (hitbox bug) [READY]
-                              BR-080 (assets) [DONE]
+BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DONE] -> BR-082 (Y-axis bug) [DONE] -> BR-083 (hitbox) [DONE] -> BR-084 (tap offset) [DONE]
+                              BR-078 (example) [DONE]                                                                                             BR-085 (highlight) [DONE]
+                              BR-080 (assets) [DONE]                                                                                              BR-086 (kill freeze) [DONE]
                               BR-081 (centerMap fix) [DONE]
+                                                                                                                                                  BR-087 (medium label) [DONE]
+                                                                                                                                                  BR-088 (archer shoot) [DONE]
+                                                                                                                                                  BR-089 (AI freeze) [DONE]
+                                                                                                                                                  BR-090 (settings page) [DONE]
+                                                                                                                                                  Theme fixes [DONE]
+                                                                                                                                                  BR-091 (achievement engine) [DONE]
+                                                                                                                                                  BR-092 (README + screenshots) [READY]
 ```
 
 ---
@@ -177,14 +221,13 @@ BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DON
 
 ## Next Steps
 
-1. **BR-083** (P2) — Entity sprite oversized hitbox fix (optional, S effort)
-2. **Commit BR-071** final integration changes + mark Done
-3. QA pass on full game with BR-082 fix in place
+1. **Commit BR-071** final integration changes + mark Done
+2. Consider audit of other engine packages for hardcoded colors
 
 ---
 
 ## Resume Command
 
 ```
-Session focus: BR-082 DONE (0912a6e, verified on simulator). BR-083 registered (entity sprite oversized hitbox). BR-071 ready for final commit. All temp debug/timer changes reverted (zero diff).
+Session focus: BR-091 DONE (5f0650b) — achievement engine theme-aware. BR-092 registered (README + screenshots). All tactical_grid briefs complete except BR-071 final commit. 382/382 tests passing. Next: hunt BR-092, then commit BR-071.
 ```
