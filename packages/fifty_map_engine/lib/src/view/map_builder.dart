@@ -339,7 +339,7 @@ class FiftyMapBuilder extends FlameGame
   @override
   void onDragStart(int pointerId, DragStartInfo info) {
     _activePointers.add(pointerId);
-    _pointerPositions[pointerId] = info.eventPosition.global;
+    _pointerPositions[pointerId] = info.eventPosition.widget;
     super.onDragStart(pointerId, info);
   }
 
@@ -349,7 +349,7 @@ class FiftyMapBuilder extends FlameGame
   /// - 2 pointers: updates pinch distance and scales zoom accordingly (midpoint anchored).
   @override
   void onDragUpdate(int pointerId, DragUpdateInfo info) {
-    _pointerPositions[pointerId] = info.eventPosition.global;
+    _pointerPositions[pointerId] = info.eventPosition.widget;
 
     if (_activePointers.length == 1) {
       // Pan camera with a single finger
@@ -421,8 +421,7 @@ class FiftyMapBuilder extends FlameGame
     }
     // Handle tile taps in grid mode
     if (grid != null && onTileTap != null) {
-      final worldPos = cameraComponent.viewfinder.transform
-          .globalToLocal(info.eventPosition.global);
+      final worldPos = _screenToWorld(info.eventPosition.widget);
       final gridPos = TapResolver.resolve(worldPos, grid!);
       if (gridPos != null) {
         onTileTap!(gridPos);
