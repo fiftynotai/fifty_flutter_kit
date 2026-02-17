@@ -3,7 +3,7 @@
 **Type:** Migration
 **Priority:** P2-Medium
 **Effort:** M-Medium (2-3d)
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-02-17
 **Requested By:** Monarch
 **Supersedes:** UI-008 (vague, outdated — this brief replaces it)
@@ -151,7 +151,7 @@ Current app uses StatefulWidget + PrintingEngine singleton. This is fine — no 
 
 ## Workflow State
 
-**Phase:** COMMITTING
+**Phase:** COMPLETE
 **Active Agent:** none
 **Retry Count:** 0
 
