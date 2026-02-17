@@ -4,7 +4,6 @@
 /// Demonstrates audio engine, map engine, and FDL styling.
 library;
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';

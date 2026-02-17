@@ -10,3 +10,6 @@ export 'engine/channels/voice_acting_channel.dart';
 
 // Widgets
 export 'src/widgets/widgets.dart';
+
+// Re-export audioplayers types used by consumers
+export 'package:audioplayers/audioplayers.dart' show AssetSource, Source;

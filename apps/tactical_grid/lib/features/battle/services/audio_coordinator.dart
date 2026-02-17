@@ -15,7 +15,6 @@
 /// ```
 library;
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';

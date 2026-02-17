@@ -22,8 +22,6 @@ dependencies:
     path: ../../packages/fifty_audio_engine
   fifty_map_engine:
     path: ../../packages/fifty_map_engine
-  # Audio
-  audioplayers: ^6.0.0
   # Persistence
   get_storage: ^2.1.1
   # State management
