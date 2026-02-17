@@ -5,9 +5,9 @@
 **Effort:** S-Small (< 4h)
 **Assignee:** Igris AI
 **Commanded By:** M
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-02-16
-**Completed:**
+**Completed:** 2026-02-16
 
 ---
 
@@ -98,8 +98,8 @@ Entity sprite tap hitboxes should be constrained to their actual tile bounds (1 
 
 ## Session State (Tactical - This Brief)
 
-**Current State:** In Progress — PLANNING phase
-**Next Steps When Resuming:** Planner investigating, then coder implements
+**Current State:** Complete — committed `4b0e26c`
+**Next Steps When Resuming:** N/A — brief done
 **Last Updated:** 2026-02-16
 **Blockers:** None
 

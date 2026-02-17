@@ -53,10 +53,9 @@
 - **Summary:** Three `Expanded` buttons in a 280px `Row` with medium size left ~88px per button — insufficient for "MEDIUM" text. Changed all three difficulty buttons to `FiftyButtonSize.small`. 281/281 tests passing.
 
 ### BR-071 - Tactical Grid Game
-- **Status:** In Progress
-- **Phase:** All 5 priorities + audio + art + code integration DONE
-- **Remaining:** Commit integration changes, mark Done
-- **Unblocked:** BR-082 fixed (movement verified)
+- **Status:** Done
+- **Phase:** Complete — all 5 priorities + audio + art + code integration + 14 bug fixes + settings page + theme awareness + README
+- **Summary:** Full turn-based tactics game: 5 unit types, AI opponent (3 difficulties), turn timer, animations, voice announcer, settings page, achievement integration, theme awareness, comprehensive README. 382/382 tests passing.
 
 ---
 
@@ -179,7 +178,11 @@
 ### BR-092 Implementation + Commit
 - **README:** Full README.md with hero screenshot, feature list, unit roster, screenshots (9 total — dark+light for menu/settings/achievements, battle gameplay+unit selected, game mode sheet), architecture overview, tech stack, getting started, tests, credits
 - **Screenshots:** Captured on iPhone 15 Pro simulator via mobile MCP tools
-- **Commit:** pending
+- **Commit:** `ce0a037`
+
+### BR-093 + BR-094 Registered
+- **BR-093:** Achievement card text not theme-aware in light mode (P2, S) — 4 `FiftyColors.cream` text refs in `achievement_card.dart` invisible on light backgrounds. Fix: replace with `colorScheme.onSurface`. Also recapture `achievements_light.png`.
+- **BR-094:** Remove direct `audioplayers` dependency from tactical_grid (P3, S) — Only `AssetSource.new` used in 2 files (4 call sites). Fix: add re-export in `fifty_audio_engine`, remove direct dep + imports.
 
 ---
 
@@ -196,7 +199,9 @@ BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DON
                                                                                                                                                   BR-090 (settings page) [DONE]
                                                                                                                                                   Theme fixes [DONE]
                                                                                                                                                   BR-091 (achievement engine) [DONE]
-                                                                                                                                                  BR-092 (README + screenshots) [READY]
+                                                                                                                                                  BR-092 (README + screenshots) [DONE]
+                                                                                                                                                  BR-093 (achievement text) [READY]
+                                                                                                                                                  BR-094 (remove audioplayers) [READY]
 ```
 
 ---
@@ -219,15 +224,32 @@ BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DON
 
 ---
 
+### BR-093 - Achievement Card Text Theme Awareness
+- **Status:** Done (`1426703`)
+- **Priority:** P2-Medium
+- **Effort:** S
+- **Phase:** Complete — 4 `FiftyColors.cream` text color refs replaced with `colorScheme.onSurface` in `achievement_card.dart`
+- **Summary:** Achievement name, description, hidden title, and hidden description now use `Theme.of(context).colorScheme.onSurface` instead of hardcoded `FiftyColors.cream`. Text readable in both light and dark mode. Rarity/semantic colors untouched. 382/382 tests passing.
+
+### BR-094 - Remove Direct audioplayers Dependency
+- **Status:** Done (`74a44ff`)
+- **Priority:** P3-Low
+- **Effort:** S
+- **Phase:** Complete — re-export added to `fifty_audio_engine`, direct imports/dep removed from `tactical_grid`
+- **Summary:** Added `AssetSource`/`Source` re-export to `fifty_audio_engine` barrel file. Removed `audioplayers` from `tactical_grid` pubspec.yaml and 2 direct imports (main.dart, audio_coordinator.dart). Enforces ecosystem layering: apps consume engine packages, not transitive deps. 382/382 tests passing.
+
+---
+
 ## Next Steps
 
 1. **Commit BR-071** final integration changes + mark Done
 2. Consider audit of other engine packages for hardcoded colors
+3. Recapture `achievements_light.png` screenshot (BR-093 visual verification)
 
 ---
 
 ## Resume Command
 
 ```
-Session focus: BR-091 DONE (5f0650b) — achievement engine theme-aware. BR-092 registered (README + screenshots). All tactical_grid briefs complete except BR-071 final commit. 382/382 tests passing. Next: hunt BR-092, then commit BR-071.
+Session focus: BR-093 DONE (1426703) + BR-094 DONE (74a44ff) — hunted in parallel. Achievement card text now theme-aware (4 cream→onSurface). audioplayers direct dep removed from tactical_grid (re-exported via fifty_audio_engine). 382/382 tests passing. Next: commit BR-071, recapture achievements_light.png.
 ```

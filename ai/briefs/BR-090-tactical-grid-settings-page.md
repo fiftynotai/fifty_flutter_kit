@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-02-17
-**Completed:**
+**Completed:** 2026-02-17
 
 ---
 
@@ -140,8 +140,8 @@ All settings persist across app sessions via local storage and are applied globa
 
 ## Session State (Tactical - This Brief)
 
-**Current State:** In Progress — COMMITTING phase
-**Next Steps When Resuming:** Commit and close brief
+**Current State:** Complete
+**Next Steps When Resuming:** N/A — brief done
 **Last Updated:** 2026-02-17
 **Blockers:** None
 
