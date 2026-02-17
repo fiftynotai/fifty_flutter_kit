@@ -7,7 +7,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 /// throughout the application.
 ///
 /// Integrates with [FiftyMotion] tokens for consistent timing across the
-/// Fifty Design Language ecosystem.
+/// Fifty Flutter Kit.
 ///
 /// Use in conjunction with [BaseAudioChannel.withFade] for scene transitions,
 /// character voice ducking, and ambiance changes.

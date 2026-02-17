@@ -37,7 +37,7 @@
 /// final result = await PrintingEngine.instance.print(ticket: ticket);
 /// print(result.isSuccess ? 'Success!' : 'Failed!');
 /// ```
-library fifty_printing_engine;
+library;
 
 // Core classes
 export 'src/core/printing_engine.dart';

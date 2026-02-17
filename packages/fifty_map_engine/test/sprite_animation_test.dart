@@ -1,6 +1,6 @@
+import 'package:flame/components.dart' show Vector2;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fifty_map_engine/fifty_map_engine.dart';
-import 'package:fifty_map_engine/src/animation/sprite_animation_config.dart';
 import 'package:fifty_map_engine/src/components/sprites/animated_entity_component.dart';
 
 void main() {

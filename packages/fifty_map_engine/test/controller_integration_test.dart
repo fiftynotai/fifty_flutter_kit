@@ -244,7 +244,7 @@ void main() {
     group('FiftyTileTapCallback typedef', () {
       test('can be used as a function type', () {
         GridPosition? tapped;
-        final FiftyTileTapCallback callback = (pos) => tapped = pos;
+        void callback(GridPosition pos) => tapped = pos;
         callback(const GridPosition(3, 4));
         expect(tapped, equals(const GridPosition(3, 4)));
       });

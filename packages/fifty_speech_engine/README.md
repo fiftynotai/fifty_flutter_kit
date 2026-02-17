@@ -383,7 +383,7 @@ flutter run
 
 This package is part of Fifty Flutter Kit:
 
-- **Consistent naming** - FiftySpeechEngine follows ecosystem patterns
+- **Consistent naming** - FiftySpeechEngine follows Fifty Flutter Kit patterns
 - **Compatible packages** - Works with `fifty_audio_engine`, `fifty_ui`
 - **Unified locale handling** - Consistent with other Fifty packages
 
@@ -404,6 +404,12 @@ This package is part of Fifty Flutter Kit:
 **Current:** 0.1.0
 
 ---
+
+## Screenshots
+
+| TTS Panel | STT Panel |
+|:---------:|:---------:|
+| ![TTS](screenshots/tts_panel_light.png) | ![STT](screenshots/stt_panel_light.png) |
 
 ## License
 

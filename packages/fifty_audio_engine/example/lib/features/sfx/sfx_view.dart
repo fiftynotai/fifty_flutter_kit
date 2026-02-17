@@ -121,10 +121,10 @@ class _SfxButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: isActive
                 ? colorScheme.primary.withValues(alpha: 0.2)
-                : FiftyColors.surfaceDark,
+                : colorScheme.surfaceContainerHighest,
             borderRadius: FiftyRadii.lgRadius,
             border: Border.all(
-              color: isActive ? colorScheme.primary : FiftyColors.borderDark,
+              color: isActive ? colorScheme.primary : colorScheme.outline,
               width: isActive ? 2 : 1,
             ),
             boxShadow: isActive
@@ -144,7 +144,7 @@ class _SfxButton extends StatelessWidget {
                 size: 28,
                 color: isActive
                     ? colorScheme.primary
-                    : FiftyColors.cream,
+                    : colorScheme.onSurface,
               ),
               const SizedBox(height: FiftySpacing.xs),
               Text(
@@ -157,7 +157,7 @@ class _SfxButton extends StatelessWidget {
                       : FiftyTypography.regular,
                   color: isActive
                       ? colorScheme.primary
-                      : FiftyColors.slateGrey,
+                      : colorScheme.onSurfaceVariant,
                 ),
               ),
             ],

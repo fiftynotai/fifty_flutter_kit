@@ -6,6 +6,7 @@
 library;
 
 import 'package:fifty_map_engine/fifty_map_engine.dart';
+import 'package:flame/components.dart' show Vector2;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -672,7 +673,9 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
           if (_state.winner == null)
             TextButton(
               onPressed: () => _endTurn(),
-              child: const Text('End Turn', style: TextStyle(color: Colors.white)),
+              child: Text('End Turn',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface)),
             ),
         ],
       ),
@@ -693,11 +696,12 @@ class _TacticalSkirmishPageState extends State<TacticalSkirmishPage> {
 
   Widget _buildWinOverlay() {
     final color = _state.winner == 'Blue' ? _blueColor : _redColor;
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      color: Colors.black54,
+      color: colorScheme.scrim.withValues(alpha: 0.54),
       child: Center(
         child: Card(
-          color: Colors.grey[900],
+          color: colorScheme.surfaceContainerHigh,
           child: Padding(
             padding: const EdgeInsets.all(32),
             child: Column(

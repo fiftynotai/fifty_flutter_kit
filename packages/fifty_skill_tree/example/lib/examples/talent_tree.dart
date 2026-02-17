@@ -106,7 +106,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
         title: Text(
           'TALENT TREE',
           style: TextStyle(
-            letterSpacing: FiftyTypography.headingLineHeight,
+            letterSpacing: FiftyTypography.lineHeightTitle,
           ),
         ),
         actions: [
@@ -253,19 +253,19 @@ class _PointsDisplay extends StatelessWidget {
         Text(
           value.toString(),
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
-            fontSize: FiftyTypography.section,
-            fontWeight: FiftyTypography.ultrabold,
+            fontFamily: FiftyTypography.fontFamily,
+            fontSize: FiftyTypography.titleLarge,
+            fontWeight: FiftyTypography.extraBold,
             color: color,
           ),
         ),
         Text(
           label,
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamilyMono,
+            fontFamily: FiftyTypography.fontFamily,
             color: FiftyColors.slateGrey,
-            fontSize: FiftyTypography.mono,
-            letterSpacing: FiftyTypography.headingLineHeight,
+            fontSize: FiftyTypography.bodySmall,
+            letterSpacing: FiftyTypography.lineHeightTitle,
           ),
         ),
       ],
@@ -296,18 +296,18 @@ class _BranchHeader extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
+              fontFamily: FiftyTypography.fontFamily,
               color: color,
               fontWeight: FiftyTypography.medium,
-              letterSpacing: FiftyTypography.headingLineHeight,
+              letterSpacing: FiftyTypography.lineHeightTitle,
             ),
           ),
           Text(
             '$points PTS',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamilyMono,
+              fontFamily: FiftyTypography.fontFamily,
               color: FiftyColors.slateGrey,
-              fontSize: FiftyTypography.mono,
+              fontSize: FiftyTypography.bodySmall,
             ),
           ),
         ],
@@ -446,11 +446,11 @@ class _TalentNode extends StatelessWidget {
               node.name.toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: FiftyTypography.fontFamilyMono,
+                fontFamily: FiftyTypography.fontFamily,
                 fontSize: _NodeSizes.labelFontSize,
                 color: isUnlocked ? FiftyColors.cream : FiftyColors.slateGrey,
                 fontWeight: isKeystone ? FiftyTypography.medium : FiftyTypography.regular,
-                letterSpacing: FiftyTypography.headingLineHeight,
+                letterSpacing: FiftyTypography.lineHeightTitle,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

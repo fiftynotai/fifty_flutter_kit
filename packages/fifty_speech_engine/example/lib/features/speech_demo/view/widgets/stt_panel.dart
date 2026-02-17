@@ -79,13 +79,13 @@ class SttPanel extends StatelessWidget {
                   size: 24,
                 ),
                 const SizedBox(width: FiftySpacing.sm),
-                const Text(
+                Text(
                   'SPEECH-TO-TEXT',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
                     fontWeight: FiftyTypography.extraBold,
-                    color: FiftyColors.cream,
+                    color: colorScheme.onSurface,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -110,12 +110,12 @@ class SttPanel extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Continuous Mode',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
-                    color: FiftyColors.slateGrey,
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 FiftySwitch(
@@ -157,27 +157,27 @@ class SttPanel extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(FiftySpacing.md),
                 decoration: BoxDecoration(
-                  color: FiftyColors.warning.withValues(alpha: 0.1),
+                  color: colorScheme.error.withValues(alpha: 0.1),
                   borderRadius: FiftyRadii.lgRadius,
                   border: Border.all(
-                    color: FiftyColors.warning.withValues(alpha: 0.5),
+                    color: colorScheme.error.withValues(alpha: 0.5),
                   ),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.warning_amber_rounded,
-                      color: FiftyColors.warning,
+                      color: colorScheme.error,
                       size: 20,
                     ),
                     const SizedBox(width: FiftySpacing.sm),
                     Expanded(
                       child: Text(
                         errorMessage!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: FiftyTypography.fontFamily,
                           fontSize: FiftyTypography.bodySmall,
-                          color: FiftyColors.warning,
+                          color: colorScheme.error,
                         ),
                       ),
                     ),
@@ -197,12 +197,12 @@ class SttPanel extends StatelessWidget {
       constraints: const BoxConstraints(minHeight: 100),
       padding: const EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
         border: Border.all(
           color: isListening
               ? colorScheme.primary.withValues(alpha: 0.5)
-              : FiftyColors.borderDark,
+              : colorScheme.outline,
           width: isListening ? 2 : 1,
         ),
       ),
@@ -217,7 +217,7 @@ class SttPanel extends StatelessWidget {
               fontSize: FiftyTypography.bodySmall,
               color: isListening
                   ? colorScheme.primary
-                  : FiftyColors.slateGrey,
+                  : colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -228,8 +228,8 @@ class SttPanel extends StatelessWidget {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyLarge,
               color: recognizedText.isEmpty
-                  ? FiftyColors.slateGrey.withValues(alpha: 0.5)
-                  : FiftyColors.cream,
+                  ? colorScheme.onSurface.withValues(alpha: 0.5)
+                  : colorScheme.onSurface,
               fontStyle: recognizedText.isEmpty
                   ? FontStyle.italic
                   : FontStyle.normal,

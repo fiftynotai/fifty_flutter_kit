@@ -1,10 +1,9 @@
 /// Sentence queue panel widget.
 ///
 /// Displays the list of sentences queued for processing
-/// with instruction type indicators and FDL styling.
+/// with instruction type indicators and theme-aware styling.
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -26,44 +25,41 @@ class SentenceQueuePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
-        borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark),
+        color: colorScheme.surface.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Header
-          _buildHeader(),
-
-          const SizedBox(height: FiftySpacing.md),
-
-          // Queue list or empty state
+          _buildHeader(colorScheme),
+          const SizedBox(height: 12),
           if (queue.isEmpty)
-            _buildEmptyState()
+            _buildEmptyState(colorScheme)
           else
-            _buildQueueList(),
+            _buildQueueList(colorScheme),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'SENTENCE QUEUE',
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.bodySmall,
-            fontWeight: FiftyTypography.medium,
-            color: FiftyColors.slateGrey,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: colorScheme.onSurfaceVariant,
             letterSpacing: 2.0,
           ),
         ),
@@ -77,34 +73,32 @@ class SentenceQueuePanel extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xl),
+      padding: const EdgeInsets.symmetric(vertical: 24),
       child: Column(
         children: [
           Icon(
             Icons.queue_outlined,
-            color: FiftyColors.slateGrey.withValues(alpha: 0.5),
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             size: 32,
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          const SizedBox(height: 8),
           Text(
             'Queue is empty',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.bodyLarge,
-              color: FiftyColors.slateGrey.withValues(alpha: 0.5),
+              fontSize: 16,
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
               fontStyle: FontStyle.italic,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          const SizedBox(height: 4),
           Text(
             'Add sentences using the buttons below',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.slateGrey.withValues(alpha: 0.5),
+              fontSize: 12,
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             ),
           ),
         ],
@@ -112,71 +106,63 @@ class SentenceQueuePanel extends StatelessWidget {
     );
   }
 
-  Widget _buildQueueList() {
+  Widget _buildQueueList(ColorScheme colorScheme) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 200),
       child: ListView.separated(
         shrinkWrap: true,
         itemCount: queue.length,
-        separatorBuilder: (_, __) => const SizedBox(height: FiftySpacing.xs),
+        separatorBuilder: (_, __) => const SizedBox(height: 4),
         itemBuilder: (context, index) {
           final sentence = queue[index];
-          return _buildQueueItem(index + 1, sentence);
+          return _buildQueueItem(index + 1, sentence, colorScheme);
         },
       ),
     );
   }
 
-  Widget _buildQueueItem(int index, DemoSentence sentence) {
+  Widget _buildQueueItem(int index, DemoSentence sentence, ColorScheme colorScheme) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: FiftySpacing.md,
-        vertical: FiftySpacing.sm,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy.withValues(alpha: 0.4),
-        borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark.withValues(alpha: 0.5)),
+        color: colorScheme.primaryContainer.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.outlineVariant.withValues(alpha: 0.5)),
       ),
       child: Row(
         children: [
-          // Index number
           Container(
             width: 24,
             height: 24,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: FiftyColors.surfaceDark,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
               '$index',
-              style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodySmall,
-                fontWeight: FiftyTypography.medium,
-                color: FiftyColors.slateGrey,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
           ),
 
-          const SizedBox(width: FiftySpacing.sm),
+          const SizedBox(width: 8),
 
-          // Instruction badge
-          _buildInstructionBadge(sentence.instruction),
+          _buildInstructionBadge(sentence.instruction, colorScheme),
 
-          const SizedBox(width: FiftySpacing.sm),
+          const SizedBox(width: 8),
 
-          // Text (truncated)
           Expanded(
             child: Text(
               sentence.text,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodySmall,
-                color: FiftyColors.cream,
+              style: TextStyle(
+                fontSize: 12,
+                color: colorScheme.onSurface,
               ),
             ),
           ),
@@ -185,15 +171,12 @@ class SentenceQueuePanel extends StatelessWidget {
     );
   }
 
-  Widget _buildInstructionBadge(String instruction) {
+  Widget _buildInstructionBadge(String instruction, ColorScheme colorScheme) {
     final label = getInstructionLabel(instruction);
-    final color = _getInstructionColor(instruction);
+    final color = _getInstructionColor(instruction, colorScheme);
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: FiftySpacing.sm,
-        vertical: FiftySpacing.xs / 2,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
@@ -202,9 +185,8 @@ class SentenceQueuePanel extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(
-          fontFamily: FiftyTypography.fontFamily,
           fontSize: 10,
-          fontWeight: FiftyTypography.medium,
+          fontWeight: FontWeight.w500,
           color: color,
           letterSpacing: 0.5,
         ),
@@ -212,16 +194,16 @@ class SentenceQueuePanel extends StatelessWidget {
     );
   }
 
-  Color _getInstructionColor(String instruction) {
+  Color _getInstructionColor(String instruction, ColorScheme colorScheme) {
     final lower = instruction.toLowerCase();
     if (lower.contains('write') && lower.contains('read')) {
-      return FiftyColors.burgundy;
+      return colorScheme.primary;
     }
-    if (lower.contains('write')) return FiftyColors.hunterGreen;
-    if (lower.contains('read')) return FiftyColors.success;
-    if (lower.contains('ask')) return FiftyColors.warning;
-    if (lower.contains('wait')) return FiftyColors.burgundy;
-    if (lower.contains('navigate')) return FiftyColors.burgundy;
-    return FiftyColors.slateGrey;
+    if (lower.contains('write')) return colorScheme.tertiary;
+    if (lower.contains('read')) return colorScheme.secondary;
+    if (lower.contains('ask')) return colorScheme.error;
+    if (lower.contains('wait')) return colorScheme.primary;
+    if (lower.contains('navigate')) return colorScheme.primary;
+    return colorScheme.onSurfaceVariant;
   }
 }

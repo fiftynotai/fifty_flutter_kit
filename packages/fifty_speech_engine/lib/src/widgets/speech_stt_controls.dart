@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 /// **Why**
 /// - Encapsulates STT control UI in a reusable, stateless widget
 /// - Works with any state management solution (GetX, Provider, Bloc, etc.)
-/// - Follows FDL design patterns for consistency across the ecosystem
+/// - Follows FDL design patterns for consistency across Fifty Flutter Kit
 ///
 /// **Key Features**
 /// - Enable/disable toggle

@@ -111,6 +111,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Basic Achievements'),
@@ -146,17 +147,19 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                 children: [
                   Expanded(
                     child: _buildActionButton(
+                      context,
                       label: 'Click Me!',
                       onPressed: () => _controller.trackEvent('button_clicked'),
-                      color: FiftyColors.burgundy,
+                      color: colorScheme.primary,
                     ),
                   ),
                   const SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: _buildActionButton(
+                      context,
                       label: 'Find Secret',
                       onPressed: () => _controller.trackEvent('secret_found'),
-                      color: FiftyColors.slateGrey,
+                      color: colorScheme.outline,
                     ),
                   ),
                 ],
@@ -176,7 +179,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.titleLarge,
                       fontWeight: FiftyTypography.bold,
-                      color: FiftyColors.cream,
+                      color: colorScheme.onSurface,
                     ),
                   );
                 },
@@ -198,7 +201,8 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
     );
   }
 
-  Widget _buildActionButton({
+  Widget _buildActionButton(
+    BuildContext context, {
     required String label,
     required VoidCallback onPressed,
     required Color color,
@@ -207,7 +211,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(vertical: FiftySpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.xlRadius,
@@ -228,10 +232,11 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
     Achievement<void> achievement,
   ) {
     final progress = _controller.getProgressDetails(achievement.id);
+    final colorScheme = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: FiftyColors.surfaceDark,
+      backgroundColor: colorScheme.surfaceContainerHighest,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(FiftyRadii.xxl)),
       ),
@@ -248,7 +253,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.titleLarge,
                   fontWeight: FiftyTypography.bold,
-                  color: FiftyColors.cream,
+                  color: colorScheme.onSurface,
                 ),
               ),
               if (achievement.description != null) ...[
@@ -257,7 +262,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                   achievement.description!,
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
-                    color: FiftyColors.cream.withValues(alpha: 0.7),
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -269,7 +274,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                     'Progress: ${progress.current}/${progress.target}',
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
-                      color: FiftyColors.cream,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   Text(
@@ -277,7 +282,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontWeight: FiftyTypography.bold,
-                      color: FiftyColors.burgundy,
+                      color: colorScheme.primary,
                     ),
                   ),
                 ],
@@ -292,14 +297,14 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                     'Rarity: ${achievement.rarity.displayName}',
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                   Text(
                     'Points: ${achievement.points}',
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
-                      color: FiftyColors.cream.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ],

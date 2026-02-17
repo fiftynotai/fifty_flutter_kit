@@ -79,18 +79,21 @@ class _StatusIndicatorState extends State<StatusIndicator>
     super.dispose();
   }
 
-  Color get _indicatorColor {
+  Color _indicatorColor(ColorScheme colorScheme) {
     if (widget.isError) {
-      return FiftyColors.warning;
+      return colorScheme.error;
     }
     if (widget.isActive) {
-      return FiftyColors.burgundy;
+      return colorScheme.primary;
     }
-    return FiftyColors.hunterGreen;
+    return colorScheme.tertiary;
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final indicatorColor = _indicatorColor(colorScheme);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -103,13 +106,13 @@ class _StatusIndicatorState extends State<StatusIndicator>
               height: 10,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _indicatorColor.withValues(
+                color: indicatorColor.withValues(
                   alpha: widget.isActive ? _pulseAnimation.value : 1.0,
                 ),
                 boxShadow: widget.isActive
                     ? [
                         BoxShadow(
-                          color: _indicatorColor.withValues(
+                          color: indicatorColor.withValues(
                             alpha: 0.5 * _pulseAnimation.value,
                           ),
                           blurRadius: 8,
@@ -129,7 +132,7 @@ class _StatusIndicatorState extends State<StatusIndicator>
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodySmall,
             fontWeight: FiftyTypography.medium,
-            color: _indicatorColor,
+            color: indicatorColor,
             letterSpacing: 1.0,
           ),
         ),

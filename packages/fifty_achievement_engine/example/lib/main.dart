@@ -19,6 +19,13 @@ class AchievementEngineExampleApp extends StatelessWidget {
       title: 'Achievement Engine Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.dark(
+          primary: FiftyColors.burgundy,
+          surface: FiftyColors.darkBurgundy,
+          onSurface: FiftyColors.cream,
+          outline: FiftyColors.borderDark,
+          surfaceContainerHighest: FiftyColors.surfaceDark,
+        ),
         scaffoldBackgroundColor: FiftyColors.darkBurgundy,
         appBarTheme: AppBarTheme(
           backgroundColor: FiftyColors.surfaceDark,
@@ -79,11 +86,12 @@ class ExampleLauncher extends StatelessWidget {
     required IconData icon,
     required WidgetBuilder builder,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Card(
-      color: FiftyColors.surfaceDark,
+      color: colorScheme.surfaceContainerHighest,
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.lgRadius,
-        side: BorderSide(color: FiftyColors.borderDark),
+        side: BorderSide(color: colorScheme.outline),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(FiftySpacing.md),
@@ -91,12 +99,12 @@ class ExampleLauncher extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: FiftyColors.burgundy.withValues(alpha: 0.2),
+            color: colorScheme.primary.withValues(alpha: 0.2),
             borderRadius: FiftyRadii.mdRadius,
           ),
           child: Icon(
             icon,
-            color: FiftyColors.burgundy,
+            color: colorScheme.primary,
           ),
         ),
         title: Text(
@@ -104,19 +112,19 @@ class ExampleLauncher extends StatelessWidget {
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontWeight: FiftyTypography.bold,
-            color: FiftyColors.cream,
+            color: colorScheme.onSurface,
           ),
         ),
         subtitle: Text(
           subtitle,
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
-            color: FiftyColors.cream.withValues(alpha: 0.7),
+            color: colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
         trailing: Icon(
           Icons.chevron_right,
-          color: FiftyColors.cream.withValues(alpha: 0.5),
+          color: colorScheme.onSurface.withValues(alpha: 0.5),
         ),
         onTap: () {
           Navigator.of(context).push(

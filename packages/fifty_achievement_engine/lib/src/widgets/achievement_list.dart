@@ -173,40 +173,45 @@ class AchievementList<T> extends StatelessWidget {
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.xxl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.emoji_events_outlined,
-              size: 48,
-              color: FiftyColors.cream.withValues(alpha: 0.3),
+    return Builder(
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(FiftySpacing.xxl),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.emoji_events_outlined,
+                  size: 48,
+                  color: colorScheme.onSurface.withValues(alpha: 0.3),
+                ),
+                const SizedBox(height: FiftySpacing.md),
+                Text(
+                  'No achievements found',
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.titleSmall,
+                    fontWeight: FiftyTypography.medium,
+                    color: colorScheme.onSurface.withValues(alpha: 0.5),
+                  ),
+                ),
+                const SizedBox(height: FiftySpacing.sm),
+                Text(
+                  _getEmptyMessage(),
+                  style: TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodySmall,
+                    color: colorScheme.onSurface.withValues(alpha: 0.3),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            const SizedBox(height: FiftySpacing.md),
-            Text(
-              'No achievements found',
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.titleSmall,
-                fontWeight: FiftyTypography.medium,
-                color: FiftyColors.cream.withValues(alpha: 0.5),
-              ),
-            ),
-            const SizedBox(height: FiftySpacing.sm),
-            Text(
-              _getEmptyMessage(),
-              style: TextStyle(
-                fontFamily: FiftyTypography.fontFamily,
-                fontSize: FiftyTypography.bodySmall,
-                color: FiftyColors.cream.withValues(alpha: 0.3),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

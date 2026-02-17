@@ -1,3 +1,4 @@
+import 'package:flame/components.dart' show Vector2;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fifty_map_engine/fifty_map_engine.dart';
 

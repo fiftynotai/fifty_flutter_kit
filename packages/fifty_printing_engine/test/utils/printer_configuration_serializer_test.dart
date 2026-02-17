@@ -235,8 +235,8 @@ void main() {
 
       final printers = engine.getAvailablePrinters();
       expect(printers.length, 2);
-      expect(printers.where((p) => p is BluetoothPrinterDevice).length, 1);
-      expect(printers.where((p) => p is WiFiPrinterDevice).length, 1);
+      expect(printers.whereType<BluetoothPrinterDevice>().length, 1);
+      expect(printers.whereType<WiFiPrinterDevice>().length, 1);
     });
 
     test('import skips unknown printer types', () {

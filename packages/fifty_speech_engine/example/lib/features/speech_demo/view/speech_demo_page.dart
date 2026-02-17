@@ -62,20 +62,22 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            color: FiftyColors.burgundy,
+            color: colorScheme.primary,
           ),
-          SizedBox(height: FiftySpacing.lg),
+          const SizedBox(height: FiftySpacing.lg),
           Text(
             'INITIALIZING SPEECH ENGINE...',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyLarge,
-              color: FiftyColors.slateGrey,
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
               letterSpacing: 2.0,
             ),
           ),
@@ -124,37 +126,39 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
   }
 
   Widget _buildInfoCard() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
-        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark),
+        border: Border.all(color: colorScheme.outline),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Icon(
                 Icons.info_outline_rounded,
-                color: FiftyColors.slateGrey,
+                color: colorScheme.onSurface.withValues(alpha: 0.7),
                 size: 20,
               ),
-              SizedBox(width: FiftySpacing.sm),
+              const SizedBox(width: FiftySpacing.sm),
               Text(
                 'ABOUT THIS DEMO',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.medium,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurface.withValues(alpha: 0.7),
                   letterSpacing: 1.0,
                 ),
               ),
             ],
           ),
-          SizedBox(height: FiftySpacing.md),
+          const SizedBox(height: FiftySpacing.md),
           Text(
             'This demo showcases the fifty_speech_engine package capabilities:\n\n'
             '- Text-to-Speech (TTS): Convert text to natural speech\n'
@@ -165,7 +169,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.slateGrey,
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
               height: 1.5,
             ),
           ),

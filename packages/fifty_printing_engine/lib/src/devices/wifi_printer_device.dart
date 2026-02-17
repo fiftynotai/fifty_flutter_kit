@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:fifty_printing_engine/src/core/printer_device.dart';
 import 'package:fifty_printing_engine/src/core/print_ticket.dart';

@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:fifty_tokens/fifty_tokens.dart';
-import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import '../widgets/add_printer_dialog.dart';
@@ -39,15 +37,14 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
 
   void _listenToStatusUpdates() {
     _statusSubscription = _engine.statusStream.listen((event) {
-      // Reload printers when status changes
       _loadPrinters();
 
-      // Show snackbar for important status changes
       if (event.newStatus == PrinterStatus.error) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Printer ${event.printerId}: ${event.message ?? "Error"}'),
-            backgroundColor: FiftyColors.error,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -66,52 +63,40 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Added printer: ${result.name}'),
-            backgroundColor: FiftyColors.success,
-          ),
+          SnackBar(content: Text('Added printer: ${result.name}')),
         );
       }
     }
   }
 
   void _removePrinter(PrinterDevice printer) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: FiftyColors.gunmetal,
-        title: Text(
-          'Remove Printer',
-          style: TextStyle(color: FiftyColors.terminalWhite),
-        ),
-        content: Text(
-          'Are you sure you want to remove "${printer.name}"?',
-          style: TextStyle(color: FiftyColors.hyperChrome),
-        ),
+        title: const Text('Remove Printer'),
+        content: Text('Are you sure you want to remove "${printer.name}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: FiftyColors.hyperChrome),
-            ),
+            child: const Text('Cancel'),
           ),
-          FiftyButton(
-            label: 'Remove',
-            variant: FiftyButtonVariant.danger,
-            size: FiftyButtonSize.small,
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: colorScheme.error,
+              foregroundColor: colorScheme.onError,
+            ),
             onPressed: () {
               _engine.removePrinter(printer.id);
               _loadPrinters();
               Navigator.pop(context);
 
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Removed printer: ${printer.name}'),
-                  backgroundColor: FiftyColors.warning,
-                ),
+                SnackBar(content: Text('Removed printer: ${printer.name}')),
               );
             },
+            child: const Text('Remove'),
           ),
         ],
       ),
@@ -119,11 +104,9 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
   }
 
   Future<void> _connectPrinter(PrinterDevice printer) async {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Connecting to ${printer.name}...'),
-        backgroundColor: FiftyColors.gunmetal,
-      ),
+      SnackBar(content: Text('Connecting to ${printer.name}...')),
     );
 
     final success = await printer.connect();
@@ -134,7 +117,9 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
           content: Text(success
             ? 'Connected to ${printer.name}'
             : 'Failed to connect to ${printer.name}'),
-          backgroundColor: success ? FiftyColors.success : FiftyColors.error,
+          backgroundColor: success
+              ? Colors.green
+              : Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -148,20 +133,15 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Disconnected from ${printer.name}'),
-          backgroundColor: FiftyColors.gunmetal,
-        ),
+        SnackBar(content: Text('Disconnected from ${printer.name}')),
       );
     }
   }
 
   Future<void> _checkHealth(PrinterDevice printer) async {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Checking ${printer.name}...'),
-        backgroundColor: FiftyColors.gunmetal,
-      ),
+      SnackBar(content: Text('Checking ${printer.name}...')),
     );
 
     final healthy = await _engine.checkPrinterHealth(printer.id);
@@ -172,7 +152,9 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
           content: Text(healthy
             ? '${printer.name} is healthy'
             : '${printer.name} health check failed'),
-          backgroundColor: healthy ? FiftyColors.success : FiftyColors.error,
+          backgroundColor: healthy
+              ? Colors.green
+              : Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -183,19 +165,13 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
   Future<void> _checkAllPrinters() async {
     if (_printers.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('No printers registered'),
-          backgroundColor: FiftyColors.warning,
-        ),
+        const SnackBar(content: Text('No printers registered')),
       );
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Checking all printers...'),
-        backgroundColor: FiftyColors.gunmetal,
-      ),
+      const SnackBar(content: Text('Checking all printers...')),
     );
 
     final results = await _engine.checkAllPrinters();
@@ -206,7 +182,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Health check: $healthy/$total printers healthy'),
-          backgroundColor: healthy == total ? FiftyColors.success : FiftyColors.warning,
+          backgroundColor: healthy == total ? Colors.green : Colors.orange,
         ),
       );
     }
@@ -216,16 +192,14 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Printer Management',
-          style: TextStyle(color: FiftyColors.terminalWhite),
-        ),
-        backgroundColor: FiftyColors.voidBlack,
+        title: const Text('Printer Management'),
         actions: [
           IconButton(
-            icon: Icon(Icons.health_and_safety, color: FiftyColors.terminalWhite),
+            icon: const Icon(Icons.health_and_safety),
             tooltip: 'Check all printers',
             onPressed: _checkAllPrinters,
           ),
@@ -234,7 +208,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
       body: _printers.isEmpty
           ? _buildEmptyState()
           : ListView.builder(
-              padding: EdgeInsets.all(FiftySpacing.lg),
+              padding: const EdgeInsets.all(16),
               itemCount: _printers.length,
               itemBuilder: (context, index) {
                 final printer = _printers[index];
@@ -249,41 +223,41 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
             ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddPrinterDialog,
-        icon: Icon(Icons.add, color: FiftyColors.terminalWhite),
-        label: Text(
-          'Add Printer',
-          style: TextStyle(color: FiftyColors.terminalWhite),
-        ),
-        backgroundColor: FiftyColors.crimsonPulse,
+        icon: const Icon(Icons.add),
+        label: const Text('Add Printer'),
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
       ),
     );
   }
 
   Widget _buildEmptyState() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(FiftySpacing.xxxl),
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.print_disabled,
               size: 80,
-              color: FiftyColors.hyperChrome,
+              color: colorScheme.onSurfaceVariant,
             ),
-            SizedBox(height: FiftySpacing.xxl),
+            const SizedBox(height: 24),
             Text(
               'No Printers Registered',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: FiftyColors.hyperChrome,
+                    color: colorScheme.onSurfaceVariant,
                   ),
             ),
-            SizedBox(height: FiftySpacing.md),
+            const SizedBox(height: 12),
             Text(
               'Add your first Bluetooth or WiFi printer to get started',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: FiftyColors.hyperChrome,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
           ],

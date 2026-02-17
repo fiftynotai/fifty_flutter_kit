@@ -143,7 +143,7 @@ The example app uses **Fifty Design Language (FDL)** packages:
 - `fifty_tokens` - Colors, spacing, typography
 - `fifty_ui` - Cards, buttons, dialogs
 
-This demonstrates how `fifty_skill_tree` integrates seamlessly with the Fifty ecosystem.
+This demonstrates how `fifty_skill_tree` integrates seamlessly with the Fifty Flutter Kit.
 
 ## Key Patterns
 
@@ -199,8 +199,8 @@ Future<void> handleNodeTap(SkillNode node) async {
 ### Custom Theming
 
 ```dart
-// Use a preset
-final theme = SkillTreeThemePresets.rpg();
+// Use built-in dark theme
+final theme = SkillTreeTheme.dark();
 
 // Or customize
 final customTheme = SkillTreeTheme.dark().copyWith(

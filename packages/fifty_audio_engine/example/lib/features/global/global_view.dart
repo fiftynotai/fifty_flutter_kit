@@ -72,12 +72,12 @@ class _GlobalViewState extends State<GlobalView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Master Mute',
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodyLarge,
-                      color: FiftyColors.cream,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
@@ -85,10 +85,10 @@ class _GlobalViewState extends State<GlobalView> {
                     _viewModel.allMuted
                         ? 'All channels muted'
                         : 'All channels active',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.slateGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -242,10 +242,10 @@ class _ChannelStatusRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
         border: Border.all(
-          color: FiftyColors.borderDark,
+          color: colorScheme.outline,
           width: 1,
         ),
       ),
@@ -257,8 +257,8 @@ class _ChannelStatusRow extends StatelessWidget {
             height: 8,
             decoration: BoxDecoration(
               color: isMuted
-                  ? FiftyColors.slateGrey
-                  : (isActive ? FiftyColors.hunterGreen : colorScheme.primary),
+                  ? colorScheme.onSurfaceVariant
+                  : (isActive ? colorScheme.tertiary : colorScheme.primary),
               shape: BoxShape.circle,
             ),
           ),
@@ -268,11 +268,11 @@ class _ChannelStatusRow extends StatelessWidget {
             width: 60,
             child: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodyLarge,
                 fontWeight: FiftyTypography.medium,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
               ),
             ),
           ),
@@ -282,7 +282,7 @@ class _ChannelStatusRow extends StatelessWidget {
             child: Container(
               height: 4,
               decoration: BoxDecoration(
-                color: FiftyColors.slateGrey.withValues(alpha: 0.3),
+                color: colorScheme.onSurfaceVariant.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
               child: FractionallySizedBox(
@@ -290,7 +290,7 @@ class _ChannelStatusRow extends StatelessWidget {
                 widthFactor: isMuted ? 0 : volume,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: isMuted ? FiftyColors.slateGrey : colorScheme.primary,
+                    color: isMuted ? colorScheme.onSurfaceVariant : colorScheme.primary,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -306,7 +306,7 @@ class _ChannelStatusRow extends StatelessWidget {
               style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodySmall,
-                color: isMuted ? FiftyColors.slateGrey : FiftyColors.cream,
+                color: isMuted ? colorScheme.onSurfaceVariant : colorScheme.onSurface,
               ),
               textAlign: TextAlign.right,
             ),

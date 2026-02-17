@@ -25,7 +25,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 /// await stt.startListening(localeId: 'en_US');
 /// ```
 ///
-/// Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+/// Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 class SttManager {
   final SpeechToText _speech = SpeechToText();
 

@@ -92,12 +92,12 @@ class _VoiceViewState extends State<VoiceView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'BGM Ducking',
                     style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodyLarge,
-                      color: FiftyColors.cream,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.xs),
@@ -105,10 +105,10 @@ class _VoiceViewState extends State<VoiceView> {
                     _viewModel.duckingEnabled
                         ? 'BGM volume lowers during voice'
                         : 'BGM plays at full volume',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
-                      color: FiftyColors.slateGrey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -179,10 +179,10 @@ class _VoiceLineButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: isPlaying
                   ? colorScheme.primary.withValues(alpha: 0.1)
-                  : FiftyColors.surfaceDark,
+                  : colorScheme.surfaceContainerHighest,
               borderRadius: FiftyRadii.lgRadius,
               border: Border.all(
-                color: isPlaying ? colorScheme.primary : FiftyColors.borderDark,
+                color: isPlaying ? colorScheme.primary : colorScheme.outline,
                 width: isPlaying ? 2 : 1,
               ),
             ),
@@ -195,19 +195,19 @@ class _VoiceLineButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isPlaying
                         ? colorScheme.primary
-                        : FiftyColors.darkBurgundy,
+                        : colorScheme.surfaceContainerHighest,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isPlaying
                           ? colorScheme.primary
-                          : FiftyColors.slateGrey,
+                          : colorScheme.onSurfaceVariant,
                       width: 1,
                     ),
                   ),
                   child: Icon(
                     isPlaying ? Icons.graphic_eq : Icons.play_arrow,
                     color: isPlaying
-                        ? FiftyColors.darkBurgundy
+                        ? colorScheme.onPrimary
                         : colorScheme.primary,
                     size: 20,
                   ),
@@ -225,15 +225,15 @@ class _VoiceLineButton extends StatelessWidget {
                           fontWeight: FiftyTypography.medium,
                           color: isPlaying
                               ? colorScheme.primary
-                              : FiftyColors.cream,
+                              : colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         description,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: FiftyTypography.fontFamily,
                           fontSize: FiftyTypography.bodySmall,
-                          color: FiftyColors.slateGrey,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],

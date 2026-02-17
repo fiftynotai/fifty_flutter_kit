@@ -212,6 +212,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Fitness Achievements'),
@@ -227,12 +228,12 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
               decoration: BoxDecoration(
                 color: _isWorkingOut
                     ? FiftyColors.hunterGreen.withValues(alpha: 0.2)
-                    : FiftyColors.surfaceDark,
+                    : colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(
                   color: _isWorkingOut
                       ? FiftyColors.hunterGreen
-                      : FiftyColors.borderDark,
+                      : colorScheme.outline,
                   width: _isWorkingOut ? 2 : 1,
                 ),
               ),
@@ -246,7 +247,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                       fontWeight: FiftyTypography.extraBold,
                       color: _isWorkingOut
                           ? FiftyColors.hunterGreen
-                          : FiftyColors.cream,
+                          : colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: FiftySpacing.md),
@@ -256,8 +257,8 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                     label: Text(_isWorkingOut ? 'End Workout' : 'Start Workout'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          _isWorkingOut ? FiftyColors.burgundy : FiftyColors.hunterGreen,
-                      foregroundColor: Colors.white,
+                          _isWorkingOut ? colorScheme.primary : FiftyColors.hunterGreen,
+                      foregroundColor: colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: FiftySpacing.xl,
                         vertical: FiftySpacing.md,
@@ -275,6 +276,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                 children: [
                   Expanded(
                     child: _buildExerciseButton(
+                      context,
                       'Push-ups',
                       'pushup',
                       Icons.accessibility_new,
@@ -283,6 +285,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                   const SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: _buildExerciseButton(
+                      context,
                       'Squats',
                       'squat',
                       Icons.directions_walk,
@@ -291,6 +294,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                   const SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: _buildExerciseButton(
+                      context,
                       'Sit-ups',
                       'situp',
                       Icons.self_improvement,
@@ -309,7 +313,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                   'Simulate Early Morning (5 AM)',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
-                    color: FiftyColors.cream.withValues(alpha: 0.5),
+                    color: colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -326,18 +330,22 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _buildStatChip(
+                        context,
                         'Push-ups',
                         ctx.getEventCount('pushup_done').toString(),
                       ),
                       _buildStatChip(
+                        context,
                         'Squats',
                         ctx.getEventCount('squat_done').toString(),
                       ),
                       _buildStatChip(
+                        context,
                         'Sit-ups',
                         ctx.getEventCount('situp_done').toString(),
                       ),
                       _buildStatChip(
+                        context,
                         'Calories',
                         ctx.getStat('calories_burned').toStringAsFixed(0),
                       ),
@@ -362,12 +370,13 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
     );
   }
 
-  Widget _buildExerciseButton(String label, String type, IconData icon) {
+  Widget _buildExerciseButton(BuildContext context, String label, String type, IconData icon) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ElevatedButton(
       onPressed: _isWorkingOut ? () => _doExercise(type, 10) : null,
       style: ElevatedButton.styleFrom(
-        backgroundColor: FiftyColors.slateGrey,
-        foregroundColor: Colors.white,
+        backgroundColor: colorScheme.outline,
+        foregroundColor: colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(vertical: FiftySpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.mdRadius,
@@ -390,7 +399,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.labelSmall,
-              color: Colors.white.withValues(alpha: 0.7),
+              color: colorScheme.onPrimary.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -398,7 +407,8 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
     );
   }
 
-  Widget _buildStatChip(String label, String value) {
+  Widget _buildStatChip(BuildContext context, String label, String value) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Text(
@@ -407,7 +417,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.titleSmall,
             fontWeight: FiftyTypography.bold,
-            color: FiftyColors.cream,
+            color: colorScheme.onSurface,
           ),
         ),
         Text(
@@ -415,7 +425,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.labelSmall,
-            color: FiftyColors.cream.withValues(alpha: 0.5),
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
       ],

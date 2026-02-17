@@ -229,6 +229,7 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('RPG Achievements'),
@@ -242,9 +243,9 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
               margin: const EdgeInsets.all(FiftySpacing.md),
               padding: const EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
-                color: FiftyColors.surfaceDark,
+                color: colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
-                border: Border.all(color: FiftyColors.borderDark),
+                border: Border.all(color: colorScheme.outline),
               ),
               child: ListenableBuilder(
                 listenable: _controller,
@@ -252,10 +253,11 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildStatColumn('Level', _playerLevel.toString()),
-                      _buildStatColumn('Gold', _gold.toString()),
-                      _buildStatColumn('EXP', _exp.toString()),
+                      _buildStatColumn(context, 'Level', _playerLevel.toString()),
+                      _buildStatColumn(context, 'Gold', _gold.toString()),
+                      _buildStatColumn(context, 'EXP', _exp.toString()),
                       _buildStatColumn(
+                        context,
                         'Kills',
                         _controller.context.getEventCount('enemy_killed').toString(),
                       ),
@@ -272,11 +274,11 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
                 spacing: FiftySpacing.sm,
                 runSpacing: FiftySpacing.sm,
                 children: [
-                  _buildActionChip('Kill Enemy', _killEnemy, Icons.pets),
-                  _buildActionChip('Kill Boss', _killBoss, Icons.whatshot),
+                  _buildActionChip(context, 'Kill Enemy', _killEnemy, Icons.pets),
+                  _buildActionChip(context, 'Kill Boss', _killBoss, Icons.whatshot),
                   _buildActionChip(
-                      'Complete Quest', _completeQuest, Icons.assignment_turned_in),
-                  _buildActionChip('Find Secret', _findSecret, Icons.explore),
+                      context, 'Complete Quest', _completeQuest, Icons.assignment_turned_in),
+                  _buildActionChip(context, 'Find Secret', _findSecret, Icons.explore),
                 ],
               ),
             ),
@@ -306,7 +308,8 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
     );
   }
 
-  Widget _buildStatColumn(String label, String value) {
+  Widget _buildStatColumn(BuildContext context, String label, String value) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Text(
@@ -316,7 +319,7 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
             fontSize: FiftyTypography.labelSmall,
             fontWeight: FiftyTypography.semiBold,
             letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-            color: FiftyColors.cream.withValues(alpha: 0.5),
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
         const SizedBox(height: FiftySpacing.xs),
@@ -326,24 +329,25 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.titleMedium,
             fontWeight: FiftyTypography.bold,
-            color: FiftyColors.cream,
+            color: colorScheme.onSurface,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildActionChip(String label, VoidCallback onPressed, IconData icon) {
+  Widget _buildActionChip(BuildContext context, String label, VoidCallback onPressed, IconData icon) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ActionChip(
-      avatar: Icon(icon, size: 18, color: FiftyColors.cream),
+      avatar: Icon(icon, size: 18, color: colorScheme.onPrimary),
       label: Text(
         label,
         style: TextStyle(
           fontFamily: FiftyTypography.fontFamily,
-          color: FiftyColors.cream,
+          color: colorScheme.onPrimary,
         ),
       ),
-      backgroundColor: FiftyColors.burgundy,
+      backgroundColor: colorScheme.primary,
       onPressed: onPressed,
     );
   }

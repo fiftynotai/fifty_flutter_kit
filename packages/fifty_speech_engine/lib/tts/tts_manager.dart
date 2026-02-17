@@ -22,7 +22,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 /// await tts.speak("Welcome to the dungeon.");
 /// ```
 ///
-/// Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+/// Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 class TtsManager {
   /// Internal Flutter TTS instance
   final FlutterTts _tts = FlutterTts();

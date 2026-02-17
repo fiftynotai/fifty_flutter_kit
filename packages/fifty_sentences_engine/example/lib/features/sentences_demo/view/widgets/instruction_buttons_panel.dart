@@ -1,10 +1,9 @@
 /// Instruction buttons panel widget.
 ///
 /// Provides buttons to add sentences of different instruction types
-/// and control processing with FDL styling.
+/// and control processing with theme-aware styling.
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -76,77 +75,83 @@ class InstructionButtonsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
-        borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark),
+        color: colorScheme.surface.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Add Instructions Section
-          _buildSectionHeader('ADD INSTRUCTIONS'),
-          const SizedBox(height: FiftySpacing.sm),
-          _buildAddInstructionButtons(),
+          _buildSectionHeader('ADD INSTRUCTIONS', colorScheme),
+          const SizedBox(height: 8),
+          _buildAddInstructionButtons(colorScheme),
 
-          const SizedBox(height: FiftySpacing.lg),
+          const SizedBox(height: 16),
 
-          // Demo Story Section
-          _buildSectionHeader('DEMO STORY'),
-          const SizedBox(height: FiftySpacing.sm),
+          _buildSectionHeader('DEMO STORY', colorScheme),
+          const SizedBox(height: 8),
           _buildDemoStoryButton(),
 
-          const SizedBox(height: FiftySpacing.lg),
+          const SizedBox(height: 16),
 
-          // Control Section
-          _buildSectionHeader('CONTROLS'),
-          const SizedBox(height: FiftySpacing.sm),
+          _buildSectionHeader('CONTROLS', colorScheme),
+          const SizedBox(height: 8),
           _buildControlButtons(),
         ],
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(String title, ColorScheme colorScheme) {
     return Text(
       title,
-      style: const TextStyle(
-        fontFamily: FiftyTypography.fontFamily,
-        fontSize: FiftyTypography.bodySmall,
-        fontWeight: FiftyTypography.medium,
-        color: FiftyColors.slateGrey,
+      style: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: colorScheme.onSurfaceVariant,
         letterSpacing: 2.0,
       ),
     );
   }
 
-  Widget _buildAddInstructionButtons() {
+  Widget _buildAddInstructionButtons(ColorScheme colorScheme) {
     return Wrap(
-      spacing: FiftySpacing.sm,
-      runSpacing: FiftySpacing.sm,
+      spacing: 8,
+      runSpacing: 8,
       children: [
         _buildInstructionButton(
           label: '+ WRITE',
-          color: FiftyColors.hunterGreen,
+          color: colorScheme.tertiary,
+          disabledColor: colorScheme.onSurfaceVariant,
+          surfaceColor: colorScheme.surface,
           onPressed: isActive ? null : onAddWriteTapped,
         ),
         _buildInstructionButton(
           label: '+ READ',
-          color: FiftyColors.success,
+          color: colorScheme.secondary,
+          disabledColor: colorScheme.onSurfaceVariant,
+          surfaceColor: colorScheme.surface,
           onPressed: isActive ? null : onAddReadTapped,
         ),
         _buildInstructionButton(
           label: '+ ASK',
-          color: FiftyColors.warning,
+          color: colorScheme.error,
+          disabledColor: colorScheme.onSurfaceVariant,
+          surfaceColor: colorScheme.surface,
           onPressed: isActive ? null : onAddAskTapped,
         ),
         _buildInstructionButton(
           label: '+ WAIT',
-          color: FiftyColors.burgundy,
+          color: colorScheme.primary,
+          disabledColor: colorScheme.onSurfaceVariant,
+          surfaceColor: colorScheme.surface,
           onPressed: isActive ? null : onAddWaitTapped,
         ),
       ],
@@ -156,6 +161,8 @@ class InstructionButtonsPanel extends StatelessWidget {
   Widget _buildInstructionButton({
     required String label,
     required Color color,
+    required Color disabledColor,
+    required Color surfaceColor,
     required VoidCallback? onPressed,
   }) {
     final isEnabled = onPressed != null;
@@ -164,27 +171,23 @@ class InstructionButtonsPanel extends StatelessWidget {
       onTap: onPressed,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: FiftySpacing.md,
-          vertical: FiftySpacing.sm,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isEnabled
               ? color.withValues(alpha: 0.2)
-              : FiftyColors.surfaceDark.withValues(alpha: 0.3),
-          borderRadius: FiftyRadii.lgRadius,
+              : surfaceColor.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isEnabled ? color : FiftyColors.slateGrey.withValues(alpha: 0.3),
+            color: isEnabled ? color : disabledColor.withValues(alpha: 0.3),
             width: 1.5,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.bodySmall,
-            fontWeight: FiftyTypography.medium,
-            color: isEnabled ? color : FiftyColors.slateGrey.withValues(alpha: 0.5),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: isEnabled ? color : disabledColor.withValues(alpha: 0.5),
             letterSpacing: 1.0,
           ),
         ),
@@ -204,10 +207,9 @@ class InstructionButtonsPanel extends StatelessWidget {
 
   Widget _buildControlButtons() {
     return Wrap(
-      spacing: FiftySpacing.sm,
-      runSpacing: FiftySpacing.sm,
+      spacing: 8,
+      runSpacing: 8,
       children: [
-        // Process / Resume button
         if (canResume)
           FiftyButton(
             label: 'RESUME',
@@ -223,7 +225,6 @@ class InstructionButtonsPanel extends StatelessWidget {
             onPressed: canProcess ? onProcessTapped : null,
           ),
 
-        // Pause button
         FiftyButton(
           label: 'PAUSE',
           icon: Icons.pause_rounded,
@@ -231,7 +232,6 @@ class InstructionButtonsPanel extends StatelessWidget {
           onPressed: canPause ? onPauseTapped : null,
         ),
 
-        // Clear Queue button
         FiftyButton(
           label: 'CLEAR QUEUE',
           icon: Icons.delete_outline_rounded,
@@ -239,7 +239,6 @@ class InstructionButtonsPanel extends StatelessWidget {
           onPressed: canClearQueue ? onClearQueueTapped : null,
         ),
 
-        // Clear All button
         FiftyButton(
           label: 'CLEAR ALL',
           icon: Icons.delete_forever_rounded,

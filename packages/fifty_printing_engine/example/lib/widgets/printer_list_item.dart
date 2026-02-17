@@ -1,5 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
-import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 
@@ -21,173 +19,175 @@ class PrinterListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final status = printer.status;
     final isConnected = status == PrinterStatus.connected || status == PrinterStatus.printing;
 
-    return FiftyCard(
-      margin: EdgeInsets.only(bottom: FiftySpacing.md),
-      padding: EdgeInsets.all(FiftySpacing.lg),
-      scanlineOnHover: false,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header Row
-          Row(
-            children: [
-              // Type Icon
-              CircleAvatar(
-                backgroundColor: _getStatusColor(status).withValues(alpha: 0.2),
-                child: Icon(
-                  printer.type == PrinterType.bluetooth
-                      ? Icons.bluetooth
-                      : Icons.wifi,
-                  color: _getStatusColor(status),
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Row
+            Row(
+              children: [
+                // Type Icon
+                CircleAvatar(
+                  backgroundColor: _getStatusColor(status, colorScheme).withValues(alpha: 0.2),
+                  child: Icon(
+                    printer.type == PrinterType.bluetooth
+                        ? Icons.bluetooth
+                        : Icons.wifi,
+                    color: _getStatusColor(status, colorScheme),
+                  ),
                 ),
-              ),
-              SizedBox(width: FiftySpacing.md),
+                const SizedBox(width: 12),
 
-              // Name and Status
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      printer.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: FiftyColors.terminalWhite,
+                // Name and Status
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        printer.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: FiftySpacing.xs),
-                    Row(
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: _getStatusColor(status),
-                            shape: BoxShape.circle,
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: _getStatusColor(status, colorScheme),
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: FiftySpacing.sm),
-                        Text(
-                          _getStatusText(status),
-                          style: TextStyle(
-                            color: _getStatusColor(status),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13,
+                          const SizedBox(width: 8),
+                          Text(
+                            _getStatusText(status),
+                            style: TextStyle(
+                              color: _getStatusColor(status, colorScheme),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              // Remove Button
-              IconButton(
-                icon: const Icon(Icons.delete_outline),
-                color: FiftyColors.error,
-                onPressed: onRemove,
-                tooltip: 'Remove printer',
-              ),
-            ],
-          ),
-
-          SizedBox(height: FiftySpacing.md),
-
-          // Details
-          _buildDetailRow(
-            Icons.tag,
-            'ID',
-            printer.id,
-          ),
-
-          if (printer.type == PrinterType.bluetooth)
-            _buildDetailRow(
-              Icons.bluetooth,
-              'MAC',
-              (printer as BluetoothPrinterDevice).macAddress,
-            )
-          else
-            _buildDetailRow(
-              Icons.lan,
-              'Address',
-              '${(printer as WiFiPrinterDevice).ipAddress}:${(printer as WiFiPrinterDevice).port}',
-            ),
-
-          if (printer.role != null)
-            _buildDetailRow(
-              Icons.assignment,
-              'Role',
-              printer.role!.name.toUpperCase(),
-            ),
-
-          _buildDetailRow(
-            Icons.copy_all,
-            'Default Copies',
-            '${printer.defaultCopies}',
-          ),
-
-          SizedBox(height: FiftySpacing.lg),
-
-          // Action Buttons
-          Wrap(
-            spacing: FiftySpacing.sm,
-            runSpacing: FiftySpacing.sm,
-            children: [
-              if (!isConnected)
-                FiftyButton(
-                  label: 'Connect',
-                  icon: Icons.link,
-                  size: FiftyButtonSize.small,
-                  onPressed: onConnect,
-                )
-              else
-                FiftyButton(
-                  label: 'Disconnect',
-                  icon: Icons.link_off,
-                  variant: FiftyButtonVariant.secondary,
-                  size: FiftyButtonSize.small,
-                  onPressed: onDisconnect,
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
 
-              FiftyButton(
-                label: 'Health Check',
-                icon: Icons.health_and_safety,
-                variant: FiftyButtonVariant.secondary,
-                size: FiftyButtonSize.small,
-                onPressed: onCheckHealth,
+                // Remove Button
+                IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  color: colorScheme.error,
+                  onPressed: onRemove,
+                  tooltip: 'Remove printer',
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 12),
+
+            // Details
+            _buildDetailRow(
+              context,
+              Icons.tag,
+              'ID',
+              printer.id,
+            ),
+
+            if (printer.type == PrinterType.bluetooth)
+              _buildDetailRow(
+                context,
+                Icons.bluetooth,
+                'MAC',
+                (printer as BluetoothPrinterDevice).macAddress,
+              )
+            else
+              _buildDetailRow(
+                context,
+                Icons.lan,
+                'Address',
+                '${(printer as WiFiPrinterDevice).ipAddress}:${(printer as WiFiPrinterDevice).port}',
               ),
-            ],
-          ),
-        ],
+
+            if (printer.role != null)
+              _buildDetailRow(
+                context,
+                Icons.assignment,
+                'Role',
+                printer.role!.name.toUpperCase(),
+              ),
+
+            _buildDetailRow(
+              context,
+              Icons.copy_all,
+              'Default Copies',
+              '${printer.defaultCopies}',
+            ),
+
+            const SizedBox(height: 16),
+
+            // Action Buttons
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (!isConnected)
+                  FilledButton.icon(
+                    icon: const Icon(Icons.link, size: 18),
+                    label: const Text('Connect'),
+                    onPressed: onConnect,
+                  )
+                else
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.link_off, size: 18),
+                    label: const Text('Disconnect'),
+                    onPressed: onDisconnect,
+                  ),
+
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.health_and_safety, size: 18),
+                  label: const Text('Health Check'),
+                  onPressed: onCheckHealth,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String label, String value) {
+  Widget _buildDetailRow(BuildContext context, IconData icon, String label, String value) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
-      padding: EdgeInsets.only(bottom: FiftySpacing.sm),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: FiftyColors.hyperChrome),
-          SizedBox(width: FiftySpacing.sm),
+          Icon(icon, size: 16, color: colorScheme.onSurfaceVariant),
+          const SizedBox(width: 8),
           Text(
             '$label: ',
             style: TextStyle(
-              color: FiftyColors.hyperChrome,
+              color: colorScheme.onSurfaceVariant,
               fontSize: 13,
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 13,
-                color: FiftyColors.terminalWhite,
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -197,18 +197,18 @@ class PrinterListItem extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(PrinterStatus status) {
+  Color _getStatusColor(PrinterStatus status, ColorScheme colorScheme) {
     switch (status) {
       case PrinterStatus.connected:
       case PrinterStatus.printing:
-        return FiftyColors.success;
+        return Colors.green;
       case PrinterStatus.connecting:
-        return FiftyColors.warning;
+        return Colors.orange;
       case PrinterStatus.error:
       case PrinterStatus.healthCheckFailed:
-        return FiftyColors.error;
+        return colorScheme.error;
       case PrinterStatus.disconnected:
-        return FiftyColors.hyperChrome;
+        return colorScheme.onSurfaceVariant;
     }
   }
 

@@ -5,7 +5,7 @@ Interactive skill tree widget for Flutter games - customizable, animated, and ga
 [![Pub Version](https://img.shields.io/pub/v/fifty_skill_tree)](https://pub.dev/packages/fifty_skill_tree)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) ecosystem.
+Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ## Features
 
@@ -16,7 +16,7 @@ Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit)
 - **Unlock Animations** - Smooth animations for unlocking, pulsing, and highlighting
 - **Save/Load Progress** - JSON serialization for game save files
 - **Mobile-Friendly** - Touch interactions with pan and pinch-to-zoom support
-- **Fully Customizable Theming** - Multiple preset themes and full customization support
+- **Fully Customizable Theming** - Dark/light preset themes, FDL integration, and full customization support
 - **Generic Data Support** - Attach any custom data to skill nodes
 
 ## Installation
@@ -183,7 +183,7 @@ SkillTreeView(
 
 ## Theming
 
-### Preset Themes
+### Built-in Themes
 
 ```dart
 // Dark theme (default)
@@ -191,19 +191,9 @@ final theme = SkillTreeTheme.dark();
 
 // Light theme
 final theme = SkillTreeTheme.light();
-
-// Fantasy RPG style
-final theme = SkillTreeThemePresets.rpg();
-
-// Sci-fi tech style
-final theme = SkillTreeThemePresets.scifi();
-
-// Minimalist style
-final theme = SkillTreeThemePresets.minimal();
-
-// Nature/organic style
-final theme = SkillTreeThemePresets.nature();
 ```
+
+When no theme is provided, the widgets use **FDL (Fifty Design Language)** defaults automatically.
 
 ### Custom Theme
 
@@ -240,7 +230,10 @@ final controller = SkillTreeController(
 );
 
 // Or update later
-controller.setTheme(SkillTreeThemePresets.rpg());
+controller.setTheme(SkillTreeTheme.light());
+
+// Or revert to FDL defaults
+controller.setTheme(null);
 ```
 
 ## Skill Nodes
@@ -319,18 +312,18 @@ tree.addConnection(SkillConnection(
 ### Connection Types
 
 ```dart
-// Standard connection (prerequisite)
-SkillConnection(
-  fromId: 'a',
-  toId: 'b',
-  type: ConnectionType.normal,
-)
-
-// Required connection (must be unlocked)
+// Required connection (must unlock parent first)
 SkillConnection(
   fromId: 'a',
   toId: 'b',
   type: ConnectionType.required,
+)
+
+// Optional connection (can skip parent)
+SkillConnection(
+  fromId: 'a',
+  toId: 'b',
+  type: ConnectionType.optional,
 )
 
 // Exclusive connection (only one can be unlocked)
@@ -514,7 +507,7 @@ SkillTreeView(
 
 ## FDL Integration
 
-This package integrates seamlessly with the **Fifty Design Language (FDL)** ecosystem:
+This package integrates seamlessly with the **Fifty Design Language (FDL)**:
 
 ```yaml
 dependencies:
@@ -544,9 +537,9 @@ The example app demonstrates full FDL integration with themed UI, consistent spa
 | Enum | Values |
 |------|--------|
 | `SkillState` | `locked`, `available`, `unlocked`, `maxed` |
-| `SkillType` | `passive`, `active`, `ultimate`, `keystone` |
-| `ConnectionType` | `normal`, `required`, `exclusive` |
-| `ConnectionStyle` | `solid`, `dashed`, `dotted` |
+| `SkillType` | `passive`, `active`, `ultimate`, `keystone`, `minor` |
+| `ConnectionType` | `required`, `optional`, `exclusive` |
+| `ConnectionStyle` | `solid`, `dashed`, `animated` |
 
 ### Layouts
 
@@ -566,6 +559,12 @@ See the [example](example/) directory for complete demo applications including:
 - RPG-style multi-branch skill tree
 - Strategy game tech tree
 - MOBA-style talent tree
+
+## Screenshots
+
+| Home | Basic Tree | Node Unlock | RPG Skill Tree |
+|:----:|:----------:|:-----------:|:--------------:|
+| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_tree_light.png) | ![Unlock](screenshots/node_unlock_light.png) | ![RPG](screenshots/rpg_skill_tree_light.png) |
 
 ## License
 

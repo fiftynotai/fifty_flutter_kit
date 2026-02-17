@@ -37,7 +37,6 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
     tree.addPoints(15);
 
     // Use FDL defaults (no custom theme needed)
-    // SkillTreeThemePresets was removed - FDL provides consistent theming
     _controller = SkillTreeController<void>(
       tree: tree,
     );

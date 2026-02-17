@@ -218,7 +218,7 @@ class AchievementCard<T> extends StatelessWidget {
                     Icon(
                       Icons.check_circle,
                       size: 14,
-                      color: FiftyColors.hunterGreen,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(width: FiftySpacing.xs),
                     Text(
@@ -227,7 +227,7 @@ class AchievementCard<T> extends StatelessWidget {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.labelSmall,
                         fontWeight: FiftyTypography.semiBold,
-                        color: FiftyColors.hunterGreen,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                     const Spacer(),

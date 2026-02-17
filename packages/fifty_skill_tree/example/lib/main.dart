@@ -49,7 +49,7 @@ class ExampleHomePage extends StatelessWidget {
             Text(
               'CHOOSE AN EXAMPLE',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                     letterSpacing: 2,
                   ),
               textAlign: TextAlign.center,
@@ -59,7 +59,7 @@ class ExampleHomePage extends StatelessWidget {
               title: 'BASIC TREE',
               description: 'Simple linear skill progression',
               icon: Icons.account_tree,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const BasicTreeExample()),
@@ -70,7 +70,7 @@ class ExampleHomePage extends StatelessWidget {
               title: 'RPG SKILL TREE',
               description: 'Multi-branch class skills (Warrior/Mage/Rogue)',
               icon: Icons.shield,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const RpgSkillTreeExample()),
@@ -81,7 +81,7 @@ class ExampleHomePage extends StatelessWidget {
               title: 'TECH TREE',
               description: 'Strategy game research tree with grid layout',
               icon: Icons.science,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const TechTreeExample()),
@@ -92,7 +92,7 @@ class ExampleHomePage extends StatelessWidget {
               title: 'TALENT TREE',
               description: 'MOBA-style talents with 3 paths',
               icon: Icons.bolt,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const TalentTreeExample()),
@@ -155,7 +155,7 @@ class _ExampleCard extends StatelessWidget {
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: FiftyColors.terminalWhite,
+                          color: FiftyColors.cream,
                           letterSpacing: 1,
                         ),
                   ),
@@ -163,7 +163,7 @@ class _ExampleCard extends StatelessWidget {
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: FiftyColors.hyperChrome,
+                          color: FiftyColors.slateGrey,
                         ),
                   ),
                 ],
@@ -171,7 +171,7 @@ class _ExampleCard extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right,
-              color: FiftyColors.hyperChrome.withValues(alpha: 0.5),
+              color: FiftyColors.slateGrey.withValues(alpha: 0.5),
             ),
           ],
         ),

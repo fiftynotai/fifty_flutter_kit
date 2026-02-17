@@ -526,6 +526,12 @@ If migrating from the original package:
    engine.sentences; // Regular List
    ```
 
+## Screenshots
+
+| Sentence Queue | Dialogue Choices | Narration |
+|:--------------:|:----------------:|:---------:|
+| ![Queue](screenshots/sentence_queue_light.png) | ![Choices](screenshots/dialogue_choices_light.png) | ![Narration](screenshots/dialogue_narration_light.png) |
+
 ## License
 
 MIT License - see LICENSE file for details.

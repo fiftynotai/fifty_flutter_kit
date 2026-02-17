@@ -715,7 +715,7 @@ class PrintingEngine {
   /// - Package stays storage-agnostic
   ///
   /// **Returns:**
-  /// Map<String, dynamic> containing full configuration (ready for jsonEncode)
+  /// `Map<String, dynamic>` containing full configuration (ready for jsonEncode)
   ///
   /// **Usage Example:**
   /// ```dart

@@ -4,7 +4,6 @@
 /// scrollable page with proper state management through ViewModel and Actions.
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/di/service_locator.dart';
@@ -51,32 +50,33 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
   @override
   Widget build(BuildContext context) {
     if (_isInitializing) {
-      return _buildLoadingState();
+      return _buildLoadingState(context);
     }
 
     return ListenableBuilder(
       listenable: _viewModel,
       builder: (context, _) {
-        return _buildContent();
+        return _buildContent(context);
       },
     );
   }
 
-  Widget _buildLoadingState() {
-    return const Center(
+  Widget _buildLoadingState(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            color: FiftyColors.burgundy,
+            color: colorScheme.primary,
           ),
-          SizedBox(height: FiftySpacing.lg),
+          const SizedBox(height: 16),
           Text(
             'INITIALIZING SENTENCES ENGINE...',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.bodyLarge,
-              color: FiftyColors.slateGrey,
+              fontSize: 16,
+              color: colorScheme.onSurfaceVariant,
               letterSpacing: 2.0,
             ),
           ),
@@ -85,11 +85,10 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: const EdgeInsets.all(16),
       children: [
-        // Dialogue Display
         DialogueDisplay(
           currentText: _viewModel.currentText,
           state: _viewModel.state,
@@ -99,17 +98,15 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
           onChoiceSelected: _actions.onChoiceSelected,
         ),
 
-        const SizedBox(height: FiftySpacing.xl),
+        const SizedBox(height: 24),
 
-        // Sentence Queue Panel
         SentenceQueuePanel(
           queue: _viewModel.queue,
           getInstructionLabel: _viewModel.getInstructionLabel,
         ),
 
-        const SizedBox(height: FiftySpacing.xl),
+        const SizedBox(height: 24),
 
-        // Instruction Buttons Panel
         InstructionButtonsPanel(
           canProcess: _viewModel.canProcess,
           canPause: _viewModel.canPause,
@@ -128,46 +125,46 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
           onLoadDemoStoryTapped: _actions.onLoadDemoStoryTapped,
         ),
 
-        const SizedBox(height: FiftySpacing.xl),
+        const SizedBox(height: 24),
 
-        // Info card
-        _buildInfoCard(),
+        _buildInfoCard(context),
       ],
     );
   }
 
-  Widget _buildInfoCard() {
+  Widget _buildInfoCard(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
-        borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark),
+        color: colorScheme.surface.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Icon(
                 Icons.info_outline_rounded,
-                color: FiftyColors.slateGrey,
+                color: colorScheme.onSurfaceVariant,
                 size: 20,
               ),
-              SizedBox(width: FiftySpacing.sm),
+              const SizedBox(width: 8),
               Text(
                 'ABOUT THIS DEMO',
                 style: TextStyle(
-                  fontFamily: FiftyTypography.fontFamily,
-                  fontSize: FiftyTypography.bodySmall,
-                  fontWeight: FiftyTypography.medium,
-                  color: FiftyColors.slateGrey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurfaceVariant,
                   letterSpacing: 1.0,
                 ),
               ),
             ],
           ),
-          SizedBox(height: FiftySpacing.md),
+          const SizedBox(height: 12),
           Text(
             'This demo showcases the fifty_sentences_engine package capabilities:\n\n'
             '- WRITE: Display text on screen (narration)\n'
@@ -177,9 +174,8 @@ class _SentencesDemoPageState extends State<SentencesDemoPage> {
             'Add sentences to the queue, then tap PROCESS to execute them in order. '
             'The engine handles instruction interpretation, flow control, and user interaction.',
             style: TextStyle(
-              fontFamily: FiftyTypography.fontFamily,
-              fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.slateGrey,
+              fontSize: 12,
+              color: colorScheme.onSurfaceVariant,
               height: 1.5,
             ),
           ),

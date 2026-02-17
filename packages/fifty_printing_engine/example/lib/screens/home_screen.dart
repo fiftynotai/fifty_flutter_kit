@@ -1,5 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
-import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,67 +5,65 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Printing Engine Example',
-          style: TextStyle(color: FiftyColors.terminalWhite),
-        ),
-        backgroundColor: FiftyColors.voidBlack,
+        title: const Text('Printing Engine Example'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(FiftySpacing.lg),
+        padding: const EdgeInsets.all(16),
         children: [
           // Header
-          FiftyCard(
-            padding: EdgeInsets.all(FiftySpacing.lg),
-            scanlineOnHover: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Welcome to Printing Engine',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: FiftyColors.terminalWhite,
-                      ),
-                ),
-                SizedBox(height: FiftySpacing.sm),
-                Text(
-                  'Production-grade Flutter package for multi-printer ESC/POS printing',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: FiftyColors.hyperChrome,
-                      ),
-                ),
-                SizedBox(height: FiftySpacing.lg),
-                Text(
-                  'Version: 1.0.0',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: FiftyColors.hyperChrome,
-                      ),
-                ),
-              ],
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome to Printing Engine',
+                    style: textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Production-grade Flutter package for multi-printer ESC/POS printing',
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Version: 1.0.0',
+                    style: textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 
-          SizedBox(height: FiftySpacing.xxl),
+          const SizedBox(height: 24),
 
           // Features
           Text(
             'Features',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: FiftyColors.terminalWhite,
-                ),
+            style: textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(height: FiftySpacing.md),
+          const SizedBox(height: 12),
 
           _buildFeatureCard(
             context,
             icon: Icons.print,
             title: 'Multi-Printer Management',
             description: 'Register and manage multiple Bluetooth and WiFi printers simultaneously',
-            color: FiftyColors.crimsonPulse,
+            color: colorScheme.primary,
           ),
 
           _buildFeatureCard(
@@ -75,7 +71,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icons.route,
             title: 'Flexible Routing Strategies',
             description: 'Print to all, select per print, or use role-based routing',
-            color: FiftyColors.success,
+            color: colorScheme.tertiary,
           ),
 
           _buildFeatureCard(
@@ -83,7 +79,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icons.bluetooth,
             title: 'Bluetooth & WiFi Support',
             description: 'Works with thermal printers over Bluetooth and network printers',
-            color: FiftyColors.crimsonPulse,
+            color: colorScheme.secondary,
           ),
 
           _buildFeatureCard(
@@ -91,7 +87,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icons.monitor_heart,
             title: 'Status Monitoring & Health Checks',
             description: 'Real-time printer status updates and periodic health monitoring',
-            color: FiftyColors.warning,
+            color: colorScheme.tertiary,
           ),
 
           _buildFeatureCard(
@@ -99,59 +95,60 @@ class HomeScreen extends StatelessWidget {
             icon: Icons.check_circle,
             title: 'Result Tracking',
             description: 'Per-printer success/failure details with error messages',
-            color: FiftyColors.success,
+            color: colorScheme.primary,
           ),
 
-          SizedBox(height: FiftySpacing.xxl),
+          const SizedBox(height: 24),
 
           // Quick Start
           Text(
             'Quick Start',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: FiftyColors.terminalWhite,
-                ),
+            style: textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(height: FiftySpacing.md),
+          const SizedBox(height: 12),
 
-          FiftyCard(
-            padding: EdgeInsets.all(FiftySpacing.lg),
-            scanlineOnHover: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildStep(context, 1, 'Go to Printers tab', 'Add your Bluetooth or WiFi printer'),
-                Divider(height: FiftySpacing.xxl, color: FiftyColors.border),
-                _buildStep(context, 2, 'Configure routing', 'Choose printing mode and role mappings'),
-                Divider(height: FiftySpacing.xxl, color: FiftyColors.border),
-                _buildStep(context, 3, 'Test Print tab', 'Try different printing scenarios'),
-                Divider(height: FiftySpacing.xxl, color: FiftyColors.border),
-                _buildStep(context, 4, 'Builder tab', 'Create custom tickets'),
-              ],
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildStep(context, 1, 'Go to Printers tab', 'Add your Bluetooth or WiFi printer'),
+                  Divider(height: 24, color: colorScheme.outlineVariant),
+                  _buildStep(context, 2, 'Configure routing', 'Choose printing mode and role mappings'),
+                  Divider(height: 24, color: colorScheme.outlineVariant),
+                  _buildStep(context, 3, 'Test Print tab', 'Try different printing scenarios'),
+                  Divider(height: 24, color: colorScheme.outlineVariant),
+                  _buildStep(context, 4, 'Builder tab', 'Create custom tickets'),
+                ],
+              ),
             ),
           ),
 
-          SizedBox(height: FiftySpacing.xxl),
+          const SizedBox(height: 24),
 
           // Navigation Hint
-          FiftyCard(
-            padding: EdgeInsets.all(FiftySpacing.lg),
-            backgroundColor: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
-            scanlineOnHover: false,
-            child: Row(
-              children: [
-                Icon(Icons.info_outline, color: FiftyColors.crimsonPulse),
-                SizedBox(width: FiftySpacing.md),
-                Expanded(
-                  child: Text(
-                    'Use the bottom navigation to explore different features',
-                    style: TextStyle(
-                      color: FiftyColors.terminalWhite,
-                      fontWeight: FontWeight.w500,
+          Card(
+            color: colorScheme.primaryContainer,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: colorScheme.onPrimaryContainer),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Use the bottom navigation to explore different features',
+                      style: TextStyle(
+                        color: colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -166,77 +163,78 @@ class HomeScreen extends StatelessWidget {
     required String description,
     required Color color,
   }) {
-    return FiftyCard(
-      margin: EdgeInsets.only(bottom: FiftySpacing.md),
-      padding: EdgeInsets.all(FiftySpacing.md),
-      scanlineOnHover: false,
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: color.withValues(alpha: 0.2),
-            child: Icon(icon, color: color),
-          ),
-          SizedBox(width: FiftySpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: FiftyColors.terminalWhite,
-                  ),
-                ),
-                SizedBox(height: FiftySpacing.xs),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: FiftyColors.hyperChrome,
-                  ),
-                ),
-              ],
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: color.withValues(alpha: 0.2),
+              child: Icon(icon, color: color),
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildStep(BuildContext context, int number, String title, String description) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
           radius: 16,
-          backgroundColor: FiftyColors.crimsonPulse,
+          backgroundColor: colorScheme.primary,
           child: Text(
             '$number',
             style: TextStyle(
-              color: FiftyColors.terminalWhite,
+              color: colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
           ),
         ),
-        SizedBox(width: FiftySpacing.md),
+        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: FiftyColors.terminalWhite,
                 ),
               ),
-              SizedBox(height: FiftySpacing.xs),
+              const SizedBox(height: 4),
               Text(
                 description,
                 style: TextStyle(
-                  color: FiftyColors.hyperChrome,
+                  color: colorScheme.onSurfaceVariant,
                   fontSize: 14,
                 ),
               ),

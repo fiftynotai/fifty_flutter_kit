@@ -483,6 +483,12 @@ All channel states are persisted via `GetStorage`:
 
 ---
 
+## Screenshots
+
+| BGM Player | SFX Player | Voice Player | Global Controls |
+|:----------:|:----------:|:------------:|:---------------:|
+| ![BGM](screenshots/bgm_player_light.png) | ![SFX](screenshots/sfx_player_light.png) | ![Voice](screenshots/voice_player_light.png) | ![Global](screenshots/global_controls_light.png) |
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.

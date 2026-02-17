@@ -26,7 +26,7 @@ import 'channels/voice_acting_channel.dart';
 /// FiftyAudioEngine.instance.voice.playVoice(myVoiceUrl);
 /// ```
 ///
-/// Part of the Fifty Design Language ecosystem.
+/// Part of Fifty Flutter Kit.
 class FiftyAudioEngine {
   /// **Singleton Instance**
   ///

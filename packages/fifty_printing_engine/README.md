@@ -824,6 +824,12 @@ This package is part of the Fifty Flutter Kit:
 
 ---
 
+## Screenshots
+
+| Home | Printer Management | Test Print | Ticket Builder |
+|:----:|:------------------:|:----------:|:--------------:|
+| ![Home](screenshots/home_light.png) | ![Printers](screenshots/printer_management_light.png) | ![Test](screenshots/test_print_light.png) | ![Builder](screenshots/ticket_builder_light.png) |
+
 ## License
 
 MIT License - see LICENSE file

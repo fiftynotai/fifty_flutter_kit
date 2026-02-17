@@ -138,6 +138,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
@@ -165,7 +166,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
               constraints: const BoxConstraints(maxWidth: 400),
               decoration: BoxDecoration(
                 color: widget.backgroundColor ??
-                    Theme.of(context).colorScheme.surfaceContainerHighest,
+                    colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(color: _rarityColor, width: 2),
                 boxShadow: [
@@ -186,7 +187,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
                 children: [
                   _buildIcon(context),
                   const SizedBox(width: FiftySpacing.md),
-                  Flexible(child: _buildContent()),
+                  Flexible(child: _buildContent(context)),
                 ],
               ),
             ),
@@ -238,7 +239,8 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -260,7 +262,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.titleMedium,
             fontWeight: FiftyTypography.bold,
-            color: FiftyColors.cream,
+            color: colorScheme.onSurface,
           ),
         ),
         if (widget.achievement.description != null) ...[
@@ -270,7 +272,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -287,7 +289,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.labelLarge,
                 fontWeight: FiftyTypography.bold,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
               ),
             ),
           ],

@@ -39,7 +39,7 @@ export 'src/widgets/widgets.dart';
 /// await engine.startListening();
 /// ```
 ///
-/// Part of the [Fifty Design Language](https://github.com/fiftynotai/fifty_eco_system) ecosystem.
+/// Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 class FiftySpeechEngine {
   /// Internal text-to-speech manager
   final TtsManager tts;

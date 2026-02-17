@@ -34,7 +34,6 @@ class _TechTreeExampleState extends State<TechTreeExample> {
     tree.addPoints(20);
 
     // Use FDL defaults (no custom theme needed)
-    // SkillTreeThemePresets was removed - FDL provides consistent theming
     _controller = SkillTreeController<void>(
       tree: tree,
     );

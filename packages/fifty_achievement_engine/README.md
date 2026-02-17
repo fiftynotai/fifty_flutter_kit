@@ -372,28 +372,40 @@ print('Earned points: ${controller.earnedPoints}');
 print('Completion: ${(controller.completionPercentage * 100).toStringAsFixed(1)}%');
 ```
 
-## FDL Compliance
+## Theme Support
 
-All widgets consume FDL tokens directly:
+All widgets are theme-aware and use `Theme.of(context).colorScheme` for colors:
 
-- Colors from `FiftyColors`
+- Text colors from `colorScheme.onSurface`
+- Background colors from `colorScheme.surfaceContainerHighest`
+- Primary accents from `colorScheme.primary`
+- Borders from `colorScheme.outline`
+- Rarity colors (common, uncommon, rare, epic, legendary) use intentional semantic colors
+
+Layout tokens from FDL:
+
 - Spacing from `FiftySpacing`
 - Typography from `FiftyTypography`
 - Radii from `FiftyRadii`
 - Motion from `FiftyMotion`
 
-Optional color overrides are provided as widget parameters (NOT theme objects):
+Optional color overrides are provided as widget parameters:
 
 ```dart
 AchievementCard(
   achievement: myAchievement,
   progress: 0.75,
-  // Optional FDL overrides
-  backgroundColor: FiftyColors.surfaceDark,
+  backgroundColor: Theme.of(context).colorScheme.surface,
   borderColor: Colors.amber,
 )
 ```
 
+## Screenshots
+
+| Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
+|:----:|:------------------:|:-------------------:|:----------------:|
+| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_achievements_light.png) | ![Unlocked](screenshots/achievement_unlocked_light.png) | ![RPG](screenshots/rpg_achievements_light.png) |
+
 ## License
 
-Part of the Fifty Flutter Kit ecosystem.
+Part of the Fifty Flutter Kit.

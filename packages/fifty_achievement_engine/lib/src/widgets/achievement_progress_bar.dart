@@ -59,7 +59,7 @@ class AchievementProgressBar extends StatelessWidget {
     final radius = borderRadius ?? FiftyRadii.smRadius;
     final bgColor =
         backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest;
-    final fgColor = foregroundColor ?? FiftyColors.burgundy;
+    final fgColor = foregroundColor ?? Theme.of(context).colorScheme.primary;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -102,7 +102,7 @@ class AchievementProgressBar extends StatelessWidget {
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
                   fontWeight: FiftyTypography.medium,
-                  color: FiftyColors.cream.withValues(alpha: 0.7),
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
           ),
         ],

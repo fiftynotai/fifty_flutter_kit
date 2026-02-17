@@ -8,15 +8,15 @@ environment:
   flutter: '>=3.0.0'
 
 dependencies:
-  flutter:
-    sdk: flutter
   fifty_tokens:
     path: ../fifty_tokens
   fifty_ui:
     path: ../fifty_ui
+  flutter:
+    sdk: flutter
 
 dev_dependencies:
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
   mocktail: ^1.0.0

@@ -724,20 +724,21 @@ This package is part of Fifty Flutter Kit:
 
 - **Consistent naming** - All classes use `Fifty` prefix
 - **Compatible packages** - Works with `fifty_ui`, `fifty_theme`, `fifty_tokens`
-- **Ecosystem patterns** - Follows Fifty coding standards
+- **Kit patterns** - Follows Fifty Flutter Kit coding standards
 
 ---
 
 ## Example App
 
-See the [example directory](example/) for a complete demo app showcasing:
+See the [example directory](example/) for a complete tactical skirmish sandbox showcasing:
 
-- MVVM + Actions architecture pattern
-- Interactive map with pan/zoom
-- Entity manipulation (add, remove, move)
-- D-pad movement controls
-- Camera controls (zoom in/out, center)
-- FDL styling with fifty_ui components
+- Tile grid rendering with multiple tile types
+- Camera pan and pinch-to-zoom controls
+- Entity spawning with team decorators (HP bars, team borders, status icons)
+- A* pathfinding and BFS movement range
+- Animation queue with step-by-step movement
+- Floating text damage popups
+- Tile and entity tap interaction
 
 ```bash
 cd example
@@ -763,6 +764,12 @@ flutter run
 **Current:** 0.1.0
 
 ---
+
+## Screenshots
+
+| Tactical Overview | Unit Selection & Pathfinding |
+|:-----------------:|:---------------------------:|
+| ![Overview](screenshots/tactical_overview_light.png) | ![Selection](screenshots/unit_selection_light.png) |
 
 ## License
 

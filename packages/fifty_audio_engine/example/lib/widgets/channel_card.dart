@@ -41,11 +41,11 @@ class ChannelCard extends StatelessWidget {
             children: [
               Text(
                 title.toUpperCase(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodyLarge,
                   fontWeight: FiftyTypography.medium,
-                  color: FiftyColors.cream,
+                  color: Theme.of(context).colorScheme.onSurface,
                   letterSpacing: 1,
                 ),
               ),

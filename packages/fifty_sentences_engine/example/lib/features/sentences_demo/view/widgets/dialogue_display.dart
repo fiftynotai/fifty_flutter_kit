@@ -1,10 +1,9 @@
 /// Dialogue display widget showing the current sentence.
 ///
 /// Displays the currently processing sentence with animated text
-/// and status indicator using FDL styling.
+/// and status indicator using theme-aware styling.
 library;
 
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -42,24 +41,26 @@ class DialogueDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: state == SentencesServiceState.waitingForInput
           ? onTapToContinue
           : null,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: FiftyColors.surfaceDark.withValues(alpha: 0.5),
-          borderRadius: FiftyRadii.lgRadius,
+          color: colorScheme.surface.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: _getBorderColor(),
+            color: _getBorderColor(colorScheme),
             width: 1.5,
           ),
           boxShadow: _isActive
               ? [
                   BoxShadow(
-                    color: _getGlowColor().withValues(alpha: 0.3),
+                    color: _getGlowColor(colorScheme).withValues(alpha: 0.3),
                     blurRadius: 12,
                     spreadRadius: 0,
                   ),
@@ -70,25 +71,21 @@ class DialogueDisplay extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header row with title and status
-            _buildHeader(),
+            _buildHeader(colorScheme),
 
-            const SizedBox(height: FiftySpacing.md),
+            const SizedBox(height: 12),
 
-            // Dialogue text area
-            _buildDialogueArea(),
+            _buildDialogueArea(colorScheme),
 
-            // Choices (for ask instruction)
             if (state == SentencesServiceState.waitingForChoice &&
                 choices.isNotEmpty) ...[
-              const SizedBox(height: FiftySpacing.lg),
-              _buildChoices(),
+              const SizedBox(height: 16),
+              _buildChoices(colorScheme),
             ],
 
-            // Tap to continue hint
             if (state == SentencesServiceState.waitingForInput) ...[
-              const SizedBox(height: FiftySpacing.md),
-              _buildTapHint(),
+              const SizedBox(height: 12),
+              _buildTapHint(colorScheme),
             ],
           ],
         ),
@@ -96,17 +93,16 @@ class DialogueDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ColorScheme colorScheme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'DIALOGUE',
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.bodySmall,
-            fontWeight: FiftyTypography.medium,
-            color: FiftyColors.slateGrey,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: colorScheme.onSurfaceVariant,
             letterSpacing: 2.0,
           ),
         ),
@@ -119,24 +115,23 @@ class DialogueDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildDialogueArea() {
+  Widget _buildDialogueArea(ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 80),
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy.withValues(alpha: 0.6),
-        borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark),
+        color: colorScheme.primaryContainer.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Text(
         currentText.isEmpty ? 'No sentence being processed...' : currentText,
         style: TextStyle(
-          fontFamily: FiftyTypography.fontFamily,
-          fontSize: FiftyTypography.bodyLarge,
+          fontSize: 16,
           color: currentText.isEmpty
-              ? FiftyColors.slateGrey.withValues(alpha: 0.5)
-              : FiftyColors.cream,
+              ? colorScheme.onSurfaceVariant.withValues(alpha: 0.5)
+              : colorScheme.onSurface,
           fontStyle: currentText.isEmpty ? FontStyle.italic : FontStyle.normal,
           height: 1.5,
         ),
@@ -144,23 +139,22 @@ class DialogueDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildChoices() {
+  Widget _buildChoices(ColorScheme colorScheme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
+        Text(
           'SELECT AN OPTION',
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.bodySmall,
-            fontWeight: FiftyTypography.medium,
-            color: FiftyColors.slateGrey,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: colorScheme.onSurfaceVariant,
             letterSpacing: 1.5,
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        const SizedBox(height: 8),
         ...choices.map((choice) => Padding(
-              padding: const EdgeInsets.only(bottom: FiftySpacing.xs),
+              padding: const EdgeInsets.only(bottom: 4),
               child: FiftyButton(
                 label: choice,
                 variant: FiftyButtonVariant.secondary,
@@ -171,18 +165,17 @@ class DialogueDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildTapHint() {
+  Widget _buildTapHint(ColorScheme colorScheme) {
     return Center(
       child: AnimatedOpacity(
         opacity: state == SentencesServiceState.waitingForInput ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 300),
-        child: const Text(
+        child: Text(
           'TAP TO CONTINUE',
           style: TextStyle(
-            fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.bodySmall,
-            fontWeight: FiftyTypography.medium,
-            color: FiftyColors.burgundy,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: colorScheme.primary,
             letterSpacing: 2.0,
           ),
         ),
@@ -195,31 +188,31 @@ class DialogueDisplay extends StatelessWidget {
       state == SentencesServiceState.waitingForInput ||
       state == SentencesServiceState.waitingForChoice;
 
-  Color _getBorderColor() {
+  Color _getBorderColor(ColorScheme colorScheme) {
     switch (state) {
       case SentencesServiceState.processing:
-        return FiftyColors.burgundy;
+        return colorScheme.primary;
       case SentencesServiceState.waitingForInput:
-        return FiftyColors.hunterGreen;
+        return colorScheme.tertiary;
       case SentencesServiceState.waitingForChoice:
-        return FiftyColors.success;
+        return colorScheme.secondary;
       case SentencesServiceState.paused:
-        return FiftyColors.warning;
+        return colorScheme.error;
       case SentencesServiceState.idle:
-        return FiftyColors.borderDark;
+        return colorScheme.outlineVariant;
     }
   }
 
-  Color _getGlowColor() {
+  Color _getGlowColor(ColorScheme colorScheme) {
     switch (state) {
       case SentencesServiceState.processing:
-        return FiftyColors.burgundy;
+        return colorScheme.primary;
       case SentencesServiceState.waitingForInput:
-        return FiftyColors.hunterGreen;
+        return colorScheme.tertiary;
       case SentencesServiceState.waitingForChoice:
-        return FiftyColors.success;
+        return colorScheme.secondary;
       default:
-        return FiftyColors.burgundy;
+        return colorScheme.primary;
     }
   }
 
@@ -228,7 +221,7 @@ class DialogueDisplay extends StatelessWidget {
       case SentencesServiceState.idle:
         return FiftyChipVariant.defaultVariant;
       case SentencesServiceState.processing:
-        return FiftyChipVariant.error; // Uses burgundy
+        return FiftyChipVariant.error;
       case SentencesServiceState.paused:
         return FiftyChipVariant.warning;
       case SentencesServiceState.waitingForInput:

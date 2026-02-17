@@ -48,14 +48,13 @@ class AchievementSummary<T> extends StatelessWidget {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
+        final colorScheme = Theme.of(context).colorScheme;
         return Container(
           padding: EdgeInsets.all(compact ? FiftySpacing.md : FiftySpacing.lg),
           decoration: BoxDecoration(
-            color: backgroundColor ??
-                Theme.of(context).colorScheme.surfaceContainerHighest,
+            color: backgroundColor ?? colorScheme.surfaceContainerHighest,
             borderRadius: FiftyRadii.lgRadius,
-            border: Border.all(
-                color: Theme.of(context).colorScheme.outline),
+            border: Border.all(color: colorScheme.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,15 +62,15 @@ class AchievementSummary<T> extends StatelessWidget {
             children: [
               _buildHeader(context),
               const SizedBox(height: FiftySpacing.md),
-              _buildProgressSection(),
+              _buildProgressSection(context),
               if (showRarityBreakdown) ...[
                 const SizedBox(height: FiftySpacing.lg),
-                _buildRarityBreakdown(),
+                _buildRarityBreakdown(context),
               ],
               if (showCategoryBreakdown &&
                   controller.categories.isNotEmpty) ...[
                 const SizedBox(height: FiftySpacing.lg),
-                _buildCategoryBreakdown(),
+                _buildCategoryBreakdown(context),
               ],
             ],
           ),
@@ -83,6 +82,7 @@ class AchievementSummary<T> extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     final unlockedCount = controller.unlockedAchievements.length;
     final totalCount = controller.achievements.length;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       children: [
@@ -94,8 +94,8 @@ class AchievementSummary<T> extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                FiftyColors.burgundy,
-                FiftyColors.burgundy.withValues(alpha: 0.7),
+                colorScheme.primary,
+                colorScheme.primary.withValues(alpha: 0.7),
               ],
             ),
             borderRadius: FiftyRadii.mdRadius,
@@ -103,7 +103,7 @@ class AchievementSummary<T> extends StatelessWidget {
           child: Icon(
             Icons.emoji_events,
             size: compact ? 20 : 24,
-            color: Theme.of(context).colorScheme.onSurface,
+            color: colorScheme.onPrimary,
           ),
         ),
         const SizedBox(width: FiftySpacing.md),
@@ -118,7 +118,7 @@ class AchievementSummary<T> extends StatelessWidget {
                   fontSize: FiftyTypography.labelMedium,
                   fontWeight: FiftyTypography.bold,
                   letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-                  color: FiftyColors.cream.withValues(alpha: 0.5),
+                  color: colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
               const SizedBox(height: FiftySpacing.xs / 2),
@@ -130,18 +130,19 @@ class AchievementSummary<T> extends StatelessWidget {
                       ? FiftyTypography.titleSmall
                       : FiftyTypography.titleMedium,
                   fontWeight: FiftyTypography.bold,
-                  color: FiftyColors.cream,
+                  color: colorScheme.onSurface,
                 ),
               ),
             ],
           ),
         ),
-        _buildPointsDisplay(),
+        _buildPointsDisplay(context),
       ],
     );
   }
 
-  Widget _buildPointsDisplay() {
+  Widget _buildPointsDisplay(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -152,7 +153,7 @@ class AchievementSummary<T> extends StatelessWidget {
             fontSize: FiftyTypography.labelSmall,
             fontWeight: FiftyTypography.semiBold,
             letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-            color: FiftyColors.cream.withValues(alpha: 0.5),
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
         const SizedBox(height: FiftySpacing.xs / 2),
@@ -164,7 +165,7 @@ class AchievementSummary<T> extends StatelessWidget {
                 ? FiftyTypography.titleLarge
                 : FiftyTypography.displayMedium,
             fontWeight: FiftyTypography.extraBold,
-            color: FiftyColors.burgundy,
+            color: colorScheme.primary,
           ),
         ),
         Text(
@@ -172,14 +173,15 @@ class AchievementSummary<T> extends StatelessWidget {
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodySmall,
-            color: FiftyColors.cream.withValues(alpha: 0.5),
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildProgressSection() {
+  Widget _buildProgressSection(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -192,7 +194,7 @@ class AchievementSummary<T> extends StatelessWidget {
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodyMedium,
                 fontWeight: FiftyTypography.medium,
-                color: FiftyColors.cream.withValues(alpha: 0.7),
+                color: colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             Text(
@@ -201,7 +203,7 @@ class AchievementSummary<T> extends StatelessWidget {
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodyMedium,
                 fontWeight: FiftyTypography.bold,
-                color: FiftyColors.cream,
+                color: colorScheme.onSurface,
               ),
             ),
           ],
@@ -215,7 +217,8 @@ class AchievementSummary<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildRarityBreakdown() {
+  Widget _buildRarityBreakdown(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -226,7 +229,7 @@ class AchievementSummary<T> extends StatelessWidget {
             fontSize: FiftyTypography.labelMedium,
             fontWeight: FiftyTypography.bold,
             letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-            color: FiftyColors.cream.withValues(alpha: 0.5),
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
         const SizedBox(height: FiftySpacing.sm),
@@ -241,6 +244,7 @@ class AchievementSummary<T> extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
             child: _buildBreakdownRow(
+              context,
               label: rarity.displayName,
               unlocked: unlocked,
               total: total,
@@ -252,7 +256,8 @@ class AchievementSummary<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryBreakdown() {
+  Widget _buildCategoryBreakdown(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -263,7 +268,7 @@ class AchievementSummary<T> extends StatelessWidget {
             fontSize: FiftyTypography.labelMedium,
             fontWeight: FiftyTypography.bold,
             letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-            color: FiftyColors.cream.withValues(alpha: 0.5),
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
         const SizedBox(height: FiftySpacing.sm),
@@ -276,10 +281,11 @@ class AchievementSummary<T> extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
             child: _buildBreakdownRow(
+              context,
               label: category,
               unlocked: unlocked,
               total: achievements.length,
-              color: FiftyColors.slateGrey,
+              color: colorScheme.outline,
             ),
           );
         }),
@@ -287,13 +293,15 @@ class AchievementSummary<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildBreakdownRow({
+  Widget _buildBreakdownRow(
+    BuildContext context, {
     required String label,
     required int unlocked,
     required int total,
     required Color color,
   }) {
     final progress = total > 0 ? unlocked / total : 0.0;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       children: [
@@ -313,7 +321,7 @@ class AchievementSummary<T> extends StatelessWidget {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
         ),
@@ -334,7 +342,7 @@ class AchievementSummary<T> extends StatelessWidget {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
               fontWeight: FiftyTypography.medium,
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.right,
           ),

@@ -91,13 +91,13 @@ class _TtsPanelState extends State<TtsPanel> {
                   size: 24,
                 ),
                 const SizedBox(width: FiftySpacing.sm),
-                const Text(
+                Text(
                   'TEXT-TO-SPEECH',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
                     fontWeight: FiftyTypography.extraBold,
-                    color: FiftyColors.cream,
+                    color: colorScheme.onSurface,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -126,12 +126,12 @@ class _TtsPanelState extends State<TtsPanel> {
             // Language selector
             Row(
               children: [
-                const Text(
+                Text(
                   'Language:',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
-                    color: FiftyColors.slateGrey,
+                    color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(width: FiftySpacing.md),
@@ -178,19 +178,19 @@ class _TtsPanelState extends State<TtsPanel> {
         vertical: FiftySpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.borderDark),
+        border: Border.all(color: colorScheme.outline),
       ),
       child: DropdownButton<SpeechLanguage>(
         value: widget.currentLanguage,
         isExpanded: true,
         underline: const SizedBox.shrink(),
-        dropdownColor: FiftyColors.surfaceDark,
-        style: const TextStyle(
+        dropdownColor: colorScheme.surfaceContainerHighest,
+        style: TextStyle(
           fontFamily: FiftyTypography.fontFamily,
           fontSize: FiftyTypography.bodyLarge,
-          color: FiftyColors.cream,
+          color: colorScheme.onSurface,
         ),
         icon: Icon(
           Icons.arrow_drop_down_rounded,

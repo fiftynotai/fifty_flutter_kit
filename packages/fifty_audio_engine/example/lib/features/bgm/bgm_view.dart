@@ -60,6 +60,8 @@ class _BgmViewState extends State<BgmView> {
   }
 
   Widget _buildNowPlaying() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return ChannelCard(
       title: 'Now Playing',
       statusLabel: _viewModel.isPlaying ? 'PLAYING' : 'STOPPED',
@@ -69,20 +71,20 @@ class _BgmViewState extends State<BgmView> {
         children: [
           Text(
             _viewModel.currentTrack.title,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.titleLarge,
               fontWeight: FiftyTypography.extraBold,
-              color: FiftyColors.cream,
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: FiftySpacing.xs),
           Text(
             _viewModel.currentTrack.artist,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyLarge,
-              color: FiftyColors.slateGrey,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: FiftySpacing.lg),
@@ -98,18 +100,18 @@ class _BgmViewState extends State<BgmView> {
             children: [
               Text(
                 _viewModel.positionString,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               Text(
                 _viewModel.durationString,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -145,12 +147,12 @@ class _BgmViewState extends State<BgmView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Shuffle',
                 style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodyLarge,
-                  color: FiftyColors.cream,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               FiftySwitch(
@@ -215,7 +217,7 @@ class _TrackListItem extends StatelessWidget {
                 : Colors.transparent,
             borderRadius: FiftyRadii.lgRadius,
             border: Border.all(
-              color: isSelected ? colorScheme.primary : FiftyColors.borderDark,
+              color: isSelected ? colorScheme.primary : colorScheme.outline,
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -235,7 +237,7 @@ class _TrackListItem extends StatelessWidget {
                         size: 20,
                         color: isSelected
                             ? colorScheme.primary
-                            : FiftyColors.slateGrey,
+                            : colorScheme.onSurfaceVariant,
                       ),
               ),
               const SizedBox(width: FiftySpacing.md),
@@ -254,15 +256,15 @@ class _TrackListItem extends StatelessWidget {
                             : FiftyTypography.regular,
                         color: isSelected
                             ? colorScheme.primary
-                            : FiftyColors.cream,
+                            : colorScheme.onSurface,
                       ),
                     ),
                     Text(
                       track.artist,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.bodySmall,
-                        color: FiftyColors.slateGrey,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -271,10 +273,10 @@ class _TrackListItem extends StatelessWidget {
               // Duration
               Text(
                 _formatDuration(track.duration),
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontSize: FiftyTypography.bodySmall,
-                  color: FiftyColors.slateGrey,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
