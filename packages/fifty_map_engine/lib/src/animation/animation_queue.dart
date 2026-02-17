@@ -115,7 +115,15 @@ class AnimationQueue {
           // ignore: avoid_print
           print('[AnimationQueue] entry.execute() threw: $e\n$st');
         }
-        entry.onComplete?.call();
+        try {
+          entry.onComplete?.call();
+        } catch (e, st) {
+          // Log but don't propagate — callers rely on onComplete to resolve
+          // Completers; if we let this throw, the queue exits early and
+          // remaining entries are orphaned.
+          // ignore: avoid_print
+          print('[AnimationQueue] entry.onComplete() threw: $e\n$st');
+        }
       }
     } finally {
       _isRunning = false;

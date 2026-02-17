@@ -284,10 +284,13 @@ class AITurnExecutor {
               await Future<void>.delayed(const Duration(milliseconds: 600));
             },
             onComplete: () {
-              final e = controller.getEntityById(target.id);
-              if (e != null) controller.removeEntity(e);
-              controller.removeDecorators(target.id);
-              c.complete();
+              try {
+                final e = controller.getEntityById(target.id);
+                if (e != null) controller.removeEntity(e);
+                controller.removeDecorators(target.id);
+              } finally {
+                c.complete();
+              }
             },
           ));
           await c.future;
@@ -378,10 +381,13 @@ class AITurnExecutor {
                       const Duration(milliseconds: 600));
                 },
                 onComplete: () {
-                  final entity = controller.getEntityById(affectedId);
-                  if (entity != null) controller.removeEntity(entity);
-                  controller.removeDecorators(affectedId);
-                  c.complete();
+                  try {
+                    final entity = controller.getEntityById(affectedId);
+                    if (entity != null) controller.removeEntity(entity);
+                    controller.removeDecorators(affectedId);
+                  } finally {
+                    c.complete();
+                  }
                 },
               ));
               await c.future;
@@ -554,10 +560,13 @@ class AITurnExecutor {
               await Future<void>.delayed(const Duration(milliseconds: 600));
             },
             onComplete: () {
-              final e = controller.getEntityById(target.id);
-              if (e != null) controller.removeEntity(e);
-              controller.removeDecorators(target.id);
-              c.complete();
+              try {
+                final e = controller.getEntityById(target.id);
+                if (e != null) controller.removeEntity(e);
+                controller.removeDecorators(target.id);
+              } finally {
+                c.complete();
+              }
             },
           ));
           await c.future;
@@ -716,10 +725,13 @@ class AITurnExecutor {
                       const Duration(milliseconds: 600));
                 },
                 onComplete: () {
-                  final entity = controller.getEntityById(affectedId);
-                  if (entity != null) controller.removeEntity(entity);
-                  controller.removeDecorators(affectedId);
-                  c.complete();
+                  try {
+                    final entity = controller.getEntityById(affectedId);
+                    if (entity != null) controller.removeEntity(entity);
+                    controller.removeDecorators(affectedId);
+                  } finally {
+                    c.complete();
+                  }
                 },
               ));
               await c.future;

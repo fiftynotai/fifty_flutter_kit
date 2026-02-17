@@ -171,6 +171,47 @@ void main() {
       expect(queue.isRunning, isFalse);
     });
 
+    test('continues processing when entry.onComplete() throws', () async {
+      final order = <int>[];
+      bool queueCompleted = false;
+
+      final queue = AnimationQueue(
+        onComplete: () => queueCompleted = true,
+      );
+
+      queue.enqueueAll([
+        AnimationEntry(
+          execute: () async => order.add(1),
+          onComplete: () => throw Exception('onComplete crashed'),
+        ),
+        AnimationEntry(
+          execute: () async => order.add(2),
+        ),
+      ]);
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      expect(order, [1, 2]);
+      expect(queue.isRunning, isFalse);
+      expect(queueCompleted, isTrue);
+    });
+
+    test('calls queue onComplete even when entry onComplete throws', () async {
+      bool queueCompleted = false;
+
+      final queue = AnimationQueue(
+        onComplete: () => queueCompleted = true,
+      );
+
+      queue.enqueue(AnimationEntry(
+        execute: () async {},
+        onComplete: () => throw Exception('removeEntity failed'),
+      ));
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      expect(queue.isRunning, isFalse);
+      expect(queueCompleted, isTrue);
+    });
+
     test('can enqueue after completion', () async {
       final order = <int>[];
       final queue = AnimationQueue();
