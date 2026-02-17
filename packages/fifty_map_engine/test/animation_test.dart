@@ -116,6 +116,61 @@ void main() {
       expect(queue.isRunning, isFalse);
     });
 
+    test('continues processing when entry.execute() throws', () async {
+      final order = <int>[];
+      bool queueCompleted = false;
+
+      final queue = AnimationQueue(
+        onComplete: () => queueCompleted = true,
+      );
+
+      queue.enqueueAll([
+        AnimationEntry(execute: () async {
+          order.add(1);
+        }),
+        AnimationEntry(execute: () async {
+          throw Exception('die() failed');
+        }),
+        AnimationEntry(execute: () async {
+          order.add(3);
+        }),
+      ]);
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      expect(order, [1, 3]);
+      expect(queue.isRunning, isFalse);
+      expect(queueCompleted, isTrue);
+    });
+
+    test('calls entry.onComplete even when execute throws', () async {
+      final completions = <int>[];
+
+      final queue = AnimationQueue();
+      queue.enqueueAll([
+        AnimationEntry(
+          execute: () async => throw Exception('boom'),
+          onComplete: () => completions.add(1),
+        ),
+        AnimationEntry(
+          execute: () async {},
+          onComplete: () => completions.add(2),
+        ),
+      ]);
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      expect(completions, [1, 2]);
+    });
+
+    test('resets isRunning after exception', () async {
+      final queue = AnimationQueue();
+      queue.enqueue(AnimationEntry(
+        execute: () async => throw Exception('crash'),
+      ));
+
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(queue.isRunning, isFalse);
+    });
+
     test('can enqueue after completion', () async {
       final order = <int>[];
       final queue = AnimationQueue();

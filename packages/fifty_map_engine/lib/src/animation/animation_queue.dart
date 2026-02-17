@@ -105,14 +105,22 @@ class AnimationQueue {
     _cancelled = false;
     onStart?.call();
 
-    while (_queue.isNotEmpty && !_cancelled) {
-      final entry = _queue.removeAt(0);
-      await entry.execute();
-      entry.onComplete?.call();
+    try {
+      while (_queue.isNotEmpty && !_cancelled) {
+        final entry = _queue.removeAt(0);
+        try {
+          await entry.execute();
+        } catch (e, st) {
+          // Log but don't propagate — the queue must keep processing.
+          // ignore: avoid_print
+          print('[AnimationQueue] entry.execute() threw: $e\n$st');
+        }
+        entry.onComplete?.call();
+      }
+    } finally {
+      _isRunning = false;
+      _cancelled = false;
+      onComplete?.call();
     }
-
-    _isRunning = false;
-    _cancelled = false;
-    onComplete?.call();
   }
 }
