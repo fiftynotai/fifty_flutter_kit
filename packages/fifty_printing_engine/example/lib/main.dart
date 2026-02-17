@@ -1,3 +1,4 @@
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/printer_management_screen.dart';
@@ -15,16 +16,8 @@ class PrintingEngineExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Printing Engine Example',
-      theme: ThemeData(
-        colorSchemeSeed: Colors.deepPurple,
-        brightness: Brightness.light,
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorSchemeSeed: Colors.deepPurple,
-        brightness: Brightness.dark,
-        useMaterial3: true,
-      ),
+      theme: FiftyTheme.light(),
+      darkTheme: FiftyTheme.dark(),
       home: const MainNavigationScreen(),
     );
   }

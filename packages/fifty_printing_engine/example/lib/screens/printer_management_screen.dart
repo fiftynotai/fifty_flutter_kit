@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import '../widgets/add_printer_dialog.dart';
@@ -8,7 +10,8 @@ class PrinterManagementScreen extends StatefulWidget {
   const PrinterManagementScreen({super.key});
 
   @override
-  State<PrinterManagementScreen> createState() => _PrinterManagementScreenState();
+  State<PrinterManagementScreen> createState() =>
+      _PrinterManagementScreenState();
 }
 
 class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
@@ -43,7 +46,8 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Printer ${event.printerId}: ${event.message ?? "Error"}'),
+            content: Text(
+                'Printer ${event.printerId}: ${event.message ?? "Error"}'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -52,7 +56,7 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
   }
 
   Future<void> _showAddPrinterDialog() async {
-    final result = await showDialog<PrinterDevice>(
+    final result = await showFiftyDialog<PrinterDevice>(
       context: context,
       builder: (context) => const AddPrinterDialog(),
     );
@@ -70,33 +74,31 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
   }
 
   void _removePrinter(PrinterDevice printer) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    showDialog(
+    showFiftyDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Remove Printer'),
-        content: Text('Are you sure you want to remove "${printer.name}"?'),
+      builder: (context) => FiftyDialog(
+        title: 'Remove Printer',
+        content:
+            Text('Are you sure you want to remove "${printer.name}"?'),
         actions: [
-          TextButton(
+          FiftyButton(
+            label: 'Cancel',
+            variant: FiftyButtonVariant.ghost,
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
           ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: colorScheme.error,
-              foregroundColor: colorScheme.onError,
-            ),
+          FiftyButton(
+            label: 'Remove',
+            variant: FiftyButtonVariant.danger,
             onPressed: () {
               _engine.removePrinter(printer.id);
               _loadPrinters();
               Navigator.pop(context);
 
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Removed printer: ${printer.name}')),
+                SnackBar(
+                    content: Text('Removed printer: ${printer.name}')),
               );
             },
-            child: const Text('Remove'),
           ),
         ],
       ),
@@ -112,13 +114,15 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
     final success = await printer.connect();
 
     if (mounted) {
+      final fifty =
+          Theme.of(context).extension<FiftyThemeExtension>()!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(success
-            ? 'Connected to ${printer.name}'
-            : 'Failed to connect to ${printer.name}'),
+              ? 'Connected to ${printer.name}'
+              : 'Failed to connect to ${printer.name}'),
           backgroundColor: success
-              ? Colors.green
+              ? fifty.success
               : Theme.of(context).colorScheme.error,
         ),
       );
@@ -147,13 +151,15 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
     final healthy = await _engine.checkPrinterHealth(printer.id);
 
     if (mounted) {
+      final fifty =
+          Theme.of(context).extension<FiftyThemeExtension>()!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(healthy
-            ? '${printer.name} is healthy'
-            : '${printer.name} health check failed'),
+              ? '${printer.name} is healthy'
+              : '${printer.name} health check failed'),
           backgroundColor: healthy
-              ? Colors.green
+              ? fifty.success
               : Theme.of(context).colorScheme.error,
         ),
       );
@@ -179,10 +185,14 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
     final total = results.length;
 
     if (mounted) {
+      final fifty =
+          Theme.of(context).extension<FiftyThemeExtension>()!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Health check: $healthy/$total printers healthy'),
-          backgroundColor: healthy == total ? Colors.green : Colors.orange,
+          content:
+              Text('Health check: $healthy/$total printers healthy'),
+          backgroundColor:
+              healthy == total ? fifty.success : fifty.warning,
         ),
       );
     }
@@ -192,14 +202,12 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Printer Management'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.health_and_safety),
+          FiftyIconButton(
+            icon: Icons.health_and_safety,
             tooltip: 'Check all printers',
             onPressed: _checkAllPrinters,
           ),
@@ -225,8 +233,6 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
         onPressed: _showAddPrinterDialog,
         icon: const Icon(Icons.add),
         label: const Text('Add Printer'),
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
       ),
     );
   }
@@ -248,9 +254,10 @@ class _PrinterManagementScreenState extends State<PrinterManagementScreen> {
             const SizedBox(height: 24),
             Text(
               'No Printers Registered',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+              style:
+                  Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
             ),
             const SizedBox(height: 12),
             Text(

@@ -1,3 +1,4 @@
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 
@@ -70,8 +71,9 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
                 ),
               ),
               const Spacer(),
-              IconButton(
-                icon: const Icon(Icons.close),
+              FiftyIconButton(
+                icon: Icons.close,
+                tooltip: 'Close',
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -86,11 +88,10 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
                 padding: const EdgeInsets.all(32),
                 child: Column(
                   children: [
-                    CircularProgressIndicator(
-                      color: colorScheme.primary,
+                    FiftyLoadingIndicator(
+                      text: 'SCANNING',
+                      style: FiftyLoadingStyle.dots,
                     ),
-                    const SizedBox(height: 16),
-                    const Text('Scanning for Bluetooth printers...'),
                   ],
                 ),
               ),
@@ -107,12 +108,14 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.error_outline, color: colorScheme.onErrorContainer),
+                  Icon(Icons.error_outline,
+                      color: colorScheme.onErrorContainer),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       _error!,
-                      style: TextStyle(color: colorScheme.onErrorContainer),
+                      style:
+                          TextStyle(color: colorScheme.onErrorContainer),
                     ),
                   ),
                 ],
@@ -124,18 +127,19 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
                 spacing: 8,
                 alignment: WrapAlignment.center,
                 children: [
-                  if (_error!.contains('permission') || _error!.contains('Settings'))
-                    FilledButton.icon(
-                      icon: const Icon(Icons.settings),
-                      label: const Text('Open Settings'),
+                  if (_error!.contains('permission') ||
+                      _error!.contains('Settings'))
+                    FiftyButton(
+                      icon: Icons.settings,
+                      label: 'Open Settings',
                       onPressed: () async {
                         await _engine.openBluetoothSettings();
                       },
                     )
                   else
-                    FilledButton.icon(
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Retry'),
+                    FiftyButton(
+                      icon: Icons.refresh,
+                      label: 'Retry',
                       onPressed: _scanForPrinters,
                     ),
                 ],
@@ -173,9 +177,10 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      OutlinedButton.icon(
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Scan Again'),
+                      FiftyButton(
+                        icon: Icons.refresh,
+                        label: 'Scan Again',
+                        variant: FiftyButtonVariant.outline,
                         onPressed: _scanForPrinters,
                       ),
                     ],
@@ -197,33 +202,17 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
                   itemCount: _discoveredPrinters.length,
                   itemBuilder: (context, index) {
                     final printer = _discoveredPrinters[index];
-                    return Card(
+                    return FiftyCard(
+                      scanlineOnHover: false,
                       margin: const EdgeInsets.only(bottom: 8),
-                      clipBehavior: Clip.antiAlias,
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.pop(context, printer);
-                        },
-                        leading: CircleAvatar(
-                          backgroundColor: colorScheme.primary,
-                          child: Icon(
-                            Icons.print,
-                            color: colorScheme.onPrimary,
-                            size: 20,
-                          ),
-                        ),
-                        title: Text(
-                          printer.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          printer.macAddress,
-                          style: TextStyle(
-                            color: colorScheme.onSurfaceVariant,
-                            fontSize: 12,
-                            fontFamily: 'monospace',
-                          ),
-                        ),
+                      onTap: () {
+                        Navigator.pop(context, printer);
+                      },
+                      child: FiftyListTile(
+                        leadingIcon: Icons.print,
+                        leadingIconColor: colorScheme.primary,
+                        title: printer.name,
+                        subtitle: printer.macAddress,
                         trailing: Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
@@ -236,9 +225,10 @@ class _BluetoothScanSheetState extends State<BluetoothScanSheet> {
               ),
               const SizedBox(height: 16),
               Center(
-                child: TextButton.icon(
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Scan Again'),
+                child: FiftyButton(
+                  icon: Icons.refresh,
+                  label: 'Scan Again',
+                  variant: FiftyButtonVariant.ghost,
                   onPressed: _scanForPrinters,
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'package:fifty_theme/fifty_theme.dart';
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 
@@ -25,7 +27,6 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,226 +36,216 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           // Instructions Card
-          Card(
-            color: colorScheme.primaryContainer,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: colorScheme.onPrimaryContainer),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Build a custom ticket with text formatting',
-                      style: TextStyle(
-                        color: colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.w500,
-                      ),
+          FiftyCard(
+            scanlineOnHover: false,
+            backgroundColor: colorScheme.primaryContainer,
+            child: Row(
+              children: [
+                Icon(Icons.info_outline,
+                    color: colorScheme.onPrimaryContainer),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Build a custom ticket with text formatting',
+                    style: TextStyle(
+                      color: colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
           const SizedBox(height: 16),
 
           // Text Input
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Text Content',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _textController,
-                    onChanged: (_) => setState(() {}),
-                    decoration: const InputDecoration(
-                      hintText: 'Enter text to print',
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 3,
-                  ),
-                ],
-              ),
+          FiftyCard(
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FiftySectionHeader(
+                  title: 'Text Content',
+                  showDivider: false,
+                ),
+                FiftyTextField(
+                  controller: _textController,
+                  hint: 'Enter text to print',
+                  maxLines: 3,
+                  onChanged: (_) => setState(() {}),
+                ),
+              ],
             ),
           ),
 
           const SizedBox(height: 16),
 
           // Formatting Options
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Formatting',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+          FiftyCard(
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FiftySectionHeader(
+                  title: 'Formatting',
+                  showDivider: false,
+                ),
+
+                // Bold and Underline
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    FilterChip(
+                      label: const Text('Bold'),
+                      selected: _bold,
+                      onSelected: (value) {
+                        setState(() {
+                          _bold = value;
+                        });
+                      },
                     ),
-                  ),
-                  const SizedBox(height: 16),
+                    FilterChip(
+                      label: const Text('Underline'),
+                      selected: _underline,
+                      onSelected: (value) {
+                        setState(() {
+                          _underline = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
 
-                  // Bold and Underline
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      FilterChip(
-                        label: const Text('Bold'),
-                        selected: _bold,
-                        onSelected: (value) {
-                          setState(() {
-                            _bold = value;
-                          });
-                        },
-                      ),
-                      FilterChip(
-                        label: const Text('Underline'),
-                        selected: _underline,
-                        onSelected: (value) {
-                          setState(() {
-                            _underline = value;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 16),
 
-                  const SizedBox(height: 16),
+                // Text Size
+                FiftySectionHeader(
+                  title: 'Text Size',
+                  size: FiftySectionHeaderSize.small,
+                  showDivider: false,
+                  showDot: false,
+                ),
+                FiftySegmentedControl<PosTextSize>(
+                  segments: [
+                    FiftySegment(
+                      value: PosTextSize.size1,
+                      label: '1x',
+                    ),
+                    FiftySegment(
+                      value: PosTextSize.size2,
+                      label: '2x',
+                    ),
+                    FiftySegment(
+                      value: PosTextSize.size3,
+                      label: '3x',
+                    ),
+                  ],
+                  selected: _textSize,
+                  onChanged: (value) {
+                    setState(() {
+                      _textSize = value;
+                    });
+                  },
+                  expanded: true,
+                ),
 
-                  // Text Size
-                  Text(
-                    'Text Size',
-                    style: textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  SegmentedButton<PosTextSize>(
-                    segments: const [
-                      ButtonSegment(
-                        value: PosTextSize.size1,
-                        label: Text('1x'),
-                      ),
-                      ButtonSegment(
-                        value: PosTextSize.size2,
-                        label: Text('2x'),
-                      ),
-                      ButtonSegment(
-                        value: PosTextSize.size3,
-                        label: Text('3x'),
-                      ),
-                    ],
-                    selected: {_textSize},
-                    onSelectionChanged: (Set<PosTextSize> selection) {
-                      setState(() {
-                        _textSize = selection.first;
-                      });
-                    },
-                  ),
+                const SizedBox(height: 16),
 
-                  const SizedBox(height: 16),
-
-                  // Alignment
-                  Text(
-                    'Alignment',
-                    style: textTheme.labelLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  SegmentedButton<PosAlign>(
-                    segments: const [
-                      ButtonSegment(
-                        value: PosAlign.left,
-                        icon: Icon(Icons.format_align_left, size: 18),
-                      ),
-                      ButtonSegment(
-                        value: PosAlign.center,
-                        icon: Icon(Icons.format_align_center, size: 18),
-                      ),
-                      ButtonSegment(
-                        value: PosAlign.right,
-                        icon: Icon(Icons.format_align_right, size: 18),
-                      ),
-                    ],
-                    selected: {_align},
-                    onSelectionChanged: (Set<PosAlign> selection) {
-                      setState(() {
-                        _align = selection.first;
-                      });
-                    },
-                  ),
-                ],
-              ),
+                // Alignment
+                FiftySectionHeader(
+                  title: 'Alignment',
+                  size: FiftySectionHeaderSize.small,
+                  showDivider: false,
+                  showDot: false,
+                ),
+                FiftySegmentedControl<PosAlign>(
+                  segments: [
+                    FiftySegment(
+                      value: PosAlign.left,
+                      label: 'Left',
+                      icon: Icons.format_align_left,
+                    ),
+                    FiftySegment(
+                      value: PosAlign.center,
+                      label: 'Center',
+                      icon: Icons.format_align_center,
+                    ),
+                    FiftySegment(
+                      value: PosAlign.right,
+                      label: 'Right',
+                      icon: Icons.format_align_right,
+                    ),
+                  ],
+                  selected: _align,
+                  onChanged: (value) {
+                    setState(() {
+                      _align = value;
+                    });
+                  },
+                  expanded: true,
+                ),
+              ],
             ),
           ),
 
           const SizedBox(height: 24),
 
           // Print Button
-          FilledButton.icon(
+          FiftyButton(
+            icon: Icons.print,
+            label: 'Print Custom Ticket',
             onPressed: _printCustomTicket,
-            icon: const Icon(Icons.print),
-            label: const Text('Print Custom Ticket'),
+            expanded: true,
           ),
 
           const SizedBox(height: 16),
 
           // Preview Card
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Preview',
-                    style: textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+          FiftyCard(
+            scanlineOnHover: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FiftySectionHeader(
+                  title: 'Preview',
+                  showDivider: false,
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: colorScheme.outline),
+                  ),
+                  child: Text(
+                    _textController.text.isEmpty
+                        ? 'Your text will appear here'
+                        : _textController.text,
+                    textAlign: _align == PosAlign.center
+                        ? TextAlign.center
+                        : _align == PosAlign.right
+                            ? TextAlign.right
+                            : TextAlign.left,
+                    style: TextStyle(
+                      fontWeight:
+                          _bold ? FontWeight.bold : FontWeight.normal,
+                      decoration: _underline
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                      fontSize: _textSize == PosTextSize.size3
+                          ? 24
+                          : _textSize == PosTextSize.size2
+                              ? 18
+                              : 14,
+                      color: _textController.text.isEmpty
+                          ? colorScheme.onSurfaceVariant
+                          : colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: colorScheme.outline),
-                    ),
-                    child: Text(
-                      _textController.text.isEmpty
-                          ? 'Your text will appear here'
-                          : _textController.text,
-                      textAlign: _align == PosAlign.center
-                          ? TextAlign.center
-                          : _align == PosAlign.right
-                              ? TextAlign.right
-                              : TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: _bold ? FontWeight.bold : FontWeight.normal,
-                        decoration: _underline
-                            ? TextDecoration.underline
-                            : TextDecoration.none,
-                        fontSize: _textSize == PosTextSize.size3
-                            ? 24
-                            : _textSize == PosTextSize.size2
-                                ? 18
-                                : 14,
-                        color: _textController.text.isEmpty
-                            ? colorScheme.onSurfaceVariant
-                            : colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -305,11 +296,14 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
     final result = await _engine.print(ticket: ticket);
 
     if (mounted) {
+      final fifty =
+          Theme.of(context).extension<FiftyThemeExtension>()!;
       if (result.isSuccess) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Printed to ${result.successCount} printer(s)'),
-            backgroundColor: Colors.green,
+            content:
+                Text('Printed to ${result.successCount} printer(s)'),
+            backgroundColor: fifty.success,
           ),
         );
       } else if (result.isPartialSuccess) {
@@ -317,7 +311,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
           SnackBar(
             content: Text(
                 'Partial success: ${result.successCount}/${result.totalPrinters}'),
-            backgroundColor: Colors.orange,
+            backgroundColor: fifty.warning,
           ),
         );
       } else {

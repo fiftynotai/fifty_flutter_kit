@@ -1,3 +1,4 @@
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 import 'bluetooth_scan_sheet.dart';
@@ -10,7 +11,6 @@ class AddPrinterDialog extends StatefulWidget {
 }
 
 class _AddPrinterDialogState extends State<AddPrinterDialog> {
-  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _portController = TextEditingController(text: '9100');
@@ -19,6 +19,12 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
   PrinterType _selectedType = PrinterType.wifi;
   PrinterRole? _selectedRole;
 
+  // Manual validation state
+  String? _nameError;
+  String? _addressError;
+  String? _portError;
+  String? _copiesError;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -26,6 +32,64 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
     _portController.dispose();
     _copiesController.dispose();
     super.dispose();
+  }
+
+  bool _validate() {
+    bool valid = true;
+
+    // Name validation
+    if (_nameController.text.isEmpty) {
+      _nameError = 'Please enter a name';
+      valid = false;
+    } else {
+      _nameError = null;
+    }
+
+    // Address validation
+    if (_addressController.text.isEmpty) {
+      _addressError =
+          'Please enter ${_selectedType == PrinterType.bluetooth ? "MAC address" : "IP address"}';
+      valid = false;
+    } else {
+      _addressError = null;
+    }
+
+    // Port validation (WiFi only)
+    if (_selectedType == PrinterType.wifi) {
+      final portText = _portController.text;
+      if (portText.isEmpty) {
+        _portError = 'Please enter port';
+        valid = false;
+      } else {
+        final port = int.tryParse(portText);
+        if (port == null || port < 1 || port > 65535) {
+          _portError = 'Invalid port number';
+          valid = false;
+        } else {
+          _portError = null;
+        }
+      }
+    } else {
+      _portError = null;
+    }
+
+    // Copies validation
+    final copiesText = _copiesController.text;
+    if (copiesText.isEmpty) {
+      _copiesError = 'Please enter number of copies';
+      valid = false;
+    } else {
+      final copies = int.tryParse(copiesText);
+      if (copies == null || copies < 1 || copies > 10) {
+        _copiesError = 'Must be between 1 and 10';
+        valid = false;
+      } else {
+        _copiesError = null;
+      }
+    }
+
+    setState(() {});
+    return valid;
   }
 
   Future<void> _scanForBluetoothPrinters() async {
@@ -39,12 +103,14 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
       setState(() {
         _nameController.text = discovered.name;
         _addressController.text = discovered.macAddress;
+        _nameError = null;
+        _addressError = null;
       });
     }
   }
 
   void _submit() {
-    if (!_formKey.currentState!.validate()) {
+    if (!_validate()) {
       return;
     }
 
@@ -79,214 +145,170 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
-    return AlertDialog(
-      title: Text(
-        'Add Printer',
-        style: textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+    return FiftyDialog(
+      title: 'Add Printer',
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 400),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Printer Type
-                SegmentedButton<PrinterType>(
-                  segments: const [
-                    ButtonSegment(
-                      value: PrinterType.bluetooth,
-                      label: Text('Bluetooth'),
-                      icon: Icon(Icons.bluetooth),
-                    ),
-                    ButtonSegment(
-                      value: PrinterType.wifi,
-                      label: Text('WiFi'),
-                      icon: Icon(Icons.wifi),
-                    ),
-                  ],
-                  selected: {_selectedType},
-                  onSelectionChanged: (Set<PrinterType> selection) {
-                    setState(() {
-                      _selectedType = selection.first;
-                    });
-                  },
-                ),
-
-                const SizedBox(height: 24),
-
-                // Printer Name
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Printer Name',
-                    hintText: 'Kitchen Printer',
-                    prefixIcon: Icon(Icons.print),
-                    border: OutlineInputBorder(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Printer Type
+              FiftySegmentedControl<PrinterType>(
+                segments: [
+                  FiftySegment(
+                    value: PrinterType.bluetooth,
+                    label: 'Bluetooth',
+                    icon: Icons.bluetooth,
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a name';
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Address (MAC or IP)
-                TextFormField(
-                  controller: _addressController,
-                  decoration: InputDecoration(
-                    labelText: _selectedType == PrinterType.bluetooth
-                        ? 'MAC Address'
-                        : 'IP Address',
-                    hintText: _selectedType == PrinterType.bluetooth
-                        ? '00:11:22:33:44:55'
-                        : '192.168.1.100',
-                    prefixIcon: Icon(_selectedType == PrinterType.bluetooth
-                        ? Icons.bluetooth
-                        : Icons.lan),
-                    suffixIcon: _selectedType == PrinterType.bluetooth
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.bluetooth_searching,
-                              color: colorScheme.primary,
-                            ),
-                            tooltip: 'Scan for printers',
-                            onPressed: _scanForBluetoothPrinters,
-                          )
-                        : null,
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter ${_selectedType == PrinterType.bluetooth ? "MAC address" : "IP address"}';
-                    }
-                    return null;
-                  },
-                ),
-
-                // Port (WiFi only)
-                if (_selectedType == PrinterType.wifi) ...[
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _portController,
-                    decoration: const InputDecoration(
-                      labelText: 'Port',
-                      hintText: '9100',
-                      prefixIcon: Icon(Icons.numbers),
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter port';
-                      }
-                      final port = int.tryParse(value);
-                      if (port == null || port < 1 || port > 65535) {
-                        return 'Invalid port number';
-                      }
-                      return null;
-                    },
+                  FiftySegment(
+                    value: PrinterType.wifi,
+                    label: 'WiFi',
+                    icon: Icons.wifi,
                   ),
                 ],
+                selected: _selectedType,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedType = value;
+                    _addressError = null;
+                    _portError = null;
+                  });
+                },
+                expanded: true,
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
-                // Printer Role (optional)
-                DropdownButtonFormField<PrinterRole>(
-                  initialValue: _selectedRole,
-                  decoration: const InputDecoration(
-                    labelText: 'Role (Optional)',
-                    prefixIcon: Icon(Icons.assignment),
-                    border: OutlineInputBorder(),
-                  ),
-                  items: PrinterRole.values.map((role) {
-                    return DropdownMenuItem(
-                      value: role,
-                      child: Text(role.name.toUpperCase()),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedRole = value;
-                    });
-                  },
-                ),
+              // Printer Name
+              FiftyTextField(
+                controller: _nameController,
+                label: 'Printer Name',
+                hint: 'Kitchen Printer',
+                errorText: _nameError,
+                prefix: const Icon(Icons.print),
+                onChanged: (_) => setState(() => _nameError = null),
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                // Default Copies
-                TextFormField(
-                  controller: _copiesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Default Copies',
-                    hintText: '1',
-                    prefixIcon: Icon(Icons.copy_all),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter number of copies';
-                    }
-                    final copies = int.tryParse(value);
-                    if (copies == null || copies < 1 || copies > 10) {
-                      return 'Must be between 1 and 10';
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 16),
-
-                // Info card
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: colorScheme.onPrimaryContainer,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Set default copies per printer. Can be overridden per print job.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: colorScheme.onPrimaryContainer,
-                          ),
+              // Address (MAC or IP)
+              FiftyTextField(
+                controller: _addressController,
+                label: _selectedType == PrinterType.bluetooth
+                    ? 'MAC Address'
+                    : 'IP Address',
+                hint: _selectedType == PrinterType.bluetooth
+                    ? '00:11:22:33:44:55'
+                    : '192.168.1.100',
+                errorText: _addressError,
+                prefix: Icon(_selectedType == PrinterType.bluetooth
+                    ? Icons.bluetooth
+                    : Icons.lan),
+                suffix: _selectedType == PrinterType.bluetooth
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.bluetooth_searching,
+                          color: colorScheme.primary,
                         ),
-                      ),
-                    ],
-                  ),
+                        tooltip: 'Scan for printers',
+                        onPressed: _scanForBluetoothPrinters,
+                      )
+                    : null,
+                onChanged: (_) => setState(() => _addressError = null),
+              ),
+
+              // Port (WiFi only)
+              if (_selectedType == PrinterType.wifi) ...[
+                const SizedBox(height: 16),
+                FiftyTextField(
+                  controller: _portController,
+                  label: 'Port',
+                  hint: '9100',
+                  errorText: _portError,
+                  prefix: const Icon(Icons.numbers),
+                  keyboardType: TextInputType.number,
+                  onChanged: (_) => setState(() => _portError = null),
                 ),
               ],
-            ),
+
+              const SizedBox(height: 16),
+
+              // Printer Role (optional)
+              FiftyDropdown<PrinterRole>(
+                value: _selectedRole,
+                label: 'Role (Optional)',
+                hint: 'Select a role',
+                items: PrinterRole.values.map((role) {
+                  return FiftyDropdownItem(
+                    value: role,
+                    label: role.name.toUpperCase(),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedRole = value;
+                  });
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // Default Copies
+              FiftyTextField(
+                controller: _copiesController,
+                label: 'Default Copies',
+                hint: '1',
+                errorText: _copiesError,
+                prefix: const Icon(Icons.copy_all),
+                keyboardType: TextInputType.number,
+                onChanged: (_) => setState(() => _copiesError = null),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Info card
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: colorScheme.onPrimaryContainer,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Set default copies per printer. Can be overridden per print job.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
       actions: [
-        TextButton(
+        FiftyButton(
+          label: 'Cancel',
+          variant: FiftyButtonVariant.ghost,
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
         ),
-        FilledButton(
+        FiftyButton(
+          label: 'Add',
           onPressed: _submit,
-          child: const Text('Add'),
         ),
       ],
     );

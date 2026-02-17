@@ -1,3 +1,4 @@
+import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 
@@ -22,18 +23,29 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
     _selectedPrinterIds.addAll(widget.availablePrinters.map((p) => p.id));
   }
 
+  FiftyStatusState _mapStatus(PrinterStatus status) {
+    switch (status) {
+      case PrinterStatus.connected:
+        return FiftyStatusState.ready;
+      case PrinterStatus.printing:
+        return FiftyStatusState.loading;
+      case PrinterStatus.connecting:
+        return FiftyStatusState.loading;
+      case PrinterStatus.error:
+        return FiftyStatusState.error;
+      case PrinterStatus.healthCheckFailed:
+        return FiftyStatusState.error;
+      case PrinterStatus.disconnected:
+        return FiftyStatusState.offline;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
-    return AlertDialog(
-      title: Text(
-        'Select Printers',
-        style: textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+    return FiftyDialog(
+      title: 'Select Printers',
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 400, maxHeight: 400),
         child: Column(
@@ -53,86 +65,97 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                 itemCount: widget.availablePrinters.length,
                 itemBuilder: (context, index) {
                   final printer = widget.availablePrinters[index];
-                  final isSelected = _selectedPrinterIds.contains(printer.id);
+                  final isSelected =
+                      _selectedPrinterIds.contains(printer.id);
 
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    clipBehavior: Clip.antiAlias,
-                    child: CheckboxListTile(
-                      value: isSelected,
-                      onChanged: (value) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: FiftyCard(
+                      scanlineOnHover: false,
+                      onTap: () {
                         setState(() {
-                          if (value == true) {
-                            _selectedPrinterIds.add(printer.id);
-                          } else {
+                          if (isSelected) {
                             _selectedPrinterIds.remove(printer.id);
+                          } else {
+                            _selectedPrinterIds.add(printer.id);
                           }
                         });
                       },
-                      title: Text(
-                        printer.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      selected: isSelected,
+                      child: Row(
                         children: [
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 4,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    printer.type == PrinterType.bluetooth
-                                        ? Icons.bluetooth
-                                        : Icons.wifi,
-                                    size: 14,
-                                    color: colorScheme.onSurfaceVariant,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    printer.type == PrinterType.bluetooth
-                                        ? 'Bluetooth'
-                                        : 'WiFi',
-                                    style: TextStyle(
-                                      color: colorScheme.onSurfaceVariant,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (printer.role != null)
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.primaryContainer,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Text(
-                                    printer.role!.name.toUpperCase(),
-                                    style: TextStyle(
-                                      color: colorScheme.onPrimaryContainer,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                          FiftyCheckbox(
+                            value: isSelected,
+                            onChanged: (value) {
+                              setState(() {
+                                if (value) {
+                                  _selectedPrinterIds.add(printer.id);
+                                } else {
+                                  _selectedPrinterIds.remove(printer.id);
+                                }
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  printer.name,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
-                            ],
+                                const SizedBox(height: 4),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 4,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          printer.type ==
+                                                  PrinterType.bluetooth
+                                              ? Icons.bluetooth
+                                              : Icons.wifi,
+                                          size: 14,
+                                          color: colorScheme
+                                              .onSurfaceVariant,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          printer.type ==
+                                                  PrinterType.bluetooth
+                                              ? 'Bluetooth'
+                                              : 'WiFi',
+                                          style: TextStyle(
+                                            color: colorScheme
+                                                .onSurfaceVariant,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    if (printer.role != null)
+                                      FiftyBadge(
+                                        label: printer.role!.name,
+                                        variant:
+                                            FiftyBadgeVariant.neutral,
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          FiftyStatusIndicator(
+                            label: '',
+                            state: _mapStatus(printer.status),
+                            showStatusLabel: false,
+                            size: FiftyStatusSize.small,
                           ),
                         ],
-                      ),
-                      secondary: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _getStatusColor(printer.status, colorScheme),
-                          shape: BoxShape.circle,
-                        ),
                       ),
                     ),
                   );
@@ -143,35 +166,20 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        FiftyButton(
+          label: 'Cancel',
+          variant: FiftyButtonVariant.ghost,
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
         ),
-        FilledButton.icon(
-          icon: const Icon(Icons.print),
-          label: Text('Print to ${_selectedPrinterIds.length}'),
-          onPressed: _selectedPrinterIds.isEmpty
-              ? null
-              : () {
-                  Navigator.pop(context, _selectedPrinterIds.toList());
-                },
+        FiftyButton(
+          icon: Icons.print,
+          label: 'Print to ${_selectedPrinterIds.length}',
+          disabled: _selectedPrinterIds.isEmpty,
+          onPressed: () {
+            Navigator.pop(context, _selectedPrinterIds.toList());
+          },
         ),
       ],
     );
-  }
-
-  Color _getStatusColor(PrinterStatus status, ColorScheme colorScheme) {
-    switch (status) {
-      case PrinterStatus.connected:
-      case PrinterStatus.printing:
-        return Colors.green;
-      case PrinterStatus.connecting:
-        return Colors.orange;
-      case PrinterStatus.error:
-      case PrinterStatus.healthCheckFailed:
-        return colorScheme.error;
-      case PrinterStatus.disconnected:
-        return colorScheme.onSurfaceVariant;
-    }
   }
 }
