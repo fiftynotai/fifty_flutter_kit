@@ -1,12 +1,37 @@
 # Current Session
 
-**Status:** Active
+**Status:** REST MODE
 **Last Updated:** 2026-02-17
-**Active Briefs:** BR-071 (pending final commit)
+**Active Briefs:** None — all queued work complete
 
 ---
 
 ## Active Briefs
+
+None. All briefs completed and committed.
+
+---
+
+## Completed Briefs (This Session - 2026-02-17)
+
+### BR-093 - Achievement Card Text Theme Awareness
+- **Status:** Done (`1426703`)
+- **Priority:** P2-Medium
+- **Effort:** S
+- **Phase:** Complete — 4 `FiftyColors.cream` text color refs replaced with `colorScheme.onSurface` in `achievement_card.dart`
+- **Summary:** Achievement name, description, hidden title, and hidden description now use `Theme.of(context).colorScheme.onSurface` instead of hardcoded `FiftyColors.cream`. Text readable in both light and dark mode. Rarity/semantic colors untouched. 382/382 tests passing.
+
+### BR-094 - Remove Direct audioplayers Dependency
+- **Status:** Done (`74a44ff`)
+- **Priority:** P3-Low
+- **Effort:** S
+- **Phase:** Complete — re-export added to `fifty_audio_engine`, direct imports/dep removed from `tactical_grid`
+- **Summary:** Added `AssetSource`/`Source` re-export to `fifty_audio_engine` barrel file. Removed `audioplayers` from `tactical_grid` pubspec.yaml and 2 direct imports (main.dart, audio_coordinator.dart). Enforces ecosystem layering: apps consume engine packages, not transitive deps. 382/382 tests passing.
+
+### BR-071 - Tactical Grid Game (Final Commit)
+- **Status:** Done (`a731a7d`)
+- **Phase:** Complete — all 5 priorities + audio + art + code integration + 14 bug fixes + settings page + theme awareness + README
+- **Summary:** Full turn-based tactics game: 5 unit types, AI opponent (3 difficulties), turn timer, animations, voice announcer, settings page, achievement integration, theme awareness, comprehensive README. 382/382 tests passing.
 
 ### BR-091 - Achievement Engine Theme Awareness
 - **Status:** Done (`5f0650b`)
@@ -29,51 +54,42 @@
   - `7788862` — Replaced `FiftyColors.darkBurgundy` with `colorScheme.surface` and `FiftyColors.cream` with `colorScheme.onSurface` across 9 files (menu, settings, achievements, battle, HUD widgets)
   - `2029ba8` — Made battle HUD bars (TurnIndicator, UnitInfoPanel) fully theme-aware: replaced `Colors.black.withAlpha(180)` overlay with `colorScheme.surface`, text with `colorScheme.onSurface`
 - **Verified:** All pages (menu, settings, achievements, battle) tested on iOS simulator in both light and dark mode. 382/382 tests passing.
-- **Finding:** Achievement cards still dark in light mode — root cause is `fifty_achievement_engine` package using hardcoded dark colors (separate from tactical_grid). Registered as BR-091.
 
 ### BR-089 - AI Turn Freezes After Killing a Player Unit
 - **Status:** Done (`7df9768`)
 - **Priority:** P0-Critical
 - **Effort:** S
 - **Phase:** Complete — try/catch on onComplete in AnimationQueue + try/finally on all defeat Completers
-- **Summary:** `AnimationQueue._processQueue()` wrapped `entry.execute()` in try/catch but left `entry.onComplete?.call()` unprotected. If onComplete threw (e.g. from `removeEntity` after `die()` already removed the component via `RemoveEffect`), the Completer in `ai_turn_executor.dart` orphaned and `await c.future` hung forever — blocking all player input. Fixed at two layers: engine-level try/catch on `onComplete`, and app-level try/finally on all 4 defeat animation callbacks to guarantee `c.complete()`. 2 new tests added. 425/425 tests passing.
 
 ### BR-088 - Archer Shoot No Target Highlights
 - **Status:** Done (`457e5ed`)
 - **Priority:** P2-Medium
 - **Effort:** S
 - **Phase:** Complete — guard abilityTargets.isEmpty before entering targeting mode
-- **Summary:** `onAbilityButtonPressed` entered targeting mode even when `abilityTargets` was empty (no enemies at Chebyshev distance 2-3). Added guard to check `abilityTargets.isEmpty` before entering targeting mode for Shoot/Fireball; shows "No valid targets in range" snackbar when empty. 3 new tests added. 423/423 tests passing.
 
 ### BR-087 - AI Difficulty "MEDIUM" Label Wraps to Two Lines
 - **Status:** Done (`336528c`)
 - **Priority:** P3-Low
 - **Effort:** S
 - **Phase:** Complete — changed difficulty buttons from FiftyButtonSize.medium to .small
-- **Summary:** Three `Expanded` buttons in a 280px `Row` with medium size left ~88px per button — insufficient for "MEDIUM" text. Changed all three difficulty buttons to `FiftyButtonSize.small`. 281/281 tests passing.
-
-### BR-071 - Tactical Grid Game
-- **Status:** Done
-- **Phase:** Complete — all 5 priorities + audio + art + code integration + 14 bug fixes + settings page + theme awareness + README
-- **Summary:** Full turn-based tactics game: 5 unit types, AI opponent (3 difficulties), turn timer, animations, voice announcer, settings page, achievement integration, theme awareness, comprehensive README. 382/382 tests passing.
 
 ---
 
-## Completed Briefs (This Session - 2026-02-17)
+## Completed Briefs (Earlier This Session)
 
 ### BR-086 - Animation Queue Exception Freezes Game After Kill
 - **Status:** Done (`2656e8c`)
 - **Priority:** P1-High
 - **Effort:** S
-- **Phase:** Complete — try/catch/finally in _processQueue()
-- **Summary:** `AnimationQueue._processQueue()` had no exception handling around `entry.execute()`. If a defeat animation threw, `_isRunning` stayed true forever and `inputManager.unblock()` never fired, freezing the game. Wrapped execute in try/catch (log and continue) with cleanup in finally block. 3 new tests added. 420/420 tests passing (142 engine + 278 tactical_grid).
 
 ### BR-085 - Mage Ability Highlight Occludes Movement
 - **Status:** Done (`c308923`)
 - **Priority:** P2-Medium
 - **Effort:** S
-- **Phase:** Complete — gated ability highlights behind isAbilityTargeting
-- **Summary:** Ability range highlights (purple) rendered on initial unit selection, occluding movement highlights (green). Removed ability target block from `_syncHighlights()`, added rendering to `_onAbilityTargetingChanged()` (show on activate, clear on deactivate), added re-apply guard for state changes during targeting. 417/417 tests passing.
+
+### BR-092 - Tactical Grid README + Screenshots
+- **Status:** Done (`ce0a037`)
+- **Phase:** Complete — README with 9 screenshots, FDL standard format
 
 ---
 
@@ -81,43 +97,21 @@
 
 ### BR-084 - Tile Tap Y-Offset (global vs widget)
 - **Status:** Done (`0d930df`)
-- **Priority:** P1-High
-- **Effort:** S
-- **Phase:** Complete — 3-line fix in map_builder.dart
-- **Summary:** Tile taps resolved to wrong grid row (1 row above target). Root cause: `eventPosition.global` passed screen-absolute coords (including status bar + header offset) to `_screenToWorld()` which expects widget-local coords. Fix: changed `.global` to `.widget` on 3 lines (onDragStart, onDragUpdate, onTapUp). 417/417 tests passing.
 
 ### BR-083 - Entity Sprite Oversized Tap Hitbox
 - **Status:** Done (`4b0e26c`)
-- **Priority:** P2-Medium
-- **Effort:** S
-- **Phase:** Complete — containsLocalPoint() override in FiftyBaseComponent
-- **Summary:** Clamped entity tap hitbox to tile footprint via `containsLocalPoint()` override. 17 new tests added. 417/417 tests passing.
 
 ### BR-082 - Y-Axis Movement Inversion Bug
 - **Status:** Done (`0912a6e`)
-- **Priority:** P0-Critical
-- **Effort:** M
-- **Phase:** Complete - fix committed + verified on iOS simulator
-- **Summary:** Units moved in opposite Y-direction from tap target. Root cause: `Anchor.bottomLeft` + extra `blockSize.height` in Y formula caused entities to render one tile below their grid position, inverting perceived movement. Fix: changed anchor to `Anchor.topLeft` and simplified Y formula to `gridPosition.y * blockSize`. 400 tests passing.
 
 ### BR-076 - Tactical Grid -> fifty_map_engine Migration
 - **Status:** Done (`8a456ef`, `c69ae5f`)
-- **Priority:** P1-High
-- **Effort:** M
-- **Phase:** All 8 phases complete + bug fixes committed
-- **Summary:** Full migration from GridView.builder to fifty_map_engine v2. 1 file created (engine_board_widget.dart), 3 files modified, 5 files deleted. 400 tests passing.
 
 ### BR-081 - centerMap() Zero Speed Crash
 - **Status:** Done (`9b0b621`)
-- **Priority:** P2-Medium
-- **Effort:** S
-- **Phase:** Complete - guard added for zero-distance + millisecond precision
 
 ### BR-080 - Tactical Skirmish Asset Integration
 - **Status:** Done (`bcdd69f`)
-- **Priority:** P2-Medium
-- **Effort:** M
-- **Phase:** Complete - all 4 phases implemented, tested on simulator
 
 ---
 
@@ -136,53 +130,30 @@
 
 ## Session Activity (2026-02-17)
 
-### BR-085 Implementation + Commit
-- **Fix:** Removed ability target highlights from `_syncHighlights()`, added rendering to `_onAbilityTargetingChanged()`, added re-apply guard for state changes during targeting
-- **Review:** APPROVE — reviewer flagged race condition (clearHighlights wipes ability overlays during targeting), patched pre-commit
-- **Tests:** 417/417 passing
-- **Commit:** `c308923`
+### BR-093 + BR-094 — Parallel Hunt
+- **BR-093 (`1426703`):** 4 `FiftyColors.cream` text refs in `achievement_card.dart` → `colorScheme.onSurface`. Readable in both themes.
+- **BR-094 (`74a44ff`):** Re-export `AssetSource`/`Source` from `fifty_audio_engine`. Removed `audioplayers` dep + 2 imports from `tactical_grid`.
+- **Deployed:** Two coder agents in parallel
+- **Tests:** 382/382 passing, 0 analyzer errors
+- **Review:** APPROVE
 
-### BR-086 Implementation + Commit
-- **Fix:** Wrapped `entry.execute()` in try/catch inside `_processQueue()`, moved `_isRunning = false` and `onComplete?.call()` to finally block
-- **Tests:** 3 new tests (exception resilience), 420/420 passing (142 engine + 278 tactical_grid)
-- **Commit:** `2656e8c`
+### BR-071 Final Commit
+- **Commit:** `a731a7d` — marked BR-071 complete, brief status updated to Done
 
-### BR-087 + BR-088 Registered + Implemented
-- **BR-087:** AI difficulty "MEDIUM" label wraps to two lines (P3, S) — Done `336528c`
-- **BR-088:** Archer shoot ability doesn't highlight targets (P2, S) — Done `457e5ed`
+### Screenshot Recapture
+- **Issue:** Initial screenshot captured stale app without BR-093 changes compiled in
+- **Fix:** Terminated app → `flutter build ios --simulator --debug` → installed fresh build → relaunched → recaptured
+- **Commit:** `9d8fde1` — correct `achievements_light.png` + README rewrite to FDL standard
 
-### BR-089 Implementation + Commit
-- **Fix:** try/catch on onComplete in AnimationQueue + try/finally on all defeat Completers
-- **Tests:** 2 new tests, 425/425 passing
-- **Commit:** `7df9768`
+### README Rebrand — tactical_grid
+- **Issue:** README used "fifty.dev ecosystem" instead of rebranded "Fifty Flutter Kit"
+- **Fix:** 8 instances replaced
+- **Commit:** `16c7354`
 
-### BR-090 Implementation + Commit
-- **Full settings page:** 9 new files, 7 modified, 101 new tests
-- **Commit:** `9e1f506`
-- **Smoke test:** PASS on iOS simulator (all sections, persistence, reset)
-
-### Theme Awareness Fixes
-- **Round 1 (`7788862`):** Replaced hardcoded `FiftyColors.darkBurgundy`/`cream` with `colorScheme.surface`/`onSurface` across 9 files (settings page, menu, achievements, battle, HUD widgets)
-- **Round 2 (`2029ba8`):** Made battle HUD bars fully theme-aware — replaced `Colors.black.withAlpha(180)` overlay with `colorScheme.surface`, text with `colorScheme.onSurface`
-- **Smoke test:** All pages verified on iOS simulator in light + dark mode
-- **Finding:** Achievement cards still dark — `fifty_achievement_engine` uses hardcoded `FiftyColors.surfaceDark`. Registered BR-091.
-
-### BR-091 Implementation + Commit
-- **Fix:** Replaced 9 hardcoded dark color refs (`FiftyColors.surfaceDark`, `darkBurgundy`, `borderDark`, `Colors.white`) with `Theme.of(context).colorScheme` tokens across 4 widget files in `fifty_achievement_engine`
-- **Context threading:** Added `BuildContext` param to `_buildIcon()`, `_buildContent()`, `_buildHiddenContent()`, `_buildHeader()` helpers
-- **Review:** APPROVE — all 9 replacements match brief table, rarity/shadow/cream colors untouched, constructor overrides preserved
-- **Tests:** 382/382 tactical_grid passing, 0 analyzer errors
-- **Smoke test:** PASS on iOS simulator — light mode cards have light surface backgrounds, dark mode identical to pre-fix
-- **Commit:** `5f0650b`
-
-### BR-092 Implementation + Commit
-- **README:** Full README.md with hero screenshot, feature list, unit roster, screenshots (9 total — dark+light for menu/settings/achievements, battle gameplay+unit selected, game mode sheet), architecture overview, tech stack, getting started, tests, credits
-- **Screenshots:** Captured on iPhone 15 Pro simulator via mobile MCP tools
-- **Commit:** `ce0a037`
-
-### BR-093 + BR-094 Registered
-- **BR-093:** Achievement card text not theme-aware in light mode (P2, S) — 4 `FiftyColors.cream` text refs in `achievement_card.dart` invisible on light backgrounds. Fix: replace with `colorScheme.onSurface`. Also recapture `achievements_light.png`.
-- **BR-094:** Remove direct `audioplayers` dependency from tactical_grid (P3, S) — Only `AssetSource.new` used in 2 files (4 call sites). Fix: add re-export in `fifty_audio_engine`, remove direct dep + imports.
+### README Rebrand — All Package READMEs
+- **Root cause:** Reference READMEs (fifty_tokens, fifty_theme, fifty_ui, etc.) still used old branding
+- **Fix:** 14 instances across 5 files (fifty_tokens, fifty_theme, fifty_ui, fifty_audio_engine/example, mvvm_actions)
+- **Commit:** `8bfacfe`
 
 ---
 
@@ -200,8 +171,8 @@ BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DON
                                                                                                                                                   Theme fixes [DONE]
                                                                                                                                                   BR-091 (achievement engine) [DONE]
                                                                                                                                                   BR-092 (README + screenshots) [DONE]
-                                                                                                                                                  BR-093 (achievement text) [READY]
-                                                                                                                                                  BR-094 (remove audioplayers) [READY]
+                                                                                                                                                  BR-093 (achievement text) [DONE]
+                                                                                                                                                  BR-094 (remove audioplayers) [DONE]
 ```
 
 ---
@@ -224,32 +195,19 @@ BR-077 (engine v2) [DONE] -> BR-079 (bugfixes) [DONE] -> BR-076 (migration) [DON
 
 ---
 
-### BR-093 - Achievement Card Text Theme Awareness
-- **Status:** Done (`1426703`)
-- **Priority:** P2-Medium
-- **Effort:** S
-- **Phase:** Complete — 4 `FiftyColors.cream` text color refs replaced with `colorScheme.onSurface` in `achievement_card.dart`
-- **Summary:** Achievement name, description, hidden title, and hidden description now use `Theme.of(context).colorScheme.onSurface` instead of hardcoded `FiftyColors.cream`. Text readable in both light and dark mode. Rarity/semantic colors untouched. 382/382 tests passing.
-
-### BR-094 - Remove Direct audioplayers Dependency
-- **Status:** Done (`74a44ff`)
-- **Priority:** P3-Low
-- **Effort:** S
-- **Phase:** Complete — re-export added to `fifty_audio_engine`, direct imports/dep removed from `tactical_grid`
-- **Summary:** Added `AssetSource`/`Source` re-export to `fifty_audio_engine` barrel file. Removed `audioplayers` from `tactical_grid` pubspec.yaml and 2 direct imports (main.dart, audio_coordinator.dart). Enforces ecosystem layering: apps consume engine packages, not transitive deps. 382/382 tests passing.
-
----
-
 ## Next Steps
 
-1. **Commit BR-071** final integration changes + mark Done
-2. Consider audit of other engine packages for hardcoded colors
-3. Recapture `achievements_light.png` screenshot (BR-093 visual verification)
+All queued briefs complete. Session at rest.
+
+Potential future work:
+- Audit other engine packages for remaining hardcoded colors
+- Additional tactical_grid features (multiplayer, new unit types, campaign mode)
+- Package version bumps and releases
 
 ---
 
 ## Resume Command
 
 ```
-Session focus: BR-093 DONE (1426703) + BR-094 DONE (74a44ff) — hunted in parallel. Achievement card text now theme-aware (4 cream→onSurface). audioplayers direct dep removed from tactical_grid (re-exported via fifty_audio_engine). 382/382 tests passing. Next: commit BR-071, recapture achievements_light.png.
+Session REST. All briefs done: BR-071 (a731a7d), BR-093 (1426703), BR-094 (74a44ff) + 11 prior briefs. README rebrand complete across all package READMEs (fifty.dev → Fifty Flutter Kit). 382/382 tests passing. No active work. Ready for new briefs.
 ```
