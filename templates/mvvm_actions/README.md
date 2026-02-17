@@ -375,7 +375,7 @@ if (connVM.isOnline.value) {
 
 Based on [flutter-mvvm-actions-arch](https://github.com/KalvadTech/flutter-mvvm-actions-arch) by KalvadTech.
 
-Rebranded and integrated into Fifty Flutter Kit by [Fifty.ai](https://fifty.dev).
+Rebranded and integrated into [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) by Mohamed Elamin.
 
 ---
 

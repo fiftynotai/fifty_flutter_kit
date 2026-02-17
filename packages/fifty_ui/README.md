@@ -7,7 +7,7 @@
 ================================================================================
 ```
 
-FDL-styled Flutter components for the fifty.dev ecosystem.
+FDL-styled Flutter components for Fifty Flutter Kit.
 
 ## Overview
 
@@ -19,7 +19,7 @@ FDL-styled Flutter components for the fifty.dev ecosystem.
 
 | Principle | Implementation |
 |-----------|----------------|
-| Crimson glow focus states | Signature fifty.dev visual effect on all interactive elements |
+| Crimson glow focus states | Signature FDL visual effect on all interactive elements |
 | Zero elevation | No drop shadows - only outlines and glows |
 | Motion animations | FDL timing tokens (150ms fast, 300ms compiling) |
 | Dark-first design | Optimized for OLED displays, voidBlack background |
@@ -1065,6 +1065,6 @@ MIT License - See LICENSE file for details.
 ```
 ================================================================================
   Heavy structure. Fast motion. Raw feedback.
-  Built for the fifty.dev ecosystem.
+  Built for Fifty Flutter Kit.
 ================================================================================
 ```

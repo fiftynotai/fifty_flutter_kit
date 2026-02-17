@@ -1,6 +1,6 @@
 # fifty_theme
 
-> Flutter theming layer for the fifty.dev ecosystem - Transform design tokens into production-ready themes
+> Flutter theming layer for Fifty Flutter Kit - Transform design tokens into production-ready themes
 
 [![pub package](https://img.shields.io/badge/pub-v0.1.0-crimson)](https://pub.dev/packages/fifty_theme)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -824,10 +824,10 @@ fifty_docs (Documentation)
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-Copyright (c) 2025 fifty.dev (Mohamed Elamin)
+Copyright (c) 2025 Fifty Flutter Kit (Mohamed Elamin)
 
 ---
 
-**Part of the [fifty.dev ecosystem](https://fifty.dev) | Pilot 2: Theming Layer**
+**Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) | Pilot 2: Theming Layer**
 
 *The interface is the machine. Make it feel alive.*

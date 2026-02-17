@@ -282,4 +282,4 @@ Run `flutter create .` in the example directory to generate platform files.
 
 ## License
 
-Part of the fifty.dev ecosystem.
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

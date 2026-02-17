@@ -1,6 +1,6 @@
 # fifty_tokens
 
-> Design tokens for the fifty.dev ecosystem - the DNA of Kinetic Brutalism
+> Design tokens for Fifty Flutter Kit - the DNA of Kinetic Brutalism
 
 [![pub package](https://img.shields.io/badge/pub-v0.2.0-crimson)](https://pub.dev/packages/fifty_tokens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -11,7 +11,7 @@
 
 ## Overview
 
-`fifty_tokens` is the foundation package for the fifty.dev ecosystem. It provides design tokens as pure Dart constants implementing the **Fifty Design Language (FDL)** - a dark, kinetic design system with a crimson signature.
+`fifty_tokens` is the foundation package for Fifty Flutter Kit. It provides design tokens as pure Dart constants implementing the **Fifty Design Language (FDL)** - a dark, kinetic design system with a crimson signature.
 
 **Visual Philosophy:** Mecha Cockpit / Server Room
 
@@ -594,9 +594,9 @@ fifty_tokens/
 └── test/                          # 73 passing tests
 ```
 
-### Ecosystem Position
+### Kit Position
 
-`fifty_tokens` is the **foundation layer** (Pilot 1) of the fifty.dev ecosystem.
+`fifty_tokens` is the **foundation layer** (Pilot 1) of Fifty Flutter Kit.
 
 ```
 fifty_tokens (this package)
@@ -611,7 +611,7 @@ fifty_ui (Component library)
 fifty_docs (Documentation viewer)
 ```
 
-All fifty.dev packages reference these tokens for visual consistency.
+All Fifty Flutter Kit packages reference these tokens for visual consistency.
 
 ---
 
@@ -639,10 +639,10 @@ flutter test
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-Copyright (c) 2025 fifty.dev (Mohamed Elamin)
+Copyright (c) 2025 Fifty Flutter Kit (Mohamed Elamin)
 
 ---
 
-**Part of the [fifty.dev ecosystem](https://fifty.dev) | Pilot 1: Foundation Layer**
+**Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) | Pilot 1: Foundation Layer**
 
 *The interface is the machine. Make it feel alive.*
