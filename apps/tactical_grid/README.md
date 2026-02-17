@@ -1,6 +1,6 @@
 # tactical_grid
 
-> Turn-based tactical combat on a grid — the fifty.dev ecosystem, battle-tested
+> Turn-based tactical combat on a grid — Fifty Flutter Kit, battle-tested
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.0.0+-02569B?logo=flutter)](https://flutter.dev)
@@ -10,7 +10,7 @@
 
 ## Overview
 
-`tactical_grid` is not just a game. It is a SHOWCASE — a live-fire demonstration of the entire fifty.dev ecosystem working in concert. Six packages. One battlefield. Every design token, every theme variant, every audio channel, every achievement unlock, every tile on the board is driven by the Fifty Design Language stack.
+`tactical_grid` is not just a game. It is a SHOWCASE — a live-fire demonstration of the entire Fifty Flutter Kit working in concert. Six packages. One battlefield. Every design token, every theme variant, every audio channel, every achievement unlock, every tile on the board is driven by the Fifty Design Language stack.
 
 Deploy six distinct unit types on an 8x8 board. Outmaneuver your opponent. Capture their Commander. This is turn-based strategy built with Flutter, running on the full FDL pipeline from `fifty_tokens` to `fifty_map_engine`.
 
@@ -62,7 +62,7 @@ Capture (defeat) the enemy **Commander** to win the match. No point systems. No 
 
 ### Board
 
-8x8 grid with six custom tile textures (dark, light, objective, obstacle, powerup, trap), rendered using `fifty_map_engine` — a Flame-based isometric engine built for the ecosystem.
+8x8 grid with six custom tile textures (dark, light, objective, obstacle, powerup, trap), rendered using `fifty_map_engine` — a Flame-based isometric engine built for Fifty Flutter Kit.
 
 ### Audio
 
@@ -204,9 +204,9 @@ lib/
 
 ---
 
-## Ecosystem Position
+## Kit Position
 
-`tactical_grid` is the **showcase application** of the fifty.dev ecosystem. Every package converges here.
+`tactical_grid` is the **showcase application** of Fifty Flutter Kit. Every package converges here.
 
 ```
 fifty_tokens -> fifty_theme -> fifty_ui
@@ -216,7 +216,7 @@ fifty_audio_engine -> tactical_grid <- fifty_achievement_engine
                        fifty_map_engine
 ```
 
-This is where the ecosystem proves itself. Design tokens become themed surfaces. Themed surfaces become UI components. Audio engines drive battlefield ambiance. Achievement engines track combat milestones. The map engine renders the board. All of it, in one app, under fire.
+This is where the kit proves itself. Design tokens become themed surfaces. Themed surfaces become UI components. Audio engines drive battlefield ambiance. Achievement engines track combat milestones. The map engine renders the board. All of it, in one app, under fire.
 
 ---
 
@@ -246,7 +246,7 @@ flutter test
 
 ## Credits
 
-- **Development** — [fifty.dev](https://fifty.dev) (Mohamed Elamin)
+- **Development** — [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) (Mohamed Elamin)
 - **Sprite Generation** — [Higgsfield FLUX.2 Pro](https://higgsfield.ai)
 
 ---
@@ -255,10 +255,10 @@ flutter test
 
 MIT License - see [LICENSE](../../LICENSE) file for details.
 
-Copyright (c) 2025 fifty.dev (Mohamed Elamin)
+Copyright (c) 2025 Fifty Flutter Kit (Mohamed Elamin)
 
 ---
 
-**Part of the [fifty.dev ecosystem](https://fifty.dev) | Showcase App**
+**Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) | Showcase App**
 
 *Deploy. Outmaneuver. Dominate.*
