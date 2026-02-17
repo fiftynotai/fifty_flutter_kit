@@ -315,7 +315,7 @@ class _TimerCountdown extends StatelessWidget {
       final minutes = seconds ~/ 60;
       final secs = seconds % 60;
       final timeText = '$minutes:${secs.toString().padLeft(2, '0')}';
-      final color = _timerColor(seconds);
+      final color = _timerColor(seconds, timerService);
 
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -366,7 +366,7 @@ class _TimerBar extends StatelessWidget {
       if (!isRunning && seconds <= 0) return const SizedBox.shrink();
 
       final progress = timerService.progress;
-      final color = _timerColor(seconds);
+      final color = _timerColor(seconds, timerService);
 
       return ClipRRect(
         borderRadius: BorderRadius.circular(1),
@@ -383,14 +383,17 @@ class _TimerBar extends StatelessWidget {
 
 /// Returns the appropriate color for the timer based on remaining [seconds].
 ///
-/// - Critical (<=5s): Red
-/// - Warning (<=10s): Amber
-/// - Normal: Accent color (powder blush / cream)
-Color _timerColor(int seconds) {
-  if (seconds <= TurnTimerService.criticalThreshold && seconds > 0) {
+/// Uses the configurable thresholds from the [TurnTimerService] instance
+/// rather than static constants, so user-configured thresholds are respected.
+///
+/// - Critical (<=criticalThreshold): Red
+/// - Warning (<=warningThreshold): Amber
+/// - Normal: Accent color (cream)
+Color _timerColor(int seconds, TurnTimerService timer) {
+  if (seconds <= timer.criticalThreshold && seconds > 0) {
     return Colors.red;
   }
-  if (seconds <= TurnTimerService.warningThreshold) {
+  if (seconds <= timer.warningThreshold) {
     return Colors.amber;
   }
   return FiftyColors.cream;

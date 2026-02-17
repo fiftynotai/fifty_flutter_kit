@@ -44,14 +44,14 @@ class _MenuPageState extends State<MenuPage> {
     super.dispose();
   }
 
-  /// Starts menu background music at a comfortable volume.
+  /// Starts menu background music using the user's persisted volume.
   ///
   /// Uses [FiftyAudioEngine] directly instead of [BattleAudioCoordinator]
   /// since the battle bindings may not be registered on the menu screen.
+  /// Volume is determined by [AudioStorage] (set via Settings page).
   Future<void> _playMenuBgm() async {
     try {
       final engine = FiftyAudioEngine.instance;
-      await engine.bgm.setVolume(0.3);
       await engine.bgm.loadDefaultPlaylist([_menuBgmPath]);
       await engine.bgm.resumeDefaultPlaylist();
     } catch (_) {

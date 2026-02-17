@@ -21,6 +21,7 @@ import 'package:get/get.dart';
 import '../../core/presentation/actions/action_presenter.dart';
 import '../achievements/achievement_actions.dart';
 import '../achievements/achievement_view_model.dart';
+import '../settings/controllers/settings_view_model.dart';
 import 'actions/battle_actions.dart';
 import 'controllers/battle_view_model.dart';
 import 'services/ai_service.dart';
@@ -78,9 +79,18 @@ class BattleBindings extends Bindings {
       fenix: true,
     );
 
-    // 4. Turn Timer
+    // 4. Turn Timer (configured from user settings)
     Get.lazyPut<TurnTimerService>(
-      () => TurnTimerService(),
+      () {
+        final settings = Get.find<SettingsViewModel>();
+        final timer = TurnTimerService();
+        timer.configure(
+          turnDuration: settings.turnDuration.value,
+          warningThreshold: settings.warningThreshold.value,
+          criticalThreshold: settings.criticalThreshold.value,
+        );
+        return timer;
+      },
       fenix: true,
     );
 

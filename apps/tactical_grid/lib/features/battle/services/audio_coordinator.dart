@@ -174,9 +174,10 @@ class BattleAudioCoordinator extends GetxController {
   ///
   /// Loads the battle BGM playlist and begins playback. If BGM is already
   /// playing, this effectively restarts from the beginning of the playlist.
+  /// Volume is determined by the user's persisted audio settings (via
+  /// [AudioStorage]) rather than a hardcoded value.
   Future<void> playBattleBgm() async {
     try {
-      await _engine.bgm.setVolume(0.4);
       await _engine.bgm.loadDefaultPlaylist(_BattleAudioAssets.bgmTracks);
       await _engine.bgm.resumeDefaultPlaylist();
     } catch (e) {
@@ -227,9 +228,9 @@ class BattleAudioCoordinator extends GetxController {
   ///
   /// Used when the player wins the match. Loads a single-track playlist
   /// with [_BattleAudioAssets.victoryBgm] and plays it once.
+  /// Volume is determined by the user's persisted audio settings.
   Future<void> playVictoryBgm() async {
     try {
-      await _engine.bgm.setVolume(0.5);
       await _engine.bgm.loadDefaultPlaylist([_BattleAudioAssets.victoryBgm]);
       await _engine.bgm.resumeDefaultPlaylist();
     } catch (e) {
@@ -243,9 +244,9 @@ class BattleAudioCoordinator extends GetxController {
   ///
   /// Used when the player loses the match. Loads a single-track playlist
   /// with [_BattleAudioAssets.defeatBgm] and plays it once.
+  /// Volume is determined by the user's persisted audio settings.
   Future<void> playDefeatBgm() async {
     try {
-      await _engine.bgm.setVolume(0.5);
       await _engine.bgm.loadDefaultPlaylist([_BattleAudioAssets.defeatBgm]);
       await _engine.bgm.resumeDefaultPlaylist();
     } catch (e) {
@@ -259,9 +260,9 @@ class BattleAudioCoordinator extends GetxController {
   ///
   /// Used on the main menu screen. Loads a single-track playlist
   /// with [_BattleAudioAssets.menuBgm] and plays it.
+  /// Volume is determined by the user's persisted audio settings.
   Future<void> playMenuBgm() async {
     try {
-      await _engine.bgm.setVolume(0.3);
       await _engine.bgm.loadDefaultPlaylist([_BattleAudioAssets.menuBgm]);
       await _engine.bgm.resumeDefaultPlaylist();
     } catch (e) {

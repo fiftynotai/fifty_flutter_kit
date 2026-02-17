@@ -40,11 +40,17 @@ class TurnTimerService {
   /// Default turn duration in seconds.
   static const int defaultTurnDuration = 60;
 
-  /// Threshold in seconds for the warning zone.
-  static const int warningThreshold = 10;
+  /// Default threshold in seconds for the warning zone.
+  static const int defaultWarningThreshold = 10;
 
-  /// Threshold in seconds for the critical zone.
-  static const int criticalThreshold = 5;
+  /// Default threshold in seconds for the critical zone.
+  static const int defaultCriticalThreshold = 5;
+
+  /// Threshold in seconds for the warning zone (configurable).
+  int warningThreshold = defaultWarningThreshold;
+
+  /// Threshold in seconds for the critical zone (configurable).
+  int criticalThreshold = defaultCriticalThreshold;
 
   /// Remaining seconds on the current turn timer.
   final RxInt remainingSeconds = 0.obs;
@@ -73,14 +79,22 @@ class TurnTimerService {
   /// Callback invoked once when entering the critical zone (<=5s).
   VoidCallback? onCritical;
 
-  /// Configures the turn duration.
+  /// Configures the turn duration and threshold values.
   ///
-  /// Must be called before [startTurn] for the new value to take effect.
+  /// Must be called before [startTurn] for the new values to take effect.
   ///
   /// **Parameters:**
   /// - [turnDuration]: Duration in seconds for each turn.
-  void configure({int turnDuration = defaultTurnDuration}) {
+  /// - [warningThreshold]: Seconds remaining when warning zone starts.
+  /// - [criticalThreshold]: Seconds remaining when critical zone starts.
+  void configure({
+    int turnDuration = defaultTurnDuration,
+    int warningThreshold = defaultWarningThreshold,
+    int criticalThreshold = defaultCriticalThreshold,
+  }) {
     _turnDuration = turnDuration;
+    this.warningThreshold = warningThreshold;
+    this.criticalThreshold = criticalThreshold;
   }
 
   /// The configured turn duration in seconds (read-only).

@@ -7,15 +7,20 @@ library;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'app/app.dart';
 
 /// Main entry point for the Tactical Grid application.
 ///
-/// Initializes Flutter bindings, sets up audio engine, and runs the root app widget.
-/// Dependency injection is handled by GetX via InitialBindings.
+/// Initializes Flutter bindings, sets up storage and audio engine, and runs
+/// the root app widget. Dependency injection is handled by GetX via
+/// InitialBindings.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize GetStorage box for settings persistence.
+  await GetStorage.init('TacticalGridSettings');
 
   // Initialize FiftyAudioEngine (before app start)
   await FiftyAudioEngine.instance.initialize();

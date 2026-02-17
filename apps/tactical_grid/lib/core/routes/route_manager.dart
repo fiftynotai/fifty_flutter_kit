@@ -3,7 +3,6 @@
 /// Centralized routing configuration for Tactical Grid.
 library;
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../features/achievements/achievement_bindings.dart';
@@ -12,6 +11,8 @@ import '../../features/battle/battle_bindings.dart';
 import '../../features/battle/models/game_state.dart';
 import '../../features/battle/views/battle_page.dart';
 import '../../features/menu/menu_page.dart';
+import '../../features/settings/settings_bindings.dart';
+import '../../features/settings/views/settings_page.dart';
 
 /// Centralized routing for the Tactical Grid app.
 ///
@@ -45,7 +46,8 @@ class RouteManager {
         ),
         GetPage<void>(
           name: settingsRoute,
-          page: () => const _PlaceholderPage(title: 'SETTINGS'),
+          page: () => const SettingsPage(),
+          binding: SettingsBindings(),
         ),
         GetPage<void>(
           name: achievementRoute,
@@ -97,43 +99,4 @@ class RouteManager {
 
   /// Navigate to main menu (clear stack).
   static Future<dynamic>? toMenu() => offAll(menuRoute);
-}
-
-/// Placeholder page widget for routes not yet implemented.
-class _PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  const _PlaceholderPage({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface,
-                letterSpacing: 4,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Coming Soon',
-              style: TextStyle(
-                fontSize: 16,
-                color: colorScheme.onSurface.withAlpha(150),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
