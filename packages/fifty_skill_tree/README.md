@@ -4,7 +4,7 @@ Interactive skill tree widget for Flutter games — customizable, animated, and 
 
 | Home | Basic Tree | Node Unlock | RPG Skill Tree |
 |:----:|:----------:|:-----------:|:--------------:|
-| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_tree_light.png) | ![Unlock](screenshots/node_unlock_light.png) | ![RPG](screenshots/rpg_skill_tree_light.png) |
+| <img src="screenshots/home_light.png" width="200"> | <img src="screenshots/basic_tree_light.png" width="200"> | <img src="screenshots/node_unlock_light.png" width="200"> | <img src="screenshots/rpg_skill_tree_light.png" width="200"> |
 
 ---
 

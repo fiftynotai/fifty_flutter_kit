@@ -4,7 +4,7 @@ A modular, reactive audio system for Flutter games and applications. Part of [Fi
 
 | BGM Player | SFX Player | Voice Player | Global Controls |
 |:----------:|:----------:|:------------:|:---------------:|
-| ![BGM](screenshots/bgm_player_light.png) | ![SFX](screenshots/sfx_player_light.png) | ![Voice](screenshots/voice_player_light.png) | ![Global](screenshots/global_controls_light.png) |
+| <img src="screenshots/bgm_player_light.png" width="200"> | <img src="screenshots/sfx_player_light.png" width="200"> | <img src="screenshots/voice_player_light.png" width="200"> | <img src="screenshots/global_controls_light.png" width="200"> |
 
 ---
 

@@ -4,7 +4,7 @@ Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flu
 
 | Tactical Overview | Unit Selection & Pathfinding |
 |:-----------------:|:---------------------------:|
-| ![Overview](screenshots/tactical_overview_light.png) | ![Selection](screenshots/unit_selection_light.png) |
+| <img src="screenshots/tactical_overview_light.png" width="200"> | <img src="screenshots/unit_selection_light.png" width="200"> |
 
 ---
 

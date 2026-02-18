@@ -4,7 +4,7 @@ A sentence processing engine for Flutter games and interactive applications. Par
 
 | Sentence Queue | Dialogue Choices | Narration |
 |:--------------:|:----------------:|:---------:|
-| ![Queue](screenshots/sentence_queue_light.png) | ![Choices](screenshots/dialogue_choices_light.png) | ![Narration](screenshots/dialogue_narration_light.png) |
+| <img src="screenshots/sentence_queue_light.png" width="200"> | <img src="screenshots/dialogue_choices_light.png" width="200"> | <img src="screenshots/dialogue_narration_light.png" width="200"> |
 
 ---
 

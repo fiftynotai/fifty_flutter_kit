@@ -4,7 +4,7 @@ A unified speech interface for Flutter games and applications with TTS and STT c
 
 | TTS Panel | STT Panel |
 |:---------:|:---------:|
-| ![TTS](screenshots/tts_panel_light.png) | ![STT](screenshots/stt_panel_light.png) |
+| <img src="screenshots/tts_panel_light.png" width="200"> | <img src="screenshots/stt_panel_light.png" width="200"> |
 
 ---
 
