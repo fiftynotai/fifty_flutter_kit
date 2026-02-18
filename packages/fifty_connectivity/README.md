@@ -2,6 +2,10 @@
 
 Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
+| Status | Handler | Overlay | Splash |
+|:---:|:---:|:---:|:---:|
+| <img src="example/screenshots/home.png" width="200"> | <img src="example/screenshots/handler.png" width="200"> | <img src="example/screenshots/overlay.png" width="200"> | <img src="example/screenshots/splash.png" width="200"> |
+
 ---
 
 ## Features
