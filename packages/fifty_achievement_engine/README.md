@@ -4,7 +4,7 @@ Achievement system for Flutter games with condition-based unlocks, progress trac
 
 | Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
 |:----:|:------------------:|:-------------------:|:----------------:|
-| ![Home](screenshots/home_light.png) | ![Basic](screenshots/basic_achievements_light.png) | ![Unlocked](screenshots/achievement_unlocked_light.png) | ![RPG](screenshots/rpg_achievements_light.png) |
+| <img src="screenshots/home_light.png" width="200"> | <img src="screenshots/basic_achievements_light.png" width="200"> | <img src="screenshots/achievement_unlocked_light.png" width="200"> | <img src="screenshots/rpg_achievements_light.png" width="200"> |
 
 ---
 
