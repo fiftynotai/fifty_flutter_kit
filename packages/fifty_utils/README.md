@@ -1,8 +1,8 @@
-# fifty_utils
+# Fifty Utils
 
-Pure Dart/Flutter utilities - DateTime, Duration, Color extensions, responsive breakpoints, and async state containers.
+Pure Dart/Flutter utilities — DateTime, Duration, Color extensions, responsive breakpoints, and async state containers. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-Part of the [Fifty Flutter Kit](../../README.md).
+---
 
 ## Features
 
@@ -11,6 +11,8 @@ Part of the [Fifty Flutter Kit](../../README.md).
 - **Color Extensions** - Hex color string conversion
 - **Responsive Utils** - Device type detection and responsive values
 - **API Response** - Immutable async state containers
+
+---
 
 ## Installation
 
@@ -22,7 +24,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   fifty_utils:
     git:
-      url: https://github.com/aspect-build/fifty_flutter_kit
+      url: https://github.com/fiftynotai/fifty_flutter_kit
       path: packages/fifty_utils
 ```
 
@@ -34,7 +36,194 @@ dependencies:
     path: ../fifty_utils
 ```
 
-## Usage
+---
+
+## Quick Start
+
+```dart
+import 'package:fifty_utils/fifty_utils.dart';
+
+// DateTime relative time
+final date = DateTime.now();
+print(date.timeAgo()); // "just now", "2 hours ago", etc.
+
+// Responsive layout
+double padding = ResponsiveUtils.padding(context); // adapts to screen size
+
+// Async state
+apiFetch(() => userService.getUser()).listen((state) {
+  if (state.isLoading) showSpinner();
+  if (state.hasData) showUser(state.data!);
+  if (state.hasError) showError(state.error);
+});
+```
+
+---
+
+## Architecture
+
+```
+fifty_utils
+├── extensions/
+│   ├── DateTime         → date comparison, formatting, relative time
+│   ├── Duration         → HH:mm:ss and compact formatting
+│   └── Color (HexColor) → hex string ↔ Color conversion
+├── responsive/
+│   └── ResponsiveUtils  → breakpoints, device type, adaptive values
+└── api/
+    ├── ApiStatus        → idle | loading | success | error enum
+    ├── ApiResponse<E>   → immutable async state container
+    ├── apiFetch<E>      → stream-based async fetch helper
+    └── PaginationResponse<E> → paginated data wrapper
+```
+
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| `DateTime` extensions | Date comparison, formatting, and relative time helpers |
+| `Duration` extensions | Format durations as HH:mm:ss or compact strings |
+| `HexColor` | Parse hex strings to `Color` and convert `Color` to hex |
+| `ResponsiveUtils` | Breakpoint-based device detection and adaptive value helpers |
+| `DeviceType` | Enum — `mobile`, `tablet`, `desktop`, `wide` |
+| `ApiStatus` | Enum — `idle`, `loading`, `success`, `error` |
+| `ApiResponse<E>` | Immutable container for async request state |
+| `apiFetch<E>` | Streams loading + success/error states from any async call |
+| `PaginationResponse<E>` | Wraps paginated data with total row count |
+
+---
+
+## API Reference
+
+### DateTime Extensions
+
+| Method | Description |
+|--------|-------------|
+| `isToday` | Check if date is today |
+| `isYesterday` | Check if date was yesterday |
+| `isTomorrow` | Check if date is tomorrow |
+| `isSameDay(other)` | Check if same day as other |
+| `isSameMonth(other)` | Check if same month as other |
+| `isSameYear(other)` | Check if same year as other |
+| `startOfDay` | Get start of day (00:00:00) |
+| `endOfDay` | Get end of day (23:59:59.999) |
+| `daysBetween(other)` | Days between dates |
+| `format([pattern])` | Format date (default: dd/MM/yyyy) |
+| `formatTime([pattern])` | Format time (default: HH:mm) |
+| `formatDateTime([pattern])` | Format date and time |
+| `timeAgo()` | Relative time string |
+
+### Duration Extensions
+
+| Method | Description |
+|--------|-------------|
+| `format()` | Format as HH:mm:ss |
+| `formatCompact()` | Format as "2h 5m" |
+
+### HexColor
+
+| Method | Description |
+|--------|-------------|
+| `HexColor.fromHex(hex)` | Parse hex string to `Color` |
+| `toHex([leadingHashSign])` | Convert `Color` to hex string |
+
+### ResponsiveUtils
+
+| Method | Description |
+|--------|-------------|
+| `isMobile(context)` | Width < 600px |
+| `isTablet(context)` | Width 600–1024px |
+| `isDesktop(context)` | Width 1024–1440px |
+| `isWideDesktop(context)` | Width >= 1440px |
+| `deviceType(context)` | Get `DeviceType` enum value |
+| `valueByDevice(context, ...)` | Return typed value per device tier |
+| `scaledFontSize(context, base)` | Scale font size by device tier |
+| `padding(context)` | Device-appropriate padding |
+| `margin(context)` | Device-appropriate margin |
+| `gridColumns(context)` | Responsive column count |
+| `screenWidth(context, [%])` | Screen width, optional percentage |
+| `screenHeight(context, [%])` | Screen height, optional percentage |
+| `pixelRatio(context)` | Device pixel ratio |
+| `isPortrait(context)` | Portrait orientation check |
+| `isLandscape(context)` | Landscape orientation check |
+
+**Breakpoints**
+
+| Device | Width |
+|--------|-------|
+| Mobile | < 600px |
+| Tablet | 600–1024px |
+| Desktop | 1024–1440px |
+| Wide | >= 1440px |
+
+Breakpoints can be customized:
+
+```dart
+ResponsiveUtils.mobileBreakpoint = 600;
+ResponsiveUtils.tabletBreakpoint = 1024;
+ResponsiveUtils.desktopBreakpoint = 1440;
+ResponsiveUtils.wideBreakpoint = 1440;
+```
+
+### ApiStatus
+
+| Value | Description |
+|-------|-------------|
+| `idle` | No request made yet |
+| `loading` | Request in progress |
+| `success` | Request completed successfully |
+| `error` | Request failed |
+
+### ApiResponse\<E\>
+
+| Factory | Description |
+|---------|-------------|
+| `ApiResponse.idle()` | No request made |
+| `ApiResponse.loading()` | Request in progress |
+| `ApiResponse.success(data)` | Request succeeded |
+| `ApiResponse.error(error, [st])` | Request failed |
+
+| Property | Description |
+|----------|-------------|
+| `status` | Current `ApiStatus` |
+| `data` | Response data (nullable) |
+| `error` | Error object (nullable) |
+| `stackTrace` | Error stack trace |
+| `isIdle` | Status == idle |
+| `isLoading` | Status == loading |
+| `isSuccess` | Status == success |
+| `isError` | Status == error |
+| `hasData` | Data is not null |
+| `hasError` | Error is not null |
+
+### apiFetch\<E\>
+
+```dart
+Stream<ApiResponse<E>> apiFetch<E>(
+  Future<E> Function() run, {
+  bool withLoading = true,
+  bool reportToSentry = true,
+})
+```
+
+Emits a stream of request states: `loading? -> success | error`.
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `run` | Async function to execute | required |
+| `withLoading` | Emit loading state first | `true` |
+| `reportToSentry` | Report errors to Sentry | `true` |
+
+### PaginationResponse\<E\>
+
+| Property | Description |
+|----------|-------------|
+| `data` | Paginated data list |
+| `totalRows` | Total available rows |
+
+---
+
+## Usage Patterns
 
 ### DateTime Extensions
 
@@ -94,7 +283,7 @@ Color withAlpha = HexColor.fromHex('#80aabbcc');
 Color noHash = HexColor.fromHex('aabbcc');
 
 // From Color to hex string
-String hex = color.toHex();                        // "#ffaabbcc"
+String hex = color.toHex();                          // "#ffaabbcc"
 String noHashHex = color.toHex(leadingHashSign: false); // "ffaabbcc"
 ```
 
@@ -191,145 +380,39 @@ final page = PaginationResponse(users, totalRows);
 print('Showing ${page.data.length} of ${page.totalRows}');
 ```
 
-## API Reference
+---
 
-### DateTime Extensions
+## Platform Support
 
-| Method | Description |
-|--------|-------------|
-| `isToday` | Check if date is today |
-| `isYesterday` | Check if date was yesterday |
-| `isTomorrow` | Check if date is tomorrow |
-| `isSameDay(other)` | Check if same day as other |
-| `isSameMonth(other)` | Check if same month as other |
-| `isSameYear(other)` | Check if same year as other |
-| `startOfDay` | Get start of day (00:00:00) |
-| `endOfDay` | Get end of day (23:59:59.999) |
-| `daysBetween(other)` | Days between dates |
-| `format([pattern])` | Format date (default: dd/MM/yyyy) |
-| `formatTime([pattern])` | Format time (default: HH:mm) |
-| `formatDateTime([pattern])` | Format date+time |
-| `timeAgo()` | Relative time string |
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     |       |
 
-### Duration Extensions
+---
 
-| Method | Description |
-|--------|-------------|
-| `format()` | Format as HH:mm:ss |
-| `formatCompact()` | Format as "2h 5m" |
+## Fifty Design Language Integration
 
-### HexColor Extension
+This package is part of Fifty Flutter Kit:
 
-| Method | Description |
-|--------|-------------|
-| `HexColor.fromHex(hex)` | Parse hex string to Color |
-| `toHex([leadingHashSign])` | Convert Color to hex string |
+- **Design token alignment** - Use alongside `fifty_tokens` for consistent spacing, color, and typography values in responsive layouts
+- **Theme integration** - `HexColor` extensions pair directly with `fifty_theme` for runtime color resolution from token strings
+- **State management bridge** - `ApiResponse` and `apiFetch` are the standard async state primitives used across all Fifty Flutter Kit app packages
 
-### ResponsiveUtils
+---
 
-| Method | Description |
-|--------|-------------|
-| `isMobile(context)` | Width < 600px |
-| `isTablet(context)` | Width 600-1024px |
-| `isDesktop(context)` | Width 1024-1440px |
-| `isWideDesktop(context)` | Width >= 1440px |
-| `deviceType(context)` | Get DeviceType enum |
-| `valueByDevice(context, ...)` | Get value by device |
-| `scaledFontSize(context, base)` | Scale font by device |
-| `padding(context)` | Device-appropriate padding |
-| `margin(context)` | Device-appropriate margin |
-| `gridColumns(context)` | Responsive column count |
-| `screenWidth(context, [%])` | Screen width |
-| `screenHeight(context, [%])` | Screen height |
-| `pixelRatio(context)` | Device pixel ratio |
-| `isPortrait(context)` | Portrait orientation |
-| `isLandscape(context)` | Landscape orientation |
+## Version
 
-### ApiStatus
+**Current:** 0.1.0
 
-| Value | Description |
-|-------|-------------|
-| `idle` | No request made yet |
-| `loading` | Request in progress |
-| `success` | Request completed successfully |
-| `error` | Request failed |
-
-### ApiResponse<E>
-
-| Factory | Description |
-|---------|-------------|
-| `ApiResponse.idle()` | No request made |
-| `ApiResponse.loading()` | Request in progress |
-| `ApiResponse.success(data)` | Request succeeded |
-| `ApiResponse.error(error, [st])` | Request failed |
-
-| Property | Description |
-|----------|-------------|
-| `status` | Current ApiStatus |
-| `data` | Response data (nullable) |
-| `error` | Error object (nullable) |
-| `stackTrace` | Error stack trace |
-| `isIdle` | Status == idle |
-| `isLoading` | Status == loading |
-| `isSuccess` | Status == success |
-| `isError` | Status == error |
-| `hasData` | Data is not null |
-| `hasError` | Error is not null |
-
-### apiFetch<E>
-
-```dart
-Stream<ApiResponse<E>> apiFetch<E>(
-  Future<E> Function() run, {
-  bool withLoading = true,
-  bool reportToSentry = true,
-})
-```
-
-Emits a stream of request states: `loading? -> success | error`.
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `run` | Async function to execute | required |
-| `withLoading` | Emit loading state first | `true` |
-| `reportToSentry` | Report errors to Sentry | `true` |
-
-### PaginationResponse<E>
-
-| Property | Description |
-|----------|-------------|
-| `data` | Paginated data |
-| `totalRows` | Total available rows |
-
-## Breakpoints
-
-| Device | Width |
-|--------|-------|
-| Mobile | < 600px |
-| Tablet | 600-1024px |
-| Desktop | 1024-1440px |
-| Wide | >= 1440px |
-
-Breakpoints can be customized:
-
-```dart
-ResponsiveUtils.mobileBreakpoint = 600;
-ResponsiveUtils.tabletBreakpoint = 1024;
-ResponsiveUtils.desktopBreakpoint = 1440;
-ResponsiveUtils.wideBreakpoint = 1440;
-```
-
-## Related Packages
-
-- [mvvm_actions](../../templates/mvvm_actions/) - Template using fifty_utils for state management
-- [fifty_tokens](../fifty_tokens/) - Design tokens for consistent styling
-- [fifty_theme](../fifty_theme/) - Theme generation and management
-
-## Requirements
-
-- Flutter SDK >= 3.0.0
-- Dart SDK >= 3.0.0
+---
 
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

@@ -1,44 +1,6 @@
-# fifty_cache
+# Fifty Cache
 
-TTL-based HTTP response caching with pluggable stores and policies.
-
-Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit) - a comprehensive Flutter toolkit.
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Architecture](#architecture)
-- [Components](#components)
-  - [CacheStore](#cachestore)
-  - [CachePolicy](#cachepolicy)
-  - [CacheKeyStrategy](#cachekeystrategy)
-  - [CacheManager](#cachemanager)
-- [Built-in Implementations](#built-in-implementations)
-- [Custom Implementations](#custom-implementations)
-- [Integration with mvvm_actions](#integration-with-mvvm_actions)
-- [Testing](#testing)
-- [API Reference](#api-reference)
-- [Best Practices](#best-practices)
-- [License](#license)
-- [Ecosystem](#ecosystem)
-
----
-
-## Overview
-
-`fifty_cache` provides a contract-based caching system designed for HTTP response caching in Flutter applications. Originally extracted from `fifty_arch` to enable standalone use.
-
-### Why fifty_cache?
-
-- **Decoupled from HTTP** - Works with any HTTP client (Dio, http, GetConnect)
-- **Contract-based** - Swap implementations without changing client code
-- **Testable** - In-memory store for unit tests, persistent store for production
-- **Flexible policies** - Control caching behavior per endpoint or globally
+TTL-based HTTP response caching with pluggable stores and policies. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
 
@@ -49,15 +11,13 @@ Part of the [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit)
 - **Pluggable stores** - In-memory for testing, GetStorage for persistence
 - **Flexible policies** - Control what gets cached and for how long
 - **Deterministic keys** - Stable cache keys from request parameters and headers
-- **Header-aware keys** - Different cache entries for different locales/auth states
+- **Header-aware keys** - Different cache entries for different locales and auth states
 
 ---
 
 ## Installation
 
-### Path Dependency (Monorepo)
-
-For projects within the Fifty Flutter Kit:
+Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
@@ -65,9 +25,7 @@ dependencies:
     path: ../fifty_cache
 ```
 
-### Git Dependency
-
-For external projects:
+For external projects using a Git dependency:
 
 ```yaml
 dependencies:
@@ -75,13 +33,6 @@ dependencies:
     git:
       url: https://github.com/fiftynotai/fifty_flutter_kit.git
       path: packages/fifty_cache
-```
-
-### Pub.dev (Future)
-
-```yaml
-dependencies:
-  fifty_cache: ^0.1.0
 ```
 
 ---
@@ -156,15 +107,24 @@ if (cached != null) {
 └─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
 
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| `CacheStore` | Storage abstraction for persisting cached entries with TTL support |
+| `CachePolicy` | Decides when to read/write cache and what TTL to apply |
+| `CacheKeyStrategy` | Builds deterministic cache keys from request data |
+| `CacheManager` | Orchestrates cache operations using store, policy, and key strategy |
+| `MemoryCacheStore` | In-memory store for testing and lightweight caching |
+| `GetStorageCacheStore` | Persistent store using the `get_storage` package |
+| `SimpleTimeToLiveCachePolicy` | Fixed TTL policy with sensible defaults |
+| `DefaultCacheKeyStrategy` | Builds human-readable, deterministic keys |
+
 ---
 
-## Components
+## API Reference
 
 ### CacheStore
-
-Storage abstraction for persisting cached entries with TTL support.
-
-**Contract:**
 
 ```dart
 abstract class CacheStore {
@@ -182,11 +142,14 @@ abstract class CacheStore {
 }
 ```
 
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `put` | `key`, `value`, `ttl` | `Future<void>` | Store value with TTL |
+| `get` | `key` | `Future<String?>` | Retrieve value (null if missing/expired) |
+| `remove` | `key` | `Future<void>` | Delete single entry |
+| `clear` | - | `Future<void>` | Delete all entries |
+
 ### CachePolicy
-
-Decides when to read/write cache and what TTL to apply.
-
-**Contract:**
 
 ```dart
 abstract class CachePolicy {
@@ -206,11 +169,13 @@ abstract class CachePolicy {
 }
 ```
 
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `canRead` | `method`, `url`, `query`, `forceRefresh` | `bool` | Should read from cache? |
+| `canWrite` | `method`, `url`, `statusCode` | `bool` | Should write to cache? |
+| `timeToLiveFor` | `method`, `url`, `statusCode` | `Duration` | TTL for this response |
+
 ### CacheKeyStrategy
-
-Builds deterministic cache keys from request data.
-
-**Contract:**
 
 ```dart
 abstract class CacheKeyStrategy {
@@ -224,11 +189,11 @@ abstract class CacheKeyStrategy {
 }
 ```
 
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `buildKey` | `url`, `query`, `method`, `headers` | `String` | Build deterministic cache key |
+
 ### CacheManager
-
-Orchestrates cache operations using store, policy, and key strategy.
-
-**API:**
 
 ```dart
 class CacheManager {
@@ -266,11 +231,20 @@ class CacheManager {
 }
 ```
 
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `tryRead` | `method`, `url`, `query`, `forceRefresh`, `headers` | `Future<String?>` | Read if policy allows |
+| `tryWrite` | `method`, `url`, `query`, `statusCode`, `bodyString`, `headers` | `Future<void>` | Write if policy allows |
+| `invalidate` | `method`, `url`, `query`, `headers` | `Future<void>` | Remove specific entry |
+| `clear` | - | `Future<void>` | Remove all entries |
+
 ---
 
-## Built-in Implementations
+## Usage Patterns
 
-### MemoryCacheStore
+### Built-in Stores
+
+#### MemoryCacheStore
 
 In-memory store for testing and lightweight caching.
 
@@ -287,14 +261,11 @@ final cached = await store.get('key');
 await store.clear();
 ```
 
-**Use cases:**
-- Unit testing
-- Short-lived session caches
-- Development environment
+Use cases: unit testing, short-lived session caches, development environment.
 
-### GetStorageCacheStore
+#### GetStorageCacheStore
 
-Persistent store using `get_storage` package.
+Persistent store using the `get_storage` package.
 
 ```dart
 // Create with async factory (ensures initialization)
@@ -307,7 +278,8 @@ await store.put('key', 'value', ttl: Duration(hours: 6));
 final cached = await store.get('key');
 ```
 
-**Storage format:**
+Storage format:
+
 ```json
 {
   "body": "<raw response string>",
@@ -315,12 +287,11 @@ final cached = await store.get('key');
 }
 ```
 
-**Use cases:**
-- Production mobile apps
-- Offline-first applications
-- Cross-session caching
+Use cases: production mobile apps, offline-first applications, cross-session caching.
 
-### SimpleTimeToLiveCachePolicy
+### Built-in Policy
+
+#### SimpleTimeToLiveCachePolicy
 
 Fixed TTL policy with sensible defaults.
 
@@ -344,12 +315,14 @@ if (policy.canWrite('GET', url, 200)) {
 final ttl = policy.timeToLiveFor('GET', url, 200);
 ```
 
-**Behavior:**
-- Reads: Allowed for GET requests (unless `forceRefresh: true`)
-- Writes: Allowed for GET requests with 2xx status codes
-- TTL: Fixed duration for all responses
+Behavior:
+- Reads: allowed for GET requests (unless `forceRefresh: true`)
+- Writes: allowed for GET requests with 2xx status codes
+- TTL: fixed duration for all responses
 
-### DefaultCacheKeyStrategy
+### Built-in Key Strategy
+
+#### DefaultCacheKeyStrategy
 
 Builds human-readable, deterministic keys.
 
@@ -368,19 +341,13 @@ final key = strategy.buildKey(
 // Output: 'GET https://api.example.com/users?limit=10&page=1 | H:lang=en,auth=1'
 ```
 
-**Key components:**
+Key components:
 1. HTTP method (uppercased)
 2. URL
 3. Query parameters (sorted alphabetically)
-4. Header fingerprint:
-   - `lang=<value>` from Accept-Language
-   - `auth=1` or `auth=0` based on Authorization presence
+4. Header fingerprint: `lang=<value>` from Accept-Language, `auth=1` or `auth=0` based on Authorization presence
 
-**Security note:** Authorization token values are NOT stored in keys - only presence is indicated (`auth=1` vs `auth=0`).
-
----
-
-## Custom Implementations
+Security note: Authorization token values are NOT stored in keys — only presence is indicated (`auth=1` vs `auth=0`).
 
 ### Custom CacheStore (Redis Example)
 
@@ -463,7 +430,7 @@ final policy = UrlBasedCachePolicy(
 );
 ```
 
-### Custom CacheKeyStrategy (Simple)
+### Custom CacheKeyStrategy
 
 ```dart
 class SimpleCacheKeyStrategy implements CacheKeyStrategy {
@@ -488,9 +455,7 @@ class SimpleCacheKeyStrategy implements CacheKeyStrategy {
 }
 ```
 
----
-
-## Integration with mvvm_actions
+### Integration with mvvm_actions
 
 When using the `mvvm_actions` template, the cache integrates with the HTTP infrastructure:
 
@@ -565,11 +530,66 @@ class AppBindings extends Bindings {
 }
 ```
 
----
+### Choosing the Right Store
 
-## Testing
+| Scenario | Store | Reason |
+|----------|-------|--------|
+| Unit tests | `MemoryCacheStore` | No setup, instant operations |
+| Development | `MemoryCacheStore` | Clears on hot restart |
+| Production mobile | `GetStorageCacheStore` | Persists across sessions |
+| Production web | Custom (IndexedDB) | Browser-native persistence |
 
-The package is designed for easy testing with `MemoryCacheStore`:
+### Configuring TTL Per Endpoint
+
+```dart
+// Frequently changing data: short TTL
+final feedPolicy = SimpleTimeToLiveCachePolicy(
+  timeToLive: Duration(minutes: 5),
+);
+
+// Rarely changing data: long TTL
+final configPolicy = SimpleTimeToLiveCachePolicy(
+  timeToLive: Duration(days: 7),
+);
+```
+
+### Using forceRefresh for Pull-to-Refresh
+
+```dart
+Future<void> onRefresh() async {
+  await cacheManager.tryRead(
+    'GET',
+    url,
+    query,
+    forceRefresh: true,  // Bypass cache
+  );
+  // Then fetch from network...
+}
+```
+
+### Invalidating on Mutations
+
+```dart
+Future<void> createUser(User user) async {
+  await api.post('/users', body: user.toJson());
+
+  // Invalidate users list cache
+  await cacheManager.invalidate('GET', '/users', null);
+}
+```
+
+### Locale-Aware Caching
+
+```dart
+final cached = await cacheManager.tryRead(
+  'GET',
+  url,
+  query,
+  headers: {'Accept-Language': currentLocale},
+);
+```
+
+### Testing with MemoryCacheStore
 
 ```dart
 import 'package:fifty_cache/fifty_cache.dart';
@@ -598,7 +618,6 @@ void main() {
   });
 
   test('returns cached value on cache hit', () async {
-    // Write to cache
     await cacheManager.tryWrite(
       'GET',
       'https://api.example.com/users',
@@ -607,7 +626,6 @@ void main() {
       bodyString: '{"users": []}',
     );
 
-    // Read from cache
     final cached = await cacheManager.tryRead(
       'GET',
       'https://api.example.com/users',
@@ -617,7 +635,6 @@ void main() {
   });
 
   test('respects forceRefresh parameter', () async {
-    // Write to cache
     await cacheManager.tryWrite(
       'GET',
       'https://api.example.com/users',
@@ -680,102 +697,32 @@ void main() {
 
 ---
 
-## API Reference
+## Platform Support
 
-### CacheStore
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `put` | `key`, `value`, `ttl` | `Future<void>` | Store value with TTL |
-| `get` | `key` | `Future<String?>` | Retrieve value (null if missing/expired) |
-| `remove` | `key` | `Future<void>` | Delete single entry |
-| `clear` | - | `Future<void>` | Delete all entries |
-
-### CachePolicy
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `canRead` | `method`, `url`, `query`, `forceRefresh` | `bool` | Should read from cache? |
-| `canWrite` | `method`, `url`, `statusCode` | `bool` | Should write to cache? |
-| `timeToLiveFor` | `method`, `url`, `statusCode` | `Duration` | TTL for this response |
-
-### CacheKeyStrategy
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `buildKey` | `url`, `query`, `method`, `headers` | `String` | Build deterministic cache key |
-
-### CacheManager
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `tryRead` | `method`, `url`, `query`, `forceRefresh`, `headers` | `Future<String?>` | Read if policy allows |
-| `tryWrite` | `method`, `url`, `query`, `statusCode`, `bodyString`, `headers` | `Future<void>` | Write if policy allows |
-| `invalidate` | `method`, `url`, `query`, `headers` | `Future<void>` | Remove specific entry |
-| `clear` | - | `Future<void>` | Remove all entries |
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     | `GetStorageCacheStore` uses shared preferences-backed storage |
+| iOS      | Yes     | `GetStorageCacheStore` uses shared preferences-backed storage |
+| macOS    | Yes     | `MemoryCacheStore` recommended for desktop |
+| Linux    | Yes     | `MemoryCacheStore` recommended for desktop |
+| Windows  | Yes     | `MemoryCacheStore` recommended for desktop |
+| Web      | Yes     | Implement custom store backed by IndexedDB for persistence |
 
 ---
 
-## Best Practices
+## Fifty Design Language Integration
 
-### 1. Choose the Right Store
+This package is part of Fifty Flutter Kit:
 
-| Scenario | Store | Reason |
-|----------|-------|--------|
-| Unit tests | `MemoryCacheStore` | No setup, instant operations |
-| Development | `MemoryCacheStore` | Clears on hot restart |
-| Production mobile | `GetStorageCacheStore` | Persists across sessions |
-| Production web | Custom (IndexedDB) | Browser-native persistence |
+- **Standalone caching layer** - Extracted from `fifty_arch` for use without the full architecture package; works with any HTTP client (Dio, http, GetConnect)
+- **mvvm_actions compatibility** - Designed to slot directly into the `mvvm_actions` service layer pattern; `CacheManager` is injected via GetX bindings alongside `ApiService`
+- **Contract-first architecture** - Follows the FDL principle of coding to interfaces; all three contracts (`CacheStore`, `CachePolicy`, `CacheKeyStrategy`) are swappable without touching call sites
 
-### 2. Configure TTL Per Endpoint
+---
 
-```dart
-// Frequently changing data: short TTL
-final feedPolicy = SimpleTimeToLiveCachePolicy(
-  timeToLive: Duration(minutes: 5),
-);
+## Version
 
-// Rarely changing data: long TTL
-final configPolicy = SimpleTimeToLiveCachePolicy(
-  timeToLive: Duration(days: 7),
-);
-```
-
-### 3. Use forceRefresh for Pull-to-Refresh
-
-```dart
-Future<void> onRefresh() async {
-  await cacheManager.tryRead(
-    'GET',
-    url,
-    query,
-    forceRefresh: true,  // Bypass cache
-  );
-  // Then fetch from network...
-}
-```
-
-### 4. Invalidate on Mutations
-
-```dart
-Future<void> createUser(User user) async {
-  await api.post('/users', body: user.toJson());
-
-  // Invalidate users list cache
-  await cacheManager.invalidate('GET', '/users', null);
-}
-```
-
-### 5. Include Headers for Locale-Aware Caching
-
-```dart
-final cached = await cacheManager.tryRead(
-  'GET',
-  url,
-  query,
-  headers: {'Accept-Language': currentLocale},
-);
-```
+**Current:** 0.1.0
 
 ---
 
@@ -783,18 +730,4 @@ final cached = await cacheManager.tryRead(
 
 MIT License - see [LICENSE](LICENSE) for details.
 
----
-
-## Ecosystem
-
-| Package | Description |
-|---------|-------------|
-| [fifty_tokens](../fifty_tokens) | Design tokens |
-| [fifty_theme](../fifty_theme) | Theme system |
-| [fifty_ui](../fifty_ui) | UI components |
-| [mvvm_actions](../../templates/mvvm_actions) | Architecture template |
-| **fifty_cache** | HTTP caching (this package) |
-| [fifty_audio_engine](../fifty_audio_engine) | Audio management |
-| [fifty_speech_engine](../fifty_speech_engine) | TTS/STT |
-| [fifty_sentences_engine](../fifty_sentences_engine) | Dialogue system |
-| [fifty_map_engine](../fifty_map_engine) | Map rendering |
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
