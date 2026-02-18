@@ -1,283 +1,150 @@
 # Fifty Demo
 
-A composite demo application showcasing the Fifty Flutter Kit packages working together. Demonstrates audio, speech, sentences, and map engines with Fifty Design Language (FDL) styling.
+Composite demo application showcasing the full Fifty Flutter Kit stack working together. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-## Table of Contents
+| Home | Packages | UI Kit | Settings |
+|:----:|:--------:|:------:|:--------:|
+| <img src="screenshots/home_dark.png" width="200"> | <img src="screenshots/packages_dark.png" width="200"> | <img src="screenshots/ui_kit_dark.png" width="200"> | <img src="screenshots/settings_dark.png" width="200"> |
 
-- [Overview](#overview)
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Getting Started](#getting-started)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Package Dependencies](#package-dependencies)
-- [Demo Features](#demo-features)
-- [License](#license)
-
-## Overview
-
-Fifty Demo serves as an integration showcase for Fifty Flutter Kit. It demonstrates how multiple Fifty packages can work together to create a cohesive application experience with consistent theming, audio management, speech capabilities, and interactive maps.
-
-**Key Highlights:**
-
-- MVVM + Actions architecture with GetX state management
-- Fifty Design Language (FDL) dark theme throughout
-- Integration of 7 Fifty Flutter Kit packages
-- Tabbed navigation between demo features
+---
 
 ## Features
 
-- **Ecosystem Status Dashboard** - Real-time status of all integrated packages
-- **Interactive Map Demo** - Grid-based map with entity placement and audio coordination
-- **Dialogue System Demo** - Sentence queue processing with TTS/STT capabilities
-- **UI Component Showcase** - Full catalog of FDL components (buttons, cards, inputs, feedback)
-- **Audio Integration** - BGM, SFX, and Voice channel management
-- **Speech Integration** - Text-to-Speech and Speech-to-Text support
+- **Ecosystem Dashboard** - Real-time status of all integrated packages with navigation to each demo
+- **UI Component Showcase** - Full catalog of FDL components (buttons, inputs, display, feedback) across 4 sections
+- **Audio Demo** - BGM, SFX, and Voice channel management with per-channel volume control
+- **Speech Demo** - Text-to-Speech and Speech-to-Text integration
+- **Dialogue Demo** - Sentence queue processing with TTS playback and auto-advance
+- **Map Demo** - Grid-based interactive map with entity placement and audio coordination
+- **Achievement Demo** - Achievement tracking with unlock popups and event triggers
+- **Skill Tree Demo** - Skill branches, unlocking, and point management
+- **Printing Demo** - Multi-printer ESC/POS printing demonstration
+- **Forms Demo** - Form validation and input handling
+- **Settings** - Theme toggle (dark/light/system), app info, and configuration
+- **Theme Support** - Full light and dark mode using FDL theme tokens across all pages
 
-## Screenshots
-
-<!-- Add screenshots here -->
-<!-- ![Home Screen](docs/screenshots/home.png) -->
-<!-- ![Map Demo](docs/screenshots/map_demo.png) -->
-<!-- ![Dialogue Demo](docs/screenshots/dialogue_demo.png) -->
-<!-- ![UI Showcase](docs/screenshots/ui_showcase.png) -->
+---
 
 ## Getting Started
 
-### Prerequisites
+```bash
+# From the monorepo root
+cd apps/fifty_demo
 
-- Flutter SDK 3.0.0 or higher
-- Dart SDK 3.6.0 or higher
+# Get dependencies
+flutter pub get
 
-### Installation
+# Deploy to a connected device or simulator
+flutter run -d <device-id>
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-org/fifty_flutter_kit.git
-   cd fifty_flutter_kit/apps/fifty_demo
-   ```
+---
 
-2. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
+## Quick Start
 
-3. Run the app:
-   ```bash
-   flutter run
-   ```
+1. Launch the app to see the Home tab with quick actions and what's new
+2. Navigate to Packages to browse all 11 engine demos organized by category (Design System, Engines, Features, Maps, Forms)
+3. Tap any package card to launch its interactive demo
+4. Switch to UI Kit to explore the full FDL component library (buttons, inputs, display, feedback)
+5. Use Settings to toggle between dark and light themes
 
-### Platform Support
-
-| Platform | Status |
-|----------|--------|
-| Android  | Supported |
-| iOS      | Supported |
-| Web      | Partial (audio limitations) |
-| macOS    | Supported |
-| Linux    | Supported |
-| Windows  | Supported |
+---
 
 ## Architecture
 
-Fifty Demo follows the **MVVM + Actions** architecture pattern with GetX for dependency injection and state management.
-
-### Pattern Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                          View                               │
-│  (GetView<ViewModel>, builds UI from ViewModel state)      │
-└─────────────────────────────────┬───────────────────────────┘
-                              │ observes
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       ViewModel                             │
-│  (GetxController, exposes state, no user action logic)     │
-└─────────────────────────────────┬───────────────────────────┘
-                              │ managed by
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                        Actions                              │
-│  (Handles user interactions, calls services/viewmodel)     │
-└─────────────────────────────────┬───────────────────────────┘
-                              │ uses
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Integration Services                     │
-│  (Wraps Fifty engines, provides simplified API)            │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Key Concepts
-
-- **View**: Stateless widgets using `GetView<ViewModel>` that rebuild on state changes
-- **ViewModel**: `GetxController` that holds and exposes reactive state
-- **Actions**: Separate class handling user interactions and business logic
-- **Integration Services**: Wrappers around Fifty engine packages for simplified access
-
-### Dependency Injection
-
-Dependencies are registered using GetX bindings:
-
-- **InitialBindings**: App-wide services (registered at startup)
-- **Feature Bindings**: Feature-specific dependencies (lazy loaded)
-
-```dart
-// Example: InitialBindings
-Get.lazyPut<AudioIntegrationService>(
-  AudioIntegrationService.new,
-  fenix: true,
-);
-```
-
-## Project Structure
+**Pattern:** MVVM + Actions (Fifty Flutter Kit architecture)
 
 ```
 lib/
-├── main.dart                    # Entry point, engine initialization
-├── fifty_demo.dart              # Library export
-├── app/
-│   ├── app.dart                 # App module export
-│   └── fifty_demo_app.dart      # Root GetMaterialApp widget
-├── core/
-│   ├── bindings/
-│   │   └── initial_bindings.dart   # App-wide DI registration
-│   ├── config/
-│   │   ├── asset_config.dart       # Asset path constants
-│   │   └── engine_config.dart      # Engine configuration
-│   ├── errors/
-│   │   └── app_exception.dart      # Custom exceptions
-│   ├── navigation/
-│   │   └── app_navigation.dart     # Route constants
-│   └── presentation/
-│       └── actions/
-│           └── action_presenter.dart  # Error/loading handling
-├── features/
-│   ├── home/
-│   │   ├── actions/home_actions.dart
-│   │   ├── view/
-│   │   │   ├── home_page.dart
-│   │   │   └── widgets/
-│   │   ├── viewmodel/home_viewmodel.dart
-│   │   └── home_bindings.dart
-│   ├── map_demo/
-│   │   ├── actions/map_demo_actions.dart
-│   │   ├── service/map_audio_coordinator.dart
-│   │   ├── view/
-│   │   │   ├── map_demo_page.dart
-│   │   │   └── widgets/
-│   │   ├── viewmodel/map_demo_viewmodel.dart
-│   │   └── map_demo_bindings.dart
-│   ├── dialogue_demo/
-│   │   ├── actions/dialogue_demo_actions.dart
-│   │   ├── service/
-│   │   │   ├── demo_dialogues.dart
-│   │   │   └── dialogue_orchestrator.dart
-│   │   ├── view/
-│   │   │   ├── dialogue_demo_page.dart
-│   │   │   └── widgets/
-│   │   ├── viewmodel/dialogue_demo_viewmodel.dart
-│   │   └── dialogue_demo_bindings.dart
-│   └── ui_showcase/
-│       ├── actions/ui_showcase_actions.dart
-│       ├── view/
-│       │   ├── ui_showcase_page.dart
-│       │   └── widgets/
-│       ├── viewmodel/ui_showcase_viewmodel.dart
-│       └── ui_showcase_bindings.dart
-└── shared/
-    ├── services/
-    │   ├── audio_integration_service.dart
-    │   ├── speech_integration_service.dart
-    │   ├── sentences_integration_service.dart
-    │   └── map_integration_service.dart
-    └── widgets/
-        ├── demo_scaffold.dart
-        ├── section_header.dart
-        └── status_indicator.dart
+  app/              # Root GetMaterialApp with bottom navigation
+  core/
+    bindings/       # App-wide dependency injection
+    config/         # Asset paths and engine configuration
+    errors/         # Custom exceptions
+    navigation/     # Route constants
+    presentation/   # Error/loading handling
+  features/
+    home/           # Landing page with quick actions
+    packages/       # Package hub with demo navigation
+    ui_showcase/    # FDL component library (4 sections)
+    settings/       # Theme toggle and app info
+    audio_demo/     # Audio engine demo
+    speech_demo/    # Speech engine demo
+    sentences_demo/ # Sentences engine demo
+    map_demo/       # Map engine demo
+    achievement_demo/ # Achievement engine demo
+    skill_tree_demo/  # Skill tree demo
+    printing_demo/    # Printing engine demo
+    forms_demo/       # Forms demo
+  shared/
+    services/       # Integration services (audio, speech, sentences, map)
+    widgets/        # Shared widgets (scaffold, section header, status indicator)
 ```
 
-## Package Dependencies
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| State Management | GetX for reactive state, dependency injection, and routing |
+| Integration Services | Wrappers around Fifty engines for simplified access |
+| Feature Bindings | Lazy-loaded dependency registration per feature module |
+
+---
+
+## Platform Support
+
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Partial | Audio limitations |
+
+---
+
+## Fifty Design Language Integration
+
+Fifty Demo is the integration showcase for Fifty Flutter Kit. It demonstrates how all packages work together in a single cohesive application.
 
 ### Fifty Flutter Kit Packages
 
-| Package | Version | Description |
-|---------|---------|-------------|
-| `fifty_tokens` | 0.2.0 | Design tokens (colors, typography, spacing) |
-| `fifty_theme` | 0.1.0 | Theme system (dark/light themes) |
-| `fifty_ui` | 0.5.0 | UI components (buttons, cards, inputs) |
-| `fifty_audio_engine` | 0.7.0 | Audio management (BGM, SFX, Voice channels) |
-| `fifty_speech_engine` | 0.1.0 | TTS/STT capabilities |
-| `fifty_sentences_engine` | 0.1.0 | Dialogue/sentence queue processing |
-| `fifty_map_engine` | 0.1.0 | Interactive grid map rendering |
+| Package | Purpose |
+|---------|---------|
+| `fifty_tokens` | Design tokens (colors, typography, spacing) |
+| `fifty_theme` | Theme system (dark/light mode) |
+| `fifty_ui` | UI components (buttons, cards, inputs, nav bar) |
+| `fifty_audio_engine` | Audio management (BGM, SFX, Voice channels) |
+| `fifty_speech_engine` | Text-to-Speech and Speech-to-Text |
+| `fifty_sentences_engine` | Dialogue and sentence queue processing |
+| `fifty_map_engine` | Interactive grid map rendering |
+| `fifty_printing_engine` | Multi-printer ESC/POS printing |
+| `fifty_skill_tree` | RPG-style skill progression |
+| `fifty_achievement_engine` | Achievement tracking and display |
+| `fifty_forms` | Form validation and input handling |
+| `fifty_connectivity` | Network connectivity monitoring |
+| `fifty_storage` | Persistent storage abstraction |
 
 ### Third-Party Dependencies
 
 | Package | Purpose |
 |---------|---------|
-| `get` | State management and dependency injection |
+| `get` | State management, routing, dependency injection |
 | `loader_overlay` | Global loading overlay |
 | `audioplayers` | Audio playback backend |
-
-## Demo Features
-
-### Home
-
-The landing page displays:
-- Ecosystem status with real-time package readiness
-- Feature navigation cards
-- System information (app version, architecture)
-
-### Map Demo
-
-Interactive grid-based map demonstration featuring:
-- Entity placement (characters, monsters, furniture)
-- Audio coordination (BGM, ambient SFX)
-- Map controls (zoom, pan, entity selection)
-- Entity info panel
-
-**Integration:** `fifty_map_engine` + `fifty_audio_engine`
-
-### Dialogue Demo
-
-Sentence queue processing with speech capabilities:
-- Pre-defined dialogue scenarios
-- TTS playback with auto-advance
-- STT voice input recognition
-- Sentence queue visualization
-- Speaker attribution
-
-**Integration:** `fifty_sentences_engine` + `fifty_speech_engine`
-
-### UI Showcase
-
-Comprehensive catalog of Fifty Design Language components:
-- **Buttons**: Primary, secondary, ghost, icon buttons
-- **Display**: Cards, hero sections, progress indicators
-- **Inputs**: Text fields, dropdowns, switches
-- **Feedback**: Toasts, dialogs, loading states
-
-**Integration:** `fifty_ui` + `fifty_tokens` + `fifty_theme`
-
-## Assets
-
-```
-assets/
-├── images/
-│   ├── rooms/        # Room/environment images
-│   ├── furniture/    # Furniture sprites
-│   ├── monsters/     # Monster sprites
-│   └── characters/   # Character sprites
-├── audio/
-│   └── sfx/          # Sound effects
-└── maps/             # Map data files
-```
-
-## License
-
-This project is part of Fifty Flutter Kit. See the root repository for license information.
+| `url_launcher` | External URL handling |
 
 ---
 
-**Built with the Fifty Design Language**
+## Version
+
+**Current:** 1.0.0
+
+---
+
+## License
+
+MIT License - see [LICENSE](../../LICENSE) for details.
+
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
