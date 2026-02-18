@@ -1,34 +1,31 @@
-# fifty_ui
+# Fifty UI
 
-```
-================================================================================
-  FIFTY UI COMPONENT LIBRARY
-  Kinetic Brutalism Design System
-================================================================================
-```
+FDL-styled Flutter component library implementing the Kinetic Brutalism design doctrine. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-FDL-styled Flutter components for Fifty Flutter Kit.
+| Gallery | Buttons | Inputs | Display |
+|:-------:|:-------:|:------:|:-------:|
+| <img src="screenshots/gallery_dark.png" width="200"> | <img src="screenshots/buttons_dark.png" width="200"> | <img src="screenshots/inputs_dark.png" width="200"> | <img src="screenshots/display_dark.png" width="200"> |
 
-## Overview
+---
 
-`fifty_ui` provides a comprehensive set of widgets that follow the Fifty Design Language (FDL) specification. Built on top of `fifty_tokens` and `fifty_theme`, these components embody the **Kinetic Brutalism** doctrine:
+## Features
 
-> **Heavy structure. Fast motion. Raw feedback.**
-
-### Core Principles
-
-| Principle | Implementation |
-|-----------|----------------|
-| Crimson glow focus states | Signature FDL visual effect on all interactive elements |
-| Zero elevation | No drop shadows - only outlines and glows |
-| Motion animations | FDL timing tokens (150ms fast, 300ms compiling) |
-| Dark-first design | Optimized for OLED displays, voidBlack background |
+- **Buttons** - Primary, secondary, outline, ghost, and danger variants with glitch and loading states
+- **Inputs** - Text fields, sliders, switches, dropdowns, checkboxes, and radio controls with FDL terminal styling
+- **Controls** - Segmented control and nav pill for selection and filtering patterns
+- **Display** - Stat cards, list tiles, badges, chips, avatars, progress bars, data slates, and loading indicators
+- **Feedback** - Snackbar toasts, modal dialogs, and hover tooltips with kinetic animations
+- **Layout** - Card containers with halftone texture, scanline effects, and bento-style hover states
+- **Navigation** - Floating glassmorphism nav bar with Dynamic Island pill style
+- **Effects** - KineticEffect, GlitchEffect, GlowContainer, and HalftoneOverlay as composable primitives
+- **Dark-first** - Optimized for OLED displays with voidBlack backgrounds and crimson glow focus states
+- **WCAG 2.1 AA** - Accessible contrast ratios, reduced motion support, required tooltips on icon buttons
 
 ---
 
 ## Installation
 
-### Path Dependency (Monorepo)
+Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
@@ -62,8 +59,6 @@ dependencies:
 
 ## Quick Start
 
-### 1. Wrap your app with FiftyTheme
-
 ```dart
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_ui/fifty_ui.dart';
@@ -76,11 +71,8 @@ void main() {
     ),
   );
 }
-```
 
-### 2. Use the components
-
-```dart
+// Use components directly
 FiftyButton(
   label: 'DEPLOY',
   onPressed: () => handleDeploy(),
@@ -93,13 +85,277 @@ FiftyButton(
 
 ---
 
-## Component Catalog
+## Architecture
+
+```
+fifty_ui
+├── buttons/
+│   ├── FiftyButton          — Primary action button (5 variants)
+│   ├── FiftyIconButton      — Circular icon button with tooltip
+│   └── FiftyLabeledIconButton — Icon button with inline label
+├── inputs/
+│   ├── FiftyTextField       — Terminal command-line text input
+│   ├── FiftySwitch          — Kinetic toggle with snap animation
+│   ├── FiftySlider          — Brutalist range selector (square thumb)
+│   ├── FiftyDropdown        — Terminal-styled dropdown selector
+│   ├── FiftyCheckbox        — Multi-select boolean control
+│   ├── FiftyRadio           — Single-select option control
+│   └── FiftyRadioCard       — Card-style radio selection
+├── controls/
+│   ├── FiftySegmentedControl — Pill-style segmented control
+│   └── FiftyNavPill         — Navigation pill indicator
+├── containers/
+│   └── FiftyCard            — Bento-style container with hover effects
+├── display/
+│   ├── FiftyStatCard        — KPI metric card with trend indicators
+│   ├── FiftyListTile        — Transaction and settings list item
+│   ├── FiftyProgressCard    — Goal progress card with gradient fill
+│   ├── FiftyBadge           — Status indicator pill with glow
+│   ├── FiftyChip            — Tag/label with optional delete
+│   ├── FiftyDivider         — Themed horizontal or vertical divider
+│   ├── FiftyDataSlate       — Terminal key-value display panel
+│   ├── FiftyAvatar          — Circular avatar with fallback initials
+│   ├── FiftyProgressBar     — Linear progress with crimson fill
+│   ├── FiftyLoadingIndicator — Text-based loading (no spinners)
+│   ├── FiftyInfoRow         — Labeled info display row
+│   ├── FiftySectionHeader   — Section heading with optional action
+│   ├── FiftySettingsRow     — Settings list row with value display
+│   └── FiftyStatusIndicator — Dot-based status icon
+├── feedback/
+│   ├── FiftySnackbar        — Toast notification with variants
+│   ├── FiftyDialog          — Modal dialog with animated border glow
+│   └── FiftyTooltip         — Hover-triggered tooltip wrapper
+├── organisms/
+│   ├── FiftyHero            — Dramatic headline with Manrope font
+│   └── FiftyNavBar          — Floating glassmorphism nav bar
+├── molecules/
+│   └── FiftyCodeBlock       — Terminal code display with syntax highlight
+└── utils/
+    ├── KineticEffect        — Hover/press scale animation wrapper
+    ├── GlitchEffect         — RGB chromatic aberration effect
+    ├── GlowContainer        — Reusable glow animation wrapper
+    ├── HalftonePainter      — CustomPainter for halftone dot patterns
+    ├── HalftoneOverlay      — Widget wrapper for halftone textures
+    └── FiftyCursor          — Custom cursor styling utilities
+```
+
+### Core Components
+
+| Component | Category | Description |
+|-----------|----------|-------------|
+| `FiftyButton` | Buttons | Primary action button with 5 variants |
+| `FiftyTextField` | Inputs | Terminal-style text input with 48px height |
+| `FiftyCard` | Containers | Bento card with kinetic hover effects |
+| `FiftyNavBar` | Navigation | Floating glassmorphism navigation bar |
+| `FiftySnackbar` | Feedback | Toast notification with semantic variants |
+| `FiftyDialog` | Feedback | Modal dialog with border glow animation |
+
+---
+
+## API Reference
 
 ### Buttons
 
-#### FiftyButton
+| Widget | Description |
+|--------|-------------|
+| `FiftyButton` | Primary action button. Variants: `primary`, `secondary`, `outline`, `ghost`, `danger`. Supports glitch effect, loading state, leading/trailing icons, and expanded width. |
+| `FiftyIconButton` | Circular icon button. Requires `tooltip` for accessibility. |
+| `FiftyLabeledIconButton` | Icon button with an inline text label. |
 
-Primary action button following the "Kinetic Switch" specification.
+**FiftyButton Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `label` | String | required | Button text (rendered uppercase) |
+| `onPressed` | VoidCallback? | null | Tap callback |
+| `variant` | FiftyButtonVariant | primary | Visual style |
+| `size` | FiftyButtonSize | medium | Height: small(32), medium(40), large(48) |
+| `shape` | FiftyButtonShape | sharp | Border radius: sharp(4px), pill(100px) |
+| `isGlitch` | bool | false | RGB split effect on hover |
+| `loading` | bool | false | Show animated dots instead of label |
+| `icon` | IconData? | null | Leading icon |
+| `trailingIcon` | IconData? | null | Trailing icon (e.g., arrow) |
+| `expanded` | bool | false | Fill available width |
+
+---
+
+### Inputs
+
+| Widget | Description |
+|--------|-------------|
+| `FiftyTextField` | Text input styled as a terminal command line. Supports multiple border styles, prefix styles (chevron, comment), and cursor types (line, block, underscore). |
+| `FiftySwitch` | Kinetic toggle switch with 150ms snap animation. Sizes: `small`, `medium`, `large`. |
+| `FiftySlider` | Brutalist range selector with square thumb and crimson active track. Supports discrete divisions and custom label formatting. |
+| `FiftyDropdown` | Terminal-styled dropdown with animated chevron and slide-down menu. Generic type support. |
+| `FiftyCheckbox` | Multi-select boolean control with FDL v2 styling. |
+| `FiftyRadio` | Single-select option control with FDL v2 styling. |
+| `FiftyRadioCard` | Card-style radio with icon, kinetic hover animation, and crimson glow on selection. |
+
+**FiftyTextField Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `shape` | FiftyTextFieldShape | standard | Shape: standard (xl radius), rounded (pill) |
+| `borderStyle` | FiftyBorderStyle | full | Border rendering: full, bottom, none |
+| `prefixStyle` | FiftyPrefixStyle? | null | Prefix character: chevron(">"), comment("//"), custom, none |
+| `customPrefix` | String? | null | Custom prefix when prefixStyle is custom |
+| `cursorStyle` | FiftyCursorStyle | line | Cursor type: line, block, underscore |
+| `terminalStyle` | bool | false | Legacy: enables chevron prefix + bottom border |
+
+**FiftySwitch Sizes:**
+
+| Size | Dimensions | Thumb Size |
+|------|------------|------------|
+| `small` | 36x20 | 16 |
+| `medium` | 48x24 | 20 |
+| `large` | 60x32 | 28 |
+
+**FiftySlider Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `value` | double | required | Current slider value |
+| `onChanged` | ValueChanged<double>? | required | Value change callback |
+| `min` | double | 0.0 | Minimum value |
+| `max` | double | 1.0 | Maximum value |
+| `divisions` | int? | null | Discrete steps (null = continuous) |
+| `label` | String? | null | Label above slider |
+| `showLabel` | bool | false | Show value label above thumb |
+| `labelBuilder` | String Function(double)? | null | Custom value formatter |
+
+**FiftyDropdown Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `items` | List<FiftyDropdownItem<T>> | required | Selectable items |
+| `value` | T? | null | Currently selected value |
+| `onChanged` | ValueChanged<T?>? | required | Selection callback |
+| `label` | String? | null | Label above dropdown |
+| `hint` | String? | null | Placeholder when no selection |
+| `enabled` | bool | true | Enable/disable interaction |
+
+---
+
+### Controls
+
+| Widget | Description |
+|--------|-------------|
+| `FiftySegmentedControl` | Pill-style segmented control for toggling between options. New in v2. |
+| `FiftyNavPill` | Navigation pill indicator for use inside custom nav layouts. |
+
+---
+
+### Containers
+
+| Widget | Description |
+|--------|-------------|
+| `FiftyCard` | Bento-style data container with optional halftone texture, scanline hover effect, selected state with crimson border and glow, and kinetic scale on hover. |
+
+**FiftyCard Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `hasTexture` | bool | false | Halftone dot pattern overlay |
+| `hoverScale` | double | 1.02 | Scale factor on hover (1.0 to disable) |
+| `scanlineOnHover` | bool | true | Sweeping scanline effect on hover |
+| `selected` | bool | false | Crimson border + glow state |
+| `onTap` | VoidCallback? | null | Tap callback |
+
+---
+
+### Display
+
+| Widget | Description |
+|--------|-------------|
+| `FiftyStatCard` | KPI metric card with trend indicator arrows (up/down/neutral), icon container, and optional highlight variant. |
+| `FiftyListTile` | List item for transactions and settings. Supports two-line trailing text, colored leading icon container, and optional divider. |
+| `FiftyProgressCard` | Goal progress card with gradient fill progress bar, percentage display, and icon container. |
+| `FiftyBadge` | Status indicator pill with optional glow animation. Variants: `primary`, `success`, `warning`, `error`, `neutral`. Factory constructors: `.tech()`, `.status()`, `.ai()`. |
+| `FiftyChip` | Tag/label component with optional delete action. |
+| `FiftyDivider` | Themed horizontal or vertical divider. |
+| `FiftyDataSlate` | Terminal-style key-value display panel for system info. |
+| `FiftyAvatar` | Circular avatar with image or fallback initials. |
+| `FiftyProgressBar` | Linear progress indicator with crimson fill and optional label. |
+| `FiftyLoadingIndicator` | Text-based loading indicator. Styles: `dots`, `pulse`, `static`, `sequence`. No spinners per FDL. |
+| `FiftyInfoRow` | Labeled info display row for detail views. |
+| `FiftySectionHeader` | Section heading with optional trailing action widget. |
+| `FiftySettingsRow` | Settings list row with key-value display. |
+| `FiftyStatusIndicator` | Dot-based status icon with semantic color variants. |
+
+**FiftyStatCard Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `label` | String | required | Metric label text |
+| `value` | String | required | Metric value (formatted) |
+| `icon` | IconData | required | Icon in circular container |
+| `trend` | FiftyStatTrend? | null | Trend direction: up, down, neutral |
+| `trendValue` | String? | null | Trend percentage (e.g., "12%") |
+| `iconColor` | Color? | null | Custom icon color |
+| `highlight` | bool | false | Use primary background variant |
+
+**FiftyListTile Properties:**
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `title` | String | required | Primary text |
+| `subtitle` | String? | null | Secondary text |
+| `leading` | Widget? | null | Custom leading widget |
+| `leadingIcon` | IconData? | null | Icon (alternative to leading) |
+| `leadingIconColor` | Color? | null | Icon color |
+| `leadingIconBackgroundColor` | Color? | null | Icon background color |
+| `trailing` | Widget? | null | Custom trailing widget |
+| `trailingText` | String? | null | Trailing text (e.g., amount) |
+| `trailingSubtext` | String? | null | Trailing subtext (e.g., date) |
+| `trailingTextColor` | Color? | null | Custom trailing text color |
+| `onTap` | VoidCallback? | null | Tap callback |
+| `showDivider` | bool | false | Show bottom divider |
+
+**FiftyLoadingIndicator Styles:**
+
+| Style | Description |
+|-------|-------------|
+| `dots` | Animated dots sequence: "." -> ".." -> "..." |
+| `pulse` | Text opacity pulsing effect |
+| `static` | No animation (for reduced motion) |
+| `sequence` | Cycles through custom text sequences |
+
+---
+
+### Feedback
+
+| Widget | Description |
+|--------|-------------|
+| `FiftySnackbar` | Toast notification. Call via `FiftySnackbar.show(context, message: ..., variant: ...)`. Variants: `success`, `error`, `warning`, `info`. |
+| `FiftyDialog` | Modal dialog with animated border glow. Display via `showFiftyDialog(context, builder: ...)`. |
+| `FiftyTooltip` | Hover-triggered tooltip wrapper widget. |
+
+---
+
+### Navigation
+
+| Widget | Description |
+|--------|-------------|
+| `FiftyNavBar` | Floating "Dynamic Island" style navigation bar with glassmorphism (20px blur + 50% black opacity). Supports `pill` and `standard` border radius styles. Active item has crimson underbar indicator. |
+
+---
+
+### Effects and Utils
+
+| Widget/Class | Description |
+|--------------|-------------|
+| `KineticEffect` | Hover/press scale animation wrapper. Configurable `hoverScale` (default 1.02) and `pressScale` (default 0.95). |
+| `GlitchEffect` | RGB chromatic aberration effect. Configurable `intensity`, `offset`, `triggerOnHover`, `triggerOnMount`. |
+| `GlowContainer` | Reusable crimson glow animation wrapper. |
+| `HalftonePainter` | CustomPainter for halftone dot patterns. |
+| `HalftoneOverlay` | Widget wrapper that applies halftone texture over a child. |
+| `FiftyCursor` | Custom cursor styling utilities. |
+
+---
+
+## Usage Patterns
+
+### Button Variants
 
 ```dart
 // Primary with glitch effect
@@ -126,7 +382,7 @@ FiftyButton(
   variant: FiftyButtonVariant.outline,
 )
 
-// With trailing icon (arrow)
+// With trailing icon
 FiftyButton(
   label: 'GET STARTED',
   onPressed: () => handleStart(),
@@ -142,45 +398,7 @@ FiftyButton(
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `label` | String | required | Button text (rendered uppercase) |
-| `onPressed` | VoidCallback? | null | Tap callback |
-| `variant` | FiftyButtonVariant | primary | Visual style |
-| `size` | FiftyButtonSize | medium | Height: small(32), medium(40), large(48) |
-| `shape` | FiftyButtonShape | sharp | Border radius: sharp(4px), pill(100px) |
-| `isGlitch` | bool | false | RGB split effect on hover |
-| `loading` | bool | false | Show animated dots instead of label |
-| `icon` | IconData? | null | Leading icon |
-| `trailingIcon` | IconData? | null | Trailing icon (e.g., arrow) |
-| `expanded` | bool | false | Fill available width |
-
-**Variants:** `primary`, `secondary`, `outline`, `ghost`, `danger`
-
----
-
-#### FiftyIconButton
-
-Circular icon button with required tooltip for accessibility.
-
-```dart
-FiftyIconButton(
-  icon: Icons.settings,
-  tooltip: 'Open settings',
-  onPressed: () => openSettings(),
-  variant: FiftyIconButtonVariant.primary,
-)
-```
-
----
-
-### Inputs
-
-#### FiftyTextField
-
-Text input styled as a terminal command line.
+### Terminal Input Styles
 
 ```dart
 // Standard with full border
@@ -215,22 +433,7 @@ FiftyTextField(
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `shape` | FiftyTextFieldShape | standard | Shape: standard (xl radius), rounded (pill) |
-| `borderStyle` | FiftyBorderStyle | full | Border rendering: full, bottom, none |
-| `prefixStyle` | FiftyPrefixStyle? | null | Prefix character: chevron(">"), comment("//"), custom, none |
-| `customPrefix` | String? | null | Custom prefix when prefixStyle is custom |
-| `cursorStyle` | FiftyCursorStyle | line | Cursor type: line, block, underscore |
-| `terminalStyle` | bool | false | Legacy: enables chevron prefix + bottom border |
-
----
-
-#### FiftyRadioCard
-
-Card-style radio selection for options like theme mode.
+### Radio Card Selection
 
 ```dart
 Row(
@@ -258,100 +461,9 @@ Row(
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | T | required | This card's value |
-| `groupValue` | T? | required | Currently selected value in group |
-| `onChanged` | ValueChanged<T?>? | required | Selection callback |
-| `icon` | IconData | required | Icon displayed in card |
-| `label` | String | required | Label below icon |
-| `enabled` | bool | true | Enable/disable interaction |
-
-**Features:**
-- Generic type support (works with enums, strings, etc.)
-- Selected state shows primary border with glow effect
-- Hover state scales icon with kinetic animation
-- Dark/light mode support
-
----
-
-### Form Components (v0.4.0)
-
-#### FiftySwitch
-
-Kinetic toggle switch with snap animation.
+### Slider with Custom Formatter
 
 ```dart
-// Basic switch
-FiftySwitch(
-  value: _isEnabled,
-  onChanged: (value) => setState(() => _isEnabled = value),
-)
-
-// With label
-FiftySwitch(
-  value: _notifications,
-  onChanged: (value) => setState(() => _notifications = value),
-  label: 'Enable notifications',
-)
-
-// Size variants
-FiftySwitch(
-  value: _compact,
-  onChanged: (value) => setState(() => _compact = value),
-  size: FiftySwitchSize.small,
-)
-```
-
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | bool | required | Current switch state |
-| `onChanged` | ValueChanged<bool>? | required | Toggle callback |
-| `label` | String? | null | Label displayed next to switch |
-| `enabled` | bool | true | Enable/disable interaction |
-| `size` | FiftySwitchSize | medium | Switch size variant |
-
-**Sizes:**
-
-| Size | Dimensions | Thumb Size |
-|------|------------|------------|
-| `small` | 36x20 | 16 |
-| `medium` | 48x24 | 20 |
-| `large` | 60x32 | 28 |
-
-**Features:**
-- 150ms snap animation with overshoot curve
-- Crimson thumb when active, HyperChrome when inactive
-- Focus glow on hover
-- Gunmetal track with subtle border
-
----
-
-#### FiftySlider
-
-Brutalist range selector with square thumb.
-
-```dart
-// Basic slider
-FiftySlider(
-  value: _volume,
-  onChanged: (value) => setState(() => _volume = value),
-)
-
-// With label and value display
-FiftySlider(
-  value: _brightness,
-  onChanged: (value) => setState(() => _brightness = value),
-  min: 0,
-  max: 100,
-  label: 'Brightness',
-  showLabel: true,
-)
-
 // Discrete divisions with custom formatter
 FiftySlider(
   value: _level,
@@ -364,55 +476,9 @@ FiftySlider(
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | double | required | Current slider value |
-| `onChanged` | ValueChanged<double>? | required | Value change callback |
-| `min` | double | 0.0 | Minimum value |
-| `max` | double | 1.0 | Maximum value |
-| `divisions` | int? | null | Discrete steps (null = continuous) |
-| `label` | String? | null | Label above slider |
-| `showLabel` | bool | false | Show value label above thumb |
-| `labelBuilder` | String Function(double)? | null | Custom value formatter |
-| `enabled` | bool | true | Enable/disable interaction |
-
-**Features:**
-- Square thumb with rounded corners (brutalist aesthetic)
-- Crimson active track fill
-- Value label appears on hover/drag
-- Kinetic scale animation on drag
-- Focus glow on interaction
-
----
-
-#### FiftyDropdown
-
-Terminal-styled dropdown selector.
+### Dropdown with Icons
 
 ```dart
-// Basic dropdown
-FiftyDropdown<String>(
-  value: _selectedLanguage,
-  onChanged: (value) => setState(() => _selectedLanguage = value),
-  items: [
-    FiftyDropdownItem(value: 'dart', label: 'Dart'),
-    FiftyDropdownItem(value: 'kotlin', label: 'Kotlin'),
-    FiftyDropdownItem(value: 'swift', label: 'Swift'),
-  ],
-)
-
-// With label and hint
-FiftyDropdown<String>(
-  value: _selected,
-  onChanged: (value) => setState(() => _selected = value),
-  items: languages,
-  label: 'Language',
-  hint: 'Select a language',
-)
-
-// With icons
 FiftyDropdown<String>(
   value: _status,
   onChanged: (value) => setState(() => _status = value),
@@ -424,71 +490,9 @@ FiftyDropdown<String>(
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `items` | List<FiftyDropdownItem<T>> | required | Selectable items |
-| `value` | T? | null | Currently selected value |
-| `onChanged` | ValueChanged<T?>? | required | Selection callback |
-| `label` | String? | null | Label above dropdown |
-| `hint` | String? | null | Placeholder when no selection |
-| `enabled` | bool | true | Enable/disable interaction |
-
-**FiftyDropdownItem Properties:**
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `value` | T | Item value |
-| `label` | String | Display text |
-| `icon` | IconData? | Optional leading icon |
-
-**Features:**
-- Terminal-styled appearance matching FiftyTextField
-- Animated chevron rotation on open
-- Fast slide-down menu animation (150ms)
-- Crimson highlight on hover
-- Check icon for selected item
-- Max height constraint with scroll
-
----
-
-### Containers
-
-#### FiftyCard
-
-Bento-style data container with kinetic hover effects.
+### KPI Dashboard with Stat Cards
 
 ```dart
-FiftyCard(
-  onTap: () => selectItem(),
-  selected: isSelected,
-  scanlineOnHover: true,
-  hasTexture: true,
-  hoverScale: 1.02,
-  child: CardContent(),
-)
-```
-
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `hasTexture` | bool | false | Halftone dot pattern overlay |
-| `hoverScale` | double | 1.02 | Scale factor on hover (1.0 to disable) |
-| `scanlineOnHover` | bool | true | Sweeping scanline effect on hover |
-| `selected` | bool | false | Crimson border + glow state |
-
----
-
-### Display
-
-#### FiftyStatCard
-
-Metric display card with trend indicators for KPIs and dashboards.
-
-```dart
-// Standard stat card
 FiftyStatCard(
   label: 'Total Views',
   value: '45.2k',
@@ -504,45 +508,11 @@ FiftyStatCard(
   icon: Icons.account_balance_wallet,
   highlight: true,
 )
-
-// With custom icon color
-FiftyStatCard(
-  label: 'Active Users',
-  value: '1,234',
-  icon: Icons.people,
-  iconColor: Colors.blue,
-  trend: FiftyStatTrend.down,
-  trendValue: '5%',
-)
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `label` | String | required | Metric label text |
-| `value` | String | required | Metric value (formatted) |
-| `icon` | IconData | required | Icon in circular container |
-| `trend` | FiftyStatTrend? | null | Trend direction: up, down, neutral |
-| `trendValue` | String? | null | Trend percentage (e.g., "12%") |
-| `iconColor` | Color? | null | Custom icon color |
-| `highlight` | bool | false | Use primary background variant |
-
-**Features:**
-- Trend arrows with semantic colors (green up, red down)
-- Icon in subtle background container
-- Highlight variant for emphasis
-- Fixed height (~128px) per FDL v2 spec
-- Dark/light mode support
-
----
-
-#### FiftyListTile
-
-Styled list item for transactions, settings, and list-based content.
+### Transaction List Item
 
 ```dart
-// Transaction item
 FiftyListTile(
   leadingIcon: Icons.subscriptions,
   leadingIconColor: Colors.blue,
@@ -553,76 +523,11 @@ FiftyListTile(
   trailingSubtext: 'Today',
   onTap: () => navigateToDetail(),
 )
-
-// Settings item with chevron
-FiftyListTile(
-  leadingIcon: Icons.notifications,
-  title: 'Notifications',
-  subtitle: 'Push alerts enabled',
-  trailing: Icon(Icons.chevron_right),
-  onTap: () => openSettings(),
-)
-
-// Deposit with custom color
-FiftyListTile(
-  leadingIcon: Icons.arrow_downward,
-  leadingIconColor: Colors.green,
-  title: 'Deposit',
-  subtitle: 'Freelance Work',
-  trailingText: '+\$850.00',
-  trailingTextColor: Colors.green,
-  trailingSubtext: 'Yesterday',
-  showDivider: true,
-)
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | String | required | Primary text |
-| `subtitle` | String? | null | Secondary text |
-| `leading` | Widget? | null | Custom leading widget |
-| `leadingIcon` | IconData? | null | Icon (alternative to leading) |
-| `leadingIconColor` | Color? | null | Icon color |
-| `leadingIconBackgroundColor` | Color? | null | Icon background color |
-| `trailing` | Widget? | null | Custom trailing widget |
-| `trailingText` | String? | null | Trailing text (e.g., amount) |
-| `trailingSubtext` | String? | null | Trailing subtext (e.g., date) |
-| `trailingTextColor` | Color? | null | Custom trailing text color |
-| `onTap` | VoidCallback? | null | Tap callback |
-| `showDivider` | bool | false | Show bottom divider |
-
-**Features:**
-- Leading icon in circular colored container
-- Two-line trailing text for transaction displays
-- Hover state with subtle background animation
-- Optional bottom divider
-- Dark/light mode support
-
----
-
-#### FiftyProgressCard
-
-Progress bar card for goals and metrics with gradient fill.
+### Progress Card with Custom Gradient
 
 ```dart
-// Basic progress card
-FiftyProgressCard(
-  icon: Icons.trending_up,
-  title: 'Weekly Goal',
-  progress: 0.75,
-  subtitle: '12 sales remaining to reach target',
-)
-
-// Without percentage display
-FiftyProgressCard(
-  title: 'Upload Progress',
-  progress: 0.45,
-  showPercentage: false,
-)
-
-// Custom gradient
 FiftyProgressCard(
   title: 'Storage Used',
   progress: 0.82,
@@ -633,139 +538,20 @@ FiftyProgressCard(
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | String | required | Card title |
-| `progress` | double | required | Progress value (0.0 to 1.0) |
-| `icon` | IconData? | null | Icon in background container |
-| `subtitle` | String? | null | Description text below progress |
-| `showPercentage` | bool | true | Show percentage in top-right |
-| `progressGradient` | Gradient? | null | Custom progress bar gradient |
-
-**Features:**
-- Slate-grey background per FDL v2 spec
-- Default gradient: powder-blush to primary (burgundy)
-- Smooth animation on progress changes
-- Icon in circular container with subtle background
-- Progress value clamped between 0.0 and 1.0
-
----
-
-#### FiftyBadge
-
-Status indicator pills with optional glow animation.
+### Badges
 
 ```dart
-// Standard badge
-FiftyBadge(
-  label: 'LIVE',
-  variant: FiftyBadgeVariant.success,
-  showGlow: true,
-)
+FiftyBadge(label: 'LIVE', variant: FiftyBadgeVariant.success, showGlow: true)
 
-// Factory constructors for common patterns
-FiftyBadge.tech('FLUTTER'),   // Gray/hyperChrome border
-FiftyBadge.status('ONLINE'),  // Green with glow
-FiftyBadge.ai('IGRIS'),       // IgrisGreen with glow
+// Factory constructors
+FiftyBadge.tech('FLUTTER')  // HyperChrome border, no glow
+FiftyBadge.status('ONLINE') // Success green with glow
+FiftyBadge.ai('IGRIS')      // IgrisGreen with glow
 ```
 
-**Variants:** `primary`, `success`, `warning`, `error`, `neutral`
-
-**Factory Constructors:**
-
-| Factory | Color | Glow | Use Case |
-|---------|-------|------|----------|
-| `.tech()` | HyperChrome | No | Technology labels |
-| `.status()` | Success green | Yes | Status indicators |
-| `.ai()` | IgrisGreen | Yes | AI-related badges |
-
----
-
-#### FiftyChip
-
-Tag/label component with delete action.
+### Sequence Loading Indicator
 
 ```dart
-FiftyChip(
-  label: 'DEPLOYED',
-  variant: FiftyChipVariant.success,
-  onDeleted: () => removeTag(),
-)
-```
-
----
-
-#### FiftyDivider
-
-Themed horizontal or vertical divider.
-
-```dart
-FiftyDivider()
-FiftyDivider(vertical: true, height: 40)
-```
-
----
-
-#### FiftyDataSlate
-
-Terminal-style key-value display panel.
-
-```dart
-FiftyDataSlate(
-  title: 'SYSTEM STATUS',
-  data: {
-    'CPU': '45%',
-    'Memory': '8.2 GB',
-    'Uptime': '72h 14m',
-  },
-)
-```
-
----
-
-#### FiftyAvatar
-
-Circular avatar with image or fallback initials.
-
-```dart
-FiftyAvatar(
-  imageUrl: 'https://example.com/avatar.jpg',
-  fallbackText: 'JD',
-  size: 48,
-)
-```
-
----
-
-#### FiftyProgressBar
-
-Linear progress indicator with crimson fill.
-
-```dart
-FiftyProgressBar(
-  value: 0.65,
-  label: 'UPLOADING',
-  showPercentage: true,
-)
-```
-
----
-
-#### FiftyLoadingIndicator
-
-Text-based loading indicator (no spinners per FDL).
-
-```dart
-// Animated dots: "> LOADING." -> "> LOADING.." -> "> LOADING..."
-FiftyLoadingIndicator(
-  text: 'LOADING',
-  style: FiftyLoadingStyle.dots,
-  size: FiftyLoadingSize.medium,
-)
-
-// Sequence mode: cycles through custom messages
 FiftyLoadingIndicator(
   style: FiftyLoadingStyle.sequence,
   sequences: [
@@ -777,36 +563,7 @@ FiftyLoadingIndicator(
 )
 ```
 
-**Styles:**
-
-| Style | Description |
-|-------|-------------|
-| `dots` | Animated dots sequence: "." -> ".." -> "..." |
-| `pulse` | Text opacity pulsing effect |
-| `static` | No animation (for reduced motion) |
-| `sequence` | Cycles through custom text sequences |
-
----
-
-### Feedback
-
-#### FiftySnackbar
-
-Toast notification with semantic variants.
-
-```dart
-FiftySnackbar.show(
-  context,
-  message: 'Deployment successful!',
-  variant: FiftySnackbarVariant.success,
-);
-```
-
----
-
-#### FiftyDialog
-
-Modal dialog with animated border glow.
+### Modal Dialog
 
 ```dart
 showFiftyDialog(
@@ -829,26 +586,7 @@ showFiftyDialog(
 );
 ```
 
----
-
-#### FiftyTooltip
-
-Hover-triggered tooltip wrapper.
-
-```dart
-FiftyTooltip(
-  message: 'Click to deploy',
-  child: FiftyButton(...),
-)
-```
-
----
-
-### Navigation
-
-#### FiftyNavBar
-
-Floating "Dynamic Island" style navigation bar with glassmorphism.
+### Floating Navigation Bar
 
 ```dart
 FiftyNavBar(
@@ -863,18 +601,7 @@ FiftyNavBar(
 )
 ```
 
-**Features:**
-- Glassmorphism: 20px blur + 50% black opacity
-- Pill or standard border radius
-- Active item crimson underbar indicator
-
----
-
-### Typography
-
-#### FiftyHero
-
-Monument Extended headline text for dramatic impact.
+### Headline Typography
 
 ```dart
 FiftyHero(
@@ -894,19 +621,7 @@ FiftyHeroSection(
 )
 ```
 
-**Sizes:**
-
-| Size | Font Size | Use Case |
-|------|-----------|----------|
-| `display` | 64px | Maximum impact headlines |
-| `h1` | 48px | Major headlines |
-| `h2` | 32px | Section headers |
-
----
-
-#### FiftyCodeBlock
-
-Terminal-style code display with syntax highlighting.
+### Code Block
 
 ```dart
 FiftyCodeBlock(
@@ -921,96 +636,33 @@ void main() {
 )
 ```
 
-**Syntax Highlighting Colors:**
-- Keywords: Crimson
-- Strings: IgrisGreen
-- Comments: HyperChrome (italic)
-- Numbers: Warning (amber)
-
----
-
-### Effects
-
-#### KineticEffect
-
-Reusable hover/press scale animation wrapper.
+### Composable Effects
 
 ```dart
+// Kinetic hover/press
 KineticEffect(
   onTap: () => handleTap(),
   hoverScale: 1.02,
   pressScale: 0.95,
   child: MyCard(),
 )
-```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `hoverScale` | double | 1.02 | Scale on hover |
-| `pressScale` | double | 0.95 | Scale on press |
-| `enabled` | bool | true | Enable/disable effect |
-
----
-
-#### GlitchEffect
-
-RGB chromatic aberration effect.
-
-```dart
+// RGB glitch on hover
 GlitchEffect(
   triggerOnHover: true,
-  triggerOnMount: false,
   intensity: 0.8,
   offset: 3.0,
   child: Text('GLITCH'),
 )
 ```
 
-**Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `triggerOnHover` | bool | false | Trigger on mouse enter |
-| `triggerOnMount` | bool | false | Trigger on widget mount |
-| `intensity` | double | 1.0 | Effect visibility (0.0-1.0) |
-| `offset` | double | 3.0 | RGB channel separation pixels |
-
----
-
-## Design Philosophy: Kinetic Brutalism
-
-The FDL defines three core tenets:
-
-### 1. Heavy Structure
-- Bold, monospace typography (JetBrains Mono)
-- Monument Extended for headlines
-- Solid gunmetal containers with crisp borders
-- No rounded corners except on pills (4px standard, 100px pill)
-
-### 2. Fast Motion
-- Animations complete in 150ms (fast) or 300ms (compiling)
-- Scale transformations feel "weighty" (0.95 press, 1.02 hover)
-- No spinners - text sequences convey loading
-- Instant color transitions on hover
-
-### 3. Raw Feedback
-- Crimson glow on focus (2px border + box shadow)
-- Scanline effects on card hover
-- RGB glitch effects for emphasis
-- No drop shadows - only outlines and glows
-
----
-
-## Theme Access Pattern
+### Theme Access Pattern
 
 All components access theme via `FiftyThemeExtension`:
 
 ```dart
 final theme = Theme.of(context);
 final fifty = theme.extension<FiftyThemeExtension>()!;
-final colorScheme = theme.colorScheme;
 
 // Access FDL tokens
 fifty.focusGlow      // Crimson box shadow
@@ -1023,48 +675,41 @@ fifty.igrisGreen     // AI indicator green
 
 ---
 
-## Accessibility
+## Platform Support
 
-All components support:
-- Reduced motion preferences (`MediaQuery.disableAnimations`)
-- Semantic labels for screen readers
-- Required tooltips on icon buttons
-- Focus visible states
-- Sufficient color contrast ratios
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     | Optimized for OLED displays |
+| iOS      | Yes     | Full gesture and animation support |
+| macOS    | Yes     | Hover states active on desktop |
+| Linux    | Yes     | Hover states active on desktop |
+| Windows  | Yes     | Hover states active on desktop |
+| Web      | Yes     | Hover states active via mouse |
 
----
-
-## Example App
-
-See the `example/` directory for a complete gallery app demonstrating all components.
-
-```bash
-cd example
-flutter run
-```
+All hover-dependent features (KineticEffect, GlitchEffect, scanline on FiftyCard) activate on desktop and web platforms where mouse input is available.
 
 ---
 
-## Dependencies
+## Fifty Design Language Integration
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `flutter` | >=3.0.0 | Flutter SDK |
-| `fifty_tokens` | path | Design tokens |
-| `fifty_theme` | path | Theme integration |
-| `flutter_animate` | ^4.5.0 | Animation utilities |
+This package is part of Fifty Flutter Kit:
+
+- **FDL v2 Kinetic Brutalism** - Implements the full design doctrine: heavy structure (bold borders, no drop shadows), fast motion (150ms / 300ms FDL timing tokens), and raw feedback (crimson glow focus states, scanlines, RGB glitch effects)
+- **fifty_tokens dependency** - All spacing, color, radius, and duration values are sourced from `fifty_tokens` for consistency across the kit
+- **fifty_theme dependency** - Components read `FiftyThemeExtension` from the widget tree for focus glow, animation curves, and semantic colors
+- **Dark-first with light mode** - All components respond to `ThemeMode` automatically; dark mode uses voidBlack backgrounds, light mode adapts contrast appropriately
+- **No spinners** - Loading states use text-based animations (animated dots, pulse, sequence) per FDL specification
+
+---
+
+## Version
+
+**Current:** 0.6.0
 
 ---
 
 ## License
 
-MIT License - See LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
----
-
-```
-================================================================================
-  Heavy structure. Fast motion. Raw feedback.
-  Built for Fifty Flutter Kit.
-================================================================================
-```
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).

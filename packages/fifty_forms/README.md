@@ -1,6 +1,12 @@
 # Fifty Forms
 
-Production-ready form building with validation, multi-step wizards, and draft persistence for the Fifty Flutter Kit.
+Production-ready form building with validation, multi-step wizards, and draft persistence. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+
+| Home | Login Form |
+|:----:|:----------:|
+| <img src="screenshots/home_dark.png" width="200"> | <img src="screenshots/login_form_dark.png" width="200"> |
+
+---
 
 ## Features
 
@@ -13,6 +19,8 @@ Production-ready form building with validation, multi-step wizards, and draft pe
 - **Dynamic Arrays** - Add/remove repeating field groups
 - **Draft Persistence** - Auto-save and restore form data
 
+---
+
 ## Installation
 
 Add to your `pubspec.yaml`:
@@ -20,15 +28,16 @@ Add to your `pubspec.yaml`:
 ```yaml
 dependencies:
   fifty_forms:
-    path: ../fifty_forms  # or published version
+    path: ../fifty_forms
 ```
+
+---
 
 ## Quick Start
 
 ```dart
 import 'package:fifty_forms/fifty_forms.dart';
 
-// Create form controller
 final controller = FiftyFormController(
   initialValues: {'email': '', 'password': ''},
   validators: {
@@ -37,7 +46,6 @@ final controller = FiftyFormController(
   },
 );
 
-// Build form
 Column(
   children: [
     FiftyTextFormField(
@@ -63,27 +71,50 @@ Column(
 )
 ```
 
-## Table of Contents
+---
 
-- [API Reference](#api-reference)
-  - [FiftyFormController](#fiftyformcontroller)
-  - [FieldState](#fieldstate)
-  - [FormStatus](#formstatus)
-- [Validators](#validators)
-  - [String Validators](#string-validators)
-  - [Number Validators](#number-validators)
-  - [Date Validators](#date-validators)
-  - [Password Validators](#password-validators)
-  - [Comparison Validators](#comparison-validators)
-  - [Custom Validators](#custom-validators)
-  - [Composite Validators](#composite-validators)
-- [Form Fields](#form-fields)
-- [Multi-Step Forms](#multi-step-forms)
-- [Dynamic Form Arrays](#dynamic-form-arrays)
-- [Draft Persistence](#draft-persistence)
-- [UI Widgets](#ui-widgets)
-- [Example App](#example-app)
-- [FDL Compliance](#fdl-compliance)
+## Architecture
+
+```
+fifty_forms
+├── core/
+│   ├── FiftyFormController   # Central state manager
+│   └── FieldState            # Immutable per-field state
+├── validators/
+│   ├── Validator             # Sync validator base
+│   ├── AsyncValidator        # Async validator with debounce
+│   └── Built-ins             # Required, Email, MinLength, etc.
+├── fields/
+│   └── FiftyTextFormField    # fifty_ui field wrappers
+│   └── FiftyDropdownFormField
+│   └── FiftyCheckboxFormField (+ others)
+├── widgets/
+│   ├── FiftyForm             # Form container
+│   ├── FiftySubmitButton     # Submit with loading state
+│   ├── FiftyMultiStepForm    # Wizard container
+│   ├── FiftyFormArray        # Dynamic repeating fields
+│   └── FiftyValidationSummary
+├── models/
+│   ├── FormStep              # Step definition for wizards
+│   └── FormStatus            # Form lifecycle enum
+└── persistence/
+    └── DraftManager          # Auto-save via GetStorage
+```
+
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| `FiftyFormController` | Central state manager: values, validation, submission |
+| `FieldState<T>` | Immutable container for a single field's state |
+| `FormStatus` | Enum: `idle`, `validating`, `submitting`, `submitted`, `error` |
+| `Validator` | Composable synchronous validator base class |
+| `AsyncValidator` | Asynchronous validator with debounce support |
+| `DraftManager` | Persists and restores form drafts via GetStorage |
+| `FiftyMultiStepForm` | Wizard-style multi-step form widget |
+| `FiftyFormArray` | Dynamic add/remove repeating field groups |
+
+---
 
 ## API Reference
 
@@ -117,11 +148,11 @@ controller.markTouched('name');
 controller.markAllTouched();
 
 // Actions
-await controller.validate();     // Validate all fields
+await controller.validate();          // Validate all fields
 await controller.validateField('email'); // Validate single field
-controller.clearErrors();        // Clear all validation errors
-controller.reset();              // Reset to initial values
-controller.clear();              // Clear all values
+controller.clearErrors();             // Clear all validation errors
+controller.reset();                   // Reset to initial values
+controller.clear();                   // Clear all values
 
 // Submit
 await controller.submit((values) async {
@@ -179,9 +210,9 @@ Enum representing the form lifecycle status:
 | `submitted` | Form successfully submitted |
 | `error` | Validation or submission failed |
 
-## Validators
+### Validators
 
-### String Validators
+**String Validators:**
 
 | Validator | Description | Example |
 |-----------|-------------|---------|
@@ -193,7 +224,7 @@ Enum representing the form lifecycle status:
 | `Pattern(regex)` | Matches pattern | `Pattern(RegExp(r'^[A-Z]+$'))` |
 | `AlphaNumeric()` | Letters and numbers only | `AlphaNumeric()` |
 
-### Number Validators
+**Number Validators:**
 
 | Validator | Description | Example |
 |-----------|-------------|---------|
@@ -203,7 +234,7 @@ Enum representing the form lifecycle status:
 | `Integer()` | Must be integer | `Integer()` |
 | `Positive()` | Must be positive (> 0) | `Positive()` |
 
-### Date Validators
+**Date Validators:**
 
 | Validator | Description | Example |
 |-----------|-------------|---------|
@@ -213,7 +244,7 @@ Enum representing the form lifecycle status:
 | `FutureDate()` | Must be future | `FutureDate()` |
 | `PastDate()` | Must be past | `PastDate()` |
 
-### Password Validators
+**Password Validators:**
 
 | Validator | Description | Example |
 |-----------|-------------|---------|
@@ -222,77 +253,14 @@ Enum representing the form lifecycle status:
 | `HasNumber()` | Contains digit | `HasNumber()` |
 | `HasSpecialChar()` | Contains special char | `HasSpecialChar()` |
 
-**Strong Password Example:**
-
-```dart
-validators: {
-  'password': [
-    Required(message: 'Password is required'),
-    MinLength(8, message: 'At least 8 characters'),
-    HasUppercase(message: 'Must contain uppercase letter'),
-    HasLowercase(message: 'Must contain lowercase letter'),
-    HasNumber(message: 'Must contain a number'),
-    HasSpecialChar(message: 'Must contain special character'),
-  ],
-}
-```
-
-### Comparison Validators
+**Comparison Validators:**
 
 | Validator | Description | Example |
 |-----------|-------------|---------|
 | `Equals(field)` | Equals another field | `Equals('password')` |
 | `NotEquals(field)` | Differs from field | `NotEquals('oldPassword')` |
 
-**Password Confirmation Example:**
-
-```dart
-validators: {
-  'password': [Required(), MinLength(8)],
-  'confirmPassword': [Required(), Equals('password', message: 'Passwords must match')],
-}
-```
-
-### Custom Validators
-
-**Synchronous:**
-
-```dart
-Custom<String>((value) {
-  if (value?.contains('banned') == true) {
-    return 'Contains banned word';
-  }
-  return null;
-})
-```
-
-**Asynchronous with debounce:**
-
-```dart
-AsyncCustom<String>(
-  (value) async {
-    final exists = await api.checkUsername(value);
-    return exists ? 'Username taken' : null;
-  },
-  debounce: Duration(milliseconds: 500),
-)
-```
-
-### Composite Validators
-
-**And - All must pass:**
-
-```dart
-And([Required(), MinLength(8), HasUppercase()])
-```
-
-**Or - At least one must pass:**
-
-```dart
-Or([Email(), Pattern(phoneRegex)])
-```
-
-## Form Fields
+### Form Fields
 
 Wrapper components for fifty_ui widgets that integrate with `FiftyFormController`:
 
@@ -308,38 +276,80 @@ Wrapper components for fifty_ui widgets that integrate with `FiftyFormController
 | `FiftyTimeFormField` | Time picker | Time input |
 | `FiftyFileFormField` | File picker | File upload |
 
-**Text Field Example:**
+### UI Widgets
+
+| Widget | Description |
+|--------|-------------|
+| `FiftyForm` | Form container with controller binding |
+| `FiftySubmitButton` | Submit button with loading state |
+| `FiftyFormProgress` | Step progress indicator |
+| `FiftyMultiStepForm` | Multi-step wizard container |
+| `FiftyFormArray` | Dynamic repeating fields |
+| `FiftyFormError` | Form-level error display |
+| `FiftyFieldError` | Field-level error display |
+| `FiftyValidationSummary` | All errors summary |
+| `FiftyFormField` | Generic field wrapper |
+
+---
+
+## Usage Patterns
+
+### Strong Password Validation
 
 ```dart
-FiftyTextFormField(
-  name: 'email',
-  controller: controller,
-  label: 'Email Address',
-  hint: 'Enter your email',
-  keyboardType: TextInputType.emailAddress,
-  prefixIcon: Icons.email,
-  onChanged: (value) => print('Changed: $value'),
-)
-```
-
-**Dropdown Example:**
-
-```dart
-FiftyDropdownFormField<String>(
-  name: 'country',
-  controller: controller,
-  label: 'Country',
-  items: [
-    DropdownItem(value: 'us', label: 'United States'),
-    DropdownItem(value: 'uk', label: 'United Kingdom'),
-    DropdownItem(value: 'ca', label: 'Canada'),
+validators: {
+  'password': [
+    Required(message: 'Password is required'),
+    MinLength(8, message: 'At least 8 characters'),
+    HasUppercase(message: 'Must contain uppercase letter'),
+    HasLowercase(message: 'Must contain lowercase letter'),
+    HasNumber(message: 'Must contain a number'),
+    HasSpecialChar(message: 'Must contain special character'),
   ],
+}
+```
+
+### Password Confirmation
+
+```dart
+validators: {
+  'password': [Required(), MinLength(8)],
+  'confirmPassword': [Required(), Equals('password', message: 'Passwords must match')],
+}
+```
+
+### Custom Validators
+
+```dart
+// Synchronous
+Custom<String>((value) {
+  if (value?.contains('banned') == true) {
+    return 'Contains banned word';
+  }
+  return null;
+})
+
+// Asynchronous with debounce
+AsyncCustom<String>(
+  (value) async {
+    final exists = await api.checkUsername(value);
+    return exists ? 'Username taken' : null;
+  },
+  debounce: Duration(milliseconds: 500),
 )
 ```
 
-## Multi-Step Forms
+### Composite Validators
 
-Create wizard-style forms with step validation:
+```dart
+// And — all must pass
+And([Required(), MinLength(8), HasUppercase()])
+
+// Or — at least one must pass
+Or([Email(), Pattern(phoneRegex)])
+```
+
+### Multi-Step Form
 
 ```dart
 FiftyMultiStepForm(
@@ -353,13 +363,12 @@ FiftyMultiStepForm(
     FormStep(
       title: 'Profile',
       fields: ['name', 'bio'],
-      isOptional: true,  // Can skip this step
+      isOptional: true,
     ),
     FormStep(
       title: 'Review',
       fields: [],
       validator: (values) {
-        // Step-level validation
         if (values['bio']?.isEmpty == true) {
           return 'Consider adding a bio';
         }
@@ -388,9 +397,7 @@ FiftyMultiStepForm(
 | `isOptional` | `bool` | Can skip if all fields empty |
 | `validator` | `Function?` | Custom step-level validation |
 
-## Dynamic Form Arrays
-
-Add/remove repeating field groups:
+### Dynamic Form Arrays
 
 ```dart
 FiftyFormArray(
@@ -456,12 +463,10 @@ controller.removeArrayItem('addresses', 1);
 | `animate` | `bool` | `true` | Animate add/remove |
 | `itemSpacing` | `double` | `16` | Spacing between items |
 
-## Draft Persistence
-
-Auto-save and restore form data using GetStorage:
+### Draft Persistence
 
 ```dart
-// Initialize storage (once at app start)
+// Initialize storage once at app start
 await DraftManager.initStorage();
 
 // Create draft manager
@@ -507,21 +512,7 @@ draftManager.dispose();
 | `debounce` | `Duration` | `2 seconds` | Delay before auto-save |
 | `containerName` | `String?` | `'fifty_forms_drafts'` | GetStorage container name |
 
-## UI Widgets
-
-| Widget | Description |
-|--------|-------------|
-| `FiftyForm` | Form container with controller binding |
-| `FiftySubmitButton` | Submit button with loading state |
-| `FiftyFormProgress` | Step progress indicator |
-| `FiftyMultiStepForm` | Multi-step wizard container |
-| `FiftyFormArray` | Dynamic repeating fields |
-| `FiftyFormError` | Form-level error display |
-| `FiftyFieldError` | Field-level error display |
-| `FiftyValidationSummary` | All errors summary |
-| `FiftyFormField` | Generic field wrapper |
-
-**FiftySubmitButton Example:**
+### FiftySubmitButton
 
 ```dart
 FiftySubmitButton(
@@ -538,38 +529,40 @@ FiftySubmitButton(
 )
 ```
 
-## Example App
+---
 
-Run the example app to see all features in action:
+## Platform Support
 
-```bash
-cd packages/fifty_forms/example
-flutter run
-```
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     |       |
 
-Examples included:
-- **Login Form** - Simple validation
-- **Registration Form** - Complex validation with async
-- **Multi-Step Form** - Wizard with progress
-- **Dynamic Form** - Array fields
+---
 
-## FDL Compliance
+## Fifty Design Language Integration
 
-This package follows the Fifty Design Language (FDL):
+This package is part of Fifty Flutter Kit:
 
-- Uses `fifty_tokens` for design tokens (spacing, radii, typography)
-- Uses `fifty_ui` for all UI components (buttons, text fields, etc.)
-- Consumes theming from FDL packages
-- No custom theme classes
+- **fifty_tokens** - All spacing, radius, and typography values sourced from design tokens
+- **fifty_ui** - Form field widgets wrap FDL components (`FiftyTextField`, `FiftyDropdown`, `FiftyCheckbox`, etc.)
+- **fifty_theme** - Consumes theming from the FDL theme system; no custom theme classes defined
+- **fifty_storage** - Draft persistence layer integrates with the FDL storage abstraction
 
-## Dependencies
+---
 
-- `flutter` - Flutter SDK
-- `fifty_tokens` - Design tokens
-- `fifty_theme` - Theme system
-- `fifty_ui` - UI components
-- `get_storage` - Draft persistence
+## Version
+
+**Current:** 0.1.0
+
+---
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) for details.
+
+Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
