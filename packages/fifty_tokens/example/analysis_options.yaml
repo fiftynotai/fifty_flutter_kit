@@ -1,7 +1,0 @@
-# Example code - linter rules are relaxed for demonstration purposes
-include: package:flutter_lints/flutter.yaml
-
-linter:
-  rules:
-    prefer_const_constructors: false
-    prefer_const_literals_to_create_immutables: false
