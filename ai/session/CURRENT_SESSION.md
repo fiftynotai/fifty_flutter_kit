@@ -3,7 +3,7 @@
 **Status:** IDLE
 **Last Updated:** 2026-02-19
 **Active Briefs:** _(none)_
-**Last Commit:** `1af3c50` — chore(pub-dev): remove gitignored files from git tracking
+**Last Commit:** `5dae714` — refactor: rename fifty_map_engine → fifty_world_engine
 
 ---
 
@@ -20,6 +20,13 @@ _(None)_
 ---
 
 ## Completed Briefs (This Session - 2026-02-19)
+
+### Rename fifty_map_engine → fifty_world_engine
+- **Status:** Done (`5dae714`)
+- **Priority:** P1-High
+- **Effort:** L
+- **Phase:** Complete — 165 files changed across package, apps, platform plugins, and documentation
+- **Summary:** Full rename of `fifty_map_engine` to `fifty_world_engine`. Package scope expanded beyond maps to include tiles, components, animated sprites, pathfinding, and overlays. Renamed: package directory, barrel file, all Dart classes (FiftyMapController → FiftyWorldController, FiftyMapWidget → FiftyWorldWidget, FiftyMapEntity → FiftyWorldEntity, MapConfig → WorldConfig, MapBuilder → WorldBuilder, MapLoaderService → WorldLoaderService), platform plugins (iOS/Android/macOS/Windows/Linux), external consumer imports and aliases (tactical_grid, fifty_demo), display strings (card titles, status bar), and all documentation. Zero analyzer issues across all packages and apps.
 
 ### BR-105 - Pub.dev Release Preparation
 - **Status:** Done (`a9906da`, `87f9d64`, `1af3c50`)
@@ -170,5 +177,5 @@ _(None)_
 ## Resume Command
 
 ```
-Session complete. BR-105 done (a9906da, 87f9d64, 1af3c50) — all 15 packages pub.dev ready. 7 packages 0 warnings, 8 blocked only by path deps (convert at publish time). Publishing order documented in ai/context/publish_order.md. Foundation layer (tokens, utils, cache, storage) can publish immediately.
+Session idle. Last action: renamed fifty_map_engine → fifty_world_engine (5dae714, 165 files). All 15 packages pub.dev ready. 7 packages 0 warnings, 8 blocked only by path deps. Publishing order in ai/context/publish_order.md. Foundation layer (tokens, utils, cache, storage) can publish immediately.
 ```
