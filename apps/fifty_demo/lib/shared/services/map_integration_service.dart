@@ -49,7 +49,7 @@ class MapIntegrationService extends GetxController {
   /// This method:
   /// 1. Creates a FiftyWorldController
   /// 2. Registers required assets with FiftyAssetLoader
-  /// 3. Loads map JSON using FiftyMapLoader
+  /// 3. Loads map JSON using FiftyWorldLoader
   /// 4. Stores entities for later use
   Future<void> loadMapFromAssets(String mapPath) async {
     _isLoading = true;
@@ -85,7 +85,7 @@ class MapIntegrationService extends GetxController {
       ]);
 
       // Load entities from map JSON
-      final loadedEntities = await FiftyMapLoader.loadFromAssets(mapPath);
+      final loadedEntities = await FiftyWorldLoader.loadFromAssets(mapPath);
 
       // Store entities
       _entities

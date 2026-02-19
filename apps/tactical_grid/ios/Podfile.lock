@@ -33,7 +33,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
   fifty_audio_engine: 066d31530f72f012e071f327b1a347c71f0a529c
-  fifty_world_engine: 865723c815d9a2a63acc7f3734eb2c8d251379d8
+  fifty_world_engine: 8e39489ce7143fa38403a61fa5ba15c8e10ed94e
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
 
