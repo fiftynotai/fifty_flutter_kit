@@ -1,8 +1,14 @@
 name: fifty_theme
-description: Flutter theming layer for the fifty.dev ecosystem.
+description: Flutter theming layer for the fifty.dev ecosystem. Converts design tokens into Material ThemeData.
 version: 1.0.0
 homepage: https://fifty.dev
-repository: https://github.com/fiftynotai/fifty_theme
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_theme
+issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
+topics:
+  - flutter
+  - theming
+  - design-system
+  - material
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

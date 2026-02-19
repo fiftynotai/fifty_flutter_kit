@@ -1,7 +1,14 @@
 name: fifty_utils
 description: Pure Dart/Flutter utilities - DateTime, Duration, Color extensions, responsive breakpoints, and async state containers.
 version: 0.1.0
-repository: https://github.com/aspect-build/fifty_flutter_kit
+homepage: https://fifty.dev
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_utils
+issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
+topics:
+  - flutter
+  - utilities
+  - extensions
+  - dart
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

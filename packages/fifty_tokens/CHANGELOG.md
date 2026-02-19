@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.0.0] - 2026-01-15
+
+### Changed
+
+- Complete color palette overhaul to "Sophisticated Warm" (FDL v2)
+- Primary color: Burgundy (#88292F) replaces CrimsonPulse
+- New surface palette: Cream, Dark Burgundy, Powder Blush, Slate Grey
+- Typography unified to Manrope font family with Material-aligned type scale
+- Radii expanded to full scale (none through full, 8 values)
+- Shadows redesigned as soft sophisticated system (sm/md/lg/primary/glow)
+
+### Added
+
+- `FiftyGradients` class with primary, progress, and surface gradient tokens
+- `FiftyShadows` class with soft shadow tokens
+- Complete semantic color aliases (primary, secondary, success, error, warning)
+- Full radii scale with BorderRadius convenience objects
+
+### Removed
+
+- FDL v1 terminal-inspired tokens (voidBlack, crimsonPulse, terminalWhite, igrisGreen)
+- Monument Extended and JetBrains Mono font families
+- Glow-only elevation system
+
 ## [0.2.0] - 2025-12-25
 
 ### Changed
@@ -160,5 +184,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Zero external dependencies
 - 100% FDL specification fidelity
 
-[0.2.0]: https://github.com/fiftynotai/fifty_tokens/releases/tag/v0.2.0
-[0.1.0]: https://github.com/fiftynotai/fifty_tokens/releases/tag/v0.1.0
+[1.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.0
+[0.2.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v0.2.0
+[0.1.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v0.1.0

@@ -1,8 +1,13 @@
 name: fifty_sentences_engine
 description: "Fifty Flutter Kit sentence processing engine for games and interactive applications"
 version: 0.1.0
-homepage: https://github.com/fiftynotai/fifty_flutter_kit
+homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_sentences_engine
+issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
+topics:
+  - flutter
+  - game
+  - text-processing
 
 environment:
   sdk: ^3.6.0

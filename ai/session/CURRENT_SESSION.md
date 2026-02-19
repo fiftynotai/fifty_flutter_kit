@@ -1,19 +1,37 @@
 # Current Session
 
-**Status:** REST MODE
+**Status:** IN PROGRESS
 **Last Updated:** 2026-02-18
-**Active Briefs:** None — all queued work complete
-**Last Commit:** `b5260de` — remove sneaker_drops, igris_videos, igris_website
+**Active Briefs:** BR-105
+**Last Commit:** `4a9ed65` — docs(fifty_connectivity): add example app screenshots to README
 
 ---
 
-## Active Briefs
+## Active Brief
 
-None. All briefs completed and committed.
+### BR-105 - Pub.dev Release Preparation
+- **Status:** In Progress (Phases 1-6 complete)
+- **Priority:** P1-High
+- **Effort:** XL
+- **Phase:** Metadata preparation complete. Code quality pass (Phase 7) remaining.
+- **Summary:** All 15 pubspec.yaml updated (repository, homepage, issue_tracker, topics). 4 LICENSE files created/fixed (fifty_ui, fifty_forms, fifty_achievement_engine, fifty_audio_engine). 4 example apps created (fifty_utils, fifty_cache, fifty_storage, fifty_theme). 2 CHANGELOGs updated with v1.0.0 entries (fifty_tokens, fifty_theme). `publish_to: none` removed from fifty_ui and fifty_connectivity. `escpos: any` pinned to `^6.0.0`. Publish order document created.
+
+---
+
+## Queued Briefs
+
+_(None)_
 
 ---
 
 ## Completed Briefs (This Session - 2026-02-18)
+
+### BR-104 - Fifty Connectivity Example App
+- **Status:** Done (`d801ab8` squashed)
+- **Priority:** P2-Medium
+- **Effort:** M (2-3d)
+- **Phase:** Complete — 8 files created, 4-screen demo (Home/Handler/Overlay/Splash), 0 analyzer errors, FDL compliant, dark mode, screenshots captured
+- **Summary:** Standalone example app for `fifty_connectivity` with live connection dashboard, ConnectionHandler demo, ConnectionOverlay behavior guide, ConnectivityCheckerSplash preview. FDL theming, GetX architecture, bottom NavigationBar. Screenshots added to parent README (`4a9ed65`).
 
 ### BR-103 - Printing Engine Example FDL Migration & fifty_ui Adoption
 - **Status:** Done (`646bdfc`)
@@ -49,7 +67,7 @@ None. All briefs completed and committed.
 | `fifty_skill_tree` | Screenshot format fix | `997a7cc` |
 | `fifty_tokens` | Full template rewrite | `1815c04` |
 | `fifty_theme` | Full template rewrite | `1815c04` |
-| `fifty_connectivity` | Full template rewrite | `1815c04` |
+| `fifty_connectivity` | Full template rewrite + screenshots | `1815c04`, `4a9ed65` |
 | `fifty_storage` | Full template rewrite | `1815c04` |
 | `fifty_ui` | Full template rewrite + 4 screenshots | `1815c04` |
 | `fifty_forms` | Full template rewrite + 2 screenshots | `1815c04` |
@@ -136,14 +154,17 @@ None. All briefs completed and committed.
 
 ## Next Steps
 
-- **Future:** Version bumps, pub.dev releases, root README update
+- **Next:** BR-105 — Pub.dev Release Preparation (P1, XL)
+  - Review all 15 packages against pub.dev publishing standards
+  - Publish order: tokens/utils/cache/storage → theme → ui → forms/connectivity → engines
+  - Per-package: pubspec metadata, CHANGELOG, LICENSE, dartdoc, analyze, dry-run
 - **All package READMEs standardized** — FDL template compliant
-- **All screenshots** use consistent `<img width="200">` format
+- **All example apps** built and verified
 
 ---
 
 ## Resume Command
 
 ```
-Session REST. All README standardization complete: 17 packages/apps rewritten to FDL template with consistent screenshots. BR-103 (646bdfc) + TD-008 (da9193a) done. Monorepo cleaned: sneaker_drops, igris_videos, igris_website removed (b5260de). Prior briefs: BR-071 through BR-094 all done. Next: version bumps, pub.dev releases.
+Session REST. BR-105 (pub.dev release preparation) queued P1-XL — review all 15 packages for pub.dev publishing. BR-104 done (d801ab8, 4a9ed65). All README standardization complete. Publishing order: foundation (tokens, utils, cache, storage) → core (theme, ui) → feature (forms, connectivity) → engines (7 packages). Next: implement BR-105.
 ```
