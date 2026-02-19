@@ -69,8 +69,8 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child1'),
-        SkillConnection(fromId: 'root', toId: 'child2'),
+        const SkillConnection(fromId: 'root', toId: 'child1'),
+        const SkillConnection(fromId: 'root', toId: 'child2'),
       ];
 
       final positions = layout.calculatePositions(
@@ -117,7 +117,7 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child'),
+        const SkillConnection(fromId: 'root', toId: 'child'),
       ];
 
       final positions = layout.calculatePositions(
@@ -253,8 +253,8 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child1'),
-        SkillConnection(fromId: 'root', toId: 'child2'),
+        const SkillConnection(fromId: 'root', toId: 'child1'),
+        const SkillConnection(fromId: 'root', toId: 'child2'),
       ];
 
       final minSize = layout.getMinimumSize(

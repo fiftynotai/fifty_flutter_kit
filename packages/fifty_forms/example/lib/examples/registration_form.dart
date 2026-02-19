@@ -107,7 +107,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Draft restored from previous session'),
-          backgroundColor: FiftyColors.igrisGreen,
+          backgroundColor: FiftyColors.hunterGreen,
           duration: Duration(seconds: 2),
         ),
       );
@@ -130,7 +130,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Passwords do not match'),
-          backgroundColor: FiftyColors.crimsonPulse,
+          backgroundColor: FiftyColors.burgundy,
         ),
       );
       return;
@@ -148,7 +148,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Account created for ${values['username']}!'),
-          backgroundColor: FiftyColors.igrisGreen,
+          backgroundColor: FiftyColors.hunterGreen,
         ),
       );
 
@@ -196,8 +196,8 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
               Text(
                 'CREATE ACCOUNT',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: FiftyColors.terminalWhite,
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
+                      color: FiftyColors.cream,
+                      fontFamily: FiftyTypography.fontFamily,
                       letterSpacing: 2,
                     ),
                 textAlign: TextAlign.center,
@@ -206,7 +206,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
               Text(
                 'Join the network with a new identity',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                 textAlign: TextAlign.center,
               ),
@@ -286,17 +286,17 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 Container(
                   padding: const EdgeInsets.all(FiftySpacing.md),
                   decoration: BoxDecoration(
-                    color: FiftyColors.igrisGreen.withValues(alpha: 0.1),
+                    color: FiftyColors.hunterGreen.withValues(alpha: 0.1),
                     borderRadius: FiftyRadii.lgRadius,
                     border: Border.all(
-                      color: FiftyColors.igrisGreen.withValues(alpha: 0.3),
+                      color: FiftyColors.hunterGreen.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Row(
                     children: [
                       const Icon(
                         Icons.save_outlined,
-                        color: FiftyColors.igrisGreen,
+                        color: FiftyColors.hunterGreen,
                         size: 16,
                       ),
                       const SizedBox(width: FiftySpacing.sm),
@@ -305,7 +305,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                         style: TextStyle(
                           fontFamily: FiftyTypography.fontFamily,
                           fontSize: FiftyTypography.bodySmall,
-                          color: FiftyColors.igrisGreen,
+                          color: FiftyColors.hunterGreen,
                         ),
                       ),
                     ],
@@ -329,7 +329,7 @@ class _AsyncValidationHint extends StatelessWidget {
         style: TextStyle(
           fontFamily: FiftyTypography.fontFamily,
           fontSize: FiftyTypography.labelSmall,
-          color: FiftyColors.hyperChrome.withValues(alpha: 0.6),
+          color: FiftyColors.slateGrey.withValues(alpha: 0.6),
           fontStyle: FontStyle.italic,
         ),
       ),
@@ -352,9 +352,9 @@ class _PasswordRequirements extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(FiftySpacing.md),
           decoration: BoxDecoration(
-            color: FiftyColors.voidBlack,
+            color: FiftyColors.darkBurgundy,
             borderRadius: FiftyRadii.lgRadius,
-            border: Border.all(color: FiftyColors.border),
+            border: Border.all(color: FiftyColors.borderDark),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,7 +366,7 @@ class _PasswordRequirements extends StatelessWidget {
                   fontSize: FiftyTypography.labelSmall,
                   fontWeight: FiftyTypography.bold,
                   letterSpacing: FiftyTypography.letterSpacingLabel,
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.slateGrey,
                 ),
               ),
               const SizedBox(height: FiftySpacing.sm),
@@ -417,7 +417,7 @@ class _RequirementRow extends StatelessWidget {
           Icon(
             isMet ? Icons.check_circle : Icons.circle_outlined,
             size: 14,
-            color: isMet ? FiftyColors.igrisGreen : FiftyColors.hyperChrome,
+            color: isMet ? FiftyColors.hunterGreen : FiftyColors.slateGrey,
           ),
           const SizedBox(width: FiftySpacing.sm),
           Text(
@@ -425,7 +425,7 @@ class _RequirementRow extends StatelessWidget {
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,
-              color: isMet ? FiftyColors.terminalWhite : FiftyColors.hyperChrome,
+              color: isMet ? FiftyColors.cream : FiftyColors.slateGrey,
             ),
           ),
         ],

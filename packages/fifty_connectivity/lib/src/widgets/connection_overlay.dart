@@ -112,7 +112,7 @@ class UplinkStatusBar extends StatelessWidget {
           label: ConnectivityConfig.labelEstablishingUplink,
           variant: FiftyBadgeVariant.neutral,
           showGlow: true,
-          customColor: FiftyColors.hyperChrome,
+          customColor: FiftyColors.slateGrey,
         );
     }
   }
@@ -200,9 +200,9 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                       builder: (context, child) {
                         return Transform.scale(
                           scale: _pulseAnimation.value,
-                          child: Icon(
+                          child: const Icon(
                             Icons.wifi_off,
-                            color: FiftyColors.crimsonPulse,
+                            color: FiftyColors.burgundy,
                             size: 64,
                           ),
                         );
@@ -214,11 +214,11 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                   // Title: SIGNAL LOST
                   Text(
                     ConnectivityConfig.labelSignalLost,
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
-                      fontSize: FiftyTypography.section,
-                      fontWeight: FiftyTypography.ultrabold,
-                      color: FiftyColors.crimsonPulse,
+                    style: const TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.titleLarge,
+                      fontWeight: FiftyTypography.extraBold,
+                      color: FiftyColors.burgundy,
                       letterSpacing: 4,
                     ),
                   ),
@@ -227,11 +227,11 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                   // Subtitle: Attempting to restore uplink...
                   Text(
                     ConnectivityConfig.labelAttemptingRestore,
-                    style: TextStyle(
-                      fontFamily: FiftyTypography.fontFamilyMono,
-                      fontSize: FiftyTypography.body,
+                    style: const TextStyle(
+                      fontFamily: FiftyTypography.fontFamily,
+                      fontSize: FiftyTypography.bodyLarge,
                       fontWeight: FiftyTypography.regular,
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -241,11 +241,11 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                   Obx(() => Text(
                         '${ConnectivityConfig.labelOfflineFor} ${Get.find<ConnectionViewModel>().dialogTimer.value}',
                         style: TextStyle(
-                          fontFamily: FiftyTypography.fontFamilyMono,
-                          fontSize: FiftyTypography.mono,
+                          fontFamily: FiftyTypography.fontFamily,
+                          fontSize: FiftyTypography.bodySmall,
                           fontWeight: FiftyTypography.regular,
                           color:
-                              FiftyColors.hyperChrome.withValues(alpha: 0.7),
+                              FiftyColors.slateGrey.withValues(alpha: 0.7),
                         ),
                       )),
                   const SizedBox(height: FiftySpacing.xl),
@@ -255,7 +255,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                     text: ConnectivityConfig.labelReconnecting,
                     style: FiftyLoadingStyle.dots,
                     size: FiftyLoadingSize.medium,
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                   ),
                   const SizedBox(height: FiftySpacing.xxl),
 

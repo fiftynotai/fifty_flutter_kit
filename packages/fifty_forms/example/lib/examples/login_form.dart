@@ -58,7 +58,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Login successful: ${values['email']}'),
-          backgroundColor: FiftyColors.igrisGreen,
+          backgroundColor: FiftyColors.hunterGreen,
         ),
       );
     });
@@ -83,8 +83,8 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
               Text(
                 'ESTABLISH UPLINK',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: FiftyColors.terminalWhite,
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
+                      color: FiftyColors.cream,
+                      fontFamily: FiftyTypography.fontFamily,
                       letterSpacing: 2,
                     ),
                 textAlign: TextAlign.center,
@@ -93,7 +93,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
               Text(
                 'Enter your credentials to continue',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                 textAlign: TextAlign.center,
               ),
@@ -170,9 +170,9 @@ class _StatusIndicator extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack,
+        color: FiftyColors.darkBurgundy,
         borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.border),
+        border: Border.all(color: FiftyColors.borderDark),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +184,7 @@ class _StatusIndicator extends StatelessWidget {
               fontSize: FiftyTypography.labelSmall,
               fontWeight: FiftyTypography.bold,
               letterSpacing: FiftyTypography.letterSpacingLabel,
-              color: FiftyColors.hyperChrome,
+              color: FiftyColors.slateGrey,
             ),
           ),
           const SizedBox(height: FiftySpacing.sm),
@@ -198,13 +198,13 @@ class _StatusIndicator extends StatelessWidget {
               _StatusChip(
                 label: 'VALID',
                 isActive: isValid,
-                activeColor: FiftyColors.igrisGreen,
+                activeColor: FiftyColors.hunterGreen,
               ),
               const SizedBox(width: FiftySpacing.sm),
               _StatusChip(
                 label: status.name.toUpperCase(),
                 isActive: status == FormStatus.submitting,
-                activeColor: FiftyColors.crimsonPulse,
+                activeColor: FiftyColors.burgundy,
               ),
             ],
           ),
@@ -222,7 +222,7 @@ class _StatusChip extends StatelessWidget {
   const _StatusChip({
     required this.label,
     required this.isActive,
-    this.activeColor = FiftyColors.terminalWhite,
+    this.activeColor = FiftyColors.cream,
   });
 
   @override
@@ -236,7 +236,7 @@ class _StatusChip extends StatelessWidget {
         color: isActive ? activeColor.withValues(alpha: 0.2) : Colors.transparent,
         borderRadius: FiftyRadii.smRadius,
         border: Border.all(
-          color: isActive ? activeColor : FiftyColors.border,
+          color: isActive ? activeColor : FiftyColors.borderDark,
         ),
       ),
       child: Text(
@@ -245,7 +245,7 @@ class _StatusChip extends StatelessWidget {
           fontFamily: FiftyTypography.fontFamily,
           fontSize: 10,
           fontWeight: FiftyTypography.medium,
-          color: isActive ? activeColor : FiftyColors.hyperChrome,
+          color: isActive ? activeColor : FiftyColors.slateGrey,
         ),
       ),
     );

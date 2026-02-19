@@ -64,9 +64,6 @@ abstract class PrinterDevice {
   /// Stream controller for status changes
   final _statusController = StreamController<PrinterStatus>.broadcast();
 
-  /// Timestamp of last successful print (for health check caching)
-  DateTime? _lastSuccessfulPrint;
-
   /// Duration to cache health check results after successful print
   /// If a print succeeds, we skip health check for subsequent prints within this window.
   /// This dramatically improves UX for consecutive prints while maintaining reliability.
@@ -92,14 +89,6 @@ abstract class PrinterDevice {
   void updateStatus(PrinterStatus newStatus) {
     if (_status != newStatus) {
       _status = newStatus;
-
-      // Clear health check cache when printer becomes unhealthy
-      // This ensures next print attempt will do a fresh health check
-      if (newStatus == PrinterStatus.disconnected ||
-          newStatus == PrinterStatus.error ||
-          newStatus == PrinterStatus.healthCheckFailed) {
-        _lastSuccessfulPrint = null;
-      }
 
       // Guard against adding to closed stream
       if (!_statusController.isClosed) {
@@ -189,7 +178,6 @@ abstract class PrinterDevice {
     if (status != PrinterStatus.connected) {
       final connected = await connect();
       if (!connected) {
-        _lastSuccessfulPrint = null; // Clear cache on failure
         return false;
       }
     }
@@ -207,18 +195,13 @@ abstract class PrinterDevice {
       final result = await printInternal(finalTicket);
 
       if (result) {
-        // Success - cache timestamp for fast consecutive prints
-        _lastSuccessfulPrint = DateTime.now();
         updateStatus(PrinterStatus.connected);
       } else {
-        // Failure - clear cache to force health check next time
-        _lastSuccessfulPrint = null;
         updateStatus(PrinterStatus.error);
       }
 
       return result;
     } catch (e) {
-      _lastSuccessfulPrint = null; // Clear cache on exception
       updateStatus(PrinterStatus.error);
       return false;
     }

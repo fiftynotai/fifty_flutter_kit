@@ -69,7 +69,7 @@ class _MultiStepFormDemoState extends State<MultiStepFormDemo> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Setup complete for ${values['displayName']}!'),
-        backgroundColor: FiftyColors.igrisGreen,
+        backgroundColor: FiftyColors.hunterGreen,
       ),
     );
 
@@ -154,8 +154,8 @@ class _StepHeader extends StatelessWidget {
         Text(
           step.title.toUpperCase(),
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: FiftyColors.terminalWhite,
-                fontFamily: FiftyTypography.fontFamilyHeadline,
+                color: FiftyColors.cream,
+                fontFamily: FiftyTypography.fontFamily,
                 letterSpacing: 2,
               ),
           textAlign: TextAlign.center,
@@ -165,7 +165,7 @@ class _StepHeader extends StatelessWidget {
           Text(
             step.description!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: FiftyColors.hyperChrome,
+                  color: FiftyColors.slateGrey,
                 ),
             textAlign: TextAlign.center,
           ),
@@ -178,10 +178,10 @@ class _StepHeader extends StatelessWidget {
               vertical: FiftySpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: FiftyColors.hyperChrome.withValues(alpha: 0.1),
+              color: FiftyColors.slateGrey.withValues(alpha: 0.1),
               borderRadius: FiftyRadii.smRadius,
               border: Border.all(
-                color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
+                color: FiftyColors.slateGrey.withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -191,7 +191,7 @@ class _StepHeader extends StatelessWidget {
                 fontSize: FiftyTypography.labelSmall,
                 fontWeight: FiftyTypography.medium,
                 letterSpacing: FiftyTypography.letterSpacingLabel,
-                color: FiftyColors.hyperChrome,
+                color: FiftyColors.slateGrey,
               ),
             ),
           ),
@@ -282,8 +282,8 @@ class _ProfileStep extends StatelessWidget {
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.labelSmall,
                 color: remaining < 20
-                    ? FiftyColors.crimsonPulse
-                    : FiftyColors.hyperChrome,
+                    ? FiftyColors.burgundy
+                    : FiftyColors.slateGrey,
               ),
               textAlign: TextAlign.right,
             );
@@ -334,7 +334,7 @@ class _PreferencesStep extends StatelessWidget {
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
             fontSize: FiftyTypography.bodySmall,
-            color: FiftyColors.hyperChrome,
+            color: FiftyColors.slateGrey,
           ),
         ),
         const SizedBox(height: FiftySpacing.xl),
@@ -363,7 +363,7 @@ class _SectionTitle extends StatelessWidget {
         fontSize: FiftyTypography.labelMedium,
         fontWeight: FiftyTypography.bold,
         letterSpacing: FiftyTypography.letterSpacingLabel,
-        color: FiftyColors.hyperChrome,
+        color: FiftyColors.slateGrey,
       ),
     );
   }
@@ -385,9 +385,9 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: FiftyColors.voidBlack,
+        color: FiftyColors.darkBurgundy,
         borderRadius: FiftyRadii.lgRadius,
-        border: Border.all(color: FiftyColors.border),
+        border: Border.all(color: FiftyColors.borderDark),
       ),
       child: Row(
         children: [
@@ -395,12 +395,12 @@ class _InfoCard extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
+              color: FiftyColors.burgundy.withValues(alpha: 0.2),
               borderRadius: FiftyRadii.smRadius,
             ),
             child: Icon(
               icon,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               size: 20,
             ),
           ),
@@ -416,7 +416,7 @@ class _InfoCard extends StatelessWidget {
                     fontSize: FiftyTypography.labelSmall,
                     fontWeight: FiftyTypography.bold,
                     letterSpacing: FiftyTypography.letterSpacingLabel,
-                    color: FiftyColors.terminalWhite,
+                    color: FiftyColors.cream,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -425,7 +425,7 @@ class _InfoCard extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
               ],

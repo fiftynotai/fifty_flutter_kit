@@ -60,7 +60,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
         SnackBar(
           content:
               Text('Project created with ${tasks.length} tasks and ${teamMembers.length} team members'),
-          backgroundColor: FiftyColors.igrisGreen,
+          backgroundColor: FiftyColors.hunterGreen,
         ),
       );
     });
@@ -84,8 +84,8 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
               Text(
                 'CREATE PROJECT',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: FiftyColors.terminalWhite,
-                      fontFamily: FiftyTypography.fontFamilyHeadline,
+                      color: FiftyColors.cream,
+                      fontFamily: FiftyTypography.fontFamily,
                       letterSpacing: 2,
                     ),
                 textAlign: TextAlign.center,
@@ -94,7 +94,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
               Text(
                 'Define project details, tasks, and team members',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                 textAlign: TextAlign.center,
               ),
@@ -227,12 +227,12 @@ class _SectionHeader extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
+            color: FiftyColors.burgundy.withValues(alpha: 0.2),
             borderRadius: FiftyRadii.smRadius,
           ),
           child: Icon(
             icon,
-            color: FiftyColors.crimsonPulse,
+            color: FiftyColors.burgundy,
             size: 18,
           ),
         ),
@@ -248,7 +248,7 @@ class _SectionHeader extends StatelessWidget {
                   fontSize: FiftyTypography.titleSmall,
                   fontWeight: FiftyTypography.bold,
                   letterSpacing: FiftyTypography.letterSpacingLabel,
-                  color: FiftyColors.terminalWhite,
+                  color: FiftyColors.cream,
                 ),
               ),
               if (subtitle != null) ...[
@@ -258,7 +258,7 @@ class _SectionHeader extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodySmall,
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
               ],
@@ -397,9 +397,9 @@ class _SummaryCard extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(FiftySpacing.lg),
           decoration: BoxDecoration(
-            color: FiftyColors.voidBlack,
+            color: FiftyColors.darkBurgundy,
             borderRadius: FiftyRadii.lgRadius,
-            border: Border.all(color: FiftyColors.border),
+            border: Border.all(color: FiftyColors.borderDark),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +408,7 @@ class _SummaryCard extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.summarize_outlined,
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                     size: 18,
                   ),
                   const SizedBox(width: FiftySpacing.sm),
@@ -419,7 +419,7 @@ class _SummaryCard extends StatelessWidget {
                       fontSize: FiftyTypography.labelMedium,
                       fontWeight: FiftyTypography.bold,
                       letterSpacing: FiftyTypography.letterSpacingLabel,
-                      color: FiftyColors.hyperChrome,
+                      color: FiftyColors.slateGrey,
                     ),
                   ),
                 ],
@@ -472,21 +472,21 @@ class _SummaryRow extends StatelessWidget {
           label,
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.body,
-            color: FiftyColors.hyperChrome,
+            fontSize: FiftyTypography.bodyLarge,
+            color: FiftyColors.slateGrey,
           ),
         ),
         Text(
           value,
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
-            fontSize: FiftyTypography.body,
+            fontSize: FiftyTypography.bodyLarge,
             fontWeight: FiftyTypography.medium,
             color: isEmpty
-                ? FiftyColors.hyperChrome.withValues(alpha: 0.5)
+                ? FiftyColors.slateGrey.withValues(alpha: 0.5)
                 : highlight
-                    ? FiftyColors.igrisGreen
-                    : FiftyColors.terminalWhite,
+                    ? FiftyColors.hunterGreen
+                    : FiftyColors.cream,
           ),
         ),
       ],

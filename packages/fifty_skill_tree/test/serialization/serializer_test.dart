@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fifty_skill_tree/fifty_skill_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -99,7 +97,7 @@ void main() {
     });
 
     test('converts to tree import format', () {
-      final progress = ProgressData(
+      const progress = ProgressData(
         unlockedNodes: {'node1', 'node2'},
         nodeLevels: {'node1': 3, 'node2': 1},
         availablePoints: 5,
@@ -114,14 +112,14 @@ void main() {
     });
 
     test('merges progress keeping higher values', () {
-      final progress1 = ProgressData(
+      const progress1 = ProgressData(
         unlockedNodes: {'node1'},
         nodeLevels: {'node1': 2},
         availablePoints: 5,
         spentPoints: 2,
       );
 
-      final progress2 = ProgressData(
+      const progress2 = ProgressData(
         unlockedNodes: {'node1', 'node2'},
         nodeLevels: {'node1': 3, 'node2': 1},
         availablePoints: 3,
@@ -143,7 +141,7 @@ void main() {
     });
 
     test('copyWith creates modified copy', () {
-      final original = ProgressData(
+      const original = ProgressData(
         unlockedNodes: {'node1'},
         nodeLevels: {'node1': 1},
         availablePoints: 5,
@@ -187,7 +185,7 @@ void main() {
         prerequisites: ['root'],
       ));
 
-      tree.addConnection(SkillConnection(
+      tree.addConnection(const SkillConnection(
         fromId: 'root',
         toId: 'child',
       ));

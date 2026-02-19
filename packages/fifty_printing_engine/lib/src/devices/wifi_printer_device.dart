@@ -22,24 +22,16 @@ class WiFiPrinterDevice extends PrinterDevice {
   Socket? _socket;
 
   WiFiPrinterDevice({
-    required String id,
-    required String name,
+    required super.id,
+    required super.name,
     required this.ipAddress,
     this.port = 9100,
     this.timeout = const Duration(seconds: 5),
-    PrinterRole? role,
-    int defaultCopies = 1,
-    PaperSize paperSize = PaperSize.mm80,
-    Map<String, dynamic>? metadata,
-  }) : super(
-          id: id,
-          name: name,
-          type: PrinterType.wifi,
-          role: role,
-          defaultCopies: defaultCopies,
-          paperSize: paperSize,
-          metadata: metadata,
-        );
+    super.role,
+    super.defaultCopies,
+    super.paperSize,
+    super.metadata,
+  }) : super(type: PrinterType.wifi);
 
   @override
   Future<bool> connect() async {

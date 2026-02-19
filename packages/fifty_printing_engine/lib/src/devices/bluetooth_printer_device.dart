@@ -14,22 +14,14 @@ class BluetoothPrinterDevice extends PrinterDevice {
   final String macAddress;
 
   BluetoothPrinterDevice({
-    required String id,
-    required String name,
+    required super.id,
+    required super.name,
     required this.macAddress,
-    PrinterRole? role,
-    int defaultCopies = 1,
-    PaperSize paperSize = PaperSize.mm80,
-    Map<String, dynamic>? metadata,
-  }) : super(
-          id: id,
-          name: name,
-          type: PrinterType.bluetooth,
-          role: role,
-          defaultCopies: defaultCopies,
-          paperSize: paperSize,
-          metadata: metadata,
-        );
+    super.role,
+    super.defaultCopies,
+    super.paperSize,
+    super.metadata,
+  }) : super(type: PrinterType.bluetooth);
 
   @override
   Future<bool> connect() async {

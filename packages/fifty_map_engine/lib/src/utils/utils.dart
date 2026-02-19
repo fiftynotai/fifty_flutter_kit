@@ -1,4 +1,5 @@
 import 'package:fifty_map_engine/fifty_map_engine.dart';
+import 'package:flame/extensions.dart';
 
 typedef _ShiftFn = Vector2 Function(Vector2 parentSize);
 

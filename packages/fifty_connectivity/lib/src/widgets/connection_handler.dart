@@ -94,7 +94,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
               text: ConnectivityConfig.labelEstablishingUplink,
               style: FiftyLoadingStyle.dots,
               size: FiftyLoadingSize.large,
-              color: FiftyColors.hyperChrome,
+              color: FiftyColors.slateGrey,
             ),
           ],
         ),
@@ -123,18 +123,18 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                 Icon(
                   Icons.cloud_off,
                   size: MediaQuery.of(context).size.height / 6,
-                  color: FiftyColors.crimsonPulse,
+                  color: FiftyColors.burgundy,
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Title
                 Text(
                   ConnectivityConfig.labelSignalLost,
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyHeadline,
-                    fontSize: FiftyTypography.section,
-                    fontWeight: FiftyTypography.ultrabold,
-                    color: FiftyColors.crimsonPulse,
+                  style: const TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.titleLarge,
+                    fontWeight: FiftyTypography.extraBold,
+                    color: FiftyColors.burgundy,
                     letterSpacing: 4,
                   ),
                 ),
@@ -143,11 +143,11 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                 // Subtitle
                 Text(
                   ConnectivityConfig.labelConnectionLost,
-                  style: TextStyle(
-                    fontFamily: FiftyTypography.fontFamilyMono,
-                    fontSize: FiftyTypography.body,
+                  style: const TextStyle(
+                    fontFamily: FiftyTypography.fontFamily,
+                    fontSize: FiftyTypography.bodyLarge,
                     fontWeight: FiftyTypography.regular,
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                   ),
                 ),
                 const SizedBox(height: FiftySpacing.xxl),

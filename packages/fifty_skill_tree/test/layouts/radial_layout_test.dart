@@ -80,10 +80,10 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child1'),
-        SkillConnection(fromId: 'root', toId: 'child2'),
-        SkillConnection(fromId: 'root', toId: 'child3'),
-        SkillConnection(fromId: 'root', toId: 'child4'),
+        const SkillConnection(fromId: 'root', toId: 'child1'),
+        const SkillConnection(fromId: 'root', toId: 'child2'),
+        const SkillConnection(fromId: 'root', toId: 'child3'),
+        const SkillConnection(fromId: 'root', toId: 'child4'),
       ];
 
       final positions = layout.calculatePositions(
@@ -97,8 +97,8 @@ void main() {
 
       expect(positions.length, equals(5));
 
-      final centerX = 200.0;
-      final centerY = 200.0;
+      const centerX = 200.0;
+      const centerY = 200.0;
 
       // Root should be at center
       final rootPos = positions['root']!;
@@ -142,7 +142,7 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child'),
+        const SkillConnection(fromId: 'root', toId: 'child'),
       ];
 
       final positions = layout.calculatePositions(
@@ -154,8 +154,8 @@ void main() {
         availableSize: const Size(400, 400),
       );
 
-      final centerX = 200.0;
-      final centerY = 200.0;
+      const centerX = 200.0;
+      const centerY = 200.0;
 
       final childPos = positions['child']!;
 
@@ -193,9 +193,9 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child1'),
-        SkillConnection(fromId: 'root', toId: 'child2'),
-        SkillConnection(fromId: 'root', toId: 'child3'),
+        const SkillConnection(fromId: 'root', toId: 'child1'),
+        const SkillConnection(fromId: 'root', toId: 'child2'),
+        const SkillConnection(fromId: 'root', toId: 'child3'),
       ];
 
       final positions = layout.calculatePositions(
@@ -207,7 +207,7 @@ void main() {
         availableSize: const Size(400, 400),
       );
 
-      final centerY = 200.0;
+      const centerY = 200.0;
 
       // At least one child should be at or above center (partial arc)
       // The middle child should be near the top
@@ -231,7 +231,7 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child'),
+        const SkillConnection(fromId: 'root', toId: 'child'),
       ];
 
       final positions = layout.calculatePositions(
@@ -243,8 +243,8 @@ void main() {
         availableSize: const Size(500, 500),
       );
 
-      final centerX = 250.0;
-      final centerY = 250.0;
+      const centerX = 250.0;
+      const centerY = 250.0;
 
       final childPos = positions['child']!;
       final dx = childPos.dx - centerX;
@@ -297,8 +297,8 @@ void main() {
       ];
 
       connections = [
-        SkillConnection(fromId: 'root', toId: 'child'),
-        SkillConnection(fromId: 'child', toId: 'grandchild'),
+        const SkillConnection(fromId: 'root', toId: 'child'),
+        const SkillConnection(fromId: 'child', toId: 'grandchild'),
       ];
 
       final positions = layout.calculatePositions(
@@ -310,8 +310,8 @@ void main() {
         availableSize: const Size(500, 500),
       );
 
-      final centerX = 250.0;
-      final centerY = 250.0;
+      const centerX = 250.0;
+      const centerY = 250.0;
 
       // Calculate distances from center
       double distanceTo(String nodeId) {

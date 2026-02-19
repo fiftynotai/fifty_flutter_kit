@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
             Text(
               'CHOOSE AN EXAMPLE',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: FiftyColors.hyperChrome,
+                    color: FiftyColors.slateGrey,
                     letterSpacing: 2,
                   ),
               textAlign: TextAlign.center,
@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
               title: 'LOGIN FORM',
               description: 'Simple form with email and password validation',
               icon: Icons.login,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const LoginFormDemo()),
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
               description:
                   'Complex form with multiple validators and async validation',
               icon: Icons.person_add,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const RegistrationFormDemo()),
@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
               title: 'MULTI-STEP FORM',
               description: 'Wizard-style form with step navigation',
               icon: Icons.format_list_numbered,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const MultiStepFormDemo()),
@@ -99,7 +99,7 @@ class HomePage extends StatelessWidget {
               title: 'DYNAMIC FORM',
               description: 'Form with dynamic array fields',
               icon: Icons.dynamic_form,
-              color: FiftyColors.crimsonPulse,
+              color: FiftyColors.burgundy,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const DynamicFormDemo()),
@@ -162,7 +162,7 @@ class _ExampleCard extends StatelessWidget {
                     title,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: FiftyColors.terminalWhite,
+                          color: FiftyColors.cream,
                           letterSpacing: 1,
                         ),
                   ),
@@ -170,7 +170,7 @@ class _ExampleCard extends StatelessWidget {
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: FiftyColors.hyperChrome,
+                          color: FiftyColors.slateGrey,
                         ),
                   ),
                 ],
@@ -178,7 +178,7 @@ class _ExampleCard extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right,
-              color: FiftyColors.hyperChrome.withValues(alpha: 0.5),
+              color: FiftyColors.slateGrey.withValues(alpha: 0.5),
             ),
           ],
         ),
