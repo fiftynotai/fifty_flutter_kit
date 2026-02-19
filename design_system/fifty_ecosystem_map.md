@@ -33,7 +33,7 @@ A visual dependency and relationship diagram for the fifty.dev modular architect
 │  │engine          │ │engine           │ │engine             │   │
 │  └────────────────┘ └─────────────────┘ └───────────────────┘   │
 │  ┌────────────────┐ ┌─────────────────┐ ┌───────────────────┐   │
-│  │fifty_map_      │ │fifty_printing_  │ │fifty_skill_tree   │   │
+│  │fifty_world_    │ │fifty_printing_  │ │fifty_skill_tree   │   │
 │  │engine          │ │engine           │ │                   │   │
 │  └────────────────┘ └─────────────────┘ └───────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
@@ -70,7 +70,7 @@ Domain-specific functionality for specialized applications.
 | `fifty_audio_engine` | 0.8.0 | Multi-channel audio (BGM, SFX, Voice) | Ready |
 | `fifty_speech_engine` | 0.1.0 | Text-to-speech integration | Released |
 | `fifty_sentences_engine` | 0.1.0 | Dialogue/sentence queue management | Released |
-| `fifty_map_engine` | 0.1.0 | 2D map and grid system | Released |
+| `fifty_world_engine` | 0.1.0 | 2D map and grid system | Released |
 | `fifty_printing_engine` | 1.0.0 | Print services and PDF generation | Released |
 | `fifty_skill_tree` | 0.2.0 | RPG-style skill tree visualization | Released |
 

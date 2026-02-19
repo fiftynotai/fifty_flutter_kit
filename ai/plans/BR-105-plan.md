@@ -16,7 +16,7 @@
 | Package | Audit Brief Claim | Actual State |
 |---------|------------------|--------------|
 | fifty_sentences_engine | Has fifty_tokens path dep | NO path deps — CLEAN |
-| fifty_map_engine | Has fifty_tokens, fifty_theme, fifty_ui path deps | NO path deps — CLEAN |
+| fifty_world_engine | Has fifty_tokens, fifty_theme, fifty_ui path deps | NO path deps — CLEAN |
 | fifty_speech_engine | Listed as clean (no path deps) | HAS fifty_tokens, fifty_theme, fifty_ui path deps |
 | fifty_achievement_engine | fifty_tokens, fifty_theme, fifty_ui | fifty_tokens + fifty_ui only (no fifty_theme) |
 | fifty_skill_tree | fifty_tokens, fifty_theme, fifty_ui | fifty_tokens ONLY |
@@ -79,7 +79,7 @@ After Phase 1 packages are live on pub.dev, subsequent packages' git refs conver
 | fifty_printing_engine | flutter, printing, bluetooth, escpos |
 | fifty_sentences_engine | flutter, game, text-processing |
 | fifty_speech_engine | flutter, speech, tts, stt |
-| fifty_map_engine | flutter, game, tilemap, flame |
+| fifty_world_engine | flutter, game, tilemap, flame |
 | fifty_achievement_engine | flutter, game, achievements, gamification |
 | fifty_skill_tree | flutter, game, skill-tree, rpg |
 
@@ -101,7 +101,7 @@ After Phase 1 packages are live on pub.dev, subsequent packages' git refs conver
 | fifty_printing_engine | 1.0.0 | YES | YES | NO | none | NO (root, no path) |
 | fifty_sentences_engine | 0.1.0 | YES | YES | NO | none | PARTIAL (wrong org) |
 | fifty_speech_engine | 0.1.0 | YES | YES | NO | fifty_tokens, fifty_theme, fifty_ui | PARTIAL |
-| fifty_map_engine | 0.1.0 | YES | YES | NO | none | PARTIAL (wrong org) |
+| fifty_world_engine | 0.1.0 | YES | YES | NO | none | PARTIAL (wrong org) |
 | fifty_achievement_engine | 0.1.1 | NO | YES | NO | fifty_tokens, fifty_ui | NO (root, no path) |
 | fifty_skill_tree | 0.1.0 | YES | YES | NO | fifty_tokens | NO (root, no path) |
 
@@ -156,7 +156,7 @@ After Phase 1 packages are live on pub.dev, subsequent packages' git refs conver
 
 ### Phase 6: Remaining Clean Engine
 
-**fifty_map_engine** — Fix homepage/repository org, add topics/issue_tracker
+**fifty_world_engine** — Fix homepage/repository org, add topics/issue_tracker
 
 **Gate:** dry-run
 
@@ -199,7 +199,7 @@ Phase 1: fifty_tokens v1.0.0, fifty_utils v0.1.0, fifty_cache v0.1.0, fifty_stor
 Phase 2: fifty_theme v1.0.0  [← fifty_tokens]
 Phase 3: fifty_ui v0.6.0 [← tokens, theme], fifty_printing_engine v1.0.0, fifty_sentences_engine v0.1.0
 Phase 4: fifty_forms v0.1.0 [← tokens, theme, ui, storage], fifty_connectivity v0.1.0 [← tokens, ui, utils]
-Phase 5: fifty_audio_engine v0.7.0, fifty_speech_engine v0.1.0, fifty_map_engine v0.1.0, fifty_achievement_engine v0.1.1, fifty_skill_tree v0.1.0
+Phase 5: fifty_audio_engine v0.7.0, fifty_speech_engine v0.1.0, fifty_world_engine v0.1.0, fifty_achievement_engine v0.1.1, fifty_skill_tree v0.1.0
 ```
 
 ---

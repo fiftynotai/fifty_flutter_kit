@@ -49,7 +49,7 @@ class StatusBar extends StatelessWidget {
         children: [
           // Package title
           const Text(
-            'FIFTY MAP ENGINE',
+            'FIFTY WORLD ENGINE',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodySmall,

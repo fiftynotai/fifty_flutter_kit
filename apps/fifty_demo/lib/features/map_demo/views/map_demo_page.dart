@@ -1,9 +1,9 @@
 /// Map Demo Page
 ///
-/// Demonstrates map engine with audio integration.
+/// Demonstrates world engine with audio integration.
 library;
 
-import 'package:fifty_map_engine/fifty_map_engine.dart';
+import 'package:fifty_world_engine/fifty_world_engine.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -290,7 +290,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
 
     // Show the actual map widget - SizedBox.expand ensures it fills the space
     return SizedBox.expand(
-      child: FiftyMapWidget(
+      child: FiftyWorldWidget(
         controller: controller,
         initialEntities: viewModel.entities,
         onEntityTap: (entity) => actions.onEntityTapped(context, entity.id),

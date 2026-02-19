@@ -114,7 +114,7 @@ void main() {
             'fifty_audio_engine',
             'fifty_speech_engine',
             'fifty_sentences_engine',
-            'fifty_map_engine',
+            'fifty_world_engine',
             'fifty_printing_engine',
           ]),
         );

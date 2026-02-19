@@ -19,7 +19,7 @@ All 7 engine packages in the Fifty Flutter Kit lack example screenshots in their
 **Engines missing screenshots:**
 1. `fifty_achievement_engine` — achievement cards, popups, progress, summary
 2. `fifty_audio_engine` — BGM/SFX/voice channel controls, playlists
-3. `fifty_map_engine` — tile map rendering, entities, camera
+3. `fifty_world_engine` — tile map rendering, entities, camera
 4. `fifty_sentences_engine` — dialogue display, sentence queue, instruction buttons
 5. `fifty_speech_engine` — TTS/STT panels, language selection, status indicators
 6. `fifty_printing_engine` — printer management, test print, ticket builder
@@ -47,7 +47,7 @@ Screenshots are the first thing developers look at when evaluating a package. Wi
 ### Affected Packages
 - [x] `packages/fifty_achievement_engine/`
 - [x] `packages/fifty_audio_engine/`
-- [x] `packages/fifty_map_engine/`
+- [x] `packages/fifty_world_engine/`
 - [x] `packages/fifty_sentences_engine/`
 - [x] `packages/fifty_speech_engine/`
 - [x] `packages/fifty_printing_engine/`
@@ -144,7 +144,7 @@ _(None)_
 ### Completed
 - [x] Engine 1: fifty_achievement_engine — 4 screenshots (home, basic, unlocked, RPG)
 - [x] Engine 2: fifty_audio_engine — 4 screenshots (BGM, SFX, voice, global)
-- [x] Engine 3: fifty_map_engine — 2 screenshots (tactical overview, unit selection)
+- [x] Engine 3: fifty_world_engine — 2 screenshots (tactical overview, unit selection)
 - [x] Engine 4: fifty_sentences_engine — 3 screenshots (queue, choices, narration)
 - [x] Engine 5: fifty_speech_engine — 2 screenshots (TTS panel, STT panel)
 - [x] Engine 6: fifty_printing_engine — 4 screenshots (home, printers, test print, builder)
@@ -188,7 +188,7 @@ For each engine:
 ### Files Created
 - `packages/fifty_achievement_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_audio_engine/screenshots/*.png` (2-4 files)
-- `packages/fifty_map_engine/screenshots/*.png` (2-4 files)
+- `packages/fifty_world_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_sentences_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_speech_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_printing_engine/screenshots/*.png` (2-4 files)

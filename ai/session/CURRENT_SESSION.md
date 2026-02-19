@@ -26,7 +26,7 @@ _(None)_
 - **Priority:** P1-High
 - **Effort:** XL
 - **Phase:** Complete — All 8 phases executed across 15 packages
-- **Summary:** Full pub.dev release preparation for all 15 packages in Fifty Flutter Kit monorepo. Phases: (1-6) Metadata preparation — pubspec.yaml fixes (repository, homepage, issue_tracker, topics), 4 LICENSE files created, 4 example apps created, 2 CHANGELOGs updated, publish_to:none removed, escpos pinned. (7) Code quality pass — 222 analyzer issues → 0, SDK constraint standardized to ^3.6.0, 13 pubspec.lock files removed from tracking, FDL v1→v2 token migration (fifty_forms, fifty_connectivity), Vector2 import fix (fifty_map_engine), const fixes (fifty_skill_tree), super params (fifty_printing_engine). (8) Final validation — 7 packages fully publish-ready (0 warnings), 8 packages blocked only by path deps (convert to hosted at publish time). 202 gitignored-but-tracked files cleaned up.
+- **Summary:** Full pub.dev release preparation for all 15 packages in Fifty Flutter Kit monorepo. Phases: (1-6) Metadata preparation — pubspec.yaml fixes (repository, homepage, issue_tracker, topics), 4 LICENSE files created, 4 example apps created, 2 CHANGELOGs updated, publish_to:none removed, escpos pinned. (7) Code quality pass — 222 analyzer issues → 0, SDK constraint standardized to ^3.6.0, 13 pubspec.lock files removed from tracking, FDL v1→v2 token migration (fifty_forms, fifty_connectivity), Vector2 import fix (fifty_world_engine), const fixes (fifty_skill_tree), super params (fifty_printing_engine). (8) Final validation — 7 packages fully publish-ready (0 warnings), 8 packages blocked only by path deps (convert to hosted at publish time). 202 gitignored-but-tracked files cleaned up.
 
 ## Completed Briefs (2026-02-18)
 
@@ -67,7 +67,7 @@ _(None)_
 | `fifty_audio_engine` | Screenshot format fix | `997a7cc` |
 | `fifty_speech_engine` | Screenshot format fix | `997a7cc` |
 | `fifty_sentences_engine` | Screenshot format fix | `997a7cc` |
-| `fifty_map_engine` | Screenshot format fix | `997a7cc` |
+| `fifty_world_engine` | Screenshot format fix | `997a7cc` |
 | `fifty_skill_tree` | Screenshot format fix | `997a7cc` |
 | `fifty_tokens` | Full template rewrite | `1815c04` |
 | `fifty_theme` | Full template rewrite | `1815c04` |
@@ -136,7 +136,7 @@ _(None)_
 ### BR-082 - Y-Axis Movement Inversion Bug
 - **Status:** Done (`0912a6e`)
 
-### BR-076 - Tactical Grid -> fifty_map_engine Migration
+### BR-076 - Tactical Grid -> fifty_world_engine Migration
 - **Status:** Done (`8a456ef`, `c69ae5f`)
 
 ### BR-081 - centerMap() Zero Speed Crash
@@ -151,7 +151,7 @@ _(None)_
 ### BR-078 - Tactical Skirmish Sandbox Example
 - **Status:** Done (`38fab7b`, `d77e872`, `35ea325`)
 
-### BR-077 - fifty_map_engine v2 Upgrade
+### BR-077 - fifty_world_engine v2 Upgrade
 - **Status:** Done (`6c13e9d`)
 
 ---
@@ -159,7 +159,7 @@ _(None)_
 ## Next Steps
 
 - **BR-105 complete** — All 15 packages prepared for pub.dev
-- **Ready to publish:** fifty_tokens, fifty_utils, fifty_cache, fifty_storage, fifty_printing_engine, fifty_sentences_engine, fifty_map_engine (7/15, 0 warnings)
+- **Ready to publish:** fifty_tokens, fifty_utils, fifty_cache, fifty_storage, fifty_printing_engine, fifty_sentences_engine, fifty_world_engine (7/15, 0 warnings)
 - **Blocked by path deps only:** fifty_theme, fifty_ui, fifty_forms, fifty_connectivity, fifty_audio_engine, fifty_speech_engine, fifty_achievement_engine, fifty_skill_tree (8/15)
 - **To publish:** Follow publish order in `ai/context/publish_order.md` — convert path deps to hosted deps bottom-up
 - **All package READMEs standardized** — FDL template compliant

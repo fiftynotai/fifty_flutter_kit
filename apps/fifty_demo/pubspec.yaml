@@ -24,8 +24,8 @@ dependencies:
     path: ../../packages/fifty_speech_engine
   fifty_sentences_engine:
     path: ../../packages/fifty_sentences_engine
-  fifty_map_engine:
-    path: ../../packages/fifty_map_engine
+  fifty_world_engine:
+    path: ../../packages/fifty_world_engine
   fifty_printing_engine:
     path: ../../packages/fifty_printing_engine
   # Fifty Flutter Kit - Features

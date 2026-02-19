@@ -59,7 +59,7 @@ class PackagesActions {
 
     // Navigate to the appropriate demo based on package ID
     switch (packageId) {
-      case 'fifty_map_engine':
+      case 'fifty_world_engine':
         Get.to<void>(() => const MapDemoPage());
         break;
       case 'fifty_audio_engine':

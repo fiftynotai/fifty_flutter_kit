@@ -116,7 +116,7 @@ class HomeViewModel extends GetxController {
           description: 'Dialogue/sentence queue processing',
         ),
         PackageStatus(
-          name: 'fifty_map_engine',
+          name: 'fifty_world_engine',
           version: 'v0.1.0',
           isReady: _mapService.isInitialized,
           category: PackageCategory.engines,

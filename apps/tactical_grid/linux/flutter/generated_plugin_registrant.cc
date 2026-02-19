@@ -8,7 +8,7 @@
 
 #include <audioplayers_linux/audioplayers_linux_plugin.h>
 #include <fifty_audio_engine/fifty_audio_engine_plugin.h>
-#include <fifty_map_engine/fifty_map_engine_plugin.h>
+#include <fifty_world_engine/fifty_world_engine_plugin.h>
 
 void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) audioplayers_linux_registrar =
@@ -17,7 +17,7 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) fifty_audio_engine_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "FiftyAudioEnginePlugin");
   fifty_audio_engine_plugin_register_with_registrar(fifty_audio_engine_registrar);
-  g_autoptr(FlPluginRegistrar) fifty_map_engine_registrar =
-      fl_plugin_registry_get_registrar_for_plugin(registry, "FiftyMapEnginePlugin");
-  fifty_map_engine_plugin_register_with_registrar(fifty_map_engine_registrar);
+  g_autoptr(FlPluginRegistrar) fifty_world_engine_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "FiftyWorldEnginePlugin");
+  fifty_world_engine_plugin_register_with_registrar(fifty_world_engine_registrar);
 }

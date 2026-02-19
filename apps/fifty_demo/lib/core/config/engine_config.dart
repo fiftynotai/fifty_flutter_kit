@@ -45,8 +45,8 @@ abstract class SentencesEngineConfig {
   static const bool enableAutoAdvance = false;
 }
 
-/// Map engine configuration.
-abstract class MapEngineConfig {
+/// World engine configuration.
+abstract class WorldEngineConfig {
   /// Default grid cell size.
   static const double defaultCellSize = 64.0;
 

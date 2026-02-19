@@ -1,0 +1,25 @@
+name: fifty_world_engine_example
+description: "Tactical Skirmish Sandbox - fifty_world_engine v2 showcase"
+publish_to: 'none'
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.30.1
+  fifty_world_engine:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/units/
+    - assets/images/tiles/

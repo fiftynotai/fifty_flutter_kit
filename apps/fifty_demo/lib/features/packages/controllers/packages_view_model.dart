@@ -113,9 +113,9 @@ class PackagesViewModel extends GetxController {
       category: PackageCategory.engines,
     ),
     PackageDemo(
-      id: 'fifty_map_engine',
-      name: 'Map Engine',
-      description: 'Interactive grid-based map rendering',
+      id: 'fifty_world_engine',
+      name: 'World Engine',
+      description: 'Interactive grid-based world rendering',
       icon: Icons.map_outlined,
       category: PackageCategory.engines,
     ),

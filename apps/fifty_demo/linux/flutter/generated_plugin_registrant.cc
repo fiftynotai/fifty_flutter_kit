@@ -8,9 +8,9 @@
 
 #include <audioplayers_linux/audioplayers_linux_plugin.h>
 #include <fifty_audio_engine/fifty_audio_engine_plugin.h>
-#include <fifty_map_engine/fifty_map_engine_plugin.h>
 #include <fifty_sentences_engine/fifty_sentences_engine_plugin.h>
 #include <fifty_speech_engine/fifty_speech_engine_plugin.h>
+#include <fifty_world_engine/fifty_world_engine_plugin.h>
 #include <flutter_secure_storage_linux/flutter_secure_storage_linux_plugin.h>
 #include <url_launcher_linux/url_launcher_plugin.h>
 
@@ -21,15 +21,15 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) fifty_audio_engine_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "FiftyAudioEnginePlugin");
   fifty_audio_engine_plugin_register_with_registrar(fifty_audio_engine_registrar);
-  g_autoptr(FlPluginRegistrar) fifty_map_engine_registrar =
-      fl_plugin_registry_get_registrar_for_plugin(registry, "FiftyMapEnginePlugin");
-  fifty_map_engine_plugin_register_with_registrar(fifty_map_engine_registrar);
   g_autoptr(FlPluginRegistrar) fifty_sentences_engine_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "FiftySentencesEnginePlugin");
   fifty_sentences_engine_plugin_register_with_registrar(fifty_sentences_engine_registrar);
   g_autoptr(FlPluginRegistrar) fifty_speech_engine_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "FiftySpeechEnginePlugin");
   fifty_speech_engine_plugin_register_with_registrar(fifty_speech_engine_registrar);
+  g_autoptr(FlPluginRegistrar) fifty_world_engine_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "FiftyWorldEnginePlugin");
+  fifty_world_engine_plugin_register_with_registrar(fifty_world_engine_registrar);
   g_autoptr(FlPluginRegistrar) flutter_secure_storage_linux_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "FlutterSecureStorageLinuxPlugin");
   flutter_secure_storage_linux_plugin_register_with_registrar(flutter_secure_storage_linux_registrar);

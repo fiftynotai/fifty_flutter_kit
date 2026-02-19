@@ -32,7 +32,7 @@ A development roadmap for the Fifty Ecosystem — building a modular, design-dri
 | **fifty_audio_engine** | 0.8.0 | Ready | Multi-channel audio (BGM, SFX, Voice) |
 | **fifty_speech_engine** | 0.1.0 | Released | Text-to-speech integration |
 | **fifty_sentences_engine** | 0.1.0 | Released | Dialogue queue and sentence management |
-| **fifty_map_engine** | 0.1.0 | Released | 2D map and grid system |
+| **fifty_world_engine** | 0.1.0 | Released | 2D map and grid system |
 | **fifty_printing_engine** | 1.0.0 | Released | Print services and PDF generation |
 | **fifty_skill_tree** | 0.2.0 | Released | RPG skill tree visualization (FDL integrated) |
 

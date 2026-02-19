@@ -399,5 +399,5 @@ MIT License - See LICENSE file for details.
 | [fifty_audio_engine](../../packages/fifty_audio_engine) | Audio management |
 | [fifty_speech_engine](../../packages/fifty_speech_engine) | TTS/STT |
 | [fifty_sentences_engine](../../packages/fifty_sentences_engine) | Dialogue system |
-| [fifty_map_engine](../../packages/fifty_map_engine) | Map rendering |
+| [fifty_world_engine](../../packages/fifty_world_engine) | Map rendering |
 | **mvvm_actions** | Architecture template (this template) |

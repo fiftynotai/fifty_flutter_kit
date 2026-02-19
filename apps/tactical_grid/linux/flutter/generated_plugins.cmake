@@ -5,7 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
   fifty_audio_engine
-  fifty_map_engine
+  fifty_world_engine
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

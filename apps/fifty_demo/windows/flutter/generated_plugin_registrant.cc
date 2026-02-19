@@ -9,8 +9,8 @@
 #include <audioplayers_windows/audioplayers_windows_plugin.h>
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
 #include <fifty_audio_engine/fifty_audio_engine_plugin_c_api.h>
-#include <fifty_map_engine/fifty_map_engine_plugin_c_api.h>
 #include <fifty_sentences_engine/fifty_sentences_engine_plugin_c_api.h>
+#include <fifty_world_engine/fifty_world_engine_plugin_c_api.h>
 #include <flutter_secure_storage_windows/flutter_secure_storage_windows_plugin.h>
 #include <flutter_tts/flutter_tts_plugin.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
@@ -25,10 +25,10 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   FiftyAudioEnginePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FiftyAudioEnginePluginCApi"));
-  FiftyMapEnginePluginCApiRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("FiftyMapEnginePluginCApi"));
   FiftySentencesEnginePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FiftySentencesEnginePluginCApi"));
+  FiftyWorldEnginePluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FiftyWorldEnginePluginCApi"));
   FlutterSecureStorageWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterSecureStorageWindowsPlugin"));
   FlutterTtsPluginRegisterWithRegistrar(

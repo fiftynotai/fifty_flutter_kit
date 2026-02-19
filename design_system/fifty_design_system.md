@@ -274,7 +274,7 @@ graph TD
         I[fifty_audio_engine]
         J[fifty_speech_engine]
         K[fifty_sentences_engine]
-        L[fifty_map_engine]
+        L[fifty_world_engine]
         M[fifty_printing_engine]
         N[fifty_skill_tree]
     end
@@ -294,7 +294,7 @@ graph TD
 | Engine | `fifty_audio_engine` | Audio playback system |
 | Engine | `fifty_speech_engine` | Text-to-speech |
 | Engine | `fifty_sentences_engine` | Sentence processing |
-| Engine | `fifty_map_engine` | Map integration |
+| Engine | `fifty_world_engine` | Map integration |
 | Engine | `fifty_printing_engine` | Print services |
 | Engine | `fifty_skill_tree` | RPG skill tree UI |
 

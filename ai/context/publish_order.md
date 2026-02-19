@@ -60,7 +60,7 @@ Before running `dart pub publish` for each package:
 |---------|---------|-------------|-------|
 | `fifty_audio_engine` | 0.7.0 | `fifty_tokens`, `fifty_theme`, `fifty_ui` | Plugin package — convert 3 path deps |
 | `fifty_speech_engine` | 0.1.0 | `fifty_tokens`, `fifty_theme`, `fifty_ui` | Plugin package — convert 3 path deps |
-| `fifty_map_engine` | 0.1.0 | none (external only) | Plugin package — clean |
+| `fifty_world_engine` | 0.1.0 | none (external only) | Plugin package — clean |
 | `fifty_achievement_engine` | 0.1.1 | `fifty_tokens`, `fifty_ui` | Convert 2 path deps |
 | `fifty_skill_tree` | 0.1.0 | `fifty_tokens` | Convert 1 path dep |
 

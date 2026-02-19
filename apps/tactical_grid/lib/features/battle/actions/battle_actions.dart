@@ -24,7 +24,7 @@ library;
 
 import 'dart:async';
 
-import 'package:fifty_map_engine/fifty_map_engine.dart' as map_engine;
+import 'package:fifty_world_engine/fifty_world_engine.dart' as world_engine;
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +146,7 @@ class BattleActions {
   /// Executes a move with engine animation (A* pathfinding + AnimationQueue).
   ///
   /// If the engine controller is available (registered via GetX by
-  /// [EngineBoardWidget]), uses the engine's [map_engine.AnimationQueue] to
+  /// [EngineBoardWidget]), uses the engine's [world_engine.AnimationQueue] to
   /// animate the unit along an A* path step by step. Falls back to the old
   /// [AnimationService] if the engine is not registered (e.g. in tests).
   Future<void> _handleMoveWithAnimation(
@@ -157,20 +157,20 @@ class BattleActions {
     final unitId = state.selectedUnit!.id;
 
     // Try engine-based animation.
-    if (Get.isRegistered<map_engine.FiftyMapController>()) {
-      final controller = Get.find<map_engine.FiftyMapController>();
-      final grid = Get.find<map_engine.TileGrid>();
+    if (Get.isRegistered<world_engine.FiftyWorldController>()) {
+      final controller = Get.find<world_engine.FiftyWorldController>();
+      final grid = Get.find<world_engine.TileGrid>();
 
       // Compute occupied positions (excluding the moving unit).
       final occupied = state.board.units
           .where((u) => u.isAlive && u.id != unitId)
-          .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
+          .map((u) => world_engine.GridPosition(u.position.x, u.position.y))
           .toSet();
 
       // A* pathfinding (diagonal enabled so diagonal/L-shape moves can route).
       final path = controller.findPath(
-        map_engine.GridPosition(fromPos.x, fromPos.y),
-        map_engine.GridPosition(position.x, position.y),
+        world_engine.GridPosition(fromPos.x, fromPos.y),
+        world_engine.GridPosition(position.x, position.y),
         grid: grid,
         blocked: occupied,
         diagonal: true,
@@ -187,7 +187,7 @@ class BattleActions {
         for (int i = 1; i < path.length; i++) {
           final step = path[i];
           final isLast = i == path.length - 1;
-          controller.queueAnimation(map_engine.AnimationEntry(
+          controller.queueAnimation(world_engine.AnimationEntry(
             execute: () async {
               final entity = controller.getEntityById(unitId);
               if (entity == null) return;
@@ -204,7 +204,7 @@ class BattleActions {
         // Move the engine component directly to the target tile so it stays
         // in sync with the game state that was already updated above.
         final completer = Completer<void>();
-        controller.queueAnimation(map_engine.AnimationEntry(
+        controller.queueAnimation(world_engine.AnimationEntry(
           execute: () async {
             final entity = controller.getEntityById(unitId);
             if (entity == null) return;
@@ -244,8 +244,8 @@ class BattleActions {
   void onTileTapped(BuildContext context, GridPosition position) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
-    if (Get.isRegistered<map_engine.FiftyMapController>() &&
-        Get.find<map_engine.FiftyMapController>().isAnimating) {
+    if (Get.isRegistered<world_engine.FiftyWorldController>() &&
+        Get.find<world_engine.FiftyWorldController>().isAnimating) {
       return;
     }
     // Block player input while AI is executing its turn.
@@ -316,8 +316,8 @@ class BattleActions {
   void onAttackUnit(BuildContext context, String targetUnitId) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
-    if (Get.isRegistered<map_engine.FiftyMapController>() &&
-        Get.find<map_engine.FiftyMapController>().isAnimating) {
+    if (Get.isRegistered<world_engine.FiftyWorldController>() &&
+        Get.find<world_engine.FiftyWorldController>().isAnimating) {
       return;
     }
     // Block player input while AI is executing its turn.
@@ -347,16 +347,16 @@ class BattleActions {
 
         // --- Animation sequence ---
         // Try engine-based animation.
-        if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        if (Get.isRegistered<world_engine.FiftyWorldController>() &&
             attacker != null &&
             target != null) {
-          final controller = Get.find<map_engine.FiftyMapController>();
+          final controller = Get.find<world_engine.FiftyWorldController>();
 
           // 1. Attack lunge animation.
           final attackerComp = controller.getComponentById(attacker.id);
-          if (attackerComp is map_engine.FiftyMovableComponent) {
+          if (attackerComp is world_engine.FiftyMovableComponent) {
             final attackCompleter = Completer<void>();
-            controller.queueAnimation(map_engine.AnimationEntry.timed(
+            controller.queueAnimation(world_engine.AnimationEntry.timed(
               action: () => attackerComp.attack(),
               duration: const Duration(milliseconds: 400),
               onComplete: () => attackCompleter.complete(),
@@ -367,10 +367,10 @@ class BattleActions {
           // 2. Damage popup + HP bar update.
           if (result.damageDealt != null && result.damageDealt! > 0) {
             final popupCompleter = Completer<void>();
-            controller.queueAnimation(map_engine.AnimationEntry.timed(
+            controller.queueAnimation(world_engine.AnimationEntry.timed(
               action: () {
                 controller.showFloatingText(
-                  map_engine.GridPosition(
+                  world_engine.GridPosition(
                       target.position.x, target.position.y),
                   '-${result.damageDealt}',
                   color: const Color(0xFFFFFF00), // Yellow
@@ -390,9 +390,9 @@ class BattleActions {
           // 3. Defeat animation (if killed).
           if (result.targetDefeated == true) {
             final targetComp = controller.getComponentById(target.id);
-            if (targetComp is map_engine.FiftyMovableComponent) {
+            if (targetComp is world_engine.FiftyMovableComponent) {
               final defeatCompleter = Completer<void>();
-              controller.queueAnimation(map_engine.AnimationEntry(
+              controller.queueAnimation(world_engine.AnimationEntry(
                 execute: () async {
                   targetComp.die();
                   await Future<void>.delayed(
@@ -499,8 +499,8 @@ class BattleActions {
   void onEndTurn(BuildContext context) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
-    if (Get.isRegistered<map_engine.FiftyMapController>() &&
-        Get.find<map_engine.FiftyMapController>().isAnimating) {
+    if (Get.isRegistered<world_engine.FiftyWorldController>() &&
+        Get.find<world_engine.FiftyWorldController>().isAnimating) {
       return;
     }
     // Block player input while AI is executing its turn.
@@ -548,8 +548,8 @@ class BattleActions {
   void onWaitUnit(BuildContext context) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
-    if (Get.isRegistered<map_engine.FiftyMapController>() &&
-        Get.find<map_engine.FiftyMapController>().isAnimating) {
+    if (Get.isRegistered<world_engine.FiftyWorldController>() &&
+        Get.find<world_engine.FiftyWorldController>().isAnimating) {
       return;
     }
     // Block player input while AI is executing its turn.
@@ -571,8 +571,8 @@ class BattleActions {
   void onAbilityButtonPressed(BuildContext context) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
-    if (Get.isRegistered<map_engine.FiftyMapController>() &&
-        Get.find<map_engine.FiftyMapController>().isAnimating) {
+    if (Get.isRegistered<world_engine.FiftyWorldController>() &&
+        Get.find<world_engine.FiftyWorldController>().isAnimating) {
       return;
     }
     // Block player input while AI is executing its turn.
@@ -620,8 +620,8 @@ class BattleActions {
   void onUseAbility(BuildContext context, {GridPosition? targetPosition}) {
     // Block player input while an animation is playing.
     if (_animationService?.isAnimating ?? false) return;
-    if (Get.isRegistered<map_engine.FiftyMapController>() &&
-        Get.find<map_engine.FiftyMapController>().isAnimating) {
+    if (Get.isRegistered<world_engine.FiftyWorldController>() &&
+        Get.find<world_engine.FiftyWorldController>().isAnimating) {
       return;
     }
     // Block player input while AI is executing its turn.
@@ -647,18 +647,18 @@ class BattleActions {
         }
 
         // --- Animation for damaging abilities ---
-        if (Get.isRegistered<map_engine.FiftyMapController>() &&
+        if (Get.isRegistered<world_engine.FiftyWorldController>() &&
             result.damageDealt != null &&
             result.damageDealt! > 0) {
-          final controller = Get.find<map_engine.FiftyMapController>();
+          final controller = Get.find<world_engine.FiftyWorldController>();
 
           // Damage popup at target position.
           if (targetPosition != null) {
             final popupCompleter = Completer<void>();
-            controller.queueAnimation(map_engine.AnimationEntry.timed(
+            controller.queueAnimation(world_engine.AnimationEntry.timed(
               action: () {
                 controller.showFloatingText(
-                  map_engine.GridPosition(
+                  world_engine.GridPosition(
                       targetPosition.x, targetPosition.y),
                   '-${result.damageDealt}',
                   color: const Color(0xFFFFFF00),
@@ -678,9 +678,9 @@ class BattleActions {
                   _viewModel.board.getUnitById(affectedId);
               if (affectedUnit != null && affectedUnit.isDead) {
                 final comp = controller.getComponentById(affectedId);
-                if (comp is map_engine.FiftyMovableComponent) {
+                if (comp is world_engine.FiftyMovableComponent) {
                   final defeatCompleter = Completer<void>();
-                  controller.queueAnimation(map_engine.AnimationEntry(
+                  controller.queueAnimation(world_engine.AnimationEntry(
                     execute: () async {
                       comp.die();
                       await Future<void>.delayed(

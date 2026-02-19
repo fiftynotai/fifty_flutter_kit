@@ -15,7 +15,7 @@
 /// - fifty_audio_engine: Audio playback
 /// - fifty_speech_engine: TTS/STT
 /// - fifty_sentences_engine: Dialogue queue
-/// - fifty_map_engine: Interactive maps
+/// - fifty_world_engine: Interactive maps
 library;
 
 export 'app/app.dart';

@@ -6,8 +6,8 @@ list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   connectivity_plus
   fifty_audio_engine
-  fifty_map_engine
   fifty_sentences_engine
+  fifty_world_engine
   flutter_secure_storage_windows
   flutter_tts
   permission_handler_windows

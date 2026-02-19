@@ -20,8 +20,8 @@ dependencies:
     path: ../../packages/fifty_achievement_engine
   fifty_audio_engine:
     path: ../../packages/fifty_audio_engine
-  fifty_map_engine:
-    path: ../../packages/fifty_map_engine
+  fifty_world_engine:
+    path: ../../packages/fifty_world_engine
   # Persistence
   get_storage: ^2.1.1
   # State management

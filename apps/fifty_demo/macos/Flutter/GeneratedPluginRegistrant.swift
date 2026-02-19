@@ -8,8 +8,8 @@ import Foundation
 import audioplayers_darwin
 import connectivity_plus
 import fifty_audio_engine
-import fifty_map_engine
 import fifty_sentences_engine
+import fifty_world_engine
 import flutter_secure_storage_macos
 import flutter_tts
 import path_provider_foundation
@@ -21,8 +21,8 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioplayersDarwinPlugin.register(with: registry.registrar(forPlugin: "AudioplayersDarwinPlugin"))
   ConnectivityPlusPlugin.register(with: registry.registrar(forPlugin: "ConnectivityPlusPlugin"))
   FiftyAudioEnginePlugin.register(with: registry.registrar(forPlugin: "FiftyAudioEnginePlugin"))
-  FiftyMapEnginePlugin.register(with: registry.registrar(forPlugin: "FiftyMapEnginePlugin"))
   FiftySentencesEnginePlugin.register(with: registry.registrar(forPlugin: "FiftySentencesEnginePlugin"))
+  FiftyWorldEnginePlugin.register(with: registry.registrar(forPlugin: "FiftyWorldEnginePlugin"))
   FlutterSecureStoragePlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStoragePlugin"))
   FlutterTtsPlugin.register(with: registry.registrar(forPlugin: "FlutterTtsPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))

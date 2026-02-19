@@ -1,11 +1,11 @@
 /// **EngineBoardWidget**
 ///
-/// Renders the 8x8 tactical grid board using the `fifty_map_engine` v2
+/// Renders the 8x8 tactical grid board using the `fifty_world_engine` v2
 /// game engine instead of Flutter's [GridView.builder].
 ///
-/// Wraps [FiftyMapWidget] with:
+/// Wraps [FiftyWorldWidget] with:
 /// - A checkerboard [TileGrid] (dark/light tiles from [AppTheme]).
-/// - [FiftyMapEntity] instances for each living unit on the board.
+/// - [FiftyWorldEntity] instances for each living unit on the board.
 /// - Entity decorators: team colour borders, HP bars, and status icons.
 ///
 /// **Architecture Note:**
@@ -15,7 +15,7 @@
 ///
 /// **Data Flow:**
 /// ```
-/// EngineBoardWidget (FiftyMapWidget)
+/// EngineBoardWidget (FiftyWorldWidget)
 ///   -> onTileTap -> BattleActions.onTileTapped
 ///   -> BattleViewModel.gameState (read-only)
 /// ```
@@ -26,7 +26,7 @@
 /// ```
 library;
 
-import 'package:fifty_map_engine/fifty_map_engine.dart' as map_engine;
+import 'package:fifty_world_engine/fifty_world_engine.dart' as world_engine;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,7 +40,7 @@ import '../../models/models.dart';
 // ---------------------------------------------------------------------------
 
 /// Dark checkerboard tile consuming [AppTheme.boardDark].
-const _tileDark = map_engine.TileType(
+const _tileDark = world_engine.TileType(
   id: 'dark',
   asset: 'board/tile_dark.png',
   color: AppTheme.boardDark,
@@ -53,7 +53,7 @@ const _tileDark = map_engine.TileType(
 /// is only used as a fallback when the asset is missing. The engine renders
 /// the sprite image when available, so the compile-time colour here is a
 /// reasonable approximation.
-const _tileLight = map_engine.TileType(
+const _tileLight = world_engine.TileType(
   id: 'light',
   asset: 'board/tile_light.png',
   color: Color(0x32708090), // AppTheme.boardLight approximation (slateGrey @ 50 alpha)
@@ -64,7 +64,7 @@ const _tileLight = map_engine.TileType(
 // Widget
 // ---------------------------------------------------------------------------
 
-/// The 8x8 tactical game board powered by `fifty_map_engine` v2.
+/// The 8x8 tactical game board powered by `fifty_world_engine` v2.
 ///
 /// Uses a [StatefulWidget] because the engine controller and grid must be
 /// initialised in [initState], and decorators are applied via a post-frame
@@ -81,10 +81,10 @@ class EngineBoardWidget extends StatefulWidget {
 
 class _EngineBoardWidgetState extends State<EngineBoardWidget> {
   /// Engine controller for entity manipulation and camera control.
-  late final map_engine.FiftyMapController _controller;
+  late final world_engine.FiftyWorldController _controller;
 
   /// The 8x8 checkerboard tile grid.
-  late final map_engine.TileGrid _grid;
+  late final world_engine.TileGrid _grid;
 
   /// Reference to the reactive battle ViewModel.
   late final BattleViewModel _viewModel;
@@ -118,13 +118,13 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
 
     // Create the engine controller and register with GetX for access
     // from the action layer (e.g. BattleActions movement animation).
-    _controller = map_engine.FiftyMapController();
-    Get.put<map_engine.FiftyMapController>(_controller);
+    _controller = world_engine.FiftyWorldController();
+    Get.put<world_engine.FiftyWorldController>(_controller);
 
     // Build the checkerboard grid and register with GetX for pathfinding.
-    _grid = map_engine.TileGrid(width: 8, height: 8);
+    _grid = world_engine.TileGrid(width: 8, height: 8);
     _grid.fillCheckerboard(_tileDark, _tileLight);
-    Get.put<map_engine.TileGrid>(_grid);
+    Get.put<world_engine.TileGrid>(_grid);
 
     // Resolve the ViewModel from GetX.
     _viewModel = Get.find<BattleViewModel>();
@@ -148,8 +148,8 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
   void dispose() {
     _stateWorker.dispose();
     _abilityTargetWorker.dispose();
-    Get.delete<map_engine.TileGrid>();
-    Get.delete<map_engine.FiftyMapController>();
+    Get.delete<world_engine.TileGrid>();
+    Get.delete<world_engine.FiftyWorldController>();
     super.dispose();
   }
 
@@ -162,7 +162,7 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
   /// Must be called before the first build so the engine can resolve
   /// asset paths to loaded images.
   void _registerAssets() {
-    map_engine.FiftyAssetLoader.registerAssets([
+    world_engine.FiftyAssetLoader.registerAssets([
       // Board tiles
       'board/tile_dark.png',
       'board/tile_light.png',
@@ -189,20 +189,20 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
 
   /// Converts the current game state's living units into engine entities.
   ///
-  /// Each [Unit] is mapped to a [FiftyMapEntity] with a 1x1 block size
+  /// Each [Unit] is mapped to a [FiftyWorldEntity] with a 1x1 block size
   /// and the appropriate sprite asset path.
-  List<map_engine.FiftyMapEntity> _buildEntities(GameState state) {
+  List<world_engine.FiftyWorldEntity> _buildEntities(GameState state) {
     return state.board.units
         .where((u) => u.isAlive)
-        .map((unit) => map_engine.FiftyMapEntity(
+        .map((unit) => world_engine.FiftyWorldEntity(
               id: unit.id,
               type: 'character',
               asset: _unitAssetPath(unit),
-              gridPosition: map_engine.Vector2(
+              gridPosition: world_engine.Vector2(
                 unit.position.x.toDouble(),
                 unit.position.y.toDouble(),
               ),
-              blockSize: map_engine.FiftyBlockSize(1, 1),
+              blockSize: world_engine.FiftyBlockSize(1, 1),
             ))
         .toList();
   }
@@ -324,9 +324,9 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
     if (state.validMoves.isNotEmpty) {
       _controller.highlightTiles(
         state.validMoves
-            .map((p) => map_engine.GridPosition(p.x, p.y))
+            .map((p) => world_engine.GridPosition(p.x, p.y))
             .toList(),
-        map_engine.HighlightStyle.validMove,
+        world_engine.HighlightStyle.validMove,
       );
     }
 
@@ -334,9 +334,9 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
     if (state.attackTargets.isNotEmpty) {
       _controller.highlightTiles(
         state.attackTargets
-            .map((u) => map_engine.GridPosition(u.position.x, u.position.y))
+            .map((u) => world_engine.GridPosition(u.position.x, u.position.y))
             .toList(),
-        map_engine.HighlightStyle.attackRange,
+        world_engine.HighlightStyle.attackRange,
       );
     }
 
@@ -344,16 +344,16 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
     if (_viewModel.isAbilityTargeting.value && state.abilityTargets.isNotEmpty) {
       _controller.highlightTiles(
         state.abilityTargets
-            .map((p) => map_engine.GridPosition(p.x, p.y))
+            .map((p) => world_engine.GridPosition(p.x, p.y))
             .toList(),
-        map_engine.HighlightStyle.abilityTarget,
+        world_engine.HighlightStyle.abilityTarget,
       );
     }
 
     // Selection highlight (yellow on selected unit's tile).
     if (state.selectedUnit != null) {
       _controller.setSelection(
-        map_engine.GridPosition(
+        world_engine.GridPosition(
           state.selectedUnit!.position.x,
           state.selectedUnit!.position.y,
         ),
@@ -400,9 +400,9 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
       if (state.abilityTargets.isNotEmpty) {
         _controller.highlightTiles(
           state.abilityTargets
-              .map((p) => map_engine.GridPosition(p.x, p.y))
+              .map((p) => world_engine.GridPosition(p.x, p.y))
               .toList(),
-          map_engine.HighlightStyle.abilityTarget,
+          world_engine.HighlightStyle.abilityTarget,
         );
       }
     } else {
@@ -419,7 +419,7 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
   /// Converts the engine's [GridPosition] to the tactical grid's own
   /// [GridPosition] and forwards the tap to the action layer. Ignores
   /// taps while the engine is animating or input is blocked.
-  void _onTileTap(map_engine.GridPosition pos) {
+  void _onTileTap(world_engine.GridPosition pos) {
     if (_controller.isAnimating || _controller.inputManager.isBlocked) return;
 
     final actions = Get.find<BattleActions>();
@@ -432,7 +432,7 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return map_engine.FiftyMapWidget(
+    return world_engine.FiftyWorldWidget(
       grid: _grid,
       controller: _controller,
       initialEntities: _buildEntities(_viewModel.gameState.value),

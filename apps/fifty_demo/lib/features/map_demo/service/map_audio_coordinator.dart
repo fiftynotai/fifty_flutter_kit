@@ -1,6 +1,6 @@
 /// Map Audio Coordinator Service
 ///
-/// Coordinates map engine with audio engine for integrated experience.
+/// Coordinates world engine with audio engine for integrated experience.
 library;
 
 import 'dart:async';
@@ -161,7 +161,7 @@ class MapAudioCoordinator extends GetxController {
   /// Called when an entity is tapped on the map.
   Future<void> onEntityTapped(String entityId) async {
     await playEntityTapSfx();
-    // Focus on entity would require the full FiftyMapEntity
+    // Focus on entity would require the full FiftyWorldEntity
     // For demo, we just play the SFX
     update();
   }

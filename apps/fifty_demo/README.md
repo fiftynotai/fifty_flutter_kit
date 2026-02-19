@@ -71,7 +71,7 @@ lib/
     audio_demo/     # Audio engine demo
     speech_demo/    # Speech engine demo
     sentences_demo/ # Sentences engine demo
-    map_demo/       # Map engine demo
+    map_demo/       # World engine demo
     achievement_demo/ # Achievement engine demo
     skill_tree_demo/  # Skill tree demo
     printing_demo/    # Printing engine demo
@@ -118,7 +118,7 @@ Fifty Demo is the integration showcase for Fifty Flutter Kit. It demonstrates ho
 | `fifty_audio_engine` | Audio management (BGM, SFX, Voice channels) |
 | `fifty_speech_engine` | Text-to-Speech and Speech-to-Text |
 | `fifty_sentences_engine` | Dialogue and sentence queue processing |
-| `fifty_map_engine` | Interactive grid map rendering |
+| `fifty_world_engine` | Interactive grid map rendering |
 | `fifty_printing_engine` | Multi-printer ESC/POS printing |
 | `fifty_skill_tree` | RPG-style skill progression |
 | `fifty_achievement_engine` | Achievement tracking and display |

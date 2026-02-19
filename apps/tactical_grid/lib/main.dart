@@ -1,7 +1,7 @@
 /// Tactical Grid - Entry Point
 ///
 /// Turn-based tactics game showcasing fifty_flutter_kit packages.
-/// Demonstrates audio engine, map engine, and FDL styling.
+/// Demonstrates audio engine, world engine, and FDL styling.
 library;
 
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';

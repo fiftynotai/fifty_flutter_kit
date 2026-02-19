@@ -205,13 +205,6 @@ packages:
       relative: true
     source: path
     version: "0.1.0"
-  fifty_map_engine:
-    dependency: "direct main"
-    description:
-      path: "../../packages/fifty_map_engine"
-      relative: true
-    source: path
-    version: "0.1.0"
   fifty_printing_engine:
     dependency: "direct main"
     description:
@@ -272,6 +265,13 @@ packages:
     dependency: transitive
     description:
       path: "../../packages/fifty_utils"
+      relative: true
+    source: path
+    version: "0.1.0"
+  fifty_world_engine:
+    dependency: "direct main"
+    description:
+      path: "../../packages/fifty_world_engine"
       relative: true
     source: path
     version: "0.1.0"

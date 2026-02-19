@@ -16,7 +16,7 @@ Turn-based tactical combat on a grid — a showcase application for the full Fif
   - **Medium** - Prioritizes attacking, targets low-HP enemies, moves toward threats
   - **Hard** - Score-based evaluation considering damage, safety, abilities, and commander protection
 - **6 Unit Types** - Commander, Knight, Shield, Archer, Mage, and Scout, each with distinct stats, movement patterns, and special abilities
-- **8x8 Board** - Six custom tile textures (dark, light, objective, obstacle, powerup, trap) rendered via `fifty_map_engine`
+- **8x8 Board** - Six custom tile textures (dark, light, objective, obstacle, powerup, trap) rendered via `fifty_world_engine`
 - **Full Audio Suite** - 4 BGM tracks, 16 sound effects, 19 voice lines with BGM ducking and per-channel volume control
 - **10 Achievements** - Combat, Strategy, and Mastery categories from Common to Legendary rarity, tracked via `fifty_achievement_engine`
 - **Turn Timer** - Configurable countdown per turn (default 60s) with warning at 10s, critical at 5s, audio cues, and auto-skip on timeout
@@ -115,7 +115,7 @@ fifty_tokens -> fifty_theme -> fifty_ui
                                   |
 fifty_audio_engine -> tactical_grid <- fifty_achievement_engine
                                   |
-                       fifty_map_engine
+                       fifty_world_engine
 ```
 
 ### Fifty Flutter Kit Packages
@@ -127,7 +127,7 @@ fifty_audio_engine -> tactical_grid <- fifty_achievement_engine
 | `fifty_ui` | UI components (FiftyButton, FiftyCard) |
 | `fifty_audio_engine` | Audio management (BGM, SFX, Voice) |
 | `fifty_achievement_engine` | Achievement tracking and display |
-| `fifty_map_engine` | Flame-based board rendering |
+| `fifty_world_engine` | Flame-based board rendering |
 
 ### Third-Party Dependencies
 
