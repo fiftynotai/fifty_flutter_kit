@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:fifty_demo/features/settings/data/services/theme_service.dart';
 import 'package:fifty_demo/shared/services/audio_integration_service.dart';
 import 'package:fifty_demo/shared/services/map_integration_service.dart';
-import 'package:fifty_demo/shared/services/sentences_integration_service.dart';
+import 'package:fifty_demo/shared/services/narrative_integration_service.dart';
 import 'package:fifty_demo/shared/services/speech_integration_service.dart';
 
 /// Mock ThemeService for SettingsViewModel tests.
@@ -22,9 +22,9 @@ class MockAudioIntegrationService extends Mock
 class MockSpeechIntegrationService extends Mock
     implements SpeechIntegrationService {}
 
-/// Mock SentencesIntegrationService for HomeViewModel tests.
-class MockSentencesIntegrationService extends Mock
-    implements SentencesIntegrationService {}
+/// Mock NarrativeIntegrationService for HomeViewModel tests.
+class MockNarrativeIntegrationService extends Mock
+    implements NarrativeIntegrationService {}
 
 /// Mock MapIntegrationService for HomeViewModel tests.
 class MockMapIntegrationService extends Mock implements MapIntegrationService {}

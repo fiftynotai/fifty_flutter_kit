@@ -15,7 +15,7 @@
 
 **What's broken or missing?**
 
-The Sentence Engine demo in fifty_demo does not showcase all available features of the fifty_sentences_engine package. The engine supports 5 instruction types plus combined instructions, but the demo may only show basic functionality.
+The Sentence Engine demo in fifty_demo does not showcase all available features of the fifty_narrative_engine package. The engine supports 5 instruction types plus combined instructions, but the demo may only show basic functionality.
 
 **Engine Capabilities (from audit):**
 
@@ -103,13 +103,13 @@ SentenceInterpreter(
 - [x] No API changes
 
 ### Dependencies
-- [x] Existing package: `fifty_sentences_engine`
+- [x] Existing package: `fifty_narrative_engine`
 - [x] Existing package: `fifty_speech_engine` (for TTS in `read` mode)
 - [x] Existing package: `fifty_ui` (FDL components)
 
 ### Related Files
 - `apps/fifty_demo/lib/src/modules/sentences/`
-- `packages/fifty_sentences_engine/lib/`
+- `packages/fifty_narrative_engine/lib/`
 
 ---
 
@@ -130,7 +130,7 @@ SentenceInterpreter(
 - **Milestones:** None
 
 ### Out of Scope
-- Changes to fifty_sentences_engine package
+- Changes to fifty_narrative_engine package
 - Adding new engine features
 - This brief is about DEMONSTRATING existing features
 

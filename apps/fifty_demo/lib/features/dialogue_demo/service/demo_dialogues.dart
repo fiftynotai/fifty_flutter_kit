@@ -3,7 +3,7 @@
 /// Sample dialogue sequences for the demo.
 library;
 
-import '../../../shared/services/sentences_integration_service.dart';
+import '../../../shared/services/narrative_integration_service.dart';
 
 /// Sample dialogue sequences.
 abstract class DemoDialogues {
@@ -22,7 +22,7 @@ abstract class DemoDialogues {
     ),
     Sentence(
       id: 'intro_3',
-      text: 'The sentence engine handles text display with typing animations.',
+      text: 'The narrative engine handles text display with typing animations.',
       speaker: 'SYSTEM',
     ),
     Sentence(

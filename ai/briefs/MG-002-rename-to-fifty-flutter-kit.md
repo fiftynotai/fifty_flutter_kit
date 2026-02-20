@@ -45,7 +45,7 @@ packages/fifty_utils/pubspec.yaml
 packages/fifty_connectivity/pubspec.yaml
 packages/fifty_audio_engine/pubspec.yaml
 packages/fifty_speech_engine/pubspec.yaml
-packages/fifty_sentences_engine/pubspec.yaml
+packages/fifty_narrative_engine/pubspec.yaml
 packages/fifty_map_engine/pubspec.yaml
 packages/fifty_printing_engine/pubspec.yaml
 ```

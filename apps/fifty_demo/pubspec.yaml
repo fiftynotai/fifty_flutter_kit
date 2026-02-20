@@ -22,8 +22,8 @@ dependencies:
     path: ../../packages/fifty_audio_engine
   fifty_speech_engine:
     path: ../../packages/fifty_speech_engine
-  fifty_sentences_engine:
-    path: ../../packages/fifty_sentences_engine
+  fifty_narrative_engine:
+    path: ../../packages/fifty_narrative_engine
   fifty_world_engine:
     path: ../../packages/fifty_world_engine
   fifty_printing_engine:

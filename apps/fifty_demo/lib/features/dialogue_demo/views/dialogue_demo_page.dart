@@ -1,6 +1,6 @@
 /// Dialogue Demo Page
 ///
-/// Demonstrates sentence engine with speech integration.
+/// Demonstrates narrative engine with speech integration.
 library;
 
 import 'package:fifty_speech_engine/fifty_speech_engine.dart';

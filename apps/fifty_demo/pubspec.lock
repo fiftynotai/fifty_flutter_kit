@@ -212,10 +212,10 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
-  fifty_sentences_engine:
+  fifty_narrative_engine:
     dependency: "direct main"
     description:
-      path: "../../packages/fifty_sentences_engine"
+      path: "../../packages/fifty_narrative_engine"
       relative: true
     source: path
     version: "0.1.0"

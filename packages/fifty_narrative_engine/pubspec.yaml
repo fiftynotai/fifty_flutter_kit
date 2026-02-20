@@ -1,0 +1,45 @@
+name: fifty_narrative_engine
+description: "Fifty Flutter Kit narrative processing engine for games and interactive applications"
+version: 0.1.0
+homepage: https://fifty.dev
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_narrative_engine
+issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
+topics:
+  - flutter
+  - game
+  - text-processing
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  web: ^1.0.0
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.fifty.narrative_engine
+        pluginClass: FiftyNarrativeEnginePlugin
+      ios:
+        pluginClass: FiftyNarrativeEnginePlugin
+      linux:
+        pluginClass: FiftyNarrativeEnginePlugin
+      macos:
+        pluginClass: FiftyNarrativeEnginePlugin
+      windows:
+        pluginClass: FiftyNarrativeEnginePluginCApi
+      web:
+        pluginClass: FiftyNarrativeEngineWeb
+        fileName: fifty_narrative_engine_web.dart

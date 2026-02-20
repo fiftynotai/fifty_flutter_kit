@@ -34,7 +34,7 @@ abstract class SpeechEngineConfig {
 }
 
 /// Sentences engine configuration.
-abstract class SentencesEngineConfig {
+abstract class NarrativeEngineConfig {
   /// Default typing speed (ms per character).
   static const int typingSpeedMs = 30;
 

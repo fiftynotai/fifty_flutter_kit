@@ -52,7 +52,7 @@ A new demo app exists at `apps/fifty_demo/` that:
 | fifty_ui | v0.4.0 | UI components (buttons, cards, inputs) |
 | fifty_audio_engine | v0.7.0 | Audio (BGM, SFX, Voice channels) |
 | fifty_speech_engine | v0.1.0 | TTS/STT capabilities |
-| fifty_sentences_engine | v0.1.0 | Dialogue/sentence queue processing |
+| fifty_narrative_engine | v0.1.0 | Dialogue/sentence queue processing |
 | fifty_map_engine | v0.1.0 | Interactive grid map rendering |
 
 ### Demo Scenarios

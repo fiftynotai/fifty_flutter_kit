@@ -92,7 +92,7 @@ dependencies:
 ### Existing Fifty Packages (naming reference)
 - fifty_audio_engine
 - fifty_speech_engine
-- fifty_sentences_engine
+- fifty_narrative_engine
 - fifty_map_engine
 - fifty_tokens
 - fifty_theme

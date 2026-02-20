@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../shared/services/audio_integration_service.dart';
 import '../../../shared/services/map_integration_service.dart';
-import '../../../shared/services/sentences_integration_service.dart';
+import '../../../shared/services/narrative_integration_service.dart';
 import '../../../shared/services/speech_integration_service.dart';
 
 /// Package category for grouping.
@@ -49,7 +49,7 @@ class HomeViewModel extends GetxController {
   HomeViewModel({
     required AudioIntegrationService audioService,
     required SpeechIntegrationService speechService,
-    required SentencesIntegrationService sentencesService,
+    required NarrativeIntegrationService sentencesService,
     required MapIntegrationService mapService,
   })  : _audioService = audioService,
         _speechService = speechService,
@@ -58,7 +58,7 @@ class HomeViewModel extends GetxController {
 
   final AudioIntegrationService _audioService;
   final SpeechIntegrationService _speechService;
-  final SentencesIntegrationService _sentencesService;
+  final NarrativeIntegrationService _sentencesService;
   final MapIntegrationService _mapService;
 
   // Reactive state
@@ -109,7 +109,7 @@ class HomeViewModel extends GetxController {
           description: 'TTS/STT capabilities',
         ),
         PackageStatus(
-          name: 'fifty_sentences_engine',
+          name: 'fifty_narrative_engine',
           version: 'v0.1.0',
           isReady: _sentencesService.isInitialized,
           category: PackageCategory.engines,
@@ -214,7 +214,7 @@ class HomeViewModel extends GetxController {
     FeatureInfo(
       id: 'dialogue_demo',
       title: 'DIALOGUE DEMO',
-      subtitle: 'Sentence engine with TTS/STT',
+      subtitle: 'Narrative engine with TTS/STT',
       icon: 0xe0b7, // Icons.chat
     ),
     FeatureInfo(

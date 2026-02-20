@@ -9,7 +9,7 @@ import '../../features/dialogue_demo/service/dialogue_orchestrator.dart';
 import '../../features/map_demo/service/map_audio_coordinator.dart';
 import '../../shared/services/audio_integration_service.dart';
 import '../../shared/services/map_integration_service.dart';
-import '../../shared/services/sentences_integration_service.dart';
+import '../../shared/services/narrative_integration_service.dart';
 import '../../shared/services/speech_integration_service.dart';
 
 /// **InitialBindings**
@@ -53,8 +53,8 @@ class InitialBindings extends Bindings {
       fenix: true,
     );
 
-    Get.lazyPut<SentencesIntegrationService>(
-      SentencesIntegrationService.new,
+    Get.lazyPut<NarrativeIntegrationService>(
+      NarrativeIntegrationService.new,
       fenix: true,
     );
 
@@ -77,7 +77,7 @@ class InitialBindings extends Bindings {
     Get.lazyPut<DialogueOrchestrator>(
       () => DialogueOrchestrator(
         speechService: Get.find<SpeechIntegrationService>(),
-        sentencesService: Get.find<SentencesIntegrationService>(),
+        sentencesService: Get.find<NarrativeIntegrationService>(),
       ),
       fenix: true,
     );

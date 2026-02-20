@@ -29,7 +29,7 @@ All 15 packages in the Fifty Flutter Kit monorepo are internal-only with path de
 | `fifty_connectivity` | 0.1.0 | No |
 | `fifty_audio_engine` | 0.7.0 | No |
 | `fifty_printing_engine` | 1.0.0 | No |
-| `fifty_sentences_engine` | 0.1.0 | No |
+| `fifty_narrative_engine` | 0.1.0 | No |
 | `fifty_speech_engine` | 0.1.0 | No |
 | `fifty_world_engine` | 0.1.0 | No |
 | `fifty_achievement_engine` | 0.1.1 | No |
@@ -70,7 +70,7 @@ All 15 packages pass `dart pub publish --dry-run` with zero warnings, have corre
 **Engine Layer (depends on core):**
 - [ ] `fifty_audio_engine` — Audio playback engine
 - [ ] `fifty_printing_engine` — Receipt/label printing
-- [ ] `fifty_sentences_engine` — Text generation engine
+- [ ] `fifty_narrative_engine` — Text generation engine
 - [ ] `fifty_speech_engine` — STT/TTS engine
 - [ ] `fifty_world_engine` — 2D tile map engine
 - [ ] `fifty_achievement_engine` — Achievement/trophy system
@@ -144,7 +144,7 @@ Phase 1: fifty_tokens, fifty_utils, fifty_cache, fifty_storage
 Phase 2: fifty_theme (→ tokens)
 Phase 3: fifty_ui (→ tokens, theme)
 Phase 4: fifty_forms (→ tokens, ui), fifty_connectivity (→ tokens, ui, utils)
-Phase 5: fifty_audio_engine, fifty_printing_engine, fifty_sentences_engine,
+Phase 5: fifty_audio_engine, fifty_printing_engine, fifty_narrative_engine,
          fifty_speech_engine, fifty_world_engine, fifty_achievement_engine,
          fifty_skill_tree
 ```

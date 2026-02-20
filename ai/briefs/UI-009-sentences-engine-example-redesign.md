@@ -1,4 +1,4 @@
-# UI-009: Sentences Engine Example App Redesign
+# UI-009: Narrative Engine Example App Redesign
 
 **Type:** Feature
 **Priority:** P2-Medium
@@ -11,7 +11,7 @@
 
 ## Problem
 
-The fifty_sentences_engine example app needs redesign to match the new FDL v2 patterns established in fifty_achievement_engine:
+The fifty_narrative_engine example app needs redesign to match the new FDL v2 patterns established in fifty_achievement_engine:
 
 1. Pages may scroll from middle instead of full-page scrolling
 2. Overlay popups may have yellow underline text issue (missing Material ancestor)
@@ -33,7 +33,7 @@ Redesign the example app to:
 
 ## Scope
 
-**Package:** `packages/fifty_sentences_engine/example/`
+**Package:** `packages/fifty_narrative_engine/example/`
 
 **Key Features to Showcase:**
 - Sentence generation

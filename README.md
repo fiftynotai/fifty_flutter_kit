@@ -16,7 +16,7 @@ A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI compon
 | [fifty_connectivity](packages/fifty_connectivity/) | v0.1.0 | Network connectivity monitoring |
 | [fifty_audio_engine](packages/fifty_audio_engine/) | v0.8.0 | Audio playback and recording |
 | [fifty_speech_engine](packages/fifty_speech_engine/) | v0.1.0 | Text-to-speech and speech-to-text |
-| [fifty_sentences_engine](packages/fifty_sentences_engine/) | v0.1.0 | Sentence building and word bank |
+| [fifty_narrative_engine](packages/fifty_narrative_engine/) | v0.1.0 | Narrative processing and word bank |
 | [fifty_world_engine](packages/fifty_world_engine/) | v3.0.0 | Cross-platform maps integration |
 | [fifty_printing_engine](packages/fifty_printing_engine/) | v1.0.0 | Multi-printer ESC/POS printing (Bluetooth & WiFi) |
 | [fifty_skill_tree](packages/fifty_skill_tree/) | v0.2.0 | Skill tree visualization and progression system |
@@ -53,7 +53,7 @@ fifty_flutter_kit/
     fifty_connectivity/     # Network monitoring
     fifty_audio_engine/     # Audio playback
     fifty_speech_engine/    # Speech services
-    fifty_sentences_engine/ # Sentence building
+    fifty_narrative_engine/ # Narrative processing
     fifty_world_engine/     # Maps integration
     fifty_printing_engine/  # ESC/POS printing
     fifty_skill_tree/       # Skill tree engine

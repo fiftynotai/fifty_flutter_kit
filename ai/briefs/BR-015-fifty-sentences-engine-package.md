@@ -1,4 +1,4 @@
-# BR-015: Fifty Sentences Engine Package
+# BR-015: Fifty Narrative Engine Package
 
 **Type:** Feature
 **Priority:** P1-High
@@ -15,7 +15,7 @@
 
 **What's broken or missing?**
 
-The Fifty ecosystem lacks a dialogue/sentence processing engine for games and interactive storytelling. An existing implementation exists in `../erune_sentences_engine` (ARKADA Studio, v0.2.0) but needs to be rebranded and integrated into the Fifty ecosystem.
+The Fifty ecosystem lacks a dialogue/sentence processing engine for games and interactive storytelling. An existing implementation exists in `../erune_narrative_engine` (ARKADA Studio, v0.2.0) but needs to be rebranded and integrated into the Fifty ecosystem.
 
 **Why does it matter?**
 
@@ -31,8 +31,8 @@ A sentence engine enables:
 
 **What should happen after this brief is completed?**
 
-A new package `packages/fifty_sentences_engine` exists with:
-- Full rebrand from erune_sentences_engine → fifty_sentences_engine
+A new package `packages/fifty_narrative_engine` exists with:
+- Full rebrand from erune_narrative_engine → fifty_narrative_engine
 - Updated class names (FiftySentenceEngine, FiftySentenceInterpreter, etc.)
 - FDL-aligned documentation
 - All tests passing
@@ -43,7 +43,7 @@ A new package `packages/fifty_sentences_engine` exists with:
 ## Context & Inputs
 
 ### Affected Modules
-- [x] Other: `packages/fifty_sentences_engine` (new package)
+- [x] Other: `packages/fifty_narrative_engine` (new package)
 
 ### Layers Touched
 - [x] Service (SentenceEngine, SentenceInterpreter)
@@ -54,13 +54,13 @@ A new package `packages/fifty_sentences_engine` exists with:
 - [x] Flutter SDK >=3.3.0, Dart ^3.6.0
 
 ### Related Files
-Source: `../erune_sentences_engine/`
+Source: `../erune_narrative_engine/`
 ```
 lib/
-├── erune_sentences_engine.dart → fifty_sentences_engine.dart
-├── erune_sentences_engine_platform_interface.dart
-├── erune_sentences_engine_method_channel.dart
-├── erune_sentences_engine_web.dart
+├── erune_narrative_engine.dart → fifty_narrative_engine.dart
+├── erune_narrative_engine_platform_interface.dart
+├── erune_narrative_engine_method_channel.dart
+├── erune_narrative_engine_web.dart
 ├── engine/
 │   ├── sentence_engine.dart
 │   ├── sentence_interpreter.dart
@@ -98,7 +98,7 @@ _(None)_
 _(None)_
 
 ### Completed
-- [x] Task 1: Copy erune_sentences_engine to packages/fifty_sentences_engine
+- [x] Task 1: Copy erune_narrative_engine to packages/fifty_narrative_engine
 - [x] Task 2: Update pubspec.yaml (name, description, homepage)
 - [x] Task 3: Rename all Dart files (erune → fifty)
 - [x] Task 4: Update all class names (SentenceEngine, etc.)
@@ -124,7 +124,7 @@ _(None)_
 
 **The feature/fix is complete when:**
 
-1. [x] Package exists at `packages/fifty_sentences_engine`
+1. [x] Package exists at `packages/fifty_narrative_engine`
 2. [x] All files renamed from erune → fifty
 3. [x] Class names follow FiftyXxx pattern
 4. [x] README.md comprehensive with API reference
@@ -146,7 +146,7 @@ _(None)_
 ## Delivery
 
 ### Code Changes
-- [x] New files created: `packages/fifty_sentences_engine/*`
+- [x] New files created: `packages/fifty_narrative_engine/*`
 
 ### Documentation Updates
 - [x] README: Full API reference

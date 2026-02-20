@@ -16,7 +16,7 @@ import '../mocks/mock_services.dart';
 void main() {
   late MockAudioIntegrationService mockAudioService;
   late MockSpeechIntegrationService mockSpeechService;
-  late MockSentencesIntegrationService mockSentencesService;
+  late MockNarrativeIntegrationService mockNarrativeService;
   late MockMapIntegrationService mockMapService;
 
   setUpAll(() {
@@ -26,23 +26,23 @@ void main() {
   setUp(() {
     mockAudioService = MockAudioIntegrationService();
     mockSpeechService = MockSpeechIntegrationService();
-    mockSentencesService = MockSentencesIntegrationService();
+    mockNarrativeService = MockNarrativeIntegrationService();
     mockMapService = MockMapIntegrationService();
 
     // Default stubs
     when(() => mockAudioService.isInitialized).thenReturn(true);
     when(() => mockSpeechService.isInitialized).thenReturn(true);
-    when(() => mockSentencesService.isInitialized).thenReturn(true);
+    when(() => mockNarrativeService.isInitialized).thenReturn(true);
     when(() => mockMapService.isInitialized).thenReturn(true);
     when(() => mockAudioService.initialize()).thenAnswer((_) async {});
     when(() => mockSpeechService.initialize()).thenAnswer((_) async => true);
-    when(() => mockSentencesService.initialize()).thenAnswer((_) async {});
+    when(() => mockNarrativeService.initialize()).thenAnswer((_) async {});
 
     // Register the ViewModel
     final viewModel = HomeViewModel(
       audioService: mockAudioService,
       speechService: mockSpeechService,
-      sentencesService: mockSentencesService,
+      sentencesService: mockNarrativeService,
       mapService: mockMapService,
     );
     Get.put<HomeViewModel>(viewModel);

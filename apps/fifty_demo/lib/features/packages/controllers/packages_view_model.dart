@@ -106,8 +106,8 @@ class PackagesViewModel extends GetxController {
       category: PackageCategory.engines,
     ),
     PackageDemo(
-      id: 'fifty_sentences_engine',
-      name: 'Sentences Engine',
+      id: 'fifty_narrative_engine',
+      name: 'Narrative Engine',
       description: 'Dialogue queue and sentence processing',
       icon: Icons.chat_outlined,
       category: PackageCategory.engines,

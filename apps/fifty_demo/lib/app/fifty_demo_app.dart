@@ -21,7 +21,7 @@ import '../features/map_demo/map_demo_bindings.dart';
 import '../features/packages/packages_bindings.dart';
 import '../features/packages/views/packages_page.dart';
 import '../features/printing_demo/printing_demo_bindings.dart';
-import '../features/sentences_demo/sentences_demo_bindings.dart';
+import '../features/narrative_demo/narrative_demo_bindings.dart';
 import '../features/settings/settings_bindings.dart';
 import '../features/settings/views/settings_page.dart';
 import '../features/skill_tree_demo/skill_tree_demo_bindings.dart';
@@ -112,7 +112,7 @@ class _DemoShellState extends State<_DemoShell> {
     MapDemoBindings().dependencies();
     AudioDemoBindings().dependencies();
     SpeechDemoBindings().dependencies();
-    SentencesDemoBindings().dependencies();
+    NarrativeDemoBindings().dependencies();
 
     // Initialize new demo bindings
     PrintingDemoBindings().dependencies();

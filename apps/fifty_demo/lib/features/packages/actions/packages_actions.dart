@@ -12,7 +12,7 @@ import '../../audio_demo/views/audio_demo_page.dart';
 import '../../forms_demo/views/forms_demo_page.dart';
 import '../../map_demo/views/map_demo_page.dart';
 import '../../printing_demo/views/printing_demo_page.dart';
-import '../../sentences_demo/views/sentences_demo_page.dart';
+import '../../narrative_demo/views/narrative_demo_page.dart';
 import '../../skill_tree_demo/views/skill_tree_demo_page.dart';
 import '../../speech_demo/views/speech_demo_page.dart';
 import '../controllers/packages_view_model.dart';
@@ -68,8 +68,8 @@ class PackagesActions {
       case 'fifty_speech_engine':
         Get.to<void>(() => const SpeechDemoPage());
         break;
-      case 'fifty_sentences_engine':
-        Get.to<void>(() => const SentencesDemoPage());
+      case 'fifty_narrative_engine':
+        Get.to<void>(() => const NarrativeDemoPage());
         break;
       case 'fifty_printing_engine':
         Get.to<void>(() => const PrintingDemoPage());

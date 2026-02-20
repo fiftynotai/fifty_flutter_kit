@@ -73,7 +73,7 @@ _(None)_
 | `fifty_demo` | Full template rewrite + 4 screenshots | `279b673` |
 | `fifty_audio_engine` | Screenshot format fix | `997a7cc` |
 | `fifty_speech_engine` | Screenshot format fix | `997a7cc` |
-| `fifty_sentences_engine` | Screenshot format fix | `997a7cc` |
+| `fifty_narrative_engine` | Screenshot format fix | `997a7cc` |
 | `fifty_world_engine` | Screenshot format fix | `997a7cc` |
 | `fifty_skill_tree` | Screenshot format fix | `997a7cc` |
 | `fifty_tokens` | Full template rewrite | `1815c04` |
@@ -166,7 +166,7 @@ _(None)_
 ## Next Steps
 
 - **BR-105 complete** — All 15 packages prepared for pub.dev
-- **Ready to publish:** fifty_tokens, fifty_utils, fifty_cache, fifty_storage, fifty_printing_engine, fifty_sentences_engine, fifty_world_engine (7/15, 0 warnings)
+- **Ready to publish:** fifty_tokens, fifty_utils, fifty_cache, fifty_storage, fifty_printing_engine, fifty_narrative_engine, fifty_world_engine (7/15, 0 warnings)
 - **Blocked by path deps only:** fifty_theme, fifty_ui, fifty_forms, fifty_connectivity, fifty_audio_engine, fifty_speech_engine, fifty_achievement_engine, fifty_skill_tree (8/15)
 - **To publish:** Follow publish order in `ai/context/publish_order.md` — convert path deps to hosted deps bottom-up
 - **All package READMEs standardized** — FDL template compliant

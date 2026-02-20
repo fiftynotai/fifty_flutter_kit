@@ -5,7 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
   fifty_audio_engine
-  fifty_sentences_engine
+  fifty_narrative_engine
   fifty_speech_engine
   fifty_world_engine
   flutter_secure_storage_linux

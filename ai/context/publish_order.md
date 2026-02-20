@@ -45,7 +45,7 @@ Before running `dart pub publish` for each package:
 |---------|---------|-------------|-------|
 | `fifty_ui` | 0.6.0 | `fifty_tokens: ^1.0.0`, `fifty_theme: ^1.0.0` | Convert 2 path deps |
 | `fifty_printing_engine` | 1.0.0 | none (external only) | Clean — no internal deps |
-| `fifty_sentences_engine` | 0.1.0 | none (external only) | Plugin package — clean |
+| `fifty_narrative_engine` | 0.1.0 | none (external only) | Plugin package — clean |
 
 ### Phase 4: Feature Packages
 

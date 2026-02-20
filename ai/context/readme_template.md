@@ -166,7 +166,7 @@ These are the ONLY allowed `##` headers. No variations.
 - Branding appears exactly twice: header one-liner + license footer
 
 ### Exceptions
-- **Migration sections** are allowed when package-specific (e.g., `## Migration from erune_sentences_engine`)
+- **Migration sections** are allowed when package-specific (e.g., `## Migration from erune_narrative_engine`)
 - Place migration sections after "Fifty Design Language Integration" and before "Version"
 
 ---

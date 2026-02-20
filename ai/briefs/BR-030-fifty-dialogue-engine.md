@@ -11,7 +11,7 @@
 
 ## Problem
 
-Game developers building RPGs, visual novels, adventure games, or any narrative-driven experience need branching dialogue systems. The existing `fifty_sentences_engine` handles text processing and narration, but lacks:
+Game developers building RPGs, visual novels, adventure games, or any narrative-driven experience need branching dialogue systems. The existing `fifty_narrative_engine` handles text processing and narration, but lacks:
 - Branching conversation trees with player choices
 - Character management with portraits and expressions
 - Conditional dialogue based on stats, flags, items
@@ -32,7 +32,7 @@ Create `fifty_dialogue_engine` - a production-ready Flutter package providing a 
 - Consequence system for state changes
 - DialogueStateManager for persistence
 - YAML/JSON dialogue file support
-- Integration with fifty_sentences_engine, fifty_speech_engine, fifty_audio_engine
+- Integration with fifty_narrative_engine, fifty_speech_engine, fifty_audio_engine
 - FDL-compliant UI widgets
 
 ---
@@ -44,7 +44,7 @@ Create `fifty_dialogue_engine` - a production-ready Flutter package providing a 
 **Ecosystem Integration:**
 | Package | Integration |
 |---------|-------------|
-| fifty_sentences_engine | Text animation, typewriter effect |
+| fifty_narrative_engine | Text animation, typewriter effect |
 | fifty_speech_engine | Voice acting playback |
 | fifty_audio_engine | Ambient sounds, SFX |
 | fifty_skill_tree | Skills affect dialogue checks |

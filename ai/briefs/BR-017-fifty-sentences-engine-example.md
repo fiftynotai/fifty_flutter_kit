@@ -1,4 +1,4 @@
-# BR-017: Fifty Sentences Engine Example App
+# BR-017: Fifty Narrative Engine Example App
 
 **Type:** Feature
 **Priority:** P1-High
@@ -15,7 +15,7 @@
 
 **What's broken or missing?**
 
-The fifty_sentences_engine package (BR-015) needs a comprehensive example app demonstrating dialogue/sentence processing capabilities with FDL styling.
+The fifty_narrative_engine package (BR-015) needs a comprehensive example app demonstrating dialogue/sentence processing capabilities with FDL styling.
 
 **Why does it matter?**
 
@@ -31,7 +31,7 @@ A high-quality example app serves as:
 
 **What should happen after this brief is completed?**
 
-A complete example app at `packages/fifty_sentences_engine/example/` with:
+A complete example app at `packages/fifty_narrative_engine/example/` with:
 - FDL-styled UI using fifty_theme + fifty_ui
 - Sentence queue visualization
 - Instruction demo (read, write, ask, wait, navigate)
@@ -63,7 +63,7 @@ example/lib/
 ```
 
 ### Dependencies
-- fifty_sentences_engine (local)
+- fifty_narrative_engine (local)
 - fifty_theme
 - fifty_ui
 - fifty_tokens

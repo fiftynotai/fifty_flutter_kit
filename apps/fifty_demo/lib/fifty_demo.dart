@@ -5,7 +5,7 @@
 /// **Features:**
 /// - Home: Ecosystem status and navigation
 /// - Map Demo: Interactive map with audio integration
-/// - Dialogue Demo: Sentence engine with TTS/STT
+/// - Dialogue Demo: Narrative engine with TTS/STT
 /// - UI Showcase: FDL component library
 ///
 /// **Packages Integrated:**
@@ -14,7 +14,7 @@
 /// - fifty_ui: UI components
 /// - fifty_audio_engine: Audio playback
 /// - fifty_speech_engine: TTS/STT
-/// - fifty_sentences_engine: Dialogue queue
+/// - fifty_narrative_engine: Dialogue queue
 /// - fifty_world_engine: Interactive maps
 library;
 

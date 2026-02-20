@@ -10,4 +10,4 @@ export 'service/dialogue_orchestrator.dart';
 export 'views/dialogue_demo_page.dart';
 export 'views/widgets/choice_buttons.dart';
 export 'views/widgets/dialogue_display.dart';
-export 'views/widgets/sentence_queue_panel.dart';
+export 'views/widgets/narrative_queue_panel.dart';

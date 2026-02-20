@@ -15,7 +15,7 @@
 
 | Package | Audit Brief Claim | Actual State |
 |---------|------------------|--------------|
-| fifty_sentences_engine | Has fifty_tokens path dep | NO path deps — CLEAN |
+| fifty_narrative_engine | Has fifty_tokens path dep | NO path deps — CLEAN |
 | fifty_world_engine | Has fifty_tokens, fifty_theme, fifty_ui path deps | NO path deps — CLEAN |
 | fifty_speech_engine | Listed as clean (no path deps) | HAS fifty_tokens, fifty_theme, fifty_ui path deps |
 | fifty_achievement_engine | fifty_tokens, fifty_theme, fifty_ui | fifty_tokens + fifty_ui only (no fifty_theme) |
@@ -77,7 +77,7 @@ After Phase 1 packages are live on pub.dev, subsequent packages' git refs conver
 | fifty_connectivity | flutter, connectivity, network, monitoring |
 | fifty_audio_engine | flutter, audio, game, engine |
 | fifty_printing_engine | flutter, printing, bluetooth, escpos |
-| fifty_sentences_engine | flutter, game, text-processing |
+| fifty_narrative_engine | flutter, game, text-processing |
 | fifty_speech_engine | flutter, speech, tts, stt |
 | fifty_world_engine | flutter, game, tilemap, flame |
 | fifty_achievement_engine | flutter, game, achievements, gamification |
@@ -99,7 +99,7 @@ After Phase 1 packages are live on pub.dev, subsequent packages' git refs conver
 | fifty_connectivity | 0.1.0 | YES | YES | YES | fifty_tokens, fifty_ui, fifty_utils | PARTIAL (wrong org) |
 | fifty_audio_engine | 0.7.0 | YES | YES | NO | fifty_tokens, fifty_theme, fifty_ui | NO (root, no path) |
 | fifty_printing_engine | 1.0.0 | YES | YES | NO | none | NO (root, no path) |
-| fifty_sentences_engine | 0.1.0 | YES | YES | NO | none | PARTIAL (wrong org) |
+| fifty_narrative_engine | 0.1.0 | YES | YES | NO | none | PARTIAL (wrong org) |
 | fifty_speech_engine | 0.1.0 | YES | YES | NO | fifty_tokens, fifty_theme, fifty_ui | PARTIAL |
 | fifty_world_engine | 0.1.0 | YES | YES | NO | none | PARTIAL (wrong org) |
 | fifty_achievement_engine | 0.1.1 | NO | YES | NO | fifty_tokens, fifty_ui | NO (root, no path) |
@@ -134,7 +134,7 @@ After Phase 1 packages are live on pub.dev, subsequent packages' git refs conver
 
 **fifty_ui** — Remove `publish_to: none`, fix repository, add topics/issue_tracker, convert 2 path deps→git, CREATE LICENSE
 **fifty_printing_engine** — Fix homepage/repository, add topics/issue_tracker, fix `escpos: any`
-**fifty_sentences_engine** — Fix homepage/repository org, add topics/issue_tracker
+**fifty_narrative_engine** — Fix homepage/repository org, add topics/issue_tracker
 
 **Gate:** dry-run per package
 
@@ -197,7 +197,7 @@ chore(pub-dev): final quality pass and publish order document
 ```
 Phase 1: fifty_tokens v1.0.0, fifty_utils v0.1.0, fifty_cache v0.1.0, fifty_storage v0.1.0
 Phase 2: fifty_theme v1.0.0  [← fifty_tokens]
-Phase 3: fifty_ui v0.6.0 [← tokens, theme], fifty_printing_engine v1.0.0, fifty_sentences_engine v0.1.0
+Phase 3: fifty_ui v0.6.0 [← tokens, theme], fifty_printing_engine v1.0.0, fifty_narrative_engine v0.1.0
 Phase 4: fifty_forms v0.1.0 [← tokens, theme, ui, storage], fifty_connectivity v0.1.0 [← tokens, ui, utils]
 Phase 5: fifty_audio_engine v0.7.0, fifty_speech_engine v0.1.0, fifty_world_engine v0.1.0, fifty_achievement_engine v0.1.1, fifty_skill_tree v0.1.0
 ```

@@ -1,4 +1,4 @@
-# BR-098: Fifty Sentences Engine — Full Review
+# BR-098: Fifty Narrative Engine — Full Review
 
 **Type:** Refactor
 **Priority:** P2-Medium
@@ -14,7 +14,7 @@
 
 **What's broken or missing?**
 
-The `fifty_sentences_engine` package needs a comprehensive review to ensure:
+The `fifty_narrative_engine` package needs a comprehensive review to ensure:
 - Code quality meets Fifty Flutter Kit standards
 - All tests pass and provide adequate coverage
 - UI components use theme-aware colors (no hardcoded `FiftyColors.*`, `Colors.*`, or hex values)
@@ -42,7 +42,7 @@ The sentences engine provides language/sentence-building functionality. It must 
 ## Context & Inputs
 
 ### Affected Modules
-- [x] Other: `packages/fifty_sentences_engine/`
+- [x] Other: `packages/fifty_narrative_engine/`
 
 ### Layers Touched
 - [x] View (UI widgets)
@@ -54,10 +54,10 @@ The sentences engine provides language/sentence-building functionality. It must 
 - [x] No API changes
 
 ### Related Files
-- `packages/fifty_sentences_engine/lib/` — all source files
-- `packages/fifty_sentences_engine/test/` — all test files
-- `packages/fifty_sentences_engine/example/` — example app
-- `packages/fifty_sentences_engine/README.md` — documentation
+- `packages/fifty_narrative_engine/lib/` — all source files
+- `packages/fifty_narrative_engine/test/` — all test files
+- `packages/fifty_narrative_engine/example/` — example app
+- `packages/fifty_narrative_engine/README.md` — documentation
 
 ---
 
@@ -91,8 +91,8 @@ The sentences engine provides language/sentence-building functionality. It must 
 ### Phase 2: TESTING (tester agent)
 **Boundary:** Run tests and analyze only. No code modifications.
 **Tasks:**
-1. Run `flutter analyze` in `packages/fifty_sentences_engine/`
-2. Run `flutter test` in `packages/fifty_sentences_engine/`
+1. Run `flutter analyze` in `packages/fifty_narrative_engine/`
+2. Run `flutter test` in `packages/fifty_narrative_engine/`
 3. Identify test coverage gaps
 4. Report: PASS/FAIL with diagnostics
 

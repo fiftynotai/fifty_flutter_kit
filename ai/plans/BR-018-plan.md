@@ -203,8 +203,8 @@ dependencies:
     path: ../../packages/fifty_audio_engine
   fifty_speech_engine:
     path: ../../packages/fifty_speech_engine
-  fifty_sentences_engine:
-    path: ../../packages/fifty_sentences_engine
+  fifty_narrative_engine:
+    path: ../../packages/fifty_narrative_engine
   fifty_map_engine:
     path: ../../packages/fifty_map_engine
 

@@ -5,7 +5,7 @@ library;
 
 import 'package:get/get.dart';
 
-import '../../../shared/services/sentences_integration_service.dart';
+import '../../../shared/services/narrative_integration_service.dart';
 import '../service/demo_dialogues.dart';
 import '../service/dialogue_orchestrator.dart';
 

@@ -57,7 +57,7 @@ packages/
 ├── fifty_arch/            # Template (fork) <- MISPLACED
 ├── fifty_audio_engine/    # Package (import)
 ├── fifty_speech_engine/   # Package (import)
-├── fifty_sentences_engine/# Package (import)
+├── fifty_narrative_engine/# Package (import)
 └── fifty_map_engine/      # Package (import)
 ```
 
@@ -73,7 +73,7 @@ packages/                  # True packages (import and use)
 ├── fifty_connectivity/
 ├── fifty_audio_engine/
 ├── fifty_speech_engine/
-├── fifty_sentences_engine/
+├── fifty_narrative_engine/
 └── fifty_map_engine/
 
 templates/                 # Scaffolds (clone and customize)

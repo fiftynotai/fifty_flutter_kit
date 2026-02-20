@@ -20,7 +20,7 @@ All 7 engine packages in the Fifty Flutter Kit lack example screenshots in their
 1. `fifty_achievement_engine` — achievement cards, popups, progress, summary
 2. `fifty_audio_engine` — BGM/SFX/voice channel controls, playlists
 3. `fifty_world_engine` — tile map rendering, entities, camera
-4. `fifty_sentences_engine` — dialogue display, sentence queue, instruction buttons
+4. `fifty_narrative_engine` — dialogue display, sentence queue, instruction buttons
 5. `fifty_speech_engine` — TTS/STT panels, language selection, status indicators
 6. `fifty_printing_engine` — printer management, test print, ticket builder
 7. `fifty_skill_tree` — skill tree rendering, node progression, interactions
@@ -48,7 +48,7 @@ Screenshots are the first thing developers look at when evaluating a package. Wi
 - [x] `packages/fifty_achievement_engine/`
 - [x] `packages/fifty_audio_engine/`
 - [x] `packages/fifty_world_engine/`
-- [x] `packages/fifty_sentences_engine/`
+- [x] `packages/fifty_narrative_engine/`
 - [x] `packages/fifty_speech_engine/`
 - [x] `packages/fifty_printing_engine/`
 - [x] `packages/fifty_skill_tree/`
@@ -116,7 +116,7 @@ Screenshots are the first thing developers look at when evaluating a package. Wi
 | achievement_engine | Achievement list | Achievement card detail | Achievement popup | Achievement summary |
 | audio_engine | BGM player | SFX panel | Voice channel | Global controls |
 | map_engine | Tile map overview | Entity interaction | Camera zoomed | Pathfinding demo |
-| sentences_engine | Dialogue display | Sentence queue | Instruction buttons | Story flow |
+| narrative_engine | Dialogue display | Sentence queue | Instruction buttons | Story flow |
 | speech_engine | TTS panel | STT panel | Language selection | — |
 | printing_engine | Home screen | Printer management | Test print | Ticket builder |
 | skill_tree | Tree overview | Node interaction | Unlock progression | — |
@@ -145,7 +145,7 @@ _(None)_
 - [x] Engine 1: fifty_achievement_engine — 4 screenshots (home, basic, unlocked, RPG)
 - [x] Engine 2: fifty_audio_engine — 4 screenshots (BGM, SFX, voice, global)
 - [x] Engine 3: fifty_world_engine — 2 screenshots (tactical overview, unit selection)
-- [x] Engine 4: fifty_sentences_engine — 3 screenshots (queue, choices, narration)
+- [x] Engine 4: fifty_narrative_engine — 3 screenshots (queue, choices, narration)
 - [x] Engine 5: fifty_speech_engine — 2 screenshots (TTS panel, STT panel)
 - [x] Engine 6: fifty_printing_engine — 4 screenshots (home, printers, test print, builder)
 - [x] Engine 7: fifty_skill_tree — 4 screenshots (home, basic tree, node unlock, RPG tree)
@@ -189,7 +189,7 @@ For each engine:
 - `packages/fifty_achievement_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_audio_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_world_engine/screenshots/*.png` (2-4 files)
-- `packages/fifty_sentences_engine/screenshots/*.png` (2-4 files)
+- `packages/fifty_narrative_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_speech_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_printing_engine/screenshots/*.png` (2-4 files)
 - `packages/fifty_skill_tree/screenshots/*.png` (2-4 files)

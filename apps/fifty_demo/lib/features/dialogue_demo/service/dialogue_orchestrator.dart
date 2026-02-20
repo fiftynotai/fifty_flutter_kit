@@ -1,11 +1,11 @@
 /// Dialogue Orchestrator Service
 ///
-/// Coordinates sentence engine with speech engine for dialogue playback.
+/// Coordinates narrative engine with speech engine for dialogue playback.
 library;
 
 import 'package:get/get.dart';
 
-import '../../../shared/services/sentences_integration_service.dart';
+import '../../../shared/services/narrative_integration_service.dart';
 import '../../../shared/services/speech_integration_service.dart';
 
 /// Orchestrates dialogue playback with TTS.
@@ -14,12 +14,12 @@ import '../../../shared/services/speech_integration_service.dart';
 class DialogueOrchestrator extends GetxController {
   DialogueOrchestrator({
     required SpeechIntegrationService speechService,
-    required SentencesIntegrationService sentencesService,
+    required NarrativeIntegrationService sentencesService,
   })  : _speechService = speechService,
         _sentencesService = sentencesService;
 
   final SpeechIntegrationService _speechService;
-  final SentencesIntegrationService _sentencesService;
+  final NarrativeIntegrationService _sentencesService;
 
   bool _ttsEnabled = true;
   bool _autoAdvance = false;
@@ -43,7 +43,7 @@ class DialogueOrchestrator extends GetxController {
   Sentence? get currentSentence => _sentencesService.currentSentence;
 
   SpeechIntegrationService get speechService => _speechService;
-  SentencesIntegrationService get sentencesService => _sentencesService;
+  NarrativeIntegrationService get sentencesService => _sentencesService;
 
   // ─────────────────────────────────────────────────────────────────────────
   // Initialization

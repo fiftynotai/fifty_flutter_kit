@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import '../../core/presentation/actions/action_presenter.dart';
 import '../../shared/services/audio_integration_service.dart';
 import '../../shared/services/map_integration_service.dart';
-import '../../shared/services/sentences_integration_service.dart';
+import '../../shared/services/narrative_integration_service.dart';
 import '../../shared/services/speech_integration_service.dart';
 import 'actions/home_actions.dart';
 import 'controllers/home_view_model.dart';
@@ -29,7 +29,7 @@ class HomeBindings implements Bindings {
         HomeViewModel(
           audioService: Get.find<AudioIntegrationService>(),
           speechService: Get.find<SpeechIntegrationService>(),
-          sentencesService: Get.find<SentencesIntegrationService>(),
+          sentencesService: Get.find<NarrativeIntegrationService>(),
           mapService: Get.find<MapIntegrationService>(),
         ),
         permanent: true,

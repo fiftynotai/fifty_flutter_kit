@@ -15,7 +15,7 @@ void main() {
   late HomeViewModel viewModel;
   late MockAudioIntegrationService mockAudioService;
   late MockSpeechIntegrationService mockSpeechService;
-  late MockSentencesIntegrationService mockSentencesService;
+  late MockNarrativeIntegrationService mockNarrativeService;
   late MockMapIntegrationService mockMapService;
 
   setUpAll(() {
@@ -26,22 +26,22 @@ void main() {
   setUp(() {
     mockAudioService = MockAudioIntegrationService();
     mockSpeechService = MockSpeechIntegrationService();
-    mockSentencesService = MockSentencesIntegrationService();
+    mockNarrativeService = MockNarrativeIntegrationService();
     mockMapService = MockMapIntegrationService();
 
     // Default stubs
     when(() => mockAudioService.isInitialized).thenReturn(false);
     when(() => mockSpeechService.isInitialized).thenReturn(false);
-    when(() => mockSentencesService.isInitialized).thenReturn(false);
+    when(() => mockNarrativeService.isInitialized).thenReturn(false);
     when(() => mockMapService.isInitialized).thenReturn(false);
     when(() => mockAudioService.initialize()).thenAnswer((_) async {});
     when(() => mockSpeechService.initialize()).thenAnswer((_) async => true);
-    when(() => mockSentencesService.initialize()).thenAnswer((_) async {});
+    when(() => mockNarrativeService.initialize()).thenAnswer((_) async {});
 
     viewModel = HomeViewModel(
       audioService: mockAudioService,
       speechService: mockSpeechService,
-      sentencesService: mockSentencesService,
+      sentencesService: mockNarrativeService,
       mapService: mockMapService,
     );
   });
@@ -70,7 +70,7 @@ void main() {
         // Then: Services should be initialized
         verify(() => mockAudioService.initialize()).called(1);
         verify(() => mockSpeechService.initialize()).called(1);
-        verify(() => mockSentencesService.initialize()).called(1);
+        verify(() => mockNarrativeService.initialize()).called(1);
       });
     });
 
@@ -113,7 +113,7 @@ void main() {
           containsAll([
             'fifty_audio_engine',
             'fifty_speech_engine',
-            'fifty_sentences_engine',
+            'fifty_narrative_engine',
             'fifty_world_engine',
             'fifty_printing_engine',
           ]),
@@ -209,7 +209,7 @@ void main() {
         // Given: Services are not initialized
         when(() => mockAudioService.isInitialized).thenReturn(false);
         when(() => mockSpeechService.isInitialized).thenReturn(false);
-        when(() => mockSentencesService.isInitialized).thenReturn(false);
+        when(() => mockNarrativeService.isInitialized).thenReturn(false);
         when(() => mockMapService.isInitialized).thenReturn(false);
 
         // When: Accessing readyCount
@@ -224,7 +224,7 @@ void main() {
         // Given: All services are initialized
         when(() => mockAudioService.isInitialized).thenReturn(true);
         when(() => mockSpeechService.isInitialized).thenReturn(true);
-        when(() => mockSentencesService.isInitialized).thenReturn(true);
+        when(() => mockNarrativeService.isInitialized).thenReturn(true);
         when(() => mockMapService.isInitialized).thenReturn(true);
 
         // When: Accessing readyCount
@@ -249,7 +249,7 @@ void main() {
         // Given: Some services are not initialized
         when(() => mockAudioService.isInitialized).thenReturn(true);
         when(() => mockSpeechService.isInitialized).thenReturn(false);
-        when(() => mockSentencesService.isInitialized).thenReturn(true);
+        when(() => mockNarrativeService.isInitialized).thenReturn(true);
         when(() => mockMapService.isInitialized).thenReturn(true);
 
         // When: Checking allReady
@@ -261,7 +261,7 @@ void main() {
         // Given: All services are initialized
         when(() => mockAudioService.isInitialized).thenReturn(true);
         when(() => mockSpeechService.isInitialized).thenReturn(true);
-        when(() => mockSentencesService.isInitialized).thenReturn(true);
+        when(() => mockNarrativeService.isInitialized).thenReturn(true);
         when(() => mockMapService.isInitialized).thenReturn(true);
 
         // When: Checking allReady
@@ -275,7 +275,7 @@ void main() {
         // Given: Some services are not initialized
         when(() => mockAudioService.isInitialized).thenReturn(false);
         when(() => mockSpeechService.isInitialized).thenReturn(false);
-        when(() => mockSentencesService.isInitialized).thenReturn(false);
+        when(() => mockNarrativeService.isInitialized).thenReturn(false);
         when(() => mockMapService.isInitialized).thenReturn(false);
 
         // When: Accessing statusMessage
@@ -289,7 +289,7 @@ void main() {
         // Given: All services are initialized
         when(() => mockAudioService.isInitialized).thenReturn(true);
         when(() => mockSpeechService.isInitialized).thenReturn(true);
-        when(() => mockSentencesService.isInitialized).thenReturn(true);
+        when(() => mockNarrativeService.isInitialized).thenReturn(true);
         when(() => mockMapService.isInitialized).thenReturn(true);
 
         // When: Accessing statusMessage
@@ -329,7 +329,7 @@ void main() {
 
         // Then: Should have correct details
         expect(dialogueDemo.title, 'DIALOGUE DEMO');
-        expect(dialogueDemo.subtitle, 'Sentence engine with TTS/STT');
+        expect(dialogueDemo.subtitle, 'Narrative engine with TTS/STT');
       });
 
       test('should have ui showcase feature', () {
