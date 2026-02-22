@@ -4,13 +4,15 @@ A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI compon
 
 This toolkit is born from close to a decade of building Flutter and Dart applications professionally. It is a curated collection of the packages and patterns I reach for most often -- not everything I know, but the essentials, battle-tested across real projects and refined over the years. Rather than keeping these as scattered internal utilities and tribal knowledge, I wrote them down as properly published, reusable packages and open-sourced them for the Flutter community.
 
-**By [Fifty.ai](https://github.com/fiftynotai)**
+The kit spans two domains: **app development** packages (design system, forms, caching, storage, connectivity, printing, architecture templates) for production applications, and **game development** packages (audio engine, speech engine, narrative engine, world engine, skill trees, achievements) for Flutter-based games and interactive experiences. Pick what you need -- they work independently or together.
+
+**By [Fifty.dev](https://github.com/fiftynotai)**
 
 ---
 
 ## Packages
 
-All packages are published on [pub.dev](https://pub.dev/publishers/fifty.ai/packages) and can be installed individually.
+All packages are published on [pub.dev](https://pub.dev/publishers/fifty.dev/packages) and can be installed individually.
 
 | Package | Version | Description |
 |---------|---------|-------------|
