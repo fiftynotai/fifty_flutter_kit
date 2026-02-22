@@ -10,7 +10,7 @@
 
 ## Summary
 
-Complete migration of the Fifty Design Language (FDL) ecosystem from "Kinetic Brutalism" aesthetic to "Sophisticated Warm" design system. This affects three core packages (fifty_tokens, fifty_theme, fifty_ui) with breaking changes requiring major version bumps from v0.x to v1.0.0.
+Complete migration of the Fifty Design Language (FDL) ecosystem from the previous aesthetic to "Sophisticated Warm" design system (FDL v2). This affects three core packages (fifty_tokens, fifty_theme, fifty_ui) with breaking changes requiring major version bumps from v0.x to v1.0.0.
 
 ---
 

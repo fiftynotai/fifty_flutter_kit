@@ -35,7 +35,7 @@ Three new FDL-compliant form components available in fifty_ui:
 2. `FiftySlider` - Range selector with brutalist styling
 3. `FiftyDropdown` - Selection menu with terminal aesthetics
 
-All components follow Kinetic Brutalism doctrine: heavy structure, fast motion, raw feedback.
+All components follow FDL v2 doctrine: modern sophisticated design, purposeful motion, clean feedback.
 
 ---
 

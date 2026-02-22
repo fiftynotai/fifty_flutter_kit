@@ -15,14 +15,14 @@
 
 **What's broken or missing?**
 
-The fifty.dev ecosystem has `fifty_tokens` (design tokens) and `fifty_theme` (ThemeData construction), but lacks a component library. Developers must manually create UI widgets that follow the Fifty Design Language (FDL) kinetic brutalism aesthetic. There are no pre-built components that leverage the theme system.
+The fifty.dev ecosystem has `fifty_tokens` (design tokens) and `fifty_theme` (ThemeData construction), but lacks a component library. Developers must manually create UI widgets that follow the Fifty Design Language (FDL) modern sophisticated aesthetic. There are no pre-built components that leverage the theme system.
 
 **Why does it matter?**
 
 - No reusable FDL-compliant widgets exist
 - Each project duplicates component implementations
 - Inconsistent UI patterns across the ecosystem
-- Kinetic brutalism aesthetic requires specific component behaviors (crimson glows, motion tokens, border outlines)
+- FDL v2 aesthetic requires specific component behaviors (burgundy accents, motion tokens, border outlines)
 - Developers cannot quickly prototype FDL-styled interfaces
 
 ---
@@ -34,7 +34,7 @@ The fifty.dev ecosystem has `fifty_tokens` (design tokens) and `fifty_theme` (Th
 A `fifty_ui` package exists that:
 1. Depends on `fifty_tokens` and `fifty_theme` for all design values
 2. Exports FDL-styled widget components ready for use
-3. Implements kinetic brutalism aesthetic (crimson glows, no drop shadows, border depth)
+3. Implements FDL v2 modern sophisticated aesthetic (burgundy accents, mode-aware colors, Manrope typography)
 4. Supports accessibility standards (contrast ratios, semantic labels)
 5. Provides both core primitives and composite components
 6. Includes interactive examples and documentation
@@ -76,7 +76,7 @@ A `fifty_ui` package exists that:
 - Components access tokens via `Theme.of(context).extension<FiftyThemeExtension>()`
 - No hardcoded colors, typography, or spacing values
 - All animations use `FiftyMotion` tokens
-- Must follow FDL principles: kinetic brutalism, zero elevation, crimson glow focus states
+- Must follow FDL v2 principles: modern sophisticated design, mode-aware colors, burgundy primary focus states
 
 ### Technical Constraints
 - Zero external dependencies (only Flutter SDK + fifty ecosystem packages)

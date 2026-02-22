@@ -27,7 +27,7 @@ void main() {
       });
 
       test('fallback theme is dark mode (FDL spec)', () {
-        // FDL: Dark mode is PRIMARY - Kinetic Brutalism aesthetic
+        // FDL: Dark mode is PRIMARY (FDL v2 spec)
         expect(ThemeViewModel.fallbackTheme, equals(ThemeMode.dark));
       });
 

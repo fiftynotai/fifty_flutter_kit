@@ -98,7 +98,7 @@ dependencies:
 
 1. **Preserve functionality** - No changes to printing logic
 2. **FDL compliance** - Use Fifty tokens, not hardcoded values
-3. **Kinetic Brutalism** - Match Fifty aesthetic (high contrast, crimson accents, terminal style)
+3. **FDL v2** - Match Fifty aesthetic (modern sophisticated, burgundy accents, Manrope typography)
 4. **Responsive** - Work on various screen sizes
 5. **Accessibility** - Maintain proper contrast ratios
 

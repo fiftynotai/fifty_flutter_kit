@@ -11,7 +11,7 @@
 
 ## Problem
 
-The current FDL (Fifty Design Language) uses "Kinetic Brutalism" aesthetic which is being replaced with a new "Sophisticated Warm" design system. This affects:
+The current FDL (Fifty Design Language) used an older aesthetic which is being replaced with a new "Sophisticated Warm" design system (FDL v2). This affects:
 
 - **Color palette** - Complete replacement (5 new core colors)
 - **Typography** - Font family change (Monument/JetBrains → Manrope)

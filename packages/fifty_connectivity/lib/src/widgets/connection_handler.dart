@@ -13,7 +13,7 @@ import '../controllers/connection_view_model.dart';
 /// - [onConnectingWidget] while probing reachability,
 /// - a retry UI when offline.
 ///
-/// Styled with FDL (Fifty Design Language) Kinetic Brutalism aesthetic
+/// Styled with FDL (Fifty Design Language) v2 aesthetic
 /// using the Orbital Command space theme.
 ///
 /// ## Why

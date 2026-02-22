@@ -9,7 +9,7 @@ import '/src/modules/auth/auth.dart';
 /// **RegisterPage**
 ///
 /// FDL-styled registration form with Orbital Command "REQUEST ACCESS" theme.
-/// Kinetic Brutalism aesthetic with space-themed terminology.
+/// FDL v2 aesthetic with space-themed terminology.
 ///
 /// **FDL Aesthetic:**
 /// - Void Black background (#050505)

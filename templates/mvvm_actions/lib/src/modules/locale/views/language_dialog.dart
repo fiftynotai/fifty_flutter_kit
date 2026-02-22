@@ -6,7 +6,7 @@ import '../../../core/routing/route_manager.dart';
 import '../controllers/localization_view_model.dart';
 import '../data/models/language_model.dart';
 
-/// Language Protocol Dialog - FDL Kinetic Brutalism styled language selector.
+/// Language Protocol Dialog - FDL v2 styled language selector.
 ///
 /// A dialog widget to allow the user to select a communication language.
 /// Uses the Fifty Design Language (FDL) with Orbital Command space theme.

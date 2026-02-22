@@ -1,6 +1,6 @@
 # Fifty UI
 
-FDL-styled Flutter component library implementing the Kinetic Brutalism design doctrine. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+FDL-styled Flutter component library implementing the Fifty Design Language v2. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Gallery | Buttons | Inputs | Display |
 |:-------:|:-------:|:------:|:-------:|
@@ -694,7 +694,7 @@ All hover-dependent features (KineticEffect, GlitchEffect, scanline on FiftyCard
 
 This package is part of Fifty Flutter Kit:
 
-- **FDL v2 Kinetic Brutalism** - Implements the full design doctrine: heavy structure (bold borders, no drop shadows), fast motion (150ms / 300ms FDL timing tokens), and raw feedback (crimson glow focus states, scanlines, RGB glitch effects)
+- **FDL v2** - Implements the full design language: burgundy primary palette, mode-aware colors, Manrope typography, fast motion (150ms / 300ms FDL timing tokens), and refined feedback (focus glow states, scanlines, RGB glitch effects)
 - **fifty_tokens dependency** - All spacing, color, radius, and duration values are sourced from `fifty_tokens` for consistency across the kit
 - **fifty_theme dependency** - Components read `FiftyThemeExtension` from the widget tree for focus glow, animation curves, and semantic colors
 - **Dark-first with light mode** - All components respond to `ThemeMode` automatically; dark mode uses voidBlack backgrounds, light mode adapts contrast appropriately

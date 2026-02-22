@@ -23,7 +23,7 @@ The fifty_ui components have several FDL (Fifty Design Language) violations disc
 
 **Why does it matter?**
 
-- Components don't fully embody the "Kinetic Brutalism" aesthetic
+- Components don't fully embody the FDL v2 aesthetic
 - Violates core FDL principles documented in design spec
 - Inconsistent with the ecosystem's design philosophy
 
@@ -216,7 +216,7 @@ _(None yet)_
 ## Notes
 
 **FDL Philosophy:**
-- "Kinetic Brutalism" - mechanical, purposeful motion
+- FDL v2 - modern sophisticated, purposeful motion
 - Terminal/command-line aesthetic
 - Physical "data cartridge" feel
 - No decorative animations - every motion has purpose

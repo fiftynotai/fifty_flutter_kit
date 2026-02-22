@@ -34,7 +34,7 @@ The `definition.md` specification defines several components and effects that we
 **Why does it matter?**
 
 - Incomplete implementation of FDL specification
-- Missing signature "Kinetic Brutalism" effects
+- Missing signature FDL v2 effects
 - Cannot build full FDL-compliant interfaces
 
 ---

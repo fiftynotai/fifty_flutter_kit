@@ -1,36 +1,39 @@
 # Current Session
 
 **Status:** IDLE
-**Last Updated:** 2026-02-20
-**Active Briefs:** BR-105 (12/15 published, 3 pending rate limit reset)
-**Last Commit:** `c2ce68c` — refactor: rename fifty_sentences_engine → fifty_narrative_engine
+**Last Updated:** 2026-02-22
+**Active Briefs:** None
+**Last Commit:** `db2bfc2` — chore(session): record 12/15 pub.dev publishes, 3 rate-limited for tomorrow
 
 ---
 
 ## Active Brief
 
-### BR-105 - Pub.dev Publishing (12/15 live)
-- **Status:** In Progress — 3 packages remaining
-- **Blocker:** pub.dev rate limit (12 new packages/day), resets 2026-02-21
-- **Remaining:**
-  - `fifty_world_engine` v0.1.0
-  - `fifty_achievement_engine` v0.1.1
-  - `fifty_skill_tree` v0.1.0
-- **Action:** Re-run `dart pub publish --force` from each package directory after converting path deps to hosted
+None — BR-105 complete (15/15 packages live on pub.dev).
 
 ---
 
 ## Queued Briefs
 
-_(None)_
+### BR-106 - Remove Stale "Kinetic Brutalism" References
+- **Type:** Bug (Doc Misalignment) | **Priority:** P2 | **Effort:** S
+- **Scope:** 30 files, ~35 references — published READMEs, source comments, guidelines, templates, briefs
+- **Note:** Combine with BR-107 into single publish cycle
+
+### BR-107 - Fix Screenshots Not Loading on pub.dev
+- **Type:** Bug | **Priority:** P1 | **Effort:** M
+- **Root Cause:** Relative `<img src="screenshots/...">` paths — GitHub resolves, pub.dev can't
+- **Fix:** Convert to absolute `raw.githubusercontent.com` URLs + add `screenshots:` pubspec field
+- **Scope:** 10 packages, ~35 image refs
+- **Note:** Combine with BR-106 into single publish cycle
 
 ---
 
 ## Completed Briefs (This Session - 2026-02-20)
 
-### Pub.dev Publishing — 12 Packages Live
-- **Status:** Done (12/15)
-- **Summary:** Published 12 packages to pub.dev in dependency order across 5 phases. Renamed `fifty_sentences_engine` → `fifty_narrative_engine` before publishing (pub.dev names are permanent). Fixed stale `FiftyMapLoader` → `FiftyWorldLoader` reference in fifty_demo. Smoke tested three apps (world_engine example, tactical_grid, fifty_demo) in iOS simulator before publishing.
+### Pub.dev Publishing — 15/15 Packages Live
+- **Status:** Done (15/15)
+- **Summary:** Published all 15 packages to pub.dev. First 12 published 2026-02-20 in dependency order across 5 phases. Renamed `fifty_sentences_engine` → `fifty_narrative_engine` before publishing (pub.dev names are permanent). Fixed stale `FiftyMapLoader` → `FiftyWorldLoader` reference in fifty_demo. Final 3 published 2026-02-22 after rate limit reset.
 - **Commits:** `3ba18de` (FiftyMapLoader fix), `c2ce68c` (narrative engine rename)
 - **Published packages:**
 
@@ -48,6 +51,9 @@ _(None)_
 | 4 | `fifty_connectivity` | 0.1.0 |
 | 5 | `fifty_audio_engine` | 0.7.0 |
 | 5 | `fifty_speech_engine` | 0.1.0 |
+| 6 | `fifty_world_engine` | 0.1.0 |
+| 6 | `fifty_achievement_engine` | 0.1.1 |
+| 6 | `fifty_skill_tree` | 0.1.0 |
 
 ---
 
@@ -197,17 +203,16 @@ _(None)_
 
 ## Next Steps
 
-- **Publish remaining 3 packages** (after 2026-02-21 rate limit reset):
-  - `fifty_world_engine` v0.1.0 — no internal path deps
-  - `fifty_achievement_engine` v0.1.1 — convert `fifty_tokens`, `fifty_ui` to hosted
-  - `fifty_skill_tree` v0.1.0 — convert `fifty_tokens` to hosted
-- All 3 validated with `dart pub publish --dry-run` (0 warnings)
-- After publishing: mark BR-105 as Done
+1. **Implement BR-106 + BR-107 together** (single publish cycle):
+   - BR-106: Remove "Kinetic Brutalism" from 30 files
+   - BR-107: Fix screenshot URLs (relative → absolute) in 10 packages + add pubspec `screenshots:` field
+   - Patch bump affected packages and re-publish
+2. Mark BR-105 as Done (all 15/15 packages now live)
 
 ---
 
 ## Resume Command
 
 ```
-Session idle. 12/15 packages live on pub.dev. 3 remaining (fifty_world_engine, fifty_achievement_engine, fifty_skill_tree) hit pub.dev daily rate limit (12 new packages/day). All validated, just re-run publish after 2026-02-21. Last commits: c2ce68c (narrative engine rename), 3ba18de (FiftyMapLoader fix). Pubspecs reverted to path deps for local dev.
+All 15 packages live on pub.dev. BR-105 complete. Two briefs queued: BR-106 (remove Kinetic Brutalism refs, 30 files) and BR-107 (fix pub.dev screenshot URLs, 10 packages). Combine BR-106+107 into single publish cycle with patch bumps. Pubspecs reverted to path deps for local dev.
 ```

@@ -661,13 +661,13 @@ StatusIndicator(
 );
 ```
 
-### Kinetic Brutalism Aesthetic
+### FDL v2 Aesthetic
 
-- **Headlines:** Monument Extended, UPPERCASE, tight letter-spacing
+- **Headlines:** Manrope, UPPERCASE, tight letter-spacing
 - **Body/Mono:** JetBrains Mono, terminal-style
-- **Colors:** High contrast, crimson accents on void black
+- **Colors:** Burgundy primary, mode-aware color palette
 - **Borders:** 1-2px solid borders, no shadows
-- **Animation:** Subtle, purposeful (scanlines, pulse effects)
+- **Animation:** Subtle, purposeful motion tokens
 
 ---
 

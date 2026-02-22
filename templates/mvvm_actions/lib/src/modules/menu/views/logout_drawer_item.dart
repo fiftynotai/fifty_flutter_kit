@@ -6,7 +6,7 @@ import '/src/modules/locale/data/keys.dart';
 
 /// Logout drawer item for the navigation menu.
 ///
-/// Displays a logout option with FDL Kinetic Brutalism styling
+/// Displays a logout option with FDL v2 styling
 /// that triggers the logout flow with confirmation dialog.
 ///
 /// ## Usage:

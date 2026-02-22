@@ -37,7 +37,7 @@ The fifty_audio_engine package lacks a comprehensive example app that demonstrat
 1. Comprehensive example app at `packages/fifty_audio_engine/example/`
 2. Showcases ALL audio engine capabilities
 3. Built entirely with fifty_ui components
-4. Follows Fifty Design Language (dark-first, crimson glows, kinetic brutalism)
+4. Follows Fifty Design Language v2 (dark-first, burgundy accents, modern sophisticated)
 5. Uses MVVM + Actions architecture pattern
 6. Runs on all supported platforms
 

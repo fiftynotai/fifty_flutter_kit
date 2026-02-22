@@ -90,7 +90,7 @@ Consider patterns from:
 6. [ ] Volume control accessible
 7. [ ] Shuffle toggle visible
 8. [ ] Progress bar/slider functional
-9. [ ] Matches FDL aesthetic (kinetic brutalism)
+9. [ ] Matches FDL v2 aesthetic (modern sophisticated)
 
 ---
 

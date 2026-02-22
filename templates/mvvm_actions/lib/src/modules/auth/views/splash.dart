@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 /// - Void Black background (#050505)
 /// - ORBITAL COMMAND text in Monument Extended, uppercase, crimsonPulse
 /// - FiftyLoadingIndicator with animated dots
-/// - Kinetic Brutalism styling
+/// - FDL v2 styling
 ///
 /// // ----------------------------------------------------
 class SplashPage extends StatelessWidget {

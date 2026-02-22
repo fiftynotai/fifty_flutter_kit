@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// A custom drawer item widget for the navigation menu.
 ///
-/// Displays a menu item with an icon and label following FDL Kinetic Brutalism
+/// Displays a menu item with an icon and label following FDL v2
 /// aesthetic with Orbital Command space theme.
 ///
 /// ## Features:

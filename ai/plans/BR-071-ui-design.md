@@ -2,7 +2,7 @@
 
 **Generated:** 2026-02-04
 **Design System:** Fifty Design Language (FDL) v2
-**Style:** Kinetic Brutalism
+**Style:** Modern Sophisticated
 
 ---
 

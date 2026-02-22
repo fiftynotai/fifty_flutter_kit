@@ -12,7 +12,7 @@ import '/src/modules/locale/locale.dart';
 
 /// Navigation drawer widget styled as "Command Center".
 ///
-/// Displays a side drawer with FDL Kinetic Brutalism aesthetic:
+/// Displays a side drawer with FDL v2 aesthetic:
 /// - voidBlack background
 /// - "COMMAND CENTER" header with crimsonPulse accent
 /// - Operator status badge

@@ -17,7 +17,7 @@
 
 The current fifty_arch example app uses a generic "posts" module that fetches placeholder data from JSONPlaceholder API. This example:
 
-1. **Doesn't showcase FDL aesthetic** - Uses default Material styling, not Kinetic Brutalism
+1. **Doesn't showcase FDL aesthetic** - Uses default Material styling, not FDL v2
 2. **No fifty_ui integration** - Doesn't use FiftyButton, FiftyCard, FiftyDataSlate, etc.
 3. **No fifty_theme integration** - Uses custom themes instead of FiftyTheme.dark()/light()
 4. **Generic concept** - "Posts" is uninspiring and doesn't demonstrate the architecture's power
@@ -39,7 +39,7 @@ The example app is the first impression developers get of the architecture. A co
 
 A redesigned example app called **"Orbital Command"** - a space monitoring station that:
 
-1. **Embodies FDL Kinetic Brutalism**
+1. **Embodies FDL v2 Modern Sophisticated**
    - Dark mode primary (voidBlack background) - perfect for space theme
    - Crimson pulse accents (alert indicators, threat levels)
    - Monument Extended headings + JetBrains Mono body

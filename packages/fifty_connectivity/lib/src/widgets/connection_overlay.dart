@@ -11,7 +11,7 @@ import '../actions/connection_actions.dart';
 /// Widget that overlays its [child] with a small status surface when the
 /// device is attempting to reconnect or has no internet connectivity.
 ///
-/// Styled with FDL (Fifty Design Language) Kinetic Brutalism aesthetic
+/// Styled with FDL (Fifty Design Language) v2 aesthetic
 /// using the Orbital Command space theme.
 ///
 /// ## Why
@@ -73,7 +73,7 @@ enum UplinkStatus {
 /// **UplinkStatusBar**
 ///
 /// A compact status bar shown when the connection status changes.
-/// Follows FDL Kinetic Brutalism aesthetic with Orbital Command theme.
+/// Follows FDL v2 aesthetic with Orbital Command theme.
 class UplinkStatusBar extends StatelessWidget {
   /// The current uplink status.
   final UplinkStatus status;
@@ -121,7 +121,7 @@ class UplinkStatusBar extends StatelessWidget {
 /// **OfflineStatusCard**
 ///
 /// Full-screen modal card shown when the app determines there is no internet
-/// connectivity. Styled with FDL Kinetic Brutalism aesthetic.
+/// connectivity. Styled with FDL v2 aesthetic.
 ///
 /// ## Why
 /// - Provide clear, blocking feedback when connectivity is lost.

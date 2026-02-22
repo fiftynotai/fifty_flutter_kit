@@ -504,7 +504,7 @@ TextStyle(
 This package is part of Fifty Flutter Kit:
 
 - **Foundation layer** - Every other Fifty Flutter Kit package (`fifty_theme`, `fifty_ui`) imports `fifty_tokens` as its single source of design truth; no values are hardcoded in consuming packages
-- **FDL v2 "Sophisticated Warm"** - The color system moved from the original Kinetic Brutalism palette to a warm burgundy-and-cream palette that supports both dark and light modes; v1 tokens remain available but are marked `@Deprecated` and will be removed in a future major version
+- **FDL v2 "Sophisticated Warm"** - The color system uses a warm burgundy-and-cream palette that supports both dark and light modes; v1 tokens remain available but are marked `@Deprecated` and will be removed in a future major version
 - **Motion philosophy** - FDL enforces kinetic (slide/wipe/reveal) animation throughout the kit; `FiftyMotion` provides the timing contracts that all animated components reference
 
 ---

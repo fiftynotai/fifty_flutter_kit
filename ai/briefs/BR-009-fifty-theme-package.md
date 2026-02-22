@@ -34,7 +34,7 @@ A `fifty_theme` package exists that:
 1. Depends on `fifty_tokens` for all design values
 2. Exports `FiftyTheme` class with `light()` and `dark()` factory methods
 3. Provides complete `ThemeData` objects ready for `MaterialApp`
-4. Follows FDL specification for kinetic brutalism aesthetic
+4. Follows FDL v2 specification for modern sophisticated aesthetic
 5. Zero additional dependencies beyond Flutter SDK and fifty_tokens
 
 ---
@@ -180,7 +180,7 @@ _(None yet)_
 2. Run the application
 3. Verify surfaces are dark (void black), crimson accents visible
 
-**Expected Result:** App renders with kinetic brutalism dark theme
+**Expected Result:** App renders with FDL v2 dark theme
 **Status:** [ ] Pass / [ ] Fail
 
 ---

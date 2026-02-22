@@ -26,7 +26,7 @@ Existing fifty_ui components don't fully match the `definition.md` specification
 **Why does it matter?**
 
 - Components don't match the approved design specification
-- Missing signature Kinetic Brutalism effects
+- Missing signature FDL v2 effects
 - Inconsistent with FDL vision
 
 ---

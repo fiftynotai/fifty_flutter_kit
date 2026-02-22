@@ -13,7 +13,7 @@ This document provides a comprehensive UI design specification for a modern snea
 
 **Design Philosophy:**
 - **Consume, Don't Define** - All styling uses FDL tokens (no hardcoded values)
-- **Kinetic Brutalism** - Heavy but fast animations, no fades, use slides/wipes/reveals
+- **Modern Sophisticated** - Purposeful animations, clean transitions, slides/wipes/reveals
 - **Premium E-commerce** - Luxury feel with warm burgundy and cream palette
 - **Mobile-First** - Responsive design starting from mobile breakpoints
 

@@ -19,7 +19,7 @@ Network connectivity monitoring with intelligent reachability probing (DNS/HTTP)
 - **App Lifecycle Awareness** - Re-checks connectivity automatically on app resume
 - **Ready-to-use UI Widgets** - Overlay, handler, and splash widgets for common connection UX patterns
 - **Highly Configurable** - Customizable labels, navigation callback, and splash screen builder
-- **FDL Styled** - Fifty Design Language Kinetic Brutalism aesthetic in all UI widgets
+- **FDL Styled** - Fifty Design Language v2 aesthetic in all UI widgets
 
 ---
 
@@ -345,7 +345,7 @@ Add to `android/app/src/main/AndroidManifest.xml`:
 
 This package is part of Fifty Flutter Kit:
 
-- **`fifty_tokens`** - All UI widgets consume FDL design tokens for color, spacing, and typography, ensuring visual consistency with the Kinetic Brutalism aesthetic
+- **`fifty_tokens`** - All UI widgets consume FDL design tokens for color, spacing, and typography, ensuring visual consistency with the FDL v2 aesthetic
 - **`fifty_ui`** - Connection overlay and handler widgets use FDL base components and theming primitives
 - **`fifty_utils`** - Duration formatting for the offline timer uses FDL utility extensions
 

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '/src/modules/locale/controllers/localization_view_model.dart';
 import '/src/modules/locale/views/language_dialog.dart';
 
-/// Language Protocol drawer item - FDL Kinetic Brutalism styled.
+/// Language Protocol drawer item - FDL v2 styled.
 ///
 /// Displays the current language and allows changing it via a dialog.
 /// Uses the Fifty Design Language (FDL) with Orbital Command space theme.

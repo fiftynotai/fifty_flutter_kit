@@ -280,7 +280,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
             ],
           ),
           const SizedBox(height: FiftySpacing.xl),
-          const _SectionTitle('Kinetic Brutalism'),
+          const _SectionTitle('FDL v2 Effects'),
           const Text(
             'Hover over buttons to see effects',
             style: TextStyle(
@@ -1562,7 +1562,7 @@ class LayoutPage extends StatelessWidget {
           const SizedBox(height: FiftySpacing.md),
           const FiftyHeroSection(
             title: 'Fifty UI',
-            subtitle: 'Design System v2 - Kinetic Brutalism',
+            subtitle: 'Fifty Design Language v2',
             glitchOnMount: true,
           ),
           const SizedBox(height: FiftySpacing.xl),
