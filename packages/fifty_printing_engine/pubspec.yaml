@@ -1,6 +1,6 @@
 name: fifty_printing_engine
 description: "Fifty Flutter Kit printing engine - multi-printer ESC/POS printing with Bluetooth and WiFi support"
-version: 1.0.0
+version: 1.0.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_printing_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -9,6 +9,15 @@ topics:
   - printing
   - bluetooth
   - escpos
+screenshots:
+  - description: 'Home screen in dark mode'
+    path: screenshots/home_dark.png
+  - description: 'Printer management in dark mode'
+    path: screenshots/printer_management_dark.png
+  - description: 'Test print preview in dark mode'
+    path: screenshots/test_print_dark.png
+  - description: 'Ticket builder in dark mode'
+    path: screenshots/ticket_builder_dark.png
 
 environment:
   sdk: ^3.6.0

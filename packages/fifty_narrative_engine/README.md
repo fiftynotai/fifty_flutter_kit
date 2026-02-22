@@ -4,7 +4,7 @@ A sentence processing engine for Flutter games and interactive applications. Par
 
 | Sentence Queue | Dialogue Choices | Narration |
 |:--------------:|:----------------:|:---------:|
-| <img src="screenshots/sentence_queue_light.png" width="200"> | <img src="screenshots/dialogue_choices_light.png" width="200"> | <img src="screenshots/dialogue_narration_light.png" width="200"> |
+| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_narrative_engine/screenshots/sentence_queue_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_narrative_engine/screenshots/dialogue_choices_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_narrative_engine/screenshots/dialogue_narration_light.png" width="200"> |
 
 ---
 

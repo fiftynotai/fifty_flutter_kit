@@ -1,6 +1,6 @@
 name: fifty_world_engine
 description: "Fifty Flutter Kit world engine - Flame-based interactive grid world rendering for Flutter games"
-version: 0.1.0
+version: 0.1.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_world_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -9,6 +9,11 @@ topics:
   - game
   - tilemap
   - flame
+screenshots:
+  - description: 'Tactical grid overview'
+    path: screenshots/tactical_overview_light.png
+  - description: 'Unit selection interface'
+    path: screenshots/unit_selection_light.png
 
 environment:
   sdk: ^3.6.0

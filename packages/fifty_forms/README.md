@@ -4,7 +4,7 @@ Production-ready form building with validation, multi-step wizards, and draft pe
 
 | Home | Login Form | Registration | Multi-Step |
 |:----:|:----------:|:------------:|:----------:|
-| <img src="screenshots/home_dark.png" width="200"> | <img src="screenshots/login_form_dark.png" width="200"> | <img src="screenshots/registration_form_dark.png" width="200"> | <img src="screenshots/multi_step_form_dark.png" width="200"> |
+| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_forms/screenshots/home_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_forms/screenshots/login_form_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_forms/screenshots/registration_form_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_forms/screenshots/multi_step_form_dark.png" width="200"> |
 
 ---
 

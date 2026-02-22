@@ -1,6 +1,6 @@
 name: fifty_connectivity
 description: Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of the Fifty Flutter Kit.
-version: 0.1.0
+version: 0.1.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_connectivity
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -9,6 +9,15 @@ topics:
   - connectivity
   - network
   - monitoring
+screenshots:
+  - description: 'Connection handler demo'
+    path: example/screenshots/handler.png
+  - description: 'Connectivity dashboard'
+    path: example/screenshots/home.png
+  - description: 'Connection overlay'
+    path: example/screenshots/overlay.png
+  - description: 'Connectivity checker splash'
+    path: example/screenshots/splash.png
 
 environment:
   sdk: ^3.6.0

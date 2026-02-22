@@ -1,6 +1,6 @@
 name: fifty_ui
 description: FDL v2 styled Flutter components for the fifty.dev ecosystem. Buttons, cards, inputs, and more.
-version: 0.6.0
+version: 0.6.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_ui
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -10,6 +10,15 @@ topics:
   - components
   - design-system
   - widgets
+screenshots:
+  - description: 'Button variants in dark mode'
+    path: screenshots/buttons_dark.png
+  - description: 'Display components in dark mode'
+    path: screenshots/display_dark.png
+  - description: 'Component gallery in dark mode'
+    path: screenshots/gallery_dark.png
+  - description: 'Input components in dark mode'
+    path: screenshots/inputs_dark.png
 
 environment:
   sdk: ^3.6.0

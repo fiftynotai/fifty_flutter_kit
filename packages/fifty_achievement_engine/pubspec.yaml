@@ -1,6 +1,6 @@
 name: fifty_achievement_engine
 description: Achievement system for Flutter games with condition-based unlocks, progress tracking, and FDL-compliant UI.
-version: 0.1.1
+version: 0.1.2
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_achievement_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -9,6 +9,15 @@ topics:
   - game
   - achievements
   - gamification
+screenshots:
+  - description: 'Achievement unlock animation'
+    path: screenshots/achievement_unlocked_light.png
+  - description: 'Basic achievements list'
+    path: screenshots/basic_achievements_light.png
+  - description: 'Achievement gallery home'
+    path: screenshots/home_light.png
+  - description: 'RPG-style achievements'
+    path: screenshots/rpg_achievements_light.png
 
 environment:
   sdk: ^3.6.0

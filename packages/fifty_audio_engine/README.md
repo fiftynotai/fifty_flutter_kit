@@ -4,7 +4,7 @@ A modular, reactive audio system for Flutter games and applications. Part of [Fi
 
 | BGM Player | SFX Player | Voice Player | Global Controls |
 |:----------:|:----------:|:------------:|:---------------:|
-| <img src="screenshots/bgm_player_light.png" width="200"> | <img src="screenshots/sfx_player_light.png" width="200"> | <img src="screenshots/voice_player_light.png" width="200"> | <img src="screenshots/global_controls_light.png" width="200"> |
+| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_audio_engine/screenshots/bgm_player_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_audio_engine/screenshots/sfx_player_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_audio_engine/screenshots/voice_player_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_audio_engine/screenshots/global_controls_light.png" width="200"> |
 
 ---
 

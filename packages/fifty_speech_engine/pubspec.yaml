@@ -1,6 +1,6 @@
 name: fifty_speech_engine
 description: "Fifty Flutter Kit speech engine - TTS and STT for Flutter games and applications"
-version: 0.1.0
+version: 0.1.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_speech_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -9,6 +9,11 @@ topics:
   - speech
   - tts
   - stt
+screenshots:
+  - description: 'Speech-to-text panel'
+    path: screenshots/stt_panel_light.png
+  - description: 'Text-to-speech panel'
+    path: screenshots/tts_panel_light.png
 
 environment:
   sdk: ^3.6.0

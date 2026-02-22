@@ -4,7 +4,7 @@ Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support.
 
 | Home | Printer Management | Test Print | Ticket Builder |
 |:----:|:------------------:|:----------:|:--------------:|
-| <img src="screenshots/home_dark.png" width="200"> | <img src="screenshots/printer_management_dark.png" width="200"> | <img src="screenshots/test_print_dark.png" width="200"> | <img src="screenshots/ticket_builder_dark.png" width="200"> |
+| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_printing_engine/screenshots/home_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_printing_engine/screenshots/printer_management_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_printing_engine/screenshots/test_print_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_printing_engine/screenshots/ticket_builder_dark.png" width="200"> |
 
 ---
 

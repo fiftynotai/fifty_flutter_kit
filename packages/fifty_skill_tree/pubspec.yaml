@@ -1,6 +1,6 @@
 name: fifty_skill_tree
 description: Interactive skill tree widget for Flutter games - customizable, animated, and game-ready.
-version: 0.1.0
+version: 0.1.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_skill_tree
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -9,6 +9,15 @@ topics:
   - game
   - skill-tree
   - rpg
+screenshots:
+  - description: 'Basic skill tree layout'
+    path: screenshots/basic_tree_light.png
+  - description: 'Skill tree gallery home'
+    path: screenshots/home_light.png
+  - description: 'Node unlock animation'
+    path: screenshots/node_unlock_light.png
+  - description: 'RPG skill tree example'
+    path: screenshots/rpg_skill_tree_light.png
 
 environment:
   sdk: ^3.6.0

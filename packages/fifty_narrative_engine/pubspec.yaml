@@ -1,6 +1,6 @@
 name: fifty_narrative_engine
 description: "Fifty Flutter Kit narrative processing engine for games and interactive applications"
-version: 0.1.0
+version: 0.1.1
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_narrative_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
@@ -8,6 +8,13 @@ topics:
   - flutter
   - game
   - text-processing
+screenshots:
+  - description: 'Dialogue with choices'
+    path: screenshots/dialogue_choices_light.png
+  - description: 'Narration display'
+    path: screenshots/dialogue_narration_light.png
+  - description: 'Sentence queue demo'
+    path: screenshots/sentence_queue_light.png
 
 environment:
   sdk: ^3.6.0
