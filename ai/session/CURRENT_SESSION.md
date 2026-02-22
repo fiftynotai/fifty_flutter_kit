@@ -1,15 +1,22 @@
 # Current Session
 
 **Status:** IDLE
-**Last Updated:** 2026-02-19
-**Active Briefs:** _(none)_
-**Last Commit:** `5dae714` — refactor: rename fifty_map_engine → fifty_world_engine
+**Last Updated:** 2026-02-20
+**Active Briefs:** BR-105 (12/15 published, 3 pending rate limit reset)
+**Last Commit:** `c2ce68c` — refactor: rename fifty_sentences_engine → fifty_narrative_engine
 
 ---
 
 ## Active Brief
 
-_(None)_
+### BR-105 - Pub.dev Publishing (12/15 live)
+- **Status:** In Progress — 3 packages remaining
+- **Blocker:** pub.dev rate limit (12 new packages/day), resets 2026-02-21
+- **Remaining:**
+  - `fifty_world_engine` v0.1.0
+  - `fifty_achievement_engine` v0.1.1
+  - `fifty_skill_tree` v0.1.0
+- **Action:** Re-run `dart pub publish --force` from each package directory after converting path deps to hosted
 
 ---
 
@@ -19,7 +26,32 @@ _(None)_
 
 ---
 
-## Completed Briefs (This Session - 2026-02-19)
+## Completed Briefs (This Session - 2026-02-20)
+
+### Pub.dev Publishing — 12 Packages Live
+- **Status:** Done (12/15)
+- **Summary:** Published 12 packages to pub.dev in dependency order across 5 phases. Renamed `fifty_sentences_engine` → `fifty_narrative_engine` before publishing (pub.dev names are permanent). Fixed stale `FiftyMapLoader` → `FiftyWorldLoader` reference in fifty_demo. Smoke tested three apps (world_engine example, tactical_grid, fifty_demo) in iOS simulator before publishing.
+- **Commits:** `3ba18de` (FiftyMapLoader fix), `c2ce68c` (narrative engine rename)
+- **Published packages:**
+
+| Phase | Package | Version |
+|-------|---------|---------|
+| 1 | `fifty_tokens` | 1.0.0 |
+| 1 | `fifty_utils` | 0.1.0 |
+| 1 | `fifty_cache` | 0.1.0 |
+| 1 | `fifty_storage` | 0.1.0 |
+| 2 | `fifty_theme` | 1.0.0 |
+| 3 | `fifty_ui` | 0.6.0 |
+| 3 | `fifty_printing_engine` | 1.0.0 |
+| 3 | `fifty_narrative_engine` | 0.1.0 |
+| 4 | `fifty_forms` | 0.1.0 |
+| 4 | `fifty_connectivity` | 0.1.0 |
+| 5 | `fifty_audio_engine` | 0.7.0 |
+| 5 | `fifty_speech_engine` | 0.1.0 |
+
+---
+
+## Completed Briefs (2026-02-19)
 
 ### Rename fifty_map_engine → fifty_world_engine
 - **Status:** Done (`5dae714`)
@@ -165,17 +197,17 @@ _(None)_
 
 ## Next Steps
 
-- **BR-105 complete** — All 15 packages prepared for pub.dev
-- **Ready to publish:** fifty_tokens, fifty_utils, fifty_cache, fifty_storage, fifty_printing_engine, fifty_narrative_engine, fifty_world_engine (7/15, 0 warnings)
-- **Blocked by path deps only:** fifty_theme, fifty_ui, fifty_forms, fifty_connectivity, fifty_audio_engine, fifty_speech_engine, fifty_achievement_engine, fifty_skill_tree (8/15)
-- **To publish:** Follow publish order in `ai/context/publish_order.md` — convert path deps to hosted deps bottom-up
-- **All package READMEs standardized** — FDL template compliant
-- **All example apps** built and verified
+- **Publish remaining 3 packages** (after 2026-02-21 rate limit reset):
+  - `fifty_world_engine` v0.1.0 — no internal path deps
+  - `fifty_achievement_engine` v0.1.1 — convert `fifty_tokens`, `fifty_ui` to hosted
+  - `fifty_skill_tree` v0.1.0 — convert `fifty_tokens` to hosted
+- All 3 validated with `dart pub publish --dry-run` (0 warnings)
+- After publishing: mark BR-105 as Done
 
 ---
 
 ## Resume Command
 
 ```
-Session idle. Last action: renamed fifty_map_engine → fifty_world_engine (5dae714, 165 files). All 15 packages pub.dev ready. 7 packages 0 warnings, 8 blocked only by path deps. Publishing order in ai/context/publish_order.md. Foundation layer (tokens, utils, cache, storage) can publish immediately.
+Session idle. 12/15 packages live on pub.dev. 3 remaining (fifty_world_engine, fifty_achievement_engine, fifty_skill_tree) hit pub.dev daily rate limit (12 new packages/day). All validated, just re-run publish after 2026-02-21. Last commits: c2ce68c (narrative engine rename), 3ba18de (FiftyMapLoader fix). Pubspecs reverted to path deps for local dev.
 ```
