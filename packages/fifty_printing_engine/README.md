@@ -754,14 +754,14 @@ engine.removePrinter('printer-id'); // Now it won't be attempted
 
 ## Platform Support
 
-| Platform | Support | Notes |
-|----------|---------|-------|
-| Android  | Yes     | Bluetooth + WiFi. Requires permissions |
-| iOS      | Yes     | Bluetooth + WiFi. Requires plist entries |
-| macOS    | Partial | WiFi only |
-| Linux    | Partial | WiFi only |
-| Windows  | Partial | WiFi only |
-| Web      | No      | No printer access |
+| Platform | Bluetooth | WiFi/Network | Status |
+|----------|-----------|--------------|--------|
+| Android | Supported | Supported | Full support |
+| iOS | Supported | Supported | Full support |
+| macOS | Supported | Supported | Full support |
+| Windows | Supported | Supported | Full support |
+| Linux | Not supported | Supported | WiFi only |
+| Web | Not supported | Not supported | Not supported |
 
 ### Android Setup
 
@@ -785,6 +785,22 @@ Add to `ios/Runner/Info.plist`:
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string>This app uses Bluetooth to connect to thermal printers.</string>
 ```
+
+### macOS Setup
+
+Bluetooth printing on macOS requires entitlements. Ensure your macOS Runner is configured with:
+
+- `com.apple.security.device.bluetooth` entitlement
+- Bluetooth usage description in Info.plist
+
+macOS Bluetooth support was added in `print_bluetooth_thermal` 1.1.8.
+
+### Platform Notes
+
+- **Bluetooth** is provided by `print_bluetooth_thermal`. Supported on Android, iOS, macOS, and Windows. Linux Bluetooth (BlueZ) is not yet implemented.
+- **WiFi/Network** printing uses Dart's built-in `dart:io` Socket on TCP port 9100. Works on all platforms except Web.
+- **Android 12+** requires `BLUETOOTH_CONNECT` and `BLUETOOTH_SCAN` permissions. The package checks permissions but cannot request them programmatically due to an Android limitation. Users must grant access via App Settings.
+- **Web** has no raw socket or Bluetooth API access, so printing is not possible.
 
 ---
 

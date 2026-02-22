@@ -2,17 +2,8 @@
 
 **Status:** IN PROGRESS
 **Last Updated:** 2026-02-22
-**Active Briefs:** BR-110
-**Last Commit:** `1ee6c17` — docs(readme): update branding to fifty.dev, add app/game domain distinction
-
----
-
-## Active Brief
-
-### BR-110 - Upgrade Outdated Dependencies for pub.dev Score Recovery
-- **Phase:** PLANNING
-- **Agent:** planner
-- **Goal:** Upgrade google_fonts, intl, flutter_secure_storage, connectivity_plus across 5 packages for +50 pub points
+**Active Briefs:** None
+**Last Commit:** `ef2e43e` — chore(deps): upgrade 5 outdated dependencies for pub.dev score recovery
 
 ---
 
@@ -23,14 +14,18 @@
 - **Scope:** 5 dependency upgrades (google_fonts, intl, flutter_secure_storage, connectivity_plus)
 - **Impact:** +50 pub points across 5 packages (tokens, theme, utils, storage, connectivity)
 
-### BR-111 - Review fifty_printing_engine Platform Support and Document Limitations
-- **Type:** Feature | **Priority:** P2 | **Effort:** S
-- **Scope:** Review Bluetooth vs WiFi printing per platform, build support matrix, update README
-- **Impact:** Clear documentation of what works where
 
 ---
 
 ## Completed Briefs (This Session - 2026-02-22)
+
+### BR-111 - Review fifty_printing_engine Platform Support and Document Limitations
+- **Status:** Done (no commit - documentation only)
+- **Summary:** Updated README Platform Support section. Fixed incorrect platform matrix showing macOS/Windows as "WiFi only" when both have full Bluetooth support. Added 3-column table (Bluetooth | WiFi/Network | Status), macOS Setup section (entitlements, version note), and Platform Notes section (technical details per platform). Verified accuracy against print_bluetooth_thermal dependency and dart:io Socket implementation.
+
+### BR-110 - Upgrade Outdated Dependencies for pub.dev Score Recovery
+- **Status:** Done (commit `ef2e43e`)
+- **Summary:** Upgraded 5 deps across 5 packages: google_fonts ^8.0.0 (tokens, theme), intl ^0.20.0 (utils), flutter_secure_storage ^10.0.0 (storage), connectivity_plus ^7.0.0 (connectivity). Adapted fifty_theme tests for google_fonts v8. All 404 tests pass. All 5 packages published to pub.dev.
 
 ### BR-105 - Pub.dev Publishing (Final 3 Packages)
 - **Status:** Done (archived)
@@ -104,8 +99,7 @@
 
 ## Next Steps When Resuming
 
-1. **Implement BR-110** — Upgrade outdated deps (+50 pub points across 5 packages)
-2. **Implement BR-111** — Review printing engine platform support, document limitations
+1. Ready for new tasks
 
 ---
 
