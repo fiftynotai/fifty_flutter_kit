@@ -1,176 +1,250 @@
+import 'dart:async';
+
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+/// Runs [body] in a guarded zone that absorbs google_fonts font-loading
+/// errors. In google_fonts v8, font loading failures produce unhandled async
+/// errors via internal `.then()` chains that cannot be caught externally.
+Future<void> _withSilencedFontErrors(FutureOr<void> Function() body) {
+  final completer = Completer<void>();
+  runZonedGuarded(
+    () async {
+      try {
+        await body();
+        completer.complete();
+      } catch (e, s) {
+        completer.completeError(e, s);
+      }
+    },
+    (error, stack) {
+      // Silently absorb google_fonts font-loading errors.
+      // These are expected because font assets are not bundled in unit tests.
+    },
+  );
+  return completer.future;
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Disable Google Fonts HTTP requests during tests
-  setUpAll(() {
-    GoogleFonts.config.allowRuntimeFetching = false;
-  });
-
   group('FiftyTheme', () {
     group('dark()', () {
       test('returns valid ThemeData', () {
-        final theme = FiftyTheme.dark();
-        expect(theme, isA<ThemeData>());
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme, isA<ThemeData>());
+        });
       });
 
       test('has Brightness.dark', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.brightness, Brightness.dark);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.brightness, Brightness.dark);
+        });
       });
 
       test('useMaterial3 is true', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.useMaterial3, isTrue);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.useMaterial3, isTrue);
+        });
       });
 
       test('scaffoldBackgroundColor is darkBurgundy', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.scaffoldBackgroundColor, FiftyColors.darkBurgundy);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.scaffoldBackgroundColor, FiftyColors.darkBurgundy);
+        });
       });
 
       test('canvasColor is darkBurgundy', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.canvasColor, FiftyColors.darkBurgundy);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.canvasColor, FiftyColors.darkBurgundy);
+        });
       });
 
       test('cardColor is surfaceDark', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.cardColor, FiftyColors.surfaceDark);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.cardColor, FiftyColors.surfaceDark);
+        });
       });
 
       test('dialogTheme backgroundColor is surfaceDark', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.dialogTheme.backgroundColor, FiftyColors.surfaceDark);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.dialogTheme.backgroundColor, FiftyColors.surfaceDark);
+        });
       });
 
       test('shadows are enabled in v2', () {
-        final theme = FiftyTheme.dark();
-        // shadowColor is no longer transparent in v2
-        expect(theme.shadowColor, isNot(Colors.transparent));
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          // shadowColor is no longer transparent in v2
+          expect(theme.shadowColor, isNot(Colors.transparent));
+        });
       });
 
       test('visualDensity is compact', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.visualDensity, VisualDensity.compact);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.visualDensity, VisualDensity.compact);
+        });
       });
 
       test('FiftyThemeExtension is attached', () {
-        final theme = FiftyTheme.dark();
-        final extension = theme.extension<FiftyThemeExtension>();
-        expect(extension, isNotNull);
-        expect(extension, isA<FiftyThemeExtension>());
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          final extension = theme.extension<FiftyThemeExtension>();
+          expect(extension, isNotNull);
+          expect(extension, isA<FiftyThemeExtension>());
+        });
       });
 
       test('colorScheme has dark brightness', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.colorScheme.brightness, Brightness.dark);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.colorScheme.brightness, Brightness.dark);
+        });
       });
 
       test('colorScheme primary is burgundy', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.colorScheme.primary, FiftyColors.burgundy);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.colorScheme.primary, FiftyColors.burgundy);
+        });
       });
 
       test('textTheme is configured', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.textTheme, isNotNull);
-        expect(theme.textTheme.displayLarge, isNotNull);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.textTheme, isNotNull);
+          expect(theme.textTheme.displayLarge, isNotNull);
+        });
       });
 
       test('textTheme bodyLarge is configured', () {
-        final theme = FiftyTheme.dark();
-        // GoogleFonts uses dynamic font names, just verify it's configured
-        expect(theme.textTheme.bodyLarge, isNotNull);
-        expect(theme.textTheme.bodyLarge?.fontSize, 16);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          // GoogleFonts uses dynamic font names, just verify it's configured
+          expect(theme.textTheme.bodyLarge, isNotNull);
+          expect(theme.textTheme.bodyLarge?.fontSize, 16);
+        });
       });
 
       test('appBarTheme is configured', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.appBarTheme.backgroundColor, FiftyColors.darkBurgundy);
-        expect(theme.appBarTheme.foregroundColor, FiftyColors.cream);
-        expect(theme.appBarTheme.elevation, 0);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.appBarTheme.backgroundColor, FiftyColors.darkBurgundy);
+          expect(theme.appBarTheme.foregroundColor, FiftyColors.cream);
+          expect(theme.appBarTheme.elevation, 0);
+        });
       });
 
       test('elevatedButtonTheme uses zero elevation', () {
-        final theme = FiftyTheme.dark();
-        final style = theme.elevatedButtonTheme.style;
-        expect(style, isNotNull);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          final style = theme.elevatedButtonTheme.style;
+          expect(style, isNotNull);
+        });
       });
 
       test('cardTheme uses surfaceDark', () {
-        final theme = FiftyTheme.dark();
-        expect(theme.cardTheme.color, FiftyColors.surfaceDark);
-        expect(theme.cardTheme.elevation, 0);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark();
+          expect(theme.cardTheme.color, FiftyColors.surfaceDark);
+          expect(theme.cardTheme.elevation, 0);
+        });
       });
     });
 
     group('light()', () {
       test('returns valid ThemeData', () {
-        final theme = FiftyTheme.light();
-        expect(theme, isA<ThemeData>());
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme, isA<ThemeData>());
+        });
       });
 
       test('has Brightness.light', () {
-        final theme = FiftyTheme.light();
-        expect(theme.brightness, Brightness.light);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.brightness, Brightness.light);
+        });
       });
 
       test('useMaterial3 is true', () {
-        final theme = FiftyTheme.light();
-        expect(theme.useMaterial3, isTrue);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.useMaterial3, isTrue);
+        });
       });
 
       test('scaffoldBackgroundColor is cream', () {
-        final theme = FiftyTheme.light();
-        expect(theme.scaffoldBackgroundColor, FiftyColors.cream);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.scaffoldBackgroundColor, FiftyColors.cream);
+        });
       });
 
       test('canvasColor is cream', () {
-        final theme = FiftyTheme.light();
-        expect(theme.canvasColor, FiftyColors.cream);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.canvasColor, FiftyColors.cream);
+        });
       });
 
       test('shadows are enabled in v2', () {
-        final theme = FiftyTheme.light();
-        // shadowColor is no longer transparent in v2
-        expect(theme.shadowColor, isNot(Colors.transparent));
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          // shadowColor is no longer transparent in v2
+          expect(theme.shadowColor, isNot(Colors.transparent));
+        });
       });
 
       test('FiftyThemeExtension is attached', () {
-        final theme = FiftyTheme.light();
-        final extension = theme.extension<FiftyThemeExtension>();
-        expect(extension, isNotNull);
-        expect(extension, isA<FiftyThemeExtension>());
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          final extension = theme.extension<FiftyThemeExtension>();
+          expect(extension, isNotNull);
+          expect(extension, isA<FiftyThemeExtension>());
+        });
       });
 
       test('colorScheme has light brightness', () {
-        final theme = FiftyTheme.light();
-        expect(theme.colorScheme.brightness, Brightness.light);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.colorScheme.brightness, Brightness.light);
+        });
       });
 
       test('colorScheme primary is burgundy', () {
-        final theme = FiftyTheme.light();
-        expect(theme.colorScheme.primary, FiftyColors.burgundy);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.colorScheme.primary, FiftyColors.burgundy);
+        });
       });
 
       test('textTheme bodyLarge is configured', () {
-        final theme = FiftyTheme.light();
-        // GoogleFonts uses dynamic font names, just verify it's configured
-        expect(theme.textTheme.bodyLarge, isNotNull);
-        expect(theme.textTheme.bodyLarge?.fontSize, 16);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          // GoogleFonts uses dynamic font names, just verify it's configured
+          expect(theme.textTheme.bodyLarge, isNotNull);
+          expect(theme.textTheme.bodyLarge?.fontSize, 16);
+        });
       });
 
       test('appBarTheme uses cream background', () {
-        final theme = FiftyTheme.light();
-        expect(theme.appBarTheme.backgroundColor, FiftyColors.cream);
-        expect(theme.appBarTheme.foregroundColor, FiftyColors.darkBurgundy);
-        expect(theme.appBarTheme.elevation, 0);
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          expect(theme.appBarTheme.backgroundColor, FiftyColors.cream);
+          expect(theme.appBarTheme.foregroundColor, FiftyColors.darkBurgundy);
+          expect(theme.appBarTheme.elevation, 0);
+        });
       });
     });
   });

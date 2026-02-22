@@ -19,7 +19,7 @@ dependencies:
   fifty_ui:
     path: ../../fifty_ui
   get: ^4.6.6
-  connectivity_plus: ^6.1.0
+  connectivity_plus: ^7.0.0
 
 dev_dependencies:
   flutter_test:
