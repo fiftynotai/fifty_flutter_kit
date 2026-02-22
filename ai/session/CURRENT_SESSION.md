@@ -3,33 +3,46 @@
 **Status:** IDLE
 **Last Updated:** 2026-02-22
 **Active Briefs:** None
-**Last Commit:** `db2bfc2` — chore(session): record 12/15 pub.dev publishes, 3 rate-limited for tomorrow
+**Last Commit:** `20be8a6` — fix(docs): convert screenshot URLs to absolute for pub.dev rendering
 
 ---
 
 ## Active Brief
 
-None — BR-105 complete (15/15 packages live on pub.dev).
+None — all queued work complete.
 
 ---
 
-## Queued Briefs
+## Completed Briefs (This Session - 2026-02-22)
 
 ### BR-106 - Remove Stale "Kinetic Brutalism" References
-- **Type:** Bug (Doc Misalignment) | **Priority:** P2 | **Effort:** S
-- **Scope:** 30 files, ~35 references — published READMEs, source comments, guidelines, templates, briefs
-- **Note:** Combine with BR-107 into single publish cycle
+- **Status:** Done (`14b0ed0`)
+- **Priority:** P2 | **Effort:** S
+- **Summary:** Removed ~35 "Kinetic Brutalism" references from 32 files across published READMEs, source comments, coding guidelines, templates, and historical briefs/plans. KineticEffect widget class preserved.
 
 ### BR-107 - Fix Screenshots Not Loading on pub.dev
-- **Type:** Bug | **Priority:** P1 | **Effort:** M
-- **Root Cause:** Relative `<img src="screenshots/...">` paths — GitHub resolves, pub.dev can't
-- **Fix:** Convert to absolute `raw.githubusercontent.com` URLs + add `screenshots:` pubspec field
-- **Scope:** 10 packages, ~35 image refs
-- **Note:** Combine with BR-106 into single publish cycle
+- **Status:** Done (`20be8a6`)
+- **Priority:** P1 | **Effort:** M
+- **Summary:** Converted 35 README screenshot paths from relative to absolute raw.githubusercontent.com URLs across 10 packages. Added pubspec `screenshots:` field for pub.dev sidebar gallery. Patch-bumped 11 packages (10 screenshot + fifty_tokens for BR-106 fix). Published all 11 to pub.dev in 3-phase dependency order.
+- **Published versions:**
+
+| Package | Old | New |
+|---------|-----|-----|
+| `fifty_tokens` | 1.0.0 | 1.0.1 |
+| `fifty_ui` | 0.6.0 | 0.6.1 |
+| `fifty_printing_engine` | 1.0.0 | 1.0.1 |
+| `fifty_forms` | 0.1.0 | 0.1.1 |
+| `fifty_connectivity` | 0.1.0 | 0.1.1 |
+| `fifty_narrative_engine` | 0.1.0 | 0.1.1 |
+| `fifty_audio_engine` | 0.7.0 | 0.7.1 |
+| `fifty_speech_engine` | 0.1.0 | 0.1.1 |
+| `fifty_achievement_engine` | 0.1.1 | 0.1.2 |
+| `fifty_skill_tree` | 0.1.0 | 0.1.1 |
+| `fifty_world_engine` | 0.1.0 | 0.1.1 |
 
 ---
 
-## Completed Briefs (This Session - 2026-02-20)
+## Completed Briefs (2026-02-20)
 
 ### Pub.dev Publishing — 15/15 Packages Live
 - **Status:** Done (15/15)
@@ -203,16 +216,14 @@ None — BR-105 complete (15/15 packages live on pub.dev).
 
 ## Next Steps
 
-1. **Implement BR-106 + BR-107 together** (single publish cycle):
-   - BR-106: Remove "Kinetic Brutalism" from 30 files
-   - BR-107: Fix screenshot URLs (relative → absolute) in 10 packages + add pubspec `screenshots:` field
-   - Patch bump affected packages and re-publish
-2. Mark BR-105 as Done (all 15/15 packages now live)
+1. Mark BR-105 as Done (all 15/15 packages live, screenshots fixed, branding cleaned)
+2. Review brief queue for next priority work
+3. Consider archiving completed briefs (BR-105, BR-106, BR-107)
 
 ---
 
 ## Resume Command
 
 ```
-All 15 packages live on pub.dev. BR-105 complete. Two briefs queued: BR-106 (remove Kinetic Brutalism refs, 30 files) and BR-107 (fix pub.dev screenshot URLs, 10 packages). Combine BR-106+107 into single publish cycle with patch bumps. Pubspecs reverted to path deps for local dev.
+All 15 packages live on pub.dev with patch bumps (BR-106 branding + BR-107 screenshots). 11 packages re-published at updated versions. BR-105 (pub.dev publishing), BR-106 (Kinetic Brutalism removal), BR-107 (screenshot URLs) all complete. Pubspecs reverted to path deps for local dev. No active briefs.
 ```
