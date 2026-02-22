@@ -1,107 +1,65 @@
 # Fifty Flutter Kit
 
-A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI components, architecture patterns, printing capabilities, and utility functions.
+A comprehensive Flutter/Dart toolkit providing design tokens, theming, UI components, forms, utilities, game engines, printing, and architecture patterns.
+
+This toolkit is born from close to a decade of building Flutter and Dart applications professionally. It is a curated collection of the packages and patterns I reach for most often -- not everything I know, but the essentials, battle-tested across real projects and refined over the years. Rather than keeping these as scattered internal utilities and tribal knowledge, I wrote them down as properly published, reusable packages and open-sourced them for the Flutter community.
+
+**By [Fifty.ai](https://github.com/fiftynotai)**
+
+---
 
 ## Packages
 
+All packages are published on [pub.dev](https://pub.dev/publishers/fifty.ai/packages) and can be installed individually.
+
 | Package | Version | Description |
 |---------|---------|-------------|
-| [fifty_tokens](packages/fifty_tokens/) | v1.0.0 | Design tokens (colors, typography, spacing) |
-| [fifty_theme](packages/fifty_theme/) | v1.0.0 | Theme generation and management |
-| [fifty_ui](packages/fifty_ui/) | v1.0.0 | Component library (buttons, cards, inputs) |
-| [fifty_forms](packages/fifty_forms/) | v0.1.0 | Form building with validation, multi-step wizards, and draft persistence |
-| [fifty_utils](packages/fifty_utils/) | v0.1.0 | Pure utilities (DateTime, responsive, state) |
-| [fifty_cache](packages/fifty_cache/) | v0.1.0 | Multi-tier caching with TTL support |
-| [fifty_storage](packages/fifty_storage/) | v0.1.0 | Key-value storage abstraction |
-| [fifty_connectivity](packages/fifty_connectivity/) | v0.1.0 | Network connectivity monitoring |
-| [fifty_audio_engine](packages/fifty_audio_engine/) | v0.8.0 | Audio playback and recording |
-| [fifty_speech_engine](packages/fifty_speech_engine/) | v0.1.0 | Text-to-speech and speech-to-text |
-| [fifty_narrative_engine](packages/fifty_narrative_engine/) | v0.1.0 | Narrative processing and word bank |
-| [fifty_world_engine](packages/fifty_world_engine/) | v3.0.0 | Cross-platform maps integration |
-| [fifty_printing_engine](packages/fifty_printing_engine/) | v1.0.0 | Multi-printer ESC/POS printing (Bluetooth & WiFi) |
-| [fifty_skill_tree](packages/fifty_skill_tree/) | v0.2.0 | Skill tree visualization and progression system |
-| [fifty_achievement_engine](packages/fifty_achievement_engine/) | v0.1.1 | Achievement tracking and unlocking system |
+| [fifty_tokens](https://pub.dev/packages/fifty_tokens) | [![pub](https://img.shields.io/badge/pub-v1.0.2-blue)](https://pub.dev/packages/fifty_tokens) | Design tokens -- colors, typography, spacing, motion, and more |
+| [fifty_theme](https://pub.dev/packages/fifty_theme) | [![pub](https://img.shields.io/badge/pub-v1.0.0-blue)](https://pub.dev/packages/fifty_theme) | Flutter theming layer. Converts design tokens into Material ThemeData |
+| [fifty_ui](https://pub.dev/packages/fifty_ui) | [![pub](https://img.shields.io/badge/pub-v0.6.2-blue)](https://pub.dev/packages/fifty_ui) | FDL v2 styled Flutter components -- buttons, cards, inputs, and more |
+| [fifty_forms](https://pub.dev/packages/fifty_forms) | [![pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/fifty_forms) | Form building with validation, multi-step wizards, and draft persistence |
+| [fifty_utils](https://pub.dev/packages/fifty_utils) | [![pub](https://img.shields.io/badge/pub-v0.1.0-blue)](https://pub.dev/packages/fifty_utils) | Pure Dart/Flutter utilities -- DateTime, Duration, Color extensions, responsive breakpoints, async state containers |
+| [fifty_cache](https://pub.dev/packages/fifty_cache) | [![pub](https://img.shields.io/badge/pub-v0.1.0-blue)](https://pub.dev/packages/fifty_cache) | TTL-based HTTP response caching with pluggable stores and policies |
+| [fifty_storage](https://pub.dev/packages/fifty_storage) | [![pub](https://img.shields.io/badge/pub-v0.1.0-blue)](https://pub.dev/packages/fifty_storage) | Secure token storage and preferences management |
+| [fifty_connectivity](https://pub.dev/packages/fifty_connectivity) | [![pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/fifty_connectivity) | Network connectivity monitoring with intelligent reachability probing |
+| [fifty_audio_engine](https://pub.dev/packages/fifty_audio_engine) | [![pub](https://img.shields.io/badge/pub-v0.7.2-blue)](https://pub.dev/packages/fifty_audio_engine) | Modular and reactive audio system for Flutter |
+| [fifty_speech_engine](https://pub.dev/packages/fifty_speech_engine) | [![pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/fifty_speech_engine) | TTS and STT for Flutter games and applications |
+| [fifty_narrative_engine](https://pub.dev/packages/fifty_narrative_engine) | [![pub](https://img.shields.io/badge/pub-v0.1.1-blue)](https://pub.dev/packages/fifty_narrative_engine) | Narrative processing engine for games and interactive applications |
+| [fifty_world_engine](https://pub.dev/packages/fifty_world_engine) | [![pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/fifty_world_engine) | Flame-based interactive grid world rendering for Flutter games |
+| [fifty_printing_engine](https://pub.dev/packages/fifty_printing_engine) | [![pub](https://img.shields.io/badge/pub-v1.0.2-blue)](https://pub.dev/packages/fifty_printing_engine) | Multi-printer ESC/POS printing with Bluetooth and WiFi support |
+| [fifty_skill_tree](https://pub.dev/packages/fifty_skill_tree) | [![pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/fifty_skill_tree) | Interactive skill tree widget for Flutter games |
+| [fifty_achievement_engine](https://pub.dev/packages/fifty_achievement_engine) | [![pub](https://img.shields.io/badge/pub-v0.1.3-blue)](https://pub.dev/packages/fifty_achievement_engine) | Achievement system for Flutter games with condition-based unlocks |
 
-## Apps
+> Source code for each package is in [`packages/`](packages/).
 
-| App | Description |
-|-----|-------------|
-| [fifty_demo](apps/fifty_demo/) | Demo app showcasing all packages |
-
-## Templates
-
-Project scaffolds for rapid development. Clone and customize.
-
-| Template | Description | Pattern |
-|----------|-------------|---------|
-| [mvvm_actions](templates/mvvm_actions/) | Full-featured app scaffold | MVVM + Actions |
-
-Templates depend on the packages above but are meant to be forked, not imported.
-
-## Architecture
-
-```
-fifty_flutter_kit/
-  packages/
-    fifty_tokens/           # Design foundation
-    fifty_theme/            # Theme layer (depends on tokens)
-    fifty_ui/               # Components (depends on theme)
-    fifty_forms/            # Form building system
-    fifty_utils/            # Pure utilities (no dependencies)
-    fifty_cache/            # Caching layer
-    fifty_storage/          # Storage abstraction
-    fifty_connectivity/     # Network monitoring
-    fifty_audio_engine/     # Audio playback
-    fifty_speech_engine/    # Speech services
-    fifty_narrative_engine/ # Narrative processing
-    fifty_world_engine/     # Maps integration
-    fifty_printing_engine/  # ESC/POS printing
-    fifty_skill_tree/       # Skill tree engine
-    fifty_achievement_engine/ # Achievement system
-  apps/
-    fifty_demo/             # Demo application
-  templates/
-    mvvm_actions/           # Full app template (fork, don't import)
-```
-
-### Dependency Graph
-
-```
-fifty_tokens (foundation)
-     |
-fifty_theme
-     |
-fifty_ui
-     |
-[fifty_forms, fifty_skill_tree, fifty_achievement_engine] <-- consume FDL
-     |
-fifty_utils (foundation)
-     |
-[mvvm_actions template] <-- fifty_storage, fifty_cache, fifty_connectivity
-
-fifty_printing_engine (standalone)
-```
+---
 
 ## Installation
 
-Add packages to your `pubspec.yaml`:
+### From pub.dev (Recommended)
 
-### Using Git (Development)
+Install any package using `dart pub add`:
+
+```bash
+dart pub add fifty_tokens
+dart pub add fifty_theme
+dart pub add fifty_ui
+```
+
+Or add them directly to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  fifty_tokens:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit
-      path: packages/fifty_tokens
-
-  fifty_utils:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit
-      path: packages/fifty_utils
+  fifty_tokens: ^1.0.2
+  fifty_theme: ^1.0.0
+  fifty_ui: ^0.6.2
+  fifty_forms: ^0.1.2
+  fifty_utils: ^0.1.0
 ```
 
-### Using Path (Monorepo)
+### For Contributors (Path)
+
+If you are working within the monorepo or contributing to packages locally:
 
 ```yaml
 dependencies:
@@ -111,6 +69,8 @@ dependencies:
   fifty_utils:
     path: ../fifty_utils
 ```
+
+---
 
 ## Quick Start
 
@@ -188,38 +148,6 @@ apiFetch(() => api.getUser()).listen((state) {
 });
 ```
 
-### Architecture (MVVM + Actions)
-
-For complete architecture patterns, see the [mvvm_actions template](templates/mvvm_actions/).
-
-```dart
-// Example from mvvm_actions template
-import 'package:fifty_utils/fifty_utils.dart';
-
-// ViewModel with reactive state
-class UserViewModel extends GetxController {
-  final usersState = ApiResponse<List<User>>.idle().obs;
-
-  void loadUsers() {
-    apiFetch(() => userService.getUsers())
-      .listen((state) => usersState.value = state);
-  }
-}
-
-// View with Obx reactive binding
-class UserListView extends GetView<UserViewModel> {
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      final state = controller.usersState.value;
-      if (state.isLoading) return CircularProgressIndicator();
-      if (state.hasData) return UserList(users: state.data!);
-      return ErrorWidget(state.error);
-    });
-  }
-}
-```
-
 ### Connectivity Monitoring
 
 ```dart
@@ -259,18 +187,131 @@ await printer.printReceipt(receiptData);
 await printer.disconnect();
 ```
 
+### Architecture (MVVM + Actions)
+
+For complete architecture patterns, see the [mvvm_actions template](templates/mvvm_actions/).
+
+```dart
+// Example from mvvm_actions template
+import 'package:fifty_utils/fifty_utils.dart';
+
+// ViewModel with reactive state
+class UserViewModel extends GetxController {
+  final usersState = ApiResponse<List<User>>.idle().obs;
+
+  void loadUsers() {
+    apiFetch(() => userService.getUsers())
+      .listen((state) => usersState.value = state);
+  }
+}
+
+// View with Obx reactive binding
+class UserListView extends GetView<UserViewModel> {
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final state = controller.usersState.value;
+      if (state.isLoading) return CircularProgressIndicator();
+      if (state.hasData) return UserList(users: state.data!);
+      return ErrorWidget(state.error);
+    });
+  }
+}
+```
+
+---
+
+## Architecture
+
+```
+fifty_flutter_kit/
+  packages/
+    fifty_tokens/               # Design foundation (colors, typography, spacing, motion)
+    fifty_theme/                # Theme layer (depends on tokens)
+    fifty_ui/                   # Components (depends on theme)
+    fifty_forms/                # Form building system
+    fifty_utils/                # Pure utilities (no dependencies)
+    fifty_cache/                # TTL-based caching layer
+    fifty_storage/              # Secure storage abstraction
+    fifty_connectivity/         # Network monitoring
+    fifty_audio_engine/         # Modular audio system
+    fifty_speech_engine/        # TTS and STT services
+    fifty_narrative_engine/     # Narrative processing
+    fifty_world_engine/         # Flame-based grid world rendering
+    fifty_printing_engine/      # ESC/POS printing
+    fifty_skill_tree/           # Skill tree widget
+    fifty_achievement_engine/   # Achievement system
+  apps/
+    fifty_demo/                 # Demo application
+  templates/
+    mvvm_actions/               # Full app template (fork, don't import)
+```
+
+### Dependency Graph
+
+```
+fifty_tokens (foundation)
+     |
+fifty_theme
+     |
+fifty_ui
+     |
+[fifty_forms, fifty_skill_tree, fifty_achievement_engine] <-- consume FDL
+     |
+fifty_utils (foundation)
+     |
+[mvvm_actions template] <-- fifty_storage, fifty_cache, fifty_connectivity
+
+fifty_printing_engine (standalone)
+```
+
+---
+
+## Apps and Templates
+
+### Demo App
+
+| App | Description |
+|-----|-------------|
+| [fifty_demo](apps/fifty_demo/) | Demo app showcasing all packages |
+
+### Templates
+
+Project scaffolds for rapid development. Clone and customize.
+
+| Template | Description | Pattern |
+|----------|-------------|---------|
+| [mvvm_actions](templates/mvvm_actions/) | Full-featured app scaffold | MVVM + Actions |
+
+Templates depend on the packages above but are meant to be forked, not imported.
+
+---
+
 ## Package Details
 
-### fifty_utils
+### fifty_tokens
 
-Pure Dart/Flutter utilities with zero external dependencies (except `intl`).
+Design tokens -- the foundation layer. Pure Dart constants with no widgets or state.
 
-- **DateTime Extensions** - `isToday`, `isYesterday`, `format()`, `timeAgo()`
-- **Duration Extensions** - `format()`, `formatCompact()`
-- **Color Extensions** - `HexColor.fromHex()`, `toHex()`
-- **ResponsiveUtils** - Device detection, breakpoints, responsive values
-- **ApiResponse** - Immutable async state container
-- **apiFetch()** - Stream-based API fetching
+- **Color Tokens** - Core palette, semantic aliases, mode-specific helpers
+- **Typography Tokens** - Unified font family with complete type scale
+- **Spacing Tokens** - 4px base grid with named scale (xs-massive)
+- **Motion Tokens** - Duration constants and easing curves
+- **Shadow, Gradient, Radii, Breakpoint Tokens**
+
+### fifty_theme
+
+Converts design tokens into Material ThemeData.
+
+- **Light and Dark Themes** - Generated from fifty_tokens
+- **Material 3 Integration** - Full ThemeData generation
+
+### fifty_ui
+
+FDL v2 styled Flutter components.
+
+- **Buttons, Cards, Inputs** - Complete component library
+- **Consistent Styling** - Driven by fifty_theme
 
 ### fifty_forms
 
@@ -283,21 +324,23 @@ Production-ready form building system with FDL v2 compliance.
 - **FiftyFormArray** - Dynamic form fields (add/remove)
 - **DraftManager** - Auto-save and restore form drafts
 
-### mvvm_actions (Template)
+### fifty_utils
 
-Full-featured app template using MVVM + Actions architecture. **Fork this, don't import.**
+Pure Dart/Flutter utilities with zero external dependencies (except `intl`).
 
-- **GetX Integration** - Reactive state management
-- **Pre-built Modules** - Auth, connectivity, locale, theme
-- **Actions Pattern** - Standardized UX handling
-- **Infrastructure** - HTTP client, caching, storage
+- **DateTime Extensions** - `isToday`, `isYesterday`, `format()`, `timeAgo()`
+- **Duration Extensions** - `format()`, `formatCompact()`
+- **Color Extensions** - `HexColor.fromHex()`, `toHex()`
+- **ResponsiveUtils** - Device detection, breakpoints, responsive values
+- **ApiResponse** - Immutable async state container
+- **apiFetch()** - Stream-based API fetching
 
 ### fifty_cache / fifty_storage
 
 Data persistence layers.
 
-- **Multi-tier caching** - Memory + disk with TTL
-- **Storage abstraction** - Platform-agnostic key-value storage
+- **TTL-based caching** - HTTP response caching with pluggable stores and policies
+- **Secure storage** - Token storage and preferences management
 
 ### fifty_connectivity
 
@@ -307,6 +350,37 @@ Network connectivity monitoring with intelligent reachability probing.
 - **ConnectionViewModel** - Reactive connection state management
 - **ConnectionOverlay** - Automatic offline/online UI overlay
 - **ConnectivityCheckerSplash** - Splash screen with connectivity check
+
+### fifty_audio_engine
+
+Modular and reactive audio system for Flutter games and applications.
+
+- **Three-Channel Architecture** - BGM (crossfade, playlist, loop), SFX (low-latency pooling), Voice (BGM ducking)
+- **Persistent State** - Volume and state persisted via GetStorage
+- **Motion Integration** - Fade presets aligned with motion tokens
+
+### fifty_speech_engine
+
+TTS and STT for Flutter games and applications.
+
+- **Text-to-Speech** - Multi-language speech synthesis
+- **Speech-to-Text** - Voice input recognition
+
+### fifty_narrative_engine
+
+Narrative processing engine for games and interactive applications.
+
+- **NarrativeEngine** - Core processor for in-game sentence execution
+- **NarrativeInterpreter** - Instruction parsing and handler delegation
+- **NarrativeQueue** - Optimized queue with order-based sorting
+
+### fifty_world_engine
+
+Flame-based interactive grid world rendering for Flutter games.
+
+- **Tile Rendering** - Grid-based map with sprites for dungeon crawlers and strategy games
+- **Camera Controls** - Smooth pan and pinch-to-zoom for map exploration
+- **Entity Management** - Spawn, update, remove lifecycle for characters, rooms, monsters
 
 ### fifty_printing_engine
 
@@ -319,7 +393,7 @@ Multi-printer ESC/POS printing engine supporting Bluetooth and WiFi printers.
 
 ### fifty_skill_tree
 
-Skill tree visualization and progression system for gamification.
+Interactive skill tree widget for Flutter games.
 
 - **SkillTreeController** - Manage skill nodes and progression
 - **SkillTreeView** - Visual tree rendering with connections
@@ -327,11 +401,22 @@ Skill tree visualization and progression system for gamification.
 
 ### fifty_achievement_engine
 
-Achievement tracking and unlocking system for gamification.
+Achievement system for Flutter games with condition-based unlocks.
 
 - **AchievementController** - Track and unlock achievements
 - **Progress Tracking** - Incremental achievement progress
 - **Event System** - Achievement unlock notifications
+
+### mvvm_actions (Template)
+
+Full-featured app template using MVVM + Actions architecture. **Fork this, don't import.**
+
+- **GetX Integration** - Reactive state management
+- **Pre-built Modules** - Auth, connectivity, locale, theme
+- **Actions Pattern** - Standardized UX handling
+- **Infrastructure** - HTTP client, caching, storage
+
+---
 
 ## Development
 
@@ -354,9 +439,7 @@ flutter test --coverage
 genhtml coverage/lcov.info -o coverage/html
 ```
 
-## License
-
-MIT License - see individual packages for details.
+---
 
 ## Contributing
 
@@ -365,6 +448,12 @@ MIT License - see individual packages for details.
 3. Make changes following the coding guidelines
 4. Run tests
 5. Submit a pull request
+
+---
+
+## License
+
+MIT License -- see individual packages for details.
 
 ---
 
