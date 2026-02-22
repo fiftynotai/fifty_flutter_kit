@@ -156,21 +156,21 @@ packages:
       path: "../../packages/fifty_theme"
       relative: true
     source: path
-    version: "0.1.0"
+    version: "1.0.0"
   fifty_tokens:
     dependency: "direct main"
     description:
       path: "../../packages/fifty_tokens"
       relative: true
     source: path
-    version: "0.2.0"
+    version: "1.0.0"
   fifty_ui:
     dependency: "direct main"
     description:
       path: "../../packages/fifty_ui"
       relative: true
     source: path
-    version: "0.5.0"
+    version: "0.6.0"
   fifty_utils:
     dependency: "direct main"
     description:

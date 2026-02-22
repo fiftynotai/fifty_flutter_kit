@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Done
 **Created:** 2026-02-22
-**Completed:**
+**Completed:** 2026-02-22
 
 ---
 
@@ -108,7 +108,7 @@ Each upgrade needs testing to ensure no regressions.
 
 ### Pending
 
-- [ ] Publish to pub.dev (switch path deps → hosted, publish, revert)
+- [x] Publish to pub.dev (switch path deps → hosted, publish, revert)
 
 ### In Progress
 _(None)_
