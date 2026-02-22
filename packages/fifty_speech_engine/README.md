@@ -4,7 +4,7 @@ A unified speech interface for Flutter games and applications with TTS and STT c
 
 | TTS Panel | STT Panel |
 |:---------:|:---------:|
-| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_speech_engine/screenshots/tts_panel_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_speech_engine/screenshots/stt_panel_light.png" width="200"> |
+| <img src="screenshots/tts_panel_light.png" width="200"> | <img src="screenshots/stt_panel_light.png" width="200"> |
 
 ---
 

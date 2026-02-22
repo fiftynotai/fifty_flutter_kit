@@ -4,7 +4,7 @@ Network connectivity monitoring with intelligent reachability probing (DNS/HTTP)
 
 | Status | Handler | Overlay | Splash |
 |:---:|:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_connectivity/example/screenshots/home.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_connectivity/example/screenshots/handler.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_connectivity/example/screenshots/overlay.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_connectivity/example/screenshots/splash.png" width="200"> |
+| <img src="example/screenshots/home.png" width="200"> | <img src="example/screenshots/handler.png" width="200"> | <img src="example/screenshots/overlay.png" width="200"> | <img src="example/screenshots/splash.png" width="200"> |
 
 ---
 

@@ -4,7 +4,7 @@ Achievement system for Flutter games with condition-based unlocks, progress trac
 
 | Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
 |:----:|:------------------:|:-------------------:|:----------------:|
-| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_achievement_engine/screenshots/home_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_achievement_engine/screenshots/basic_achievements_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_achievement_engine/screenshots/achievement_unlocked_light.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_achievement_engine/screenshots/rpg_achievements_light.png" width="200"> |
+| <img src="screenshots/home_light.png" width="200"> | <img src="screenshots/basic_achievements_light.png" width="200"> | <img src="screenshots/achievement_unlocked_light.png" width="200"> | <img src="screenshots/rpg_achievements_light.png" width="200"> |
 
 ---
 

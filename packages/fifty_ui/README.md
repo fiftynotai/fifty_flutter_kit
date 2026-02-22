@@ -4,7 +4,7 @@ FDL-styled Flutter component library implementing the Fifty Design Language v2. 
 
 | Gallery | Buttons | Inputs | Display |
 |:-------:|:-------:|:------:|:-------:|
-| <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_ui/screenshots/gallery_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_ui/screenshots/buttons_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_ui/screenshots/inputs_dark.png" width="200"> | <img src="https://raw.githubusercontent.com/fiftynotai/fifty_flutter_kit/main/packages/fifty_ui/screenshots/display_dark.png" width="200"> |
+| <img src="screenshots/gallery_dark.png" width="200"> | <img src="screenshots/buttons_dark.png" width="200"> | <img src="screenshots/inputs_dark.png" width="200"> | <img src="screenshots/display_dark.png" width="200"> |
 
 ---
 
