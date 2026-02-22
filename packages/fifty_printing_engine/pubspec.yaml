@@ -1,6 +1,6 @@
 name: fifty_printing_engine
 description: "Fifty Flutter Kit printing engine - multi-printer ESC/POS printing with Bluetooth and WiFi support"
-version: 1.0.1
+version: 1.0.2
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_printing_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues

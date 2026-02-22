@@ -1,6 +1,6 @@
 name: fifty_world_engine
 description: "Fifty Flutter Kit world engine - Flame-based interactive grid world rendering for Flutter games"
-version: 0.1.1
+version: 0.1.2
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_world_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues

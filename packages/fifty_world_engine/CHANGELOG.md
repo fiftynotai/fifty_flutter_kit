@@ -5,18 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 3.0.0
+## [0.1.2] - 2026-02-22
 
-* **BREAKING**: Renamed package from `fifty_map_engine` to `fifty_world_engine`
-* All classes renamed: `FiftyMapController` → `FiftyWorldController`, `FiftyMapWidget` → `FiftyWorldWidget`, `FiftyMapEntity` → `FiftyWorldEntity`, `MapConfig` → `WorldConfig`, `MapBuilder` → `WorldBuilder`, `MapLoaderService` → `WorldLoaderService`
-* Platform plugins renamed accordingly
+### Fixed
+
+- Synced CHANGELOG.md with published version history (pub.dev compliance)
+
+## [0.1.1] - 2026-02-22
+
+### Added
+
+- Pubspec `screenshots` field for pub.dev sidebar gallery
 
 ## [0.1.0] - 2025-12-30
 
 ### Added
 
-- Initial release of fifty_map_engine (now fifty_world_engine)
-- Rebranded from erune_map_engine v0.3.1
+- Initial release as fifty_world_engine (renamed from fifty_map_engine / erune_map_engine v0.3.1)
 
 ### Core Components
 
@@ -70,6 +75,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pinch-to-zoom anchored at midpoint (0.3x - 3.0x)
 - Programmatic zoom in/out/reset
 - Center on all entities or specific entity
+
+### Changed
+
+- **BREAKING**: Renamed package from `fifty_map_engine` to `fifty_world_engine`
+- All classes renamed: `FiftyMapController` -> `FiftyWorldController`, `FiftyMapWidget` -> `FiftyWorldWidget`, `FiftyMapEntity` -> `FiftyWorldEntity`, `MapConfig` -> `WorldConfig`, `MapBuilder` -> `WorldBuilder`, `MapLoaderService` -> `WorldLoaderService`
+- Platform plugins renamed accordingly
 
 ### Platform Support
 

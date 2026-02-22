@@ -5,9 +5,9 @@
 **Effort:** S-Small (<1d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** Ready
+**Status:** Done
 **Created:** 2026-02-22
-**Completed:**
+**Completed:** 2026-02-22
 
 ---
 
@@ -99,31 +99,28 @@ For packages at 0.x.0 (utils, cache, storage), the CHANGELOG has `1.0.0` but the
 
 ## Tasks
 
-### Pending
-
-**Task 1 — Rewrite/update CHANGELOGs (14 packages):**
-- [ ] Read each CHANGELOG.md to understand current content
-- [ ] Rewrite with accurate version entries matching pubspec version
-- [ ] Include brief descriptions of what shipped in each version
-
-**Task 2 — Re-publish to pub.dev (14 packages):**
-- [ ] Convert path deps to hosted
-- [ ] Publish all 14 packages
-- [ ] Revert path deps for local dev
-
-### In Progress
-_(None)_
-
 ### Completed
-_(None)_
+
+**Task 1 — Update CHANGELOGs (10 packages):**
+- [x] Read each CHANGELOG.md — found 10 mismatched (4 already correct: utils, cache, storage, narrative_engine)
+- [x] Added missing version entries for BR-107 patch bumps
+- [x] Added new version entries for CHANGELOG sync patch bump
+- [x] Fixed fifty_world_engine broken 3.0.0 entry (merged into 0.1.0)
+- [x] Fixed fifty_achievement_engine bracket formatting
+
+**Task 2 — Re-publish to pub.dev (10 packages):**
+- [x] Patch bumped all 10 packages (+1 patch)
+- [x] Converted path deps to hosted
+- [x] Published in 3 waves (leaf → mid → dependent)
+- [x] Reverted path deps for local dev
 
 ---
 
 ## Acceptance Criteria
 
-1. [ ] All 15 packages: CHANGELOG.md top entry matches pubspec version
-2. [ ] pub.dev awards 5/5 for "Provide a valid CHANGELOG.md" on all packages
-3. [ ] CHANGELOG entries have accurate, meaningful descriptions
+1. [x] All 15 packages: CHANGELOG.md top entry matches pubspec version
+2. [ ] pub.dev awards 5/5 for "Provide a valid CHANGELOG.md" on all packages (pending re-analysis)
+3. [x] CHANGELOG entries have accurate, meaningful descriptions
 
 ---
 

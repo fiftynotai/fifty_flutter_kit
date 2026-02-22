@@ -1,6 +1,6 @@
 name: fifty_audio_engine
 description: "Fifty Flutter Kit audio engine - modular and reactive audio system for Flutter"
-version: 0.7.1
+version: 0.7.2
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_audio_engine
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
