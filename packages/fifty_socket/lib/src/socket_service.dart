@@ -282,6 +282,7 @@ abstract class SocketService {
     _log(LogLevel.info, 'Disconnecting...');
     _updateState(SocketConnectionState.disconnecting);
     _stopReconnect();
+    _reconnectAttempts = 0; // Reset counter for fresh retry budget on next connect
     _stopPingWatchdog(); // Stop heartbeat monitoring
 
     // Leave channels if auto-reconnect disabled
