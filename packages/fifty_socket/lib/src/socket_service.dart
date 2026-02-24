@@ -364,6 +364,7 @@ abstract class SocketService {
   // ────────────────────────────────────────────────
   void forceReconnect() {
     _log(LogLevel.info, 'Force reconnect requested (manual override)');
+    _stopReconnect();        // Cancel pending reconnect and reset _isReconnecting
     _reconnectAttempts = 0;  // Reset counter - bypass max attempts check
     reconnect();
   }
