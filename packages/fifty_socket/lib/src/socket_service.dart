@@ -112,8 +112,19 @@ abstract class SocketService {
   /// Stream of errors (separate from state for granular handling)
   Stream<SocketError> get errorStream => _errorController.stream;
 
-  /// Stream of raw WebSocket messages (subclasses filter and route)
-  Stream<Message> get messageStream => _socket!.messageStream;
+  /// Stream of raw WebSocket messages (subclasses filter and route).
+  ///
+  /// **Throws:**
+  /// - `StateError` if accessed before `connect()` is called
+  Stream<Message> get messageStream {
+    if (_socket == null) {
+      throw StateError(
+        'Cannot access messageStream before connect() is called. '
+        'Call connect() first, then listen to messageStream.',
+      );
+    }
+    return _socket!.messageStream;
+  }
 
   /// **Public Getters**
   // ────────────────────────────────────────────────

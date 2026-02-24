@@ -10,6 +10,16 @@ topics:
   - phoenix
   - realtime
 
+screenshots:
+  - description: 'Connected state showing active WebSocket connection'
+    path: screenshots/connected.png
+  - description: 'Disconnected state with reconnection options'
+    path: screenshots/disconnected.png
+  - description: 'Channel joined state with topic subscription'
+    path: screenshots/channel_joined.png
+  - description: 'Event log showing WebSocket message history'
+    path: screenshots/event_log.png
+
 environment:
   sdk: ^3.6.0
 

@@ -1,5 +1,8 @@
 # Fifty Socket
 
+[![pub package](https://img.shields.io/pub/v/fifty_socket.svg)](https://pub.dev/packages/fifty_socket)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Phoenix WebSocket infrastructure with auto-reconnect, heartbeat monitoring, and channel management. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Connected | Disconnected | Channel Joined | Event Log |

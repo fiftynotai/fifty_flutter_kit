@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:fifty_socket/fifty_socket.dart';
 
 /// Example: Extend SocketService for a notification system.
