@@ -31,6 +31,7 @@ All packages are published on [pub.dev](https://pub.dev/publishers/fifty.dev/pac
 | [fifty_printing_engine](https://pub.dev/packages/fifty_printing_engine) | [![pub](https://img.shields.io/badge/pub-v1.0.2-blue)](https://pub.dev/packages/fifty_printing_engine) | Multi-printer ESC/POS printing with Bluetooth and WiFi support |
 | [fifty_skill_tree](https://pub.dev/packages/fifty_skill_tree) | [![pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/fifty_skill_tree) | Interactive skill tree widget for Flutter games |
 | [fifty_achievement_engine](https://pub.dev/packages/fifty_achievement_engine) | [![pub](https://img.shields.io/badge/pub-v0.1.3-blue)](https://pub.dev/packages/fifty_achievement_engine) | Achievement system for Flutter games with condition-based unlocks |
+| [fifty_socket](https://pub.dev/packages/fifty_socket) | [![pub](https://img.shields.io/badge/pub-v0.1.0-blue)](https://pub.dev/packages/fifty_socket) | Phoenix WebSocket infrastructure with auto-reconnect and channel management |
 
 > Source code for each package is in [`packages/`](packages/).
 
@@ -243,6 +244,7 @@ fifty_flutter_kit/
     fifty_printing_engine/      # ESC/POS printing
     fifty_skill_tree/           # Skill tree widget
     fifty_achievement_engine/   # Achievement system
+    fifty_socket/               # Phoenix WebSocket client
   apps/
     fifty_demo/                 # Demo application
   templates/
@@ -265,6 +267,7 @@ fifty_utils (foundation)
 [mvvm_actions template] <-- fifty_storage, fifty_cache, fifty_connectivity
 
 fifty_printing_engine (standalone)
+fifty_socket (standalone, depends on phoenix_socket)
 ```
 
 ---
@@ -408,6 +411,16 @@ Achievement system for Flutter games with condition-based unlocks.
 - **AchievementController** - Track and unlock achievements
 - **Progress Tracking** - Incremental achievement progress
 - **Event System** - Achievement unlock notifications
+
+### fifty_socket
+
+Phoenix WebSocket infrastructure for Flutter with auto-reconnect and channel management.
+
+- **SocketService** - Abstract base class with one override (`getWebSocketUrl()`)
+- **Auto-Reconnect** - Configurable exponential backoff with jitter
+- **Heartbeat Monitoring** - Phoenix heartbeat with watchdog timeout
+- **Channel Management** - Join/leave topics with subscription guards
+- **Reactive Streams** - State, error, and message streams
 
 ### mvvm_actions (Template)
 
