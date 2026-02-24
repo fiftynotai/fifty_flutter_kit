@@ -1,0 +1,15 @@
+[Unit]
+Description=Fifty Socket Test Server (Phoenix Protocol)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/fifty-socket-test
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+Environment=PORT=4000
+
+[Install]
+WantedBy=multi-user.target

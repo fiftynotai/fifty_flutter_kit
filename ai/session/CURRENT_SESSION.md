@@ -2,28 +2,38 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-24
-**Active Briefs:** None (BR-113 complete)
-**Last Commit:** pending — feat(fifty-socket): add Flutter example app with FDL UI
-**Instance ID:** 408b8f07-b0f1-4653-8d96-e53180369911
+**Active Briefs:** BR-114
+**Instance ID:** 4502d517-db9b-412c-9414-ed5c56990076
+**Last Commit:** `b139860` — style(fifty-socket): center connection status card content
 
 ---
 
 ## Completed Briefs (This Session - 2026-02-24)
 
-### BR-112 - Create fifty_socket Package
+### BR-112 - Create fifty_socket Package (previous session)
 - **Status:** Done (commit `dc87f39`)
-- **Summary:** Extracted production-proven SocketService from opaala_admin_app_v3 into new standalone `fifty_socket` package. 16th ecosystem package. Abstract base class with auto-reconnect (exponential backoff), heartbeat watchdog, Phoenix channel management, subscription guards, typed error/state streams. Full pipeline: ARCHITECT → FORGER → SENTINEL (27/27 tests) → WARDEN (APPROVE after fixing 2 AppStorageService doc refs).
-
-### Stale Brief Cleanup
-- BR-074: In Progress → Ready (0/10 sprints done)
-- BR-076: In Progress → Ready (0/8 phases done)
-- TD-004: In Progress → Done (all tasks completed)
-- TD-006: In Progress → Done (all tasks completed)
-- TD-007: In Progress → Done (all tasks completed)
+- **Summary:** Extracted production-proven SocketService from opaala_admin_app_v3 into new standalone `fifty_socket` package. 16th ecosystem package.
 
 ### BR-113 - Build fifty_socket Example App
-- **Status:** Done
-- **Summary:** Flutter example app at `packages/fifty_socket/example/`. Single-screen FDL UI demonstrating connection lifecycle, channel management, reconnect controls, config display, error stream, and event log. 7 files created. Full pipeline: ARCHITECT → FORGER → SENTINEL (PASS, 0 analysis issues) → WARDEN (APPROVE).
+- **Status:** Done (commit `2c06325`)
+- **Summary:** Flutter example app at `packages/fifty_socket/example/`. Single-screen FDL UI demonstrating connection lifecycle, channel management, reconnect controls, config display, error stream, and event log. 7 files created. Full pipeline: ARCHITECT -> FORGER -> SENTINEL (PASS) -> WARDEN (APPROVE). Smoke tested on iPhone 15 Pro simulator.
+
+### Bug Fix - Reconnect counter reset
+- **Commit:** `39a8ca3`
+- **Summary:** Found during smoke testing — `disconnect()` was not resetting `_reconnectAttempts`, causing subsequent `connect()` calls to start from exhausted counter. One-line fix. 27/27 tests pass.
+
+### UI Fix - Center connection status card
+- **Commit:** `b139860`
+- **Summary:** Centered icon, text, and badge in the ConnectionStatusCard using `SizedBox(width: double.infinity)`.
+
+### BR-114 - Deploy Phoenix WebSocket Test Server
+- **Status:** Ready (registered, not started)
+- **Summary:** Brief registered for deploying a minimal Phoenix WebSocket server on VPS for live testing of fifty_socket.
+
+### Stale Brief Cleanup (previous session)
+- BR-074: In Progress -> Ready
+- BR-076: In Progress -> Ready
+- TD-004/TD-006/TD-007: In Progress -> Done
 
 ---
 
@@ -52,14 +62,14 @@
 
 ## Next Steps When Resuming
 
-1. **Publish:** `fifty_socket` to pub.dev when ready
-2. **Root README:** Add fifty_socket to the packages table (16th package)
-3. **Review backlog:** Check P0/P1 briefs for next priority work
+1. **BR-114:** Deploy Phoenix WebSocket test server on VPS for live fifty_socket testing
+2. **Publish:** `fifty_socket` to pub.dev after live testing passes
+3. **Root README:** Add fifty_socket to the packages table (16th package)
 
 ---
 
 ## Resume Command
 
 ```
-Session 2026-02-24. BR-112 complete (fifty_socket package, commit dc87f39). 16 packages now (15 published + fifty_socket pending). BR-113 in progress (example app deferred). 5 stale briefs cleaned. Last commit dc87f39.
+Session 2026-02-24. BR-113 complete (example app, commit 2c06325). Bug fix: reconnect counter reset (39a8ca3). UI fix: centered status card (b139860). BR-114 registered (Phoenix test server). 16 packages (15 published + fifty_socket pending). Last commit b139860.
 ```

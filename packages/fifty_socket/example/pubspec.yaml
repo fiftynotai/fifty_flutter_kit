@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   fifty_socket:
     path: ../
+  phoenix_socket: ^0.8.0
   fifty_theme:
     path: ../../fifty_theme
   fifty_tokens:

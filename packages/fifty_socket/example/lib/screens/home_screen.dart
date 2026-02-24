@@ -10,13 +10,15 @@ import '../widgets/event_log_tile.dart';
 
 /// Primary screen for the Fifty Socket example app.
 ///
-/// Organised into six sections:
+/// Organised into eight sections:
 /// 1. Connection Status - hero card with state badge
 /// 2. Connection Actions - connect / disconnect / force reconnect
-/// 3. Configuration - reconnect and heartbeat config slates
-/// 4. Controls - auto-reconnect toggle and log level selector
-/// 5. Error Stream - list of recent errors
-/// 6. Event Log - scrollable timestamped log
+/// 3. Channel Management - join/leave channels, list of joined channels
+/// 4. Messaging - send messages, view received messages
+/// 5. Configuration - reconnect and heartbeat config slates
+/// 6. Controls - auto-reconnect toggle and log level selector
+/// 7. Error Stream - list of recent errors
+/// 8. Event Log - scrollable timestamped log
 class HomeScreen extends StatelessWidget {
   /// Creates the home screen.
   const HomeScreen({super.key});
@@ -48,6 +50,10 @@ class HomeScreen extends StatelessWidget {
               _ConnectionStatusSection(),
               SizedBox(height: FiftySpacing.xxl),
               _ConnectionActionsSection(),
+              SizedBox(height: FiftySpacing.xxl),
+              _ChannelManagementSection(),
+              SizedBox(height: FiftySpacing.xxl),
+              _MessagingSection(),
               SizedBox(height: FiftySpacing.xxl),
               _ConfigurationSection(),
               SizedBox(height: FiftySpacing.xxl),
@@ -145,7 +151,288 @@ class _ConnectionActionsSection extends StatelessWidget {
 }
 
 // =============================================================================
-// Section 3: Configuration
+// Section 3: Channel Management
+// =============================================================================
+
+class _ChannelManagementSection extends StatelessWidget {
+  const _ChannelManagementSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<SocketController>();
+    final topicController = TextEditingController(text: 'test:lobby');
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const FiftySectionHeader(title: 'Channel Management'),
+        FiftyTextField(
+          controller: topicController,
+          label: 'CHANNEL TOPIC',
+          hint: 'e.g. test:lobby, echo:ping',
+          terminalStyle: true,
+          prefixStyle: FiftyPrefixStyle.chevron,
+          onChanged: (value) => controller.channelTopic.value = value,
+        ),
+        const SizedBox(height: FiftySpacing.sm),
+        Obx(() {
+          final connected = controller.isConnected.value;
+          return Wrap(
+            spacing: FiftySpacing.sm,
+            runSpacing: FiftySpacing.sm,
+            children: [
+              FiftyButton(
+                label: 'Join',
+                icon: Icons.login_rounded,
+                variant: FiftyButtonVariant.primary,
+                size: FiftyButtonSize.small,
+                onPressed: connected
+                    ? () => controller.joinChannel(
+                        topicController.text.isNotEmpty
+                            ? topicController.text
+                            : controller.channelTopic.value)
+                    : null,
+              ),
+              FiftyButton(
+                label: 'Leave',
+                icon: Icons.logout_rounded,
+                variant: FiftyButtonVariant.danger,
+                size: FiftyButtonSize.small,
+                onPressed: connected
+                    ? () => controller.leaveChannel(
+                        topicController.text.isNotEmpty
+                            ? topicController.text
+                            : controller.channelTopic.value)
+                    : null,
+              ),
+            ],
+          );
+        }),
+        const SizedBox(height: FiftySpacing.md),
+        Obx(() {
+          if (controller.joinedChannels.isEmpty) {
+            return Text(
+              'No channels joined',
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            );
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: controller.joinedChannels
+                .map(
+                  (topic) => Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: FiftySpacing.xs),
+                    child: FiftyCard(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: FiftySpacing.md,
+                        vertical: FiftySpacing.sm,
+                      ),
+                      scanlineOnHover: false,
+                      hoverScale: 1.0,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.tag_rounded,
+                            size: 16,
+                            color: colorScheme.primary,
+                          ),
+                          const SizedBox(width: FiftySpacing.sm),
+                          Expanded(
+                            child: Text(
+                              topic,
+                              style: TextStyle(
+                                fontFamily: FiftyTypography.fontFamily,
+                                fontSize: FiftyTypography.bodySmall,
+                                fontWeight: FiftyTypography.medium,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => controller.leaveChannel(topic),
+                            child: Icon(
+                              Icons.close_rounded,
+                              size: 16,
+                              color: colorScheme.error,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          );
+        }),
+      ],
+    );
+  }
+}
+
+// =============================================================================
+// Section 4: Messaging
+// =============================================================================
+
+class _MessagingSection extends StatelessWidget {
+  const _MessagingSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<SocketController>();
+    final messageController = TextEditingController();
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        FiftySectionHeader(
+          title: 'Messaging',
+          trailing: Obx(
+            () => controller.messages.isNotEmpty
+                ? FiftyButton(
+                    label: 'Clear',
+                    variant: FiftyButtonVariant.ghost,
+                    size: FiftyButtonSize.small,
+                    onPressed: controller.clearMessages,
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ),
+        FiftyTextField(
+          controller: messageController,
+          label: 'MESSAGE',
+          hint: 'Type a message...',
+          terminalStyle: true,
+          prefixStyle: FiftyPrefixStyle.chevron,
+          onChanged: (value) => controller.messageInput.value = value,
+          onSubmitted: (value) {
+            _sendMessage(controller, messageController);
+          },
+        ),
+        const SizedBox(height: FiftySpacing.sm),
+        Obx(() {
+          final hasChannels = controller.joinedChannels.isNotEmpty;
+          final hasMessage = controller.messageInput.value.isNotEmpty;
+          return FiftyButton(
+            label: 'Send',
+            icon: Icons.send_rounded,
+            variant: FiftyButtonVariant.primary,
+            size: FiftyButtonSize.small,
+            expanded: true,
+            onPressed: hasChannels && hasMessage
+                ? () => _sendMessage(controller, messageController)
+                : null,
+          );
+        }),
+        const SizedBox(height: FiftySpacing.md),
+        Obx(() {
+          if (controller.messages.isEmpty) {
+            return Text(
+              'No messages yet',
+              style: TextStyle(
+                fontFamily: FiftyTypography.fontFamily,
+                fontSize: FiftyTypography.bodySmall,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            );
+          }
+
+          return FiftyCard(
+            padding: const EdgeInsets.all(FiftySpacing.md),
+            scanlineOnHover: false,
+            hoverScale: 1.0,
+            child: SizedBox(
+              height: 200,
+              child: ListView.builder(
+                itemCount: controller.messages.length,
+                itemBuilder: (context, index) {
+                  final msg = controller.messages[index];
+                  final time = msg.timestamp;
+                  final timeStr =
+                      '${_pad(time.hour)}:${_pad(time.minute)}:${_pad(time.second)}';
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: FiftySpacing.xs / 2),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '[$timeStr] ',
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
+                              fontWeight: FiftyTypography.medium,
+                              color: colorScheme.primary,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${msg.topic} ',
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
+                              fontWeight: FiftyTypography.bold,
+                              color: FiftyColors.hunterGreen,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${msg.event}: ',
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
+                              fontWeight: FiftyTypography.medium,
+                              color: colorScheme.tertiary,
+                            ),
+                          ),
+                          TextSpan(
+                            text: msg.payload.toString(),
+                            style: TextStyle(
+                              fontFamily: FiftyTypography.fontFamily,
+                              fontSize: FiftyTypography.bodySmall,
+                              fontWeight: FiftyTypography.regular,
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  /// Sends a message on the first joined channel and clears the input.
+  void _sendMessage(
+    SocketController controller,
+    TextEditingController textController,
+  ) {
+    final text = textController.text.trim();
+    if (text.isEmpty || controller.joinedChannels.isEmpty) return;
+
+    final topic = controller.joinedChannels.first;
+    controller.sendMessage(topic, 'new_msg', {'body': text});
+    textController.clear();
+    controller.messageInput.value = '';
+  }
+
+  /// Pads a single-digit number with a leading zero.
+  String _pad(int value) => value.toString().padLeft(2, '0');
+}
+
+// =============================================================================
+// Section 5: Configuration
 // =============================================================================
 
 class _ConfigurationSection extends StatelessWidget {
@@ -185,7 +472,7 @@ class _ConfigurationSection extends StatelessWidget {
 }
 
 // =============================================================================
-// Section 4: Controls
+// Section 6: Controls
 // =============================================================================
 
 class _ControlsSection extends StatelessWidget {
@@ -231,7 +518,7 @@ class _ControlsSection extends StatelessWidget {
 }
 
 // =============================================================================
-// Section 5: Error Stream
+// Section 7: Error Stream
 // =============================================================================
 
 class _ErrorStreamSection extends StatelessWidget {
@@ -338,7 +625,7 @@ class _ErrorStreamSection extends StatelessWidget {
 }
 
 // =============================================================================
-// Section 6: Event Log
+// Section 8: Event Log
 // =============================================================================
 
 class _EventLogSection extends StatelessWidget {

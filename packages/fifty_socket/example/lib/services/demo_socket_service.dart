@@ -5,8 +5,8 @@ import 'package:fifty_socket/fifty_socket.dart';
 /// Uses shorter retry intervals and debug logging to demonstrate
 /// the full socket lifecycle in a development environment.
 ///
-/// The WebSocket URL points to a local Phoenix server that will
-/// fail gracefully if not running, exercising the reconnect flow.
+/// The WebSocket URL points to the Fifty Socket Test Server running
+/// on the VPS, implementing the Phoenix V2 JSON wire protocol.
 class DemoSocketService extends SocketService {
   /// Creates a demo socket service with aggressive retry settings.
   DemoSocketService()
@@ -26,5 +26,5 @@ class DemoSocketService extends SocketService {
         );
 
   @override
-  String getWebSocketUrl() => 'ws://localhost:4000/socket';
+  String getWebSocketUrl() => 'ws://76.13.180.77:4000/socket';
 }
