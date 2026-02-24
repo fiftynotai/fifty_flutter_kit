@@ -1,5 +1,8 @@
 # Fifty Speech Engine
 
+[![pub package](https://img.shields.io/pub/v/fifty_speech_engine.svg)](https://pub.dev/packages/fifty_speech_engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A unified speech interface for Flutter games and applications with TTS and STT capabilities. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | TTS Panel | STT Panel |
@@ -22,19 +25,20 @@ A unified speech interface for Flutter games and applications with TTS and STT c
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_speech_engine: ^0.1.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_speech_engine:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_speech_engine
+    path: ../fifty_speech_engine
 ```
 
-**Dependencies:**
-- `speech_to_text: ^7.1.0`
-- `flutter_tts: ^4.2.3`
+**Dependencies:** `speech_to_text`, `flutter_tts`, `fifty_tokens`, `fifty_theme`, `fifty_ui`
 
 ---
 
@@ -127,8 +131,6 @@ SttManager get stt
 void dispose()
 ```
 
----
-
 ### TtsManager
 
 Text-to-Speech handler.
@@ -163,8 +165,6 @@ await tts.initialize(language: 'fr-FR');  // French
 await tts.initialize(language: 'de-DE');  // German
 await tts.initialize(language: 'ja-JP');  // Japanese
 ```
-
----
 
 ### SttManager
 
@@ -202,8 +202,6 @@ void Function(String error)? onError
 **Listen Modes:**
 - `listenContinuously: true` - Dictation mode for longer input
 - `listenContinuously: false` - Confirmation mode for commands
-
----
 
 ### SpeechResultModel
 
@@ -310,6 +308,7 @@ The [example directory](example/) contains a complete demo app with MVVM + Actio
 | iOS | Yes | Yes | Requires microphone usage description |
 | macOS | Yes | Yes | Requires audio-input entitlement |
 | Linux | Yes | Limited | STT requires libspeechd |
+| Windows | No | No | Not supported |
 | Web | Yes | Yes | Browser-dependent |
 
 ### Platform Configuration
@@ -376,12 +375,13 @@ This package is part of Fifty Flutter Kit:
 - **Consistent naming** - FiftySpeechEngine follows Fifty Flutter Kit patterns
 - **Compatible packages** - Works with `fifty_audio_engine`, `fifty_ui`
 - **Unified locale handling** - Consistent with other Fifty packages
+- **FDL Foundation** - Uses `fifty_tokens`, `fifty_theme`, `fifty_ui` for widget styling
 
 ---
 
 ## Version
 
-**Current:** 0.1.0
+**Current:** 0.1.2
 
 ---
 

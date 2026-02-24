@@ -1,5 +1,8 @@
 # Fifty UI
 
+[![pub package](https://img.shields.io/pub/v/fifty_ui.svg)](https://pub.dev/packages/fifty_ui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 FDL-styled Flutter component library implementing the Fifty Design Language v2. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Gallery | Buttons | Inputs | Display |
@@ -25,35 +28,20 @@ FDL-styled Flutter component library implementing the Fifty Design Language v2. 
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_ui: ^0.6.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_ui:
     path: ../fifty_ui
-  fifty_theme:
-    path: ../fifty_theme
-  fifty_tokens:
-    path: ../fifty_tokens
 ```
 
-### Git Dependency
-
-```yaml
-dependencies:
-  fifty_ui:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_ui
-  fifty_theme:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_theme
-  fifty_tokens:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_tokens
-```
+**Dependencies:** `fifty_tokens`, `fifty_theme`
 
 ---
 
@@ -704,7 +692,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.6.0
+**Current:** 0.6.2
 
 ---
 

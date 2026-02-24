@@ -1,5 +1,8 @@
 # Fifty World Engine
 
+[![pub package](https://img.shields.io/pub/v/fifty_world_engine.svg)](https://pub.dev/packages/fifty_world_engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Tactical Overview | Unit Selection & Pathfinding |
@@ -24,19 +27,20 @@ Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flu
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_world_engine: ^0.1.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_world_engine:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_world_engine
+    path: ../fifty_world_engine
 ```
 
-**Dependencies:**
-- `flame: ^1.30.1`
-- `logging: ^1.3.0`
+**Dependencies:** `flame`, `logging`
 
 ---
 
@@ -127,6 +131,12 @@ FiftyWorldWidget (Flutter Widget)
 | `FiftyWorldEntity` | Data model for map entities |
 | `FiftyEntitySpawner` | Factory for creating entity components |
 
+### Coordinate System
+
+- **Grid coordinates**: Tile-based `(x, y)` where `(0, 0)` is bottom-left
+- **Pixel coordinates**: `gridPosition * FiftyWorldConfig.blockSize`
+- **Flame rendering**: Y-axis is flipped internally for correct display
+
 ---
 
 ## API Reference
@@ -172,8 +182,6 @@ controller.zoomOut();                 // Zoom out (1.2x factor)
 - Movement helpers only work on `FiftyMovableComponent` instances
 - All operations are synchronous proxies; spawning/animations occur on Flame tick
 
----
-
 ### FiftyWorldBuilder
 
 FlameGame implementation with pan/zoom gestures.
@@ -211,8 +219,6 @@ game.resetZoom();
 - Two finger pinch: Zooms anchored at pinch midpoint
 - Zoom range: 0.3x to 3.0x
 
----
-
 ### FiftyWorldWidget
 
 Flutter widget embedding the map game.
@@ -229,8 +235,6 @@ The widget:
 - Automatically binds the controller to a new FiftyWorldBuilder
 - Initializes with provided entities
 - Forwards tap events via callback
-
----
 
 ### FiftyWorldEntity
 
@@ -261,8 +265,6 @@ final json = entity.toJson();
 final restored = FiftyWorldEntity.fromJson(json);
 ```
 
----
-
 ### FiftyWorldEvent
 
 Event marker attached to entities.
@@ -280,8 +282,6 @@ final json = event.toJson();
 final restored = FiftyWorldEvent.fromJson(json);
 ```
 
----
-
 ### FiftyBlockSize
 
 Tile-based size wrapper for map entities.
@@ -298,8 +298,6 @@ final json = size.toJson();
 final restored = FiftyBlockSize.fromJson(json);
 ```
 
----
-
 ### Entity Types
 
 | Type | Class | Description |
@@ -311,8 +309,6 @@ final restored = FiftyBlockSize.fromJson(json);
 | `door` | FiftyStaticComponent | Static door |
 | `event` | FiftyEventComponent | Event marker |
 
----
-
 ### Event Types
 
 | Type | Description |
@@ -321,8 +317,6 @@ final restored = FiftyBlockSize.fromJson(json);
 | `FiftyEventType.npc` | NPC interaction |
 | `FiftyEventType.masterOfShadow` | Boss/story event |
 
----
-
 ### Event Alignments
 
 ```
@@ -330,8 +324,6 @@ FiftyEventAlignment.topLeft      FiftyEventAlignment.topCenter      FiftyEventAl
 FiftyEventAlignment.centerLeft   FiftyEventAlignment.center         FiftyEventAlignment.centerRight
 FiftyEventAlignment.bottomLeft   FiftyEventAlignment.bottomCenter   FiftyEventAlignment.bottomRight
 ```
-
----
 
 ### Component Classes
 
@@ -422,8 +414,6 @@ Text overlay component for entity labels.
 // Automatically spawned when entity.text is non-null
 ```
 
----
-
 ### Services
 
 #### FiftyAssetLoader
@@ -481,8 +471,6 @@ FiftyEntitySpawner.register(
 );
 ```
 
----
-
 ### Extensions
 
 #### FiftyWorldEntityExtension
@@ -508,6 +496,46 @@ entity.isMovable;      // true if character or monster
 ```
 
 ---
+
+## Configuration
+
+### FiftyWorldConfig
+
+Grid configuration controlling tile size for the world map.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `blockSize` | `double` | `64.0` | Size of each grid tile in pixels |
+
+```dart
+FiftyWorldConfig.blockSize  // 64.0
+```
+
+### FiftyRenderPriority
+
+Default render priorities controlling draw order (higher values render on top).
+
+| Priority | Value | Description |
+|----------|-------|-------------|
+| `background` | `0` | Background layer |
+| `furniture` | `10` | Static furniture props |
+| `door` | `20` | Door elements |
+| `monster` | `30` | Enemy entities |
+| `character` | `40` | Player and NPC entities |
+| `event` | `50` | Event marker overlays |
+| `uiOverlay` | `100` | Top-level UI elements |
+
+```dart
+FiftyRenderPriority.background   // 0
+FiftyRenderPriority.furniture    // 10
+FiftyRenderPriority.door         // 20
+FiftyRenderPriority.monster      // 30
+FiftyRenderPriority.character    // 40
+FiftyRenderPriority.event        // 50
+FiftyRenderPriority.uiOverlay    // 100
+```
+
+Override the default render order for any entity using the `zIndex` parameter on `FiftyWorldEntity`.
 
 ### Map JSON Format
 
@@ -547,42 +575,6 @@ entity.isMovable;      // true if character or monster
 
 ---
 
-### Configuration
-
-#### Grid Configuration
-
-The default block size is 64 pixels. Access via:
-
-```dart
-FiftyWorldConfig.blockSize  // 64.0
-```
-
-#### Render Priorities
-
-Default render priorities (higher = on top):
-
-```dart
-FiftyRenderPriority.background   // 0
-FiftyRenderPriority.furniture    // 10
-FiftyRenderPriority.door         // 20
-FiftyRenderPriority.monster      // 30
-FiftyRenderPriority.character    // 40
-FiftyRenderPriority.event        // 50
-FiftyRenderPriority.uiOverlay    // 100
-```
-
-Override with `zIndex` in FiftyWorldEntity.
-
----
-
-### Coordinate System
-
-- **Grid coordinates**: Tile-based `(x, y)` where `(0, 0)` is bottom-left
-- **Pixel coordinates**: `gridPosition * FiftyWorldConfig.blockSize`
-- **Flame rendering**: Y-axis is flipped internally for correct display
-
----
-
 ## Usage Patterns
 
 ### Loading Maps Dynamically
@@ -596,8 +588,6 @@ controller.clear();
 controller.addEntities(entities);
 controller.centerMap();
 ```
-
----
 
 ### Character Movement with Collision Checks
 
@@ -614,8 +604,6 @@ void moveCharacter(FiftyWorldEntity character, double x, double y) {
   }
 }
 ```
-
----
 
 ### Event Marker Interaction
 
@@ -635,8 +623,6 @@ FiftyWorldWidget(
 );
 ```
 
----
-
 ### Camera Animation Sequences
 
 ```dart
@@ -647,8 +633,6 @@ await controller.centerOnEntity(treasure, duration: Duration(seconds: 2));
 await Future.delayed(Duration(milliseconds: 500));
 await controller.centerOnEntity(exit, duration: Duration(seconds: 1));
 ```
-
----
 
 ### Custom Entity Types
 
@@ -684,8 +668,6 @@ final trap = FiftyWorldEntity(
   blockSize: FiftyBlockSize(1, 1),
 );
 ```
-
----
 
 ### Best Practices
 
@@ -725,7 +707,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.0
+**Current:** 0.1.2
 
 ---
 

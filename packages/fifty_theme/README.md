@@ -1,5 +1,8 @@
 # Fifty Theme
 
+[![pub package](https://img.shields.io/pub/v/fifty_theme.svg)](https://pub.dev/packages/fifty_theme)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Flutter theming layer that converts `fifty_tokens` design tokens into a complete Material 3 `ThemeData`. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
@@ -19,7 +22,12 @@ Flutter theming layer that converts `fifty_tokens` design tokens into a complete
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_theme: ^1.0.1
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
@@ -27,13 +35,7 @@ dependencies:
     path: ../fifty_theme
 ```
 
-Run:
-
-```bash
-flutter pub get
-```
-
-This package depends on `fifty_tokens`. Both must be present in your workspace.
+**Dependencies:** `fifty_tokens`, `google_fonts`
 
 ---
 
@@ -458,7 +460,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 1.0.0
+**Current:** 1.0.1
 
 ---
 

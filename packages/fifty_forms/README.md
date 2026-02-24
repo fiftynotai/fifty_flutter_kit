@@ -1,5 +1,8 @@
 # Fifty Forms
 
+[![pub package](https://img.shields.io/pub/v/fifty_forms.svg)](https://pub.dev/packages/fifty_forms)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Production-ready form building with validation, multi-step wizards, and draft persistence. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Login Form | Registration | Multi-Step |
@@ -23,7 +26,12 @@ Production-ready form building with validation, multi-step wizards, and draft pe
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_forms: ^0.1.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
@@ -31,13 +39,13 @@ dependencies:
     path: ../fifty_forms
 ```
 
+**Dependencies:** `fifty_tokens`, `fifty_theme`, `fifty_ui`, `fifty_storage`, `get_storage`
+
 ---
 
 ## Quick Start
 
 ```dart
-import 'package:fifty_forms/fifty_forms.dart';
-
 final controller = FiftyFormController(
   initialValues: {'email': '', 'password': ''},
   validators: {
@@ -77,28 +85,28 @@ Column(
 
 ```
 fifty_forms
-├── core/
-│   ├── FiftyFormController   # Central state manager
-│   └── FieldState            # Immutable per-field state
-├── validators/
-│   ├── Validator             # Sync validator base
-│   ├── AsyncValidator        # Async validator with debounce
-│   └── Built-ins             # Required, Email, MinLength, etc.
-├── fields/
-│   └── FiftyTextFormField    # fifty_ui field wrappers
-│   └── FiftyDropdownFormField
-│   └── FiftyCheckboxFormField (+ others)
-├── widgets/
-│   ├── FiftyForm             # Form container
-│   ├── FiftySubmitButton     # Submit with loading state
-│   ├── FiftyMultiStepForm    # Wizard container
-│   ├── FiftyFormArray        # Dynamic repeating fields
-│   └── FiftyValidationSummary
-├── models/
-│   ├── FormStep              # Step definition for wizards
-│   └── FormStatus            # Form lifecycle enum
-└── persistence/
-    └── DraftManager          # Auto-save via GetStorage
++-- core/
+|   +-- FiftyFormController   # Central state manager
+|   +-- FieldState            # Immutable per-field state
++-- validators/
+|   +-- Validator             # Sync validator base
+|   +-- AsyncValidator        # Async validator with debounce
+|   +-- Built-ins             # Required, Email, MinLength, etc.
++-- fields/
+|   +-- FiftyTextFormField    # fifty_ui field wrappers
+|   +-- FiftyDropdownFormField
+|   +-- FiftyCheckboxFormField (+ others)
++-- widgets/
+|   +-- FiftyForm             # Form container
+|   +-- FiftySubmitButton     # Submit with loading state
+|   +-- FiftyMultiStepForm    # Wizard container
+|   +-- FiftyFormArray        # Dynamic repeating fields
+|   +-- FiftyValidationSummary
++-- models/
+|   +-- FormStep              # Step definition for wizards
+|   +-- FormStatus            # Form lifecycle enum
++-- persistence/
+    +-- DraftManager          # Auto-save via GetStorage
 ```
 
 ### Core Components
@@ -292,6 +300,68 @@ Wrapper components for fifty_ui widgets that integrate with `FiftyFormController
 
 ---
 
+## Configuration
+
+### FiftyFormController
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `initialValues` | `Map<String, dynamic>` | required | Initial field values keyed by field name |
+| `validators` | `Map<String, List<Validator>>` | `{}` | Sync validators per field |
+| `asyncValidators` | `Map<String, List<AsyncValidator>>` | `{}` | Async validators per field |
+| `onValidationChanged` | `void Function(bool)?` | `null` | Callback when overall validity changes |
+| `validateOnChange` | `bool` | `true` | Re-validate fields when values change |
+
+### FiftyMultiStepForm
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `controller` | `FiftyFormController` | required | Form controller instance |
+| `steps` | `List<FormStep>` | required | Step definitions |
+| `stepBuilder` | `Widget Function(BuildContext, int, FormStep)` | required | Builder for each step's content |
+| `onComplete` | `void Function(Map<String, dynamic>)` | required | Callback on final step completion |
+| `onStepChanged` | `void Function(int)?` | `null` | Callback when active step changes |
+| `showProgress` | `bool` | `true` | Show step progress indicator |
+| `validateOnNext` | `bool` | `true` | Validate current step before advancing |
+| `nextLabel` | `String` | `'NEXT'` | Label for the next button |
+| `previousLabel` | `String` | `'BACK'` | Label for the previous button |
+| `completeLabel` | `String` | `'COMPLETE'` | Label for the final step button |
+
+### FormStep
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `title` | `String` | required | Step title for progress indicator |
+| `description` | `String?` | `null` | Optional step description |
+| `fields` | `List<String>` | required | Field names to validate for this step |
+| `isOptional` | `bool` | `false` | Can skip if all fields empty |
+| `validator` | `String? Function(Map<String, dynamic>)?` | `null` | Custom step-level validation |
+
+### DraftManager
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `controller` | `FiftyFormController` | required | Form controller to manage |
+| `key` | `String` | required | Unique storage key for draft |
+| `debounce` | `Duration` | `2 seconds` | Delay before auto-save triggers |
+| `containerName` | `String?` | `'fifty_forms_drafts'` | GetStorage container name |
+
+### FiftyFormArray
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `controller` | `FiftyFormController` | required | Form controller instance |
+| `name` | `String` | required | Base name for array fields |
+| `minItems` | `int` | `0` | Minimum items required |
+| `maxItems` | `int` | `10` | Maximum items allowed |
+| `initialCount` | `int` | `1` | Initial number of items |
+| `animate` | `bool` | `true` | Animate add/remove transitions |
+| `itemSpacing` | `double` | `16` | Spacing between items |
+| `itemBuilder` | `Widget Function(BuildContext, int, VoidCallback)` | required | Builder for each array item |
+| `addButtonBuilder` | `Widget Function(VoidCallback)?` | `null` | Custom add button builder |
+
+---
+
 ## Usage Patterns
 
 ### Strong Password Validation
@@ -342,10 +412,10 @@ AsyncCustom<String>(
 ### Composite Validators
 
 ```dart
-// And — all must pass
+// And -- all must pass
 And([Required(), MinLength(8), HasUppercase()])
 
-// Or — at least one must pass
+// Or -- at least one must pass
 Or([Email(), Pattern(phoneRegex)])
 ```
 
@@ -386,16 +456,6 @@ FiftyMultiStepForm(
   completeLabel: 'COMPLETE',
 )
 ```
-
-**FormStep Properties:**
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `title` | `String` | Step title for progress indicator |
-| `description` | `String?` | Optional step description |
-| `fields` | `List<String>` | Field names to validate for this step |
-| `isOptional` | `bool` | Can skip if all fields empty |
-| `validator` | `Function?` | Custom step-level validation |
 
 ### Dynamic Form Arrays
 
@@ -452,17 +512,6 @@ final count = controller.getArrayLength('addresses');
 controller.removeArrayItem('addresses', 1);
 ```
 
-**FiftyFormArray Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `name` | `String` | required | Base name for array fields |
-| `minItems` | `int` | `0` | Minimum items required |
-| `maxItems` | `int` | `10` | Maximum items allowed |
-| `initialCount` | `int` | `1` | Initial number of items |
-| `animate` | `bool` | `true` | Animate add/remove |
-| `itemSpacing` | `double` | `16` | Spacing between items |
-
 ### Draft Persistence
 
 ```dart
@@ -502,15 +551,6 @@ draftManager.stop();
 // Cleanup
 draftManager.dispose();
 ```
-
-**DraftManager Properties:**
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `controller` | `FiftyFormController` | required | Form controller to manage |
-| `key` | `String` | required | Unique storage key for draft |
-| `debounce` | `Duration` | `2 seconds` | Delay before auto-save |
-| `containerName` | `String?` | `'fifty_forms_drafts'` | GetStorage container name |
 
 ### FiftySubmitButton
 
@@ -557,7 +597,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.0
+**Current:** 0.1.2
 
 ---
 

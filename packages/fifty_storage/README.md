@@ -1,5 +1,8 @@
 # Fifty Storage
 
+[![pub package](https://img.shields.io/pub/v/fifty_storage.svg)](https://pub.dev/packages/fifty_storage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Secure token storage and preferences management for Flutter apps. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
@@ -17,7 +20,12 @@ Secure token storage and preferences management for Flutter apps. Part of [Fifty
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_storage: ^0.1.1
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
@@ -25,15 +33,7 @@ dependencies:
     path: ../fifty_storage
 ```
 
-For external projects using a git dependency:
-
-```yaml
-dependencies:
-  fifty_storage:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_storage
-```
+**Dependencies:** `flutter_secure_storage`, `get_storage`
 
 ---
 
@@ -294,7 +294,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.0
+**Current:** 0.1.1
 
 ---
 

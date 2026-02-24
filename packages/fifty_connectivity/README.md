@@ -1,10 +1,13 @@
 # Fifty Connectivity
 
+[![pub package](https://img.shields.io/pub/v/fifty_connectivity.svg)](https://pub.dev/packages/fifty_connectivity)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Status | Handler | Overlay | Splash |
 |:---:|:---:|:---:|:---:|
-| <img src="example/screenshots/home.png" width="200"> | <img src="example/screenshots/handler.png" width="200"> | <img src="example/screenshots/overlay.png" width="200"> | <img src="example/screenshots/splash.png" width="200"> |
+| <img src="screenshots/home.png" width="200"> | <img src="screenshots/handler.png" width="200"> | <img src="screenshots/overlay.png" width="200"> | <img src="screenshots/splash.png" width="200"> |
 
 ---
 
@@ -25,13 +28,20 @@ Network connectivity monitoring with intelligent reachability probing (DNS/HTTP)
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_connectivity: ^0.1.3
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_connectivity:
     path: ../fifty_connectivity
 ```
+
+**Dependencies:** `connectivity_plus`, `get`, `fifty_tokens`, `fifty_ui`, `fifty_utils`
 
 ---
 
@@ -222,6 +232,49 @@ class ConnectivityConfig {
 
 ---
 
+## Configuration
+
+### ConnectivityConfig
+
+Static configuration class that controls labels, navigation, and splash screen behavior. Assign values before `runApp` or in your bindings setup.
+
+#### Labels
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `labelSignalLost` | `String` | `'Signal Lost'` | Overlay title when connection drops |
+| `labelEstablishingUplink` | `String` | `'Establishing uplink'` | Subtitle while reconnecting |
+| `labelReconnecting` | `String` | `'Reconnecting'` | Status text during reconnection attempts |
+| `labelRetryConnection` | `String` | `'Retry connection'` | Button label for manual retry |
+| `labelTryAgain` | `String` | `'Try Again'` | Alternative retry label used in handler |
+| `labelOfflineFor` | `String` | `'Offline for'` | Prefix for offline duration timer |
+| `labelAttemptingRestore` | `String` | `'Attempting to restore connection'` | Extended reconnection status text |
+| `labelConnectionLost` | `String` | `'Connection lost'` | Handler title when disconnected |
+| `labelNoInternetSemantics` | `String` | `'No internet connection'` | Accessibility label for screen readers |
+| `labelUplinkActive` | `String` | `'Uplink active'` | Status text when connection is restored |
+
+#### Navigation
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `navigateOff` | `Future<void> Function(String)?` | `null` | Navigation callback for splash-to-home transition |
+
+#### Splash Screen
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `logoBuilder` | `Widget Function(BuildContext)?` | `null` | Custom logo widget builder for splash screen |
+| `defaultNextRoute` | `String` | `'/home'` | Route to navigate to after splash completes |
+| `splashDelaySeconds` | `int` | `3` | Seconds to wait before navigating from splash |
+
+#### Utility
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `reset()` | `void` | Resets all configuration values to defaults (useful in tests) |
+
+---
+
 ## Usage Patterns
 
 ### ConnectionOverlay
@@ -353,7 +406,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.0
+**Current:** 0.1.3
 
 ---
 

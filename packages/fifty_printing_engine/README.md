@@ -1,5 +1,8 @@
 # Fifty Printing Engine
 
+[![pub package](https://img.shields.io/pub/v/fifty_printing_engine.svg)](https://pub.dev/packages/fifty_printing_engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Printer Management | Test Print | Ticket Builder |
@@ -26,20 +29,20 @@ Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support.
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_printing_engine: ^1.0.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
-  fifty_printing_engine: ^1.0.0
+  fifty_printing_engine:
+    path: ../fifty_printing_engine
 ```
 
-Then run:
-
-```bash
-flutter pub get
-```
-
-**Dependencies:** `escpos` (ESC/POS ticket generation), `print_bluetooth_thermal` (Bluetooth thermal printer support), `permission_handler` (Bluetooth permission handling), Dart sockets (WiFi/network printer support, built-in).
+**Dependencies:** `escpos`, `print_bluetooth_thermal`, `permission_handler`
 
 ---
 
@@ -452,9 +455,37 @@ engine.statusStream.listen((event) {
 });
 ```
 
-### Configuration
+### PrintResult
 
-#### Paper Sizes
+| Property | Type | Description |
+|----------|------|-------------|
+| `totalPrinters` | int | Total printers attempted |
+| `successCount` | int | Successful prints |
+| `failedCount` | int | Failed prints |
+| `results` | Map | Per-printer results |
+| `isSuccess` | bool | All succeeded |
+| `isPartialSuccess` | bool | Some succeeded |
+| `isFailure` | bool | All failed |
+
+### PrinterResult
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `printerId` | String | Printer ID |
+| `success` | bool | Print succeeded |
+| `errorMessage` | String? | Error description |
+| `duration` | Duration | Time taken |
+
+---
+
+## Configuration
+
+### Paper Sizes
+
+| Size | Constant | Use Case |
+|------|----------|----------|
+| `PaperSize.mm58` | 58mm width | Compact receipts |
+| `PaperSize.mm80` | 80mm width | Standard receipts |
 
 ```dart
 // 58mm paper (compact receipts)
@@ -488,15 +519,13 @@ await engine.print(
 );
 ```
 
-#### Printer Roles
+### Printer Roles
 
-```dart
-enum PrinterRole {
-  kitchen,  // Kitchen order tickets
-  receipt,  // Customer receipts
-  both,     // Handles any print job
-}
-```
+| Role | Constant | Description |
+|------|----------|-------------|
+| Kitchen | `PrinterRole.kitchen` | Kitchen order tickets |
+| Receipt | `PrinterRole.receipt` | Customer receipts |
+| Both | `PrinterRole.both` | Handles any print job |
 
 **Role Mapping (for role-based routing):**
 
@@ -508,7 +537,12 @@ engine.setRoleMapping(PrinterRole.receipt, ['wifi-1']);
 final kitchenIds = engine.getRoleMapping(PrinterRole.kitchen);
 ```
 
-#### Copy Control
+### Copy Control
+
+| Parameter | Scope | Description |
+|-----------|-------|-------------|
+| `defaultCopies` | Per-printer | Default copies for every job sent to this printer |
+| `copies` | Per-job | Overrides `defaultCopies` for all target printers in this job |
 
 ```dart
 // Per-printer default copies
@@ -533,7 +567,7 @@ await engine.print(
 );
 ```
 
-#### Persistence
+### Persistence
 
 The package is in-memory only. Use export/import for persistence with your preferred storage:
 
@@ -558,27 +592,6 @@ if (configJson != null) {
 - Role mappings (which printers for which roles)
 
 **Storage Options:** shared_preferences, get_storage, Hive, SQLite, backend API - your choice.
-
-### PrintResult
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `totalPrinters` | int | Total printers attempted |
-| `successCount` | int | Successful prints |
-| `failedCount` | int | Failed prints |
-| `results` | Map | Per-printer results |
-| `isSuccess` | bool | All succeeded |
-| `isPartialSuccess` | bool | Some succeeded |
-| `isFailure` | bool | All failed |
-
-### PrinterResult
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `printerId` | String | Printer ID |
-| `success` | bool | Print succeeded |
-| `errorMessage` | String? | Error description |
-| `duration` | Duration | Time taken |
 
 ---
 
@@ -816,7 +829,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-1.0.0
+**Current:** 1.0.2
 
 ---
 

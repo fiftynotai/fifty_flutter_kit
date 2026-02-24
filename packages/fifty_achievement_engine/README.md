@@ -1,5 +1,8 @@
 # Fifty Achievement Engine
 
+[![pub package](https://img.shields.io/pub/v/fifty_achievement_engine.svg)](https://pub.dev/packages/fifty_achievement_engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Achievement system for Flutter games with condition-based unlocks, progress tracking, and FDL-compliant UI. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
@@ -25,12 +28,18 @@ Achievement system for Flutter games with condition-based unlocks, progress trac
 
 ```yaml
 dependencies:
+  fifty_achievement_engine: ^0.1.3
+```
+
+### For Contributors
+
+```yaml
+dependencies:
   fifty_achievement_engine:
     path: ../fifty_achievement_engine
-  # Required for FDL tokens
-  fifty_tokens:
-    path: ../fifty_tokens
 ```
+
+**Dependencies:** `fifty_tokens`, `fifty_ui`
 
 ---
 
@@ -460,7 +469,7 @@ AchievementCard(
 
 ## Version
 
-**Current:** 0.1.1
+**Current:** 0.1.3
 
 ---
 

@@ -1,5 +1,8 @@
 # Fifty Utils
 
+[![pub package](https://img.shields.io/pub/v/fifty_utils.svg)](https://pub.dev/packages/fifty_utils)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Pure Dart/Flutter utilities — DateTime, Duration, Color extensions, responsive breakpoints, and async state containers. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
@@ -16,25 +19,20 @@ Pure Dart/Flutter utilities — DateTime, Duration, Color extensions, responsive
 
 ## Installation
 
-Add to your `pubspec.yaml`:
-
-### Using Git
-
 ```yaml
 dependencies:
-  fifty_utils:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit
-      path: packages/fifty_utils
+  fifty_utils: ^0.1.1
 ```
 
-### Using Path (Monorepo)
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_utils:
     path: ../fifty_utils
 ```
+
+**Dependencies:** `intl`
 
 ---
 
@@ -407,7 +405,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.0
+**Current:** 0.1.1
 
 ---
 

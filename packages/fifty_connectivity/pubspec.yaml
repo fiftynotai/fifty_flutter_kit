@@ -11,13 +11,13 @@ topics:
   - monitoring
 screenshots:
   - description: 'Connection handler demo'
-    path: example/screenshots/handler.png
+    path: screenshots/handler.png
   - description: 'Connectivity dashboard'
-    path: example/screenshots/home.png
+    path: screenshots/home.png
   - description: 'Connection overlay'
-    path: example/screenshots/overlay.png
+    path: screenshots/overlay.png
   - description: 'Connectivity checker splash'
-    path: example/screenshots/splash.png
+    path: screenshots/splash.png
 
 environment:
   sdk: ^3.6.0

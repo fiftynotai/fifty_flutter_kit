@@ -1,5 +1,8 @@
 # Fifty Narrative Engine
 
+[![pub package](https://img.shields.io/pub/v/fifty_narrative_engine.svg)](https://pub.dev/packages/fifty_narrative_engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A sentence processing engine for Flutter games and interactive applications. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Sentence Queue | Dialogue Choices | Narration |
@@ -21,20 +24,20 @@ A sentence processing engine for Flutter games and interactive applications. Par
 
 ## Installation
 
-Add to your `pubspec.yaml`:
-
 ```yaml
 dependencies:
-  fifty_narrative_engine: ^0.1.0
+  fifty_narrative_engine: ^0.1.1
 ```
 
-Or for local development in the monorepo:
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_narrative_engine:
     path: ../fifty_narrative_engine
 ```
+
+**Dependencies:** `web`, `plugin_platform_interface`
 
 ---
 
@@ -454,14 +457,14 @@ while (queue.isNotEmpty) {
 
 ## Platform Support
 
-| Platform | Support |
-|----------|---------|
-| Android  | Yes     |
-| iOS      | Yes     |
-| macOS    | Yes     |
-| Linux    | Yes     |
-| Windows  | Yes     |
-| Web      | Yes     |
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     |       |
 
 ---
 
@@ -510,7 +513,7 @@ If migrating from the original package:
 
 ## Version
 
-0.1.0
+**Current:** 0.1.1
 
 ---
 

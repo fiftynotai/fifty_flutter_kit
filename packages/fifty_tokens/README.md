@@ -1,5 +1,8 @@
 # Fifty Tokens
 
+[![pub package](https://img.shields.io/pub/v/fifty_tokens.svg)](https://pub.dev/packages/fifty_tokens)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design Language (FDL), providing colors, typography, spacing, motion, radii, shadows, gradients, and breakpoints as pure Dart constants. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
@@ -20,7 +23,12 @@ Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_tokens: ^1.0.3
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
@@ -28,13 +36,7 @@ dependencies:
     path: ../fifty_tokens
 ```
 
-Then run:
-
-```bash
-flutter pub get
-```
-
-The package requires `google_fonts` (included transitively) for Manrope font loading.
+**Dependencies:** `google_fonts`
 
 ---
 
@@ -466,12 +468,12 @@ Text(
 
 | Platform | Support | Notes |
 |----------|---------|-------|
-| Android  | Yes     | |
-| iOS      | Yes     | |
-| macOS    | Yes     | |
-| Linux    | Yes     | |
-| Windows  | Yes     | |
-| Web      | Yes     | |
+| Android  | Yes     |       |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     |       |
 
 Pure Dart constants — no platform channels or native code required. The `google_fonts` dependency fetches Manrope at runtime or can be bundled as an asset font.
 
@@ -511,7 +513,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 1.0.0
+**Current:** 1.0.3
 
 ---
 

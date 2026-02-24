@@ -33,6 +33,14 @@ dependencies:
   fifty_socket: ^0.1.0
 ```
 
+### For Contributors
+
+```yaml
+dependencies:
+  fifty_socket:
+    path: ../fifty_socket
+```
+
 **Dependencies:**
 - `phoenix_socket: ^0.8.0`
 - `meta: ^1.11.0`
@@ -159,6 +167,25 @@ SocketService (Abstract Base)
 | `SocketError` | Typed error with category, message, and original exception |
 | `SocketErrorType` | Error category enum (connection, auth, channel, message, timeout) |
 | `LogLevel` | Logging verbosity (none, error, info, debug) |
+
+### Connection State Machine
+
+```
+[disconnected] --(connect)--> [connecting] --(success)--> [connected]
+       ^                           |                           |
+       |                     (failure +                   (close/error)
+       |                      reconnect                        |
+       |                      enabled)                         v
+       +----(max retries)---- [reconnecting] <--(auto)---- [disconnected]
+```
+
+| State | Description |
+|-------|-------------|
+| `disconnected` | No active connection |
+| `connecting` | Connection attempt in progress |
+| `connected` | WebSocket open, heartbeat active |
+| `disconnecting` | Graceful shutdown in progress |
+| `reconnecting` | Auto-reconnect cycle active (with attempt count) |
 
 ---
 
@@ -390,24 +417,16 @@ socketService.autoReconnectIfNeeded();
 
 ---
 
-## Connection State Machine
+## Platform Support
 
-```
-[disconnected] --(connect)--> [connecting] --(success)--> [connected]
-       ^                           |                           |
-       |                     (failure +                   (close/error)
-       |                      reconnect                        |
-       |                      enabled)                         v
-       +----(max retries)---- [reconnecting] <--(auto)---- [disconnected]
-```
-
-| State | Description |
-|-------|-------------|
-| `disconnected` | No active connection |
-| `connecting` | Connection attempt in progress |
-| `connected` | WebSocket open, heartbeat active |
-| `disconnecting` | Graceful shutdown in progress |
-| `reconnecting` | Auto-reconnect cycle active (with attempt count) |
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     | Requires network permission |
+| iOS      | Yes     |       |
+| macOS    | Yes     |       |
+| Linux    | Yes     |       |
+| Windows  | Yes     |       |
+| Web      | Yes     | WebSocket via dart:html |
 
 ---
 

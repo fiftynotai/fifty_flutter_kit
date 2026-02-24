@@ -1,5 +1,8 @@
 # Fifty Cache
 
+[![pub package](https://img.shields.io/pub/v/fifty_cache.svg)](https://pub.dev/packages/fifty_cache)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 TTL-based HTTP response caching with pluggable stores and policies. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
@@ -17,7 +20,12 @@ TTL-based HTTP response caching with pluggable stores and policies. Part of [Fif
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_cache: ^0.1.0
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
@@ -25,15 +33,7 @@ dependencies:
     path: ../fifty_cache
 ```
 
-For external projects using a Git dependency:
-
-```yaml
-dependencies:
-  fifty_cache:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_cache
-```
+**Dependencies:** `get_storage`
 
 ---
 

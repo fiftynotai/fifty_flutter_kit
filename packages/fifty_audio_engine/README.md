@@ -1,5 +1,8 @@
 # Fifty Audio Engine
 
+[![pub package](https://img.shields.io/pub/v/fifty_audio_engine.svg)](https://pub.dev/packages/fifty_audio_engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A modular, reactive audio system for Flutter games and applications. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | BGM Player | SFX Player | Voice Player | Global Controls |
@@ -23,20 +26,20 @@ A modular, reactive audio system for Flutter games and applications. Part of [Fi
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_audio_engine: ^0.7.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
   fifty_audio_engine:
-    git:
-      url: https://github.com/fiftynotai/fifty_flutter_kit.git
-      path: packages/fifty_audio_engine
+    path: ../fifty_audio_engine
 ```
 
-**Dependencies:**
-- `audioplayers: ^6.4.0`
-- `get_storage: ^2.1.1`
-- `fifty_tokens` (for motion token integration)
+**Dependencies:** `audioplayers`, `get_storage`, `fifty_tokens`
 
 ---
 
@@ -230,33 +233,6 @@ Future<void> Function()? onCompleted  // Called on natural completion
 3. Voice completes or stops
 4. `onRestore` fires - BGM returns to original volume
 
-### FadePreset
-
-Reusable fade configurations integrated with FiftyMotion tokens.
-
-| Preset | Duration | Curve | Use Case |
-|--------|----------|-------|----------|
-| `fast` | 150ms | linear | UI feedback, quick transitions |
-| `panel` | 300ms | standard | Panel reveals |
-| `normal` | 800ms | easeInOut | Scene transitions |
-| `cinematic` | 2000ms | easeInOutCubic | Dramatic moments |
-| `ambient` | 3000ms | decelerate | Environmental changes |
-| `buildTension` | 1200ms | easeIn | Boss entrances |
-| `smoothExit` | 1000ms | easeOut | Scene fade outs |
-
-**Usage:**
-```dart
-await bgm.fadeOutVolume(FadePreset.cinematic);
-await bgm.fadeInVolume(FadePreset.normal);
-
-// Or wrap actions
-await bgm.withFade(
-  () async => bgm.playAtIndex(3),
-  fadeOut: FadePreset.fast,
-  fadeIn: FadePreset.normal,
-);
-```
-
 ### GlobalFadePresets
 
 Semantic aliases for common scenarios.
@@ -369,6 +345,80 @@ StreamBuilder<Duration>(
 
 ---
 
+## Configuration
+
+### FadePreset
+
+Reusable fade configurations integrated with FiftyMotion tokens.
+
+| Preset | Duration | Curve | Use Case |
+|--------|----------|-------|----------|
+| `fast` | 150ms | linear | UI feedback, quick transitions |
+| `panel` | 300ms | standard | Panel reveals |
+| `normal` | 800ms | easeInOut | Scene transitions |
+| `cinematic` | 2000ms | easeInOutCubic | Dramatic moments |
+| `ambient` | 3000ms | decelerate | Environmental changes |
+| `buildTension` | 1200ms | easeIn | Boss entrances |
+| `smoothExit` | 1000ms | easeOut | Scene fade outs |
+
+**Usage:**
+```dart
+await bgm.fadeOutVolume(FadePreset.cinematic);
+await bgm.fadeInVolume(FadePreset.normal);
+
+// Or wrap actions
+await bgm.withFade(
+  () async => bgm.playAtIndex(3),
+  fadeOut: FadePreset.fast,
+  fadeIn: FadePreset.normal,
+);
+```
+
+### ChannelLifecycleConfig
+
+Controls automatic pause/resume behavior when the app enters/leaves the foreground.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `pauseOnBackground` | `bool` | `true` | Pause channel when app backgrounds |
+| `fadeOnPause` | `FadePreset` | `FadePreset.fast` | Fade preset used before pausing |
+| `fadeOnResume` | `FadePreset` | `FadePreset.normal` | Fade preset used when resuming |
+
+```dart
+bgm.enableLifecycle(ChannelLifecycleConfig(
+  pauseOnBackground: true,
+  fadeOnPause: FadePreset.fast,
+  fadeOnResume: FadePreset.normal,
+));
+```
+
+### Audio Context Configuration
+
+Each channel uses platform-specific audio contexts to control system audio interaction:
+
+| Channel | Android | iOS |
+|---------|---------|-----|
+| BGM | `game` usage, `music` content, no focus | `ambient` category |
+| SFX | Mix with others | Mix with others |
+| Voice | Duck others (transient) | Duck others |
+
+### Persistence Keys
+
+All channel states are persisted via `GetStorage`:
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `fifty_audio_bgm_volume` | double | BGM volume (0.0-1.0) |
+| `fifty_audio_sfx_volume` | double | SFX volume |
+| `fifty_audio_voice_volume` | double | Voice volume |
+| `fifty_audio_bgm_active` | bool | BGM enabled flag |
+| `fifty_audio_sfx_active` | bool | SFX enabled flag |
+| `fifty_audio_voice_active` | bool | Voice enabled flag |
+| `fifty_audio_playlist` | List | Current BGM playlist |
+| `fifty_audio_index` | int | Current track index |
+
+---
+
 ## Usage Patterns
 
 ### Source Swapping
@@ -388,28 +438,6 @@ sfx.changeSource((path) => UrlSource(path));
 sfx.play('https://cdn.example.com/sfx/click.wav');
 ```
 
-### Audio Context Configuration
-
-Each channel uses platform-specific audio contexts:
-
-| Channel | Android | iOS |
-|---------|---------|-----|
-| BGM | `game` usage, `music` content, no focus | `ambient` category |
-| SFX | Mix with others | Mix with others |
-| Voice | Duck others (transient) | Duck others |
-
-### Lifecycle Handling
-
-Channels can auto-pause/resume with app lifecycle:
-
-```dart
-bgm.enableLifecycle(ChannelLifecycleConfig(
-  pauseOnBackground: true,
-  fadeOnPause: FadePreset.fast,
-  fadeOnResume: FadePreset.normal,
-));
-```
-
 ### Waiting for Playback
 
 For scripted sequences (non-looping, non-pooled channels only):
@@ -422,33 +450,18 @@ await voice.playAndWait('https://cdn.example.com/vo/intro.mp3');
 await voice.waitUntilStopped();
 ```
 
-### Persistence
-
-All channel states are persisted via `GetStorage`:
-
-| Key | Type | Description |
-|-----|------|-------------|
-| `fifty_audio_bgm_volume` | double | BGM volume (0.0-1.0) |
-| `fifty_audio_sfx_volume` | double | SFX volume |
-| `fifty_audio_voice_volume` | double | Voice volume |
-| `fifty_audio_bgm_active` | bool | BGM enabled flag |
-| `fifty_audio_sfx_active` | bool | SFX enabled flag |
-| `fifty_audio_voice_active` | bool | Voice enabled flag |
-| `fifty_audio_playlist` | List | Current BGM playlist |
-| `fifty_audio_index` | int | Current track index |
-
 ---
 
 ## Platform Support
 
-| Platform | Status | Notes |
-|----------|--------|-------|
-| Android | Supported | `audioplayers` native |
-| iOS | Supported | AVAudioPlayer |
-| macOS | Supported | AVAudioPlayer |
-| Linux | Supported | GStreamer |
-| Windows | Supported | Windows Media Foundation |
-| Web | Supported | Web Audio API |
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android | Yes | `audioplayers` native |
+| iOS | Yes | AVAudioPlayer |
+| macOS | Yes | AVAudioPlayer |
+| Linux | Yes | GStreamer |
+| Windows | Yes | Windows Media Foundation |
+| Web | Yes | Web Audio API |
 
 ---
 
@@ -464,7 +477,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.7.0
+**Current:** 0.7.2
 
 ---
 

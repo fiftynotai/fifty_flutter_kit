@@ -1,6 +1,9 @@
 # Fifty Skill Tree
 
-Interactive skill tree widget for Flutter games — customizable, animated, and game-ready. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+[![pub package](https://img.shields.io/pub/v/fifty_skill_tree.svg)](https://pub.dev/packages/fifty_skill_tree)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Interactive skill tree widget for Flutter games -- customizable, animated, and game-ready. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Basic Tree | Node Unlock | RPG Skill Tree |
 |:----:|:----------:|:-----------:|:--------------:|
@@ -24,18 +27,20 @@ Interactive skill tree widget for Flutter games — customizable, animated, and 
 
 ## Installation
 
-Add to your `pubspec.yaml`:
+```yaml
+dependencies:
+  fifty_skill_tree: ^0.1.2
+```
+
+### For Contributors
 
 ```yaml
 dependencies:
-  fifty_skill_tree: ^0.1.0
+  fifty_skill_tree:
+    path: ../fifty_skill_tree
 ```
 
-Then run:
-
-```bash
-flutter pub get
-```
+**Dependencies:** `fifty_tokens`
 
 ---
 
@@ -619,7 +624,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-0.1.0
+**Current:** 0.1.2
 
 ---
 
