@@ -26,7 +26,10 @@ class ConnectionStatusCard extends StatelessWidget {
 
       return FiftyCard(
         size: FiftyCardSize.hero,
-        child: Column(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               mapping.icon,
@@ -63,6 +66,7 @@ class ConnectionStatusCard extends StatelessWidget {
               ),
             ],
           ],
+        ),
         ),
       );
     });
