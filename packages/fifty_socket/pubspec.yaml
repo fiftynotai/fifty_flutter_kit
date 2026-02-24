@@ -1,0 +1,22 @@
+name: fifty_socket
+description: Phoenix WebSocket infrastructure with auto-reconnect, heartbeat monitoring, and channel management. Part of the Fifty Flutter Kit.
+version: 0.1.0
+homepage: https://fifty.dev
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_socket
+issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
+topics:
+  - dart
+  - websocket
+  - phoenix
+  - realtime
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  phoenix_socket: ^0.8.0
+  meta: ^1.11.0
+
+dev_dependencies:
+  test: ^1.24.0
+  flutter_lints: ^5.0.0

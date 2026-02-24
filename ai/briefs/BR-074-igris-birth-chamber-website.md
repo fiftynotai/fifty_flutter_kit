@@ -2,7 +2,7 @@
 
 **Type:** Feature
 **Priority:** P1 - High
-**Status:** In Progress
+**Status:** Ready
 **Effort:** XL - Extra Large (10 sprints)
 **Created:** 2026-02-05
 
@@ -70,12 +70,13 @@ Create a Flutter Web app at `apps/igris_website/` featuring:
 
 ## Workflow State
 
-**Phase:** BUILDING
-**Active Agent:** orchestrator
+**Phase:** INIT
+**Active Agent:** none
 **Retry Count:** 0
 
 ### Agent Log
 - [2026-02-05] Starting BR-074 implementation - 10 sprint plan
+- [2026-02-24] Reset to Ready — no sprints started, stale since 2026-02-05
 
 ### Tasks
 
@@ -91,4 +92,4 @@ Create a Flutter Web app at `apps/igris_website/` featuring:
 - [ ] Sprint 10: Responsive + Polish
 
 ### Next Steps
-- Begin Sprint 1: Project scaffold with flutter create
+- Ready for implementation when prioritized

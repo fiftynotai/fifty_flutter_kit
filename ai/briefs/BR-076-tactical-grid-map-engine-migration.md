@@ -5,7 +5,7 @@
 **Effort:** M-Medium (2-3d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** In Progress
+**Status:** Ready
 **Created:** 2026-02-10
 **Completed:**
 
@@ -124,10 +124,10 @@ The Tactical Grid game board should be fully rendered through `fifty_map_engine`
 
 ## Session State (Tactical - This Brief)
 
-**Current State:** BUILDING phase 1+2 (EngineBoardWidget + TileGrid + Entity Spawning)
-**Active Agent:** coder
-**Next Steps When Resuming:** Phase 1+2 in progress, then Phase 3 (Highlights + Selection)
-**Last Updated:** 2026-02-16
+**Current State:** INIT — reset to Ready, no phases completed
+**Active Agent:** none
+**Next Steps When Resuming:** Start fresh from Phase 1 (EngineBoardWidget + TileGrid)
+**Last Updated:** 2026-02-24
 **Blockers:** None
 **Plan:** ai/plans/BR-076-plan.md
 
