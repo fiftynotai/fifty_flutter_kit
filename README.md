@@ -118,14 +118,16 @@ FiftyButton(
 import 'package:fifty_audio_engine/fifty_audio_engine.dart';
 
 // Initialize once in main()
-final engine = FiftyAudioEngine();
-await engine.init();
+await FiftyAudioEngine.instance.initialize([
+  'assets/bgm/menu.mp3',
+  'assets/bgm/level1.mp3',
+]);
 
-// Background music with crossfade
-engine.bgm.play(AssetSource('music/theme.mp3'));
+// Background music
+FiftyAudioEngine.instance.bgm.play('assets/bgm/menu.mp3');
 
 // Low-latency sound effects
-engine.sfx.play(AssetSource('sfx/click.wav'));
+FiftyAudioEngine.instance.sfx.play('assets/sfx/click.wav');
 ```
 
 > See each package README for complete API documentation, or browse the [full Quick Start guide](docs/QUICK_START.md) for all domains.

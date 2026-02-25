@@ -24,16 +24,16 @@ final primary = FiftyColors.primary;
 final surface = FiftyColors.surface;
 
 // Typography
-final heading = FiftyTypography.heading1;
-final body = FiftyTypography.body;
+final heading = FiftyTypography.displayMedium;  // 24px
+final body = FiftyTypography.titleSmall;        // 16px
 
 // Spacing (4px base grid)
-final padding = FiftySpacing.md;   // 16.0
+final padding = FiftySpacing.md;   // 12.0
 final gap = FiftySpacing.sm;       // 8.0
 
 // Motion
-final duration = FiftyMotion.normal;
-final curve = FiftyMotion.easeOut;
+final duration = FiftyMotion.compiling;  // 300ms
+final curve = FiftyMotion.standard;
 ```
 
 ### Applying the Theme
@@ -82,20 +82,23 @@ FiftyForm(
   controller: controller,
   child: Column(
     children: [
-      FiftyTextField(
+      FiftyTextFormField(
         name: 'email',
-        validators: [Validators.required(), Validators.email()],
+        validators: [Required(), Email()],
       ),
       FiftyButton(
         label: 'Submit',
-        onPressed: () => controller.submit(),
+        onPressed: () => controller.submit((values) async {
+          // values is a Map<String, dynamic> of all field values
+          await api.register(values['email']);
+        }),
       ),
     ],
   ),
 );
 ```
 
-The controller manages field state, validation, and submission. Validators compose -- stack as many as needed on any field.
+The controller manages field state, validation, and submission. `submit()` validates all fields first, then calls the callback with collected values. Validators compose -- stack as many as needed on any field.
 
 Learn more: [fifty_forms](../packages/fifty_forms/)
 
@@ -151,11 +154,14 @@ import 'package:fifty_connectivity/fifty_connectivity.dart';
 
 ### Setup
 
+Configure via static properties before use:
+
 ```dart
-ConnectivityConfig.initialize(
-  dnsLookupHost: 'google.com',
-  httpCheckUrl: 'https://www.google.com',
-);
+ConnectivityConfig.navigateOff = (route) async {
+  Get.offAllNamed(route);
+};
+ConnectivityConfig.logoBuilder = (context) => Image.asset('assets/logo.png');
+ConnectivityConfig.defaultNextRoute = '/home';
 ```
 
 ### Automatic UI Feedback
@@ -172,7 +178,7 @@ ConnectionOverlay(
 
 ```dart
 final connVM = Get.find<ConnectionViewModel>();
-if (connVM.isOnline.value) {
+if (connVM.isConnected()) {
   // Network available
 }
 ```
@@ -183,7 +189,7 @@ Learn more: [fifty_connectivity](../packages/fifty_connectivity/)
 
 ## Printing
 
-`fifty_printing_engine` handles ESC/POS thermal printing over Bluetooth and WiFi. Discover printers, connect, build receipts, and print.
+`fifty_printing_engine` handles ESC/POS thermal printing over Bluetooth. Discover printers, connect, and print.
 
 ```dart
 import 'package:fifty_printing_engine/fifty_printing_engine.dart';
@@ -192,14 +198,21 @@ import 'package:fifty_printing_engine/fifty_printing_engine.dart';
 ### Discover and Print
 
 ```dart
-// Discover printers
-final bluetoothPrinters = await PrinterDiscovery.discoverBluetooth();
-final wifiPrinters = await PrinterDiscovery.discoverWifi();
+final engine = PrintingEngine.instance;
 
-// Connect and print
-final printer = PrinterConnection(device: selectedPrinter);
+// Scan for Bluetooth printers
+final printers = await engine.scanBluetoothPrinters(
+  filterPrintersOnly: true,
+);
+
+// Connect to a printer
+final printer = printers.first;
 await printer.connect();
-await printer.printReceipt(receiptData);
+
+// Print a ticket
+await engine.print(ticket: myTicket);
+
+// Disconnect when done
 await printer.disconnect();
 ```
 
