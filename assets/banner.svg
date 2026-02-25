@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#88292f"/>
+      <stop offset="100%" stop-color="#1a0d0e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="200" fill="url(#bg)" rx="8"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="48" font-weight="700" fill="#fefee3" letter-spacing="1">Fifty Flutter Kit</text>
+  <text x="400" y="132" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#ffc9b9" letter-spacing="0.5">16 packages for Flutter app &amp; game development</text>
+  <text x="400" y="170" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13" font-weight="300" fill="#ffc9b9" opacity="0.8" letter-spacing="0.5">by fifty.dev</text>
+</svg>
