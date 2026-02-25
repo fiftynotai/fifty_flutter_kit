@@ -14,20 +14,23 @@ import 'package:loader_overlay/loader_overlay.dart';
 import '../core/bindings/initial_bindings.dart';
 import '../features/achievement_demo/achievement_demo_bindings.dart';
 import '../features/audio_demo/audio_demo_bindings.dart';
+import '../features/cache_demo/cache_demo_bindings.dart';
 import '../features/forms_demo/forms_demo_bindings.dart';
 import '../features/home/home_bindings.dart';
 import '../features/home/views/home_page.dart';
 import '../features/map_demo/map_demo_bindings.dart';
+import '../features/narrative_demo/narrative_demo_bindings.dart';
 import '../features/packages/packages_bindings.dart';
 import '../features/packages/views/packages_page.dart';
 import '../features/printing_demo/printing_demo_bindings.dart';
-import '../features/narrative_demo/narrative_demo_bindings.dart';
 import '../features/settings/settings_bindings.dart';
 import '../features/settings/views/settings_page.dart';
 import '../features/skill_tree_demo/skill_tree_demo_bindings.dart';
+import '../features/socket_demo/socket_demo_bindings.dart';
 import '../features/speech_demo/speech_demo_bindings.dart';
 import '../features/ui_showcase/ui_showcase_bindings.dart';
 import '../features/ui_showcase/views/ui_showcase_page.dart';
+import '../features/utils_demo/utils_demo_bindings.dart';
 
 /// Main app shell with bottom navigation.
 ///
@@ -119,6 +122,9 @@ class _DemoShellState extends State<_DemoShell> {
     SkillTreeDemoBindings().dependencies();
     AchievementDemoBindings().dependencies();
     FormsDemoBindings().dependencies();
+    CacheDemoBindings().dependencies();
+    UtilsDemoBindings().dependencies();
+    SocketDemoBindings().dependencies();
 
     setState(() {
       _bindingsInitialized = true;

@@ -36,6 +36,9 @@ This toolkit is born from close to a decade of building Flutter and Dart applica
 <td align="center"><img src="packages/fifty_printing_engine/screenshots/ticket_builder_dark.png" width="180"><br><sub>Printing</sub></td>
 <td align="center"><img src="packages/fifty_connectivity/screenshots/overlay.png" width="180"><br><sub>Connectivity</sub></td>
 </tr>
+<tr>
+<td colspan="4" align="center"><img src="apps/tactical_grid/screenshots/battle_dark.png" width="180"><br><sub>Tactical Grid</sub></td>
+</tr>
 </table>
 </div>
 
@@ -141,7 +144,7 @@ graph LR
     subgraph Foundation
         tokens[fifty_tokens] --> theme[fifty_theme] --> ui[fifty_ui]
     end
-    subgraph App Development
+    subgraph AppDev[App Development]
         forms[fifty_forms]
         cache[fifty_cache]
         storage[fifty_storage]
@@ -149,7 +152,7 @@ graph LR
         socket[fifty_socket]
         printing[fifty_printing_engine]
     end
-    subgraph Game Development
+    subgraph GameDev[Game Development]
         audio[fifty_audio_engine]
         speech[fifty_speech_engine]
         narrative[fifty_narrative_engine]
@@ -161,8 +164,8 @@ graph LR
     ui --> forms
     ui --> skill_tree
     ui --> achievements
-    utils -.-> App Development
-    utils -.-> Game Development
+    utils -.-> AppDev
+    utils -.-> GameDev
 ```
 
 > Full architecture documentation and dependency graph: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
@@ -175,11 +178,15 @@ graph LR
 |----------|-------------|---------|
 | [mvvm_actions](templates/mvvm_actions/) | Production app scaffold with auth, caching, connectivity, theming | MVVM + Actions |
 
-Templates use the ecosystem packages as dependencies. Fork as a starting point — don't import.
+Templates use the ecosystem packages as dependencies. Fork as a starting point -- don't import.
+
+## Apps
 
 | App | Description |
 |-----|-------------|
 | [fifty_demo](apps/fifty_demo/) | Interactive demo showcasing all packages |
+| [tactical_grid](apps/tactical_grid/) | Tactical skirmish game -- world engine, audio, achievements |
+| [sneaker_drops](apps/sneaker_drops/) | Sneaker marketplace -- UI components, forms, theming |
 
 ---
 

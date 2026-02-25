@@ -146,10 +146,9 @@ class PackagesViewModel extends GetxController {
     PackageDemo(
       id: 'fifty_cache',
       name: 'Fifty Cache',
-      description: 'Caching and data persistence',
+      description: 'TTL-based HTTP response caching',
       icon: Icons.cached_outlined,
       category: PackageCategory.utilities,
-      isAvailable: false,
     ),
     PackageDemo(
       id: 'fifty_storage',
@@ -162,10 +161,16 @@ class PackagesViewModel extends GetxController {
     PackageDemo(
       id: 'fifty_utils',
       name: 'Fifty Utils',
-      description: 'Common utilities and extensions',
+      description: 'DateTime, Color, responsive utilities',
       icon: Icons.build_outlined,
       category: PackageCategory.utilities,
-      isAvailable: false,
+    ),
+    PackageDemo(
+      id: 'fifty_socket',
+      name: 'Fifty Socket',
+      description: 'Phoenix WebSocket with auto-reconnect',
+      icon: Icons.cable_outlined,
+      category: PackageCategory.utilities,
     ),
 
     // Features

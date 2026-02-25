@@ -191,6 +191,13 @@ packages:
       relative: true
     source: path
     version: "0.7.2"
+  fifty_cache:
+    dependency: "direct main"
+    description:
+      path: "../../packages/fifty_cache"
+      relative: true
+    source: path
+    version: "0.1.0"
   fifty_connectivity:
     dependency: "direct main"
     description:
@@ -226,6 +233,13 @@ packages:
       relative: true
     source: path
     version: "0.1.2"
+  fifty_socket:
+    dependency: "direct main"
+    description:
+      path: "../../packages/fifty_socket"
+      relative: true
+    source: path
+    version: "0.1.0"
   fifty_speech_engine:
     dependency: "direct main"
     description:
@@ -262,7 +276,7 @@ packages:
     source: path
     version: "0.6.2"
   fifty_utils:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "../../packages/fifty_utils"
       relative: true
@@ -690,6 +704,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  phoenix_socket:
+    dependency: transitive
+    description:
+      name: phoenix_socket
+      sha256: befa09b9861b69f922e8b4854de3e40bf9601e381a89460dacdd1198799ca28a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   platform:
     dependency: transitive
     description:
@@ -722,6 +744,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.9"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.28.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -911,6 +941,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  web_socket:
+    dependency: transitive
+    description:
+      name: web_socket
+      sha256: "34d64019aa8e36bf9842ac014bb5d2f5586ca73df5e4d9bf5c936975cae6982c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  web_socket_channel:
+    dependency: transitive
+    description:
+      name: web_socket_channel
+      sha256: d645757fb0f4773d602444000a8131ff5d48c9e47adfe9772652dd1a4f2d45c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
   win32:
     dependency: transitive
     description:

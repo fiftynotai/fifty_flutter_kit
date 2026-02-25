@@ -2,27 +2,45 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-25
-**Active Brief:** BR-116 (Root README Overhaul)
+**Active Brief:** BR-120, BR-119, BR-118 (parallel team)
 
 ---
 
-## Completed Briefs (This Session - 2026-02-25)
+## Resume Point
 
-### fifty_socket Pre-Publish Review & Fixes
-- **Commit:** `3e6790c`
-- **Summary:** WARDEN review + RELEASER audit identified 5 issues. FORGER fixed: hardcoded VPS IP removed, badges added, avoid_print lint suppressed, screenshots metadata added to pubspec, messageStream null guard. All 27 tests pass, analyzer clean.
+**Last Active:** BR-116 (Root README Overhaul) — Done
+**Phase:** COMPLETE
 
-### fifty_socket Published to pub.dev
-- **Commit:** `3e6790c` (pre-publish fixes)
-- **Summary:** `dart pub publish --force` — fifty_socket v0.1.0 live on pub.dev. 16th package in the ecosystem.
+---
 
-### Root README Updated
-- **Commit:** `9a571d8`
-- **Summary:** Added fifty_socket to packages table, architecture tree, package details, and dependency graph.
+## Next Session Instructions
 
-### BR-115 - Standardize All Package READMEs to FDL Template v2
-- **Status:** Done (commit `43843d1`)
-- **Summary:** Full pipeline: ARCHITECT -> FORGER (x4 batches, 16 parallel agents) -> SENTINEL (PASS). 23 files changed, 953 insertions, 420 deletions. All 16 package READMEs now comply with FDL Template v2. Added badges, fixed 14 stale versions, added Configuration sections to 5 packages, relocated fifty_connectivity screenshots, added Platform Support to fifty_socket. SENTINEL verified 160/160 compliance checks. FDL README Template upgraded to v2.
+4 new briefs registered and ready for implementation:
+
+1. **BR-120** (P1-High, S-Small) — Fix Mermaid diagram parse error in root README. `utils -.-> App Development` breaks GitHub rendering. Quick fix.
+2. **BR-119** (P2-Medium, S-Small) — Add tactical_grid app to README showcase screenshot + apps table. Also add sneaker_drops to apps table. Needs screenshots captured first.
+3. **BR-118** (P2-Medium, M-Medium) — Update fifty_demo app with all 16 packages. Missing: fifty_cache, fifty_utils, fifty_socket (13/16 currently).
+4. **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo (~250 lines). Do NOT move apps/tactical_grid/ — create new slim example instead.
+
+**Recommended order:** BR-120 (quick fix, high visibility) → BR-119 (needs screenshots) → BR-117 or BR-118
+
+---
+
+## Last Session Summary
+
+**Date:** 2026-02-25
+**Completed:**
+- BR-116: Root README overhaul to top-tier standard (banner, showcase, docs/)
+- Full API documentation audit — fixed 13 code example discrepancies across README + docs/QUICK_START.md
+- Replaced first showcase screenshot with fifty_demo app
+- Registered 4 new briefs: BR-117, BR-118, BR-119, BR-120
+
+**Commits this session:**
+- `b3a3f02` — docs: overhaul root README to top-tier standard with banner, showcase, and docs
+- `8060406` — fix(docs): correct all code examples to match actual package APIs
+- `5b98c24` — docs: replace showcase screenshot with fifty_demo app
+
+**Summary:** Root README overhauled from 476 to 250 lines with SVG banner, 8-screenshot showcase grid, domain-grouped package tables, Mermaid architecture diagram, and 3 new docs files (ARCHITECTURE.md, QUICK_START.md, CONTRIBUTING.md). Created FDL Root README Template v1. Full code example audit found and fixed 13 API discrepancies. Registered 4 follow-up briefs for remaining polish.
 
 ---
 
@@ -49,16 +67,8 @@
 
 ---
 
-## Next Steps When Resuming
-
-1. **BR-074/BR-076:** Resume stale briefs if needed
-2. **Review brief queue:** `/scan` to check priorities
-3. **Consider republishing** packages with updated READMEs to refresh pub.dev pages
-
----
-
 ## Resume Command
 
 ```
-Session 2026-02-25. fifty_socket v0.1.0 published to pub.dev (16th package). BR-115 complete — all 16 package READMEs standardized to FDL Template v2 (160/160 compliance checks pass, 23 files changed). FDL README Template upgraded to v2 with badges, installation format, optional sections, compliance checklist. 4 commits this session. Last commit 43843d1.
+Session 2026-02-25. BR-116 complete — root README overhauled (banner, showcase, docs/). 13 code example fixes. 3 commits. 4 new briefs registered: BR-117 (world engine FDL example), BR-118 (demo app missing packages), BR-119 (tactical grid in README), BR-120 (Mermaid parse error). Recommended next: BR-120 (P1, quick fix).
 ```

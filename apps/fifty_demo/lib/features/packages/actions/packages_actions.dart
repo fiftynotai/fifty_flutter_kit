@@ -9,12 +9,15 @@ import 'package:get/get.dart';
 import '../../../core/presentation/actions/action_presenter.dart';
 import '../../achievement_demo/views/achievement_demo_page.dart';
 import '../../audio_demo/views/audio_demo_page.dart';
+import '../../cache_demo/views/cache_demo_page.dart';
 import '../../forms_demo/views/forms_demo_page.dart';
 import '../../map_demo/views/map_demo_page.dart';
-import '../../printing_demo/views/printing_demo_page.dart';
 import '../../narrative_demo/views/narrative_demo_page.dart';
+import '../../printing_demo/views/printing_demo_page.dart';
 import '../../skill_tree_demo/views/skill_tree_demo_page.dart';
+import '../../socket_demo/views/socket_demo_page.dart';
 import '../../speech_demo/views/speech_demo_page.dart';
+import '../../utils_demo/views/utils_demo_page.dart';
 import '../controllers/packages_view_model.dart';
 
 /// Actions for the packages hub feature.
@@ -82,6 +85,15 @@ class PackagesActions {
         break;
       case 'fifty_forms':
         Get.to<void>(() => const FormsDemoPage());
+        break;
+      case 'fifty_cache':
+        Get.to<void>(() => const CacheDemoPage());
+        break;
+      case 'fifty_utils':
+        Get.to<void>(() => const UtilsDemoPage());
+        break;
+      case 'fifty_socket':
+        Get.to<void>(() => const SocketDemoPage());
         break;
       case 'fifty_ui':
       case 'fifty_tokens':

@@ -40,6 +40,12 @@ dependencies:
     path: ../../packages/fifty_connectivity
   fifty_storage:
     path: ../../packages/fifty_storage
+  fifty_cache:
+    path: ../../packages/fifty_cache
+  fifty_utils:
+    path: ../../packages/fifty_utils
+  fifty_socket:
+    path: ../../packages/fifty_socket
   # Third-party
   get: ^4.6.6
   loader_overlay: ^4.0.3
