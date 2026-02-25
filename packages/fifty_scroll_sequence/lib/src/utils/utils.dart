@@ -2,3 +2,4 @@
 library;
 
 export 'frame_path_resolver.dart';
+export 'lerp_util.dart';

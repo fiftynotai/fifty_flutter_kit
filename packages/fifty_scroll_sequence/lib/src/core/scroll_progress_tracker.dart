@@ -40,4 +40,22 @@ class ScrollProgressTracker {
     final traveled = viewportHeight - widgetTopInViewport;
     return (traveled / totalTravel).clamp(0.0, 1.0);
   }
+
+  /// Calculate normalized progress (0.0 to 1.0) for pinned mode.
+  ///
+  /// In pinned mode, progress is based on how far the section has
+  /// scrolled past the point where it pinned (its top reached the
+  /// viewport top).
+  ///
+  /// - **0.0** when `scrollOffset == sectionTop` (section just pinned)
+  /// - **1.0** when `scrollOffset == sectionTop + scrollExtent` (about to unpin)
+  ///
+  /// Values outside the pin range are clamped to [0.0, 1.0].
+  double calculatePinnedProgress({
+    required double scrollOffset,
+    required double sectionTop,
+  }) {
+    final scrolledPastPin = scrollOffset - sectionTop;
+    return (scrolledPastPin / scrollExtent).clamp(0.0, 1.0);
+  }
 }

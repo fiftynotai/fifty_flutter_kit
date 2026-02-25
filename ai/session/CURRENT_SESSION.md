@@ -2,7 +2,7 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-25
-**Active Brief:** BR-123 (fifty_scroll_sequence — Core Package MVP)
+**Active Brief:** BR-124 (fifty_scroll_sequence — Pinning & Smoothing)
 
 ---
 
