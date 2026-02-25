@@ -126,6 +126,55 @@ void main() {
       // 1x1 image * 4 bytes RGBA = 4 bytes
       expect(cache.estimatedMemoryBytes, 4);
     });
+
+    test('estimatedMemoryBytes grows with multiple frames', () async {
+      await cache.loadFrame(0, loader);
+      await cache.loadFrame(1, loader);
+      await cache.loadFrame(2, loader);
+      // 3 images * 1x1 * 4 bytes = 12 bytes
+      expect(cache.estimatedMemoryBytes, 12);
+    });
+
+    test('estimatedMemoryBytes returns 0 when cache is empty', () {
+      expect(cache.estimatedMemoryBytes, 0);
+    });
+  });
+
+  group('FrameCacheManager with maxCacheSize = 1', () {
+    late FrameCacheManager tinyCache;
+    late FakeFrameLoader loader;
+
+    setUp(() {
+      tinyCache = FrameCacheManager(maxCacheSize: 1);
+      loader = FakeFrameLoader();
+    });
+
+    tearDown(() {
+      tinyCache.clearAll();
+    });
+
+    test('only keeps one frame at a time', () async {
+      await tinyCache.loadFrame(0, loader);
+      expect(tinyCache.length, 1);
+      expect(tinyCache.getFrame(0), isNotNull);
+
+      await tinyCache.loadFrame(1, loader);
+      expect(tinyCache.length, 1);
+      expect(tinyCache.getFrame(0), isNull); // Evicted
+      expect(tinyCache.getFrame(1), isNotNull);
+    });
+
+    test('loading same frame twice does not exceed size', () async {
+      await tinyCache.loadFrame(0, loader);
+      await tinyCache.loadFrame(0, loader);
+      expect(tinyCache.length, 1);
+    });
+
+    test('clearAll on single-entry cache works', () async {
+      await tinyCache.loadFrame(0, loader);
+      tinyCache.clearAll();
+      expect(tinyCache.length, 0);
+    });
   });
 
   group('FrameCacheManager strategy integration', () {

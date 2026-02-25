@@ -1,25 +1,24 @@
 # Current Session
 
 **Status:** HUNT MODE
-**Last Updated:** 2026-02-25
-**Active Brief:** None (BR-125 complete)
+**Last Updated:** 2026-02-26
+**Active Brief:** None (BR-126 Done)
 
 ---
 
 ## Resume Point
 
-**Last Active:** BR-124 (Done), BR-123 (Done)
+**Last Active:** BR-125 (Done)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-Continue with `fifty_scroll_sequence` package — 3 briefs remaining in the chain:
+Continue with `fifty_scroll_sequence` package — 2 briefs remaining in the chain:
 
-1. **BR-125** (P2-Medium, M-Medium) — Advanced Loading Strategies: chunked/progressive preloading, NetworkFrameLoader, SpriteSheetLoader
-2. **BR-126** (P2-Medium, M-Medium) — ScrollSequenceController, SliverScrollSequence, example app, comprehensive tests, README
-3. **BR-127** (P3-Low, M-Medium) — Snap, Lifecycle Callbacks (onEnter/onLeave), Horizontal Scroll
+1. **BR-126** (P2-Medium, M-Medium) — ScrollSequenceController, SliverScrollSequence, example app, comprehensive tests, README
+2. **BR-127** (P3-Low, M-Medium) — Snap, Lifecycle Callbacks (onEnter/onLeave), Horizontal Scroll
 
 Also remaining from previous sessions:
 - **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo
@@ -28,18 +27,24 @@ Also remaining from previous sessions:
 
 ## Last Session Summary
 
-**Date:** 2026-02-25
+**Date:** 2026-02-26
 **Completed:**
-- Registered 5 briefs for `fifty_scroll_sequence` package (BR-123, BR-124, BR-125, BR-126, BR-127)
-- BR-123: Core MVP — package scaffold, models, loaders, LRU cache, frame controller, scroll progress tracker, frame display, scroll sequence widget, 30 unit tests (3,268 lines)
-- BR-124: Pinning & Smoothing — ticker-based lerp (vsync'd), PinnedScrollSection (sticky behavior), builder/overlay support, curve transforms, WidgetsBindingObserver lifecycle, 23 additional tests (1,776 lines)
-- Researched GSAP ScrollTrigger API comparison — decided to stay focused on image sequence scrubbing, cherry-picked 3 features for BR-127
+- BR-125: Advanced Loading Strategies for `fifty_scroll_sequence`
+  - PreloadStrategy system: `eager()`, `chunked()`, `progressive()` with const factories
+  - ChunkedPreloadStrategy: direction-aware sliding window (40 frames, 30 ahead/10 behind)
+  - ProgressivePreloadStrategy: keyframes first (20 evenly spaced), then gap-filling around current
+  - NetworkFrameLoader: dart:io HttpClient, disk caching, custom headers, progress callback
+  - SpriteSheetLoader: multi-sheet support, Canvas+PictureRecorder grid crop extraction
+  - ScrollSequence.network() and ScrollSequence.spriteSheet() named constructors
+  - Scroll direction detection on ScrollProgressTracker with jitter threshold
+  - loadingBuilder now receives 0.0-1.0 progress (LoadingWidgetBuilder typedef)
+  - WARDEN review fixes: mounted guard, shared HttpClient, response drain, cache dir creation
+  - 109 tests passing (39 new), zero analyze issues, +2,605 lines
 
 **Commits this session:**
-- `f39fb5e` — feat(scroll-sequence): add fifty_scroll_sequence core MVP package (BR-123)
-- `32e7efc` — feat(scroll-sequence): add pinning and smooth lerping (BR-124)
+- `028b436` — feat(scroll-sequence): add advanced loading strategies (BR-125)
 
-**Summary:** Registered 5 briefs and implemented 2 (BR-123, BR-124) for the new `fifty_scroll_sequence` package. Core MVP + pinning/smoothing complete with 53 passing tests and zero analyze issues. 3 briefs remaining (BR-125, BR-126, BR-127).
+**Summary:** Implemented BR-125 — advanced loading strategies for fifty_scroll_sequence. Added pluggable preload strategies (eager/chunked/progressive), NetworkFrameLoader with disk caching, SpriteSheetLoader with grid crop, scroll direction detection, and two new convenience constructors. Full agent pipeline: ARCHITECT -> FORGER (x3 phases) -> SENTINEL -> WARDEN -> fixes -> commit. 2 briefs remaining (BR-126, BR-127).
 
 ---
 
@@ -70,5 +75,5 @@ Also remaining from previous sessions:
 ## Resume Command
 
 ```
-Session 2026-02-25. 5 briefs registered (BR-123-127), 2 implemented (BR-123, BR-124) for fifty_scroll_sequence. 2 commits. 3 briefs remaining: BR-125 (advanced loading), BR-126 (controller/sliver/example), BR-127 (snap/lifecycle/horizontal). Also BR-117 (world engine FDL example).
+Session 2026-02-26. BR-125 implemented (advanced loading strategies for fifty_scroll_sequence). 1 commit. 2 briefs remaining: BR-126 (controller/sliver/example/README), BR-127 (snap/lifecycle/horizontal). Also BR-117 (world engine FDL example).
 ```

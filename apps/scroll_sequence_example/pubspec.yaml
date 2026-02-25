@@ -1,0 +1,28 @@
+name: scroll_sequence_example
+description: Example app for fifty_scroll_sequence
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.9.2 <4.0.0'
+
+dependencies:
+  fifty_scroll_sequence:
+    path: ../../packages/fifty_scroll_sequence
+  fifty_theme:
+    path: ../../packages/fifty_theme
+  fifty_tokens:
+    path: ../../packages/fifty_tokens
+  fifty_ui:
+    path: ../../packages/fifty_ui
+  flutter:
+    sdk: flutter
+  get: ^4.6.6
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

@@ -308,6 +308,94 @@ void main() {
       });
     });
 
+    group('curve support: easeIn', () {
+      test('easeIn produces lower index at 0.25 than linear', () {
+        final linearVsync = FakeTickerProvider();
+        final linearController = FrameController(
+          frameCount: 100,
+          vsync: linearVsync,
+          lerpFactor: 1.0,
+          curve: Curves.linear,
+        );
+        addTearDown(linearController.dispose);
+
+        linearController.updateFromProgress(0.25);
+        linearVsync.tick();
+        final linearAt25 = linearController.currentIndex;
+
+        final easeInVsync = FakeTickerProvider();
+        final easeInController = FrameController(
+          frameCount: 100,
+          vsync: easeInVsync,
+          lerpFactor: 1.0,
+          curve: Curves.easeIn,
+        );
+        addTearDown(easeInController.dispose);
+
+        easeInController.updateFromProgress(0.25);
+        easeInVsync.tick();
+        final easeInAt25 = easeInController.currentIndex;
+
+        expect(
+          easeInAt25,
+          lessThan(linearAt25),
+          reason: 'easeIn should produce lower index at 0.25',
+        );
+      });
+    });
+
+    group('curve support: easeOut', () {
+      test('easeOut produces higher index at 0.25 than linear', () {
+        final linearVsync = FakeTickerProvider();
+        final linearController = FrameController(
+          frameCount: 100,
+          vsync: linearVsync,
+          lerpFactor: 1.0,
+          curve: Curves.linear,
+        );
+        addTearDown(linearController.dispose);
+
+        linearController.updateFromProgress(0.25);
+        linearVsync.tick();
+        final linearAt25 = linearController.currentIndex;
+
+        final easeOutVsync = FakeTickerProvider();
+        final easeOutController = FrameController(
+          frameCount: 100,
+          vsync: easeOutVsync,
+          lerpFactor: 1.0,
+          curve: Curves.easeOut,
+        );
+        addTearDown(easeOutController.dispose);
+
+        easeOutController.updateFromProgress(0.25);
+        easeOutVsync.tick();
+        final easeOutAt25 = easeOutController.currentIndex;
+
+        expect(
+          easeOutAt25,
+          greaterThan(linearAt25),
+          reason: 'easeOut should produce higher index at 0.25',
+        );
+      });
+    });
+
+    group('boundary conditions', () {
+      test('exact 0.0 progress maps to index 0', () {
+        controller.updateFromProgress(0.0);
+        vsync.tick();
+        expect(controller.currentIndex, 0);
+        expect(controller.progress, 0.0);
+      });
+
+      test('exact 1.0 progress maps to last frame', () {
+        controller.updateFromProgress(1.0);
+        vsync.tick();
+        expect(controller.currentIndex, 9);
+        expect(controller.progress, closeTo(1.0, 0.01));
+      });
+    });
+
     group('targetProgress', () {
       test('reflects the last value set by updateFromProgress', () {
         controller.updateFromProgress(0.7);

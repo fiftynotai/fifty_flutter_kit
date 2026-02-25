@@ -10,6 +10,7 @@ import '../loaders/sprite_sheet_loader.dart';
 import '../strategies/preload_strategy.dart';
 import 'frame_display.dart';
 import 'pinned_scroll_section.dart';
+import 'scroll_sequence_controller.dart';
 
 /// Callback signature for frame change events.
 ///
@@ -96,6 +97,7 @@ class ScrollSequence extends StatefulWidget {
     this.curve = Curves.linear,
     this.loader,
     this.strategy,
+    this.controller,
     super.key,
   });
 
@@ -139,6 +141,7 @@ class ScrollSequence extends StatefulWidget {
     this.lerpFactor = 0.15,
     this.curve = Curves.linear,
     PreloadStrategy? strategy,
+    this.controller,
     super.key,
   })  : framePath = frameUrl,
         strategy = strategy ?? const PreloadStrategy.chunked(),
@@ -193,6 +196,7 @@ class ScrollSequence extends StatefulWidget {
     this.lerpFactor = 0.15,
     this.curve = Curves.linear,
     PreloadStrategy? strategy,
+    this.controller,
     super.key,
   })  : framePath = '',
         indexPadWidth = null,
@@ -288,12 +292,23 @@ class ScrollSequence extends StatefulWidget {
   /// and [PreloadStrategy.chunked()] for network/sprite sheet constructors.
   final PreloadStrategy? strategy;
 
+  /// Optional controller for programmatic interaction with the sequence.
+  ///
+  /// Provides read-only access to current frame, progress, and loading state
+  /// plus commands like [ScrollSequenceController.jumpToFrame] and
+  /// [ScrollSequenceController.preloadAll].
+  ///
+  /// The controller is attached in `initState` and detached in `dispose`.
+  /// Passing `null` disables programmatic control (backward-compatible).
+  final ScrollSequenceController? controller;
+
   @override
   State<ScrollSequence> createState() => _ScrollSequenceState();
 }
 
 class _ScrollSequenceState extends State<ScrollSequence>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver
+    implements ScrollSequenceStateAccessor {
   late FrameLoader _loader;
   late FrameCacheManager _cache;
   late FrameController _controller;
@@ -302,6 +317,33 @@ class _ScrollSequenceState extends State<ScrollSequence>
   bool _isLoadingFrames = true;
   int _loadedCount = 0;
   int _totalToLoad = 0;
+
+  // ---------------------------------------------------------------------------
+  // ScrollSequenceStateAccessor
+  // ---------------------------------------------------------------------------
+
+  @override
+  ScrollPosition? get scrollPosition => Scrollable.maybeOf(context)?.position;
+
+  @override
+  double get scrollExtent => widget.scrollExtent;
+
+  @override
+  bool get isPinned => widget.pin;
+
+  @override
+  double get widgetTopOffset {
+    final renderBox = context.findRenderObject() as RenderBox?;
+    if (renderBox == null || !renderBox.hasSize) return 0;
+
+    // For pinned mode, return the scroll offset at which the widget top
+    // reaches the viewport top (i.e. the absolute position in scroll content).
+    final position = scrollPosition;
+    if (position == null) return 0;
+
+    final widgetTopInViewport = renderBox.localToGlobal(Offset.zero).dy;
+    return position.pixels + widgetTopInViewport;
+  }
 
   @override
   void initState() {
@@ -331,6 +373,15 @@ class _ScrollSequenceState extends State<ScrollSequence>
     _tracker = ScrollProgressTracker(scrollExtent: widget.scrollExtent);
 
     _controller.addListener(_onFrameChanged);
+
+    // Attach the public controller after internals are ready.
+    widget.controller?.attach(
+      cacheManager: _cache,
+      loader: _loader,
+      frameCount: widget.frameCount,
+      accessor: this,
+    );
+
     _initialLoad();
   }
 
@@ -348,6 +399,13 @@ class _ScrollSequenceState extends State<ScrollSequence>
     widget.onFrameChanged?.call(
       _controller.currentIndex,
       _controller.progress,
+    );
+
+    // Sync state to the public controller.
+    widget.controller?.updateState(
+      currentFrame: _controller.currentIndex,
+      progress: _controller.progress,
+      loadedCount: _cache.length,
     );
 
     // Update direction tracking.
@@ -398,6 +456,9 @@ class _ScrollSequenceState extends State<ScrollSequence>
 
   @override
   void dispose() {
+    // Detach the public controller before disposing internals.
+    widget.controller?.detach();
+
     WidgetsBinding.instance.removeObserver(this);
     _controller.removeListener(_onFrameChanged);
     _controller.dispose();

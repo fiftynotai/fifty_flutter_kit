@@ -210,5 +210,69 @@ void main() {
     test('maxCacheSize returns keyframeCount + windowAhead + windowBehind', () {
       expect(strategy.maxCacheSize(100), 10 + 5 + 3);
     });
+
+    test('handles keyframeCount greater than totalFrames', () {
+      const edgeStrategy = ProgressivePreloadStrategy(
+        keyframeCount: 50,
+        windowAhead: 3,
+        windowBehind: 2,
+      );
+
+      final result = edgeStrategy.framesToLoad(
+        currentIndex: 0,
+        totalFrames: 10,
+        direction: ScrollDirection.forward,
+      );
+
+      // Should not exceed totalFrames in output.
+      for (final index in result) {
+        expect(index, greaterThanOrEqualTo(0));
+        expect(index, lessThan(10));
+      }
+
+      // No duplicates.
+      expect(result.toSet().length, result.length);
+
+      // Current frame is first.
+      expect(result.first, 0);
+    });
+
+    test('keyframeCount equal to totalFrames loads all frames', () {
+      const edgeStrategy = ProgressivePreloadStrategy(
+        keyframeCount: 10,
+        windowAhead: 0,
+        windowBehind: 0,
+      );
+
+      final result = edgeStrategy.framesToLoad(
+        currentIndex: 5,
+        totalFrames: 10,
+        direction: ScrollDirection.forward,
+      );
+
+      // Should contain all frames since step = max(1, 10 ~/ 10) = 1.
+      // Plus the last frame. All 10 frames should be present.
+      final resultSet = result.toSet();
+      for (int i = 0; i < 10; i++) {
+        expect(resultSet.contains(i), isTrue, reason: 'Missing frame $i');
+      }
+    });
+
+    test('window at boundary of totalFrames clamps correctly', () {
+      final result = strategy.framesToLoad(
+        currentIndex: 99,
+        totalFrames: 100,
+        direction: ScrollDirection.forward,
+      );
+
+      // Window ahead should not exceed 99.
+      for (final index in result) {
+        expect(index, greaterThanOrEqualTo(0));
+        expect(index, lessThan(100));
+      }
+
+      // Current frame is first.
+      expect(result.first, 99);
+    });
   });
 }
