@@ -1,0 +1,24 @@
+name: fifty_scroll_sequence
+description: Scroll-driven image sequence animation for Flutter. Apple-style frame scrubbing mapped to scroll position.
+version: 0.1.0
+homepage: https://fifty.dev
+repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_scroll_sequence
+issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues
+topics:
+  - flutter
+  - scroll
+  - animation
+  - image-sequence
+
+environment:
+  sdk: ^3.9.2
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter

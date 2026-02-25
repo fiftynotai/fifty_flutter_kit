@@ -2,27 +2,26 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-25
-**Active Brief:** BR-120, BR-119, BR-118 (parallel team)
+**Active Brief:** BR-123 (fifty_scroll_sequence — Core Package MVP)
 
 ---
 
 ## Resume Point
 
-**Last Active:** BR-116 (Root README Overhaul) — Done
+**Last Active:** BR-122, BR-121 (both Done)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-4 new briefs registered and ready for implementation:
+All high-priority briefs done. 1 brief remaining:
 
-1. **BR-120** (P1-High, S-Small) — Fix Mermaid diagram parse error in root README. `utils -.-> App Development` breaks GitHub rendering. Quick fix.
-2. **BR-119** (P2-Medium, S-Small) — Add tactical_grid app to README showcase screenshot + apps table. Also add sneaker_drops to apps table. Needs screenshots captured first.
-3. **BR-118** (P2-Medium, M-Medium) — Update fifty_demo app with all 16 packages. Missing: fifty_cache, fifty_utils, fifty_socket (13/16 currently).
-4. **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo (~250 lines). Do NOT move apps/tactical_grid/ — create new slim example instead.
+1. **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo (~250 lines). Do NOT move apps/tactical_grid/ — create new slim example instead.
 
-**Recommended order:** BR-120 (quick fix, high visibility) → BR-119 (needs screenshots) → BR-117 or BR-118
+Also consider:
+- Fixing the pre-existing `fifty_world_engine` Flame dependency issue (flame-1.35.0 missing from pub cache, blocks 3 test files)
+- Adding `trackUnitDefeated()` to AI regular attack paths in `_executeAttack()` and `_executeMoveAndAttack()` for full achievement tracking symmetry (WARDEN suggestion from BR-121 review)
 
 ---
 
@@ -30,17 +29,28 @@
 
 **Date:** 2026-02-25
 **Completed:**
-- BR-116: Root README overhaul to top-tier standard (banner, showcase, docs/)
-- Full API documentation audit — fixed 13 code example discrepancies across README + docs/QUICK_START.md
-- Replaced first showcase screenshot with fifty_demo app
-- Registered 4 new briefs: BR-117, BR-118, BR-119, BR-120
+- BR-120: Fixed Mermaid diagram parse error (subgraph IDs)
+- BR-119: Added tactical_grid to README showcase + apps table
+- BR-118: Added 3 demo pages (cache, utils, socket) to fifty_demo app
+- BR-122: Fixed game-stuck loop after killing AI commander (early game-over check in onEndTurn)
+- BR-121: Fixed First Blood achievement not triggering for ability kills (trackUnitDefeated in onUseAbility + AI executor)
+- Fixed grid centering bug (camera centered on tile grid midpoint instead of entity bounding box)
+- Fixed canvas clipping bug (ClipRect wrapping EngineBoardWidget)
+- Captured 4 tactical_grid screenshots (menu, battle, achievements, settings)
+- Updated tactical_grid README screenshot paths
+- Updated root README showcase grid (2x4, tactical grid replaces world engine)
+- Upgraded Igris AI to v4.0 (centralized brain symlinks)
 
 **Commits this session:**
-- `b3a3f02` — docs: overhaul root README to top-tier standard with banner, showcase, and docs
-- `8060406` — fix(docs): correct all code examples to match actual package APIs
-- `5b98c24` — docs: replace showcase screenshot with fifty_demo app
+- `3fb6344` — feat: implement BR-120, BR-119, BR-118 via parallel agent team
+- `f4e4d45` — docs: add tactical grid app screenshots for README showcase
+- `5a382cb` — fix(battle): resolve game-stuck loop and missing ability kill achievements
+- `0f0e4e4` — fix(battle): center grid on board and clip game canvas to layout bounds
+- `1354a2e` — chore: upgrade Igris AI to v4.0 and sync project config
+- `3872e6b` — docs: update tactical grid battle screenshot
+- `7dd4242` — docs: replace world engine with tactical grid in showcase grid
 
-**Summary:** Root README overhauled from 476 to 250 lines with SVG banner, 8-screenshot showcase grid, domain-grouped package tables, Mermaid architecture diagram, and 3 new docs files (ARCHITECTURE.md, QUICK_START.md, CONTRIBUTING.md). Created FDL Root README Template v1. Full code example audit found and fixed 13 API discrepancies. Registered 4 follow-up briefs for remaining polish.
+**Summary:** Massive session — 5 briefs completed (BR-118, BR-119, BR-120, BR-121, BR-122), 2 additional UI bug fixes (grid centering + canvas clipping), screenshot capture via simulator MCP, README updates, and Igris AI v4.0 upgrade. 7 commits pushed to main.
 
 ---
 
@@ -70,5 +80,5 @@
 ## Resume Command
 
 ```
-Session 2026-02-25. BR-116 complete — root README overhauled (banner, showcase, docs/). 13 code example fixes. 3 commits. 4 new briefs registered: BR-117 (world engine FDL example), BR-118 (demo app missing packages), BR-119 (tactical grid in README), BR-120 (Mermaid parse error). Recommended next: BR-120 (P1, quick fix).
+Session 2026-02-25. 5 briefs completed (BR-118, BR-119, BR-120, BR-121, BR-122) + 2 UI fixes (grid centering, canvas clipping). 7 commits. 1 brief remaining: BR-117 (world engine FDL example). Git clean.
 ```
