@@ -255,7 +255,11 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
     _centerCamera();
   }
 
-  /// Zooms out and centres the camera.
+  /// Zooms out and centres the camera on the tile grid.
+  ///
+  /// Centres on the grid midpoint (4 tiles in from each edge) rather than the
+  /// entity bounding box, so that the full 8x8 board is visually centred even
+  /// when units don't occupy the outer columns.
   ///
   /// Retries if the engine camera is not yet initialised (e.g. web where
   /// asset loading takes longer than the post-frame callback delay).
@@ -263,7 +267,10 @@ class _EngineBoardWidgetState extends State<EngineBoardWidget> {
     try {
       _controller.zoomOut();
       _controller.zoomOut();
-      _controller.centerMap();
+      // Centre on the tile grid midpoint instead of the entity bounding box.
+      const tileSize = world_engine.FiftyWorldConfig.blockSize;
+      _controller.game.cameraComponent.viewfinder.position =
+          world_engine.Vector2(4 * tileSize, 4 * tileSize);
     } catch (_) {
       // Camera not ready yet; retry shortly.
       Future.delayed(const Duration(milliseconds: 300), _centerCamera);

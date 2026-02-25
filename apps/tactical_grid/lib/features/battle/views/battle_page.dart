@@ -54,7 +54,7 @@ class _BattlePageState extends State<BattlePage> {
       body: Column(
         children: [
           const TurnIndicator(),
-          const Expanded(child: EngineBoardWidget()),
+          const Expanded(child: ClipRect(child: EngineBoardWidget())),
           const UnitInfoPanel(),
         ],
       ),

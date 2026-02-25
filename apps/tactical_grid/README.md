@@ -4,7 +4,7 @@ Turn-based tactical combat on a grid — a showcase application for the full Fif
 
 | Menu | Battle | Settings | Achievements |
 |:----:|:------:|:--------:|:------------:|
-| <img src="docs/screenshots/menu_dark.png" width="200"> | <img src="docs/screenshots/battle_dark.png" width="200"> | <img src="docs/screenshots/settings_dark.png" width="200"> | <img src="docs/screenshots/achievements_dark.png" width="200"> |
+| <img src="screenshots/menu_dark.png" width="200"> | <img src="screenshots/battle_dark.png" width="200"> | <img src="screenshots/settings_dark.png" width="200"> | <img src="screenshots/achievements_dark.png" width="200"> |
 
 ---
 
