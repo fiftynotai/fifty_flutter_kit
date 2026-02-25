@@ -1,3 +1,5 @@
+import '../strategies/preload_strategy.dart' show ScrollDirection;
+
 /// Calculates normalized scroll progress (0.0 to 1.0) for non-pinned mode.
 ///
 /// Progress is viewport-relative, meaning the animation plays while
@@ -24,6 +26,18 @@ class ScrollProgressTracker {
 
   /// Total scroll distance over which the sequence plays.
   final double scrollExtent;
+
+  /// Previous progress value for direction detection.
+  double _previousProgress = 0.0;
+
+  /// Current detected scroll direction.
+  ScrollDirection _direction = ScrollDirection.idle;
+
+  /// Minimum delta to register a direction change (prevents noise).
+  static const double _directionThreshold = 0.001;
+
+  /// Current scroll direction based on recent progress changes.
+  ScrollDirection get direction => _direction;
 
   /// Calculate normalized progress (0.0 to 1.0) for non-pinned mode.
   ///
@@ -57,5 +71,22 @@ class ScrollProgressTracker {
   }) {
     final scrolledPastPin = scrollOffset - sectionTop;
     return (scrolledPastPin / scrollExtent).clamp(0.0, 1.0);
+  }
+
+  /// Update direction from a new progress value.
+  ///
+  /// Call this each time progress is recalculated. If the delta exceeds
+  /// [_directionThreshold], the direction is updated to [ScrollDirection.forward]
+  /// or [ScrollDirection.backward]. Small deltas below the threshold keep
+  /// the previous direction to avoid idle flicker during smooth scrolling.
+  void updateDirection(double currentProgress) {
+    final delta = currentProgress - _previousProgress;
+    if (delta > _directionThreshold) {
+      _direction = ScrollDirection.forward;
+    } else if (delta < -_directionThreshold) {
+      _direction = ScrollDirection.backward;
+    }
+    // If |delta| <= threshold, keep previous direction (avoids idle flicker).
+    _previousProgress = currentProgress;
   }
 }

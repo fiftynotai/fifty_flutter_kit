@@ -105,5 +105,47 @@ void main() {
         expect(progress, 0.5);
       });
     });
+
+    group('direction detection', () {
+      test('initial direction is idle', () {
+        expect(tracker.direction, ScrollDirection.idle);
+      });
+
+      test('increasing progress sets direction to forward', () {
+        tracker.updateDirection(0.1);
+        expect(tracker.direction, ScrollDirection.forward);
+      });
+
+      test('decreasing progress sets direction to backward', () {
+        // First move forward to establish a baseline.
+        tracker.updateDirection(0.5);
+        expect(tracker.direction, ScrollDirection.forward);
+
+        // Now decrease to go backward.
+        tracker.updateDirection(0.3);
+        expect(tracker.direction, ScrollDirection.backward);
+      });
+
+      test('tiny delta below threshold keeps previous direction', () {
+        // Move forward past threshold.
+        tracker.updateDirection(0.1);
+        expect(tracker.direction, ScrollDirection.forward);
+
+        // Tiny delta (0.0005 < 0.001 threshold) should keep forward.
+        tracker.updateDirection(0.1005);
+        expect(tracker.direction, ScrollDirection.forward);
+      });
+
+      test('direction persists across multiple same-direction updates', () {
+        tracker.updateDirection(0.1);
+        tracker.updateDirection(0.2);
+        tracker.updateDirection(0.3);
+        expect(tracker.direction, ScrollDirection.forward);
+
+        tracker.updateDirection(0.2);
+        tracker.updateDirection(0.1);
+        expect(tracker.direction, ScrollDirection.backward);
+      });
+    });
   });
 }

@@ -3,6 +3,10 @@ import 'dart:collection';
 import 'dart:ui' as ui;
 
 import '../loaders/frame_loader.dart';
+import '../strategies/preload_strategy.dart';
+
+/// Progress callback: (loadedCount, totalExpected).
+typedef LoadProgressCallback = void Function(int loaded, int total);
 
 /// LRU cache for decoded [ui.Image] frames with proper GPU texture disposal.
 ///
@@ -126,6 +130,61 @@ class FrameCacheManager {
     _cache.clear();
     _loading.clear();
     _pending.clear();
+  }
+
+  /// Trigger strategy-driven preloading around [currentIndex].
+  ///
+  /// Calls [strategy.framesToLoad] to get the target set, then:
+  /// 1. Evicts frames outside the target set if
+  ///    [PreloadStrategy.shouldEvictOutsideWindow] is `true`.
+  /// 2. Loads any missing frames in priority order from the strategy.
+  /// 3. Reports progress via [onProgress] callback.
+  ///
+  /// Returns a [Future] that completes when all target frames are loaded.
+  Future<void> preloadForStrategy({
+    required int currentIndex,
+    required int totalFrames,
+    required PreloadStrategy strategy,
+    required ScrollDirection direction,
+    required FrameLoader loader,
+    LoadProgressCallback? onProgress,
+  }) async {
+    final targets = strategy.framesToLoad(
+      currentIndex: currentIndex,
+      totalFrames: totalFrames,
+      direction: direction,
+    );
+    final targetSet = targets.toSet();
+
+    // Evict frames outside target window.
+    if (strategy.shouldEvictOutsideWindow) {
+      _evictOutsideSet(targetSet);
+    }
+
+    // Load missing frames in strategy-defined priority order.
+    int loadedCount = 0;
+    final totalToLoad =
+        targets.where((i) => getFrame(i) == null && !_loading.contains(i)).length;
+
+    for (final index in targets) {
+      if (getFrame(index) != null) continue; // already cached
+      if (_loading.contains(index)) continue; // already loading
+
+      await loadFrame(index, loader);
+      loadedCount++;
+      onProgress?.call(loadedCount, totalToLoad);
+    }
+  }
+
+  /// Evict all cached frames whose indices are NOT in [keepSet].
+  ///
+  /// Calls [ui.Image.dispose] on each evicted frame to free GPU textures.
+  void _evictOutsideSet(Set<int> keepSet) {
+    final toEvict = _cache.keys.where((k) => !keepSet.contains(k)).toList();
+    for (final key in toEvict) {
+      final image = _cache.remove(key);
+      image?.dispose(); // CRITICAL: free GPU texture
+    }
   }
 
   void _evictIfNeeded() {

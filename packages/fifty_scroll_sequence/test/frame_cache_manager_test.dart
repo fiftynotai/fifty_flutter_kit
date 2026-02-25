@@ -127,4 +127,126 @@ void main() {
       expect(cache.estimatedMemoryBytes, 4);
     });
   });
+
+  group('FrameCacheManager strategy integration', () {
+    late FrameCacheManager cache;
+    late FakeFrameLoader loader;
+
+    setUp(() {
+      cache = FrameCacheManager(maxCacheSize: 50);
+      loader = FakeFrameLoader();
+    });
+
+    tearDown(() {
+      cache.clearAll();
+    });
+
+    test('preloadForStrategy loads frames in strategy order', () async {
+      const strategy = ChunkedPreloadStrategy(
+        chunkSize: 5,
+        preloadAhead: 3,
+        preloadBehind: 1,
+      );
+
+      await cache.preloadForStrategy(
+        currentIndex: 5,
+        totalFrames: 20,
+        strategy: strategy,
+        direction: ScrollDirection.forward,
+        loader: loader,
+      );
+
+      // Strategy should have loaded current (5), ahead (6,7,8), behind (4).
+      expect(cache.getFrame(5), isNotNull);
+      expect(cache.getFrame(6), isNotNull);
+      expect(cache.getFrame(7), isNotNull);
+      expect(cache.getFrame(8), isNotNull);
+      expect(cache.getFrame(4), isNotNull);
+      expect(cache.length, 5);
+    });
+
+    test('preloadForStrategy with chunked strategy evicts frames outside window',
+        () async {
+      const strategy = ChunkedPreloadStrategy(
+        chunkSize: 3,
+        preloadAhead: 2,
+        preloadBehind: 0,
+      );
+
+      // Pre-load frames 0 and 1 (these will be outside the next window).
+      await cache.loadFrame(0, loader);
+      await cache.loadFrame(1, loader);
+      expect(cache.length, 2);
+
+      // Now preload for index 10. Window should be [10, 11, 12].
+      // Frames 0 and 1 should be evicted since shouldEvictOutsideWindow is true.
+      await cache.preloadForStrategy(
+        currentIndex: 10,
+        totalFrames: 20,
+        strategy: strategy,
+        direction: ScrollDirection.forward,
+        loader: loader,
+      );
+
+      expect(cache.getFrame(0), isNull);
+      expect(cache.getFrame(1), isNull);
+      expect(cache.getFrame(10), isNotNull);
+    });
+
+    test('preloadForStrategy reports progress via callback', () async {
+      const strategy = ChunkedPreloadStrategy(
+        chunkSize: 4,
+        preloadAhead: 2,
+        preloadBehind: 1,
+      );
+
+      final progressCalls = <(int, int)>[];
+
+      await cache.preloadForStrategy(
+        currentIndex: 5,
+        totalFrames: 20,
+        strategy: strategy,
+        direction: ScrollDirection.forward,
+        loader: loader,
+        onProgress: (loaded, total) {
+          progressCalls.add((loaded, total));
+        },
+      );
+
+      // All frames should have been newly loaded, so we get progress for each.
+      expect(progressCalls, isNotEmpty);
+
+      // Last call should have loaded == total.
+      final lastCall = progressCalls.last;
+      expect(lastCall.$1, lastCall.$2);
+    });
+
+    test('evicted frames reduce cache length', () async {
+      const strategy = ChunkedPreloadStrategy(
+        chunkSize: 2,
+        preloadAhead: 1,
+        preloadBehind: 0,
+      );
+
+      // Pre-load several frames.
+      await cache.loadFrame(0, loader);
+      await cache.loadFrame(1, loader);
+      await cache.loadFrame(2, loader);
+      expect(cache.length, 3);
+
+      // Preload for index 10; frames 0-2 should be evicted.
+      await cache.preloadForStrategy(
+        currentIndex: 10,
+        totalFrames: 20,
+        strategy: strategy,
+        direction: ScrollDirection.forward,
+        loader: loader,
+      );
+
+      // Only the strategy window frames should remain.
+      expect(cache.getFrame(0), isNull);
+      expect(cache.getFrame(1), isNull);
+      expect(cache.getFrame(2), isNull);
+    });
+  });
 }

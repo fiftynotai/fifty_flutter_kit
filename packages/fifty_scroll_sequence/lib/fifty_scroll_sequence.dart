@@ -20,5 +20,6 @@ library;
 export 'src/core/core.dart';
 export 'src/loaders/loaders.dart';
 export 'src/models/models.dart';
+export 'src/strategies/strategies.dart';
 export 'src/utils/utils.dart';
 export 'src/widgets/widgets.dart';

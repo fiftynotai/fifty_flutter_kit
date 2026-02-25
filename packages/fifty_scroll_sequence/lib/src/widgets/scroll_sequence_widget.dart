@@ -4,6 +4,10 @@ import '../core/frame_cache_manager.dart';
 import '../core/frame_controller.dart';
 import '../core/scroll_progress_tracker.dart';
 import '../loaders/asset_frame_loader.dart';
+import '../loaders/frame_loader.dart';
+import '../loaders/network_frame_loader.dart';
+import '../loaders/sprite_sheet_loader.dart';
+import '../strategies/preload_strategy.dart';
 import 'frame_display.dart';
 import 'pinned_scroll_section.dart';
 
@@ -12,6 +16,14 @@ import 'pinned_scroll_section.dart';
 /// [frameIndex] is the current zero-based frame index.
 /// [progress] is the interpolated progress value (0.0 to 1.0).
 typedef FrameChangedCallback = void Function(int frameIndex, double progress);
+
+/// Builder for loading state with normalized progress (0.0 to 1.0).
+///
+/// Use this to build custom loading indicators that reflect preload progress.
+typedef LoadingWidgetBuilder = Widget Function(
+  BuildContext context,
+  double progress,
+);
 
 /// A scroll-driven image sequence widget that plays through frames
 /// as the user scrolls, creating an Apple-style scrubbing effect.
@@ -63,6 +75,8 @@ typedef FrameChangedCallback = void Function(int frameIndex, double progress);
 /// ```
 class ScrollSequence extends StatefulWidget {
   /// Creates a [ScrollSequence] widget.
+  ///
+  /// By default, uses [AssetFrameLoader] and [PreloadStrategy.eager()].
   const ScrollSequence({
     required this.frameCount,
     required this.framePath,
@@ -80,8 +94,111 @@ class ScrollSequence extends StatefulWidget {
     this.builder,
     this.lerpFactor = 0.15,
     this.curve = Curves.linear,
+    this.loader,
+    this.strategy,
     super.key,
   });
+
+  /// Creates a [ScrollSequence] that loads frames from network URLs.
+  ///
+  /// Downloaded frames are cached to [cacheDirectory] for offline access.
+  /// Obtain the directory via `(await getTemporaryDirectory()).path` from
+  /// the `path_provider` package.
+  ///
+  /// Defaults to [PreloadStrategy.chunked()] which is optimal for network
+  /// loading since it avoids downloading all frames upfront.
+  ///
+  /// ## Example
+  ///
+  /// ```dart
+  /// ScrollSequence.network(
+  ///   frameCount: 200,
+  ///   frameUrl: 'https://cdn.example.com/hero/frame_{index}.webp',
+  ///   cacheDirectory: tempDir.path,
+  ///   scrollExtent: 4000,
+  /// )
+  /// ```
+  ScrollSequence.network({
+    required this.frameCount,
+    required String frameUrl,
+    required String cacheDirectory,
+    Map<String, String> headers = const {},
+    DownloadProgressCallback? onDownloadProgress,
+    this.scrollExtent = 3000.0,
+    this.fit = BoxFit.cover,
+    this.width,
+    this.height,
+    this.placeholder,
+    this.loadingBuilder,
+    this.onFrameChanged,
+    this.indexPadWidth,
+    this.indexOffset = 0,
+    this.maxCacheSize = 100,
+    this.pin = true,
+    this.builder,
+    this.lerpFactor = 0.15,
+    this.curve = Curves.linear,
+    PreloadStrategy? strategy,
+    super.key,
+  })  : framePath = frameUrl,
+        strategy = strategy ?? const PreloadStrategy.chunked(),
+        loader = NetworkFrameLoader(
+          frameUrlPattern: frameUrl,
+          frameCount: frameCount,
+          cacheDirectory: cacheDirectory,
+          headers: headers,
+          indexPadWidth: indexPadWidth,
+          indexOffset: indexOffset,
+          onDownloadProgress: onDownloadProgress,
+        );
+
+  /// Creates a [ScrollSequence] from sprite sheet grid images.
+  ///
+  /// Each [SpriteSheetConfig] describes one sprite sheet image containing
+  /// a grid of frames. Multiple sheets can be used for large sequences.
+  ///
+  /// Defaults to [PreloadStrategy.chunked()] since sprite sheets often
+  /// contain many frames.
+  ///
+  /// ## Example
+  ///
+  /// ```dart
+  /// ScrollSequence.spriteSheet(
+  ///   frameCount: 100,
+  ///   sheets: [
+  ///     SpriteSheetConfig(
+  ///       assetPath: 'assets/sprites/sheet_01.webp',
+  ///       columns: 10,
+  ///       rows: 10,
+  ///       frameWidth: 320,
+  ///       frameHeight: 180,
+  ///     ),
+  ///   ],
+  ///   scrollExtent: 3000,
+  /// )
+  /// ```
+  ScrollSequence.spriteSheet({
+    required this.frameCount,
+    required List<SpriteSheetConfig> sheets,
+    this.scrollExtent = 3000.0,
+    this.fit = BoxFit.cover,
+    this.width,
+    this.height,
+    this.placeholder,
+    this.loadingBuilder,
+    this.onFrameChanged,
+    this.maxCacheSize = 100,
+    this.pin = true,
+    this.builder,
+    this.lerpFactor = 0.15,
+    this.curve = Curves.linear,
+    PreloadStrategy? strategy,
+    super.key,
+  })  : framePath = '',
+        indexPadWidth = null,
+        indexOffset = 0,
+        strategy = strategy ?? const PreloadStrategy.chunked(),
+        loader = SpriteSheetLoader(sheets: sheets, totalFrames: frameCount);
 
   /// Total number of frames in the sequence.
   final int frameCount;
@@ -107,7 +224,10 @@ class ScrollSequence extends StatefulWidget {
   final ImageProvider? placeholder;
 
   /// Builder shown during initial frame loading.
-  final WidgetBuilder? loadingBuilder;
+  ///
+  /// Receives a normalized progress value (0.0 to 1.0) reflecting how many
+  /// frames from the initial load have been cached so far.
+  final LoadingWidgetBuilder? loadingBuilder;
 
   /// Called when the displayed frame index or progress changes.
   final FrameChangedCallback? onFrameChanged;
@@ -157,30 +277,51 @@ class ScrollSequence extends StatefulWidget {
   /// at the start and end of the scroll range and faster in the middle.
   final Curve curve;
 
+  /// Optional custom frame loader.
+  ///
+  /// When null, [AssetFrameLoader] is used with [framePath].
+  final FrameLoader? loader;
+
+  /// Preload strategy controlling when frames are loaded/evicted.
+  ///
+  /// Defaults to [PreloadStrategy.eager()] for the default constructor
+  /// and [PreloadStrategy.chunked()] for network/sprite sheet constructors.
+  final PreloadStrategy? strategy;
+
   @override
   State<ScrollSequence> createState() => _ScrollSequenceState();
 }
 
 class _ScrollSequenceState extends State<ScrollSequence>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late AssetFrameLoader _loader;
+  late FrameLoader _loader;
   late FrameCacheManager _cache;
   late FrameController _controller;
   late ScrollProgressTracker _tracker;
+  late PreloadStrategy _strategy;
   bool _isLoadingFrames = true;
+  int _loadedCount = 0;
+  int _totalToLoad = 0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    _loader = AssetFrameLoader(
-      framePath: widget.framePath,
-      frameCount: widget.frameCount,
-      indexPadWidth: widget.indexPadWidth,
-      indexOffset: widget.indexOffset,
+    _loader = widget.loader ??
+        AssetFrameLoader(
+          framePath: widget.framePath,
+          frameCount: widget.frameCount,
+          indexPadWidth: widget.indexPadWidth,
+          indexOffset: widget.indexOffset,
+        );
+
+    _strategy = widget.strategy ?? const PreloadStrategy.eager();
+
+    _cache = FrameCacheManager(
+      maxCacheSize:
+          _strategy.maxCacheSize(widget.frameCount).clamp(1, widget.maxCacheSize),
     );
-    _cache = FrameCacheManager(maxCacheSize: widget.maxCacheSize);
     _controller = FrameController(
       frameCount: widget.frameCount,
       vsync: this,
@@ -190,7 +331,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
     _tracker = ScrollProgressTracker(scrollExtent: widget.scrollExtent);
 
     _controller.addListener(_onFrameChanged);
-    _eagerLoadAllFrames();
+    _initialLoad();
   }
 
   @override
@@ -208,17 +349,51 @@ class _ScrollSequenceState extends State<ScrollSequence>
       _controller.currentIndex,
       _controller.progress,
     );
+
+    // Update direction tracking.
+    _tracker.updateDirection(_controller.progress);
+
+    // Trigger strategy-driven preload for non-eager strategies.
+    if (_strategy.shouldEvictOutsideWindow) {
+      _preloadAroundCurrent();
+    }
+
     if (mounted) setState(() {});
   }
 
-  Future<void> _eagerLoadAllFrames() async {
-    for (int i = 0; i < widget.frameCount; i++) {
+  /// Strategy-aware initial load.
+  Future<void> _initialLoad() async {
+    final targets = _strategy.framesToLoad(
+      currentIndex: 0,
+      totalFrames: widget.frameCount,
+      direction: ScrollDirection.idle,
+    );
+    _totalToLoad = targets.length;
+    _loadedCount = 0;
+
+    for (final index in targets) {
       if (!mounted) return;
-      await _cache.loadFrame(i, _loader);
-      // Trigger rebuild after first frame so placeholder disappears fast.
-      if (i == 0 && mounted) setState(() => _isLoadingFrames = false);
+      await _cache.loadFrame(index, _loader);
+      _loadedCount++;
+      // Show content as soon as first frame is loaded.
+      if (_loadedCount == 1 && mounted) {
+        setState(() => _isLoadingFrames = false);
+      }
+      if (mounted) setState(() {}); // Update progress.
     }
     if (mounted) setState(() => _isLoadingFrames = false);
+  }
+
+  /// Preload frames around current position using strategy.
+  Future<void> _preloadAroundCurrent() async {
+    if (!mounted) return;
+    await _cache.preloadForStrategy(
+      currentIndex: _controller.currentIndex,
+      totalFrames: widget.frameCount,
+      strategy: _strategy,
+      direction: _tracker.direction,
+      loader: _loader,
+    );
   }
 
   @override
@@ -247,6 +422,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
     return PinnedScrollSection(
       scrollExtent: widget.scrollExtent,
       onProgressChanged: (progress) {
+        _tracker.updateDirection(progress);
         _controller.updateFromProgress(progress);
       },
       child: _buildFrameContent(),
@@ -281,6 +457,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
       viewportHeight: viewportHeight,
     );
 
+    _tracker.updateDirection(progress);
     _controller.updateFromProgress(progress);
     return false; // Don't absorb the notification.
   }
@@ -295,7 +472,10 @@ class _ScrollSequenceState extends State<ScrollSequence>
         return Image(image: widget.placeholder!, fit: widget.fit);
       }
       if (widget.loadingBuilder != null) {
-        return widget.loadingBuilder!(context);
+        final progress = _totalToLoad > 0
+            ? (_loadedCount / _totalToLoad).clamp(0.0, 1.0)
+            : 0.0;
+        return widget.loadingBuilder!(context, progress);
       }
       return const SizedBox.shrink();
     }
