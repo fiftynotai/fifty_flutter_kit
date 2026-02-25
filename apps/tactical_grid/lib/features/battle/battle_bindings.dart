@@ -75,6 +75,7 @@ class BattleBindings extends Bindings {
         Get.find<BattleAudioCoordinator>(),
         Get.find<AIService>(),
         Get.find<AnimationService>(),
+        Get.find<AchievementActions>(),
       ),
       fenix: true,
     );

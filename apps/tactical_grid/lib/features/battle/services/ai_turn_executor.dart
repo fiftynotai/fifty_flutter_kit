@@ -20,6 +20,7 @@ import 'package:fifty_world_engine/fifty_world_engine.dart' as world_engine;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../achievements/achievement_actions.dart';
 import '../controllers/battle_view_model.dart';
 import '../models/models.dart';
 import '../services/ai_service.dart';
@@ -49,6 +50,10 @@ class AITurnExecutor {
   /// Nullable so existing tests work without it.
   final AnimationService? _animationService;
 
+  /// Achievement tracking for battle events. Nullable so existing tests
+  /// work without it.
+  final AchievementActions? _achievements;
+
   /// Whether the AI is currently executing its turn.
   final RxBool isExecuting = false.obs;
 
@@ -66,7 +71,7 @@ class AITurnExecutor {
 
   /// Creates an [AITurnExecutor] with the required dependencies.
   AITurnExecutor(this._viewModel, this._audio, this._aiService,
-      [this._animationService]);
+      [this._animationService, this._achievements]);
 
   /// Execute the complete AI turn.
   ///
@@ -422,6 +427,23 @@ class AITurnExecutor {
     if (abilityType != null) {
       _audio.announceAbilityUsed(abilityType);
     }
+
+    // Track achievement events for ability kills.
+    // Use `selectedUnit` captured before useAbility() state mutation.
+    final achievements = _achievements;
+    if (achievements != null && result.affectedUnitIds != null) {
+      for (final affectedId in result.affectedUnitIds!) {
+        final affectedUnit = _viewModel.board.getUnitById(affectedId);
+        if (affectedUnit != null &&
+            affectedUnit.isDead &&
+            selectedUnit != null) {
+          achievements.trackUnitDefeated(
+            attacker: selectedUnit,
+            target: affectedUnit,
+          );
+        }
+      }
+    }
   }
 
   /// Executes a move-then-attack combo with sub-step delay.
@@ -765,6 +787,21 @@ class AITurnExecutor {
 
     if (abilityType != null) {
       _audio.announceAbilityUsed(abilityType);
+    }
+
+    // Track achievement events for ability kills.
+    // Use `unit` captured before useAbility() state mutation.
+    final achievements = _achievements;
+    if (achievements != null && result.affectedUnitIds != null) {
+      for (final affectedId in result.affectedUnitIds!) {
+        final affectedUnit = _viewModel.board.getUnitById(affectedId);
+        if (affectedUnit != null && affectedUnit.isDead && unit != null) {
+          achievements.trackUnitDefeated(
+            attacker: unit,
+            target: affectedUnit,
+          );
+        }
+      }
     }
   }
 

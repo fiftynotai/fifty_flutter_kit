@@ -509,6 +509,15 @@ class BattleActions {
     // Cancel timer before ending turn.
     _timerService?.cancel();
 
+    // If the game is already over (e.g. player killed AI commander this turn),
+    // show the game-over dialog immediately instead of switching turns.
+    if (_viewModel.isGameOver) {
+      if (context.mounted) {
+        _handleGameOver(context);
+      }
+      return;
+    }
+
     _viewModel.endTurn();
     _audio.playTurnEndSfx();
 
@@ -629,8 +638,9 @@ class BattleActions {
 
     _presenter.actionHandlerWithoutLoading(
       () async {
-        // Capture ability type before state mutation for voice announcement.
+        // Capture ability type and attacker before state mutation.
         final usedAbilityType = _viewModel.selectedAbility?.type;
+        final attacker = _viewModel.selectedUnit;
 
         final result = _viewModel.useAbility(targetPosition: targetPosition);
         _viewModel.isAbilityTargeting.value = false;
@@ -732,6 +742,22 @@ class BattleActions {
         // Announce ability used via voice.
         if (usedAbilityType != null) {
           _audio.announceAbilityUsed(usedAbilityType);
+        }
+
+        // Track achievement events for ability kills.
+        final achievements = _achievements;
+        if (achievements != null && result.affectedUnitIds != null) {
+          for (final affectedId in result.affectedUnitIds!) {
+            final affectedUnit = _viewModel.board.getUnitById(affectedId);
+            if (affectedUnit != null &&
+                affectedUnit.isDead &&
+                attacker != null) {
+              achievements.trackUnitDefeated(
+                attacker: attacker,
+                target: affectedUnit,
+              );
+            }
+          }
         }
 
         // Show success feedback.
