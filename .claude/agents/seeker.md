@@ -1,0 +1,1 @@
+/Users/m.elamin/.igris/core/agents/seeker.md

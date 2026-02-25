@@ -1,0 +1,1 @@
+/Users/m.elamin/.igris/core/rules/05-igris-persona.md
