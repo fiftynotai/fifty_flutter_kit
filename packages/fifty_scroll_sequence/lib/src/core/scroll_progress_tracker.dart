@@ -73,6 +73,31 @@ class ScrollProgressTracker {
     return (scrolledPastPin / scrollExtent).clamp(0.0, 1.0);
   }
 
+  /// Calculates non-pinned progress for horizontal scrolling.
+  ///
+  /// Same math as vertical but uses left offset and viewport width.
+  double calculateHorizontalProgress({
+    required double widgetLeftInViewport,
+    required double viewportWidth,
+  }) {
+    final totalTravel = viewportWidth + scrollExtent;
+    if (totalTravel <= 0) return 0;
+    final traveled = viewportWidth - widgetLeftInViewport;
+    return (traveled / totalTravel).clamp(0.0, 1.0);
+  }
+
+  /// Calculates pinned progress for horizontal scrolling.
+  ///
+  /// Same math as vertical but with left offset.
+  double calculatePinnedHorizontalProgress({
+    required double scrollOffset,
+    required double sectionLeft,
+  }) {
+    if (scrollExtent <= 0) return 0;
+    final scrolledPastPin = scrollOffset - sectionLeft;
+    return (scrolledPastPin / scrollExtent).clamp(0.0, 1.0);
+  }
+
   /// Update direction from a new progress value.
   ///
   /// Call this each time progress is recalculated. If the delta exceeds

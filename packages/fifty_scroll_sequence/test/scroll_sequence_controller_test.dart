@@ -46,6 +46,9 @@ class _MockAccessor implements ScrollSequenceStateAccessor {
   bool get isPinned => true;
 
   @override
+  Axis get scrollDirection => Axis.vertical;
+
+  @override
   double get widgetTopOffset => 0.0;
 }
 

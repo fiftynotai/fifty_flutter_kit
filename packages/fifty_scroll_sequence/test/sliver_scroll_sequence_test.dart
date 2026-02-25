@@ -259,6 +259,93 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
+    group('snap in sliver context', () {
+      testWidgets('SliverScrollSequence with snapConfig renders without errors',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: CustomScrollView(
+                slivers: [
+                  SliverScrollSequence(
+                    frameCount: 5,
+                    framePath: '',
+                    loader: loader,
+                    scrollExtent: 1000,
+                    lerpFactor: 1.0,
+                    snapConfig: SnapConfig(
+                      snapPoints: [0.0, 0.5, 1.0],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    });
+
+    group('lifecycle in sliver context', () {
+      testWidgets(
+          'SliverScrollSequence with all lifecycle callbacks renders without errors',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: CustomScrollView(
+                slivers: [
+                  SliverScrollSequence(
+                    frameCount: 5,
+                    framePath: '',
+                    loader: loader,
+                    scrollExtent: 1000,
+                    lerpFactor: 1.0,
+                    onEnter: () {},
+                    onLeave: () {},
+                    onEnterBack: () {},
+                    onLeaveBack: () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    });
+
+    group('horizontal sliver', () {
+      test(
+          'SliverScrollSequence accepts horizontal scrollDirection parameter',
+          () {
+        final loader = _FakeFrameLoader();
+        // Verify that the widget can be constructed with horizontal
+        // scrollDirection without throwing. Rendering in a horizontal
+        // CustomScrollView is not tested here because
+        // SliverPersistentHeader has a known layoutExtent constraint
+        // issue in horizontal mode during tests.
+        final widget = SliverScrollSequence(
+          frameCount: 5,
+          framePath: '',
+          loader: loader,
+          scrollExtent: 1000,
+          lerpFactor: 1.0,
+          scrollDirection: Axis.horizontal,
+        );
+        expect(widget.scrollDirection, Axis.horizontal);
+        expect(widget.frameCount, 5);
+      });
+    });
+
     testWidgets('controller detaches when widget is removed',
         (WidgetTester tester) async {
       final loader = _FakeFrameLoader();

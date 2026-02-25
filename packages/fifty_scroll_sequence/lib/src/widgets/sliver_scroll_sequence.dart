@@ -1,10 +1,16 @@
+import 'package:flutter/rendering.dart' show Axis, ScrollDirection;
 import 'package:flutter/widgets.dart';
 
 import '../core/frame_cache_manager.dart';
 import '../core/frame_controller.dart';
+import '../core/scroll_progress_tracker.dart';
+import '../core/snap_controller.dart';
+import '../core/viewport_observer.dart';
 import '../loaders/asset_frame_loader.dart';
 import '../loaders/frame_loader.dart';
-import '../strategies/preload_strategy.dart';
+import '../models/snap_config.dart';
+import '../strategies/preload_strategy.dart' as preload_strategy;
+import '../strategies/preload_strategy.dart' show PreloadStrategy;
 import 'frame_display.dart';
 import 'scroll_sequence_controller.dart';
 import 'scroll_sequence_widget.dart' show FrameChangedCallback, LoadingWidgetBuilder;
@@ -62,6 +68,12 @@ class SliverScrollSequence extends StatelessWidget {
     this.strategy,
     this.controller,
     this.pinned = true,
+    this.snapConfig,
+    this.onEnter,
+    this.onLeave,
+    this.onEnterBack,
+    this.onLeaveBack,
+    this.scrollDirection = Axis.vertical,
     super.key,
   });
 
@@ -136,14 +148,41 @@ class SliverScrollSequence extends StatelessWidget {
   /// Whether the sliver header stays pinned at the viewport top.
   final bool pinned;
 
+  /// Optional snap-to-keyframe configuration.
+  ///
+  /// When non-null, the scroll position auto-settles to the nearest snap
+  /// point when the user stops scrolling. See [SnapConfig] for details.
+  final SnapConfig? snapConfig;
+
+  /// Called when the sequence enters the viewport (forward scroll).
+  final VoidCallback? onEnter;
+
+  /// Called when the sequence exits the viewport (forward scroll).
+  final VoidCallback? onLeave;
+
+  /// Called when the sequence re-enters the viewport (backward scroll).
+  final VoidCallback? onEnterBack;
+
+  /// Called when the sequence exits the viewport backward.
+  final VoidCallback? onLeaveBack;
+
+  /// The scroll axis for the sequence.
+  ///
+  /// Defaults to [Axis.vertical]. When set to [Axis.horizontal], the widget
+  /// uses width-based layout for the persistent header extent.
+  final Axis scrollDirection;
+
   @override
   Widget build(BuildContext context) {
-    final viewportHeight = MediaQuery.sizeOf(context).height;
+    final size = MediaQuery.sizeOf(context);
+    final viewportDimension = scrollDirection == Axis.vertical
+        ? size.height
+        : size.width;
     return SliverPersistentHeader(
       pinned: pinned,
       delegate: _ScrollSequencePersistentDelegate(
-        maxExtent: viewportHeight + scrollExtent,
-        minExtent: pinned ? viewportHeight : 0,
+        maxExtent: viewportDimension + scrollExtent,
+        minExtent: pinned ? viewportDimension : 0,
         scrollExtent: scrollExtent,
         frameCount: frameCount,
         framePath: framePath,
@@ -160,6 +199,12 @@ class SliverScrollSequence extends StatelessWidget {
         loader: loader,
         strategy: strategy,
         controller: controller,
+        snapConfig: snapConfig,
+        onEnter: onEnter,
+        onLeave: onLeave,
+        onEnterBack: onEnterBack,
+        onLeaveBack: onLeaveBack,
+        scrollDirection: scrollDirection,
       ),
     );
   }
@@ -190,6 +235,12 @@ class _ScrollSequencePersistentDelegate
     this.loader,
     this.strategy,
     this.controller,
+    this.snapConfig,
+    this.onEnter,
+    this.onLeave,
+    this.onEnterBack,
+    this.onLeaveBack,
+    this.scrollDirection = Axis.vertical,
   })  : _maxExtent = maxExtent,
         _minExtent = minExtent;
 
@@ -216,6 +267,12 @@ class _ScrollSequencePersistentDelegate
   final FrameLoader? loader;
   final PreloadStrategy? strategy;
   final ScrollSequenceController? controller;
+  final SnapConfig? snapConfig;
+  final VoidCallback? onEnter;
+  final VoidCallback? onLeave;
+  final VoidCallback? onEnterBack;
+  final VoidCallback? onLeaveBack;
+  final Axis scrollDirection;
 
   @override
   double get maxExtent => _maxExtent;
@@ -233,7 +290,9 @@ class _ScrollSequencePersistentDelegate
         oldDelegate.curve != curve ||
         oldDelegate.loader != loader ||
         oldDelegate.strategy != strategy ||
-        oldDelegate.controller != controller;
+        oldDelegate.controller != controller ||
+        oldDelegate.snapConfig != snapConfig ||
+        oldDelegate.scrollDirection != scrollDirection;
   }
 
   @override
@@ -262,6 +321,12 @@ class _ScrollSequencePersistentDelegate
       loader: loader,
       strategy: strategy,
       controller: controller,
+      snapConfig: snapConfig,
+      onEnter: onEnter,
+      onLeave: onLeave,
+      onEnterBack: onEnterBack,
+      onLeaveBack: onLeaveBack,
+      scrollDirection: scrollDirection,
     );
   }
 }
@@ -289,6 +354,12 @@ class _SliverScrollSequenceContent extends StatefulWidget {
     this.loader,
     this.strategy,
     this.controller,
+    this.snapConfig,
+    this.onEnter,
+    this.onLeave,
+    this.onEnterBack,
+    this.onLeaveBack,
+    this.scrollDirection = Axis.vertical,
   });
 
   final double progress;
@@ -313,6 +384,12 @@ class _SliverScrollSequenceContent extends StatefulWidget {
   final FrameLoader? loader;
   final PreloadStrategy? strategy;
   final ScrollSequenceController? controller;
+  final SnapConfig? snapConfig;
+  final VoidCallback? onEnter;
+  final VoidCallback? onLeave;
+  final VoidCallback? onEnterBack;
+  final VoidCallback? onLeaveBack;
+  final Axis scrollDirection;
 
   @override
   State<_SliverScrollSequenceContent> createState() =>
@@ -326,7 +403,10 @@ class _SliverScrollSequenceContentState
   late FrameLoader _loader;
   late FrameCacheManager _cache;
   late FrameController _frameController;
+  late ScrollProgressTracker _tracker;
   late PreloadStrategy _strategy;
+  SnapController? _snapController;
+  ViewportObserver? _viewportObserver;
   bool _isLoadingFrames = true;
   int _loadedCount = 0;
   int _totalToLoad = 0;
@@ -344,7 +424,10 @@ class _SliverScrollSequenceContentState
   @override
   bool get isPinned => true;
 
-  /// Not applicable for sliver usage — the sliver header manages its own
+  @override
+  Axis get scrollDirection => widget.scrollDirection;
+
+  /// Not applicable for sliver usage -- the sliver header manages its own
   /// scroll offset via [shrinkOffset]. Jump commands on
   /// [ScrollSequenceController] are not supported for [SliverScrollSequence].
   @override
@@ -375,6 +458,7 @@ class _SliverScrollSequenceContentState
       lerpFactor: widget.lerpFactor,
       curve: widget.curve,
     );
+    _tracker = ScrollProgressTracker(scrollExtent: widget.scrollExtent);
 
     _frameController.addListener(_onFrameChanged);
 
@@ -386,7 +470,45 @@ class _SliverScrollSequenceContentState
       accessor: this,
     );
 
+    // Create snap controller if configured.
+    if (widget.snapConfig != null) {
+      _snapController = SnapController(config: widget.snapConfig!);
+    }
+
+    // Create viewport observer if any lifecycle callback is provided.
+    if (widget.onEnter != null ||
+        widget.onLeave != null ||
+        widget.onEnterBack != null ||
+        widget.onLeaveBack != null) {
+      _viewportObserver = ViewportObserver(
+        onEnter: widget.onEnter,
+        onLeave: widget.onLeave,
+        onEnterBack: widget.onEnterBack,
+        onLeaveBack: widget.onLeaveBack,
+      );
+    }
+
     _initialLoad();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _attachSnapController();
+  }
+
+  void _attachSnapController() {
+    final snap = _snapController;
+    if (snap == null) return;
+    final position = Scrollable.maybeOf(context)?.position;
+    if (position == null) return;
+
+    snap.attach(
+      position,
+      leadingEdgeOffset: () => widgetTopOffset,
+      scrollExtent: widget.scrollExtent,
+      currentProgress: () => _frameController.progress,
+    );
   }
 
   @override
@@ -395,6 +517,13 @@ class _SliverScrollSequenceContentState
     // Feed new progress from delegate into the frame controller.
     if (widget.progress != oldWidget.progress) {
       _frameController.updateFromProgress(widget.progress);
+      _tracker.updateDirection(widget.progress);
+
+      // Feed pinned lifecycle events from progress changes.
+      _viewportObserver?.updatePinnedState(
+        progress: widget.progress,
+        direction: _flutterDirection,
+      );
     }
   }
 
@@ -411,6 +540,9 @@ class _SliverScrollSequenceContentState
       loadedCount: _cache.length,
     );
 
+    // Update direction tracking.
+    _tracker.updateDirection(_frameController.progress);
+
     // Trigger strategy-driven preload for non-eager strategies.
     if (_strategy.shouldEvictOutsideWindow) {
       _preloadAroundCurrent();
@@ -419,12 +551,25 @@ class _SliverScrollSequenceContentState
     if (mounted) setState(() {});
   }
 
+  /// Converts the local [ScrollProgressTracker] direction to Flutter's
+  /// [ScrollDirection] for use with [ViewportObserver].
+  ScrollDirection get _flutterDirection {
+    switch (_tracker.direction) {
+      case preload_strategy.ScrollDirection.forward:
+        return ScrollDirection.forward;
+      case preload_strategy.ScrollDirection.backward:
+        return ScrollDirection.reverse;
+      case preload_strategy.ScrollDirection.idle:
+        return ScrollDirection.idle;
+    }
+  }
+
   /// Strategy-aware initial load.
   Future<void> _initialLoad() async {
     final targets = _strategy.framesToLoad(
       currentIndex: 0,
       totalFrames: widget.frameCount,
-      direction: ScrollDirection.idle,
+      direction: preload_strategy.ScrollDirection.idle,
     );
     _totalToLoad = targets.length;
     _loadedCount = 0;
@@ -451,7 +596,7 @@ class _SliverScrollSequenceContentState
       currentIndex: _frameController.currentIndex,
       totalFrames: widget.frameCount,
       strategy: _strategy,
-      direction: ScrollDirection.idle,
+      direction: _tracker.direction,
       loader: _loader,
     );
   }
@@ -459,6 +604,8 @@ class _SliverScrollSequenceContentState
   @override
   void dispose() {
     widget.controller?.detach();
+    _snapController?.dispose();
+    _viewportObserver?.dispose();
     _frameController.removeListener(_onFrameChanged);
     _frameController.dispose();
     _cache.clearAll();

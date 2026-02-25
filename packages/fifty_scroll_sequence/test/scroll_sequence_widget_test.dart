@@ -323,6 +323,236 @@ void main() {
       controller.dispose();
     });
 
+    group('snap integration', () {
+      testWidgets('widget with snapConfig renders without errors',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                      snapConfig: SnapConfig(
+                        snapPoints: [0.0, 0.5, 1.0],
+                      ),
+                    ),
+                    const SizedBox(height: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets(
+          'widget without snapConfig (null) renders without errors (backward compat)',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                    ),
+                    const SizedBox(height: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    });
+
+    group('lifecycle callbacks', () {
+      testWidgets('widget with onEnter callback renders without errors',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                      onEnter: () {},
+                    ),
+                    const SizedBox(height: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('widget with all lifecycle callbacks renders without errors',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                      onEnter: () {},
+                      onLeave: () {},
+                      onEnterBack: () {},
+                      onLeaveBack: () {},
+                    ),
+                    const SizedBox(height: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('widget without callbacks (null) renders without errors',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                    ),
+                    const SizedBox(height: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    });
+
+    group('horizontal scroll', () {
+      testWidgets(
+          'widget with scrollDirection: Axis.horizontal renders inside horizontal SingleChildScrollView',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                      scrollDirection: Axis.horizontal,
+                      width: 1000,
+                      height: 400,
+                    ),
+                    const SizedBox(width: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('widget with default scrollDirection (vertical) works as before',
+          (WidgetTester tester) async {
+        final loader = _FakeFrameLoader();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScrollSequence(
+                      frameCount: 5,
+                      framePath: '',
+                      loader: loader,
+                      scrollExtent: 1000,
+                      pin: false,
+                      lerpFactor: 1.0,
+                    ),
+                    const SizedBox(height: 500),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    });
+
     testWidgets('loadingBuilder receives progress values',
         (WidgetTester tester) async {
       final loader = _FakeFrameLoader();

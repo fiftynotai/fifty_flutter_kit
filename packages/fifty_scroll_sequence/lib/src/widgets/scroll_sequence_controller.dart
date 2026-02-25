@@ -18,10 +18,15 @@ abstract class ScrollSequenceStateAccessor {
   /// Whether the widget is in pinned mode.
   bool get isPinned;
 
-  /// The vertical offset of the widget in the scroll view.
+  /// The scroll direction of the widget.
+  Axis get scrollDirection;
+
+  /// The leading-edge offset of the widget in the scroll view.
   ///
-  /// For pinned mode this is the top of the [PinnedScrollSection] in the
-  /// scroll content, used to calculate jump offsets.
+  /// Returns the top offset for vertical scrolling, or the left offset for
+  /// horizontal scrolling. For pinned mode this is the leading edge of the
+  /// [PinnedScrollSection] in the scroll content, used to calculate jump
+  /// offsets.
   double get widgetTopOffset;
 }
 

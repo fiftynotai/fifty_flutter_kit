@@ -2,25 +2,22 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-26
-**Active Brief:** None (BR-126 Done)
+**Active Brief:** BR-127 (Done)
 
 ---
 
 ## Resume Point
 
-**Last Active:** BR-125 (Done)
+**Last Active:** BR-127 (Done)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-Continue with `fifty_scroll_sequence` package — 2 briefs remaining in the chain:
+The `fifty_scroll_sequence` package chain (BR-123 through BR-127) is now complete.
 
-1. **BR-126** (P2-Medium, M-Medium) — ScrollSequenceController, SliverScrollSequence, example app, comprehensive tests, README
-2. **BR-127** (P3-Low, M-Medium) — Snap, Lifecycle Callbacks (onEnter/onLeave), Horizontal Scroll
-
-Also remaining from previous sessions:
+Remaining from previous sessions:
 - **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo
 
 ---
@@ -29,22 +26,20 @@ Also remaining from previous sessions:
 
 **Date:** 2026-02-26
 **Completed:**
-- BR-125: Advanced Loading Strategies for `fifty_scroll_sequence`
-  - PreloadStrategy system: `eager()`, `chunked()`, `progressive()` with const factories
-  - ChunkedPreloadStrategy: direction-aware sliding window (40 frames, 30 ahead/10 behind)
-  - ProgressivePreloadStrategy: keyframes first (20 evenly spaced), then gap-filling around current
-  - NetworkFrameLoader: dart:io HttpClient, disk caching, custom headers, progress callback
-  - SpriteSheetLoader: multi-sheet support, Canvas+PictureRecorder grid crop extraction
-  - ScrollSequence.network() and ScrollSequence.spriteSheet() named constructors
-  - Scroll direction detection on ScrollProgressTracker with jitter threshold
-  - loadingBuilder now receives 0.0-1.0 progress (LoadingWidgetBuilder typedef)
-  - WARDEN review fixes: mounted guard, shared HttpClient, response drain, cache dir creation
-  - 109 tests passing (39 new), zero analyze issues, +2,605 lines
+- BR-037: Marked as Done (already migrated to FiftySnackbar/FiftyDialog in a previous session)
+- BR-127: Snap, Lifecycle Callbacks & Horizontal Scroll for `fifty_scroll_sequence`
+  - SnapConfig: immutable model with 3 constructors (explicit, everyNFrames, scenes) + O(log n) nearestSnapPoint
+  - SnapController: timer-based idle detection (150ms debounce), cancellable snap animation via animateTo/jumpTo
+  - ViewportObserver: dual state machine (visibility for non-pinned, progress for pinned) with exactly-once callback firing
+  - Horizontal scroll: scrollDirection parameter on ScrollSequence, SliverScrollSequence, PinnedScrollSection
+  - WARDEN fixes: .whenComplete vs .then for isSnapping reset, unconditional _cancelSnap reset, copy-before-sort in SnapConfig
+  - 65 new tests (238 total), zero analyze issues
+  - Full pipeline: ARCHITECT -> FORGER (x3 phases) -> SENTINEL -> WARDEN -> fixes -> commit
 
 **Commits this session:**
-- `028b436` — feat(scroll-sequence): add advanced loading strategies (BR-125)
+- (pending) feat(scroll-sequence): add snap, lifecycle callbacks, and horizontal scroll (BR-127)
 
-**Summary:** Implemented BR-125 — advanced loading strategies for fifty_scroll_sequence. Added pluggable preload strategies (eager/chunked/progressive), NetworkFrameLoader with disk caching, SpriteSheetLoader with grid crop, scroll direction detection, and two new convenience constructors. Full agent pipeline: ARCHITECT -> FORGER (x3 phases) -> SENTINEL -> WARDEN -> fixes -> commit. 2 briefs remaining (BR-126, BR-127).
+**Summary:** Implemented BR-127 — snap-to-keyframe, lifecycle callbacks (onEnter/onLeave/onEnterBack/onLeaveBack), and horizontal scroll support for fifty_scroll_sequence. All features opt-in. 238 tests passing, +1,500 lines. scroll_sequence chain complete (BR-123 through BR-127).
 
 ---
 
@@ -75,5 +70,5 @@ Also remaining from previous sessions:
 ## Resume Command
 
 ```
-Session 2026-02-26. BR-125 implemented (advanced loading strategies for fifty_scroll_sequence). 1 commit. 2 briefs remaining: BR-126 (controller/sliver/example/README), BR-127 (snap/lifecycle/horizontal). Also BR-117 (world engine FDL example).
+Session 2026-02-26. BR-127 implemented (snap/lifecycle/horizontal for fifty_scroll_sequence). 238 tests, zero analyze. scroll_sequence chain complete (BR-123–127). BR-117 remaining (world engine FDL example).
 ```

@@ -1,13 +1,18 @@
+import 'package:flutter/rendering.dart' show Axis, ScrollDirection;
 import 'package:flutter/widgets.dart';
 
 import '../core/frame_cache_manager.dart';
 import '../core/frame_controller.dart';
 import '../core/scroll_progress_tracker.dart';
+import '../core/snap_controller.dart';
+import '../core/viewport_observer.dart';
 import '../loaders/asset_frame_loader.dart';
 import '../loaders/frame_loader.dart';
 import '../loaders/network_frame_loader.dart';
 import '../loaders/sprite_sheet_loader.dart';
-import '../strategies/preload_strategy.dart';
+import '../models/snap_config.dart';
+import '../strategies/preload_strategy.dart' as preload_strategy;
+import '../strategies/preload_strategy.dart' show PreloadStrategy;
 import 'frame_display.dart';
 import 'pinned_scroll_section.dart';
 import 'scroll_sequence_controller.dart';
@@ -98,6 +103,12 @@ class ScrollSequence extends StatefulWidget {
     this.loader,
     this.strategy,
     this.controller,
+    this.snapConfig,
+    this.onEnter,
+    this.onLeave,
+    this.onEnterBack,
+    this.onLeaveBack,
+    this.scrollDirection = Axis.vertical,
     super.key,
   });
 
@@ -142,6 +153,12 @@ class ScrollSequence extends StatefulWidget {
     this.curve = Curves.linear,
     PreloadStrategy? strategy,
     this.controller,
+    this.snapConfig,
+    this.onEnter,
+    this.onLeave,
+    this.onEnterBack,
+    this.onLeaveBack,
+    this.scrollDirection = Axis.vertical,
     super.key,
   })  : framePath = frameUrl,
         strategy = strategy ?? const PreloadStrategy.chunked(),
@@ -197,6 +214,12 @@ class ScrollSequence extends StatefulWidget {
     this.curve = Curves.linear,
     PreloadStrategy? strategy,
     this.controller,
+    this.snapConfig,
+    this.onEnter,
+    this.onLeave,
+    this.onEnterBack,
+    this.onLeaveBack,
+    this.scrollDirection = Axis.vertical,
     super.key,
   })  : framePath = '',
         indexPadWidth = null,
@@ -302,6 +325,30 @@ class ScrollSequence extends StatefulWidget {
   /// Passing `null` disables programmatic control (backward-compatible).
   final ScrollSequenceController? controller;
 
+  /// Optional snap-to-keyframe configuration.
+  ///
+  /// When non-null, the scroll position auto-settles to the nearest snap
+  /// point when the user stops scrolling. See [SnapConfig] for details.
+  final SnapConfig? snapConfig;
+
+  /// Called when the sequence enters the viewport (forward scroll).
+  final VoidCallback? onEnter;
+
+  /// Called when the sequence exits the viewport (forward scroll).
+  final VoidCallback? onLeave;
+
+  /// Called when the sequence re-enters the viewport (backward scroll).
+  final VoidCallback? onEnterBack;
+
+  /// Called when the sequence exits the viewport backward.
+  final VoidCallback? onLeaveBack;
+
+  /// The scroll axis for the sequence.
+  ///
+  /// Defaults to [Axis.vertical]. When set to [Axis.horizontal], the widget
+  /// uses width-based layout and horizontal progress calculations.
+  final Axis scrollDirection;
+
   @override
   State<ScrollSequence> createState() => _ScrollSequenceState();
 }
@@ -314,6 +361,8 @@ class _ScrollSequenceState extends State<ScrollSequence>
   late FrameController _controller;
   late ScrollProgressTracker _tracker;
   late PreloadStrategy _strategy;
+  SnapController? _snapController;
+  ViewportObserver? _viewportObserver;
   bool _isLoadingFrames = true;
   int _loadedCount = 0;
   int _totalToLoad = 0;
@@ -332,17 +381,25 @@ class _ScrollSequenceState extends State<ScrollSequence>
   bool get isPinned => widget.pin;
 
   @override
+  Axis get scrollDirection => widget.scrollDirection;
+
+  @override
   double get widgetTopOffset {
     final renderBox = context.findRenderObject() as RenderBox?;
     if (renderBox == null || !renderBox.hasSize) return 0;
 
-    // For pinned mode, return the scroll offset at which the widget top
-    // reaches the viewport top (i.e. the absolute position in scroll content).
+    // Return the leading-edge offset in the configured scroll direction.
+    // For pinned mode, this is the scroll offset at which the widget's
+    // leading edge reaches the viewport's leading edge (i.e. the absolute
+    // position in scroll content).
     final position = scrollPosition;
     if (position == null) return 0;
 
-    final widgetTopInViewport = renderBox.localToGlobal(Offset.zero).dy;
-    return position.pixels + widgetTopInViewport;
+    final globalOffset = renderBox.localToGlobal(Offset.zero);
+    final leadingEdgeInViewport = widget.scrollDirection == Axis.vertical
+        ? globalOffset.dy
+        : globalOffset.dx;
+    return position.pixels + leadingEdgeInViewport;
   }
 
   @override
@@ -382,7 +439,45 @@ class _ScrollSequenceState extends State<ScrollSequence>
       accessor: this,
     );
 
+    // Create snap controller if configured.
+    if (widget.snapConfig != null) {
+      _snapController = SnapController(config: widget.snapConfig!);
+    }
+
+    // Create viewport observer if any lifecycle callback is provided.
+    if (widget.onEnter != null ||
+        widget.onLeave != null ||
+        widget.onEnterBack != null ||
+        widget.onLeaveBack != null) {
+      _viewportObserver = ViewportObserver(
+        onEnter: widget.onEnter,
+        onLeave: widget.onLeave,
+        onEnterBack: widget.onEnterBack,
+        onLeaveBack: widget.onLeaveBack,
+      );
+    }
+
     _initialLoad();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _attachSnapController();
+  }
+
+  void _attachSnapController() {
+    final snap = _snapController;
+    if (snap == null) return;
+    final position = Scrollable.maybeOf(context)?.position;
+    if (position == null) return;
+
+    snap.attach(
+      position,
+      leadingEdgeOffset: () => widgetTopOffset,
+      scrollExtent: widget.scrollExtent,
+      currentProgress: () => _controller.progress,
+    );
   }
 
   @override
@@ -424,7 +519,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
     final targets = _strategy.framesToLoad(
       currentIndex: 0,
       totalFrames: widget.frameCount,
-      direction: ScrollDirection.idle,
+      direction: preload_strategy.ScrollDirection.idle,
     );
     _totalToLoad = targets.length;
     _loadedCount = 0;
@@ -459,6 +554,8 @@ class _ScrollSequenceState extends State<ScrollSequence>
     // Detach the public controller before disposing internals.
     widget.controller?.detach();
 
+    _snapController?.dispose();
+    _viewportObserver?.dispose();
     WidgetsBinding.instance.removeObserver(this);
     _controller.removeListener(_onFrameChanged);
     _controller.dispose();
@@ -480,14 +577,52 @@ class _ScrollSequenceState extends State<ScrollSequence>
   // ---------------------------------------------------------------------------
 
   Widget _buildPinned() {
-    return PinnedScrollSection(
-      scrollExtent: widget.scrollExtent,
-      onProgressChanged: (progress) {
-        _tracker.updateDirection(progress);
-        _controller.updateFromProgress(progress);
-      },
-      child: _buildFrameContent(),
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handlePinnedScrollNotification,
+      child: PinnedScrollSection(
+        scrollExtent: widget.scrollExtent,
+        scrollDirection: widget.scrollDirection,
+        onProgressChanged: (progress) {
+          _tracker.updateDirection(progress);
+          _controller.updateFromProgress(progress);
+
+          // Feed pinned lifecycle events.
+          _viewportObserver?.updatePinnedState(
+            progress: progress,
+            direction: _flutterDirection,
+          );
+        },
+        child: _buildFrameContent(),
+      ),
     );
+  }
+
+  bool _handlePinnedScrollNotification(ScrollNotification notification) {
+    if (_snapController == null) return false;
+
+    if (notification is ScrollUpdateNotification) {
+      if (_snapController?.isSnapping != true) {
+        _snapController!.onScrollUpdate();
+      }
+    } else if (notification is ScrollEndNotification) {
+      if (_snapController?.isSnapping != true) {
+        _snapController!.onScrollEnd();
+      }
+    }
+    return false;
+  }
+
+  /// Converts the local [ScrollProgressTracker] direction to Flutter's
+  /// [ScrollDirection] for use with [ViewportObserver].
+  ScrollDirection get _flutterDirection {
+    switch (_tracker.direction) {
+      case preload_strategy.ScrollDirection.forward:
+        return ScrollDirection.forward;
+      case preload_strategy.ScrollDirection.backward:
+        return ScrollDirection.reverse;
+      case preload_strategy.ScrollDirection.idle:
+        return ScrollDirection.idle;
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -495,11 +630,13 @@ class _ScrollSequenceState extends State<ScrollSequence>
   // ---------------------------------------------------------------------------
 
   Widget _buildNonPinned() {
+    final isHorizontal = widget.scrollDirection == Axis.horizontal;
+
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScroll,
       child: SizedBox(
-        width: widget.width,
-        height: widget.height ?? widget.scrollExtent,
+        width: isHorizontal ? (widget.width ?? widget.scrollExtent) : widget.width,
+        height: isHorizontal ? widget.height : (widget.height ?? widget.scrollExtent),
         child: _buildFrameContent(),
       ),
     );
@@ -510,17 +647,65 @@ class _ScrollSequenceState extends State<ScrollSequence>
     final renderBox = context.findRenderObject() as RenderBox?;
     if (renderBox == null || !renderBox.hasSize) return false;
 
-    final viewportHeight = notification.metrics.viewportDimension;
-    final widgetTopInViewport = renderBox.localToGlobal(Offset.zero).dy;
+    final viewportDimension = notification.metrics.viewportDimension;
+    final globalOffset = renderBox.localToGlobal(Offset.zero);
 
-    final progress = _tracker.calculateProgress(
-      widgetTopInViewport: widgetTopInViewport,
-      viewportHeight: viewportHeight,
-    );
+    final double progress;
+    if (widget.scrollDirection == Axis.horizontal) {
+      progress = _tracker.calculateHorizontalProgress(
+        widgetLeftInViewport: globalOffset.dx,
+        viewportWidth: viewportDimension,
+      );
+    } else {
+      progress = _tracker.calculateProgress(
+        widgetTopInViewport: globalOffset.dy,
+        viewportHeight: viewportDimension,
+      );
+    }
 
     _tracker.updateDirection(progress);
     _controller.updateFromProgress(progress);
+
+    // Feed non-pinned lifecycle events.
+    if (_viewportObserver != null) {
+      final isVisible = _isWidgetInViewport(
+        globalOffset: globalOffset,
+        renderBox: renderBox,
+        viewportDimension: viewportDimension,
+      );
+      _viewportObserver!.updateVisibility(
+        isVisible: isVisible,
+        direction: _flutterDirection,
+      );
+    }
+
+    // Feed snap controller events.
+    if (_snapController != null && _snapController!.isSnapping != true) {
+      if (notification is ScrollUpdateNotification) {
+        _snapController!.onScrollUpdate();
+      } else if (notification is ScrollEndNotification) {
+        _snapController!.onScrollEnd();
+      }
+    }
+
     return false; // Don't absorb the notification.
+  }
+
+  /// Checks if the widget's render box is visible within the viewport.
+  bool _isWidgetInViewport({
+    required Offset globalOffset,
+    required RenderBox renderBox,
+    required double viewportDimension,
+  }) {
+    if (widget.scrollDirection == Axis.horizontal) {
+      final left = globalOffset.dx;
+      final right = left + renderBox.size.width;
+      return right > 0 && left < viewportDimension;
+    } else {
+      final top = globalOffset.dy;
+      final bottom = top + renderBox.size.height;
+      return bottom > 0 && top < viewportDimension;
+    }
   }
 
   // ---------------------------------------------------------------------------
