@@ -25,7 +25,7 @@ This toolkit is born from close to a decade of building Flutter and Dart applica
 <div align="center">
 <table>
 <tr>
-<td align="center"><img src="design_system/v2/fifty_ui_kit_components_1/screen.png" width="180"><br><sub>Design System</sub></td>
+<td align="center"><img src="apps/fifty_demo/screenshots/home_dark.png" width="180"><br><sub>Demo App</sub></td>
 <td align="center"><img src="packages/fifty_forms/screenshots/multi_step_form_dark.png" width="180"><br><sub>Multi-Step Forms</sub></td>
 <td align="center"><img src="packages/fifty_skill_tree/screenshots/rpg_skill_tree_light.png" width="180"><br><sub>Skill Trees</sub></td>
 <td align="center"><img src="packages/fifty_world_engine/screenshots/tactical_overview_light.png" width="180"><br><sub>World Engine</sub></td>
