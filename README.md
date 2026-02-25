@@ -28,16 +28,13 @@ This toolkit is born from close to a decade of building Flutter and Dart applica
 <td align="center"><img src="apps/fifty_demo/screenshots/home_dark.png" width="180"><br><sub>Demo App</sub></td>
 <td align="center"><img src="packages/fifty_forms/screenshots/multi_step_form_dark.png" width="180"><br><sub>Multi-Step Forms</sub></td>
 <td align="center"><img src="packages/fifty_skill_tree/screenshots/rpg_skill_tree_light.png" width="180"><br><sub>Skill Trees</sub></td>
-<td align="center"><img src="packages/fifty_world_engine/screenshots/tactical_overview_light.png" width="180"><br><sub>World Engine</sub></td>
+<td align="center"><img src="apps/tactical_grid/screenshots/battle_dark.png" width="180"><br><sub>Tactical Grid</sub></td>
 </tr>
 <tr>
 <td align="center"><img src="packages/fifty_audio_engine/screenshots/bgm_player_light.png" width="180"><br><sub>Audio Engine</sub></td>
 <td align="center"><img src="packages/fifty_achievement_engine/screenshots/achievement_unlocked_light.png" width="180"><br><sub>Achievements</sub></td>
 <td align="center"><img src="packages/fifty_printing_engine/screenshots/ticket_builder_dark.png" width="180"><br><sub>Printing</sub></td>
 <td align="center"><img src="packages/fifty_connectivity/screenshots/overlay.png" width="180"><br><sub>Connectivity</sub></td>
-</tr>
-<tr>
-<td colspan="4" align="center"><img src="apps/tactical_grid/screenshots/battle_dark.png" width="180"><br><sub>Tactical Grid</sub></td>
 </tr>
 </table>
 </div>
