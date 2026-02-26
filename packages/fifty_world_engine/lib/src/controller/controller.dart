@@ -227,10 +227,10 @@ class FiftyWorldController {
 
   // Camera utilities
 
-  /// **Centers the camera on all spawned entities.**
+  /// **Centers the camera on the map.**
   ///
-  /// Delegates to [FiftyWorldBuilder.centerMap]. See that method for notes on how
-  /// speed is derived from [duration].
+  /// When a grid is present, centers on the grid midpoint. Otherwise falls
+  /// back to the entity bounding-box midpoint. Snaps immediately (no animation).
   void centerMap({Duration duration = const Duration(seconds: 1)}) {
     if (!isBound) return;
     game.centerMap(duration: duration);

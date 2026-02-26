@@ -10,10 +10,8 @@ topics:
   - tilemap
   - flame
 screenshots:
-  - description: 'Tactical grid overview'
-    path: screenshots/tactical_overview_light.png
-  - description: 'Unit selection interface'
-    path: screenshots/unit_selection_light.png
+  - description: 'FDL Tactical Grid Demo'
+    path: screenshots/tactical_overview_dark.png
 
 environment:
   sdk: ^3.6.0

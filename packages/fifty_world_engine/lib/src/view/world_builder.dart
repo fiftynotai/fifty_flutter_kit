@@ -11,6 +11,7 @@ import 'package:fifty_world_engine/src/services/asset_loader_service.dart';
 import 'package:fifty_world_engine/src/grid/grid_position.dart';
 import 'package:fifty_world_engine/src/grid/tile_grid.dart';
 import 'package:fifty_world_engine/src/components/tiles/tile_grid_component.dart';
+import 'package:fifty_world_engine/src/config/world_config.dart';
 import 'package:fifty_world_engine/src/input/tap_resolver.dart';
 import 'package:fifty_world_engine/src/view/widget.dart' show FiftyTileTapCallback;
 
@@ -454,32 +455,37 @@ class FiftyWorldBuilder extends FlameGame
 
   // Camera Centering Helpers
 
-  /// **Centers the camera on the full extent of all entities.**
+  /// **Centers the camera on the map.**
   ///
-  /// Calculates the bounding box of all component positions and moves the
-  /// camera towards the midpoint. The *movement speed* is computed as
-  /// `distance / duration.inSeconds` so that the viewfinder approximately
-  /// reaches the target in [duration].
+  /// When a [grid] is present, centers on the grid midpoint so the full board
+  /// is visually centered regardless of where entities are placed. Without a
+  /// grid, falls back to the entity bounding-box midpoint.
+  ///
+  /// The viewfinder position is set directly (no animation) so the camera
+  /// snaps to the target immediately.
   void centerMap({Duration duration = const Duration(seconds: 1)}) {
-    if (_componentsRegistry.isEmpty) return;
+    final Vector2 center;
 
-    final positions =
-        _componentsRegistry.values.map((c) => c.position).toList();
-    final minX = positions.map((p) => p.x).reduce((a, b) => a < b ? a : b);
-    final maxX = positions.map((p) => p.x).reduce((a, b) => a > b ? a : b);
-    final minY = positions.map((p) => p.y).reduce((a, b) => a < b ? a : b);
-    final maxY = positions.map((p) => p.y).reduce((a, b) => a > b ? a : b);
+    if (grid != null) {
+      // Grid midpoint in world pixels.
+      center = Vector2(
+        grid!.width * FiftyWorldConfig.blockSize / 2,
+        grid!.height * FiftyWorldConfig.blockSize / 2,
+      );
+    } else if (_componentsRegistry.isNotEmpty) {
+      // Fallback: entity bounding-box midpoint.
+      final positions =
+          _componentsRegistry.values.map((c) => c.position).toList();
+      final minX = positions.map((p) => p.x).reduce((a, b) => a < b ? a : b);
+      final maxX = positions.map((p) => p.x).reduce((a, b) => a > b ? a : b);
+      final minY = positions.map((p) => p.y).reduce((a, b) => a < b ? a : b);
+      final maxY = positions.map((p) => p.y).reduce((a, b) => a > b ? a : b);
+      center = Vector2((minX + maxX) / 2, (minY + maxY) / 2);
+    } else {
+      return;
+    }
 
-    final center = Vector2((minX + maxX) / 2, (minY + maxY) / 2);
-    final currentPos = cameraComponent.viewfinder.position;
-    final distance = currentPos.distanceTo(center);
-
-    if (distance < 0.01) return; // Already centered
-
-    final speed = distance / (duration.inMilliseconds / 1000.0);
-
-    // Align center to camera viewport so it looks centered on screen.
-    cameraComponent.moveTo(center, speed: speed);
+    cameraComponent.viewfinder.position = center;
   }
 
   /// **Centers the camera on a specific [entity]** over [duration].
