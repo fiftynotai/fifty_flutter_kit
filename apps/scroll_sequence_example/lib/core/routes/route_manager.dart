@@ -1,14 +1,18 @@
 /// Scroll Sequence Example - Route Manager
 ///
-/// Defines four routes for the demo: menu, basic, pinned, and multi.
+/// Defines seven routes for the demo: menu, basic, pinned, multi,
+/// snap, lifecycle, and horizontal.
 library;
 
 import 'package:get/get.dart';
 
 import '../../features/basic/views/basic_page.dart';
+import '../../features/horizontal/views/horizontal_page.dart';
+import '../../features/lifecycle/views/lifecycle_page.dart';
 import '../../features/menu/views/menu_page.dart';
 import '../../features/multi/views/multi_sequence_page.dart';
 import '../../features/pinned/views/pinned_page.dart';
+import '../../features/snap/views/snap_page.dart';
 
 /// Centralized route definitions for the scroll sequence demo.
 ///
@@ -29,6 +33,15 @@ class RouteManager {
   /// Multi-sequence demo with two independent sequences.
   static const String multiRoute = '/multi';
 
+  /// Snap-to-keyframe demo with scene indicators.
+  static const String snapRoute = '/snap';
+
+  /// Lifecycle callbacks demo with event log.
+  static const String lifecycleRoute = '/lifecycle';
+
+  /// Horizontal scroll direction demo.
+  static const String horizontalRoute = '/horizontal';
+
   /// All registered pages for [GetMaterialApp.getPages].
   static final List<GetPage<dynamic>> pages = [
     GetPage<dynamic>(
@@ -46,6 +59,18 @@ class RouteManager {
     GetPage<dynamic>(
       name: multiRoute,
       page: () => const MultiSequencePage(),
+    ),
+    GetPage<dynamic>(
+      name: snapRoute,
+      page: () => const SnapPage(),
+    ),
+    GetPage<dynamic>(
+      name: lifecycleRoute,
+      page: () => const LifecyclePage(),
+    ),
+    GetPage<dynamic>(
+      name: horizontalRoute,
+      page: () => const HorizontalPage(),
     ),
   ];
 }

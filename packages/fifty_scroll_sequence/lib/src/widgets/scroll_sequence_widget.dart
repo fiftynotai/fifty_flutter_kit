@@ -363,6 +363,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
   late PreloadStrategy _strategy;
   SnapController? _snapController;
   ViewportObserver? _viewportObserver;
+  ScrollPosition? _attachedScrollPosition;
   bool _isLoadingFrames = true;
   int _loadedCount = 0;
   int _totalToLoad = 0;
@@ -472,12 +473,51 @@ class _ScrollSequenceState extends State<ScrollSequence>
     final position = Scrollable.maybeOf(context)?.position;
     if (position == null) return;
 
+    // Detach from previous position if re-attaching.
+    _detachScrollPositionListeners();
+
     snap.attach(
       position,
-      leadingEdgeOffset: () => widgetTopOffset,
       scrollExtent: widget.scrollExtent,
       currentProgress: () => _controller.progress,
     );
+
+    // In pinned mode, NotificationListener can't catch scroll notifications
+    // from the ancestor scrollable (notifications bubble UP, not DOWN).
+    // Listen to the ScrollPosition directly for scroll idle detection.
+    //
+    // We use position.addListener (fires on every pixel change) with a
+    // pure debounce approach: each change resets the idle timer. When
+    // position stops changing for idleTimeout ms, snap fires.
+    //
+    // NOTE: We do NOT use isScrollingNotifier because it toggles between
+    // discrete scroll events on macOS trackpad, causing false snap triggers.
+    if (widget.pin) {
+      _attachedScrollPosition = position;
+      position.addListener(_onScrollPositionChanged);
+    }
+  }
+
+  void _detachScrollPositionListeners() {
+    final position = _attachedScrollPosition;
+    if (position == null) return;
+    position.removeListener(_onScrollPositionChanged);
+    _attachedScrollPosition = null;
+  }
+
+  /// Called when the ancestor scroll position changes (pinned mode only).
+  ///
+  /// Ignores position changes from the snap animation itself (isSnapping
+  /// guard). When the user scrolls, resets the idle debounce timer. Snap
+  /// fires when no user-driven position changes occur for idleTimeout ms.
+  ///
+  /// If the user grabs the scroll during a snap animation, Flutter interrupts
+  /// the [DrivenScrollActivity] which completes the animateTo future, setting
+  /// isSnapping = false. Subsequent position changes then process normally.
+  void _onScrollPositionChanged() {
+    if (_snapController == null || _snapController!.isSnapping) return;
+    // Reset idle timer — snap fires when position stops changing.
+    _snapController!.onScrollEnd();
   }
 
   @override
@@ -554,6 +594,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
     // Detach the public controller before disposing internals.
     widget.controller?.detach();
 
+    _detachScrollPositionListeners();
     _snapController?.dispose();
     _viewportObserver?.dispose();
     WidgetsBinding.instance.removeObserver(this);
@@ -577,39 +618,21 @@ class _ScrollSequenceState extends State<ScrollSequence>
   // ---------------------------------------------------------------------------
 
   Widget _buildPinned() {
-    return NotificationListener<ScrollNotification>(
-      onNotification: _handlePinnedScrollNotification,
-      child: PinnedScrollSection(
-        scrollExtent: widget.scrollExtent,
-        scrollDirection: widget.scrollDirection,
-        onProgressChanged: (progress) {
-          _tracker.updateDirection(progress);
-          _controller.updateFromProgress(progress);
+    return PinnedScrollSection(
+      scrollExtent: widget.scrollExtent,
+      scrollDirection: widget.scrollDirection,
+      onProgressChanged: (progress) {
+        _tracker.updateDirection(progress);
+        _controller.updateFromProgress(progress);
 
-          // Feed pinned lifecycle events.
-          _viewportObserver?.updatePinnedState(
-            progress: progress,
-            direction: _flutterDirection,
-          );
-        },
-        child: _buildFrameContent(),
-      ),
+        // Feed pinned lifecycle events.
+        _viewportObserver?.updatePinnedState(
+          progress: progress,
+          direction: _flutterDirection,
+        );
+      },
+      child: _buildFrameContent(),
     );
-  }
-
-  bool _handlePinnedScrollNotification(ScrollNotification notification) {
-    if (_snapController == null) return false;
-
-    if (notification is ScrollUpdateNotification) {
-      if (_snapController?.isSnapping != true) {
-        _snapController!.onScrollUpdate();
-      }
-    } else if (notification is ScrollEndNotification) {
-      if (_snapController?.isSnapping != true) {
-        _snapController!.onScrollEnd();
-      }
-    }
-    return false;
   }
 
   /// Converts the local [ScrollProgressTracker] direction to Flutter's

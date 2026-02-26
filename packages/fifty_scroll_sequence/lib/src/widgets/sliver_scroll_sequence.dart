@@ -505,7 +505,6 @@ class _SliverScrollSequenceContentState
 
     snap.attach(
       position,
-      leadingEdgeOffset: () => widgetTopOffset,
       scrollExtent: widget.scrollExtent,
       currentProgress: () => _frameController.progress,
     );

@@ -26,7 +26,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.3, // Not at a snap point
         );
@@ -62,7 +62,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.3,
         );
@@ -101,7 +101,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.3,
         );
@@ -141,7 +141,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.5, // Already at a snap point
         );
@@ -178,7 +178,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.3,
         );
@@ -218,7 +218,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.3,
         );
@@ -254,7 +254,7 @@ void main() {
         final scrollPosition = scrollController.position;
         snapController.attach(
           scrollPosition,
-          leadingEdgeOffset: () => 0.0,
+
           scrollExtent: 3000.0,
           currentProgress: () => 0.3,
         );

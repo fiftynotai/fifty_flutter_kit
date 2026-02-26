@@ -1,7 +1,7 @@
 /// Scroll Sequence Example - Menu Page
 ///
 /// Landing page with FDL-styled title and navigation buttons
-/// to the three demo pages.
+/// to the six demo pages.
 library;
 
 import 'package:fifty_tokens/fifty_tokens.dart';
@@ -14,7 +14,7 @@ import '../../../core/routes/route_manager.dart';
 /// FDL-styled menu page for the scroll sequence example app.
 ///
 /// Displays the app title in display typography (Manrope uppercase),
-/// a subtitle, three navigation buttons, and a version label.
+/// a subtitle, six navigation buttons, and a version label.
 class MenuPage extends StatelessWidget {
   /// Creates the menu page.
   const MenuPage({super.key});
@@ -29,7 +29,6 @@ class MenuPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.xxl),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 2),
 
@@ -72,26 +71,63 @@ class MenuPage extends StatelessWidget {
 
               const Spacer(),
 
-              // Navigation buttons.
-              FiftyButton(
-                label: 'BASIC DEMO',
-                onPressed: () => Get.toNamed<void>(RouteManager.basicRoute),
-                variant: FiftyButtonVariant.primary,
-                expanded: true,
-              ),
-              const SizedBox(height: FiftySpacing.md),
-              FiftyButton(
-                label: 'PINNED DEMO',
-                onPressed: () => Get.toNamed<void>(RouteManager.pinnedRoute),
-                variant: FiftyButtonVariant.outline,
-                expanded: true,
-              ),
-              const SizedBox(height: FiftySpacing.md),
-              FiftyButton(
-                label: 'MULTI DEMO',
-                onPressed: () => Get.toNamed<void>(RouteManager.multiRoute),
-                variant: FiftyButtonVariant.outline,
-                expanded: true,
+              // Navigation buttons (scrollable for smaller screens).
+              Flexible(
+                flex: 4,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      FiftyButton(
+                        label: 'BASIC DEMO',
+                        onPressed: () =>
+                            Get.toNamed<void>(RouteManager.basicRoute),
+                        variant: FiftyButtonVariant.primary,
+                        expanded: true,
+                      ),
+                      const SizedBox(height: FiftySpacing.md),
+                      FiftyButton(
+                        label: 'PINNED DEMO',
+                        onPressed: () =>
+                            Get.toNamed<void>(RouteManager.pinnedRoute),
+                        variant: FiftyButtonVariant.outline,
+                        expanded: true,
+                      ),
+                      const SizedBox(height: FiftySpacing.md),
+                      FiftyButton(
+                        label: 'MULTI DEMO',
+                        onPressed: () =>
+                            Get.toNamed<void>(RouteManager.multiRoute),
+                        variant: FiftyButtonVariant.outline,
+                        expanded: true,
+                      ),
+                      const SizedBox(height: FiftySpacing.md),
+                      FiftyButton(
+                        label: 'SNAP DEMO',
+                        onPressed: () =>
+                            Get.toNamed<void>(RouteManager.snapRoute),
+                        variant: FiftyButtonVariant.outline,
+                        expanded: true,
+                      ),
+                      const SizedBox(height: FiftySpacing.md),
+                      FiftyButton(
+                        label: 'LIFECYCLE DEMO',
+                        onPressed: () =>
+                            Get.toNamed<void>(RouteManager.lifecycleRoute),
+                        variant: FiftyButtonVariant.outline,
+                        expanded: true,
+                      ),
+                      const SizedBox(height: FiftySpacing.md),
+                      FiftyButton(
+                        label: 'HORIZONTAL DEMO',
+                        onPressed: () =>
+                            Get.toNamed<void>(RouteManager.horizontalRoute),
+                        variant: FiftyButtonVariant.outline,
+                        expanded: true,
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
               const Spacer(),

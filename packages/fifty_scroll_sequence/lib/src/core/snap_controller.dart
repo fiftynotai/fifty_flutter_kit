@@ -17,7 +17,6 @@ class SnapController {
 
   ScrollPosition? _scrollPosition;
   double Function()? _currentProgress;
-  double Function()? _leadingEdgeOffset;
   double _scrollExtent = 0;
   Timer? _idleTimer;
   bool _isSnapping = false;
@@ -27,17 +26,14 @@ class SnapController {
 
   /// Attaches the controller to a scroll position.
   ///
-  /// [leadingEdgeOffset] returns the current leading edge pixel offset.
   /// [scrollExtent] is the total scroll distance for the sequence.
   /// [currentProgress] returns the current normalized progress (0.0--1.0).
   void attach(
     ScrollPosition scrollPosition, {
-    required double Function() leadingEdgeOffset,
     required double scrollExtent,
     required double Function() currentProgress,
   }) {
     _scrollPosition = scrollPosition;
-    _leadingEdgeOffset = leadingEdgeOffset;
     _scrollExtent = scrollExtent;
     _currentProgress = currentProgress;
   }
@@ -47,7 +43,6 @@ class SnapController {
     _cancelTimer();
     _cancelSnap();
     _scrollPosition = null;
-    _leadingEdgeOffset = null;
     _currentProgress = null;
   }
 
@@ -96,17 +91,21 @@ class SnapController {
   void _performSnap() {
     if (_scrollPosition == null ||
         _currentProgress == null ||
-        _leadingEdgeOffset == null) {
+        !_scrollPosition!.hasPixels) {
       return;
     }
 
     final progress = _currentProgress!();
     final target = config.nearestSnapPoint(progress);
 
-    // Skip if already at the target (within small epsilon)
+    // Skip if already at the target (within small epsilon).
     if ((target - progress).abs() < 0.001) return;
 
-    final targetOffset = _leadingEdgeOffset!() + target * _scrollExtent;
+    // Delta-based offset: from current position, move by the progress
+    // difference. This works correctly in both pinned and non-pinned modes
+    // regardless of lead-in spacing or widget position.
+    final delta = (target - progress) * _scrollExtent;
+    final targetOffset = _scrollPosition!.pixels + delta;
 
     _isSnapping = true;
     _scrollPosition!
