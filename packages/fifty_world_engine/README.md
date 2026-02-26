@@ -5,9 +5,9 @@
 
 Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
-| Tactical Overview | Unit Selection & Pathfinding |
-|:-----------------:|:---------------------------:|
-| <img src="screenshots/tactical_overview_light.png" width="200"> | <img src="screenshots/unit_selection_light.png" width="200"> |
+| FDL Tactical Grid Demo |
+|:----------------------:|
+| <img src="screenshots/tactical_overview_dark.png" width="300"> |
 
 ---
 

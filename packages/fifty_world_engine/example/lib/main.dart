@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 
 const _grass = TileType(
   id: 'grass',
-  asset: 'tiles/tile_light.png',
+  asset: 'tiles/tile_dark.png',
   color: Color(0xFF4CAF50),
   walkable: true,
   movementCost: 1.0,
@@ -36,14 +36,14 @@ const _forest = TileType(
 
 const _water = TileType(
   id: 'water',
-  asset: 'tiles/tile_trap.png',
+  asset: 'tiles/tile_dark.png',
   color: Color(0xFF1565C0),
   walkable: false,
 );
 
 const _wall = TileType(
   id: 'wall',
-  asset: 'tiles/tile_obstacle.png',
+  asset: 'tiles/tile_dark.png',
   color: Color(0xFF5D4037),
   walkable: false,
 );
@@ -159,10 +159,7 @@ Future<void> main() async {
     'units/enemy_commander.png',
     'units/enemy_archer.png',
     'units/enemy_mage.png',
-    'tiles/tile_light.png',
     'tiles/tile_dark.png',
-    'tiles/tile_obstacle.png',
-    'tiles/tile_trap.png',
   ]);
   runApp(const FdlTacticalGridDemo());
 }
@@ -176,9 +173,9 @@ class FdlTacticalGridDemo extends StatelessWidget {
     return MaterialApp(
       title: 'FDL Tactical Grid Demo',
       debugShowCheckedModeBanner: false,
-      theme: FiftyTheme.light(),
+      theme: FiftyTheme.dark(),
       darkTheme: FiftyTheme.dark(),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       home: const DemoPage(),
     );
   }
