@@ -248,10 +248,25 @@ class _DemoPageState extends State<DemoPage> {
       _controller.addStatusIcon(unit.id, unit.label);
     }
 
-    // Zoom out and centre camera on the grid.
-    _controller.zoomOut();
-    _controller.zoomOut();
-    _controller.centerMap();
+    // Centre camera on the grid (retry if engine not ready).
+    _centerCamera();
+  }
+
+  /// Zooms out and snaps the camera to the grid centre.
+  ///
+  /// Retries if the engine camera is not yet initialised.
+  void _centerCamera() {
+    try {
+      _controller.zoomOut();
+      _controller.zoomOut();
+      const tileSize = FiftyWorldConfig.blockSize;
+      _controller.game.cameraComponent.viewfinder.position =
+          // ignore: deprecated_export_use
+          Vector2(4 * tileSize, 4 * tileSize);
+    } catch (_) {
+      // Camera not ready yet; retry shortly.
+      Future.delayed(const Duration(milliseconds: 300), _centerCamera);
+    }
   }
 
   // --- Tap handlers ---
