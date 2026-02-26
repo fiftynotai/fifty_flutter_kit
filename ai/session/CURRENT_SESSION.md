@@ -2,7 +2,8 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-26
-**Active Brief:** BR-127 (Done)
+**Active Brief:** BR-117 (Done)
+**Instance ID:** 272eb9a5
 
 ---
 
@@ -15,9 +16,10 @@
 
 ## Next Session Instructions
 
-The `fifty_scroll_sequence` package chain (BR-123 through BR-127) is now complete.
+The `fifty_scroll_sequence` package chain (BR-123 through BR-127) is complete. Snap fixes committed.
 
-Remaining from previous sessions:
+Remaining briefs:
+- **BR-128** (P2-Medium, S-Small) — PinnedScrollSection dead zone: `_leadingEdgeInViewport` uses screen-relative coords instead of scroll-area-relative. Fix prototyped, needs manual verification.
 - **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo
 
 ---
@@ -26,20 +28,19 @@ Remaining from previous sessions:
 
 **Date:** 2026-02-26
 **Completed:**
-- BR-037: Marked as Done (already migrated to FiftySnackbar/FiftyDialog in a previous session)
-- BR-127: Snap, Lifecycle Callbacks & Horizontal Scroll for `fifty_scroll_sequence`
-  - SnapConfig: immutable model with 3 constructors (explicit, everyNFrames, scenes) + O(log n) nearestSnapPoint
-  - SnapController: timer-based idle detection (150ms debounce), cancellable snap animation via animateTo/jumpTo
-  - ViewportObserver: dual state machine (visibility for non-pinned, progress for pinned) with exactly-once callback firing
-  - Horizontal scroll: scrollDirection parameter on ScrollSequence, SliverScrollSequence, PinnedScrollSection
-  - WARDEN fixes: .whenComplete vs .then for isSnapping reset, unconditional _cancelSnap reset, copy-before-sort in SnapConfig
-  - 65 new tests (238 total), zero analyze issues
-  - Full pipeline: ARCHITECT -> FORGER (x3 phases) -> SENTINEL -> WARDEN -> fixes -> commit
+- Fixed snap-to-keyframe in pinned mode (3 bugs):
+  - NotificationListener doesn't work for pinned mode (bubbles UP not DOWN) — replaced with direct ScrollPosition.addListener
+  - Snap animation cancelled itself — added isSnapping guard in position listener
+  - Wrong target offset — switched to delta-based calculation (position.pixels + delta)
+  - Removed unused leadingEdgeOffset parameter from SnapController.attach
+- Added 3 example app demo pages: snap, lifecycle, horizontal
+- Added iOS + macOS platform support for example app
+- Registered BR-128 for PinnedScrollSection dead zone investigation
 
 **Commits this session:**
-- (pending) feat(scroll-sequence): add snap, lifecycle callbacks, and horizontal scroll (BR-127)
+- 63a0d5f fix(scroll-sequence): fix snap in pinned mode, add example demos
 
-**Summary:** Implemented BR-127 — snap-to-keyframe, lifecycle callbacks (onEnter/onLeave/onEnterBack/onLeaveBack), and horizontal scroll support for fifty_scroll_sequence. All features opt-in. 238 tests passing, +1,500 lines. scroll_sequence chain complete (BR-123 through BR-127).
+**Summary:** Fixed snap-to-keyframe bugs in pinned mode (notification bubbling, self-cancellation, wrong offset). Added snap/lifecycle/horizontal demos to example app. Registered BR-128 for dead zone issue in PinnedScrollSection progress calculation.
 
 ---
 
@@ -70,5 +71,5 @@ Remaining from previous sessions:
 ## Resume Command
 
 ```
-Session 2026-02-26. BR-127 implemented (snap/lifecycle/horizontal for fifty_scroll_sequence). 238 tests, zero analyze. scroll_sequence chain complete (BR-123–127). BR-117 remaining (world engine FDL example).
+Session 2026-02-26. Snap fixes committed (63a0d5f). BR-128 registered (PinnedScrollSection dead zone). BR-117 remaining (world engine FDL example).
 ```

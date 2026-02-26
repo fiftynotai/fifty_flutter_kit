@@ -678,7 +678,7 @@ final trap = FiftyWorldEntity(
 5. **Use grid coordinates** - Movement methods use tile units, not pixels
 6. **Leverage custom types** - Register custom spawners for game-specific entities
 
-See the [example directory](example/) for a complete tactical skirmish sandbox showcasing tile grid rendering, camera controls, entity spawning with team decorators, A* pathfinding, animation queues, and tap interaction.
+See the [example directory](example/) for a concise FDL-styled tactical grid demo showcasing tile grid rendering, entity decorators (HP bars, team borders, status icons), tile overlays, A* pathfinding, and tap interaction -- all themed with the Fifty Design Language. For a full-featured tactical game, see [apps/tactical_grid/](../../apps/tactical_grid/).
 
 ---
 
