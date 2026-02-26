@@ -461,9 +461,12 @@ class FiftyWorldBuilder extends FlameGame
   /// is visually centered regardless of where entities are placed. Without a
   /// grid, falls back to the entity bounding-box midpoint.
   ///
-  /// The viewfinder position is set directly (no animation) so the camera
-  /// snaps to the target immediately.
-  void centerMap({Duration duration = const Duration(seconds: 1)}) {
+  /// By default the viewfinder snaps to the target instantly. Set [animate]
+  /// to `true` to smoothly pan the camera over [duration] instead.
+  void centerMap({
+    bool animate = false,
+    Duration duration = const Duration(seconds: 1),
+  }) {
     final Vector2 center;
 
     if (grid != null) {
@@ -485,7 +488,14 @@ class FiftyWorldBuilder extends FlameGame
       return;
     }
 
-    cameraComponent.viewfinder.position = center;
+    if (animate) {
+      final distance = cameraComponent.viewfinder.position.distanceTo(center);
+      if (distance < 0.01) return;
+      final speed = distance / (duration.inMilliseconds / 1000.0);
+      cameraComponent.moveTo(center, speed: speed);
+    } else {
+      cameraComponent.viewfinder.position = center;
+    }
   }
 
   /// **Centers the camera on a specific [entity]** over [duration].

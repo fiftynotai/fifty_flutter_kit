@@ -230,10 +230,16 @@ class FiftyWorldController {
   /// **Centers the camera on the map.**
   ///
   /// When a grid is present, centers on the grid midpoint. Otherwise falls
-  /// back to the entity bounding-box midpoint. Snaps immediately (no animation).
-  void centerMap({Duration duration = const Duration(seconds: 1)}) {
+  /// back to the entity bounding-box midpoint.
+  ///
+  /// Snaps instantly by default. Set [animate] to `true` to smoothly pan
+  /// the camera over [duration].
+  void centerMap({
+    bool animate = false,
+    Duration duration = const Duration(seconds: 1),
+  }) {
     if (!isBound) return;
-    game.centerMap(duration: duration);
+    game.centerMap(animate: animate, duration: duration);
   }
 
   /// **Centers the camera on a specific [entity].**
