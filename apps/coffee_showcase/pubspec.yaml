@@ -1,0 +1,29 @@
+name: coffee_showcase
+description: Coffee scroll sequence showcase - real video frames
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.9.2 <4.0.0'
+
+dependencies:
+  fifty_scroll_sequence:
+    path: ../../packages/fifty_scroll_sequence
+  fifty_theme:
+    path: ../../packages/fifty_theme
+  fifty_tokens:
+    path: ../../packages/fifty_tokens
+  fifty_ui:
+    path: ../../packages/fifty_ui
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/frames/

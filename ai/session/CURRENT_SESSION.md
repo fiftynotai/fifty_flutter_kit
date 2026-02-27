@@ -1,26 +1,24 @@
 # Current Session
 
 **Status:** HUNT MODE
-**Last Updated:** 2026-02-26
-**Active Brief:** BR-117 (Done)
-**Instance ID:** 272eb9a5
+**Last Updated:** 2026-02-27
+**Active Brief:** BR-129 (Scroll Sequence Coffee Showcase)
 
 ---
 
 ## Resume Point
 
-**Last Active:** BR-127 (Done)
+**Last Active:** BR-117 (Done)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-The `fifty_scroll_sequence` package chain (BR-123 through BR-127) is complete. Snap fixes committed.
+BR-117 is complete (world engine FDL tactical grid demo). All commits pushed.
 
 Remaining briefs:
-- **BR-128** (P2-Medium, S-Small) — PinnedScrollSection dead zone: `_leadingEdgeInViewport` uses screen-relative coords instead of scroll-area-relative. Fix prototyped, needs manual verification.
-- **BR-117** (P2-Medium, M-Medium) — Replace world engine example with slim FDL tactical grid demo
+- **BR-128** (P2-Medium, S-Small) — PinnedScrollSection dead zone: `_leadingEdgeInViewport` uses screen-relative coords instead of scroll-area-relative. Fix prototyped in brief, needs implementation and manual verification.
 
 ---
 
@@ -28,19 +26,21 @@ Remaining briefs:
 
 **Date:** 2026-02-26
 **Completed:**
-- Fixed snap-to-keyframe in pinned mode (3 bugs):
-  - NotificationListener doesn't work for pinned mode (bubbles UP not DOWN) — replaced with direct ScrollPosition.addListener
-  - Snap animation cancelled itself — added isSnapping guard in position listener
-  - Wrong target offset — switched to delta-based calculation (position.pixels + delta)
-  - Removed unused leadingEdgeOffset parameter from SnapController.attach
-- Added 3 example app demo pages: snap, lifecycle, horizontal
-- Added iOS + macOS platform support for example app
-- Registered BR-128 for PinnedScrollSection dead zone investigation
+- Implemented BR-117: Replaced world engine example with slim FDL tactical grid demo (489 lines)
+- Forced dark mode + uniform tile sprite (`tile_dark.png`) across all terrain types
+- Captured dark screenshot, updated README and pubspec.yaml
+- Fixed `centerMap()` at package level — uses grid dimensions when available instead of entity bbox
+- Added `animate` parameter to `centerMap()` (snap by default, animated on request)
+- Full agent pipeline: ARCHITECT → FORGER → SENTINEL → WARDEN
 
 **Commits this session:**
-- 63a0d5f fix(scroll-sequence): fix snap in pinned mode, add example demos
+- ba2b760 feat(world-engine): replace example with FDL tactical grid demo
+- 5cccecb fix(world-engine): use dark mode and uniform tile sprite
+- c472c08 fix(world-engine): center grid correctly in example
+- aeb6023 fix(world-engine): fix centerMap to use grid dimensions
+- 87ca487 feat(world-engine): add animate option to centerMap
 
-**Summary:** Fixed snap-to-keyframe bugs in pinned mode (notification bubbling, self-cancellation, wrong offset). Added snap/lifecycle/horizontal demos to example app. Registered BR-128 for dead zone issue in PinnedScrollSection progress calculation.
+**Summary:** Implemented BR-117 end-to-end. Replaced 727-line sandbox with 489-line FDL demo. Fixed `centerMap()` bug at the package level (was centering on entity bbox midpoint instead of grid center). Added snap/animate modes. All pushed to remote.
 
 ---
 
@@ -71,5 +71,5 @@ Remaining briefs:
 ## Resume Command
 
 ```
-Session 2026-02-26. Snap fixes committed (63a0d5f). BR-128 registered (PinnedScrollSection dead zone). BR-117 remaining (world engine FDL example).
+Session 2026-02-26. BR-117 complete (5 commits). centerMap() fixed at package level. BR-128 remaining (PinnedScrollSection dead zone).
 ```
