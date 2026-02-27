@@ -418,10 +418,14 @@ class _ScrollSequenceState extends State<ScrollSequence>
 
     _strategy = widget.strategy ?? const PreloadStrategy.eager();
 
-    _cache = FrameCacheManager(
-      maxCacheSize:
-          _strategy.maxCacheSize(widget.frameCount).clamp(1, widget.maxCacheSize),
-    );
+    // Use the strategy's requested cache size. For eager strategy this equals
+    // frameCount so all frames stay resident. Only clamp to widget.maxCacheSize
+    // when the strategy requests fewer frames (chunked/progressive).
+    final strategyCacheSize = _strategy.maxCacheSize(widget.frameCount);
+    final effectiveCacheSize = _strategy.shouldEvictOutsideWindow
+        ? strategyCacheSize.clamp(1, widget.maxCacheSize)
+        : strategyCacheSize.clamp(1, widget.frameCount);
+    _cache = FrameCacheManager(maxCacheSize: effectiveCacheSize);
     _controller = FrameController(
       frameCount: widget.frameCount,
       vsync: this,
