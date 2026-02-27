@@ -30,7 +30,7 @@ class MenuPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.xxl),
           child: Column(
             children: [
-              const Spacer(flex: 2),
+              const Spacer(),
 
               // Title.
               Text(
@@ -55,7 +55,7 @@ class MenuPage extends StatelessWidget {
                   height: FiftyTypography.lineHeightDisplay,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              const SizedBox(height: FiftySpacing.sm),
 
               // Subtitle.
               Text(
@@ -71,63 +71,53 @@ class MenuPage extends StatelessWidget {
 
               const Spacer(),
 
-              // Navigation buttons (scrollable for smaller screens).
-              Flexible(
-                flex: 4,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      FiftyButton(
-                        label: 'BASIC DEMO',
-                        onPressed: () =>
-                            Get.toNamed<void>(RouteManager.basicRoute),
-                        variant: FiftyButtonVariant.primary,
-                        expanded: true,
-                      ),
-                      const SizedBox(height: FiftySpacing.md),
-                      FiftyButton(
-                        label: 'PINNED DEMO',
-                        onPressed: () =>
-                            Get.toNamed<void>(RouteManager.pinnedRoute),
-                        variant: FiftyButtonVariant.outline,
-                        expanded: true,
-                      ),
-                      const SizedBox(height: FiftySpacing.md),
-                      FiftyButton(
-                        label: 'MULTI DEMO',
-                        onPressed: () =>
-                            Get.toNamed<void>(RouteManager.multiRoute),
-                        variant: FiftyButtonVariant.outline,
-                        expanded: true,
-                      ),
-                      const SizedBox(height: FiftySpacing.md),
-                      FiftyButton(
-                        label: 'SNAP DEMO',
-                        onPressed: () =>
-                            Get.toNamed<void>(RouteManager.snapRoute),
-                        variant: FiftyButtonVariant.outline,
-                        expanded: true,
-                      ),
-                      const SizedBox(height: FiftySpacing.md),
-                      FiftyButton(
-                        label: 'LIFECYCLE DEMO',
-                        onPressed: () =>
-                            Get.toNamed<void>(RouteManager.lifecycleRoute),
-                        variant: FiftyButtonVariant.outline,
-                        expanded: true,
-                      ),
-                      const SizedBox(height: FiftySpacing.md),
-                      FiftyButton(
-                        label: 'HORIZONTAL DEMO',
-                        onPressed: () =>
-                            Get.toNamed<void>(RouteManager.horizontalRoute),
-                        variant: FiftyButtonVariant.outline,
-                        expanded: true,
-                      ),
-                    ],
-                  ),
-                ),
+              // Navigation buttons.
+              FiftyButton(
+                label: 'BASIC DEMO',
+                onPressed: () =>
+                    Get.toNamed<void>(RouteManager.basicRoute),
+                variant: FiftyButtonVariant.primary,
+                expanded: true,
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftyButton(
+                label: 'PINNED DEMO',
+                onPressed: () =>
+                    Get.toNamed<void>(RouteManager.pinnedRoute),
+                variant: FiftyButtonVariant.outline,
+                expanded: true,
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftyButton(
+                label: 'MULTI DEMO',
+                onPressed: () =>
+                    Get.toNamed<void>(RouteManager.multiRoute),
+                variant: FiftyButtonVariant.outline,
+                expanded: true,
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftyButton(
+                label: 'SNAP DEMO',
+                onPressed: () =>
+                    Get.toNamed<void>(RouteManager.snapRoute),
+                variant: FiftyButtonVariant.outline,
+                expanded: true,
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftyButton(
+                label: 'LIFECYCLE DEMO',
+                onPressed: () =>
+                    Get.toNamed<void>(RouteManager.lifecycleRoute),
+                variant: FiftyButtonVariant.outline,
+                expanded: true,
+              ),
+              const SizedBox(height: FiftySpacing.md),
+              FiftyButton(
+                label: 'HORIZONTAL DEMO',
+                onPressed: () =>
+                    Get.toNamed<void>(RouteManager.horizontalRoute),
+                variant: FiftyButtonVariant.outline,
+                expanded: true,
               ),
 
               const Spacer(),
@@ -142,7 +132,7 @@ class MenuPage extends StatelessWidget {
                   color: colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              const SizedBox(height: FiftySpacing.md),
             ],
           ),
         ),
