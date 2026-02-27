@@ -368,6 +368,13 @@ class _ScrollSequenceState extends State<ScrollSequence>
   int _loadedCount = 0;
   int _totalToLoad = 0;
 
+  /// Raw (unlerped) progress from [PinnedScrollSection].
+  ///
+  /// Used by the snap controller instead of [_controller.progress] to avoid
+  /// overshoot caused by lerp lag: the smoothed value trails the actual scroll
+  /// position, making forward-snap deltas too large.
+  double _rawProgress = 0.0;
+
   // ---------------------------------------------------------------------------
   // ScrollSequenceStateAccessor
   // ---------------------------------------------------------------------------
@@ -468,60 +475,108 @@ class _ScrollSequenceState extends State<ScrollSequence>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _attachSnapController();
+    _attachScrollPosition();
   }
 
-  void _attachSnapController() {
-    final snap = _snapController;
-    if (snap == null) return;
+  void _attachScrollPosition() {
     final position = Scrollable.maybeOf(context)?.position;
     if (position == null) return;
 
     // Detach from previous position if re-attaching.
     _detachScrollPositionListeners();
 
-    snap.attach(
+    // Attach snap controller if configured.
+    _snapController?.attach(
       position,
       scrollExtent: widget.scrollExtent,
-      currentProgress: () => _controller.progress,
+      currentProgress: () => widget.pin ? _rawProgress : _controller.progress,
     );
 
-    // In pinned mode, NotificationListener can't catch scroll notifications
-    // from the ancestor scrollable (notifications bubble UP, not DOWN).
-    // Listen to the ScrollPosition directly for scroll idle detection.
+    // Listen to the ancestor ScrollPosition directly.
     //
-    // We use position.addListener (fires on every pixel change) with a
-    // pure debounce approach: each change resets the idle timer. When
-    // position stops changing for idleTimeout ms, snap fires.
-    //
-    // NOTE: We do NOT use isScrollingNotifier because it toggles between
-    // discrete scroll events on macOS trackpad, causing false snap triggers.
-    if (widget.pin) {
-      _attachedScrollPosition = position;
-      position.addListener(_onScrollPositionChanged);
-    }
+    // NotificationListener can't catch scroll notifications from an ancestor
+    // scrollable (notifications bubble UP, not DOWN). We listen to the
+    // ScrollPosition for both pinned and non-pinned modes:
+    // - Pinned: drives snap momentum detection via onPositionChanged.
+    // - Non-pinned: drives frame updates via _onNonPinnedScroll since the
+    //   NotificationListener inside _buildNonPinned never fires.
+    _attachedScrollPosition = position;
+    position.addListener(
+      widget.pin ? _onScrollPositionChanged : _onNonPinnedScroll,
+    );
   }
 
   void _detachScrollPositionListeners() {
     final position = _attachedScrollPosition;
     if (position == null) return;
     position.removeListener(_onScrollPositionChanged);
+    position.removeListener(_onNonPinnedScroll);
     _attachedScrollPosition = null;
   }
 
   /// Called when the ancestor scroll position changes (pinned mode only).
   ///
-  /// Ignores position changes from the snap animation itself (isSnapping
-  /// guard). When the user scrolls, resets the idle debounce timer. Snap
-  /// fires when no user-driven position changes occur for idleTimeout ms.
+  /// Delegates to [SnapController.onPositionChanged] which tracks per-frame
+  /// velocity to detect momentum deceleration. Snaps as soon as momentum
+  /// slows below a threshold instead of waiting for complete stop.
   ///
   /// If the user grabs the scroll during a snap animation, Flutter interrupts
   /// the [DrivenScrollActivity] which completes the animateTo future, setting
   /// isSnapping = false. Subsequent position changes then process normally.
   void _onScrollPositionChanged() {
     if (_snapController == null || _snapController!.isSnapping) return;
-    // Reset idle timer — snap fires when position stops changing.
-    _snapController!.onScrollEnd();
+    _snapController!.onPositionChanged(_attachedScrollPosition!.pixels);
+  }
+
+  /// Called when the ancestor scroll position changes (non-pinned mode).
+  ///
+  /// Calculates viewport-relative progress using the widget's global position
+  /// and the scroll position's viewport dimension. This replaces the broken
+  /// [NotificationListener] approach — notifications bubble UP and never reach
+  /// a listener that is a descendant of the scrollable.
+  void _onNonPinnedScroll() {
+    final position = _attachedScrollPosition;
+    if (position == null || !position.hasPixels) return;
+
+    final renderBox = context.findRenderObject() as RenderBox?;
+    if (renderBox == null || !renderBox.hasSize) return;
+
+    final viewportDimension = position.viewportDimension;
+    final globalOffset = renderBox.localToGlobal(Offset.zero);
+
+    final double progress;
+    if (widget.scrollDirection == Axis.horizontal) {
+      progress = _tracker.calculateHorizontalProgress(
+        widgetLeftInViewport: globalOffset.dx,
+        viewportWidth: viewportDimension,
+      );
+    } else {
+      progress = _tracker.calculateProgress(
+        widgetTopInViewport: globalOffset.dy,
+        viewportHeight: viewportDimension,
+      );
+    }
+
+    _tracker.updateDirection(progress);
+    _controller.updateFromProgress(progress);
+
+    // Feed non-pinned lifecycle events.
+    if (_viewportObserver != null) {
+      final isVisible = _isWidgetInViewport(
+        globalOffset: globalOffset,
+        renderBox: renderBox,
+        viewportDimension: viewportDimension,
+      );
+      _viewportObserver!.updateVisibility(
+        isVisible: isVisible,
+        direction: _flutterDirection,
+      );
+    }
+
+    // Feed snap controller events.
+    if (_snapController != null && !_snapController!.isSnapping) {
+      _snapController!.onScrollUpdate();
+    }
   }
 
   @override
@@ -626,6 +681,7 @@ class _ScrollSequenceState extends State<ScrollSequence>
       scrollExtent: widget.scrollExtent,
       scrollDirection: widget.scrollDirection,
       onProgressChanged: (progress) {
+        _rawProgress = progress;
         _tracker.updateDirection(progress);
         _controller.updateFromProgress(progress);
 

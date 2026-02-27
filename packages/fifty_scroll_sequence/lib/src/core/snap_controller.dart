@@ -8,6 +8,9 @@ import '../models/snap_config.dart';
 ///
 /// Listens for scroll idle events and animates the scroll position to the
 /// nearest snap point. Snap animations are cancellable by resuming scrolling.
+///
+/// In pinned mode, uses velocity tracking via [onPositionChanged] to detect
+/// momentum deceleration and snap early instead of waiting for complete stop.
 class SnapController {
   /// Creates a [SnapController] with the given [config].
   SnapController({required this.config});
@@ -20,6 +23,17 @@ class SnapController {
   double _scrollExtent = 0;
   Timer? _idleTimer;
   bool _isSnapping = false;
+
+  // Velocity tracking for pinned mode momentum detection.
+  double? _lastPixels;
+  double? _prevDelta;
+
+  /// Per-frame pixel delta below which momentum is considered dying.
+  ///
+  /// At 60fps (~16ms/frame), 2.0 px/frame ≈ 120 px/s — a near-crawl.
+  /// Snapping at this point feels instant to the user since the remaining
+  /// momentum distance is negligible.
+  static const double _momentumThreshold = 2.0;
 
   /// Whether a snap animation is currently in progress.
   bool get isSnapping => _isSnapping;
@@ -42,20 +56,64 @@ class SnapController {
   void detach() {
     _cancelTimer();
     _cancelSnap();
+    _resetVelocityTracking();
     _scrollPosition = null;
     _currentProgress = null;
   }
 
-  /// Called on scroll updates. Resets idle timer and cancels active snaps.
+  /// Called on scroll updates (non-pinned mode).
+  ///
+  /// Resets idle timer, velocity tracking, and cancels active snaps.
   void onScrollUpdate() {
     _cancelTimer();
+    _resetVelocityTracking();
     if (_isSnapping) {
       _cancelSnap();
     }
   }
 
-  /// Called when scrolling ends. Starts the idle debounce timer.
+  /// Called when scrolling ends (non-pinned mode).
+  ///
+  /// Starts the idle debounce timer.
   void onScrollEnd() {
+    _cancelTimer();
+    _idleTimer = Timer(config.idleTimeout, _performSnap);
+  }
+
+  /// Called on every scroll position change in pinned mode.
+  ///
+  /// Tracks per-frame pixel deltas to detect momentum deceleration.
+  /// When the delta is both decelerating and below [_momentumThreshold],
+  /// snaps immediately instead of waiting for momentum to fully decay.
+  ///
+  /// Falls back to idle timer if momentum detection doesn't trigger
+  /// (e.g. user stops scrolling abruptly with no momentum).
+  void onPositionChanged(double pixels) {
+    if (_isSnapping) return;
+
+    if (_lastPixels != null) {
+      final delta = (pixels - _lastPixels!).abs();
+
+      if (delta > 0) {
+        // Snap when momentum is decelerating below threshold.
+        // During user drag, velocity is erratic (increases/decreases).
+        // During ballistic momentum, velocity strictly decreases.
+        if (_prevDelta != null &&
+            delta < _prevDelta! &&
+            delta < _momentumThreshold) {
+          _cancelTimer();
+          _resetVelocityTracking();
+          _performSnap();
+          return;
+        }
+        _prevDelta = delta;
+      }
+    }
+
+    _lastPixels = pixels;
+
+    // Fallback: idle timer for cases where scroll stops without momentum
+    // (e.g. trackpad lift with zero velocity).
     _cancelTimer();
     _idleTimer = Timer(config.idleTimeout, _performSnap);
   }
@@ -64,13 +122,20 @@ class SnapController {
   void cancelSnap() {
     _cancelTimer();
     _cancelSnap();
+    _resetVelocityTracking();
   }
 
   /// Releases resources.
   void dispose() {
     _cancelTimer();
     _cancelSnap();
+    _resetVelocityTracking();
     _scrollPosition = null;
+  }
+
+  void _resetVelocityTracking() {
+    _lastPixels = null;
+    _prevDelta = null;
   }
 
   void _cancelTimer() {
