@@ -46,6 +46,8 @@ dependencies:
     path: ../fifty_scroll_sequence
 ```
 
+**Dependencies:** Flutter SDK only
+
 ---
 
 ## Quick Start
@@ -518,7 +520,7 @@ flutter:
 
 ---
 
-## Advanced Usage
+## Usage Patterns
 
 ### Custom FrameLoader
 
@@ -594,9 +596,7 @@ SingleChildScrollView(
 )
 ```
 
----
-
-## Performance Tips
+### Performance Tips
 
 - **Use WebP format** - Smallest file size with good quality. Significantly smaller than PNG.
 - **Use chunked strategy for >100 frames** - Avoids loading all frames into memory at once.
@@ -607,9 +607,7 @@ SingleChildScrollView(
 - **Pre-extract frames at target resolution** - Runtime scaling wastes GPU cycles.
 - **Eager strategy keeps all frames** - Cache size equals `frameCount` for eager strategy, preventing eviction.
 
----
-
-## Example App
+### Example App
 
 See the [example app](example/) for working demos:
 
@@ -620,12 +618,35 @@ See the [example app](example/) for working demos:
 - **Lifecycle demo** - Enter/leave callbacks with event log
 - **Horizontal demo** - Horizontal scrolling mode
 
-### Running the Example
+#### Running the Example
 
 ```bash
 cd packages/fifty_scroll_sequence/example
 flutter run
 ```
+
+---
+
+## Platform Support
+
+| Platform | Support | Notes |
+|----------|---------|-------|
+| Android  | Yes     | Asset and network frame loading |
+| iOS      | Yes     | Asset and network frame loading |
+| macOS    | Yes     | Asset and network frame loading |
+| Linux    | Yes     | Asset and network frame loading |
+| Windows  | Yes     | Asset and network frame loading |
+| Web      | Yes     | Asset loading only (no disk cache for network) |
+
+---
+
+## Fifty Design Language Integration
+
+This package is part of Fifty Flutter Kit:
+
+- **Standalone package** — No dependencies on other kit packages; works with any Flutter project
+- **Token compatible** — Use with `fifty_tokens` for consistent spacing, sizing, and animation curves
+- **Theme integration** — Builder overlay widgets can reference `fifty_theme` for colors and typography
 
 ---
 

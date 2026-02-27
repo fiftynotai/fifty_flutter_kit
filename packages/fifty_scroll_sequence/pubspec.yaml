@@ -9,6 +9,15 @@ topics:
   - scroll
   - animation
   - image-sequence
+screenshots:
+  - description: 'Example app menu showing all available demos'
+    path: screenshots/menu.png
+  - description: 'Pinned scroll sequence demo with frame counter overlay'
+    path: screenshots/pinned_demo.png
+  - description: 'Snap-to-keyframe demo with scene indicator dots'
+    path: screenshots/snap_demo.png
+  - description: 'Lifecycle callbacks demo with event log'
+    path: screenshots/lifecycle_demo.png
 
 environment:
   sdk: ^3.9.2
