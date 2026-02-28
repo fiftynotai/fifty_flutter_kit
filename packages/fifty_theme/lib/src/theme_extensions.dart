@@ -30,17 +30,25 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
   });
 
   /// Creates the dark mode theme extension.
-  factory FiftyThemeExtension.dark() {
+  ///
+  /// Pass optional overrides for semantic colors. Shadows, motion
+  /// durations, and curves are always resolved from token getters.
+  factory FiftyThemeExtension.dark({
+    Color? accent,
+    Color? success,
+    Color? warning,
+    Color? info,
+  }) {
     return FiftyThemeExtension(
-      accent: FiftyColors.powderBlush,
+      accent: accent ?? FiftyColors.powderBlush,
       shadowSm: FiftyShadows.sm,
       shadowMd: FiftyShadows.md,
       shadowLg: FiftyShadows.lg,
       shadowPrimary: FiftyShadows.primary,
       shadowGlow: FiftyShadows.glow,
-      success: FiftyColors.hunterGreen,
-      warning: FiftyColors.warning,
-      info: FiftyColors.slateGrey,
+      success: success ?? FiftyColors.success,
+      warning: warning ?? FiftyColors.warning,
+      info: info ?? FiftyColors.secondary,
       instant: FiftyMotion.instant,
       fast: FiftyMotion.fast,
       compiling: FiftyMotion.compiling,
@@ -52,17 +60,25 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
   }
 
   /// Creates the light mode theme extension.
-  factory FiftyThemeExtension.light() {
+  ///
+  /// Pass optional overrides for semantic colors. Shadows, motion
+  /// durations, and curves are always resolved from token getters.
+  factory FiftyThemeExtension.light({
+    Color? accent,
+    Color? success,
+    Color? warning,
+    Color? info,
+  }) {
     return FiftyThemeExtension(
-      accent: FiftyColors.burgundy,
+      accent: accent ?? FiftyColors.primary,
       shadowSm: FiftyShadows.sm,
       shadowMd: FiftyShadows.md,
       shadowLg: FiftyShadows.lg,
       shadowPrimary: FiftyShadows.primary,
       shadowGlow: FiftyShadows.none, // No glow in light mode
-      success: FiftyColors.hunterGreen,
-      warning: FiftyColors.warning,
-      info: FiftyColors.slateGrey,
+      success: success ?? FiftyColors.success,
+      warning: warning ?? FiftyColors.warning,
+      info: info ?? FiftyColors.secondary,
       instant: FiftyMotion.instant,
       fast: FiftyMotion.fast,
       compiling: FiftyMotion.compiling,

@@ -1,44 +1,70 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Fifty.dev component theme configurations v2.
 ///
 /// Applies FDL v2 design principles to Material components:
 /// - Soft shadows (enabled in v2)
-/// - Burgundy accents for focus states
+/// - Primary accents for focus states
 /// - Border outlines for depth
-/// - Manrope typography
+/// - Font-resolved typography via [FiftyFontResolver]
+///
+/// All color values are derived from the incoming [ColorScheme],
+/// making every component theme fully parameterizable.
 class FiftyComponentThemes {
   FiftyComponentThemes._();
 
+  /// Helper to create font-aware text styles.
+  ///
+  /// Uses [FiftyFontResolver] to resolve the configured font family
+  /// (defaults to Manrope via google_fonts unless overridden).
+  static TextStyle _font({
+    required double fontSize,
+    required FontWeight fontWeight,
+    Color? color,
+    double? letterSpacing,
+    double? height,
+  }) {
+    return FiftyFontResolver.resolve(
+      fontFamily: FiftyTypography.fontFamily,
+      source: FiftyTypography.fontSource,
+      baseStyle: TextStyle(
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        color: color,
+        letterSpacing: letterSpacing,
+        height: height,
+      ),
+    );
+  }
+
   /// Elevated button theme - Primary CTA style.
   ///
-  /// Uses Burgundy background with soft shadow.
+  /// Uses primary background with soft shadow.
   static ElevatedButtonThemeData elevatedButtonTheme(ColorScheme colorScheme) {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: FiftyColors.burgundy,
-        foregroundColor: FiftyColors.cream,
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
         elevation: 0,
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.xlRadius,
         ),
-        textStyle: GoogleFonts.manrope(
+        textStyle: _font(
           fontSize: FiftyTypography.labelLarge,
           fontWeight: FiftyTypography.bold,
         ),
       ).copyWith(
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
-            return FiftyColors.cream.withValues(alpha: 0.1);
+            return colorScheme.onPrimary.withValues(alpha: 0.1);
           }
           if (states.contains(WidgetState.pressed)) {
-            return FiftyColors.cream.withValues(alpha: 0.2);
+            return colorScheme.onPrimary.withValues(alpha: 0.2);
           }
           return null;
         }),
@@ -48,25 +74,21 @@ class FiftyComponentThemes {
 
   /// Outlined button theme - Secondary action style.
   ///
-  /// Uses border outline with burgundy hover state.
+  /// Uses border outline with primary hover state.
   static OutlinedButtonThemeData outlinedButtonTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final foregroundColor = isDark ? FiftyColors.cream : FiftyColors.darkBurgundy;
-
     return OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: foregroundColor,
+        foregroundColor: colorScheme.onSurface,
         elevation: 0,
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.xlRadius,
         ),
-        side: BorderSide(color: borderColor),
-        textStyle: GoogleFonts.manrope(
+        side: BorderSide(color: colorScheme.outline),
+        textStyle: _font(
           fontSize: FiftyTypography.labelLarge,
           fontWeight: FiftyTypography.bold,
         ),
@@ -74,16 +96,16 @@ class FiftyComponentThemes {
         side: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered) ||
               states.contains(WidgetState.focused)) {
-            return const BorderSide(color: FiftyColors.burgundy);
+            return BorderSide(color: colorScheme.primary);
           }
-          return BorderSide(color: borderColor);
+          return BorderSide(color: colorScheme.outline);
         }),
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
-            return FiftyColors.burgundy.withValues(alpha: 0.1);
+            return colorScheme.primary.withValues(alpha: 0.1);
           }
           if (states.contains(WidgetState.pressed)) {
-            return FiftyColors.burgundy.withValues(alpha: 0.2);
+            return colorScheme.primary.withValues(alpha: 0.2);
           }
           return null;
         }),
@@ -93,30 +115,30 @@ class FiftyComponentThemes {
 
   /// Text button theme - Tertiary action style.
   ///
-  /// Uses Burgundy text color for brand consistency.
+  /// Uses primary text color for brand consistency.
   static TextButtonThemeData textButtonTheme(ColorScheme colorScheme) {
     return TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: FiftyColors.burgundy,
+        foregroundColor: colorScheme.primary,
         elevation: 0,
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.sm,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.xlRadius,
         ),
-        textStyle: GoogleFonts.manrope(
+        textStyle: _font(
           fontSize: FiftyTypography.labelLarge,
           fontWeight: FiftyTypography.bold,
         ),
       ).copyWith(
         overlayColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.hovered)) {
-            return FiftyColors.burgundy.withValues(alpha: 0.1);
+            return colorScheme.primary.withValues(alpha: 0.1);
           }
           if (states.contains(WidgetState.pressed)) {
-            return FiftyColors.burgundy.withValues(alpha: 0.2);
+            return colorScheme.primary.withValues(alpha: 0.2);
           }
           return null;
         }),
@@ -128,70 +150,67 @@ class FiftyComponentThemes {
   ///
   /// Uses elevation with soft shadow in v2.
   static CardThemeData cardTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return CardThemeData(
-      color: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      color: colorScheme.surfaceContainerHighest,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.xxlRadius,
-        side: BorderSide(color: borderColor),
+        side: BorderSide(color: colorScheme.outline),
       ),
       margin: EdgeInsets.zero,
     );
   }
 
-  /// Input decoration theme - Surface fill with burgundy focus.
+  /// Input decoration theme - Surface fill with primary focus.
   ///
-  /// Uses filled style with border that transitions to burgundy on focus.
+  /// Uses filled style with border that transitions to primary on focus.
   static InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) {
     final isDark = colorScheme.brightness == Brightness.dark;
-    final fillColor = isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.1);
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    const hintColor = FiftyColors.slateGrey;
+    final fillColor = isDark
+        ? colorScheme.surfaceContainerHighest
+        : colorScheme.secondary.withValues(alpha: 0.1);
 
     return InputDecorationTheme(
       filled: true,
       fillColor: fillColor,
-      contentPadding: const EdgeInsets.symmetric(
+      contentPadding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.md,
       ),
       border: OutlineInputBorder(
         borderRadius: FiftyRadii.xlRadius,
-        borderSide: BorderSide(color: borderColor),
+        borderSide: BorderSide(color: colorScheme.outline),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: FiftyRadii.xlRadius,
-        borderSide: BorderSide(color: borderColor),
+        borderSide: BorderSide(color: colorScheme.outline),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: FiftyRadii.xlRadius,
-        borderSide: const BorderSide(color: FiftyColors.burgundy, width: 2),
+        borderSide: BorderSide(color: colorScheme.primary, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: FiftyRadii.xlRadius,
-        borderSide: const BorderSide(color: FiftyColors.burgundy),
+        borderSide: BorderSide(color: colorScheme.error),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: FiftyRadii.xlRadius,
-        borderSide: const BorderSide(color: FiftyColors.burgundy, width: 2),
+        borderSide: BorderSide(color: colorScheme.error, width: 2),
       ),
-      hintStyle: GoogleFonts.manrope(
+      hintStyle: _font(
         fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: hintColor,
+        color: colorScheme.onSurfaceVariant,
       ),
-      labelStyle: GoogleFonts.manrope(
+      labelStyle: _font(
         fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: hintColor,
+        color: colorScheme.onSurfaceVariant,
       ),
-      floatingLabelStyle: GoogleFonts.manrope(
+      floatingLabelStyle: _font(
         fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.medium,
-        color: FiftyColors.burgundy,
+        color: colorScheme.primary,
       ),
     );
   }
@@ -200,21 +219,19 @@ class FiftyComponentThemes {
   ///
   /// Maintains deep background for immersive feel.
   static AppBarTheme appBarTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return AppBarTheme(
-      backgroundColor: isDark ? FiftyColors.darkBurgundy : FiftyColors.cream,
-      foregroundColor: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+      backgroundColor: colorScheme.surface,
+      foregroundColor: colorScheme.onSurface,
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: false,
-      titleTextStyle: GoogleFonts.manrope(
+      titleTextStyle: _font(
         fontSize: FiftyTypography.titleMedium,
         fontWeight: FiftyTypography.bold,
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
       ),
       iconTheme: IconThemeData(
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
         size: 24,
       ),
     );
@@ -224,39 +241,36 @@ class FiftyComponentThemes {
   ///
   /// Uses larger radius for softer appearance on modals.
   static DialogThemeData dialogTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return DialogThemeData(
-      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      backgroundColor: colorScheme.surfaceContainerHighest,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.xxxlRadius,
-        side: BorderSide(color: borderColor),
+        side: BorderSide(color: colorScheme.outline),
       ),
-      titleTextStyle: GoogleFonts.manrope(
+      titleTextStyle: _font(
         fontSize: FiftyTypography.titleLarge,
         fontWeight: FiftyTypography.bold,
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
       ),
-      contentTextStyle: GoogleFonts.manrope(
+      contentTextStyle: _font(
         fontSize: FiftyTypography.bodyLarge,
         fontWeight: FiftyTypography.regular,
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
       ),
     );
   }
 
-  /// SnackBar theme - Dark Burgundy surface.
+  /// SnackBar theme - Inverse surface.
   ///
   /// Consistent appearance across themes.
   static SnackBarThemeData snackBarTheme(ColorScheme colorScheme) {
     return SnackBarThemeData(
-      backgroundColor: FiftyColors.darkBurgundy,
-      contentTextStyle: GoogleFonts.manrope(
+      backgroundColor: colorScheme.inverseSurface,
+      contentTextStyle: _font(
         fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.cream,
+        color: colorScheme.onInverseSurface,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.xlRadius,
@@ -270,101 +284,89 @@ class FiftyComponentThemes {
   ///
   /// Uses standard border color for subtle separation.
   static DividerThemeData dividerTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
     return DividerThemeData(
-      color: isDark ? FiftyColors.borderDark : FiftyColors.borderLight,
+      color: colorScheme.outline,
       thickness: 1,
       space: FiftySpacing.lg,
     );
   }
 
-  /// Checkbox theme - Burgundy when active.
+  /// Checkbox theme - Primary when active.
   ///
   /// Consistent brand color for selected states.
   static CheckboxThemeData checkboxTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.burgundy;
+          return colorScheme.primary;
         }
         return Colors.transparent;
       }),
-      checkColor: WidgetStateProperty.all(FiftyColors.cream),
-      side: BorderSide(color: borderColor, width: 2),
+      checkColor: WidgetStateProperty.all(colorScheme.onPrimary),
+      side: BorderSide(color: colorScheme.outline, width: 2),
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.smRadius,
       ),
     );
   }
 
-  /// Radio theme - Burgundy when active.
+  /// Radio theme - Primary when active.
   ///
   /// Consistent brand color for selected states.
   static RadioThemeData radioTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return RadioThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.burgundy;
+          return colorScheme.primary;
         }
-        return borderColor;
+        return colorScheme.outline;
       }),
     );
   }
 
-  /// Switch theme - Slate Grey when active (NOT primary!).
+  /// Switch theme - Secondary when active (NOT primary!).
   ///
   /// Per v2 spec, switches use secondary color when on.
   static SwitchThemeData switchTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.cream;
+          return colorScheme.onPrimary;
         }
-        return FiftyColors.slateGrey;
+        return colorScheme.secondary;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return FiftyColors.slateGrey;
+          return colorScheme.secondary;
         }
-        return isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
+        return colorScheme.surfaceContainerHighest;
       }),
       trackOutlineColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return Colors.transparent;
         }
-        return borderColor;
+        return colorScheme.outline;
       }),
     );
   }
 
   /// Bottom navigation bar theme.
   ///
-  /// Uses background color based on mode with burgundy selected items.
+  /// Uses background color based on mode with primary selected items.
   static BottomNavigationBarThemeData bottomNavigationBarTheme(
     ColorScheme colorScheme,
   ) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return BottomNavigationBarThemeData(
-      backgroundColor: isDark ? FiftyColors.darkBurgundy : FiftyColors.cream,
-      selectedItemColor: FiftyColors.burgundy,
-      unselectedItemColor: FiftyColors.slateGrey,
+      backgroundColor: colorScheme.surface,
+      selectedItemColor: colorScheme.primary,
+      unselectedItemColor: colorScheme.onSurfaceVariant,
       type: BottomNavigationBarType.fixed,
       elevation: 0,
-      selectedLabelStyle: GoogleFonts.manrope(
+      selectedLabelStyle: _font(
         fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.semiBold,
       ),
-      unselectedLabelStyle: GoogleFonts.manrope(
+      unselectedLabelStyle: _font(
         fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.regular,
       ),
@@ -373,45 +375,41 @@ class FiftyComponentThemes {
 
   /// Navigation rail theme.
   ///
-  /// Uses surface color with burgundy selected items.
+  /// Uses surface container with primary selected items.
   static NavigationRailThemeData navigationRailTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return NavigationRailThemeData(
-      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
-      selectedIconTheme: const IconThemeData(color: FiftyColors.burgundy),
-      unselectedIconTheme: const IconThemeData(color: FiftyColors.slateGrey),
-      selectedLabelTextStyle: GoogleFonts.manrope(
+      backgroundColor: colorScheme.surfaceContainerHighest,
+      selectedIconTheme: IconThemeData(color: colorScheme.primary),
+      unselectedIconTheme: IconThemeData(color: colorScheme.onSurfaceVariant),
+      selectedLabelTextStyle: _font(
         fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.semiBold,
-        color: FiftyColors.burgundy,
+        color: colorScheme.primary,
       ),
-      unselectedLabelTextStyle: GoogleFonts.manrope(
+      unselectedLabelTextStyle: _font(
         fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.slateGrey,
+        color: colorScheme.onSurfaceVariant,
       ),
       elevation: 0,
-      indicatorColor: FiftyColors.burgundy.withValues(alpha: 0.15),
+      indicatorColor: colorScheme.primary.withValues(alpha: 0.15),
     );
   }
 
   /// Tab bar theme.
   ///
-  /// Uses Burgundy for selected tab indicator.
+  /// Uses primary for selected tab indicator.
   static TabBarThemeData tabBarTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return TabBarThemeData(
-      indicatorColor: FiftyColors.burgundy,
-      labelColor: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
-      unselectedLabelColor: FiftyColors.slateGrey,
+      indicatorColor: colorScheme.primary,
+      labelColor: colorScheme.onSurface,
+      unselectedLabelColor: colorScheme.onSurfaceVariant,
       indicatorSize: TabBarIndicatorSize.tab,
-      labelStyle: GoogleFonts.manrope(
+      labelStyle: _font(
         fontSize: FiftyTypography.labelLarge,
         fontWeight: FiftyTypography.bold,
       ),
-      unselectedLabelStyle: GoogleFonts.manrope(
+      unselectedLabelStyle: _font(
         fontSize: FiftyTypography.labelLarge,
         fontWeight: FiftyTypography.regular,
       ),
@@ -420,13 +418,13 @@ class FiftyComponentThemes {
 
   /// Floating action button theme.
   ///
-  /// Uses Burgundy with soft shadow.
+  /// Uses primary with soft shadow.
   static FloatingActionButtonThemeData floatingActionButtonTheme(
     ColorScheme colorScheme,
   ) {
     return FloatingActionButtonThemeData(
-      backgroundColor: FiftyColors.burgundy,
-      foregroundColor: FiftyColors.cream,
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.onPrimary,
       elevation: 0,
       focusElevation: 0,
       hoverElevation: 0,
@@ -439,30 +437,31 @@ class FiftyComponentThemes {
 
   /// Chip theme.
   ///
-  /// Uses surface color with burgundy when selected.
+  /// Uses surface container color with primary when selected.
   static ChipThemeData chipTheme(ColorScheme colorScheme) {
     final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
 
     return ChipThemeData(
-      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.1),
-      selectedColor: FiftyColors.burgundy.withValues(alpha: 0.15),
-      disabledColor: FiftyColors.slateGrey.withValues(alpha: 0.05),
-      labelStyle: GoogleFonts.manrope(
+      backgroundColor: isDark
+          ? colorScheme.surfaceContainerHighest
+          : colorScheme.secondary.withValues(alpha: 0.1),
+      selectedColor: colorScheme.primary.withValues(alpha: 0.15),
+      disabledColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.05),
+      labelStyle: _font(
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
       ),
-      secondaryLabelStyle: GoogleFonts.manrope(
+      secondaryLabelStyle: _font(
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.slateGrey,
+        color: colorScheme.onSurfaceVariant,
       ),
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.xs,
       ),
-      side: BorderSide(color: borderColor),
+      side: BorderSide(color: colorScheme.outline),
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.fullRadius,
       ),
@@ -471,54 +470,60 @@ class FiftyComponentThemes {
 
   /// Progress indicator theme.
   ///
-  /// Uses Burgundy for the indicator.
+  /// Uses primary for the indicator.
   static ProgressIndicatorThemeData progressIndicatorTheme(
     ColorScheme colorScheme,
   ) {
     final isDark = colorScheme.brightness == Brightness.dark;
 
     return ProgressIndicatorThemeData(
-      color: FiftyColors.burgundy,
-      linearTrackColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.2),
-      circularTrackColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.2),
+      color: colorScheme.primary,
+      linearTrackColor: isDark
+          ? colorScheme.surfaceContainerHighest
+          : colorScheme.secondary.withValues(alpha: 0.2),
+      circularTrackColor: isDark
+          ? colorScheme.surfaceContainerHighest
+          : colorScheme.secondary.withValues(alpha: 0.2),
     );
   }
 
   /// Slider theme.
   ///
-  /// Uses Burgundy for active track and thumb.
+  /// Uses primary for active track and thumb.
   static SliderThemeData sliderTheme(ColorScheme colorScheme) {
     final isDark = colorScheme.brightness == Brightness.dark;
 
     return SliderThemeData(
-      activeTrackColor: FiftyColors.burgundy,
-      inactiveTrackColor: isDark ? FiftyColors.surfaceDark : FiftyColors.slateGrey.withValues(alpha: 0.2),
-      thumbColor: FiftyColors.burgundy,
-      overlayColor: FiftyColors.burgundy.withValues(alpha: 0.2),
-      valueIndicatorColor: FiftyColors.burgundy,
-      valueIndicatorTextStyle: GoogleFonts.manrope(
+      activeTrackColor: colorScheme.primary,
+      inactiveTrackColor: isDark
+          ? colorScheme.surfaceContainerHighest
+          : colorScheme.secondary.withValues(alpha: 0.2),
+      thumbColor: colorScheme.primary,
+      overlayColor: colorScheme.primary.withValues(alpha: 0.2),
+      valueIndicatorColor: colorScheme.primary,
+      valueIndicatorTextStyle: _font(
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.medium,
-        color: FiftyColors.cream,
+        color: colorScheme.onPrimary,
       ),
     );
   }
 
   /// Tooltip theme.
   ///
-  /// Uses dark burgundy background for visibility.
+  /// Uses inverse surface for visibility.
   static TooltipThemeData tooltipTheme(ColorScheme colorScheme) {
     return TooltipThemeData(
       decoration: BoxDecoration(
-        color: FiftyColors.darkBurgundy,
+        color: colorScheme.inverseSurface,
         borderRadius: FiftyRadii.xlRadius,
       ),
-      textStyle: GoogleFonts.manrope(
+      textStyle: _font(
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.cream,
+        color: colorScheme.onInverseSurface,
       ),
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
@@ -527,44 +532,38 @@ class FiftyComponentThemes {
 
   /// Popup menu theme.
   ///
-  /// Uses surface color with border.
+  /// Uses surface container with border.
   static PopupMenuThemeData popupMenuTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return PopupMenuThemeData(
-      color: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      color: colorScheme.surfaceContainerHighest,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.xlRadius,
-        side: BorderSide(color: borderColor),
+        side: BorderSide(color: colorScheme.outline),
       ),
-      textStyle: GoogleFonts.manrope(
+      textStyle: _font(
         fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
       ),
     );
   }
 
   /// Dropdown menu theme.
   ///
-  /// Uses surface color with border.
+  /// Uses surface container with border.
   static DropdownMenuThemeData dropdownMenuTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final borderColor = isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-
     return DropdownMenuThemeData(
       inputDecorationTheme: inputDecorationTheme(colorScheme),
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.all(
-          isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+          colorScheme.surfaceContainerHighest,
         ),
         elevation: WidgetStateProperty.all(0),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: FiftyRadii.xlRadius,
-            side: BorderSide(color: borderColor),
+            side: BorderSide(color: colorScheme.outline),
           ),
         ),
       ),
@@ -573,31 +572,27 @@ class FiftyComponentThemes {
 
   /// Bottom sheet theme.
   ///
-  /// Uses surface color with smooth radius at top.
+  /// Uses surface container with smooth radius at top.
   static BottomSheetThemeData bottomSheetTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return BottomSheetThemeData(
-      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      backgroundColor: colorScheme.surfaceContainerHighest,
       elevation: 0,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(FiftyRadii.xxxl),
         ),
       ),
-      modalBackgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      modalBackgroundColor: colorScheme.surfaceContainerHighest,
       modalElevation: 0,
     );
   }
 
   /// Drawer theme.
   ///
-  /// Uses surface color based on mode.
+  /// Uses surface container based on mode.
   static DrawerThemeData drawerTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return DrawerThemeData(
-      backgroundColor: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+      backgroundColor: colorScheme.surfaceContainerHighest,
       elevation: 0,
       shape: const RoundedRectangleBorder(),
     );
@@ -607,53 +602,49 @@ class FiftyComponentThemes {
   ///
   /// Uses standard spacing and typography.
   static ListTileThemeData listTileTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return ListTileThemeData(
       tileColor: Colors.transparent,
-      selectedTileColor: FiftyColors.burgundy.withValues(alpha: 0.1),
-      iconColor: FiftyColors.slateGrey,
-      selectedColor: FiftyColors.burgundy,
-      textColor: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
-      contentPadding: const EdgeInsets.symmetric(
+      selectedTileColor: colorScheme.primary.withValues(alpha: 0.1),
+      iconColor: colorScheme.onSurfaceVariant,
+      selectedColor: colorScheme.primary,
+      textColor: colorScheme.onSurface,
+      contentPadding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.sm,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: FiftyRadii.xlRadius,
       ),
-      titleTextStyle: GoogleFonts.manrope(
+      titleTextStyle: _font(
         fontSize: FiftyTypography.bodyLarge,
         fontWeight: FiftyTypography.regular,
-        color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+        color: colorScheme.onSurface,
       ),
-      subtitleTextStyle: GoogleFonts.manrope(
+      subtitleTextStyle: _font(
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
-        color: FiftyColors.slateGrey,
+        color: colorScheme.onSurfaceVariant,
       ),
     );
   }
 
   /// Icon theme.
   ///
-  /// Uses cream (dark) or dark burgundy (light) as default icon color.
+  /// Uses onSurface as default icon color.
   static IconThemeData iconTheme(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-
     return IconThemeData(
-      color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+      color: colorScheme.onSurface,
       size: 24,
     );
   }
 
   /// Scrollbar theme.
   ///
-  /// Uses Slate Grey with subtle appearance.
+  /// Uses onSurfaceVariant with subtle appearance.
   static ScrollbarThemeData scrollbarTheme(ColorScheme colorScheme) {
     return ScrollbarThemeData(
       thumbColor: WidgetStateProperty.all(
-        FiftyColors.slateGrey.withValues(alpha: 0.5),
+        colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
       ),
       trackColor: WidgetStateProperty.all(Colors.transparent),
       radius: const Radius.circular(4),

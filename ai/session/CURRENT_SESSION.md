@@ -2,29 +2,25 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-28
-**Active Brief:** AC-002 (fifty_tokens — Configuration System)
+**Active Brief:** AC-003 (Done)
 
 ---
 
 ## Resume Point
 
-**Last Active:** BR-130 (Done)
+**Last Active:** AC-003 (Done)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-### No Uncommitted Changes
-
-Git is clean. All work committed and pushed.
-
 ### Next Brief
 
-No active brief queued for this project. Possible next actions:
-- Pick up a new brief from the backlog
-- Register new work items as needed
-- FR-085 was registered on igris-ai project (release skill template integration)
+AC-003 complete. Next in the AC-001 theme customization pipeline:
+- AC-004 (fifty_ui theme alignment) — Ready
+- AC-005 (engine packages theme alignment) — Ready
+- AC-006 (documentation + migration guide) — Blocked by AC-004 + AC-005
 
 ---
 
@@ -32,28 +28,24 @@ No active brief queued for this project. Possible next actions:
 
 **Date:** 2026-02-28
 **Completed:**
-- Committed uncommitted bug fixes from previous session (snap momentum, overshoot, non-pinned mode, pinned centering, menu layout)
-- Pushed all commits to main
-- Executed `/hunt BR-130` — full autonomous pipeline (architect, forger, sentinel, warden)
-  - Relocated example app to `packages/fifty_scroll_sequence/example/`
-  - Rewrote README with full API documentation
-  - Created CHANGELOG.md v1.0.0 entry
-  - Version bumped to 1.0.0
-  - Fixed SliverScrollSequence eager cache sizing (WARDEN finding)
-- Captured 4 iOS simulator screenshots (menu, pinned, snap, lifecycle)
-- Fixed README to comply with FDL README Template v2 (added Platform Support, FDL Integration, renamed Advanced Usage to Usage Patterns, folded Performance Tips and Example App sections, added Dependencies line, added screenshots to pubspec.yaml)
-- Published `fifty_scroll_sequence` v1.0.0 to pub.dev
-- Registered FR-085 on igris-ai project (release skill README template integration)
+- Executed `/hunt AC-002` — full autonomous pipeline (architect, forger, sentinel, warden)
+  - Created 7 config classes in `packages/fifty_tokens/lib/src/config/`
+  - Refactored 8 token files from `static const` → `static get` with config fallback
+  - Created FiftyFontResolver for Google Fonts vs asset font resolution
+  - 217 tests passing, 70 new config tests
+- Executed `/hunt AC-003` — full autonomous pipeline (architect, forger, sentinel, warden)
+  - Replaced 91 `FiftyColors.*` refs with `colorScheme.*` in component themes
+  - Replaced 23 `GoogleFonts.manrope()` calls with `FiftyFontResolver.resolve()`
+  - Parameterized `FiftyTheme.dark()/light()` with colorScheme, primaryColor, fontFamily, etc.
+  - Parameterized `FiftyThemeExtension.dark()/light()` with semantic color overrides
+  - Consolidated light theme (~280 lines of duplicated code eliminated)
+  - 205 tests passing, 88 new tests
 
 **Commits this session:**
-- a5639bb fix(scroll-sequence): snap momentum detection, overshoot correction, non-pinned mode, and pinned centering
-- 3a5fefa fix(scroll-sequence-example): menu layout and project cleanup
-- 01956ee chore(scroll-sequence): update session state and briefs
-- a9283e9 feat(scroll-sequence): v1.0.0 release preparation
-- 4d674e4 docs(scroll-sequence): add example app screenshots for README
-- 202e28a docs(scroll-sequence): align README with FDL README Template v2
+- 9bcd528 feat(fifty-tokens): add configurable token system with FiftyTokens.configure()
+- [pending] refactor(fifty-theme): parameterize theme system to use colorScheme
 
-**Summary:** Complete fifty_scroll_sequence v1.0.0 release cycle — from bug fixes through /hunt pipeline, screenshots, README template compliance, and pub.dev publication.
+**Summary:** AC-002 and AC-003 complete — fifty_tokens configurable, fifty_theme parameterized. Theme customization system 2/6 briefs done.
 
 ---
 

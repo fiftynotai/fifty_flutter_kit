@@ -31,6 +31,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('FiftyTheme', () {
+    setUp(() => FiftyTokens.reset());
+
     group('dark()', () {
       test('returns valid ThemeData', () {
         return _withSilencedFontErrors(() {
@@ -162,6 +164,68 @@ void main() {
       });
     });
 
+    group('dark() parameterized', () {
+      setUp(() => FiftyTokens.reset());
+
+      test('primaryColor override changes colorScheme.primary', () {
+        return _withSilencedFontErrors(() {
+          const custom = Colors.blue;
+          final theme = FiftyTheme.dark(primaryColor: custom);
+          expect(theme.colorScheme.primary, custom);
+        });
+      });
+
+      test('secondaryColor override changes colorScheme.secondary', () {
+        return _withSilencedFontErrors(() {
+          const custom = Colors.green;
+          final theme = FiftyTheme.dark(secondaryColor: custom);
+          expect(theme.colorScheme.secondary, custom);
+        });
+      });
+
+      test('full colorScheme override takes precedence', () {
+        return _withSilencedFontErrors(() {
+          const customPrimary = Colors.purple;
+          final customScheme = FiftyColorScheme.dark(primary: customPrimary);
+          final theme = FiftyTheme.dark(
+            colorScheme: customScheme,
+            primaryColor: Colors.red, // should be ignored
+          );
+          expect(theme.colorScheme.primary, customPrimary);
+        });
+      });
+
+      test('custom extension is attached', () {
+        return _withSilencedFontErrors(() {
+          final customExt = FiftyThemeExtension.dark(accent: Colors.pink);
+          final theme = FiftyTheme.dark(extension: customExt);
+          final ext = theme.extension<FiftyThemeExtension>();
+          expect(ext?.accent, Colors.pink);
+        });
+      });
+
+      test('asset font family is applied to text theme', () {
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.dark(
+            fontFamily: 'CustomFont',
+            fontSource: FontSource.asset,
+          );
+          expect(theme.textTheme.bodyLarge?.fontFamily, 'CustomFont');
+          expect(theme.textTheme.displayLarge?.fontFamily, 'CustomFont');
+        });
+      });
+
+      test('scaffold colors derive from colorScheme surface', () {
+        return _withSilencedFontErrors(() {
+          const customSurface = Color(0xFF111111);
+          final cs = FiftyColorScheme.dark(surface: customSurface);
+          final theme = FiftyTheme.dark(colorScheme: cs);
+          expect(theme.scaffoldBackgroundColor, customSurface);
+          expect(theme.canvasColor, customSurface);
+        });
+      });
+    });
+
     group('light()', () {
       test('returns valid ThemeData', () {
         return _withSilencedFontErrors(() {
@@ -244,6 +308,44 @@ void main() {
           expect(theme.appBarTheme.backgroundColor, FiftyColors.cream);
           expect(theme.appBarTheme.foregroundColor, FiftyColors.darkBurgundy);
           expect(theme.appBarTheme.elevation, 0);
+        });
+      });
+
+      test('light uses FiftyComponentThemes delegation (no inlined themes)', () {
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light();
+          // Card theme should use surfaceContainerHighest from colorScheme
+          expect(
+            theme.cardTheme.color,
+            theme.colorScheme.surfaceContainerHighest,
+          );
+          // Dialog theme should use surfaceContainerHighest from colorScheme
+          expect(
+            theme.dialogTheme.backgroundColor,
+            theme.colorScheme.surfaceContainerHighest,
+          );
+        });
+      });
+    });
+
+    group('light() parameterized', () {
+      setUp(() => FiftyTokens.reset());
+
+      test('primaryColor override changes colorScheme.primary', () {
+        return _withSilencedFontErrors(() {
+          const custom = Colors.indigo;
+          final theme = FiftyTheme.light(primaryColor: custom);
+          expect(theme.colorScheme.primary, custom);
+        });
+      });
+
+      test('asset font family is applied to text theme', () {
+        return _withSilencedFontErrors(() {
+          final theme = FiftyTheme.light(
+            fontFamily: 'CustomFont',
+            fontSource: FontSource.asset,
+          );
+          expect(theme.textTheme.bodyLarge?.fontFamily, 'CustomFont');
         });
       });
     });

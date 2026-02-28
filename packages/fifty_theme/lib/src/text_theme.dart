@@ -1,15 +1,18 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-/// Fifty.dev text theme builder v2 - Manrope unified font.
+/// Fifty.dev text theme builder v2 - unified font via [FiftyFontResolver].
 ///
-/// Creates a Flutter TextTheme using Manrope via google_fonts.
-/// Replaces the binary type system (Monument/JetBrains) with unified Manrope.
+/// Creates a Flutter TextTheme using the configured font family.
+/// Defaults to Manrope via google_fonts unless overridden through
+/// [FiftyTokens.configure] or the optional parameters below.
 class FiftyTextTheme {
   FiftyTextTheme._();
 
   /// Creates the Fifty v2 text theme.
+  ///
+  /// Pass optional [fontFamily] and [fontSource] to override the
+  /// globally configured values from [FiftyTypography].
   ///
   /// Scale:
   /// - `displayLarge`: 32px, extraBold (800)
@@ -27,75 +30,96 @@ class FiftyTextTheme {
   /// - `labelLarge`: 14px, bold
   /// - `labelMedium`: 12px, bold (UPPERCASE, letterSpacing 1.5)
   /// - `labelSmall`: 10px, semiBold (600)
-  static TextTheme textTheme() {
+  static TextTheme textTheme({String? fontFamily, FontSource? fontSource}) {
+    final family = fontFamily ?? FiftyTypography.fontFamily;
+    final source = fontSource ?? FiftyTypography.fontSource;
+
+    TextStyle style({
+      required double fontSize,
+      required FontWeight fontWeight,
+      double? letterSpacing,
+      double? height,
+    }) {
+      return FiftyFontResolver.resolve(
+        fontFamily: family,
+        source: source,
+        baseStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          letterSpacing: letterSpacing,
+          height: height,
+        ),
+      );
+    }
+
     return TextTheme(
       // Display styles
-      displayLarge: GoogleFonts.manrope(
+      displayLarge: style(
         fontSize: FiftyTypography.displayLarge,
         fontWeight: FiftyTypography.extraBold,
         letterSpacing: FiftyTypography.letterSpacingDisplay,
         height: FiftyTypography.lineHeightDisplay,
       ),
-      displayMedium: GoogleFonts.manrope(
+      displayMedium: style(
         fontSize: FiftyTypography.displayMedium,
         fontWeight: FiftyTypography.extraBold,
         letterSpacing: FiftyTypography.letterSpacingDisplayMedium,
         height: FiftyTypography.lineHeightDisplay,
       ),
-      displaySmall: GoogleFonts.manrope(
+      displaySmall: style(
         fontSize: FiftyTypography.titleLarge,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
 
       // Headline styles
-      headlineLarge: GoogleFonts.manrope(
+      headlineLarge: style(
         fontSize: FiftyTypography.titleLarge,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
-      headlineMedium: GoogleFonts.manrope(
+      headlineMedium: style(
         fontSize: FiftyTypography.titleMedium,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
-      headlineSmall: GoogleFonts.manrope(
+      headlineSmall: style(
         fontSize: FiftyTypography.titleSmall,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
 
       // Title styles
-      titleLarge: GoogleFonts.manrope(
+      titleLarge: style(
         fontSize: FiftyTypography.titleLarge,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
-      titleMedium: GoogleFonts.manrope(
+      titleMedium: style(
         fontSize: FiftyTypography.titleMedium,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
-      titleSmall: GoogleFonts.manrope(
+      titleSmall: style(
         fontSize: FiftyTypography.titleSmall,
         fontWeight: FiftyTypography.bold,
         height: FiftyTypography.lineHeightTitle,
       ),
 
       // Body styles
-      bodyLarge: GoogleFonts.manrope(
+      bodyLarge: style(
         fontSize: FiftyTypography.bodyLarge,
         fontWeight: FiftyTypography.medium,
         letterSpacing: FiftyTypography.letterSpacingBody,
         height: FiftyTypography.lineHeightBody,
       ),
-      bodyMedium: GoogleFonts.manrope(
+      bodyMedium: style(
         fontSize: FiftyTypography.bodyMedium,
         fontWeight: FiftyTypography.regular,
         letterSpacing: FiftyTypography.letterSpacingBodyMedium,
         height: FiftyTypography.lineHeightBody,
       ),
-      bodySmall: GoogleFonts.manrope(
+      bodySmall: style(
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.regular,
         letterSpacing: FiftyTypography.letterSpacingBodySmall,
@@ -103,19 +127,19 @@ class FiftyTextTheme {
       ),
 
       // Label styles
-      labelLarge: GoogleFonts.manrope(
+      labelLarge: style(
         fontSize: FiftyTypography.labelLarge,
         fontWeight: FiftyTypography.bold,
         letterSpacing: FiftyTypography.letterSpacingLabel,
         height: FiftyTypography.lineHeightLabel,
       ),
-      labelMedium: GoogleFonts.manrope(
+      labelMedium: style(
         fontSize: FiftyTypography.labelMedium,
         fontWeight: FiftyTypography.bold,
         letterSpacing: FiftyTypography.letterSpacingLabelMedium,
         height: FiftyTypography.lineHeightLabel,
       ),
-      labelSmall: GoogleFonts.manrope(
+      labelSmall: style(
         fontSize: FiftyTypography.labelSmall,
         fontWeight: FiftyTypography.semiBold,
         letterSpacing: FiftyTypography.letterSpacingLabel,

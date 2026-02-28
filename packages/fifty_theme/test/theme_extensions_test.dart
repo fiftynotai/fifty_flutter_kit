@@ -2,13 +2,18 @@ import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
   group('FiftyThemeExtension', () {
+    setUp(() => FiftyTokens.reset());
+
     group('dark()', () {
       late FiftyThemeExtension extension;
 
       setUp(() {
+        FiftyTokens.reset();
         extension = FiftyThemeExtension.dark();
       });
 
@@ -106,10 +111,46 @@ void main() {
       });
     });
 
+    group('dark() parameterized overrides', () {
+      setUp(() => FiftyTokens.reset());
+
+      test('accent override is applied', () {
+        const custom = Colors.pink;
+        final ext = FiftyThemeExtension.dark(accent: custom);
+        expect(ext.accent, custom);
+      });
+
+      test('success override is applied', () {
+        const custom = Colors.teal;
+        final ext = FiftyThemeExtension.dark(success: custom);
+        expect(ext.success, custom);
+      });
+
+      test('warning override is applied', () {
+        const custom = Colors.amber;
+        final ext = FiftyThemeExtension.dark(warning: custom);
+        expect(ext.warning, custom);
+      });
+
+      test('info override is applied', () {
+        const custom = Colors.cyan;
+        final ext = FiftyThemeExtension.dark(info: custom);
+        expect(ext.info, custom);
+      });
+
+      test('non-overridden fields use FDL defaults', () {
+        final ext = FiftyThemeExtension.dark(accent: Colors.pink);
+        expect(ext.success, FiftyColors.success);
+        expect(ext.warning, FiftyColors.warning);
+        expect(ext.info, FiftyColors.secondary);
+      });
+    });
+
     group('light()', () {
       late FiftyThemeExtension extension;
 
       setUp(() {
+        FiftyTokens.reset();
         extension = FiftyThemeExtension.light();
       });
 
@@ -122,10 +163,27 @@ void main() {
       });
     });
 
+    group('light() parameterized overrides', () {
+      setUp(() => FiftyTokens.reset());
+
+      test('accent override is applied', () {
+        const custom = Colors.deepPurple;
+        final ext = FiftyThemeExtension.light(accent: custom);
+        expect(ext.accent, custom);
+      });
+
+      test('non-overridden fields use FDL defaults', () {
+        final ext = FiftyThemeExtension.light(accent: Colors.deepPurple);
+        expect(ext.success, FiftyColors.success);
+        expect(ext.warning, FiftyColors.warning);
+      });
+    });
+
     group('copyWith()', () {
       late FiftyThemeExtension original;
 
       setUp(() {
+        FiftyTokens.reset();
         original = FiftyThemeExtension.dark();
       });
 
@@ -205,6 +263,7 @@ void main() {
       late FiftyThemeExtension extensionB;
 
       setUp(() {
+        FiftyTokens.reset();
         extensionA = FiftyThemeExtension.dark();
         extensionB = const FiftyThemeExtension(
           accent: Colors.blue,
@@ -271,6 +330,8 @@ void main() {
     // GoogleFonts requires network access to load fonts during tests.
     // The functionality is verified in widget tests with proper setup.
     group('Integration with ThemeData', () {
+      setUp(() => FiftyTokens.reset());
+
       test('dark extension has correct accent color', () {
         // Test the extension factory directly (without FiftyTheme which uses GoogleFonts)
         final extension = FiftyThemeExtension.dark();

@@ -30,6 +30,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('FiftyTextTheme', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Display Styles', () {
       test('displayLarge.fontSize is 32 (displayLarge)', () {
         return _withSilencedFontErrors(() {
@@ -292,6 +294,29 @@ void main() {
             FiftyTypography.letterSpacingBody,
           );
         });
+      });
+    });
+
+    group('custom font parameters', () {
+      setUp(() => FiftyTokens.reset());
+
+      test('asset font family is applied directly', () {
+        final textTheme = FiftyTextTheme.textTheme(
+          fontFamily: 'CustomFont',
+          fontSource: FontSource.asset,
+        );
+        expect(textTheme.displayLarge?.fontFamily, 'CustomFont');
+        expect(textTheme.bodyLarge?.fontFamily, 'CustomFont');
+        expect(textTheme.labelSmall?.fontFamily, 'CustomFont');
+      });
+
+      test('font sizes use FiftyTypography tokens regardless of font', () {
+        final textTheme = FiftyTextTheme.textTheme(
+          fontFamily: 'CustomFont',
+          fontSource: FontSource.asset,
+        );
+        expect(textTheme.displayLarge?.fontSize, FiftyTypography.displayLarge);
+        expect(textTheme.bodyLarge?.fontSize, FiftyTypography.bodyLarge);
       });
     });
   });
