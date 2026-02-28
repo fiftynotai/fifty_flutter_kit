@@ -26,6 +26,7 @@ class AchievementSummary<T> extends StatelessWidget {
     this.showRarityBreakdown = false,
     this.showCategoryBreakdown = false,
     this.compact = false,
+    this.rarityColors,
   });
 
   /// The achievement controller.
@@ -42,6 +43,13 @@ class AchievementSummary<T> extends StatelessWidget {
 
   /// Whether to use compact layout.
   final bool compact;
+
+  /// Optional rarity color overrides.
+  ///
+  /// If a color is provided for a given rarity, it takes precedence
+  /// over the default. Defaults use theme-derived colors for common
+  /// and uncommon, and hardcoded domain colors for rare/epic/legendary.
+  final Map<AchievementRarity, Color>? rarityColors;
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +256,7 @@ class AchievementSummary<T> extends StatelessWidget {
               label: rarity.displayName,
               unlocked: unlocked,
               total: total,
-              color: _getRarityColor(rarity),
+              color: _getRarityColor(rarity, colorScheme),
             ),
           );
         }),
@@ -351,12 +359,16 @@ class AchievementSummary<T> extends StatelessWidget {
     );
   }
 
-  Color _getRarityColor(AchievementRarity rarity) {
+  /// Gets the rarity color, checking overrides first, then theme defaults.
+  Color _getRarityColor(AchievementRarity rarity, ColorScheme colorScheme) {
+    if (rarityColors != null && rarityColors!.containsKey(rarity)) {
+      return rarityColors![rarity]!;
+    }
     switch (rarity) {
       case AchievementRarity.common:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
       case AchievementRarity.uncommon:
-        return FiftyColors.hunterGreen;
+        return colorScheme.tertiary;
       case AchievementRarity.rare:
         return const Color(0xFF5B8BD4);
       case AchievementRarity.epic:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../layouts/layouts.dart';
 import '../models/models.dart';
 import '../painters/painters.dart';
+import '../themes/skill_tree_theme.dart';
 import 'skill_node_widget.dart';
 import 'skill_tree_controller.dart';
 
@@ -216,6 +217,10 @@ class _SkillTreeViewState<T> extends State<SkillTreeView<T>> {
 
         _calculateLayout(availableSize);
 
+        // Resolve theme from context if controller doesn't have one
+        final resolvedTheme = widget.controller.theme ??
+            SkillTreeTheme.fromContext(context);
+
         return SizedBox(
           width: availableSize.width,
           height: availableSize.height,
@@ -238,7 +243,7 @@ class _SkillTreeViewState<T> extends State<SkillTreeView<T>> {
                         connections: widget.controller.connections,
                         nodePositions: _nodePositions,
                         nodeSize: widget.nodeSize,
-                        theme: widget.controller.theme,
+                        theme: resolvedTheme,
                         getNodeState: widget.controller.getNodeState,
                         useCurvedConnections: widget.connectionCurved,
                       ),

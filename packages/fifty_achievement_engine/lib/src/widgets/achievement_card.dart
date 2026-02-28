@@ -31,6 +31,7 @@ class AchievementCard<T> extends StatelessWidget {
     this.borderColor,
     this.showProgress = true,
     this.compact = false,
+    this.rarityColors,
   });
 
   /// The achievement to display.
@@ -60,13 +61,27 @@ class AchievementCard<T> extends StatelessWidget {
   /// Whether to use compact layout.
   final bool compact;
 
+  /// Optional rarity color overrides.
+  ///
+  /// If a color is provided for a given rarity, it takes precedence
+  /// over the default. Defaults use theme-derived colors for common
+  /// and uncommon, and hardcoded domain colors for rare/epic/legendary.
+  final Map<AchievementRarity, Color>? rarityColors;
+
   /// Gets the rarity color based on achievement rarity.
-  Color get _rarityColor {
+  ///
+  /// Checks [rarityColors] overrides first, then falls back to
+  /// theme-derived defaults for common/uncommon and hardcoded
+  /// domain colors for rare/epic/legendary.
+  Color _getRarityColor(ColorScheme colorScheme) {
+    if (rarityColors != null && rarityColors!.containsKey(achievement.rarity)) {
+      return rarityColors![achievement.rarity]!;
+    }
     switch (achievement.rarity) {
       case AchievementRarity.common:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
       case AchievementRarity.uncommon:
-        return FiftyColors.hunterGreen;
+        return colorScheme.tertiary;
       case AchievementRarity.rare:
         return const Color(0xFF5B8BD4);
       case AchievementRarity.epic:
@@ -95,6 +110,9 @@ class AchievementCard<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final rarityColor = _getRarityColor(colorScheme);
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -105,28 +123,28 @@ class AchievementCard<T> extends StatelessWidget {
           padding: EdgeInsets.all(compact ? FiftySpacing.sm : FiftySpacing.md),
           decoration: BoxDecoration(
             color: backgroundColor ??
-                Theme.of(context).colorScheme.surfaceContainerHighest,
+                colorScheme.surfaceContainerHighest,
             borderRadius: FiftyRadii.lgRadius,
             border: Border.all(
               color: borderColor ??
                   (state.isComplete
-                      ? _rarityColor
-                      : _rarityColor.withValues(alpha: 0.3)),
+                      ? rarityColor
+                      : rarityColor.withValues(alpha: 0.3)),
               width: state.isComplete ? 2 : 1,
             ),
           ),
           child: _isHiddenAndLocked
-              ? _buildHiddenContent(context)
-              : _buildContent(context),
+              ? _buildHiddenContent(context, rarityColor)
+              : _buildContent(context, rarityColor),
         ),
       ),
     );
   }
 
-  Widget _buildHiddenContent(BuildContext context) {
+  Widget _buildHiddenContent(BuildContext context, Color rarityColor) {
     return Row(
       children: [
-        _buildIcon(context, Icons.help_outline),
+        _buildIcon(context, Icons.help_outline, rarityColor),
         SizedBox(width: compact ? FiftySpacing.sm : FiftySpacing.md),
         Expanded(
           child: Column(
@@ -160,10 +178,10 @@ class AchievementCard<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent(BuildContext context, Color rarityColor) {
     return Row(
       children: [
-        _buildIcon(context, achievement.icon ?? Icons.emoji_events),
+        _buildIcon(context, achievement.icon ?? Icons.emoji_events, rarityColor),
         SizedBox(width: compact ? FiftySpacing.sm : FiftySpacing.md),
         Expanded(
           child: Column(
@@ -188,7 +206,7 @@ class AchievementCard<T> extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: FiftySpacing.sm),
-                  _buildRarityBadge(),
+                  _buildRarityBadge(rarityColor),
                 ],
               ),
               if (achievement.description != null && !compact) ...[
@@ -208,7 +226,7 @@ class AchievementCard<T> extends StatelessWidget {
                 const SizedBox(height: FiftySpacing.sm),
                 AchievementProgressBar(
                   progress: progress,
-                  foregroundColor: _rarityColor,
+                  foregroundColor: rarityColor,
                 ),
               ],
               if (state.isComplete) ...[
@@ -237,7 +255,7 @@ class AchievementCard<T> extends StatelessWidget {
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.labelSmall,
                         fontWeight: FiftyTypography.bold,
-                        color: _rarityColor,
+                        color: rarityColor,
                       ),
                     ),
                   ],
@@ -250,7 +268,7 @@ class AchievementCard<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(BuildContext context, IconData iconData) {
+  Widget _buildIcon(BuildContext context, IconData iconData, Color rarityColor) {
     final size = compact ? 40.0 : 48.0;
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
@@ -258,35 +276,35 @@ class AchievementCard<T> extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: state.isComplete
-            ? _rarityColor.withValues(alpha: 0.2)
+            ? rarityColor.withValues(alpha: 0.2)
             : colorScheme.surface,
         borderRadius: FiftyRadii.mdRadius,
         border: Border.all(
           color: state.isComplete
-              ? _rarityColor
-              : _rarityColor.withValues(alpha: 0.3),
+              ? rarityColor
+              : rarityColor.withValues(alpha: 0.3),
         ),
       ),
       child: Icon(
         iconData,
         size: compact ? 20 : 24,
         color: state.isComplete
-            ? _rarityColor
+            ? rarityColor
             : colorScheme.onSurface.withValues(alpha: 0.5),
       ),
     );
   }
 
-  Widget _buildRarityBadge() {
+  Widget _buildRarityBadge(Color rarityColor) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs / 2,
       ),
       decoration: BoxDecoration(
-        color: _rarityColor.withValues(alpha: 0.2),
+        color: rarityColor.withValues(alpha: 0.2),
         borderRadius: FiftyRadii.smRadius,
-        border: Border.all(color: _rarityColor.withValues(alpha: 0.5)),
+        border: Border.all(color: rarityColor.withValues(alpha: 0.5)),
       ),
       child: Text(
         achievement.rarity.displayName.toUpperCase(),
@@ -295,7 +313,7 @@ class AchievementCard<T> extends StatelessWidget {
           fontSize: FiftyTypography.labelSmall,
           fontWeight: FiftyTypography.bold,
           letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-          color: _rarityColor,
+          color: rarityColor,
         ),
       ),
     );

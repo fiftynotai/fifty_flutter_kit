@@ -1,4 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -69,47 +68,33 @@ class SkillTooltip<T> extends StatelessWidget {
   /// Points available for the player.
   final int availablePoints;
 
-  // ---- FDL Default Styles ----
-
-  /// FDL default tooltip background color.
-  static Color get _fdlTooltipBackground => FiftyColors.surfaceDark;
-
-  /// FDL default tooltip border color.
-  static Color get _fdlTooltipBorder => FiftyColors.borderDark;
-
-  /// FDL default tooltip title style.
-  static const TextStyle _fdlTitleStyle = TextStyle(
-    color: FiftyColors.cream,
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-  );
-
-  /// FDL default tooltip description style.
-  static TextStyle get _fdlDescriptionStyle => TextStyle(
-    color: FiftyColors.cream.withAlpha(179),
-    fontSize: 12,
-  );
-
-  /// FDL default cost text style.
-  static const TextStyle _fdlCostStyle = TextStyle(
-    color: FiftyColors.warning,
-    fontSize: 12,
-    fontWeight: FontWeight.w600,
-  );
-
-  /// FDL default level text style.
-  static const TextStyle _fdlLevelStyle = TextStyle(
-    color: FiftyColors.cream,
-    fontSize: 12,
-    fontWeight: FontWeight.w600,
-  );
+  /// Resolves the theme to use for this widget.
+  ///
+  /// Returns the explicitly provided [theme] if non-null, otherwise
+  /// derives one from the current [BuildContext] via
+  /// [SkillTreeTheme.fromContext].
+  SkillTreeTheme _resolveTheme(BuildContext context) {
+    return theme ?? SkillTreeTheme.fromContext(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final tooltipBackground = theme?.tooltipBackground ?? _fdlTooltipBackground;
-    final tooltipBorder = theme?.tooltipBorder ?? _fdlTooltipBorder;
-    final titleStyle = theme?.tooltipTitleStyle ?? _fdlTitleStyle;
-    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
+    final resolvedTheme = _resolveTheme(context);
+    final tooltipBackground = resolvedTheme.tooltipBackground ??
+        Theme.of(context).colorScheme.surfaceContainerHighest;
+    final tooltipBorder = resolvedTheme.tooltipBorder ??
+        Theme.of(context).colorScheme.outline;
+    final titleStyle = resolvedTheme.tooltipTitleStyle ??
+        TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        );
+    final descriptionStyle = resolvedTheme.tooltipDescriptionStyle ??
+        TextStyle(
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+          fontSize: 12,
+        );
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 250),
@@ -151,37 +136,43 @@ class SkillTooltip<T> extends StatelessWidget {
           // Cost line (if not maxed)
           if (showCost && !node.isMaxed) ...[
             const SizedBox(height: 12),
-            _buildCostLine(),
+            _buildCostLine(resolvedTheme, descriptionStyle),
           ],
 
           // Level line (if multi-level)
           if (node.maxLevel > 1) ...[
             const SizedBox(height: 8),
-            _buildLevelLine(),
+            _buildLevelLine(resolvedTheme, descriptionStyle),
           ],
 
           // Prerequisites
           if (showPrerequisites && node.prerequisites.isNotEmpty) ...[
             const SizedBox(height: 8),
-            _buildPrerequisitesLine(),
+            _buildPrerequisitesLine(descriptionStyle),
           ],
 
           // State indicator
           const SizedBox(height: 12),
-          _buildStateIndicator(),
+          _buildStateIndicator(resolvedTheme),
         ],
       ),
     );
   }
 
   /// Builds the cost display line.
-  Widget _buildCostLine() {
+  Widget _buildCostLine(SkillTreeTheme resolvedTheme, TextStyle descriptionStyle) {
     final cost = node.nextCost;
     final hasEnoughPoints = availablePoints >= cost;
-    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
+    final errorColor = resolvedTheme.availableNodeBorderColor;
+    final costStyle = resolvedTheme.nodeCostStyle ??
+        TextStyle(
+          color: resolvedTheme.keystoneColor,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        );
     final costColor = hasEnoughPoints
-        ? (theme?.nodeCostStyle?.color ?? FiftyColors.warning)
-        : FiftyColors.burgundy;
+        ? (costStyle.color ?? resolvedTheme.keystoneColor)
+        : errorColor;
 
     return Row(
       children: [
@@ -191,14 +182,14 @@ class SkillTooltip<T> extends StatelessWidget {
         ),
         Text(
           '$cost',
-          style: (theme?.nodeCostStyle ?? _fdlCostStyle).copyWith(color: costColor),
+          style: costStyle.copyWith(color: costColor),
         ),
         if (!hasEnoughPoints) ...[
           const SizedBox(width: 8),
           Text(
             '(Insufficient points)',
             style: TextStyle(
-              color: FiftyColors.burgundy.withAlpha(179),
+              color: errorColor.withAlpha(179),
               fontSize: 10,
               fontStyle: FontStyle.italic,
             ),
@@ -209,9 +200,13 @@ class SkillTooltip<T> extends StatelessWidget {
   }
 
   /// Builds the level display line.
-  Widget _buildLevelLine() {
-    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
-    final levelStyle = theme?.nodeLevelStyle ?? _fdlLevelStyle;
+  Widget _buildLevelLine(SkillTreeTheme resolvedTheme, TextStyle descriptionStyle) {
+    final levelStyle = resolvedTheme.nodeLevelStyle ??
+        TextStyle(
+          color: descriptionStyle.color,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        );
 
     return Row(
       children: [
@@ -229,9 +224,9 @@ class SkillTooltip<T> extends StatelessWidget {
             borderRadius: BorderRadius.circular(2),
             child: LinearProgressIndicator(
               value: node.currentLevel / node.maxLevel,
-              backgroundColor: FiftyColors.surfaceDark,
+              backgroundColor: resolvedTheme.lockedNodeColor,
               valueColor: AlwaysStoppedAnimation<Color>(
-                _getProgressColor(),
+                _getProgressColor(resolvedTheme),
               ),
               minHeight: 4,
             ),
@@ -242,9 +237,7 @@ class SkillTooltip<T> extends StatelessWidget {
   }
 
   /// Builds the prerequisites display line.
-  Widget _buildPrerequisitesLine() {
-    final descriptionStyle = theme?.tooltipDescriptionStyle ?? _fdlDescriptionStyle;
-
+  Widget _buildPrerequisitesLine(TextStyle descriptionStyle) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -263,8 +256,8 @@ class SkillTooltip<T> extends StatelessWidget {
   }
 
   /// Builds the state indicator badge.
-  Widget _buildStateIndicator() {
-    final (label, color) = _getStateInfo();
+  Widget _buildStateIndicator(SkillTreeTheme resolvedTheme) {
+    final (label, color) = _getStateInfo(resolvedTheme);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -287,31 +280,31 @@ class SkillTooltip<T> extends StatelessWidget {
     );
   }
 
-  /// Gets the state label and color using FDL colors.
-  (String, Color) _getStateInfo() {
+  /// Gets the state label and color from the resolved theme.
+  (String, Color) _getStateInfo(SkillTreeTheme resolvedTheme) {
     switch (state) {
       case SkillState.locked:
-        return ('Locked', FiftyColors.slateGrey);
+        return ('Locked', resolvedTheme.lockedNodeBorderColor);
       case SkillState.available:
-        return ('Available', FiftyColors.success);
+        return ('Available', resolvedTheme.availableNodeBorderColor);
       case SkillState.unlocked:
-        return ('Unlocked', FiftyColors.primary);
+        return ('Unlocked', resolvedTheme.unlockedNodeBorderColor);
       case SkillState.maxed:
-        return ('Maxed', FiftyColors.warning);
+        return ('Maxed', resolvedTheme.maxedNodeBorderColor);
     }
   }
 
-  /// Gets the progress bar color based on state using FDL colors.
-  Color _getProgressColor() {
+  /// Gets the progress bar color based on state from the resolved theme.
+  Color _getProgressColor(SkillTreeTheme resolvedTheme) {
     switch (state) {
       case SkillState.locked:
-        return FiftyColors.slateGrey;
+        return resolvedTheme.lockedNodeBorderColor;
       case SkillState.available:
-        return FiftyColors.success;
+        return resolvedTheme.availableNodeBorderColor;
       case SkillState.unlocked:
-        return FiftyColors.primary;
+        return resolvedTheme.unlockedNodeBorderColor;
       case SkillState.maxed:
-        return FiftyColors.warning;
+        return resolvedTheme.maxedNodeBorderColor;
     }
   }
 }

@@ -2,13 +2,13 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-28
-**Active Brief:** AC-004 (fifty_ui theme alignment)
+**Active Brief:** AC-005 (engine packages theme alignment)
 
 ---
 
 ## Resume Point
 
-**Last Active:** AC-003 (Done)
+**Last Active:** AC-004 (Done)
 **Phase:** COMPLETE
 
 ---

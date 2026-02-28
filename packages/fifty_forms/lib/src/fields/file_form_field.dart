@@ -56,14 +56,11 @@ class FiftyFileFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
-    final borderColor =
-        isDark ? FiftyColors.borderDark : FiftyColors.borderLight;
-    final fillColor =
-        isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight;
-    final textColor = isDark ? FiftyColors.slateGrey : Colors.grey[600];
+    final borderColor = colorScheme.outline;
+    final fillColor = colorScheme.surfaceContainerHighest;
+    final textColor = colorScheme.onSurfaceVariant;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +117,7 @@ class FiftyFileFormField extends StatelessWidget {
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
                       fontWeight: FiftyTypography.regular,
-                      color: textColor?.withValues(alpha: 0.7),
+                      color: textColor.withValues(alpha: 0.7),
                     ),
                   ),
                 ],

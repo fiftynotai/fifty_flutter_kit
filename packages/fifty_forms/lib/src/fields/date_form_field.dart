@@ -149,7 +149,6 @@ class _FiftyDateFormFieldState extends State<FiftyDateFormField>
         widget.lastDate ?? DateTime(now.year + 100, now.month, now.day);
 
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     final selectedDate = await showDatePicker(
       context: context,
@@ -157,23 +156,10 @@ class _FiftyDateFormFieldState extends State<FiftyDateFormField>
       firstDate: firstDate,
       lastDate: lastDate,
       builder: (context, child) {
-        // Apply FDL styling to the date picker
         return Theme(
           data: theme.copyWith(
-            colorScheme: theme.colorScheme.copyWith(
-              primary: FiftyColors.primary,
-              onPrimary: Colors.white,
-              surface:
-                  isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
-              onSurface: isDark ? Colors.white : FiftyColors.darkBurgundy,
-            ),
-            dialogTheme: DialogThemeData(
-              backgroundColor:
-                  isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
-            ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: FiftyColors.primary,
                 textStyle: const TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontWeight: FiftyTypography.medium,
@@ -215,9 +201,7 @@ class _FiftyDateFormFieldState extends State<FiftyDateFormField>
                   Icon(
                     Icons.calendar_today,
                     size: 20,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? FiftyColors.slateGrey
-                        : Colors.grey[600],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
             ),
           ),

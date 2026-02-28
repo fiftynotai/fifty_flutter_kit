@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 
 /// Immutable theme configuration for skill tree appearance.
 ///
@@ -257,6 +256,83 @@ class SkillTreeTheme {
       // Tooltip
       tooltipBackground: Color(0xFFFAFAFA),
       tooltipBorder: Color(0xFFE0E0E0),
+    );
+  }
+
+  /// Creates a theme derived from the app's [ColorScheme] via [Theme.of].
+  ///
+  /// Maps ColorScheme roles to skill tree properties so that the tree
+  /// follows the consumer's active theme automatically.
+  ///
+  /// For colors that have no direct ColorScheme equivalent (warning, accent),
+  /// optional parameters are provided with reasonable fallbacks:
+  /// - [warningColor] defaults to `colorScheme.error`
+  /// - [accentColor] defaults to `colorScheme.secondary`
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final theme = SkillTreeTheme.fromContext(context);
+  /// ```
+  factory SkillTreeTheme.fromContext(
+    BuildContext context, {
+    Color? warningColor,
+    Color? accentColor,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final warning = warningColor ?? colorScheme.error;
+    final accent = accentColor ?? colorScheme.secondary;
+
+    return SkillTreeTheme(
+      // Node colors by state
+      lockedNodeColor: colorScheme.surfaceContainerHighest,
+      lockedNodeBorderColor: colorScheme.outline,
+      availableNodeColor: colorScheme.primaryContainer,
+      availableNodeBorderColor: colorScheme.primary,
+      unlockedNodeColor: colorScheme.tertiaryContainer,
+      unlockedNodeBorderColor: colorScheme.tertiary,
+      maxedNodeColor: colorScheme.primary.withValues(alpha: 0.2),
+      maxedNodeBorderColor: colorScheme.primary,
+      // Node colors by type
+      passiveColor: colorScheme.onSurfaceVariant,
+      activeColor: colorScheme.primary,
+      ultimateColor: accent,
+      keystoneColor: warning,
+      // Connection colors
+      connectionLockedColor: colorScheme.outline,
+      connectionUnlockedColor: colorScheme.tertiary,
+      connectionHighlightColor: colorScheme.primary,
+      // Sizes
+      nodeRadius: 28.0,
+      nodeBorderWidth: 2.0,
+      connectionWidth: 2.0,
+      // Text styles
+      nodeNameStyle: TextStyle(
+        color: colorScheme.onSurface,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+      nodeLevelStyle: TextStyle(
+        color: colorScheme.onSurface,
+        fontSize: 10,
+        fontWeight: FontWeight.w600,
+      ),
+      nodeCostStyle: TextStyle(
+        color: warning,
+        fontSize: 10,
+        fontWeight: FontWeight.w600,
+      ),
+      tooltipTitleStyle: TextStyle(
+        color: colorScheme.onSurface,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+      tooltipDescriptionStyle: TextStyle(
+        color: colorScheme.onSurface.withValues(alpha: 0.7),
+        fontSize: 12,
+      ),
+      // Tooltip
+      tooltipBackground: colorScheme.surfaceContainerHighest,
+      tooltipBorder: colorScheme.outline,
     );
   }
 

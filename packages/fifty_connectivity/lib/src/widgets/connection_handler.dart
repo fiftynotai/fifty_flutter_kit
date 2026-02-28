@@ -94,7 +94,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
               text: ConnectivityConfig.labelEstablishingUplink,
               style: FiftyLoadingStyle.dots,
               size: FiftyLoadingSize.large,
-              color: FiftyColors.slateGrey,
+              color: colorScheme.onSurfaceVariant,
             ),
           ],
         ),
@@ -123,18 +123,18 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                 Icon(
                   Icons.cloud_off,
                   size: MediaQuery.of(context).size.height / 6,
-                  color: FiftyColors.burgundy,
+                  color: colorScheme.error,
                 ),
                 const SizedBox(height: FiftySpacing.xl),
 
                 // Title
                 Text(
                   ConnectivityConfig.labelSignalLost,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.titleLarge,
                     fontWeight: FiftyTypography.extraBold,
-                    color: FiftyColors.burgundy,
+                    color: colorScheme.error,
                     letterSpacing: 4,
                   ),
                 ),
@@ -143,11 +143,11 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                 // Subtitle
                 Text(
                   ConnectivityConfig.labelConnectionLost,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
                     fontSize: FiftyTypography.bodyLarge,
                     fontWeight: FiftyTypography.regular,
-                    color: FiftyColors.slateGrey,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: FiftySpacing.xxl),

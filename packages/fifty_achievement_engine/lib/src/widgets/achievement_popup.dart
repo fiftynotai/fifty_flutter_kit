@@ -42,6 +42,7 @@ class AchievementPopup<T> extends StatefulWidget {
     this.duration = const Duration(seconds: 4),
     this.backgroundColor,
     this.showAnimation = true,
+    this.rarityColors,
   });
 
   /// The unlocked achievement to display.
@@ -61,6 +62,13 @@ class AchievementPopup<T> extends StatefulWidget {
 
   /// Whether to show entrance/exit animations.
   final bool showAnimation;
+
+  /// Optional rarity color overrides.
+  ///
+  /// If a color is provided for a given rarity, it takes precedence
+  /// over the default. Defaults use theme-derived colors for common
+  /// and uncommon, and hardcoded domain colors for rare/epic/legendary.
+  final Map<AchievementRarity, Color>? rarityColors;
 
   @override
   State<AchievementPopup<T>> createState() => _AchievementPopupState<T>();
@@ -121,12 +129,17 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
     widget.onDismiss?.call();
   }
 
-  Color get _rarityColor {
+  /// Gets the rarity color, checking overrides first, then theme defaults.
+  Color _getRarityColor(ColorScheme colorScheme) {
+    final overrides = widget.rarityColors;
+    if (overrides != null && overrides.containsKey(widget.achievement.rarity)) {
+      return overrides[widget.achievement.rarity]!;
+    }
     switch (widget.achievement.rarity) {
       case AchievementRarity.common:
-        return FiftyColors.slateGrey;
+        return colorScheme.onSurfaceVariant;
       case AchievementRarity.uncommon:
-        return FiftyColors.hunterGreen;
+        return colorScheme.tertiary;
       case AchievementRarity.rare:
         return const Color(0xFF5B8BD4);
       case AchievementRarity.epic:
@@ -139,6 +152,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final rarityColor = _getRarityColor(colorScheme);
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
@@ -168,10 +182,10 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
                 color: widget.backgroundColor ??
                     colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
-                border: Border.all(color: _rarityColor, width: 2),
+                border: Border.all(color: rarityColor, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: _rarityColor.withValues(alpha: 0.3),
+                    color: rarityColor.withValues(alpha: 0.3),
                     blurRadius: 20,
                     spreadRadius: 2,
                   ),
@@ -185,9 +199,9 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildIcon(context),
+                  _buildIcon(context, rarityColor),
                   const SizedBox(width: FiftySpacing.md),
-                  Flexible(child: _buildContent(context)),
+                  Flexible(child: _buildContent(context, rarityColor)),
                 ],
               ),
             ),
@@ -198,7 +212,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
     );
   }
 
-  Widget _buildIcon(BuildContext context) {
+  Widget _buildIcon(BuildContext context, Color rarityColor) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 600),
@@ -217,14 +231,14 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              _rarityColor,
-              _rarityColor.withValues(alpha: 0.7),
+              rarityColor,
+              rarityColor.withValues(alpha: 0.7),
             ],
           ),
           borderRadius: FiftyRadii.mdRadius,
           boxShadow: [
             BoxShadow(
-              color: _rarityColor.withValues(alpha: 0.5),
+              color: rarityColor.withValues(alpha: 0.5),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -239,7 +253,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
     );
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent(BuildContext context, Color rarityColor) {
     final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,7 +266,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             fontSize: FiftyTypography.labelMedium,
             fontWeight: FiftyTypography.bold,
             letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-            color: _rarityColor,
+            color: rarityColor,
           ),
         ),
         const SizedBox(height: FiftySpacing.xs),
@@ -281,7 +295,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
         const SizedBox(height: FiftySpacing.sm),
         Row(
           children: [
-            _buildRarityBadge(),
+            _buildRarityBadge(rarityColor),
             const SizedBox(width: FiftySpacing.sm),
             Text(
               '+${widget.achievement.points} pts',
@@ -298,16 +312,16 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
     );
   }
 
-  Widget _buildRarityBadge() {
+  Widget _buildRarityBadge(Color rarityColor) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs / 2,
       ),
       decoration: BoxDecoration(
-        color: _rarityColor.withValues(alpha: 0.2),
+        color: rarityColor.withValues(alpha: 0.2),
         borderRadius: FiftyRadii.smRadius,
-        border: Border.all(color: _rarityColor),
+        border: Border.all(color: rarityColor),
       ),
       child: Text(
         widget.achievement.rarity.displayName.toUpperCase(),
@@ -316,7 +330,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
           fontSize: FiftyTypography.labelSmall,
           fontWeight: FiftyTypography.bold,
           letterSpacing: FiftyTypography.letterSpacingLabelMedium,
-          color: _rarityColor,
+          color: rarityColor,
         ),
       ),
     );

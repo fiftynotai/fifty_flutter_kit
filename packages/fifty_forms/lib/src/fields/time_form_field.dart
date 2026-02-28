@@ -127,45 +127,20 @@ class _FiftyTimeFormFieldState extends State<FiftyTimeFormField>
     final now = TimeOfDay.now();
 
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: currentValue ?? now,
       builder: (context, child) {
-        // Apply FDL styling to the time picker
         return Theme(
           data: theme.copyWith(
-            colorScheme: theme.colorScheme.copyWith(
-              primary: FiftyColors.primary,
-              onPrimary: Colors.white,
-              surface:
-                  isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
-              onSurface: isDark ? Colors.white : FiftyColors.darkBurgundy,
-            ),
-            dialogTheme: DialogThemeData(
-              backgroundColor:
-                  isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
-            ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: FiftyColors.primary,
                 textStyle: const TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontWeight: FiftyTypography.medium,
                 ),
               ),
-            ),
-            timePickerTheme: TimePickerThemeData(
-              backgroundColor:
-                  isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
-              hourMinuteTextColor:
-                  isDark ? Colors.white : FiftyColors.darkBurgundy,
-              dialHandColor: FiftyColors.primary,
-              dialBackgroundColor: isDark
-                  ? FiftyColors.slateGrey.withValues(alpha: 0.2)
-                  : FiftyColors.borderLight,
-              entryModeIconColor: FiftyColors.slateGrey,
             ),
           ),
           child: MediaQuery(
@@ -207,9 +182,7 @@ class _FiftyTimeFormFieldState extends State<FiftyTimeFormField>
                   Icon(
                     Icons.access_time,
                     size: 20,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? FiftyColors.slateGrey
-                        : Colors.grey[600],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
             ),
           ),

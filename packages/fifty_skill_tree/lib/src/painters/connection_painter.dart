@@ -1,4 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/rendering.dart';
 
 import '../models/models.dart';
@@ -73,23 +72,23 @@ class ConnectionPainter extends CustomPainter {
   /// Connection IDs are formatted as "fromId->toId".
   final Set<String>? highlightedConnectionIds;
 
-  // ---- FDL Default Colors ----
+  // ---- Default Colors (safety net when theme is null) ----
 
-  /// FDL default color for locked connections.
-  static Color get _fdlLockedColor => FiftyColors.borderDark;
+  /// Default color for locked connections.
+  static const Color _defaultLockedColor = Color(0xFF616161);
 
-  /// FDL default color for unlocked connections.
-  static Color get _fdlUnlockedColor => FiftyColors.success;
+  /// Default color for unlocked connections.
+  static const Color _defaultUnlockedColor = Color(0xFF4CAF50);
 
-  /// FDL default color for highlighted connections.
-  static Color get _fdlHighlightColor => FiftyColors.primary;
+  /// Default color for highlighted connections.
+  static const Color _defaultHighlightColor = Color(0xFF2196F3);
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Get colors from theme or use FDL defaults
-    final lockedColor = theme?.connectionLockedColor ?? _fdlLockedColor;
-    final unlockedColor = theme?.connectionUnlockedColor ?? _fdlUnlockedColor;
-    final highlightColor = theme?.connectionHighlightColor ?? _fdlHighlightColor;
+    // Get colors from theme or use safe defaults
+    final lockedColor = theme?.connectionLockedColor ?? _defaultLockedColor;
+    final unlockedColor = theme?.connectionUnlockedColor ?? _defaultUnlockedColor;
+    final highlightColor = theme?.connectionHighlightColor ?? _defaultHighlightColor;
     final connectionWidth = theme?.connectionWidth ?? 2.0;
 
     for (final connection in connections) {

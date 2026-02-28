@@ -1,4 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -79,57 +78,21 @@ class SkillNodeWidget<T> extends StatelessWidget {
   /// Whether this node is being hovered.
   final bool hovered;
 
-  // ---- FDL Default Colors ----
-
-  /// Gets the FDL default background color based on state.
-  static Color _getFdlBackgroundColor(SkillState state) {
-    switch (state) {
-      case SkillState.locked:
-        return FiftyColors.surfaceDark;
-      case SkillState.available:
-        return FiftyColors.surfaceDark;
-      case SkillState.unlocked:
-        return FiftyColors.hunterGreen.withAlpha(51);
-      case SkillState.maxed:
-        return FiftyColors.warning.withAlpha(51);
-    }
-  }
-
-  /// Gets the FDL default border color based on state.
-  static Color _getFdlBorderColor(SkillState state) {
-    switch (state) {
-      case SkillState.locked:
-        return FiftyColors.borderDark;
-      case SkillState.available:
-        return FiftyColors.primary;
-      case SkillState.unlocked:
-        return FiftyColors.success;
-      case SkillState.maxed:
-        return FiftyColors.warning;
-    }
-  }
-
-  /// Gets the FDL default icon color based on node type.
-  static Color _getFdlIconColor(SkillType type) {
-    switch (type) {
-      case SkillType.passive:
-        return FiftyColors.slateGrey;
-      case SkillType.active:
-        return FiftyColors.primary;
-      case SkillType.ultimate:
-        return FiftyColors.powderBlush;
-      case SkillType.keystone:
-        return FiftyColors.warning;
-      case SkillType.minor:
-        return FiftyColors.slateGrey.withAlpha(179);
-    }
+  /// Resolves the theme to use for this widget.
+  ///
+  /// Returns the explicitly provided [theme] if non-null, otherwise
+  /// derives one from the current [BuildContext] via
+  /// [SkillTreeTheme.fromContext].
+  SkillTreeTheme _resolveTheme(BuildContext context) {
+    return theme ?? SkillTreeTheme.fromContext(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = _getBackgroundColor();
-    final borderColor = _getBorderColor();
-    final borderWidth = theme?.nodeBorderWidth ?? 2.0;
+    final resolvedTheme = _resolveTheme(context);
+    final backgroundColor = _getBackgroundColor(resolvedTheme);
+    final borderColor = _getBorderColor(resolvedTheme);
+    final borderWidth = resolvedTheme.nodeBorderWidth;
 
     return GestureDetector(
       onTap: onTap,
@@ -147,16 +110,16 @@ class SkillNodeWidget<T> extends StatelessWidget {
               color: borderColor,
               width: borderWidth,
             ),
-            boxShadow: _buildShadows(),
+            boxShadow: _buildShadows(resolvedTheme),
           ),
           child: Stack(
             children: [
               // Icon in center
               Center(
-                child: _buildIcon(),
+                child: _buildIcon(resolvedTheme),
               ),
               // Level badge (bottom right)
-              if (node.maxLevel > 1) _buildLevelBadge(),
+              if (node.maxLevel > 1) _buildLevelBadge(resolvedTheme),
             ],
           ),
         ),
@@ -164,40 +127,32 @@ class SkillNodeWidget<T> extends StatelessWidget {
     );
   }
 
-  /// Gets the background color based on state.
-  /// Uses custom theme if provided, otherwise FDL defaults.
-  Color _getBackgroundColor() {
-    if (theme != null) {
-      switch (state) {
-        case SkillState.locked:
-          return theme!.lockedNodeColor;
-        case SkillState.available:
-          return theme!.availableNodeColor;
-        case SkillState.unlocked:
-          return theme!.unlockedNodeColor;
-        case SkillState.maxed:
-          return theme!.maxedNodeColor;
-      }
+  /// Gets the background color based on state from the resolved theme.
+  Color _getBackgroundColor(SkillTreeTheme resolvedTheme) {
+    switch (state) {
+      case SkillState.locked:
+        return resolvedTheme.lockedNodeColor;
+      case SkillState.available:
+        return resolvedTheme.availableNodeColor;
+      case SkillState.unlocked:
+        return resolvedTheme.unlockedNodeColor;
+      case SkillState.maxed:
+        return resolvedTheme.maxedNodeColor;
     }
-    return _getFdlBackgroundColor(state);
   }
 
-  /// Gets the border color based on state.
-  /// Uses custom theme if provided, otherwise FDL defaults.
-  Color _getBorderColor() {
-    if (theme != null) {
-      switch (state) {
-        case SkillState.locked:
-          return theme!.lockedNodeBorderColor;
-        case SkillState.available:
-          return theme!.availableNodeBorderColor;
-        case SkillState.unlocked:
-          return theme!.unlockedNodeBorderColor;
-        case SkillState.maxed:
-          return theme!.maxedNodeBorderColor;
-      }
+  /// Gets the border color based on state from the resolved theme.
+  Color _getBorderColor(SkillTreeTheme resolvedTheme) {
+    switch (state) {
+      case SkillState.locked:
+        return resolvedTheme.lockedNodeBorderColor;
+      case SkillState.available:
+        return resolvedTheme.availableNodeBorderColor;
+      case SkillState.unlocked:
+        return resolvedTheme.unlockedNodeBorderColor;
+      case SkillState.maxed:
+        return resolvedTheme.maxedNodeBorderColor;
     }
-    return _getFdlBorderColor(state);
   }
 
   /// Gets the cursor based on state.
@@ -210,10 +165,10 @@ class SkillNodeWidget<T> extends StatelessWidget {
   }
 
   /// Builds the shadow list based on selection/hover state.
-  List<BoxShadow>? _buildShadows() {
+  List<BoxShadow>? _buildShadows(SkillTreeTheme resolvedTheme) {
     final shadows = <BoxShadow>[];
-    final borderColor = _getBorderColor();
-    final availableBorderColor = theme?.availableNodeBorderColor ?? FiftyColors.primary;
+    final borderColor = _getBorderColor(resolvedTheme);
+    final availableBorderColor = resolvedTheme.availableNodeBorderColor;
 
     // Selection glow
     if (selected) {
@@ -246,7 +201,7 @@ class SkillNodeWidget<T> extends StatelessWidget {
   }
 
   /// Builds the icon widget.
-  Widget _buildIcon() {
+  Widget _buildIcon(SkillTreeTheme resolvedTheme) {
     // Icon opacity based on state
     final opacity = state == SkillState.locked ? 0.5 : 1.0;
 
@@ -255,7 +210,7 @@ class SkillNodeWidget<T> extends StatelessWidget {
         opacity: opacity,
         child: Icon(
           node.icon,
-          color: _getIconColor(),
+          color: _getIconColor(resolvedTheme),
           size: size.width * 0.5,
         ),
       );
@@ -266,30 +221,26 @@ class SkillNodeWidget<T> extends StatelessWidget {
       opacity: opacity,
       child: Icon(
         _getDefaultIcon(),
-        color: _getIconColor(),
+        color: _getIconColor(resolvedTheme),
         size: size.width * 0.4,
       ),
     );
   }
 
-  /// Gets the icon color based on node type.
-  /// Uses custom theme if provided, otherwise FDL defaults.
-  Color _getIconColor() {
-    if (theme != null) {
-      switch (node.type) {
-        case SkillType.passive:
-          return theme!.passiveColor;
-        case SkillType.active:
-          return theme!.activeColor;
-        case SkillType.ultimate:
-          return theme!.ultimateColor;
-        case SkillType.keystone:
-          return theme!.keystoneColor;
-        case SkillType.minor:
-          return theme!.passiveColor.withAlpha(179);
-      }
+  /// Gets the icon color based on node type from the resolved theme.
+  Color _getIconColor(SkillTreeTheme resolvedTheme) {
+    switch (node.type) {
+      case SkillType.passive:
+        return resolvedTheme.passiveColor;
+      case SkillType.active:
+        return resolvedTheme.activeColor;
+      case SkillType.ultimate:
+        return resolvedTheme.ultimateColor;
+      case SkillType.keystone:
+        return resolvedTheme.keystoneColor;
+      case SkillType.minor:
+        return resolvedTheme.passiveColor.withAlpha(179);
     }
-    return _getFdlIconColor(node.type);
   }
 
   /// Gets a default icon based on node type.
@@ -309,11 +260,11 @@ class SkillNodeWidget<T> extends StatelessWidget {
   }
 
   /// Builds the level badge for multi-level skills.
-  Widget _buildLevelBadge() {
+  Widget _buildLevelBadge(SkillTreeTheme resolvedTheme) {
     final levelText = '${node.currentLevel}/${node.maxLevel}';
-    final levelStyle = theme?.nodeLevelStyle ??
-        const TextStyle(
-          color: FiftyColors.cream,
+    final levelStyle = resolvedTheme.nodeLevelStyle ??
+        TextStyle(
+          color: resolvedTheme.lockedNodeBorderColor,
           fontSize: 10,
           fontWeight: FontWeight.w600,
         );
@@ -327,7 +278,7 @@ class SkillNodeWidget<T> extends StatelessWidget {
           color: const Color(0xFF000000).withAlpha(179),
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
-            color: _getBorderColor(),
+            color: _getBorderColor(resolvedTheme),
             width: 1,
           ),
         ),
