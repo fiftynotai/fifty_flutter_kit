@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+
+import 'config/color_config.dart';
 
 /// Fifty.dev color tokens v2 - Sophisticated Warm design system.
 ///
 /// All colors follow the Fifty Design Language (FDL) v2 specification.
 /// Supports both dark mode (primary) and light mode.
+///
+/// Override defaults via [FiftyTokens.configure()] with a [FiftyColorConfig].
 class FiftyColors {
   FiftyColors._();
+
+  /// Internal config -- set via [FiftyTokens.configure()].
+  /// Do not set directly.
+  @internal
+  static FiftyColorConfig? config;
 
   // ============================================================================
   // CORE PALETTE (v2 - Sophisticated Warm)
   // ============================================================================
+
+  static const Color _defaultBurgundy = Color(0xFF88292F);
+  static const Color _defaultBurgundyHover = Color(0xFF6E2126);
+  static const Color _defaultCream = Color(0xFFFEFEE3);
+  static const Color _defaultDarkBurgundy = Color(0xFF1A0D0E);
+  static const Color _defaultSlateGrey = Color(0xFF335C67);
+  static const Color _defaultSlateGreyHover = Color(0xFF274750);
+  static const Color _defaultHunterGreen = Color(0xFF4B644A);
+  static const Color _defaultPowderBlush = Color(0xFFFFC9B9);
+  static const Color _defaultSurfaceLight = Color(0xFFFAF9DE);
+  static const Color _defaultSurfaceDark = Color(0xFF2A1517);
+  static const Color _defaultWarning = Color(0xFFF7A100);
 
   /// Burgundy (#88292F) - Primary brand color.
   ///
@@ -17,10 +39,11 @@ class FiftyColors {
   /// - Primary buttons and CTAs
   /// - Brand accents and highlights
   /// - Active states
-  static const Color burgundy = Color(0xFF88292F);
+  static Color get burgundy => config?.burgundy ?? _defaultBurgundy;
 
   /// Burgundy Hover (#6E2126) - Primary hover state.
-  static const Color burgundyHover = Color(0xFF6E2126);
+  static Color get burgundyHover =>
+      config?.burgundyHover ?? _defaultBurgundyHover;
 
   /// Cream (#FEFEE3) - Light background and dark mode text.
   ///
@@ -28,14 +51,15 @@ class FiftyColors {
   /// - Light mode backgrounds
   /// - Dark mode primary text
   /// - Accent highlights
-  static const Color cream = Color(0xFFFEFEE3);
+  static Color get cream => config?.cream ?? _defaultCream;
 
   /// Dark Burgundy (#1A0D0E) - Dark mode background.
   ///
   /// Use for:
   /// - Dark mode backgrounds
   /// - Deep, immersive dark surfaces
-  static const Color darkBurgundy = Color(0xFF1A0D0E);
+  static Color get darkBurgundy =>
+      config?.darkBurgundy ?? _defaultDarkBurgundy;
 
   /// Slate Grey (#335C67) - Secondary color.
   ///
@@ -43,10 +67,11 @@ class FiftyColors {
   /// - Secondary buttons
   /// - Switch on-state (NOT primary!)
   /// - Segmented control active state (dark mode)
-  static const Color slateGrey = Color(0xFF335C67);
+  static Color get slateGrey => config?.slateGrey ?? _defaultSlateGrey;
 
   /// Slate Grey Hover (#274750) - Secondary hover state.
-  static const Color slateGreyHover = Color(0xFF274750);
+  static Color get slateGreyHover =>
+      config?.slateGreyHover ?? _defaultSlateGreyHover;
 
   /// Hunter Green (#4B644A) - Success/positive color.
   ///
@@ -54,7 +79,7 @@ class FiftyColors {
   /// - Success messages
   /// - Positive indicators
   /// - Confirmation states
-  static const Color hunterGreen = Color(0xFF4B644A);
+  static Color get hunterGreen => config?.hunterGreen ?? _defaultHunterGreen;
 
   /// Powder Blush (#FFC9B9) - Dark mode accent.
   ///
@@ -62,41 +87,48 @@ class FiftyColors {
   /// - Dark mode accent color
   /// - Outline button borders (dark mode)
   /// - Focus rings (dark mode)
-  static const Color powderBlush = Color(0xFFFFC9B9);
+  static Color get powderBlush => config?.powderBlush ?? _defaultPowderBlush;
 
   /// Surface Light (#FAF9DE) - Light mode card/surface color.
   ///
   /// Darker cream shade creates contrast against cream background,
   /// giving cards depth while staying in the warm palette.
-  static const Color surfaceLight = Color(0xFFFAF9DE);
+  static Color get surfaceLight =>
+      config?.surfaceLight ?? _defaultSurfaceLight;
 
   /// Surface Dark (#2A1517) - Dark mode surfaces/cards.
-  static const Color surfaceDark = Color(0xFF2A1517);
+  static Color get surfaceDark => config?.surfaceDark ?? _defaultSurfaceDark;
 
   // ============================================================================
   // SEMANTIC COLORS
   // ============================================================================
 
   /// Primary - Alias for burgundy.
-  static const Color primary = burgundy;
+  ///
+  /// Falls back to [burgundy] getter when not explicitly overridden,
+  /// so overriding burgundy also changes primary.
+  static Color get primary => config?.primary ?? burgundy;
 
   /// Primary Hover - Alias for burgundyHover.
-  static const Color primaryHover = burgundyHover;
+  static Color get primaryHover => config?.primaryHover ?? burgundyHover;
 
   /// Secondary - Alias for slateGrey.
-  static const Color secondary = slateGrey;
+  static Color get secondary => config?.secondary ?? slateGrey;
 
   /// Secondary Hover - Alias for slateGreyHover.
-  static const Color secondaryHover = slateGreyHover;
+  static Color get secondaryHover =>
+      config?.secondaryHover ?? slateGreyHover;
 
   /// Success - Alias for hunterGreen.
-  static const Color success = hunterGreen;
+  static Color get success => config?.success ?? hunterGreen;
 
   /// Warning (#F7A100) - Caution states.
-  static const Color warning = Color(0xFFF7A100);
+  static Color get warning => config?.warning ?? _defaultWarning;
 
-  /// Error - Uses burgundy for consistency.
-  static const Color error = burgundy;
+  /// Error - Uses primary for consistency.
+  ///
+  /// Falls back to [primary] getter when not explicitly overridden.
+  static Color get error => config?.error ?? primary;
 
   // ============================================================================
   // MODE-SPECIFIC HELPERS
@@ -109,7 +141,9 @@ class FiftyColors {
   static Color get borderDark => Colors.white.withValues(alpha: 0.05);
 
   /// Focus border for light mode.
-  static const Color focusLight = burgundy;
+  ///
+  /// Falls back to [primary] getter when not explicitly overridden.
+  static Color get focusLight => config?.focusLight ?? primary;
 
   /// Focus border for dark mode (powderBlush at 50% opacity).
   static Color get focusDark => powderBlush.withValues(alpha: 0.5);

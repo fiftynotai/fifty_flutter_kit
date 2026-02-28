@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyTokens Package', () {
+    setUp(() => FiftyTokens.reset());
+
     test('exports FiftyColors (v2)', () {
       expect(FiftyColors.burgundy, isNotNull);
       expect(FiftyColors.cream, isNotNull);
@@ -41,6 +43,32 @@ void main() {
 
     test('exports FiftyBreakpoints', () {
       expect(FiftyBreakpoints.desktop, isNotNull);
+    });
+
+    test('exports FiftyTokens config', () {
+      expect(FiftyTokens.isConfigured, isFalse);
+    });
+
+    test('exports FontSource enum', () {
+      expect(FontSource.googleFonts, isNotNull);
+      expect(FontSource.asset, isNotNull);
+    });
+
+    test('exports config classes', () {
+      // Verify all config classes are accessible
+      const colorConfig = FiftyColorConfig();
+      const typographyConfig = FiftyTypographyConfig();
+      const spacingConfig = FiftySpacingConfig();
+      const radiiConfig = FiftyRadiiConfig();
+      const motionConfig = FiftyMotionConfig();
+      const breakpointsConfig = FiftyBreakpointsConfig();
+
+      expect(colorConfig, isNotNull);
+      expect(typographyConfig, isNotNull);
+      expect(spacingConfig, isNotNull);
+      expect(radiiConfig, isNotNull);
+      expect(motionConfig, isNotNull);
+      expect(breakpointsConfig, isNotNull);
     });
   });
 }

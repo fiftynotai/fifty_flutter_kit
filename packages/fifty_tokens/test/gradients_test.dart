@@ -4,11 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyGradients', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Primary Gradient', () {
       test('has correct colors', () {
         expect(FiftyGradients.primary.colors.length, 2);
-        expect(FiftyGradients.primary.colors[0], const Color(0xFF88292F));
-        expect(FiftyGradients.primary.colors[1], const Color(0xFF5A1B1F));
+        expect(FiftyGradients.primary.colors[0], FiftyColors.burgundy);
+        expect(FiftyGradients.primary.colors[1], Color(0xFF5A1B1F));
       });
 
       test('has correct alignment', () {
@@ -20,8 +22,8 @@ void main() {
     group('Progress Gradient', () {
       test('has correct colors', () {
         expect(FiftyGradients.progress.colors.length, 2);
-        expect(FiftyGradients.progress.colors[0], const Color(0xFFFFC9B9));
-        expect(FiftyGradients.progress.colors[1], const Color(0xFF88292F));
+        expect(FiftyGradients.progress.colors[0], FiftyColors.powderBlush);
+        expect(FiftyGradients.progress.colors[1], FiftyColors.burgundy);
       });
 
       test('has correct alignment', () {
@@ -33,8 +35,8 @@ void main() {
     group('Surface Gradient', () {
       test('has correct colors', () {
         expect(FiftyGradients.surface.colors.length, 2);
-        expect(FiftyGradients.surface.colors[0], const Color(0xFF1A0D0E));
-        expect(FiftyGradients.surface.colors[1], const Color(0xFF2A1517));
+        expect(FiftyGradients.surface.colors[0], FiftyColors.darkBurgundy);
+        expect(FiftyGradients.surface.colors[1], FiftyColors.surfaceDark);
       });
 
       test('has correct alignment', () {

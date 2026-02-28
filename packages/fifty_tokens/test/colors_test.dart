@@ -4,45 +4,47 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyColors', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Core Palette v2 (Sophisticated Warm)', () {
       test('burgundy is #88292F', () {
-        expect(FiftyColors.burgundy, const Color(0xFF88292F));
+        expect(FiftyColors.burgundy, Color(0xFF88292F));
       });
 
       test('burgundyHover is #6E2126', () {
-        expect(FiftyColors.burgundyHover, const Color(0xFF6E2126));
+        expect(FiftyColors.burgundyHover, Color(0xFF6E2126));
       });
 
       test('cream is #FEFEE3', () {
-        expect(FiftyColors.cream, const Color(0xFFFEFEE3));
+        expect(FiftyColors.cream, Color(0xFFFEFEE3));
       });
 
       test('darkBurgundy is #1A0D0E', () {
-        expect(FiftyColors.darkBurgundy, const Color(0xFF1A0D0E));
+        expect(FiftyColors.darkBurgundy, Color(0xFF1A0D0E));
       });
 
       test('slateGrey is #335C67', () {
-        expect(FiftyColors.slateGrey, const Color(0xFF335C67));
+        expect(FiftyColors.slateGrey, Color(0xFF335C67));
       });
 
       test('slateGreyHover is #274750', () {
-        expect(FiftyColors.slateGreyHover, const Color(0xFF274750));
+        expect(FiftyColors.slateGreyHover, Color(0xFF274750));
       });
 
       test('hunterGreen is #4B644A', () {
-        expect(FiftyColors.hunterGreen, const Color(0xFF4B644A));
+        expect(FiftyColors.hunterGreen, Color(0xFF4B644A));
       });
 
       test('powderBlush is #FFC9B9', () {
-        expect(FiftyColors.powderBlush, const Color(0xFFFFC9B9));
+        expect(FiftyColors.powderBlush, Color(0xFFFFC9B9));
       });
 
-      test('surfaceLight is #FFFFFF', () {
-        expect(FiftyColors.surfaceLight, const Color(0xFFFFFFFF));
+      test('surfaceLight is #FAF9DE', () {
+        expect(FiftyColors.surfaceLight, Color(0xFFFAF9DE));
       });
 
       test('surfaceDark is #2A1517', () {
-        expect(FiftyColors.surfaceDark, const Color(0xFF2A1517));
+        expect(FiftyColors.surfaceDark, Color(0xFF2A1517));
       });
     });
 
@@ -68,7 +70,7 @@ void main() {
       });
 
       test('warning is #F7A100', () {
-        expect(FiftyColors.warning, const Color(0xFFF7A100));
+        expect(FiftyColors.warning, Color(0xFFF7A100));
       });
 
       test('error is burgundy', () {

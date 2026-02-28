@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftySpacing', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Base Unit', () {
       test('base is 4px', () {
         expect(FiftySpacing.base, 4);

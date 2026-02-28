@@ -1,3 +1,7 @@
+import 'package:meta/meta.dart';
+
+import 'config/breakpoints_config.dart';
+
 /// Fifty.dev breakpoint tokens - responsive design.
 ///
 /// Defines breakpoint widths for responsive layouts following the
@@ -8,12 +12,23 @@
 ///
 /// **Gutter values** are defined in FiftySpacing (gutterMobile, gutterTablet,
 /// gutterDesktop) and should be used in conjunction with these breakpoints.
+///
+/// Override defaults via [FiftyTokens.configure()] with a [FiftyBreakpointsConfig].
 class FiftyBreakpoints {
   FiftyBreakpoints._(); // Private constructor - static class
+
+  /// Internal config -- set via [FiftyTokens.configure()].
+  /// Do not set directly.
+  @internal
+  static FiftyBreakpointsConfig? config;
 
   // ============================================================================
   // BREAKPOINT WIDTHS
   // ============================================================================
+
+  static const double _defaultMobile = 768;
+  static const double _defaultTablet = 768;
+  static const double _defaultDesktop = 1024;
 
   /// Mobile breakpoint (768px) - Small screen threshold.
   ///
@@ -25,7 +40,7 @@ class FiftyBreakpoints {
   /// - Compact UI
   /// - Single-column layouts
   /// - Maximum content density
-  static const double mobile = 768;
+  static double get mobile => config?.mobile ?? _defaultMobile;
 
   /// Tablet breakpoint (768px) - Medium screen threshold.
   ///
@@ -37,7 +52,7 @@ class FiftyBreakpoints {
   /// - Two-column layouts
   /// - Medium-density UI
   /// - Balanced spacing
-  static const double tablet = 768;
+  static double get tablet => config?.tablet ?? _defaultTablet;
 
   /// Desktop breakpoint (1024px) - Large screen threshold.
   ///
@@ -49,5 +64,5 @@ class FiftyBreakpoints {
   /// - Multi-column layouts
   /// - Generous spacing
   /// - Maximum readability
-  static const double desktop = 1024;
+  static double get desktop => config?.desktop ?? _defaultDesktop;
 }

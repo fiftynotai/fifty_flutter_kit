@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyShadows', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Shadow Tokens (v2)', () {
       test('sm has correct offset and blur', () {
         expect(FiftyShadows.sm.length, 1);

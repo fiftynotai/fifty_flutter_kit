@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyMotion', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Durations (FDL Brand Sheet)', () {
       test('instant is 0ms', () {
         expect(FiftyMotion.instant, Duration.zero);

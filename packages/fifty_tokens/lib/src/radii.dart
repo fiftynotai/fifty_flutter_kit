@@ -1,80 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+
+import 'config/radii_config.dart';
 
 /// Fifty.dev border radius tokens v2 - Complete radius scale.
 ///
 /// Expanded scale from none (0) to full (9999px).
+///
+/// Override defaults via [FiftyTokens.configure()] with a [FiftyRadiiConfig].
 class FiftyRadii {
   FiftyRadii._();
+
+  /// Internal config -- set via [FiftyTokens.configure()].
+  /// Do not set directly.
+  @internal
+  static FiftyRadiiConfig? config;
 
   // ============================================================================
   // RADIUS VALUES (v2)
   // ============================================================================
 
+  static const double _defaultNone = 0;
+  static const double _defaultSm = 4;
+  static const double _defaultMd = 8;
+  static const double _defaultLg = 12;
+  static const double _defaultXl = 16;
+  static const double _defaultXxl = 24;
+  static const double _defaultXxxl = 32;
+  static const double _defaultFull = 9999;
+
   /// None (0) - No radius.
-  static const double none = 0;
+  static double get none => config?.none ?? _defaultNone;
 
   /// Small (4px) - Subtle rounding.
   ///
   /// Use for: Checkboxes, small badges.
-  static const double sm = 4;
+  static double get sm => config?.sm ?? _defaultSm;
 
   /// Medium (8px) - Default small elements.
   ///
   /// Use for: Chips, tags.
-  static const double md = 8;
+  static double get md => config?.md ?? _defaultMd;
 
   /// Large (12px) - Standard elements.
   ///
   /// Use for: Standard cards, inputs (legacy).
-  static const double lg = 12;
+  static double get lg => config?.lg ?? _defaultLg;
 
   /// Extra Large (16px) - Buttons and inputs.
   ///
   /// Use for: Buttons, text fields, dropdowns.
-  static const double xl = 16;
+  static double get xl => config?.xl ?? _defaultXl;
 
   /// 2X Large (24px) - Cards.
   ///
   /// Use for: Standard cards, containers.
-  static const double xxl = 24;
+  static double get xxl => config?.xxl ?? _defaultXxl;
 
   /// 3X Large (32px) - Hero cards.
   ///
   /// Use for: Hero cards, modals, dialogs.
-  static const double xxxl = 32;
+  static double get xxxl => config?.xxxl ?? _defaultXxxl;
 
   /// Full (9999px) - Pills and circles.
   ///
   /// Use for: Pill buttons, avatars, badges.
-  static const double full = 9999;
+  static double get full => config?.full ?? _defaultFull;
 
   // ============================================================================
   // BORDERRADIUS OBJECTS (Convenience)
   // ============================================================================
 
   /// BorderRadius for none (0).
-  static const BorderRadius noneRadius = BorderRadius.zero;
+  static BorderRadius get noneRadius => BorderRadius.circular(none);
 
   /// BorderRadius for sm (4px).
-  static final BorderRadius smRadius = BorderRadius.circular(sm);
+  static BorderRadius get smRadius => BorderRadius.circular(sm);
 
   /// BorderRadius for md (8px).
-  static final BorderRadius mdRadius = BorderRadius.circular(md);
+  static BorderRadius get mdRadius => BorderRadius.circular(md);
 
   /// BorderRadius for lg (12px).
-  static final BorderRadius lgRadius = BorderRadius.circular(lg);
+  static BorderRadius get lgRadius => BorderRadius.circular(lg);
 
   /// BorderRadius for xl (16px).
-  static final BorderRadius xlRadius = BorderRadius.circular(xl);
+  static BorderRadius get xlRadius => BorderRadius.circular(xl);
 
   /// BorderRadius for xxl (24px).
-  static final BorderRadius xxlRadius = BorderRadius.circular(xxl);
+  static BorderRadius get xxlRadius => BorderRadius.circular(xxl);
 
   /// BorderRadius for xxxl (32px).
-  static final BorderRadius xxxlRadius = BorderRadius.circular(xxxl);
+  static BorderRadius get xxxlRadius => BorderRadius.circular(xxxl);
 
   /// BorderRadius for full (9999px).
-  static final BorderRadius fullRadius = BorderRadius.circular(full);
+  static BorderRadius get fullRadius => BorderRadius.circular(full);
 
   // ============================================================================
   // DEPRECATED (v1 compatibility)

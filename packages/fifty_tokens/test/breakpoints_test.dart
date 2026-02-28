@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyBreakpoints', () {
+    setUp(() => FiftyTokens.reset());
+
     test('breakpoint values match FDL specification', () {
       expect(FiftyBreakpoints.mobile, equals(768));
       expect(FiftyBreakpoints.tablet, equals(768));

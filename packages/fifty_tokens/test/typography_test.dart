@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyTypography', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Font Family (v2)', () {
       test('fontFamily is Manrope', () {
         expect(FiftyTypography.fontFamily, 'Manrope');
@@ -123,6 +125,12 @@ void main() {
 
       test('lineHeightLabel is 1.2', () {
         expect(FiftyTypography.lineHeightLabel, 1.2);
+      });
+    });
+
+    group('Font Source', () {
+      test('default fontSource is googleFonts', () {
+        expect(FiftyTypography.fontSource, FontSource.googleFonts);
       });
     });
 

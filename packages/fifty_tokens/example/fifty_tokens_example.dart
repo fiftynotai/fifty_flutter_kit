@@ -130,7 +130,7 @@ void main() {
   // EXAMPLE: Display Text Style
   // ---------------------------------------------------------------------------
 
-  const displayStyle = TextStyle(
+  final displayStyle = TextStyle(
     fontFamily: FiftyTypography.fontFamily,
     fontSize: FiftyTypography.displayLarge,
     fontWeight: FiftyTypography.extraBold,
@@ -145,7 +145,7 @@ void main() {
   // EXAMPLE: Body Text Style
   // ---------------------------------------------------------------------------
 
-  const bodyStyle = TextStyle(
+  final bodyStyle = TextStyle(
     fontFamily: FiftyTypography.fontFamily,
     fontSize: FiftyTypography.bodyLarge,
     fontWeight: FiftyTypography.medium,

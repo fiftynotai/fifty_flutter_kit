@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FiftyRadii', () {
+    setUp(() => FiftyTokens.reset());
+
     group('Radius Values (v2 Complete Scale)', () {
       test('none is 0px', () {
         expect(FiftyRadii.none, 0);
