@@ -190,7 +190,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final isEnabled = widget.enabled && widget.onChanged != null;
@@ -231,7 +231,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
               child: GestureDetector(
                 onTap: _toggleDropdown,
                 child: AnimatedContainer(
-                  duration: fifty.fast,
+                  duration: fifty?.fast ?? const Duration(milliseconds: 150),
                   height: 48,
                   padding: const EdgeInsets.symmetric(
                     horizontal: FiftySpacing.lg,
@@ -247,7 +247,9 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                               : borderColor),
                       width: _isOpen ? 2 : 1,
                     ),
-                    boxShadow: _isOpen ? fifty.shadowGlow : null,
+                    boxShadow: _isOpen
+                        ? (fifty?.shadowGlow ?? FiftyShadows.glow)
+                        : null,
                   ),
                   child: Row(
                     children: [
@@ -268,7 +270,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
 
                       // Chevron indicator
                       AnimatedRotation(
-                        duration: fifty.fast,
+                        duration: fifty?.fast ?? const Duration(milliseconds: 150),
                         turns: _isOpen ? 0.5 : 0,
                         child: Icon(
                           Icons.keyboard_arrow_down,
@@ -302,7 +304,9 @@ class _DropdownMenu<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final fifty = theme.extension<FiftyThemeExtension>();
+    final colorScheme = theme.colorScheme;
     final fillColor = colorScheme.surfaceContainerHighest;
     final borderColor = colorScheme.outline;
 
@@ -315,7 +319,7 @@ class _DropdownMenu<T> extends StatelessWidget {
           color: borderColor,
           width: 1,
         ),
-        boxShadow: FiftyShadows.md,
+        boxShadow: fifty?.shadowMd ?? FiftyShadows.md,
       ),
       child: ClipRRect(
         borderRadius: FiftyRadii.xlRadius,

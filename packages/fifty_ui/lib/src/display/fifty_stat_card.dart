@@ -76,7 +76,7 @@ class FiftyStatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     // Background color
@@ -103,14 +103,14 @@ class FiftyStatCard extends StatelessWidget {
     return SizedBox(
       height: 128,
       child: AnimatedContainer(
-        duration: fifty.fast,
-        curve: fifty.standardCurve,
+        duration: fifty?.fast ?? const Duration(milliseconds: 150),
+        curve: fifty?.standardCurve ?? Curves.easeInOut,
         padding: const EdgeInsets.all(FiftySpacing.lg),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: FiftyRadii.xlRadius,
           border: highlight ? null : Border.all(color: borderColor),
-          boxShadow: FiftyShadows.sm,
+          boxShadow: fifty?.shadowSm ?? FiftyShadows.sm,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,10 +162,10 @@ class FiftyStatCard extends StatelessWidget {
   Widget _buildTrendBadge(
     ColorScheme colorScheme,
     bool isHighlight,
-    FiftyThemeExtension fifty,
+    FiftyThemeExtension? fifty,
   ) {
     final trendColor = switch (trend!) {
-      FiftyStatTrend.up => fifty.success,
+      FiftyStatTrend.up => fifty?.success ?? colorScheme.tertiary,
       FiftyStatTrend.down => colorScheme.error,
       FiftyStatTrend.neutral => colorScheme.onSurfaceVariant,
     };

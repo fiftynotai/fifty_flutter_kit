@@ -183,7 +183,7 @@ class _FiftyButtonState extends State<FiftyButton>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final height = _getHeight();
@@ -193,7 +193,7 @@ class _FiftyButtonState extends State<FiftyButton>
     final backgroundColor = _getBackgroundColor(colorScheme);
     final foregroundColor = _getForegroundColor(colorScheme, fifty);
     final borderColor = _getBorderColor(colorScheme, fifty);
-    final shadow = _getShadow();
+    final shadow = _getShadow(fifty);
 
     return Focus(
       onFocusChange: (focused) => setState(() => _isFocused = focused),
@@ -206,11 +206,11 @@ class _FiftyButtonState extends State<FiftyButton>
           onTapCancel: _isDisabled ? null : () => setState(() => _isPressed = false),
           child: AnimatedScale(
             scale: _pressScale,
-            duration: fifty.fast,
-            curve: fifty.standardCurve,
+            duration: fifty?.fast ?? const Duration(milliseconds: 150),
+            curve: fifty?.standardCurve ?? Curves.easeInOut,
             child: AnimatedContainer(
-              duration: fifty.fast,
-              curve: fifty.standardCurve,
+              duration: fifty?.fast ?? const Duration(milliseconds: 150),
+              curve: fifty?.standardCurve ?? Curves.easeInOut,
               height: height,
               decoration: BoxDecoration(
                 color: backgroundColor,
@@ -221,7 +221,9 @@ class _FiftyButtonState extends State<FiftyButton>
                         width: _showGlow ? 2 : 1,
                       )
                     : null,
-                boxShadow: _showGlow ? fifty.shadowGlow : shadow,
+                boxShadow: _showGlow
+                    ? (fifty?.shadowGlow ?? FiftyShadows.glow)
+                    : shadow,
               ),
               child: Material(
                 color: Colors.transparent,
@@ -423,14 +425,14 @@ class _FiftyButtonState extends State<FiftyButton>
     }
   }
 
-  List<BoxShadow>? _getShadow() {
+  List<BoxShadow>? _getShadow(FiftyThemeExtension? fifty) {
     if (_isDisabled) return null;
 
     switch (widget.variant) {
       case FiftyButtonVariant.primary:
-        return FiftyShadows.primary;
+        return fifty?.shadowPrimary ?? FiftyShadows.primary;
       case FiftyButtonVariant.secondary:
-        return FiftyShadows.sm;
+        return fifty?.shadowSm ?? FiftyShadows.sm;
       case FiftyButtonVariant.outline:
       case FiftyButtonVariant.ghost:
       case FiftyButtonVariant.danger:

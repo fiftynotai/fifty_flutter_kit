@@ -176,7 +176,7 @@ class _FiftyCardState extends State<FiftyCard>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final effectiveBorderRadius = _effectiveRadius;
@@ -193,9 +193,9 @@ class _FiftyCardState extends State<FiftyCard>
     // Determine shadow - use medium shadow by default
     List<BoxShadow>? effectiveShadow;
     if (_showGlow) {
-      effectiveShadow = fifty.shadowGlow;
+      effectiveShadow = fifty?.shadowGlow ?? FiftyShadows.glow;
     } else if (widget.showShadow) {
-      effectiveShadow = FiftyShadows.md;
+      effectiveShadow = fifty?.shadowMd ?? FiftyShadows.md;
     }
 
     // Card visual content (padding + child)
@@ -206,8 +206,8 @@ class _FiftyCardState extends State<FiftyCard>
 
     // The visual card structure with decoration and overlays
     final Widget cardVisual = AnimatedContainer(
-      duration: fifty.fast,
-      curve: fifty.standardCurve,
+      duration: fifty?.fast ?? const Duration(milliseconds: 150),
+      curve: fifty?.standardCurve ?? Curves.easeInOut,
       margin: widget.margin,
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
@@ -279,8 +279,8 @@ class _FiftyCardState extends State<FiftyCard>
         onExit: _isInteractive ? (_) => _onHoverEnd() : null,
         child: AnimatedScale(
           scale: _currentScale,
-          duration: fifty.fast,
-          curve: fifty.standardCurve,
+          duration: fifty?.fast ?? const Duration(milliseconds: 150),
+          curve: fifty?.standardCurve ?? Curves.easeInOut,
           child: cardVisual,
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -189,6 +190,7 @@ class _FiftySegmentItem<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     // Active colors are variant-based (mode-independent)
@@ -205,8 +207,8 @@ class _FiftySegmentItem<T> extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: FiftyMotion.fast,
-        curve: Curves.easeInOut,
+        duration: fifty?.fast ?? const Duration(milliseconds: 150),
+        curve: fifty?.standardCurve ?? Curves.easeInOut,
         padding: const EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: 10,

@@ -60,7 +60,7 @@ class FiftyProgressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     // Clamp progress to valid range
@@ -70,14 +70,14 @@ class FiftyProgressCard extends StatelessWidget {
     // Default gradient: accent to primary (per design)
     final gradient = progressGradient ??
         LinearGradient(
-          colors: [fifty.accent, colorScheme.primary],
+          colors: [fifty?.accent ?? colorScheme.primary, colorScheme.primary],
         );
 
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.onSurfaceVariant,
         borderRadius: FiftyRadii.xxlRadius,
-        boxShadow: FiftyShadows.md,
+        boxShadow: fifty?.shadowMd ?? FiftyShadows.md,
       ),
       padding: const EdgeInsets.all(FiftySpacing.xs),
       child: Container(
@@ -122,7 +122,7 @@ class FiftyProgressCard extends StatelessWidget {
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodySmall,
                       fontWeight: FiftyTypography.bold,
-                      color: fifty.accent,
+                      color: fifty?.accent ?? colorScheme.primary,
                     ),
                   ),
               ],
@@ -141,8 +141,8 @@ class FiftyProgressCard extends StatelessWidget {
                   return Stack(
                     children: [
                       AnimatedContainer(
-                        duration: fifty.fast,
-                        curve: fifty.standardCurve,
+                        duration: fifty?.fast ?? const Duration(milliseconds: 150),
+                        curve: fifty?.standardCurve ?? Curves.easeInOut,
                         width: constraints.maxWidth * clampedProgress,
                         height: 8,
                         decoration: BoxDecoration(

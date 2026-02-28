@@ -1,4 +1,3 @@
-import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 /// A CustomPainter that draws a halftone dot pattern.
@@ -22,11 +21,12 @@ import 'package:flutter/material.dart';
 class HalftonePainter extends CustomPainter {
   /// Creates a halftone pattern painter.
   ///
-  /// The [color] parameter defaults to [FiftyColors.cream] for backwards
-  /// compatibility. For theme-aware usage, pass `colorScheme.onSurface`
-  /// or another appropriate theme color from your widget's build method.
+  /// The [color] parameter defaults to cream (`Color(0xFFFFF8F0)`) for
+  /// backwards compatibility. For theme-aware usage, pass
+  /// `colorScheme.onSurface` or another appropriate theme color from your
+  /// widget's build method.
   const HalftonePainter({
-    this.color = FiftyColors.cream,
+    this.color = const Color(0xFFFFF8F0),
     this.dotRadius = 1.0,
     this.spacing = 8.0,
     this.opacity = 0.05,
@@ -34,7 +34,7 @@ class HalftonePainter extends CustomPainter {
 
   /// The color of the halftone dots.
   ///
-  /// Defaults to [FiftyColors.cream]. For theme-aware usage, pass
+  /// Defaults to cream (`Color(0xFFFFF8F0)`). For theme-aware usage, pass
   /// `colorScheme.onSurface` from your widget's build method.
   final Color color;
 

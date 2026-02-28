@@ -50,7 +50,7 @@ class FiftySnackbar {
     String? actionLabel,
   }) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final accentColor = _getAccentColor(fifty, colorScheme, variant);
@@ -116,7 +116,7 @@ class FiftySnackbar {
     String? actionLabel,
   }) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final accentColor = _getAccentColor(fifty, colorScheme, variant);
@@ -165,7 +165,7 @@ class FiftySnackbar {
                 color: backgroundColor,
                 borderRadius: FiftyRadii.xlRadius,
                 border: Border.all(color: accentColor, width: 1),
-                boxShadow: FiftyShadows.md,
+                boxShadow: fifty?.shadowMd ?? FiftyShadows.md,
               ),
               child: Row(
                 children: [
@@ -224,7 +224,7 @@ class FiftySnackbar {
   }
 
   static Color _getAccentColor(
-    FiftyThemeExtension fifty,
+    FiftyThemeExtension? fifty,
     ColorScheme colorScheme,
     FiftySnackbarVariant variant,
   ) {
@@ -232,9 +232,9 @@ class FiftySnackbar {
       case FiftySnackbarVariant.info:
         return colorScheme.onSurfaceVariant;
       case FiftySnackbarVariant.success:
-        return fifty.success;
+        return fifty?.success ?? colorScheme.tertiary;
       case FiftySnackbarVariant.warning:
-        return fifty.warning;
+        return fifty?.warning ?? FiftyColors.warning;
       case FiftySnackbarVariant.error:
         return colorScheme.error;
     }

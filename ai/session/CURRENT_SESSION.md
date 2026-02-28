@@ -2,7 +2,7 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-28
-**Active Brief:** AC-003 (Done)
+**Active Brief:** AC-004 (fifty_ui theme alignment)
 
 ---
 
@@ -15,12 +15,30 @@
 
 ## Next Session Instructions
 
+### No Uncommitted Changes
+
+Git is clean. 2 commits ahead of origin (not pushed).
+
+### Unpushed Commits
+
+- 9bcd528 feat(fifty-tokens): add configurable token system with FiftyTokens.configure()
+- 55c6d90 refactor(fifty-theme): parameterize theme system to use colorScheme
+
 ### Next Brief
 
-AC-003 complete. Next in the AC-001 theme customization pipeline:
-- AC-004 (fifty_ui theme alignment) — Ready
-- AC-005 (engine packages theme alignment) — Ready
-- AC-006 (documentation + migration guide) — Blocked by AC-004 + AC-005
+AC-001 Theme Customization pipeline progress:
+- [x] AC-002 — fifty_tokens configuration (Done)
+- [x] AC-003 — fifty_theme parameterization (Done)
+- [ ] AC-004 — fifty_ui theme alignment (Ready — next)
+- [ ] AC-005 — engine packages theme alignment (Ready)
+- [ ] AC-006 — documentation + migration guide (Blocked by AC-004 + AC-005)
+
+Recommended: `git push` then `/hunt AC-004`
+
+### Notes
+
+- Downstream apps (coffee_showcase, fifty_demo) have `const` breakage from `static const` → getter change — expected, addressed by AC-006 migration guide
+- WARDEN minor findings on AC-003 (non-blocking): tooltip/snackbar use inverseSurface instead of surfaceContainerHighest (better UX), outline/outlineVariant not parameterizable (future enhancement)
 
 ---
 
@@ -33,6 +51,7 @@ AC-003 complete. Next in the AC-001 theme customization pipeline:
   - Refactored 8 token files from `static const` → `static get` with config fallback
   - Created FiftyFontResolver for Google Fonts vs asset font resolution
   - 217 tests passing, 70 new config tests
+  - Commit: 9bcd528
 - Executed `/hunt AC-003` — full autonomous pipeline (architect, forger, sentinel, warden)
   - Replaced 91 `FiftyColors.*` refs with `colorScheme.*` in component themes
   - Replaced 23 `GoogleFonts.manrope()` calls with `FiftyFontResolver.resolve()`
@@ -40,10 +59,11 @@ AC-003 complete. Next in the AC-001 theme customization pipeline:
   - Parameterized `FiftyThemeExtension.dark()/light()` with semantic color overrides
   - Consolidated light theme (~280 lines of duplicated code eliminated)
   - 205 tests passing, 88 new tests
+  - Commit: 55c6d90
 
 **Commits this session:**
 - 9bcd528 feat(fifty-tokens): add configurable token system with FiftyTokens.configure()
-- [pending] refactor(fifty-theme): parameterize theme system to use colorScheme
+- 55c6d90 refactor(fifty-theme): parameterize theme system to use colorScheme
 
 **Summary:** AC-002 and AC-003 complete — fifty_tokens configurable, fifty_theme parameterized. Theme customization system 2/6 briefs done.
 

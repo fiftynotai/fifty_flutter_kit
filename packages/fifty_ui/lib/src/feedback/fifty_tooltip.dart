@@ -1,3 +1,4 @@
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +46,7 @@ class FiftyTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     // Tooltip uses inverse colors for visibility
@@ -60,7 +62,7 @@ class FiftyTooltip extends StatelessWidget {
         color: backgroundColor,
         borderRadius: FiftyRadii.lgRadius,
         border: Border.all(color: borderColor),
-        boxShadow: FiftyShadows.sm,
+        boxShadow: fifty?.shadowSm ?? FiftyShadows.sm,
       ),
       textStyle: TextStyle(
         fontFamily: FiftyTypography.fontFamily,

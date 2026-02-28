@@ -60,7 +60,7 @@ class FiftyDataSlate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final effectiveKeyColor = keyColor ?? colorScheme.onSurfaceVariant;
@@ -68,8 +68,8 @@ class FiftyDataSlate extends StatelessWidget {
     final borderColor = colorScheme.outline;
 
     return AnimatedContainer(
-      duration: fifty.fast,
-      curve: fifty.standardCurve,
+      duration: fifty?.fast ?? const Duration(milliseconds: 150),
+      curve: fifty?.standardCurve ?? Curves.easeInOut,
       padding: const EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
@@ -80,7 +80,9 @@ class FiftyDataSlate extends StatelessWidget {
                 width: showGlow ? 2 : 1,
               )
             : null,
-        boxShadow: showGlow ? fifty.shadowGlow : FiftyShadows.md,
+        boxShadow: showGlow
+            ? (fifty?.shadowGlow ?? FiftyShadows.glow)
+            : (fifty?.shadowMd ?? FiftyShadows.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

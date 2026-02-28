@@ -63,7 +63,7 @@ class FiftyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
+    final fifty = theme.extension<FiftyThemeExtension>();
     final colorScheme = theme.colorScheme;
 
     final backgroundColor = colorScheme.surfaceContainerHighest;
@@ -74,8 +74,8 @@ class FiftyDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       child: AnimatedContainer(
-        duration: fifty.compiling,
-        curve: fifty.enterCurve,
+        duration: fifty?.compiling ?? const Duration(milliseconds: 300),
+        curve: fifty?.enterCurve ?? Curves.easeOut,
         constraints: const BoxConstraints(
           maxWidth: 480,
           minWidth: 280,
@@ -87,7 +87,9 @@ class FiftyDialog extends StatelessWidget {
             color: showGlow ? colorScheme.primary : borderColor,
             width: showGlow ? 2 : 1,
           ),
-          boxShadow: showGlow ? fifty.shadowGlow : FiftyShadows.lg,
+          boxShadow: showGlow
+              ? (fifty?.shadowGlow ?? FiftyShadows.glow)
+              : (fifty?.shadowLg ?? FiftyShadows.lg),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -74,8 +74,8 @@ class _KineticEffectState extends State<KineticEffect> {
   Widget build(BuildContext context) {
     final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final theme = Theme.of(context);
-    final fifty = theme.extension<FiftyThemeExtension>()!;
-    final animationDuration = widget.duration ?? fifty.fast;
+    final fifty = theme.extension<FiftyThemeExtension>();
+    final animationDuration = widget.duration ?? fifty?.fast ?? const Duration(milliseconds: 150);
 
     // If reduced motion or disabled, render without animation
     if (reduceMotion || !widget.enabled) {
@@ -98,7 +98,7 @@ class _KineticEffectState extends State<KineticEffect> {
         child: AnimatedScale(
           scale: _currentScale,
           duration: animationDuration,
-          curve: fifty.standardCurve,
+          curve: fifty?.standardCurve ?? Curves.easeInOut,
           child: widget.child,
         ),
       ),

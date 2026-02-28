@@ -54,14 +54,16 @@ class FiftyBadge extends StatefulWidget {
     this.customColor,
   });
 
-  /// Creates a tech-style badge with slateGrey border.
+  /// Creates a tech-style badge with neutral styling.
+  ///
+  /// Uses [FiftyBadgeVariant.neutral] which resolves to
+  /// `colorScheme.onSurfaceVariant` at build time for proper theme alignment.
   ///
   /// Suitable for technology labels like 'FLUTTER', 'DART', 'REACT'.
   factory FiftyBadge.tech(String label) {
     return FiftyBadge(
       label: label,
       variant: FiftyBadgeVariant.neutral,
-      customColor: FiftyColors.slateGrey,
     );
   }
 
@@ -76,13 +78,17 @@ class FiftyBadge extends StatefulWidget {
     );
   }
 
-  /// Creates an AI indicator badge with hunterGreen border.
+  /// Creates an AI indicator badge with success styling and glow.
+  ///
+  /// Uses [FiftyBadgeVariant.success] which resolves to
+  /// `extension.success` or `colorScheme.tertiary` at build time
+  /// for proper theme alignment.
   ///
   /// Suitable for AI-related labels like 'IGRIS', 'AI', 'AGENT'.
   factory FiftyBadge.ai(String label) {
     return FiftyBadge(
       label: label,
-      customColor: FiftyColors.hunterGreen,
+      variant: FiftyBadgeVariant.success,
       showGlow: true,
     );
   }
@@ -202,7 +208,7 @@ class _FiftyBadgeState extends State<FiftyBadge>
       case FiftyBadgeVariant.primary:
         return colorScheme.primary;
       case FiftyBadgeVariant.success:
-        return fifty?.success ?? FiftyColors.hunterGreen;
+        return fifty?.success ?? colorScheme.tertiary;
       case FiftyBadgeVariant.warning:
         return fifty?.warning ?? FiftyColors.warning;
       case FiftyBadgeVariant.error:
