@@ -596,12 +596,12 @@ Use `FiftyTokens` for all visual values:
 
 ```dart
 // Colors
-FiftyColors.crimsonPulse      // Primary accent
-FiftyColors.voidBlack         // Background
-FiftyColors.hyperChrome       // Secondary text
-FiftyColors.igrisGreen        // Success/online
-FiftyColors.border            // Border color
-FiftyColors.error             // Error state
+FiftyColors.burgundy      // Primary brand (#88292F)
+FiftyColors.cream         // Light background / dark text (#FEFEE3)
+FiftyColors.darkBurgundy  // Dark mode background (#1A0D0E)
+FiftyColors.slateGrey     // Secondary (#335C67)
+FiftyColors.hunterGreen   // Success (#4B644A)
+FiftyColors.warning       // Warning state (#F7A100)
 
 // Spacing
 FiftySpacing.xs   // 4
@@ -613,18 +613,23 @@ FiftySpacing.xxl  // 32
 FiftySpacing.xxxl // 48
 
 // Typography
-FiftyTypography.fontFamilyHeadline  // Monument Extended
-FiftyTypography.fontFamilyMono      // JetBrains Mono
-FiftyTypography.display  // 32
-FiftyTypography.heading  // 24
-FiftyTypography.title    // 20
-FiftyTypography.body     // 16
-FiftyTypography.mono     // 12
+FiftyTypography.fontFamily     // Manrope
+FiftyTypography.displayLarge   // Display large
+FiftyTypography.displayMedium  // Display medium
+FiftyTypography.titleLarge     // Title large
+FiftyTypography.titleMedium    // Title medium
+FiftyTypography.titleSmall     // Title small
+FiftyTypography.bodyLarge      // Body large
+FiftyTypography.bodyMedium     // Body medium
+FiftyTypography.bodySmall      // Body small
 
 // Radii
-FiftyRadii.standardRadius  // BorderRadius.circular(8)
-FiftyRadii.smallRadius     // BorderRadius.circular(4)
-FiftyRadii.largeRadius     // BorderRadius.circular(12)
+FiftyRadii.smRadius   // BorderRadius.circular(4)
+FiftyRadii.mdRadius   // BorderRadius.circular(8)
+FiftyRadii.lgRadius   // BorderRadius.circular(12)
+FiftyRadii.xlRadius   // BorderRadius.circular(16)
+FiftyRadii.xxlRadius  // BorderRadius.circular(24)
+FiftyRadii.fullRadius // BorderRadius.circular(999)
 ```
 
 ### FDL Components

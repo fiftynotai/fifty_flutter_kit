@@ -504,7 +504,7 @@ FiftyStatCard(
 FiftyListTile(
   leadingIcon: Icons.subscriptions,
   leadingIconColor: Colors.blue,
-  leadingIconBackgroundColor: Colors.blue.withOpacity(0.1),
+  leadingIconBackgroundColor: Colors.blue.withValues(alpha: 0.1),
   title: 'Subscription',
   subtitle: 'Adobe Creative Cloud',
   trailingText: '-\$54.00',

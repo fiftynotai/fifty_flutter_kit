@@ -218,6 +218,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Zero external dependencies
 - 100% FDL specification fidelity
 
+[2.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v2.0.0
+[1.0.3]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.3
+[1.0.2]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.2
+[1.0.1]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.1
 [1.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.0
 [0.2.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v0.2.0
 [0.1.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v0.1.0

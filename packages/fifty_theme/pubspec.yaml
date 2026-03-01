@@ -19,7 +19,6 @@ dependencies:
     sdk: flutter
   fifty_tokens:
     path: ../fifty_tokens
-  google_fonts: ^8.0.0
 
 dev_dependencies:
   flutter_test:
