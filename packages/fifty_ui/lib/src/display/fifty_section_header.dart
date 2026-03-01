@@ -173,12 +173,12 @@ class FiftySectionHeader extends StatelessWidget {
                     children: [
                       if (leading != null) ...[
                         leading!,
-                        const SizedBox(width: FiftySpacing.sm),
+                        SizedBox(width: FiftySpacing.sm),
                       ] else if (showAccentDot) ...[
                         Container(
                           width: _dotSize,
                           height: _dotSize,
-                          margin: const EdgeInsets.only(right: FiftySpacing.sm),
+                          margin: EdgeInsets.only(right: FiftySpacing.sm),
                           decoration: BoxDecoration(
                             color: colorScheme.primary,
                             shape: BoxShape.circle,
@@ -200,7 +200,7 @@ class FiftySectionHeader extends StatelessWidget {
                     ],
                   ),
                   if (subtitle != null) ...[
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     Text(
                       subtitle!,
                       style: TextStyle(
@@ -217,13 +217,13 @@ class FiftySectionHeader extends StatelessWidget {
           ],
         ),
         if (showDivider) ...[
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Container(
             height: 1,
             color: colorScheme.outline,
           ),
         ],
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
       ],
     );
 

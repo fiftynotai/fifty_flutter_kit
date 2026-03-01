@@ -67,7 +67,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: FiftyColors.surfaceDark,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(FiftySpacing.lg),
         ),
@@ -163,7 +163,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
         children: [
           // Resource bar
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
+            padding: EdgeInsets.all(FiftySpacing.lg),
             color: FiftyColors.surfaceDark,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -195,7 +195,7 @@ class _TechTreeExampleState extends State<TechTreeExample> {
             child: SkillTreeView<void>(
               controller: _controller,
               layout: const GridLayout(columns: 3),
-              padding: const EdgeInsets.all(FiftySpacing.xxl),
+              padding: EdgeInsets.all(FiftySpacing.xxl),
               nodeSize: const Size(72, 72),
               levelSeparation: 60,
               nodeSeparation: 40,
@@ -243,7 +243,7 @@ class _ResourceDisplay extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: color, size: 20),
-            const SizedBox(width: FiftySpacing.xs),
+            SizedBox(width: FiftySpacing.xs),
             Text(
               value,
               style: TextStyle(
@@ -254,7 +254,7 @@ class _ResourceDisplay extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.xs),
+        SizedBox(height: FiftySpacing.xs),
         Text(
           label,
           style: TextStyle(
@@ -372,7 +372,7 @@ class _NodeDetailsSheet extends StatelessWidget {
     final canAfford = availablePoints >= node.nextCost;
 
     return Padding(
-      padding: const EdgeInsets.all(FiftySpacing.xl),
+      padding: EdgeInsets.all(FiftySpacing.xl),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,7 +382,7 @@ class _NodeDetailsSheet extends StatelessWidget {
             child: Container(
               width: 40,
               height: 4,
-              margin: const EdgeInsets.only(bottom: FiftySpacing.lg),
+              margin: EdgeInsets.only(bottom: FiftySpacing.lg),
               decoration: BoxDecoration(
                 color: FiftyColors.slateGrey,
                 borderRadius: BorderRadius.circular(2),
@@ -395,7 +395,7 @@ class _NodeDetailsSheet extends StatelessWidget {
             children: [
               // Branch badge
               Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.sm,
                   vertical: FiftySpacing.xs,
                 ),
@@ -425,7 +425,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Name
           Text(
@@ -437,7 +437,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
 
           // Description
           Text(
@@ -446,7 +446,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               color: FiftyColors.cream.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Prerequisites
           if (node.prerequisites.isNotEmpty) ...[
@@ -458,7 +458,7 @@ class _NodeDetailsSheet extends StatelessWidget {
                 letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: FiftySpacing.xs),
+            SizedBox(height: FiftySpacing.xs),
             ...node.prerequisites.map(
               (prereq) => Text(
                 '  - $prereq',
@@ -468,14 +468,14 @@ class _NodeDetailsSheet extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
           ],
 
           // Cost row
           Row(
             children: [
               Icon(Icons.science, size: 16, color: branchColor),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               Text(
                 'COST: ${node.nextCost} POINTS',
                 style: TextStyle(
@@ -484,7 +484,7 @@ class _NodeDetailsSheet extends StatelessWidget {
                 ),
               ),
               if (!canAfford && !isUnlocked) ...[
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Text(
                   '(Need ${node.nextCost - availablePoints} more)',
                   style: TextStyle(
@@ -495,7 +495,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               ],
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
 
           // Research button
           SizedBox(
@@ -510,7 +510,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               variant: FiftyButtonVariant.primary,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
         ],
       ),
     );

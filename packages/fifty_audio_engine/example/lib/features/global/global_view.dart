@@ -45,12 +45,12 @@ class _GlobalViewState extends State<GlobalView> {
       listenable: _viewModel,
       builder: (context, _) {
         return ListView(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           children: [
             _buildMasterControls(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildFadeControls(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildChannelStatus(),
           ],
         );
@@ -80,7 +80,7 @@ class _GlobalViewState extends State<GlobalView> {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     _viewModel.allMuted
                         ? 'All channels muted'
@@ -99,7 +99,7 @@ class _GlobalViewState extends State<GlobalView> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           // Stop all button
           FiftyButton(
             label: 'STOP ALL',
@@ -136,7 +136,7 @@ class _GlobalViewState extends State<GlobalView> {
             label: 'Fade Preset',
             hint: 'Select fade duration',
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           // Preset info
           FiftyDataSlate(
             title: 'Preset Info',
@@ -145,7 +145,7 @@ class _GlobalViewState extends State<GlobalView> {
               'Use Case': _getPresetUseCase(_viewModel.fadePreset),
             },
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           // Fade buttons
           Row(
             children: [
@@ -158,7 +158,7 @@ class _GlobalViewState extends State<GlobalView> {
                   loading: _viewModel.isFading,
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: FiftyButton(
                   label: 'FADE OUT',
@@ -186,14 +186,14 @@ class _GlobalViewState extends State<GlobalView> {
             isMuted: _viewModel.bgmMuted,
             volume: _viewModel.bgmVolume,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           _ChannelStatusRow(
             label: 'SFX',
             isActive: true,
             isMuted: _viewModel.sfxMuted,
             volume: _viewModel.sfxVolume,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           _ChannelStatusRow(
             label: 'VOICE',
             isActive: _viewModel.voicePlaying,
@@ -240,7 +240,7 @@ class _ChannelStatusRow extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
@@ -262,7 +262,7 @@ class _ChannelStatusRow extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           // Label
           SizedBox(
             width: 60,
@@ -276,7 +276,7 @@ class _ChannelStatusRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           // Volume bar
           Expanded(
             child: Container(
@@ -297,7 +297,7 @@ class _ChannelStatusRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           // Volume percentage
           SizedBox(
             width: 40,

@@ -33,7 +33,7 @@ class EntityInfoPanel extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -63,9 +63,9 @@ class EntityInfoPanel extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(height: 1, color: colorScheme.outline),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           // Info rows
           _InfoRow(label: 'ID', value: entityId),
           _InfoRow(label: 'TYPE', value: entityType.toUpperCase()),
@@ -95,7 +95,7 @@ class _InfoRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

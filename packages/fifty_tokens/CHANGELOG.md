@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.0] - 2026-03-01
+
+### BREAKING CHANGES
+
+- All token values converted from `static const` to `static get` backed by configurable defaults
+- Existing `const` contexts using `FiftySpacing.*`, `FiftyRadii.*`, `FiftyTypography.*`, `FiftyMotion.*`, or `FiftyBreakpoints.*` must remove the `const` keyword
+- See [Migration Guide](../../docs/MIGRATION_GUIDE.md) for details
+
+### Added
+
+- `FiftyTokens.configure()` -- single entry point for overriding all token defaults
+- `FiftyTokens.reset()` -- restore FDL v2 defaults
+- Per-category config classes: `FiftyColorConfig`, `FiftyTypographyConfig`, `FiftySpacingConfig`, `FiftyRadiiConfig`, `FiftyMotionConfig`, `FiftyBreakpointsConfig`
+- `FiftyFontResolver` for resolving fonts via Google Fonts or local asset fonts
+- `FontSource` enum (`googleFonts`, `asset`) for font loading strategy
+
 ## [1.0.3] - 2026-02-22
 
 ### Changed

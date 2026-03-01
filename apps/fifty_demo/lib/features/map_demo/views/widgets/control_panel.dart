@@ -56,7 +56,7 @@ class ControlPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       backgroundColor: FiftyColors.surfaceDark.withValues(alpha: 0.9),
       scanlineOnHover: false,
       hoverScale: 1.0,
@@ -65,7 +65,7 @@ class ControlPanel extends StatelessWidget {
         children: [
           // Section Label
           _buildSectionLabel('CAMERA'),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
 
           // Zoom & Center controls
           Row(
@@ -76,13 +76,13 @@ class ControlPanel extends StatelessWidget {
                 tooltip: 'Zoom In',
                 onPressed: onZoomIn,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.zoom_out,
                 tooltip: 'Zoom Out',
                 onPressed: onZoomOut,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.my_location,
                 tooltip: 'Center Map',
@@ -91,13 +91,13 @@ class ControlPanel extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyDivider(),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Section Label
           _buildSectionLabel('ENTITY'),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
 
           // Entity add/remove/focus controls
           Row(
@@ -108,13 +108,13 @@ class ControlPanel extends StatelessWidget {
                 tooltip: 'Add Entity',
                 onPressed: onAddEntity,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.remove,
                 tooltip: 'Remove Entity',
                 onPressed: onRemoveEntity,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.center_focus_strong_rounded,
                 tooltip: 'Focus on Entity',
@@ -123,13 +123,13 @@ class ControlPanel extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyDivider(),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Section Label
           _buildSectionLabel('MAP'),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
 
           // Load/clear controls
           Row(
@@ -140,13 +140,13 @@ class ControlPanel extends StatelessWidget {
                 tooltip: 'Refresh',
                 onPressed: onRefresh,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.download,
                 tooltip: 'Reload Map',
                 onPressed: onReload,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.clear,
                 tooltip: 'Clear All',
@@ -155,13 +155,13 @@ class ControlPanel extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyDivider(),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Section Label
           _buildSectionLabel('MOVE'),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
 
           // D-pad movement controls
           _buildIconButton(
@@ -169,7 +169,7 @@ class ControlPanel extends StatelessWidget {
             tooltip: 'Move Up',
             onPressed: onMoveUp,
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -178,13 +178,13 @@ class ControlPanel extends StatelessWidget {
                 tooltip: 'Move Left',
                 onPressed: onMoveLeft,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.arrow_circle_down_outlined,
                 tooltip: 'Move Down',
                 onPressed: onMoveDown,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               _buildIconButton(
                 icon: Icons.arrow_circle_right_outlined,
                 tooltip: 'Move Right',

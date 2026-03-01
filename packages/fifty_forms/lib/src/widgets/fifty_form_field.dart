@@ -72,7 +72,7 @@ class FiftyFormField extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
             ],
             // Field
             child,

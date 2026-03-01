@@ -585,9 +585,9 @@ All UI MUST use the FDL packages:
 
 ```yaml
 dependencies:
-  fifty_tokens: ^0.2.0    # Design tokens
-  fifty_theme: ^0.1.0     # Theme system
-  fifty_ui: ^0.5.0        # UI components
+  fifty_tokens: ^2.0.0    # Design tokens
+  fifty_theme: ^2.0.0     # Theme system
+  fifty_ui: ^0.7.0        # UI components
 ```
 
 ### Design Tokens
@@ -1051,8 +1051,9 @@ class SkillTreeThemePresets {
 **ALWAYS do this:**
 
 ```dart
-// ✅ CORRECT - Package consumes from FDL
+// ✅ CORRECT - Package consumes from theme context
 import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 
 class SkillNodeWidget extends StatelessWidget {
@@ -1068,27 +1069,44 @@ class SkillNodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fifty = Theme.of(context).extension<FiftyThemeExtension>();
+
     return Container(
-      // Use FDL tokens with optional override
-      color: nodeColor ?? FiftyColors.surface,
-      padding: FiftySpacing.insets.md,
+      // Colors from theme context, structural tokens used directly
+      color: nodeColor ?? colorScheme.surface,
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         border: Border.all(
-          color: borderColor ?? FiftyColors.border,
+          color: borderColor ?? colorScheme.outline,
         ),
         borderRadius: FiftyRadii.standardRadius,
       ),
       child: Text(
         node.name,
         style: TextStyle(
-          fontFamily: FiftyTypography.fontFamilyMono,
-          fontSize: FiftyTypography.body,
-          color: FiftyColors.textPrimary,
+          fontFamily: FiftyTypography.fontFamily,
+          fontSize: FiftyTypography.bodyMedium,
+          color: colorScheme.onSurface,
         ),
       ),
     );
   }
 }
+```
+
+### Const Context Note
+
+Token values (`FiftySpacing`, `FiftyRadii`, `FiftyTypography`, `FiftyMotion`, `FiftyBreakpoints`) are runtime getters, not compile-time constants. They cannot appear inside `const` expressions:
+
+```dart
+// ❌ WRONG - compile error
+const SizedBox(height: FiftySpacing.sm)
+const EdgeInsets.all(FiftySpacing.md)
+
+// ✅ CORRECT
+SizedBox(height: FiftySpacing.sm)
+EdgeInsets.all(FiftySpacing.md)
 ```
 
 ### Engine Package Checklist
@@ -1098,13 +1116,15 @@ When creating or reviewing an engine package:
 - [ ] **Dependencies:** Includes `fifty_tokens` and `fifty_ui` in pubspec.yaml
 - [ ] **No Theme Class:** Does NOT define a custom `*Theme` class with color properties
 - [ ] **No Presets:** Does NOT define `*ThemePresets` with hardcoded variants
-- [ ] **FDL Colors:** Uses `FiftyColors.*` for all color values
-- [ ] **FDL Spacing:** Uses `FiftySpacing.*` for all padding/margins
-- [ ] **FDL Typography:** Uses `FiftyTypography.*` for all text styles
-- [ ] **FDL Radii:** Uses `FiftyRadii.*` for all border radius values
+- [ ] **Theme Colors:** Uses `colorScheme.*` or `FiftyThemeExtension` for all color values in build() methods
+- [ ] **No Direct FiftyColors/FiftyShadows:** Does NOT reference `FiftyColors.*` or `FiftyShadows.*` directly in build() methods
+- [ ] **FDL Spacing:** Uses `FiftySpacing.*` for all padding/margins (structural tokens are OK to use directly)
+- [ ] **FDL Typography:** Uses `FiftyTypography.*` for all text styles (structural tokens are OK to use directly)
+- [ ] **FDL Radii:** Uses `FiftyRadii.*` for all border radius values (structural tokens are OK to use directly)
 - [ ] **FDL Components:** Uses `FiftyCard`, `FiftyButton`, etc. where applicable
 - [ ] **Optional Overrides:** Provides override parameters on widgets (not a theme object)
 - [ ] **Controller Clean:** Controller does NOT have a `theme` property
+- [ ] **No const with tokens:** Does NOT use `const` with `FiftySpacing.*` or other token getters
 
 ### Override Pattern
 
@@ -1117,8 +1137,8 @@ SkillTreeView<void>(
   layout: const VerticalTreeLayout(),
   // Optional overrides for specific use cases
   lockedNodeColor: Colors.grey,
-  unlockedNodeColor: FiftyColors.igrisGreen,
-  connectionColor: FiftyColors.border,
+  unlockedNodeColor: colorScheme.tertiary,
+  connectionColor: colorScheme.outline,
 )
 
 // ❌ WRONG - Separate theme object
@@ -1133,33 +1153,33 @@ SkillTreeView<void>(
 
 ### State-Based Styling
 
-For widgets with multiple states (locked, unlocked, available, etc.), define semantic color getters:
+For widgets with multiple states (locked, unlocked, available, etc.), resolve colors from the theme context:
 
 ```dart
 class SkillNodeWidget extends StatelessWidget {
-  Color get _nodeColor {
+  Color _nodeColor(ColorScheme colorScheme) {
     switch (state) {
       case SkillState.locked:
-        return FiftyColors.surfaceVariant;
+        return colorScheme.surfaceContainerHighest;
       case SkillState.available:
-        return FiftyColors.surface;
+        return colorScheme.surface;
       case SkillState.unlocked:
-        return FiftyColors.successBackground;
+        return colorScheme.tertiaryContainer;
       case SkillState.maxed:
-        return FiftyColors.primaryBackground;
+        return colorScheme.primaryContainer;
     }
   }
 
-  Color get _borderColor {
+  Color _borderColor(ColorScheme colorScheme) {
     switch (state) {
       case SkillState.locked:
-        return FiftyColors.border;
+        return colorScheme.outline;
       case SkillState.available:
-        return FiftyColors.primary;
+        return colorScheme.primary;
       case SkillState.unlocked:
-        return FiftyColors.success;
+        return colorScheme.tertiary;
       case SkillState.maxed:
-        return FiftyColors.primaryAccent;
+        return colorScheme.primary;
     }
   }
 }
@@ -1175,8 +1195,8 @@ dependencies:
     sdk: flutter
 
   # FDL Foundation (REQUIRED)
-  fifty_tokens: ^0.2.0
-  fifty_ui: ^0.5.0
+  fifty_tokens: ^2.0.0
+  fifty_ui: ^0.7.0
 
   # Optional ecosystem packages
   fifty_storage: ^0.1.0      # if persistence needed

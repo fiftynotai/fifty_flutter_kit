@@ -110,7 +110,7 @@ class FiftyInfoRow extends StatelessWidget {
     );
 
     final content = Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.sm),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.sm),
       child: Row(
         children: [
           // Leading icon
@@ -120,7 +120,7 @@ class FiftyInfoRow extends StatelessWidget {
               size: 16,
               color: colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
           ],
           // Label
           Text(
@@ -135,7 +135,7 @@ class FiftyInfoRow extends StatelessWidget {
           ),
           // Chevron for tappable rows
           if (onTap != null) ...[
-            const SizedBox(width: FiftySpacing.xs),
+            SizedBox(width: FiftySpacing.xs),
             Icon(
               Icons.chevron_right,
               size: 16,

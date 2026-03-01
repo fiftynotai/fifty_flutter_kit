@@ -72,14 +72,14 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.xl),
+        padding: EdgeInsets.all(FiftySpacing.xl),
         child: FiftyForm(
           controller: _controller,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Header
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
               Text(
                 'ESTABLISH UPLINK',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -89,7 +89,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Enter your credentials to continue',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -97,7 +97,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Email field
               FiftyTextFormField(
@@ -109,7 +109,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
                 textInputAction: TextInputAction.next,
                 prefix: const Icon(Icons.email_outlined, size: 20),
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Password field
               FiftyTextFormField(
@@ -122,7 +122,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
                 prefix: const Icon(Icons.lock_outlined, size: 20),
                 onSubmitted: (_) => _handleSubmit(),
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Submit button
               FiftySubmitButton(
@@ -133,7 +133,7 @@ class _LoginFormDemoState extends State<LoginFormDemo> {
                 expanded: true,
                 isGlitch: true,
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Form status indicator
               ListenableBuilder(
@@ -168,7 +168,7 @@ class _StatusIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: FiftyColors.darkBurgundy,
         borderRadius: FiftyRadii.lgRadius,
@@ -187,20 +187,20 @@ class _StatusIndicator extends StatelessWidget {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Row(
             children: [
               _StatusChip(
                 label: 'DIRTY',
                 isActive: isDirty,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               _StatusChip(
                 label: 'VALID',
                 isActive: isValid,
                 activeColor: FiftyColors.hunterGreen,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               _StatusChip(
                 label: status.name.toUpperCase(),
                 isActive: status == FormStatus.submitting,
@@ -219,16 +219,16 @@ class _StatusChip extends StatelessWidget {
   final bool isActive;
   final Color activeColor;
 
-  const _StatusChip({
+  _StatusChip({
     required this.label,
     required this.isActive,
-    this.activeColor = FiftyColors.cream,
+    this.activeColor = const Color(0xFFFEFEE3),
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),

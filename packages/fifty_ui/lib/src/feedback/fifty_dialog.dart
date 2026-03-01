@@ -97,7 +97,7 @@ class FiftyDialog extends StatelessWidget {
           children: [
             if (title != null || showCloseButton)
               Padding(
-                padding: const EdgeInsets.all(FiftySpacing.lg),
+                padding: EdgeInsets.all(FiftySpacing.lg),
                 child: Row(
                   children: [
                     if (title != null)
@@ -145,7 +145,7 @@ class FiftyDialog extends StatelessWidget {
             ),
             if (actions.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: FiftySpacing.lg,
                   right: FiftySpacing.lg,
                   bottom: FiftySpacing.lg,

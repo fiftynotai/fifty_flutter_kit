@@ -162,7 +162,7 @@ class AchievementCard<T> extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Text(
                 'Keep playing to discover this achievement',
                 style: TextStyle(
@@ -205,12 +205,12 @@ class AchievementCard<T> extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   _buildRarityBadge(rarityColor),
                 ],
               ),
               if (achievement.description != null && !compact) ...[
-                const SizedBox(height: FiftySpacing.xs),
+                SizedBox(height: FiftySpacing.xs),
                 Text(
                   achievement.description!,
                   style: TextStyle(
@@ -223,14 +223,14 @@ class AchievementCard<T> extends StatelessWidget {
                 ),
               ],
               if (showProgress && state == AchievementState.available) ...[
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 AchievementProgressBar(
                   progress: progress,
                   foregroundColor: rarityColor,
                 ),
               ],
               if (state.isComplete) ...[
-                const SizedBox(height: FiftySpacing.xs),
+                SizedBox(height: FiftySpacing.xs),
                 Row(
                   children: [
                     Icon(
@@ -238,7 +238,7 @@ class AchievementCard<T> extends StatelessWidget {
                       size: 14,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
                     Text(
                       'Unlocked',
                       style: TextStyle(
@@ -297,7 +297,7 @@ class AchievementCard<T> extends StatelessWidget {
 
   Widget _buildRarityBadge(Color rarityColor) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs / 2,
       ),

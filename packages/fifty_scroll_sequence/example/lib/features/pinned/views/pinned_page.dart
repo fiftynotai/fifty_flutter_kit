@@ -46,7 +46,7 @@ class _PinnedPageState extends State<PinnedPage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'PINNED',
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
@@ -75,14 +75,14 @@ class _PinnedPageState extends State<PinnedPage> {
                   loadingBuilder: (context, progress) {
                     return Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(FiftySpacing.xxxl),
+                        padding: EdgeInsets.all(FiftySpacing.xxxl),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             FiftyProgressBar(
                               value: progress,
                             ),
-                            const SizedBox(height: FiftySpacing.md),
+                            SizedBox(height: FiftySpacing.md),
                             Text(
                               'LOADING ${(progress * 100).toInt()}%',
                               style: TextStyle(
@@ -156,7 +156,7 @@ class _ProgressOverlay extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
@@ -179,7 +179,7 @@ class _ProgressOverlay extends StatelessWidget {
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             '${(progress * 100).toStringAsFixed(1)}%',
             style: TextStyle(
@@ -228,7 +228,7 @@ class _ControlBar extends StatelessWidget {
               size: FiftyButtonSize.small,
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: FiftyButton(
               label: '50%',
@@ -237,7 +237,7 @@ class _ControlBar extends StatelessWidget {
               size: FiftyButtonSize.small,
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: FiftyButton(
               label: 'END',

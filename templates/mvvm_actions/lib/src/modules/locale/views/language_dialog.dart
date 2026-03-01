@@ -54,7 +54,7 @@ class LanguagePickerDialog extends GetView<LocalizationViewModel> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -78,7 +78,7 @@ class LanguagePickerDialog extends GetView<LocalizationViewModel> {
                 GestureDetector(
                   onTap: _close,
                   child: Container(
-                    padding: const EdgeInsets.all(FiftySpacing.xs),
+                    padding: EdgeInsets.all(FiftySpacing.xs),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(FiftyRadii.standard),
                       border: Border.all(
@@ -94,7 +94,7 @@ class LanguagePickerDialog extends GetView<LocalizationViewModel> {
                 ),
               ],
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             // Subtitle
             Text(
               'Select communication language',
@@ -105,7 +105,7 @@ class LanguagePickerDialog extends GetView<LocalizationViewModel> {
                 letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
             // Language chips
             Obx(
               () => Wrap(
@@ -116,7 +116,7 @@ class LanguagePickerDialog extends GetView<LocalizationViewModel> {
                     .toList(),
               ),
             ),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
             // Action buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -127,7 +127,7 @@ class LanguagePickerDialog extends GetView<LocalizationViewModel> {
                   variant: FiftyButtonVariant.secondary,
                   size: FiftyButtonSize.small,
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 FiftyButton(
                   label: 'CONFIRM',
                   onPressed: _confirm,

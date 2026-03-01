@@ -46,7 +46,7 @@ class SettingsPage extends StatelessWidget {
           children: [
             // -- Header row: back button + title --
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.md,
                 vertical: FiftySpacing.sm,
               ),
@@ -59,7 +59,7 @@ class SettingsPage extends StatelessWidget {
                     size: FiftyIconButtonSize.small,
                     onPressed: () => Get.back<void>(),
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Text(
                     'SETTINGS',
                     style: TextStyle(
@@ -77,7 +77,7 @@ class SettingsPage extends StatelessWidget {
             // -- Scrollable settings content --
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.xl,
                   vertical: FiftySpacing.lg,
                 ),
@@ -85,11 +85,11 @@ class SettingsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AudioSettingsSection(),
-                    const SizedBox(height: FiftySpacing.xl),
+                    SizedBox(height: FiftySpacing.xl),
                     const GameplaySettingsSection(),
-                    const SizedBox(height: FiftySpacing.xl),
+                    SizedBox(height: FiftySpacing.xl),
                     const DisplaySettingsSection(),
-                    const SizedBox(height: FiftySpacing.xxl),
+                    SizedBox(height: FiftySpacing.xxl),
 
                     // -- Reset to defaults button --
                     Center(
@@ -101,7 +101,7 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: FiftySpacing.xxl),
+                    SizedBox(height: FiftySpacing.xxl),
                   ],
                 ),
               ),

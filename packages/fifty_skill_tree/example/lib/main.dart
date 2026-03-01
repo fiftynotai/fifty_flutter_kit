@@ -41,11 +41,11 @@ class ExampleHomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             Text(
               'CHOOSE AN EXAMPLE',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -54,7 +54,7 @@ class ExampleHomePage extends StatelessWidget {
                   ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: FiftySpacing.xxxl),
+            SizedBox(height: FiftySpacing.xxxl),
             _ExampleCard(
               title: 'BASIC TREE',
               description: 'Simple linear skill progression',
@@ -65,7 +65,7 @@ class ExampleHomePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const BasicTreeExample()),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
               title: 'RPG SKILL TREE',
               description: 'Multi-branch class skills (Warrior/Mage/Rogue)',
@@ -76,7 +76,7 @@ class ExampleHomePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const RpgSkillTreeExample()),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
               title: 'TECH TREE',
               description: 'Strategy game research tree with grid layout',
@@ -87,7 +87,7 @@ class ExampleHomePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const TechTreeExample()),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
               title: 'TALENT TREE',
               description: 'MOBA-style talents with 3 paths',
@@ -126,7 +126,7 @@ class _ExampleCard extends StatelessWidget {
       onTap: onTap,
       padding: EdgeInsets.zero,
       child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.xl),
+        padding: EdgeInsets.all(FiftySpacing.xl),
         child: Row(
           children: [
             Container(
@@ -146,7 +146,7 @@ class _ExampleCard extends StatelessWidget {
                 size: 28,
               ),
             ),
-            const SizedBox(width: FiftySpacing.lg),
+            SizedBox(width: FiftySpacing.lg),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +159,7 @@ class _ExampleCard extends StatelessWidget {
                           letterSpacing: 1,
                         ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(

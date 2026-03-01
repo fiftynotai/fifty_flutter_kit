@@ -30,7 +30,7 @@ FDL-styled Flutter component library implementing the Fifty Design Language v2. 
 
 ```yaml
 dependencies:
-  fifty_ui: ^0.6.2
+  fifty_ui: ^0.7.0
 ```
 
 ### For Contributors
@@ -644,6 +644,14 @@ GlitchEffect(
 )
 ```
 
+### Theming
+
+All widgets resolve colors from `Theme.of(context).colorScheme` and `FiftyThemeExtension` -- not directly from `FiftyColors.*` or `FiftyShadows.*`. This means widgets automatically adapt when you pass a custom `colorScheme` to `FiftyTheme.dark(colorScheme: ...)`.
+
+Structural tokens (`FiftySpacing`, `FiftyRadii`, `FiftyTypography`) are accessed directly since they are not color-dependent.
+
+**Note:** Token values are now getters, not compile-time constants. Expressions using `FiftySpacing.*` cannot appear inside `const` constructors. Use `SizedBox(height: FiftySpacing.sm)` instead of `const SizedBox(height: FiftySpacing.sm)`.
+
 ### Theme Access Pattern
 
 All components access theme via `FiftyThemeExtension`:
@@ -692,7 +700,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.6.2
+**Current:** 0.7.0
 
 ---
 

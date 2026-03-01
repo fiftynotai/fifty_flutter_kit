@@ -19,12 +19,12 @@ class StatusCard extends StatelessWidget {
     final badgeVariant = _badgeVariantFor(type);
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.xl),
+      padding: EdgeInsets.all(FiftySpacing.xl),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(iconData, size: 48, color: color),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Text(
             type.name.toUpperCase(),
             style: TextStyle(
@@ -35,7 +35,7 @@ class StatusCard extends StatelessWidget {
               letterSpacing: FiftyTypography.letterSpacingLabelMedium,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyBadge(
             label: type.name.toUpperCase(),
             variant: badgeVariant,

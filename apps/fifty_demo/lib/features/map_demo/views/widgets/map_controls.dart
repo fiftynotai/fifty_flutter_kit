@@ -25,7 +25,7 @@ class MapControlsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -85,7 +85,7 @@ class _ControlButton extends StatelessWidget {
               color: colorScheme.primary,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             style: TextStyle(

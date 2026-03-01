@@ -32,7 +32,7 @@ class GalleryHome extends StatelessWidget {
         title: const Text('FIFTY UI GALLERY'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           _buildSection(
             context,
@@ -101,7 +101,7 @@ class GalleryHome extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+      padding: EdgeInsets.only(bottom: FiftySpacing.md),
       child: FiftyCard(
         onTap: onTap,
         child: Row(
@@ -109,7 +109,7 @@ class GalleryHome extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: FiftyTypography.bodyLarge,
                 fontWeight: FiftyTypography.medium,
@@ -142,7 +142,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('BUTTONS')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('Button Variants'),
           Wrap(
@@ -176,7 +176,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Button Sizes'),
           Wrap(
             spacing: FiftySpacing.md,
@@ -200,7 +200,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Button States'),
           Wrap(
             spacing: FiftySpacing.md,
@@ -222,13 +222,13 @@ class _ButtonsPageState extends State<ButtonsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyButton(
             label: _loading ? 'Stop Loading' : 'Start Loading',
             onPressed: () => setState(() => _loading = !_loading),
             variant: FiftyButtonVariant.secondary,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Trailing Icons'),
           Wrap(
             spacing: FiftySpacing.md,
@@ -253,7 +253,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Icon Buttons'),
           Wrap(
             spacing: FiftySpacing.md,
@@ -279,9 +279,9 @@ class _ButtonsPageState extends State<ButtonsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('FDL v2 Effects'),
-          const Text(
+          Text(
             'Hover over buttons to see effects',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -289,7 +289,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Wrap(
             spacing: FiftySpacing.md,
             runSpacing: FiftySpacing.md,
@@ -390,7 +390,7 @@ class _InputsPageState extends State<InputsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('INPUTS')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('Text Field'),
           FiftyTextField(
@@ -401,40 +401,40 @@ class _InputsPageState extends State<InputsPage> {
             errorText: _emailError,
             onChanged: (_) => _validateEmail(),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Password',
             hint: 'Enter your password',
             prefix: Icon(Icons.lock),
             obscureText: true,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Disabled',
             hint: 'This field is disabled',
             enabled: false,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Multiline',
             hint: 'Enter a longer message...',
             maxLines: 4,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Terminal Style',
             hint: 'Enter command',
             terminalStyle: true,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             hint: 'Search...',
             prefix: Icon(Icons.search),
             shape: FiftyTextFieldShape.rounded,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Terminal Styles'),
-          const Text(
+          Text(
             'Advanced styling for terminal-like inputs',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -442,32 +442,32 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyTextField(
             label: 'Bottom Border Only',
             hint: 'Enter value',
             borderStyle: FiftyBorderStyle.bottom,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'No Border',
             hint: 'Enter text',
             borderStyle: FiftyBorderStyle.none,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Chevron Prefix',
             hint: 'command',
             borderStyle: FiftyBorderStyle.bottom,
             prefixStyle: FiftyPrefixStyle.chevron,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Comment Prefix',
             hint: 'your comment',
             prefixStyle: FiftyPrefixStyle.comment,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Block Cursor',
             hint: 'Focus to see block cursor',
@@ -475,15 +475,15 @@ class _InputsPageState extends State<InputsPage> {
             prefixStyle: FiftyPrefixStyle.chevron,
             cursorStyle: FiftyCursorStyle.block,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftyTextField(
             label: 'Underscore Cursor',
             hint: 'Focus to see underscore cursor',
             cursorStyle: FiftyCursorStyle.underscore,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Checkboxes'),
-          const Text(
+          Text(
             'Selection controls with kinetic animation',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -491,28 +491,28 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyCheckbox(
             value: _checkbox1,
             onChanged: (value) => setState(() => _checkbox1 = value),
             label: 'Accept terms and conditions',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyCheckbox(
             value: _checkbox2,
             onChanged: (value) => setState(() => _checkbox2 = value),
             label: 'Subscribe to newsletter',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyCheckbox(
             value: false,
             onChanged: null,
             label: 'Disabled checkbox',
             enabled: false,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Radio Buttons'),
-          const Text(
+          Text(
             'Mutually exclusive selection with animated dot',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -520,28 +520,28 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyRadio<String>(
             value: 'option1',
             groupValue: _radioValue,
             onChanged: (value) => setState(() => _radioValue = value),
             label: 'Option 1',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyRadio<String>(
             value: 'option2',
             groupValue: _radioValue,
             onChanged: (value) => setState(() => _radioValue = value),
             label: 'Option 2',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyRadio<String>(
             value: 'option3',
             groupValue: _radioValue,
             onChanged: (value) => setState(() => _radioValue = value),
             label: 'Option 3',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyRadio<String>(
             value: 'disabled',
             groupValue: null,
@@ -549,9 +549,9 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Disabled radio',
             enabled: false,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Radio Cards'),
-          const Text(
+          Text(
             'Card-style radio selection for theme modes',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -559,7 +559,7 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Row(
             children: [
               Expanded(
@@ -571,7 +571,7 @@ class _InputsPageState extends State<InputsPage> {
                   label: 'Light',
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: FiftyRadioCard<int>(
                   value: 1,
@@ -583,9 +583,9 @@ class _InputsPageState extends State<InputsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Switches'),
-          const Text(
+          Text(
             'Kinetic toggle switches with snap animation',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -593,26 +593,26 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySwitch(
             value: _switchValue,
             onChanged: (value) => setState(() => _switchValue = value),
             label: 'Basic Switch',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySwitch(
             value: _notificationsEnabled,
             onChanged: (value) => setState(() => _notificationsEnabled = value),
             label: 'Enable Notifications',
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySwitch(
             value: _darkMode,
             onChanged: (value) => setState(() => _darkMode = value),
             label: 'Dark Mode',
           ),
-          const SizedBox(height: FiftySpacing.md),
-          const Text(
+          SizedBox(height: FiftySpacing.md),
+          Text(
             'Switch Sizes',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -620,7 +620,7 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Wrap(
             spacing: FiftySpacing.lg,
             runSpacing: FiftySpacing.md,
@@ -643,15 +643,15 @@ class _InputsPageState extends State<InputsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftySwitch(
             value: false,
             onChanged: null,
             label: 'Disabled Switch',
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Sliders'),
-          const Text(
+          Text(
             'Brutalist range selectors with square thumb',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -659,7 +659,7 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySlider(
             value: _sliderValue,
             min: 0,
@@ -668,7 +668,7 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Value',
             showLabel: true,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           FiftySlider(
             value: _volumeValue,
             min: 0,
@@ -678,7 +678,7 @@ class _InputsPageState extends State<InputsPage> {
             showLabel: true,
             labelBuilder: (value) => '${value.round()}%',
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           FiftySlider(
             value: _sliderValue,
             min: 0,
@@ -687,7 +687,7 @@ class _InputsPageState extends State<InputsPage> {
             onChanged: (value) => setState(() => _sliderValue = value),
             label: 'With Divisions (steps of 10)',
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           const FiftySlider(
             value: 50,
             min: 0,
@@ -696,9 +696,9 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Disabled',
             enabled: false,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Dropdowns'),
-          const Text(
+          Text(
             'Terminal-styled dropdown selectors',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -706,7 +706,7 @@ class _InputsPageState extends State<InputsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyDropdown<String>(
             items: _languages,
             value: _selectedLanguage,
@@ -714,7 +714,7 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Language',
             hint: 'Select a language',
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           FiftyDropdown<String>(
             items: _priorities,
             value: _selectedPriority,
@@ -722,7 +722,7 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Priority',
             hint: 'Select priority level',
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           FiftyDropdown<String>(
             items: _languages,
             value: 'dart',
@@ -730,7 +730,7 @@ class _InputsPageState extends State<InputsPage> {
             label: 'Disabled',
             enabled: false,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
         ],
       ),
     );
@@ -759,10 +759,10 @@ class _ControlsPageState extends State<ControlsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('CONTROLS')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('Segmented Control'),
-          const Text(
+          Text(
             'Pill-style segments with animated selection',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -770,7 +770,7 @@ class _ControlsPageState extends State<ControlsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySegmentedControl<String>(
             segments: const [
               FiftySegment(value: 'daily', label: 'Daily'),
@@ -780,9 +780,9 @@ class _ControlsPageState extends State<ControlsPage> {
             selected: _period,
             onChanged: (value) => setState(() => _period = value),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Variants'),
-          const Text(
+          Text(
             'Primary (cream/burgundy) and Secondary (slate/cream)',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -790,14 +790,14 @@ class _ControlsPageState extends State<ControlsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Primary',
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
@@ -805,7 +805,7 @@ class _ControlsPageState extends State<ControlsPage> {
                         color: FiftyColors.slateGrey,
                       ),
                     ),
-                    const SizedBox(height: FiftySpacing.sm),
+                    SizedBox(height: FiftySpacing.sm),
                     FiftySegmentedControl<String>(
                       segments: const [
                         FiftySegment(value: 'daily', label: 'Daily'),
@@ -820,14 +820,14 @@ class _ControlsPageState extends State<ControlsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Secondary',
                       style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
@@ -835,7 +835,7 @@ class _ControlsPageState extends State<ControlsPage> {
                         color: FiftyColors.slateGrey,
                       ),
                     ),
-                    const SizedBox(height: FiftySpacing.sm),
+                    SizedBox(height: FiftySpacing.sm),
                     FiftySegmentedControl<String>(
                       segments: const [
                         FiftySegment(value: 'light', label: 'Light', icon: Icons.light_mode),
@@ -851,9 +851,9 @@ class _ControlsPageState extends State<ControlsPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('With Icons'),
-          const Text(
+          Text(
             'Segments with leading icons',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -861,7 +861,7 @@ class _ControlsPageState extends State<ControlsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySegmentedControl<String>(
             segments: const [
               FiftySegment(value: 'grid', label: 'Grid', icon: Icons.grid_view),
@@ -870,9 +870,9 @@ class _ControlsPageState extends State<ControlsPage> {
             selected: _viewMode,
             onChanged: (value) => setState(() => _viewMode = value),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Expanded Mode'),
-          const Text(
+          Text(
             'Segments expand to fill available width',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -880,7 +880,7 @@ class _ControlsPageState extends State<ControlsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySegmentedControl<String>(
             segments: const [
               FiftySegment(value: 'all', label: 'All'),
@@ -891,9 +891,9 @@ class _ControlsPageState extends State<ControlsPage> {
             onChanged: (value) => setState(() => _expandedValue = value),
             expanded: true,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Disabled State'),
-          const Text(
+          Text(
             'Non-interactive segmented control',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -901,7 +901,7 @@ class _ControlsPageState extends State<ControlsPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftySegmentedControl<String>(
             segments: const [
               FiftySegment(value: 'on', label: 'On'),
@@ -937,7 +937,7 @@ class _DisplayPageState extends State<DisplayPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('DISPLAY')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('Cards'),
           FiftyCard(
@@ -945,12 +945,12 @@ class _DisplayPageState extends State<DisplayPage> {
             selected: _selectedCard,
             child: const Text('Tap to select this card'),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyCard(
             hasTexture: true,
             hoverScale: 1.05,
             onTap: () {},
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -973,8 +973,8 @@ class _DisplayPageState extends State<DisplayPage> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
-          const FiftyCard(
+          SizedBox(height: FiftySpacing.md),
+          FiftyCard(
             hasTexture: true,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -999,9 +999,9 @@ class _DisplayPageState extends State<DisplayPage> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Stat Cards'),
-          const Text(
+          Text(
             'Metric display with trend indicators',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1009,10 +1009,10 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
-          const Row(
+          SizedBox(height: FiftySpacing.md),
+          Row(
             children: [
-              Expanded(
+              const Expanded(
                 child: FiftyStatCard(
                   label: 'Total Views',
                   value: '45.2k',
@@ -1022,7 +1022,7 @@ class _DisplayPageState extends State<DisplayPage> {
                 ),
               ),
               SizedBox(width: FiftySpacing.md),
-              Expanded(
+              const Expanded(
                 child: FiftyStatCard(
                   label: 'Revenue',
                   value: '\$12.5k',
@@ -1032,9 +1032,9 @@ class _DisplayPageState extends State<DisplayPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Progress Card'),
-          const Text(
+          Text(
             'Progress metrics with gradient bar',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1042,16 +1042,16 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyProgressCard(
             icon: Icons.trending_up,
             title: 'Weekly Goal',
             progress: 0.75,
             subtitle: '12 sales remaining to reach target',
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('List Tiles'),
-          const Text(
+          Text(
             'Transaction-style list items',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1059,7 +1059,7 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           FiftyCard(
             padding: EdgeInsets.zero,
             child: Column(
@@ -1087,7 +1087,7 @@ class _DisplayPageState extends State<DisplayPage> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Chips'),
           Wrap(
             spacing: FiftySpacing.sm,
@@ -1109,9 +1109,9 @@ class _DisplayPageState extends State<DisplayPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Badges'),
-          const Wrap(
+          Wrap(
             spacing: FiftySpacing.sm,
             runSpacing: FiftySpacing.sm,
             children: [
@@ -1122,8 +1122,8 @@ class _DisplayPageState extends State<DisplayPage> {
               FiftyBadge(label: 'Neutral', variant: FiftyBadgeVariant.neutral),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
-          const Text(
+          SizedBox(height: FiftySpacing.md),
+          Text(
             'Factory Constructors',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1131,7 +1131,7 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Wrap(
             spacing: FiftySpacing.sm,
             runSpacing: FiftySpacing.sm,
@@ -1144,9 +1144,9 @@ class _DisplayPageState extends State<DisplayPage> {
               FiftyBadge.ai('AGENT'),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Avatars'),
-          const Wrap(
+          Wrap(
             spacing: FiftySpacing.md,
             runSpacing: FiftySpacing.md,
             children: [
@@ -1155,21 +1155,21 @@ class _DisplayPageState extends State<DisplayPage> {
               FiftyAvatar(fallbackText: 'XY', size: 48, borderColor: FiftyColors.burgundy),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Progress Bar'),
           FiftyProgressBar(
             value: _progress,
             label: 'Uploading',
             showPercentage: true,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Slider(
             value: _progress,
             onChanged: (value) => setState(() => _progress = value),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Loading Indicator'),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // FDL-compliant text-based loading indicators
@@ -1192,8 +1192,8 @@ class _DisplayPageState extends State<DisplayPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
-          const Text(
+          SizedBox(height: FiftySpacing.md),
+          Text(
             'Sequence Mode',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1201,8 +1201,8 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
-          const Column(
+          SizedBox(height: FiftySpacing.sm),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Default sequence (uses built-in messages)
@@ -1223,9 +1223,9 @@ class _DisplayPageState extends State<DisplayPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Code Block'),
-          const Text(
+          Text(
             'Terminal-style code display with syntax highlighting',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1233,7 +1233,7 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyCodeBlock(
             code: '''void main() {
   print('Hello, Fifty!');
@@ -1244,8 +1244,8 @@ class _DisplayPageState extends State<DisplayPage> {
 }''',
             language: 'dart',
           ),
-          const SizedBox(height: FiftySpacing.lg),
-          const Text(
+          SizedBox(height: FiftySpacing.lg),
+          Text(
             'Without Line Numbers',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1253,14 +1253,14 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           const FiftyCodeBlock(
             code: 'final greeting = "Welcome to Fifty UI";',
             language: 'dart',
             showLineNumbers: false,
           ),
-          const SizedBox(height: FiftySpacing.lg),
-          const Text(
+          SizedBox(height: FiftySpacing.lg),
+          Text(
             'Without Copy Button',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1268,14 +1268,14 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           const FiftyCodeBlock(
             code: 'npm install fifty-ui',
             language: 'plain',
             copyButton: false,
           ),
-          const SizedBox(height: FiftySpacing.lg),
-          const Text(
+          SizedBox(height: FiftySpacing.lg),
+          Text(
             'With Max Height (Scrollable)',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1283,7 +1283,7 @@ class _DisplayPageState extends State<DisplayPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           const FiftyCodeBlock(
             code: '''class FiftyWidget extends StatelessWidget {
   const FiftyWidget({super.key});
@@ -1311,7 +1311,7 @@ class AnotherWidget extends StatefulWidget {
             language: 'dart',
             maxHeight: 150,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Data Slate'),
           const FiftyDataSlate(
             title: 'System Status',
@@ -1323,11 +1323,11 @@ class AnotherWidget extends StatefulWidget {
               'Uptime': '72h 14m 32s',
             },
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Dividers'),
           const FiftyDivider(),
-          const SizedBox(height: FiftySpacing.md),
-          const Row(
+          SizedBox(height: FiftySpacing.md),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Left'),
@@ -1355,7 +1355,7 @@ class FeedbackPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('FEEDBACK')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('Snackbars'),
           Wrap(
@@ -1411,7 +1411,7 @@ class FeedbackPage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Dialogs'),
           FiftyButton(
             label: 'Show Dialog',
@@ -1444,7 +1444,7 @@ class FeedbackPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Tooltips'),
           Wrap(
             spacing: FiftySpacing.md,
@@ -1485,10 +1485,10 @@ class LayoutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('LAYOUT')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('Hero Text'),
-          const Text(
+          Text(
             'Monument headers with Manrope font',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1496,28 +1496,28 @@ class LayoutPage extends StatelessWidget {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyHero(
             text: 'Display Size',
             size: FiftyHeroSize.display,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('H1 Size'),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyHero(
             text: 'H1 Headline',
             size: FiftyHeroSize.h1,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('H2 Size'),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyHero(
             text: 'H2 Section Header',
             size: FiftyHeroSize.h2,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('With Glitch Effect'),
-          const Text(
+          Text(
             'Kinetic glitch animation on mount',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1525,15 +1525,15 @@ class LayoutPage extends StatelessWidget {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyHero(
             text: 'Glitch Hero',
             size: FiftyHeroSize.h1,
             glitchOnMount: true,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('With Gradient'),
-          const Text(
+          Text(
             'Custom gradient fill for dramatic effect',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1541,17 +1541,17 @@ class LayoutPage extends StatelessWidget {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
-          const FiftyHero(
+          SizedBox(height: FiftySpacing.md),
+          FiftyHero(
             text: 'Gradient Text',
             size: FiftyHeroSize.h1,
             gradient: LinearGradient(
               colors: [FiftyColors.burgundy, FiftyColors.hunterGreen],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Hero Section'),
-          const Text(
+          Text(
             'Title with subtitle combo',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1559,15 +1559,15 @@ class LayoutPage extends StatelessWidget {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyHeroSection(
             title: 'Fifty UI',
             subtitle: 'Fifty Design Language v2',
             glitchOnMount: true,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Left Aligned Section'),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           const FiftyHeroSection(
             title: 'Welcome',
             subtitle: 'Build beautiful interfaces with confidence',
@@ -1601,10 +1601,10 @@ class _NavigationPageState extends State<NavigationPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('NAVIGATION')),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           const _SectionTitle('NavBar - Pill Style'),
-          const Text(
+          Text(
             'Dynamic Island inspired with glassmorphism',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1612,7 +1612,7 @@ class _NavigationPageState extends State<NavigationPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(
             height: 120,
             decoration: BoxDecoration(
@@ -1640,9 +1640,9 @@ class _NavigationPageState extends State<NavigationPage> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('NavBar - Standard Style'),
-          const Text(
+          Text(
             'Rectangular with standard border radius',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1650,7 +1650,7 @@ class _NavigationPageState extends State<NavigationPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(
             height: 120,
             decoration: BoxDecoration(
@@ -1679,9 +1679,9 @@ class _NavigationPageState extends State<NavigationPage> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           const _SectionTitle('Text-Only (No Icons)'),
-          const Text(
+          Text(
             'Label-only navigation items',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -1689,7 +1689,7 @@ class _NavigationPageState extends State<NavigationPage> {
               color: FiftyColors.slateGrey,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(
             height: 100,
             decoration: BoxDecoration(
@@ -1737,10 +1737,10 @@ class _SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+      padding: EdgeInsets.only(bottom: FiftySpacing.md),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: FiftyTypography.fontFamily,
           fontSize: FiftyTypography.bodySmall,
           fontWeight: FiftyTypography.medium,

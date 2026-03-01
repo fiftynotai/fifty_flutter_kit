@@ -94,7 +94,7 @@ class AchievementProgressBar extends StatelessWidget {
           ),
         ),
         if (showLabel) ...[
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             '${(clampedProgress * 100).toStringAsFixed(0)}%',
             style: labelStyle ??

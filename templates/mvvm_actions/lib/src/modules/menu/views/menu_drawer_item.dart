@@ -59,7 +59,7 @@ class MenuDrawerItem extends StatelessWidget {
         child: AnimatedContainer(
           duration: FiftyMotion.fast,
           curve: Curves.easeOut,
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
             vertical: FiftySpacing.md,
           ),
@@ -79,7 +79,7 @@ class MenuDrawerItem extends StatelessWidget {
                 size: 20.0,
                 color: isSelected ? FiftyColors.crimsonPulse : FiftyColors.hyperChrome,
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: Text(
                   label.toUpperCase(),

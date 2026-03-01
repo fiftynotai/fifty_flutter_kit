@@ -130,13 +130,13 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         children: [
           // Points display
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
+            padding: EdgeInsets.all(FiftySpacing.lg),
             color: FiftyColors.surfaceDark,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.stars, color: FiftyColors.warning),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Text(
                   'POINTS: ${_controller.availablePoints}',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -145,7 +145,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                         letterSpacing: 1.2,
                       ),
                 ),
-                const SizedBox(width: FiftySpacing.xxl),
+                SizedBox(width: FiftySpacing.xxl),
                 Text(
                   'SPENT: ${_controller.spentPoints}',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -161,7 +161,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
             child: SkillTreeView<void>(
               controller: _controller,
               layout: const VerticalTreeLayout(),
-              padding: const EdgeInsets.all(FiftySpacing.xxxl),
+              padding: EdgeInsets.all(FiftySpacing.xxxl),
               nodeSize: const Size(64, 64),
               levelSeparation: 100,
               onNodeTap: _handleNodeTap,
@@ -174,7 +174,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
 
           // Instructions
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
+            padding: EdgeInsets.all(FiftySpacing.lg),
             color: FiftyColors.surfaceDark,
             child: Text(
               'Tap a skill to unlock it. Long press for details.',
@@ -205,7 +205,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                 node.description!,
                 style: TextStyle(color: FiftyColors.cream),
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
             ],
             Text(
               'Level: ${node.currentLevel}/${node.maxLevel}',

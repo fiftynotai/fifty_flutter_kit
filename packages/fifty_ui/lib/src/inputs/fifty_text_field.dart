@@ -316,7 +316,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
     final prefixText = _prefixText;
     if (prefixText != null) {
       return Padding(
-        padding: const EdgeInsets.only(left: FiftySpacing.lg),
+        padding: EdgeInsets.only(left: FiftySpacing.lg),
         child: Text(
           prefixText,
           style: TextStyle(
@@ -346,7 +346,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: FiftySpacing.sm),
+            padding: EdgeInsets.only(right: FiftySpacing.sm),
             child: AnimatedBuilder(
               animation: _cursorController,
               builder: (context, child) {
@@ -403,7 +403,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
               letterSpacing: FiftyTypography.letterSpacingLabelMedium,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
         ],
         AnimatedContainer(
           duration: fifty.fast,
@@ -465,7 +465,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
               suffixIconColor: colorScheme.onSurfaceVariant,
               filled: true,
               fillColor: fillColor,
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.lg,
                 vertical: FiftySpacing.md,
               ),
@@ -481,7 +481,7 @@ class _FiftyTextFieldState extends State<FiftyTextField>
           ),
         ),
         if (_hasError) ...[
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             widget.errorText!,
             style: TextStyle(

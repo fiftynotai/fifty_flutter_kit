@@ -45,7 +45,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                               ? FiftyStatusState.ready
                               : FiftyStatusState.idle),
                     ),
-                    const SizedBox(width: FiftySpacing.lg),
+                    SizedBox(width: FiftySpacing.lg),
                     FiftyStatusIndicator(
                       label: 'PRINT',
                       state: viewModel.isPrinting
@@ -56,18 +56,18 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Error Message
                 if (viewModel.errorMessage != null) ...[
                   _buildErrorCard(context, viewModel),
-                  const SizedBox(height: FiftySpacing.md),
+                  SizedBox(height: FiftySpacing.md),
                 ],
 
                 // Permissions Section (if not granted)
                 if (!viewModel.hasPermissions) ...[
                   _buildPermissionsSection(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
                 ],
 
                 // Discovery Section
@@ -76,7 +76,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                   subtitle: 'Scan for nearby Bluetooth printers',
                 ),
                 _buildDiscoverySection(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Discovered Printers (not yet registered)
                 if (viewModel.discoveredPrinters.isNotEmpty) ...[
@@ -85,7 +85,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     subtitle: '${viewModel.discoveredPrinters.length} found - tap to add',
                   ),
                   _buildDiscoveredPrintersList(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
                 ],
 
                 // Registered Printers
@@ -95,7 +95,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     subtitle: '${viewModel.registeredPrinters.length} available',
                   ),
                   _buildRegisteredPrintersList(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
                 ],
 
                 // Ticket Preview Section
@@ -104,7 +104,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                   subtitle: 'Sample receipt ticket',
                 ),
                 _buildTicketPreview(context, viewModel),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Print Section
                 const FiftySectionHeader(
@@ -124,7 +124,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         children: [
           Icon(
@@ -132,7 +132,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
             color: colorScheme.error,
             size: 20,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               viewModel.errorMessage!,
@@ -158,7 +158,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final warningColor = fiftyTheme?.warning ?? colorScheme.error;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -169,7 +169,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 color: warningColor,
                 size: 24,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Expanded(
                 child: Text(
                   'Bluetooth Permissions Required',
@@ -183,7 +183,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Text(
             'Grant Bluetooth permissions to discover and connect to thermal printers.',
             style: TextStyle(
@@ -192,7 +192,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Row(
             children: [
               Expanded(
@@ -217,7 +217,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         children: [
           Expanded(
@@ -267,9 +267,9 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
         );
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          padding: EdgeInsets.only(bottom: FiftySpacing.sm),
           child: FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             onTap: isRegistered ? null : () => actions.onDiscoveredPrinterTapped(context, discovered),
             child: Opacity(
               opacity: isRegistered ? 0.5 : 1.0,
@@ -289,7 +289,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
 
                   // Device info
                   Expanded(
@@ -304,7 +304,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                             color: colorScheme.onSurface,
                           ),
                         ),
-                        const SizedBox(height: FiftySpacing.xs),
+                        SizedBox(height: FiftySpacing.xs),
                         Text(
                           discovered.macAddress,
                           style: TextStyle(
@@ -362,9 +362,9 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
         );
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          padding: EdgeInsets.only(bottom: FiftySpacing.sm),
           child: FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             onTap: () => actions.onRegisteredPrinterTapped(context, printer),
             child: Row(
               children: [
@@ -386,7 +386,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
 
                 // Printer info
                 Expanded(
@@ -402,7 +402,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: FiftySpacing.xs),
+                      SizedBox(height: FiftySpacing.xs),
                       Row(
                         children: [
                           Container(
@@ -413,7 +413,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          const SizedBox(width: FiftySpacing.xs),
+                          SizedBox(width: FiftySpacing.xs),
                           Text(
                             viewModel.getStatusLabel(printer.status),
                             style: TextStyle(
@@ -460,10 +460,10 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(FiftySpacing.md),
+        padding: EdgeInsets.all(FiftySpacing.md),
         decoration: BoxDecoration(
           color: colorScheme.onSurface,
           borderRadius: BorderRadius.circular(FiftyRadii.sm),
@@ -497,7 +497,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
     final errorColor = colorScheme.error;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -509,7 +509,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                 color: colorScheme.onSurface.withValues(alpha: 0.7),
                 size: 20,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Expanded(
                 child: Text(
                   viewModel.selectedPrinter != null
@@ -527,9 +527,9 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
 
           // Last result
           if (viewModel.lastResult != null) ...[
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             Container(
-              padding: const EdgeInsets.all(FiftySpacing.sm),
+              padding: EdgeInsets.all(FiftySpacing.sm),
               decoration: BoxDecoration(
                 color: viewModel.lastResult!.isSuccess
                     ? successColor.withValues(alpha: 0.2)
@@ -545,7 +545,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
                     color: viewModel.lastResult!.isSuccess ? successColor : errorColor,
                     size: 16,
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: Text(
                       viewModel.lastResult!.isSuccess
@@ -563,7 +563,7 @@ class PrintingDemoPage extends GetView<PrintingDemoViewModel> {
             ),
           ],
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Print button
           SizedBox(

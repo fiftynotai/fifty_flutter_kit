@@ -32,7 +32,7 @@ class LogoutDrawerItem extends StatelessWidget {
         splashColor: FiftyColors.crimsonPulse.withValues(alpha: 0.2),
         highlightColor: FiftyColors.crimsonPulse.withValues(alpha: 0.1),
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
             vertical: FiftySpacing.md,
           ),
@@ -43,7 +43,7 @@ class LogoutDrawerItem extends StatelessWidget {
                 size: 20,
                 color: FiftyColors.crimsonPulse,
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Text(
                 tkLogoutBtn.tr.toUpperCase(),
                 style: TextStyle(

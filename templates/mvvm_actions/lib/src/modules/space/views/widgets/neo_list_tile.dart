@@ -90,7 +90,7 @@ class NeoListTile extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
 
               // Hazard status chip
               FiftyChip(
@@ -103,7 +103,7 @@ class NeoListTile extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Metrics row
           Row(
@@ -134,7 +134,7 @@ class NeoListTile extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Close approach date
           Row(
@@ -144,7 +144,7 @@ class NeoListTile extends StatelessWidget {
                 size: 14,
                 color: FiftyColors.hyperChrome,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               Text(
                 'Close approach: ${_formatDate(closeApproachDate)}',
                 style: TextStyle(

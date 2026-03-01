@@ -52,7 +52,7 @@ class _ExampleLauncherState extends State<ExampleLauncher> {
         children: [
           // Navigation bar
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.lg,
               vertical: FiftySpacing.md,
             ),

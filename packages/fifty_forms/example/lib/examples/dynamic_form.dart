@@ -74,7 +74,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.xl),
+        padding: EdgeInsets.all(FiftySpacing.xl),
         child: FiftyForm(
           controller: _controller,
           child: Column(
@@ -90,7 +90,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Define project details, tasks, and team members',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -98,14 +98,14 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Project Details Section
               _SectionHeader(
                 title: 'PROJECT DETAILS',
                 icon: Icons.folder_outlined,
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               FiftyTextFormField(
                 name: 'projectName',
                 controller: _controller,
@@ -113,7 +113,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                 hint: 'Enter project name',
                 prefix: const Icon(Icons.title, size: 20),
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               FiftyTextFormField(
                 name: 'description',
                 controller: _controller,
@@ -123,7 +123,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                 minLines: 2,
                 prefix: const Icon(Icons.description_outlined, size: 20),
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Tasks Array Section
               _SectionHeader(
@@ -131,7 +131,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                 icon: Icons.checklist,
                 subtitle: 'Add up to 10 tasks (minimum 1)',
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               FiftyFormArray(
                 controller: _controller,
                 name: 'tasks',
@@ -154,7 +154,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                   );
                 },
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Team Members Array Section
               _SectionHeader(
@@ -162,7 +162,7 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                 icon: Icons.group_outlined,
                 subtitle: 'Add up to 5 team members (optional)',
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               FiftyFormArray(
                 controller: _controller,
                 name: 'team',
@@ -185,11 +185,11 @@ class _DynamicFormDemoState extends State<DynamicFormDemo> {
                   );
                 },
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Summary Card
               _SummaryCard(controller: _controller),
-              const SizedBox(height: FiftySpacing.xl),
+              SizedBox(height: FiftySpacing.xl),
 
               // Submit button
               FiftySubmitButton(
@@ -236,7 +236,7 @@ class _SectionHeader extends StatelessWidget {
             size: 18,
           ),
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +300,7 @@ class _TaskItem extends StatelessWidget {
           hint: 'What needs to be done?',
           prefix: const Icon(Icons.task_alt, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyDropdownFormField<String>(
           name: priorityName,
           controller: controller,
@@ -355,7 +355,7 @@ class _TeamMemberItem extends StatelessWidget {
           hint: 'Team member name',
           prefix: const Icon(Icons.person_outline, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyTextFormField(
           name: roleName,
           controller: controller,
@@ -363,7 +363,7 @@ class _TeamMemberItem extends StatelessWidget {
           hint: 'e.g., Developer, Designer',
           prefix: const Icon(Icons.work_outline, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyTextFormField(
           name: emailName,
           controller: controller,
@@ -395,7 +395,7 @@ class _SummaryCard extends StatelessWidget {
         final projectName = controller.getValue<String>('projectName') ?? '';
 
         return Container(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           decoration: BoxDecoration(
             color: FiftyColors.darkBurgundy,
             borderRadius: FiftyRadii.lgRadius,
@@ -406,12 +406,12 @@ class _SummaryCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.summarize_outlined,
                     color: FiftyColors.slateGrey,
                     size: 18,
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Text(
                     'PROJECT SUMMARY',
                     style: TextStyle(
@@ -424,19 +424,19 @@ class _SummaryCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               _SummaryRow(
                 label: 'Project',
                 value: projectName.isEmpty ? '(not set)' : projectName,
                 isEmpty: projectName.isEmpty,
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               _SummaryRow(
                 label: 'Tasks',
                 value: '${tasks.length}',
                 highlight: tasks.isNotEmpty,
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               _SummaryRow(
                 label: 'Team Members',
                 value: team.isEmpty ? 'None' : '${team.length}',

@@ -160,7 +160,7 @@ class _FiftyDateFormFieldState extends State<FiftyDateFormField>
           data: theme.copyWith(
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                textStyle: const TextStyle(
+                textStyle: TextStyle(
                   fontFamily: FiftyTypography.fontFamily,
                   fontWeight: FiftyTypography.medium,
                 ),

@@ -40,7 +40,7 @@ class SplashPage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: FiftySpacing.xxl),
+            SizedBox(height: FiftySpacing.xxl),
 
             // Subtle grid lines effect
             Container(
@@ -57,7 +57,7 @@ class SplashPage extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: FiftySpacing.xxl),
+            SizedBox(height: FiftySpacing.xxl),
 
             // FDL-compliant loading indicator
             const FiftyLoadingIndicator(
@@ -72,7 +72,7 @@ class SplashPage extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: FiftySpacing.huge),
+            SizedBox(height: FiftySpacing.huge),
 
             // Subtle version/system info
             Text(

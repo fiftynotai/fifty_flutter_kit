@@ -74,7 +74,7 @@ class _MenuPageState extends State<MenuPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.xxl,
             vertical: FiftySpacing.lg,
           ),
@@ -128,7 +128,7 @@ class _TitleSection extends StatelessWidget {
             height: FiftyTypography.lineHeightDisplay,
           ),
         ),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Text(
           'A FIFTY SHOWCASE',
           style: TextStyle(
@@ -162,7 +162,7 @@ class _NavigationSection extends StatelessWidget {
             expanded: true,
             onPressed: () => _showGameModeSheet(context),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           FiftyButton(
             label: 'ACHIEVEMENTS',
             variant: FiftyButtonVariant.outline,
@@ -170,7 +170,7 @@ class _NavigationSection extends StatelessWidget {
             expanded: true,
             onPressed: () => RouteManager.toAchievements(),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           FiftyButton(
             label: 'SETTINGS',
             variant: FiftyButtonVariant.outline,
@@ -211,7 +211,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.xxl,
         vertical: FiftySpacing.xl,
       ),
@@ -244,7 +244,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
               ),
             ),
 
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // LOCAL 1v1 button
             ConstrainedBox(
@@ -263,7 +263,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
               ),
             ),
 
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
 
             // VS AI button
             ConstrainedBox(
@@ -285,7 +285,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
 
             // AI difficulty options (shown after VS AI is tapped)
             if (_showDifficulty) ...[
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Divider label
               Row(
@@ -296,7 +296,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: FiftySpacing.md,
                     ),
                     child: Text(
@@ -318,7 +318,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                 ],
               ),
 
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
 
               // Difficulty buttons row
               ConstrainedBox(
@@ -333,7 +333,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                         onPressed: () => _startAIGame(AIDifficulty.easy),
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Expanded(
                       child: FiftyButton(
                         label: 'MEDIUM',
@@ -342,7 +342,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
                         onPressed: () => _startAIGame(AIDifficulty.medium),
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Expanded(
                       child: FiftyButton(
                         label: 'HARD',
@@ -356,7 +356,7 @@ class _GameModeSheetState extends State<_GameModeSheet> {
               ),
             ],
 
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
           ],
         ),
       ),

@@ -124,7 +124,7 @@ class _StatusIndicatorState extends State<StatusIndicator>
             );
           },
         ),
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
         // Status label
         Text(
           widget.label,

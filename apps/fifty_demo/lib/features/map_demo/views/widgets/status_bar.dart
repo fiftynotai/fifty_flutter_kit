@@ -58,13 +58,13 @@ class StatusBar extends StatelessWidget {
               letterSpacing: 1.5,
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           const _VerticalDivider(),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
 
           // Status indicator
           _buildStatusIndicator(),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
 
           // Status label
           Text(
@@ -78,9 +78,9 @@ class StatusBar extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           const _VerticalDivider(),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
 
           // Entity count
           Text(
@@ -95,9 +95,9 @@ class StatusBar extends StatelessWidget {
 
           // Error message (if any)
           if (hasError && errorMessage != null) ...[
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
             const _VerticalDivider(),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
             SizedBox(
               width: 200,
               child: Text(

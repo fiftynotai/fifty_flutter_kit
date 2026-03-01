@@ -32,7 +32,7 @@ class ChannelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return FiftyCard(
       hasTexture: true,
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -59,7 +59,7 @@ class ChannelCard extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           child,
         ],
       ),

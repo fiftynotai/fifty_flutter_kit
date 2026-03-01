@@ -59,7 +59,7 @@ class GameplaySettingsSection extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
 
           // Difficulty buttons row
           Row(
@@ -75,7 +75,7 @@ class GameplaySettingsSection extends StatelessWidget {
                       actions.onDifficultyChanged(AIDifficulty.easy),
                 ),
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Expanded(
                 child: FiftyButton(
                   label: 'MEDIUM',
@@ -87,7 +87,7 @@ class GameplaySettingsSection extends StatelessWidget {
                       actions.onDifficultyChanged(AIDifficulty.medium),
                 ),
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Expanded(
                 child: FiftyButton(
                   label: 'HARD',
@@ -102,7 +102,7 @@ class GameplaySettingsSection extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
 
           // Turn Timer Duration
           _TimerSliderRow(
@@ -114,7 +114,7 @@ class GameplaySettingsSection extends StatelessWidget {
             onChanged: actions.onTurnDurationChanged,
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Warning Threshold
           _TimerSliderRow(
@@ -126,7 +126,7 @@ class GameplaySettingsSection extends StatelessWidget {
             onChanged: actions.onWarningThresholdChanged,
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Critical Threshold
           _TimerSliderRow(
@@ -202,7 +202,7 @@ class _TimerSliderRow extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
 
         // Slider
         FiftySlider(

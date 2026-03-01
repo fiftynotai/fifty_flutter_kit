@@ -54,11 +54,11 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
-                    const SizedBox(height: FiftySpacing.sm),
+                    SizedBox(height: FiftySpacing.sm),
 
                     // Section header: NAVIGATION
                     _buildSectionHeader('NAVIGATION'),
-                    const SizedBox(height: FiftySpacing.sm),
+                    SizedBox(height: FiftySpacing.sm),
 
                     // Menu items
                     ...controller.menuItems.asMap().entries.map((entry) {
@@ -76,13 +76,13 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
                       );
                     }),
 
-                    const SizedBox(height: FiftySpacing.lg),
+                    SizedBox(height: FiftySpacing.lg),
                     const FiftyDivider(),
-                    const SizedBox(height: FiftySpacing.md),
+                    SizedBox(height: FiftySpacing.md),
 
                     // Section header: SETTINGS
                     _buildSectionHeader(tkSettings.tr.toUpperCase()),
-                    const SizedBox(height: FiftySpacing.sm),
+                    SizedBox(height: FiftySpacing.sm),
 
                     // Theme switcher with FDL styling
                     _buildSettingsItem(
@@ -104,7 +104,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
               // Bottom section: Logout
               const FiftyDivider(),
               const LogoutDrawerItem(),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
             ],
           ),
         ),
@@ -117,7 +117,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,7 +126,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
             children: [
               // Logo with crimson glow effect
               Container(
-                padding: const EdgeInsets.all(FiftySpacing.sm),
+                padding: EdgeInsets.all(FiftySpacing.sm),
                 decoration: BoxDecoration(
                   color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(FiftySpacing.sm),
@@ -157,7 +157,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
                   ),
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
 
               // Title
               Expanded(
@@ -174,7 +174,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
                         letterSpacing: 2,
                       ),
                     ),
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     Text(
                       appName.tr.toUpperCase(),
                       style: TextStyle(
@@ -191,7 +191,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Operator status badge
           FiftyChip(
@@ -206,7 +206,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
   /// Builds a section header with FDL styling.
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.xs,
       ),
@@ -220,7 +220,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             title,
             style: TextStyle(
@@ -249,7 +249,7 @@ class SideMenuDrawer extends GetWidget<MenuViewModel> {
         listTileTheme: ListTileThemeData(
           iconColor: FiftyColors.hyperChrome,
           textColor: colorScheme.onSurface,
-          contentPadding: const EdgeInsets.symmetric(
+          contentPadding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
           ),
         ),

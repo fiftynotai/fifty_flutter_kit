@@ -111,7 +111,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: FiftySpacing.sm),
+            padding: EdgeInsets.only(right: FiftySpacing.sm),
             child: FiftyButton(
               label: 'RESET',
               icon: Icons.refresh,
@@ -126,7 +126,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
         children: [
           // Points header
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
+            padding: EdgeInsets.all(FiftySpacing.lg),
             decoration: BoxDecoration(
               color: FiftyColors.surfaceDark,
               border: Border(
@@ -152,7 +152,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
 
           // Branch headers
           Container(
-            padding: const EdgeInsets.symmetric(vertical: FiftySpacing.md),
+            padding: EdgeInsets.symmetric(vertical: FiftySpacing.md),
             color: FiftyColors.darkBurgundy,
             child: Row(
               children: [
@@ -218,7 +218,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
 
           // Footer hint
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             color: FiftyColors.surfaceDark,
             child: Text(
               'Tap a talent to invest a point',
@@ -292,7 +292,7 @@ class _BranchHeader extends StatelessWidget {
       child: Column(
         children: [
           Icon(icon, color: color, size: FiftySpacing.xxl),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             style: TextStyle(
@@ -337,7 +337,7 @@ class _TalentPath extends StatelessWidget {
       ..sort((a, b) => a.tier.compareTo(b.tier));
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.lg),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.lg),
       child: Column(
         children: [
           for (int i = 0; i < nodes.length; i++) ...[
@@ -410,7 +410,7 @@ class _TalentNode extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: isKeystone ? _NodeSizes.keystoneWidth : _NodeSizes.nodeWidth,
-        padding: const EdgeInsets.all(FiftySpacing.sm),
+        padding: EdgeInsets.all(FiftySpacing.sm),
         decoration: BoxDecoration(
           color: isUnlocked ? color.withValues(alpha: 0.2) : FiftyColors.surfaceDark,
           borderRadius: BorderRadius.circular(isKeystone ? FiftySpacing.md : FiftySpacing.sm),
@@ -441,7 +441,7 @@ class _TalentNode extends StatelessWidget {
               color: isUnlocked ? color : FiftyColors.slateGrey,
               size: isKeystone ? _NodeSizes.keystoneIconSize : _NodeSizes.iconSize,
             ),
-            const SizedBox(height: FiftySpacing.xs),
+            SizedBox(height: FiftySpacing.xs),
             Text(
               node.name.toUpperCase(),
               textAlign: TextAlign.center,
@@ -455,7 +455,7 @@ class _TalentNode extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: FiftySpacing.xs),
+            SizedBox(height: FiftySpacing.xs),
             // Level indicator
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

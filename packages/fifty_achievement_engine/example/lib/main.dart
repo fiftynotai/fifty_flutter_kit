@@ -49,7 +49,7 @@ class ExampleLauncher extends StatelessWidget {
         title: const Text('Achievement Engine Examples'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.md),
+        padding: EdgeInsets.all(FiftySpacing.md),
         children: [
           _buildExampleTile(
             context,
@@ -58,7 +58,7 @@ class ExampleLauncher extends StatelessWidget {
             icon: Icons.star_outline,
             builder: (context) => const BasicAchievementsExample(),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           _buildExampleTile(
             context,
             title: 'RPG Achievements',
@@ -66,7 +66,7 @@ class ExampleLauncher extends StatelessWidget {
             icon: Icons.sports_esports,
             builder: (context) => const RpgAchievementsExample(),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           _buildExampleTile(
             context,
             title: 'Fitness Achievements',
@@ -94,7 +94,7 @@ class ExampleLauncher extends StatelessWidget {
         side: BorderSide(color: colorScheme.outline),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.all(FiftySpacing.md),
+        contentPadding: EdgeInsets.all(FiftySpacing.md),
         leading: Container(
           width: 48,
           height: 48,

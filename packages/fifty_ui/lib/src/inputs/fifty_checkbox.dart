@@ -192,7 +192,7 @@ class _FiftyCheckboxState extends State<FiftyCheckbox>
                 },
               ),
               if (widget.label != null) ...[
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 Flexible(
                   child: Text(
                     widget.label!,

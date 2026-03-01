@@ -63,7 +63,7 @@ class HomePage extends GetView<HomeViewModel> {
                   onAudioDemo: () => Get.to<void>(() => const DialogueDemoPage()),
                   onMapDemo: () => Get.to<void>(() => const MapDemoPage()),
                 ),
-                const SizedBox(height: FiftySpacing.xxl),
+                SizedBox(height: FiftySpacing.xxl),
 
                 // What's New Section
                 const FiftySectionHeader(
@@ -71,7 +71,7 @@ class HomePage extends GetView<HomeViewModel> {
                   subtitle: 'Recent updates',
                 ),
                 const WhatsNewSection(),
-                const SizedBox(height: FiftySpacing.xxl),
+                SizedBox(height: FiftySpacing.xxl),
 
                 // Resources Section
                 const FiftySectionHeader(
@@ -79,7 +79,7 @@ class HomePage extends GetView<HomeViewModel> {
                   subtitle: 'External links',
                 ),
                 const ResourcesSection(),
-                const SizedBox(height: FiftySpacing.xxl),
+                SizedBox(height: FiftySpacing.xxl),
 
                 // System Info Section
                 const FiftySectionHeader(
@@ -87,7 +87,7 @@ class HomePage extends GetView<HomeViewModel> {
                   subtitle: 'Application details',
                 ),
                 FiftyCard(
-                  padding: const EdgeInsets.all(FiftySpacing.lg),
+                  padding: EdgeInsets.all(FiftySpacing.lg),
                   hasTexture: true,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +126,7 @@ class HomePage extends GetView<HomeViewModel> {
 
   Widget _buildInfoRow(ColorScheme colorScheme, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

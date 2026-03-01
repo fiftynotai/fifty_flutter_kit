@@ -41,19 +41,19 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
 
                 // Demo Mode Badge
                 _buildDemoModeBadge(context),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Connection Status
                 _buildConnectionStatus(context, viewModel),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Connection Actions
                 _buildConnectionActions(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Socket Config
                 _buildConfigCard(context),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Channel Management
                 const FiftySectionHeader(
@@ -61,7 +61,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
                   subtitle: 'Join and leave Phoenix channels',
                 ),
                 _buildChannelSection(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Message Log
                 const FiftySectionHeader(
@@ -82,7 +82,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(FiftySpacing.sm),
+      padding: EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
         color: colorScheme.tertiary.withValues(alpha: 0.1),
         borderRadius: FiftyRadii.smRadius,
@@ -97,7 +97,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
             color: colorScheme.tertiary,
             size: 16,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               'DEMO MODE - No live server required. All states are simulated.',
@@ -121,7 +121,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
     final stateColor = _connectionStateColor(colorScheme, viewModel.connectionState);
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         children: [
           // Status indicator
@@ -150,7 +150,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
                     ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +214,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
                     : null,
               ),
             ),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
             Expanded(
               child: FiftyButton(
                 label: 'DISCONNECT',
@@ -226,7 +226,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         SizedBox(
           width: double.infinity,
           child: FiftyButton(
@@ -245,7 +245,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -259,7 +259,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           _buildConfigRow(context, 'URL', SocketDemoViewModel.demoConfig.url),
           _buildConfigRow(context, 'Reconnect Base', '${SocketDemoViewModel.demoConfig.reconnectBaseRetry}s'),
           _buildConfigRow(context, 'Max Retries', '${SocketDemoViewModel.demoConfig.reconnectMaxRetries}'),
@@ -275,7 +275,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -311,14 +311,14 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
         viewModel.connectionState == SocketConnectionState.connected;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           for (final topic in SocketDemoViewModel.availableChannels)
             _buildChannelRow(context, viewModel, actions, topic, isConnected),
           if (!isConnected)
             Padding(
-              padding: const EdgeInsets.only(top: FiftySpacing.sm),
+              padding: EdgeInsets.only(top: FiftySpacing.sm),
               child: Text(
                 'Connect first to manage channels',
                 style: TextStyle(
@@ -344,7 +344,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
     final isJoined = viewModel.joinedChannels.contains(topic);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         children: [
           // Status dot
@@ -358,7 +358,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           // Channel name
           Expanded(
             child: Text(
@@ -395,7 +395,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
                 ),
               ),
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
           ],
           // Join/Leave button
           GestureDetector(
@@ -463,9 +463,9 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
               ),
             ),
           ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.md),
+          padding: EdgeInsets.all(FiftySpacing.md),
           child: viewModel.messages.isEmpty
               ? Center(
                   child: Text(
@@ -510,7 +510,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
                     ? colorScheme.primary
                     : colorScheme.tertiary,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

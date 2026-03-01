@@ -35,7 +35,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                   subtitle: 'Theme and display settings',
                 ),
                 _buildThemeSelector(context, viewModel),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // App Information
                 const FiftySectionHeader(
@@ -43,7 +43,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                   subtitle: 'Version and build details',
                 ),
                 _buildAppInfo(context),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // About
                 const FiftySectionHeader(
@@ -51,7 +51,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
                   subtitle: 'Fifty Flutter Kit',
                 ),
                 _buildAbout(context),
-                const SizedBox(height: FiftySpacing.xxl),
+                SizedBox(height: FiftySpacing.xxl),
               ],
             ),
           ),
@@ -64,7 +64,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           _buildThemeOption(
@@ -120,7 +120,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
         viewModel.themeMode = mode;
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: FiftySpacing.sm),
+        padding: EdgeInsets.symmetric(vertical: FiftySpacing.sm),
         child: Row(
           children: [
             Icon(
@@ -128,7 +128,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
               color: isSelected ? colorScheme.primary : colorScheme.onSurface,
               size: 24,
             ),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,7 +169,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
 
   Widget _buildAppInfo(BuildContext context) {
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           _buildInfoRow(context, 'App', SettingsViewModel.appName),
@@ -188,7 +188,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -220,7 +220,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -233,7 +233,7 @@ class SettingsPage extends GetView<SettingsViewModel> {
               color: colorScheme.primary,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Text(
             'A comprehensive Flutter ecosystem providing design tokens, '
             'theming, UI components, and specialized engines for building '
@@ -245,9 +245,9 @@ class SettingsPage extends GetView<SettingsViewModel> {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Divider(color: colorScheme.surfaceContainerHighest),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           _buildInfoRow(context, 'Copyright', SettingsViewModel.copyright),
           _buildInfoRow(context, 'License', SettingsViewModel.license),
         ],

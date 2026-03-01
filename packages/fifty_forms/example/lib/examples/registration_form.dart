@@ -105,7 +105,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
     if (restored != null && mounted) {
       setState(() => _draftRestored = true);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Draft restored from previous session'),
           backgroundColor: FiftyColors.hunterGreen,
           duration: Duration(seconds: 2),
@@ -128,7 +128,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Passwords do not match'),
           backgroundColor: FiftyColors.burgundy,
         ),
@@ -186,7 +186,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.xl),
+        padding: EdgeInsets.all(FiftySpacing.xl),
         child: FiftyForm(
           controller: _controller,
           child: Column(
@@ -202,7 +202,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Join the network with a new identity',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -210,7 +210,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Username field
               FiftyTextFormField(
@@ -221,7 +221,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 textInputAction: TextInputAction.next,
                 prefix: const Icon(Icons.person_outline, size: 20),
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Email field (with async validation)
               FiftyTextFormField(
@@ -234,7 +234,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 prefix: const Icon(Icons.email_outlined, size: 20),
               ),
               _AsyncValidationHint(),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Password field
               FiftyTextFormField(
@@ -246,9 +246,9 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 textInputAction: TextInputAction.next,
                 prefix: const Icon(Icons.lock_outlined, size: 20),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               _PasswordRequirements(controller: _controller),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Confirm password field
               FiftyTextFormField(
@@ -260,7 +260,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 textInputAction: TextInputAction.next,
                 prefix: const Icon(Icons.lock_outline, size: 20),
               ),
-              const SizedBox(height: FiftySpacing.xl),
+              SizedBox(height: FiftySpacing.xl),
 
               // Terms checkbox
               FiftyCheckboxFormField(
@@ -268,7 +268,7 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 controller: _controller,
                 label: 'I agree to the Terms of Service and Privacy Policy',
               ),
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Submit button
               FiftySubmitButton(
@@ -279,12 +279,12 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                 expanded: true,
                 disableWhenInvalid: false, // Allow submission to show all errors
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Draft indicator
               if (_draftRestored)
                 Container(
-                  padding: const EdgeInsets.all(FiftySpacing.md),
+                  padding: EdgeInsets.all(FiftySpacing.md),
                   decoration: BoxDecoration(
                     color: FiftyColors.hunterGreen.withValues(alpha: 0.1),
                     borderRadius: FiftyRadii.lgRadius,
@@ -294,12 +294,12 @@ class _RegistrationFormDemoState extends State<RegistrationFormDemo> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.save_outlined,
                         color: FiftyColors.hunterGreen,
                         size: 16,
                       ),
-                      const SizedBox(width: FiftySpacing.sm),
+                      SizedBox(width: FiftySpacing.sm),
                       Text(
                         'Auto-saving draft...',
                         style: TextStyle(
@@ -323,7 +323,7 @@ class _AsyncValidationHint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: FiftySpacing.xs),
+      padding: EdgeInsets.only(top: FiftySpacing.xs),
       child: Text(
         'Try "test@example.com" to see async validation',
         style: TextStyle(
@@ -350,7 +350,7 @@ class _PasswordRequirements extends StatelessWidget {
         final password = controller.getValue<String>('password') ?? '';
 
         return Container(
-          padding: const EdgeInsets.all(FiftySpacing.md),
+          padding: EdgeInsets.all(FiftySpacing.md),
           decoration: BoxDecoration(
             color: FiftyColors.darkBurgundy,
             borderRadius: FiftyRadii.lgRadius,
@@ -369,7 +369,7 @@ class _PasswordRequirements extends StatelessWidget {
                   color: FiftyColors.slateGrey,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               _RequirementRow(
                 label: 'At least 8 characters',
                 isMet: password.length >= 8,
@@ -419,7 +419,7 @@ class _RequirementRow extends StatelessWidget {
             size: 14,
             color: isMet ? FiftyColors.hunterGreen : FiftyColors.slateGrey,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             label,
             style: TextStyle(

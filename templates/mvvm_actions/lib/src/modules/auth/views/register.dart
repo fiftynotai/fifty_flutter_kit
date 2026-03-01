@@ -46,7 +46,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
             vertical: FiftySpacing.lg,
           ),
@@ -58,7 +58,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                   GestureDetector(
                     onTap: () => RouteManager.back(),
                     child: Container(
-                      padding: const EdgeInsets.all(FiftySpacing.sm),
+                      padding: EdgeInsets.all(FiftySpacing.sm),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: FiftyColors.border,
@@ -76,7 +76,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                 ],
               ),
 
-              const SizedBox(height: FiftySpacing.xxl),
+              SizedBox(height: FiftySpacing.xxl),
 
               // Request Access title
               Text(
@@ -91,7 +91,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
 
               // Subtitle
               Text(
@@ -105,11 +105,11 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                 ),
               ),
 
-              const SizedBox(height: FiftySpacing.xxl),
+              SizedBox(height: FiftySpacing.xxl),
 
               // Registration form wrapped in FiftyCard
               FiftyCard(
-                padding: const EdgeInsets.all(FiftySpacing.xxl),
+                padding: EdgeInsets.all(FiftySpacing.xxl),
                 scanlineOnHover: false,
                 child: Form(
                   key: _formKey,
@@ -126,7 +126,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: FiftySpacing.lg),
+                      SizedBox(height: FiftySpacing.lg),
 
                       // Phone field
                       _buildFdlFormField(
@@ -139,7 +139,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: FiftySpacing.lg),
+                      SizedBox(height: FiftySpacing.lg),
 
                       // Email field
                       _buildFdlFormField(
@@ -152,7 +152,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: FiftySpacing.lg),
+                      SizedBox(height: FiftySpacing.lg),
 
                       // Password field with visibility toggle
                       Obx(() => _buildFdlFormField(
@@ -176,7 +176,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                             ),
                           )),
 
-                      const SizedBox(height: FiftySpacing.xxl),
+                      SizedBox(height: FiftySpacing.xxl),
 
                       // Register button
                       FiftyButton(
@@ -191,7 +191,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                 ),
               ),
 
-              const SizedBox(height: FiftySpacing.xxl),
+              SizedBox(height: FiftySpacing.xxl),
 
               // Back to login link
               Row(
@@ -223,11 +223,11 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                 ],
               ),
 
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Security notice
               Container(
-                padding: const EdgeInsets.all(FiftySpacing.md),
+                padding: EdgeInsets.all(FiftySpacing.md),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: FiftyColors.hyperChrome.withValues(alpha: 0.3),
@@ -242,7 +242,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                       color: FiftyColors.igrisGreen,
                       size: 16,
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Expanded(
                       child: Text(
                         'ALL DATA TRANSMISSIONS ARE ENCRYPTED',
@@ -258,7 +258,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
                 ),
               ),
 
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
             ],
           ),
         ),
@@ -294,7 +294,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
             letterSpacing: 1,
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         // Form field
         TextFormField(
           controller: controller,
@@ -320,7 +320,7 @@ class RegisterPage extends GetWidget<AuthViewModel> {
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: colorScheme.surfaceContainerHighest,
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.lg,
               vertical: FiftySpacing.md,
             ),
@@ -347,14 +347,14 @@ class RegisterPage extends GetWidget<AuthViewModel> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: FiftyRadii.standardRadius,
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: FiftyColors.error,
                 width: 1,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: FiftyRadii.standardRadius,
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: FiftyColors.error,
                 width: 2,
               ),

@@ -43,7 +43,7 @@ class AchievementList<T> extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.padding,
-    this.spacing = FiftySpacing.md,
+    this.spacing = 12,
     this.compact = false,
     this.showProgress = true,
     this.emptyWidget,
@@ -146,7 +146,7 @@ class AchievementList<T> extends StatelessWidget {
         }
 
         return ListView.separated(
-          padding: padding ?? const EdgeInsets.all(FiftySpacing.md),
+          padding: padding ?? EdgeInsets.all(FiftySpacing.md),
           physics: physics,
           shrinkWrap: shrinkWrap,
           itemCount: achievements.length,
@@ -178,7 +178,7 @@ class AchievementList<T> extends StatelessWidget {
         final colorScheme = Theme.of(context).colorScheme;
         return Center(
           child: Padding(
-            padding: const EdgeInsets.all(FiftySpacing.xxl),
+            padding: EdgeInsets.all(FiftySpacing.xxl),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -187,7 +187,7 @@ class AchievementList<T> extends StatelessWidget {
                   size: 48,
                   color: colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 Text(
                   'No achievements found',
                   style: TextStyle(
@@ -197,7 +197,7 @@ class AchievementList<T> extends StatelessWidget {
                     color: colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   _getEmptyMessage(),
                   style: TextStyle(

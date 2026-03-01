@@ -78,7 +78,7 @@ class _TtsPanelState extends State<TtsPanel> {
 
     return FiftyCard(
       child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,7 +90,7 @@ class _TtsPanelState extends State<TtsPanel> {
                   color: colorScheme.primary,
                   size: 24,
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Text(
                   'TEXT-TO-SPEECH',
                   style: TextStyle(
@@ -102,7 +102,7 @@ class _TtsPanelState extends State<TtsPanel> {
                   ),
                 ),
                 const Spacer(),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 StatusIndicator(
                   label: widget.statusLabel,
                   isActive: widget.isSpeaking,
@@ -110,7 +110,7 @@ class _TtsPanelState extends State<TtsPanel> {
               ],
             ),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Text input
             FiftyTextField(
@@ -121,7 +121,7 @@ class _TtsPanelState extends State<TtsPanel> {
               enabled: !widget.isSpeaking,
             ),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Language selector
             Row(
@@ -134,14 +134,14 @@ class _TtsPanelState extends State<TtsPanel> {
                     color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 Expanded(
                   child: _buildLanguageDropdown(colorScheme),
                 ),
               ],
             ),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Action buttons
             Row(
@@ -155,7 +155,7 @@ class _TtsPanelState extends State<TtsPanel> {
                         : () => widget.onSpeak(_textController.text),
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: FiftyButton(
                     label: 'STOP',
@@ -173,7 +173,7 @@ class _TtsPanelState extends State<TtsPanel> {
 
   Widget _buildLanguageDropdown(ColorScheme colorScheme) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.xs,
       ),

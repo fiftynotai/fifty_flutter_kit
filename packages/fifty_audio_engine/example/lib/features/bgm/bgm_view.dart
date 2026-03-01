@@ -46,12 +46,12 @@ class _BgmViewState extends State<BgmView> {
       listenable: _viewModel,
       builder: (context, _) {
         return ListView(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           children: [
             _buildNowPlaying(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildControls(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildTrackList(),
           ],
         );
@@ -78,7 +78,7 @@ class _BgmViewState extends State<BgmView> {
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             _viewModel.currentTrack.artist,
             style: TextStyle(
@@ -87,13 +87,13 @@ class _BgmViewState extends State<BgmView> {
               color: colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           // Progress bar
           FiftyProgressBar(
             value: _viewModel.progress,
             showPercentage: false,
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           // Time display
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,7 +134,7 @@ class _BgmViewState extends State<BgmView> {
             onPreviousPressed: _actions.onPreviousPressed,
             onNextPressed: _actions.onNextPressed,
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
           // Volume control
           VolumeControl(
             volume: _viewModel.volume,
@@ -142,7 +142,7 @@ class _BgmViewState extends State<BgmView> {
             isMuted: _viewModel.isMuted,
             onMuteToggled: _actions.onMuteToggled,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           // Shuffle toggle
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,11 +206,11 @@ class _TrackListItem extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.md,
             vertical: FiftySpacing.md,
           ),
-          margin: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          margin: EdgeInsets.only(bottom: FiftySpacing.sm),
           decoration: BoxDecoration(
             color: isSelected
                 ? colorScheme.primary.withValues(alpha: 0.1)
@@ -240,7 +240,7 @@ class _TrackListItem extends StatelessWidget {
                             : colorScheme.onSurfaceVariant,
                       ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               // Track info
               Expanded(
                 child: Column(

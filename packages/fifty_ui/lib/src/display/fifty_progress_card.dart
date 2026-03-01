@@ -79,9 +79,9 @@ class FiftyProgressCard extends StatelessWidget {
         borderRadius: FiftyRadii.xxlRadius,
         boxShadow: fifty?.shadowMd ?? FiftyShadows.md,
       ),
-      padding: const EdgeInsets.all(FiftySpacing.xs),
+      padding: EdgeInsets.all(FiftySpacing.xs),
       child: Container(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,12 +102,12 @@ class FiftyProgressCard extends StatelessWidget {
                       size: 16,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                 ],
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: FiftyTypography.fontFamily,
                       fontSize: FiftyTypography.bodyMedium,
                       fontWeight: FiftyTypography.semiBold,
@@ -127,7 +127,7 @@ class FiftyProgressCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
 
             // Progress bar
             Container(
@@ -158,7 +158,7 @@ class FiftyProgressCard extends StatelessWidget {
 
             // Subtitle
             if (subtitle != null) ...[
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 subtitle!,
                 style: TextStyle(

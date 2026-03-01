@@ -210,7 +210,7 @@ class _TtsHeader extends StatelessWidget {
                   : colorScheme.onSurface.withValues(alpha: 0.5),
               size: 20,
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
             Text(
               'TEXT-TO-SPEECH',
               style: TextStyle(
@@ -223,7 +223,7 @@ class _TtsHeader extends StatelessWidget {
               ),
             ),
             if (isSpeaking) ...[
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Container(
                 width: 8,
                 height: 8,

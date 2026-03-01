@@ -147,7 +147,7 @@ class _FiftyRadioFormFieldState<T> extends State<FiftyRadioFormField<T>>
               enabled: widget.enabled,
             ),
             if (errorText != null) ...[
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Padding(
                 padding: const EdgeInsets.only(left: 32), // Align with label
                 child: Text(

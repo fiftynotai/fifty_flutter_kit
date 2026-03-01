@@ -60,7 +60,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             errorText: viewModel.nameError,
             onChanged: (_) => viewModel.update(),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Email Field
           FiftyTextField(
@@ -72,7 +72,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             errorText: viewModel.emailError,
             onChanged: (_) => viewModel.update(),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Password Field
           Builder(
@@ -101,10 +101,10 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
 
           // Password strength indicator
           if (viewModel.passwordController.text.isNotEmpty) ...[
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             _buildPasswordStrength(context, viewModel),
           ],
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Confirm Password Field
           Builder(
@@ -130,7 +130,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               );
             },
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Phone Field (Optional)
           FiftyTextField(
@@ -142,7 +142,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             errorText: viewModel.phoneError,
             onChanged: (_) => viewModel.update(),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Age Field (Optional)
           FiftyTextField(
@@ -154,7 +154,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             errorText: viewModel.ageError,
             onChanged: (_) => viewModel.update(),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
 
           // Submit Button
           SizedBox(
@@ -168,7 +168,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
                   : () => actions.onSubmitTapped(context),
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Form info
           _buildFormInfo(context),
@@ -187,7 +187,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     );
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.sm),
+      padding: EdgeInsets.all(FiftySpacing.sm),
       child: Row(
         children: [
           Expanded(
@@ -201,7 +201,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Text(
             viewModel.passwordStrengthLabel.toUpperCase(),
             style: TextStyle(
@@ -220,7 +220,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -231,7 +231,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
                 color: colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 16,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Text(
                 'VALIDATION RULES',
                 style: TextStyle(
@@ -243,7 +243,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           _buildInfoItem(context, 'Name: 2+ characters, letters only'),
           _buildInfoItem(context, 'Email: Valid email format'),
           _buildInfoItem(context, 'Password: 8+ chars, uppercase, lowercase, number'),
@@ -257,7 +257,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(top: FiftySpacing.xs),
+      padding: EdgeInsets.only(top: FiftySpacing.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -267,7 +267,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               color: colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               text,
@@ -314,7 +314,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
                     size: 48,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
                 Text(
                   'REGISTRATION COMPLETE!',
                   style: TextStyle(
@@ -325,7 +325,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
                     letterSpacing: 2,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   'Your form has been submitted successfully.',
                   style: TextStyle(
@@ -337,7 +337,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
 
           // Submitted Data
           const FiftySectionHeader(
@@ -345,7 +345,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
             subtitle: 'Form values captured',
           ),
           FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             child: Column(
               children: [
                 _buildDataRow(context, 'Name', data['name'] ?? '-'),
@@ -359,7 +359,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.xl),
+          SizedBox(height: FiftySpacing.xl),
 
           // Register Again Button
           SizedBox(
@@ -379,7 +379,7 @@ class FormsDemoPage extends GetView<FormsDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.sm),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

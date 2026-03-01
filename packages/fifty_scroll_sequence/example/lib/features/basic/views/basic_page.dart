@@ -30,7 +30,7 @@ class BasicPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'BASIC',
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
@@ -50,7 +50,7 @@ class BasicPage extends StatelessWidget {
 
             // Instruction text.
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.xxl,
                 vertical: FiftySpacing.lg,
               ),

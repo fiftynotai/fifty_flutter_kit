@@ -43,10 +43,10 @@ class _SfxViewState extends State<SfxView> {
       listenable: _viewModel,
       builder: (context, _) {
         return ListView(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           children: [
             _buildSoundGrid(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildVolumeControl(),
           ],
         );
@@ -62,7 +62,7 @@ class _SfxViewState extends State<SfxView> {
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisSpacing: FiftySpacing.md,
           crossAxisSpacing: FiftySpacing.md,
@@ -146,7 +146,7 @@ class _SfxButton extends StatelessWidget {
                     ? colorScheme.primary
                     : colorScheme.onSurface,
               ),
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Text(
                 sound.label,
                 style: TextStyle(

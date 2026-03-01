@@ -30,9 +30,9 @@ class InputsSection extends StatelessWidget {
       children: [
         // Text Input
         const SectionLabel(label: 'TEXT INPUT'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             children: [
               // Standard input
@@ -40,7 +40,7 @@ class InputsSection extends StatelessWidget {
                 hint: 'Enter text...',
                 onChanged: viewModel.setInputValue,
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               // Rounded search input
               const FiftyTextField(
                 hint: 'Search...',
@@ -48,7 +48,7 @@ class InputsSection extends StatelessWidget {
                 shape: FiftyTextFieldShape.rounded,
               ),
               if (viewModel.inputValue.isNotEmpty) ...[
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   'VALUE: "${viewModel.inputValue}"',
                   style: TextStyle(
@@ -61,13 +61,13 @@ class InputsSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Toggle Switch
         const SectionLabel(label: 'TOGGLE SWITCH'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -86,13 +86,13 @@ class InputsSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Slider
         const SectionLabel(label: 'SLIDER'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -104,7 +104,7 @@ class InputsSection extends StatelessWidget {
                   color: colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftySlider(
                 value: viewModel.sliderValue,
                 onChanged: viewModel.setSliderValue,
@@ -114,13 +114,13 @@ class InputsSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Radio Card
         const SectionLabel(label: 'RADIO CARD'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -133,7 +133,7 @@ class InputsSection extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               Row(
                 children: [
                   Expanded(
@@ -145,7 +145,7 @@ class InputsSection extends StatelessWidget {
                       label: 'Light',
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: FiftyRadioCard<int>(
                       value: 1,
@@ -160,13 +160,13 @@ class InputsSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Segmented Control
         const SectionLabel(label: 'SEGMENTED CONTROL'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -179,7 +179,7 @@ class InputsSection extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Cream background with burgundy text',
                 style: TextStyle(
@@ -188,7 +188,7 @@ class InputsSection extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftySegmentedControl<String>(
                 segments: const [
                   FiftySegment(value: 'daily', label: 'Daily'),
@@ -199,7 +199,7 @@ class InputsSection extends StatelessWidget {
                 onChanged: viewModel.setPeriod,
                 variant: FiftySegmentedControlVariant.primary,
               ),
-              const SizedBox(height: FiftySpacing.xl),
+              SizedBox(height: FiftySpacing.xl),
               Text(
                 'SECONDARY VARIANT',
                 style: TextStyle(
@@ -209,7 +209,7 @@ class InputsSection extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Slate-grey background with cream text',
                 style: TextStyle(
@@ -218,7 +218,7 @@ class InputsSection extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftySegmentedControl<String>(
                 segments: const [
                   FiftySegment(

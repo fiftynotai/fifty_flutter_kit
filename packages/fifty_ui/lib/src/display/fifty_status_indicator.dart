@@ -192,7 +192,7 @@ class FiftyStatusIndicator extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
         ],
         Text(
           label,
@@ -203,7 +203,7 @@ class FiftyStatusIndicator extends StatelessWidget {
           ),
         ),
         if (showStatusLabel) ...[
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
           Text(
             '[$_statusText]',
             style: TextStyle(

@@ -209,7 +209,7 @@ class _FiftySegmentItem<T> extends StatelessWidget {
       child: AnimatedContainer(
         duration: fifty?.fast ?? const Duration(milliseconds: 150),
         curve: fifty?.standardCurve ?? Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: 10,
         ),
@@ -227,7 +227,7 @@ class _FiftySegmentItem<T> extends StatelessWidget {
                 size: 18,
                 color: isSelected ? activeTextColor : inactiveTextColor,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
             ],
             Flexible(
               child: Text(

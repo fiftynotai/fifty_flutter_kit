@@ -24,7 +24,7 @@ Flutter theming layer that converts `fifty_tokens` design tokens into a complete
 
 ```yaml
 dependencies:
-  fifty_theme: ^1.0.1
+  fifty_theme: ^2.0.0
 ```
 
 ### For Contributors
@@ -35,7 +35,7 @@ dependencies:
     path: ../fifty_theme
 ```
 
-**Dependencies:** `fifty_tokens`, `google_fonts`
+**Dependencies:** `fifty_tokens`
 
 ---
 
@@ -109,15 +109,40 @@ The main entry point for creating themed applications.
 
 ```dart
 /// Creates the dark ThemeData — PRIMARY theme.
-/// Optimized for OLED displays. Dark mode is the primary FDL environment.
-static ThemeData FiftyTheme.dark()
+/// All parameters are optional; omit for FDL v2 defaults.
+static ThemeData FiftyTheme.dark({
+  ColorScheme? colorScheme,
+  Color? primaryColor,
+  Color? secondaryColor,
+  String? fontFamily,
+  FontSource? fontSource,
+  FiftyThemeExtension? extension,
+})
 
 /// Creates the light ThemeData — SECONDARY theme.
-/// Provided for accessibility and user preference.
-static ThemeData FiftyTheme.light()
+/// Same optional parameters as dark().
+static ThemeData FiftyTheme.light({
+  ColorScheme? colorScheme,
+  Color? primaryColor,
+  Color? secondaryColor,
+  String? fontFamily,
+  FontSource? fontSource,
+  FiftyThemeExtension? extension,
+})
 ```
 
 Both themes include: `useMaterial3: true`, `VisualDensity.compact`, 25+ component themes, and `FiftyThemeExtension`.
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `colorScheme` | `ColorScheme?` | Full color scheme override. Takes priority over `primaryColor`/`secondaryColor`. |
+| `primaryColor` | `Color?` | Override primary color only. Generates matching onPrimary, primaryContainer, etc. |
+| `secondaryColor` | `Color?` | Override secondary color only. |
+| `fontFamily` | `String?` | Font family name. Default: `'Manrope'`. |
+| `fontSource` | `FontSource?` | How to load fonts: `googleFonts` (default) or `asset`. |
+| `extension` | `FiftyThemeExtension?` | Custom theme extension with overridden shadows, colors, or motion. |
 
 ---
 
@@ -283,6 +308,64 @@ Static methods that return individual component theme objects. All accept a `Col
 
 ---
 
+## Configuration
+
+### 4 Levels of Customization
+
+**Level 1: Zero Config** - Use FDL v2 defaults as-is:
+
+```dart
+MaterialApp(theme: FiftyTheme.dark());
+```
+
+**Level 2: Token-Level** - Override individual tokens globally via `FiftyTokens.configure()`:
+
+```dart
+FiftyTokens.configure(
+  colors: FiftyColorConfig(primary: Color(0xFF1A73E8)),
+);
+MaterialApp(theme: FiftyTheme.dark());
+```
+
+**Level 3: Theme-Level** - Pass a custom `ColorScheme`:
+
+```dart
+MaterialApp(
+  theme: FiftyTheme.dark(
+    colorScheme: ColorScheme.dark(
+      primary: Color(0xFF1A73E8),
+      secondary: Color(0xFF34A853),
+    ),
+    fontFamily: 'Inter',
+  ),
+);
+```
+
+**Level 4: Widget-Level** - Override individual component themes:
+
+```dart
+final theme = FiftyTheme.dark().copyWith(
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+  ),
+);
+```
+
+### FiftyThemeExtension Customization
+
+```dart
+final custom = FiftyThemeExtension.dark().copyWith(
+  accent: Color(0xFFFF6B6B),
+  success: Color(0xFF00C853),
+);
+
+MaterialApp(
+  theme: FiftyTheme.dark(extension: custom),
+);
+```
+
+---
+
 ## Usage Patterns
 
 ### Accessing the Theme Extension
@@ -417,7 +500,7 @@ Widget build(BuildContext context) {
   final fifty = Theme.of(context).extension<FiftyThemeExtension>()!;
 
   return Container(
-    padding: const EdgeInsets.all(FiftySpacing.md),
+    padding: EdgeInsets.all(FiftySpacing.md),
     decoration: BoxDecoration(
       color: FiftyColors.surfaceDark,
       borderRadius: FiftyRadii.xxlRadius,
@@ -460,7 +543,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 1.0.1
+**Current:** 2.0.0
 
 ---
 

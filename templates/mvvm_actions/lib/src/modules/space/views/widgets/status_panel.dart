@@ -136,7 +136,7 @@ class StatusIndicator extends StatelessWidget {
         ),
 
         if (label != null) ...[
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             label!,
             style: TextStyle(

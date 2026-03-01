@@ -77,7 +77,7 @@ class FiftyFileFormField extends StatelessWidget {
               letterSpacing: FiftyTypography.letterSpacingLabelMedium,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
         ],
         Container(
           height: 120,
@@ -99,7 +99,7 @@ class FiftyFileFormField extends StatelessWidget {
                   size: 32,
                   color: textColor,
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   'File picker coming soon',
                   style: TextStyle(
@@ -110,7 +110,7 @@ class FiftyFileFormField extends StatelessWidget {
                   ),
                 ),
                 if (hint != null) ...[
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     hint!,
                     style: TextStyle(

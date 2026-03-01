@@ -48,7 +48,7 @@ class PlaybackControls extends StatelessWidget {
             variant: FiftyIconButtonVariant.ghost,
             size: FiftyIconButtonSize.large,
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
         ],
         FiftyIconButton(
           icon: isPlaying ? Icons.pause : Icons.play_arrow,
@@ -57,7 +57,7 @@ class PlaybackControls extends StatelessWidget {
           variant: FiftyIconButtonVariant.primary,
           size: FiftyIconButtonSize.large,
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
         FiftyIconButton(
           icon: Icons.stop,
           tooltip: 'Stop',
@@ -66,7 +66,7 @@ class PlaybackControls extends StatelessWidget {
           size: FiftyIconButtonSize.large,
         ),
         if (showPrevNext) ...[
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           FiftyIconButton(
             icon: Icons.skip_next,
             tooltip: 'Next',

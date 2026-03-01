@@ -1,6 +1,6 @@
 name: fifty_forms
 description: Production-ready form building with validation, multi-step wizards, and draft persistence for the Fifty Flutter Kit.
-version: 0.1.2
+version: 0.2.0
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_forms
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues

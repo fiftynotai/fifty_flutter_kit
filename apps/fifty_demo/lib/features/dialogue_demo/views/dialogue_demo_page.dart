@@ -48,14 +48,14 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                           ? FiftyStatusState.ready
                           : FiftyStatusState.idle,
                     ),
-                    const SizedBox(width: FiftySpacing.lg),
+                    SizedBox(width: FiftySpacing.lg),
                     FiftyStatusIndicator(
                       label: 'STT',
                       state: viewModel.sttListening
                           ? FiftyStatusState.loading
                           : FiftyStatusState.idle,
                     ),
-                    const SizedBox(width: FiftySpacing.lg),
+                    SizedBox(width: FiftySpacing.lg),
                     Builder(
                       builder: (context) {
                         final colorScheme = Theme.of(context).colorScheme;
@@ -71,7 +71,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Dialogue Selection
                 const FiftySectionHeader(
@@ -119,7 +119,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                     );
                   },
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Dialogue Display
                 const FiftySectionHeader(
@@ -132,7 +132,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                   isTyping: viewModel.isProcessing,
                   onTap: () => actions.onDialogueTapped(context),
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 // Progress bar
                 Builder(
                   builder: (context) {
@@ -146,7 +146,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                     );
                   },
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Playback Controls
                 const FiftySectionHeader(
@@ -154,7 +154,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                   subtitle: 'Dialogue controls',
                 ),
                 FiftyCard(
-                  padding: const EdgeInsets.all(FiftySpacing.lg),
+                  padding: EdgeInsets.all(FiftySpacing.lg),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -182,7 +182,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                     ],
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // TTS Controls
                 const FiftySectionHeader(
@@ -194,14 +194,14 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                   onEnabledChanged: (_) => actions.onToggleTts(),
                 ),
                 // Auto-advance toggle (not part of SpeechTtsControls)
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 FiftySettingsRow(
                   icon: Icons.fast_forward,
                   label: 'AUTO-ADVANCE',
                   value: viewModel.autoAdvance,
                   onChanged: (_) => actions.onToggleAutoAdvance(),
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // STT Controls
                 const FiftySectionHeader(

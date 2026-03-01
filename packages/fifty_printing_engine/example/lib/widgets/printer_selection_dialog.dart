@@ -42,7 +42,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
               style: TextStyle(color: colorScheme.onSurfaceVariant),
             ),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             Flexible(
               child: ListView.builder(
@@ -54,7 +54,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                       _selectedPrinterIds.contains(printer.id);
 
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+                    padding: EdgeInsets.only(bottom: FiftySpacing.sm),
                     child: FiftyCard(
                       scanlineOnHover: false,
                       onTap: () {
@@ -81,7 +81,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                               });
                             },
                           ),
-                          const SizedBox(width: FiftySpacing.md),
+                          SizedBox(width: FiftySpacing.md),
                           Expanded(
                             child: Column(
                               crossAxisAlignment:
@@ -92,7 +92,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
-                                const SizedBox(height: FiftySpacing.xs),
+                                SizedBox(height: FiftySpacing.xs),
                                 Wrap(
                                   spacing: FiftySpacing.sm,
                                   runSpacing: FiftySpacing.xs,
@@ -109,7 +109,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
                                           color: colorScheme
                                               .onSurfaceVariant,
                                         ),
-                                        const SizedBox(width: FiftySpacing.xs),
+                                        SizedBox(width: FiftySpacing.xs),
                                         Text(
                                           printer.type ==
                                                   PrinterType.bluetooth

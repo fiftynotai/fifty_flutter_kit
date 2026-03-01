@@ -54,7 +54,7 @@ class AudioSettingsSection extends StatelessWidget {
             onChanged: (_) => actions.onMuteToggled(),
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // BGM Volume
           _VolumeSliderRow(
@@ -64,7 +64,7 @@ class AudioSettingsSection extends StatelessWidget {
             onChanged: actions.onBgmVolumeChanged,
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // SFX Volume
           _VolumeSliderRow(
@@ -74,7 +74,7 @@ class AudioSettingsSection extends StatelessWidget {
             onChanged: actions.onSfxVolumeChanged,
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Voice Volume
           _VolumeSliderRow(
@@ -146,7 +146,7 @@ class _VolumeSliderRow extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
 
         // Slider
         FiftySlider(

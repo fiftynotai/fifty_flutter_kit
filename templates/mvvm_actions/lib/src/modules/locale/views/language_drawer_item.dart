@@ -53,7 +53,7 @@ class LanguageDrawerItem extends GetWidget<LocalizationViewModel> {
           splashColor: colorScheme.primary.withValues(alpha: 0.1),
           highlightColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
           child: Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.lg,
               vertical: FiftySpacing.md,
             ),
@@ -61,7 +61,7 @@ class LanguageDrawerItem extends GetWidget<LocalizationViewModel> {
               children: [
                 // Leading icon
                 Container(
-                  padding: const EdgeInsets.all(FiftySpacing.sm),
+                  padding: EdgeInsets.all(FiftySpacing.sm),
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(FiftyRadii.standard),
@@ -75,7 +75,7 @@ class LanguageDrawerItem extends GetWidget<LocalizationViewModel> {
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 // Title and subtitle
                 Expanded(
                   child: Column(
@@ -92,7 +92,7 @@ class LanguageDrawerItem extends GetWidget<LocalizationViewModel> {
                           letterSpacing: 1,
                         ),
                       ),
-                      const SizedBox(height: FiftySpacing.xs),
+                      SizedBox(height: FiftySpacing.xs),
                       Text(
                         '${_getFlagEmoji(controller.language.countryCode)} ${controller.language.name}',
                         style: TextStyle(

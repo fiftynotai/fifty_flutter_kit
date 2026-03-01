@@ -44,7 +44,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
             vertical: FiftySpacing.xxl,
           ),
@@ -65,7 +65,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
 
               // Establish Uplink subtitle
               Text(
@@ -79,11 +79,11 @@ class LoginPage extends GetWidget<AuthViewModel> {
                 ),
               ),
 
-              const SizedBox(height: FiftySpacing.xxxl),
+              SizedBox(height: FiftySpacing.xxxl),
 
               // Login form wrapped in FiftyCard
               FiftyCard(
-                padding: const EdgeInsets.all(FiftySpacing.xxl),
+                padding: EdgeInsets.all(FiftySpacing.xxl),
                 scanlineOnHover: false,
                 child: Form(
                   key: _formKey,
@@ -100,7 +100,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
                         textInputAction: TextInputAction.next,
                       ),
 
-                      const SizedBox(height: FiftySpacing.lg),
+                      SizedBox(height: FiftySpacing.lg),
 
                       // Password field with visibility toggle
                       Obx(() => _buildFdlFormField(
@@ -124,7 +124,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
                             ),
                           )),
 
-                      const SizedBox(height: FiftySpacing.xxl),
+                      SizedBox(height: FiftySpacing.xxl),
 
                       // Login button
                       FiftyButton(
@@ -139,7 +139,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
                 ),
               ),
 
-              const SizedBox(height: FiftySpacing.xxl),
+              SizedBox(height: FiftySpacing.xxl),
 
               // Request Access link
               Row(
@@ -171,7 +171,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
                 ],
               ),
 
-              const SizedBox(height: FiftySpacing.huge),
+              SizedBox(height: FiftySpacing.huge),
 
               // System status indicator
               Row(
@@ -185,7 +185,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Text(
                     'SYSTEM ONLINE',
                     style: TextStyle(
@@ -231,7 +231,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
             letterSpacing: 1,
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         // Form field
         TextFormField(
           controller: controller,
@@ -256,7 +256,7 @@ class LoginPage extends GetWidget<AuthViewModel> {
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: colorScheme.surfaceContainerHighest,
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.lg,
               vertical: FiftySpacing.md,
             ),
@@ -283,14 +283,14 @@ class LoginPage extends GetWidget<AuthViewModel> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: FiftyRadii.standardRadius,
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: FiftyColors.error,
                 width: 1,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: FiftyRadii.standardRadius,
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: FiftyColors.error,
                 width: 2,
               ),

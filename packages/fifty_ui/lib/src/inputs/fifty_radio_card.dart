@@ -124,7 +124,7 @@ class _FiftyRadioCardState<T> extends State<FiftyRadioCard<T>> {
             child: AnimatedContainer(
               duration: fifty.fast,
               curve: fifty.standardCurve,
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
                 color: backgroundColor,
                 borderRadius: FiftyRadii.xlRadius,
@@ -155,7 +155,7 @@ class _FiftyRadioCardState<T> extends State<FiftyRadioCard<T>> {
                       size: 24,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     widget.label,
                     style: TextStyle(

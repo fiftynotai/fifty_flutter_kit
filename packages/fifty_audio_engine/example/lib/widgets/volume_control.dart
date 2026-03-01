@@ -47,7 +47,7 @@ class VolumeControl extends StatelessWidget {
               ? FiftyIconButtonVariant.secondary
               : FiftyIconButtonVariant.ghost,
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
         Expanded(
           child: Opacity(
             opacity: isMuted ? 0.5 : 1.0,

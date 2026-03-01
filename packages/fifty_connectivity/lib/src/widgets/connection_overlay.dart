@@ -90,7 +90,7 @@ class UplinkStatusBar extends StatelessWidget {
       child: Align(
         alignment: Alignment.topCenter,
         child: Container(
-          margin: const EdgeInsets.only(top: FiftySpacing.md),
+          margin: EdgeInsets.only(top: FiftySpacing.md),
           child: _buildStatusBadge(context),
         ),
       ),
@@ -184,9 +184,9 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
       child: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(FiftySpacing.xxl),
+            padding: EdgeInsets.all(FiftySpacing.xxl),
             child: FiftyCard(
-              padding: const EdgeInsets.all(FiftySpacing.xxxl),
+              padding: EdgeInsets.all(FiftySpacing.xxxl),
               backgroundColor: colorScheme.surfaceContainerHighest,
               scanlineOnHover: false,
               child: Column(
@@ -209,7 +209,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                       },
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Title: SIGNAL LOST
                   Text(
@@ -222,7 +222,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                       letterSpacing: 4,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.md),
+                  SizedBox(height: FiftySpacing.md),
 
                   // Subtitle: Attempting to restore uplink...
                   Text(
@@ -235,7 +235,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
 
                   // Offline duration timer
                   Obx(() => Text(
@@ -248,7 +248,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                               colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                         ),
                       )),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Loading indicator
                   FiftyLoadingIndicator(
@@ -257,7 +257,7 @@ class _OfflineStatusCardState extends State<OfflineStatusCard>
                     size: FiftyLoadingSize.medium,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(height: FiftySpacing.xxl),
+                  SizedBox(height: FiftySpacing.xxl),
 
                   // Retry button
                   FiftyButton(

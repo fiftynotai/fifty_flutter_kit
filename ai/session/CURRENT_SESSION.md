@@ -2,13 +2,13 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-02-28
-**Active Brief:** AC-005 (engine packages theme alignment)
+**Active Brief:** AC-006 (documentation + migration guide)
 
 ---
 
 ## Resume Point
 
-**Last Active:** AC-004 (Done)
+**Last Active:** AC-005 (Done)
 **Phase:** COMPLETE
 
 ---

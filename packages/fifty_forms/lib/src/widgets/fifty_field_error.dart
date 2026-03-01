@@ -69,7 +69,7 @@ class FiftyFieldError extends StatelessWidget {
             opacity: showError ? 1.0 : 0.0,
             child: showError
                 ? Padding(
-                    padding: const EdgeInsets.only(top: FiftySpacing.xs),
+                    padding: EdgeInsets.only(top: FiftySpacing.xs),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -78,7 +78,7 @@ class FiftyFieldError extends StatelessWidget {
                           color: colorScheme.error,
                           size: FiftyTypography.bodySmall,
                         ),
-                        const SizedBox(width: FiftySpacing.xs),
+                        SizedBox(width: FiftySpacing.xs),
                         Flexible(
                           child: Text(
                             error,

@@ -18,13 +18,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Connection Status')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Live status card
             Obx(() => StatusCard(type: vm.connectionType.value)),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // Connection telemetry
             Obx(
@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // Manual check button
             FiftyButton(

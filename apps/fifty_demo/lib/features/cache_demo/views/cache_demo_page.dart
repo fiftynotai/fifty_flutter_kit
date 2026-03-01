@@ -39,25 +39,25 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
 
                 // Endpoint Selection
                 _buildEndpointSelector(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // TTL Countdown
                 _buildTtlCountdown(context, viewModel),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Action Buttons
                 _buildActionButtons(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Last Result
                 if (viewModel.lastResult.isNotEmpty)
                   _buildLastResult(context, viewModel),
                 if (viewModel.lastResult.isNotEmpty)
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
 
                 // Cache Stats
                 _buildCacheStats(context, viewModel),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Info Card
                 _buildInfoCard(context),
@@ -89,7 +89,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
             letterSpacing: 1,
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         Wrap(
           spacing: FiftySpacing.sm,
           runSpacing: FiftySpacing.sm,
@@ -144,7 +144,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
         : 0.0;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -188,7 +188,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           ClipRRect(
             borderRadius: FiftyRadii.smRadius,
             child: LinearProgressIndicator(
@@ -220,7 +220,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
                 : () => actions.onFetchTapped(context),
           ),
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
         Expanded(
           child: FiftyButton(
             label: 'CLEAR CACHE',
@@ -239,7 +239,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -254,7 +254,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
                     : colorScheme.tertiary,
                 size: 20,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: FiftySpacing.sm,
@@ -281,7 +281,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Text(
             'RESPONSE',
             style: TextStyle(
@@ -292,10 +292,10 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(FiftySpacing.sm),
+            padding: EdgeInsets.all(FiftySpacing.sm),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: FiftyRadii.smRadius,
@@ -321,7 +321,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -335,7 +335,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Row(
             children: [
               _buildStatItem(
@@ -386,7 +386,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
       child: Column(
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             value,
             style: TextStyle(
@@ -414,7 +414,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -425,7 +425,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
                 color: colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 16,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Text(
                 'HOW IT WORKS',
                 style: TextStyle(
@@ -437,7 +437,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           _buildInfoItem(context, 'Uses MemoryCacheStore for in-memory caching'),
           _buildInfoItem(context, 'TTL is set to 15 seconds per entry'),
           _buildInfoItem(context, 'First fetch: cache miss (simulates 800ms network delay)'),
@@ -452,7 +452,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(top: FiftySpacing.xs),
+      padding: EdgeInsets.only(top: FiftySpacing.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -462,7 +462,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               color: colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               text,

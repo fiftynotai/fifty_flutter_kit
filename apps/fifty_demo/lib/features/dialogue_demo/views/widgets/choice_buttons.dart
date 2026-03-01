@@ -42,11 +42,11 @@ class ChoiceButtons extends StatelessWidget {
         final isSelected = choice.id == selectedId;
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          padding: EdgeInsets.only(bottom: FiftySpacing.sm),
           child: GestureDetector(
             onTap: () => onChoiceSelected(choice),
             child: Container(
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
                 color: isSelected
                     ? colorScheme.primary.withValues(alpha: 0.2)
@@ -83,7 +83,7 @@ class ChoiceButtons extends StatelessWidget {
                           )
                         : null,
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   // Choice text
                   Expanded(
                     child: Text(

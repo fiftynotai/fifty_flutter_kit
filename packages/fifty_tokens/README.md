@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/fifty_tokens.svg)](https://pub.dev/packages/fifty_tokens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design Language (FDL), providing colors, typography, spacing, motion, radii, shadows, gradients, and breakpoints as pure Dart constants. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design Language (FDL), providing colors, typography, spacing, motion, radii, shadows, gradients, and breakpoints as configurable design tokens. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
 
@@ -17,7 +17,7 @@ Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design
 - **Shadow Tokens** - Soft, sophisticated box shadow presets (sm, md, lg, primary, glow)
 - **Gradient Tokens** - LinearGradient presets for hero, progress, and surface backgrounds
 - **Breakpoint Tokens** - Screen width thresholds and paired responsive gutter values
-- **Zero UI, Pure Constants** - No widgets, no state — just Dart constants consumable by any Flutter package
+- **Zero UI, Design Tokens** - No widgets, no state — pure design tokens consumable by any Flutter package
 
 ---
 
@@ -25,7 +25,7 @@ Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design
 
 ```yaml
 dependencies:
-  fifty_tokens: ^1.0.3
+  fifty_tokens: ^2.0.0
 ```
 
 ### For Contributors
@@ -83,7 +83,16 @@ fifty_tokens/
 │       ├── motion.dart        # FiftyMotion
 │       ├── shadows.dart       # FiftyShadows
 │       ├── gradients.dart     # FiftyGradients
-│       └── breakpoints.dart   # FiftyBreakpoints
+│       ├── breakpoints.dart   # FiftyBreakpoints
+│       ├── fifty_tokens_config.dart  # FiftyTokens.configure() / reset()
+│       ├── font_resolver.dart        # FiftyFontResolver + FontSource
+│       └── config/
+│           ├── color_config.dart       # FiftyColorConfig
+│           ├── typography_config.dart  # FiftyTypographyConfig
+│           ├── spacing_config.dart     # FiftySpacingConfig
+│           ├── radii_config.dart       # FiftyRadiiConfig
+│           ├── motion_config.dart      # FiftyMotionConfig
+│           └── breakpoints_config.dart # FiftyBreakpointsConfig
 └── test/
 ```
 
@@ -277,6 +286,99 @@ FiftyGradients.surface   // topCenter→bottomCenter: #1A0D0E → #2A1517 (backg
 FiftyBreakpoints.mobile   // 768.0 — Screens below are mobile (gutter: 12px)
 FiftyBreakpoints.tablet   // 768.0 — Screens >= tablet, < desktop (gutter: 16px)
 FiftyBreakpoints.desktop  // 1024.0 — Screens >= desktop (gutter: 24px)
+```
+
+---
+
+## Configuration
+
+### FiftyTokens.configure()
+
+Override any token category at app startup. If not called, all tokens use FDL v2 defaults.
+
+```dart
+import 'package:fifty_tokens/fifty_tokens.dart';
+
+FiftyTokens.configure(
+  colors: FiftyColorConfig(
+    primary: Color(0xFF1A73E8),
+    secondary: Color(0xFF34A853),
+    cream: Color(0xFFF5F5DC),
+  ),
+  typography: FiftyTypographyConfig(
+    fontFamily: 'Inter',
+    fontSource: FontSource.googleFonts,
+  ),
+  spacing: FiftySpacingConfig(
+    base: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+  ),
+  radii: FiftyRadiiConfig(
+    md: 12,
+    lg: 16,
+  ),
+  motion: FiftyMotionConfig(
+    fast: Duration(milliseconds: 200),
+  ),
+  breakpoints: FiftyBreakpointsConfig(
+    mobile: 600,
+    tablet: 900,
+    desktop: 1200,
+  ),
+);
+```
+
+### Config Classes
+
+| Config Class | Overrides |
+|-------------|-----------|
+| `FiftyColorConfig` | `primary`, `primaryHover`, `secondary`, `secondaryHover`, `success`, `warning`, `error`, `cream`, `darkBurgundy`, `powderBlush`, `slateGrey`, `slateGreyHover`, `hunterGreen`, `surfaceLight`, `surfaceDark` |
+| `FiftyTypographyConfig` | `fontFamily`, `fontSource`, plus all type scale sizes, weights, letter spacing, and line heights |
+| `FiftySpacingConfig` | `base`, `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `huge`, `massive`, `gutterMobile`, `gutterTablet`, `gutterDesktop` |
+| `FiftyRadiiConfig` | `none`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `full` |
+| `FiftyMotionConfig` | `instant`, `fast`, `compiling`, `systemLoad`, `standard`, `enter`, `exit` |
+| `FiftyBreakpointsConfig` | `mobile`, `tablet`, `desktop` |
+
+### Font Configuration
+
+```dart
+// Google Fonts (default) — downloads at runtime
+FiftyTokens.configure(
+  typography: FiftyTypographyConfig(
+    fontFamily: 'Manrope',
+    fontSource: FontSource.googleFonts,
+  ),
+);
+
+// Asset fonts — bundled in app, no network needed
+FiftyTokens.configure(
+  typography: FiftyTypographyConfig(
+    fontFamily: 'Manrope',
+    fontSource: FontSource.asset,
+  ),
+);
+```
+
+### FiftyTokens.reset()
+
+Restore all tokens to FDL v2 defaults:
+
+```dart
+FiftyTokens.reset();
+```
+
+### Const Context Note
+
+Token values are now getters, not compile-time constants. Expressions using `FiftySpacing.*` (or any other token) cannot appear inside `const` constructors:
+
+```dart
+// Will not compile
+const SizedBox(height: FiftySpacing.sm)
+
+// Correct
+SizedBox(height: FiftySpacing.sm)
 ```
 
 ---
@@ -513,7 +615,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 1.0.3
+**Current:** 2.0.0
 
 ---
 

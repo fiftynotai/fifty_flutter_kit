@@ -146,7 +146,7 @@ class _FiftySliderFormFieldState extends State<FiftySliderFormField>
               ),
             ),
             if (errorText != null) ...[
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Text(
                 errorText,
                 style: TextStyle(

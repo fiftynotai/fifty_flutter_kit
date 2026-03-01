@@ -420,7 +420,7 @@ class _DemoPageState extends State<DemoPage> {
           // Info panel
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.lg,
               vertical: FiftySpacing.md,
             ),
@@ -444,19 +444,19 @@ class _DemoPageState extends State<DemoPage> {
                       : 'Tap a unit to select, then tap a green tile to move.',
                   style: theme.textTheme.bodyMedium,
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 // Terrain legend.
                 Row(
                   children: [
                     _legendDot(const Color(0xFF4CAF50), 'Grass',
                         theme.textTheme.bodySmall),
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
                     _legendDot(const Color(0xFF2E7D32), 'Forest (2x)',
                         theme.textTheme.bodySmall),
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
                     _legendDot(const Color(0xFF1565C0), 'Water',
                         theme.textTheme.bodySmall),
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
                     _legendDot(const Color(0xFF5D4037), 'Wall',
                         theme.textTheme.bodySmall),
                   ],
@@ -478,7 +478,7 @@ class _DemoPageState extends State<DemoPage> {
           height: 10,
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
-        const SizedBox(width: FiftySpacing.xs),
+        SizedBox(width: FiftySpacing.xs),
         Text(label, style: style),
       ],
     );

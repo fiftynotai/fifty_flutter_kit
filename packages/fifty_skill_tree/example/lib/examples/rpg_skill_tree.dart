@@ -192,7 +192,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.stars, color: FiftyColors.warning),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Text(
                       'POINTS: ${_controller.availablePoints}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -203,15 +203,15 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
                     ),
                   ],
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _LegendItem(
                         color: FiftyColors.burgundy, label: 'WARRIOR'),
-                    const SizedBox(width: FiftySpacing.lg),
+                    SizedBox(width: FiftySpacing.lg),
                     _LegendItem(color: _magePurple, label: 'MAGE'),
-                    const SizedBox(width: FiftySpacing.lg),
+                    SizedBox(width: FiftySpacing.lg),
                     _LegendItem(color: FiftyColors.hunterGreen, label: 'ROGUE'),
                   ],
                 ),
@@ -224,7 +224,7 @@ class _RpgSkillTreeExampleState extends State<RpgSkillTreeExample> {
             child: SkillTreeView<void>(
               controller: _controller,
               layout: _currentLayout,
-              padding: const EdgeInsets.all(FiftySpacing.xxxl),
+              padding: EdgeInsets.all(FiftySpacing.xxxl),
               nodeSize: const Size(56, 56),
               levelSeparation: 90,
               nodeSeparation: 60,
@@ -271,7 +271,7 @@ class _LegendItem extends StatelessWidget {
   final String label;
 
   /// Legend dot size using spacing tokens.
-  static const double _dotSize = FiftySpacing.md;
+  static double _dotSize = FiftySpacing.md;
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +286,7 @@ class _LegendItem extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: FiftySpacing.xs),
+        SizedBox(width: FiftySpacing.xs),
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -314,7 +314,7 @@ class _CustomRpgNode extends StatelessWidget {
   static const double _nodeSize = 56;
   static const double _iconSize = 24;
   static const double _ultimateIconSize = 28;
-  static const double _glowBlurRadius = FiftySpacing.sm;
+  static double _glowBlurRadius = FiftySpacing.sm;
 
   /// Ultimate node border radius (compact).
   static final BorderRadius _ultimateRadius =

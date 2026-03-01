@@ -79,7 +79,7 @@ class FiftyValidationSummary extends StatelessWidget {
                     scanlineOnHover: false,
                     backgroundColor:
                         colorScheme.error.withValues(alpha: 0.08),
-                    padding: const EdgeInsets.all(FiftySpacing.lg),
+                    padding: EdgeInsets.all(FiftySpacing.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -92,7 +92,7 @@ class FiftyValidationSummary extends StatelessWidget {
                               color: colorScheme.error,
                               size: FiftyTypography.titleMedium,
                             ),
-                            const SizedBox(width: FiftySpacing.sm),
+                            SizedBox(width: FiftySpacing.sm),
                             Expanded(
                               child: Text(
                                 title ?? 'Please fix the following errors:',
@@ -106,7 +106,7 @@ class FiftyValidationSummary extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: FiftySpacing.md),
+                        SizedBox(height: FiftySpacing.md),
                         // Error list
                         ...errors.entries.map((entry) {
                           return _ErrorItem(
@@ -146,7 +146,7 @@ class _ErrorItem extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     final content = Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -157,7 +157,7 @@ class _ErrorItem extends StatelessWidget {
               fontSize: FiftyTypography.bodyMedium,
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: RichText(
               text: TextSpan(
@@ -182,7 +182,7 @@ class _ErrorItem extends StatelessWidget {
             ),
           ),
           if (onTap != null) ...[
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
             Icon(
               Icons.chevron_right,
               color: colorScheme.error.withValues(alpha: 0.7),

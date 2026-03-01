@@ -253,7 +253,7 @@ class _FiftyMultiStepFormState extends State<FiftyMultiStepForm> {
           ),
 
         if (widget.showProgress)
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: SizedBox(height: FiftySpacing.lg),
           ),
 
@@ -261,7 +261,7 @@ class _FiftyMultiStepFormState extends State<FiftyMultiStepForm> {
         if (_stepError != null)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+              padding: EdgeInsets.only(bottom: FiftySpacing.md),
               child: _StepErrorMessage(error: _stepError!),
             ),
           ),
@@ -275,7 +275,7 @@ class _FiftyMultiStepFormState extends State<FiftyMultiStepForm> {
         ),
 
         // Spacer
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: SizedBox(height: FiftySpacing.lg),
         ),
 
@@ -285,7 +285,7 @@ class _FiftyMultiStepFormState extends State<FiftyMultiStepForm> {
         ),
 
         // Bottom padding
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: SizedBox(height: FiftySpacing.lg),
         ),
       ],
@@ -306,7 +306,7 @@ class _FiftyMultiStepFormState extends State<FiftyMultiStepForm> {
                 expanded: true,
               ),
             ),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
           ],
           Expanded(
             child: FiftyButton(
@@ -353,7 +353,7 @@ class _StepErrorMessage extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: colorScheme.error.withValues(alpha: 0.1),
         borderRadius: FiftyRadii.lgRadius,
@@ -368,7 +368,7 @@ class _StepErrorMessage extends StatelessWidget {
             color: colorScheme.error,
             size: 20,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               error,

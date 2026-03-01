@@ -29,7 +29,7 @@ class PrinterListItem extends StatelessWidget {
 
     return FiftyCard(
       scanlineOnHover: false,
-      margin: const EdgeInsets.only(bottom: FiftySpacing.md),
+      margin: EdgeInsets.only(bottom: FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,7 +47,7 @@ class PrinterListItem extends StatelessWidget {
                   color: colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
 
               // Name and Status
               Expanded(
@@ -61,7 +61,7 @@ class PrinterListItem extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     FiftyStatusIndicator(
                       label: _getStatusText(status),
                       state: mapPrinterStatus(status),
@@ -81,7 +81,7 @@ class PrinterListItem extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Details
           _buildDetailRow(
@@ -121,7 +121,7 @@ class PrinterListItem extends StatelessWidget {
             '${printer.defaultCopies}',
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Action Buttons
           Wrap(
@@ -162,11 +162,11 @@ class PrinterListItem extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+      padding: EdgeInsets.only(bottom: FiftySpacing.sm),
       child: Row(
         children: [
           Icon(icon, size: 16, color: colorScheme.onSurfaceVariant),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             '$label: ',
             style: TextStyle(

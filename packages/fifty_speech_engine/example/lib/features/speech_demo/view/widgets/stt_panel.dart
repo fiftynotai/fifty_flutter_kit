@@ -66,7 +66,7 @@ class SttPanel extends StatelessWidget {
 
     return FiftyCard(
       child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,7 +78,7 @@ class SttPanel extends StatelessWidget {
                   color: colorScheme.primary,
                   size: 24,
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Text(
                   'SPEECH-TO-TEXT',
                   style: TextStyle(
@@ -90,7 +90,7 @@ class SttPanel extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 StatusIndicator(
                   label: statusLabel,
                   isActive: isListening || isProcessing,
@@ -99,12 +99,12 @@ class SttPanel extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Result display
             _buildResultDisplay(colorScheme),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Continuous mode toggle
             Row(
@@ -125,7 +125,7 @@ class SttPanel extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Action buttons
             Row(
@@ -140,7 +140,7 @@ class SttPanel extends StatelessWidget {
                     onPressed: isProcessing ? null : onListenToggle,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: FiftyButton(
                     label: 'CLEAR',
@@ -153,9 +153,9 @@ class SttPanel extends StatelessWidget {
 
             // Error message
             if (hasError && errorMessage != null) ...[
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               Container(
-                padding: const EdgeInsets.all(FiftySpacing.md),
+                padding: EdgeInsets.all(FiftySpacing.md),
                 decoration: BoxDecoration(
                   color: colorScheme.error.withValues(alpha: 0.1),
                   borderRadius: FiftyRadii.lgRadius,
@@ -170,7 +170,7 @@ class SttPanel extends StatelessWidget {
                       color: colorScheme.error,
                       size: 20,
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Expanded(
                       child: Text(
                         errorMessage!,
@@ -195,7 +195,7 @@ class SttPanel extends StatelessWidget {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 100),
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
@@ -220,7 +220,7 @@ class SttPanel extends StatelessWidget {
                   : colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           // Text content
           AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 200),
@@ -242,7 +242,7 @@ class SttPanel extends StatelessWidget {
           ),
           // Listening indicator
           if (isListening) ...[
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
             _buildListeningWave(colorScheme),
           ],
         ],

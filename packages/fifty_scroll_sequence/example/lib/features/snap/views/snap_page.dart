@@ -34,7 +34,7 @@ class SnapPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'SNAP',
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
@@ -53,7 +53,7 @@ class SnapPage extends StatelessWidget {
 
             // Instruction text.
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.xxl,
                 vertical: FiftySpacing.lg,
               ),
@@ -158,7 +158,7 @@ class _SceneBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.lg,
         vertical: FiftySpacing.sm,
       ),
@@ -195,7 +195,7 @@ class _FrameCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),
@@ -237,7 +237,7 @@ class _SceneDots extends StatelessWidget {
       children: List.generate(sceneCount, (index) {
         final isActive = index == activeScene;
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.xs),
+          padding: EdgeInsets.symmetric(horizontal: FiftySpacing.xs),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             width: isActive ? 24 : 10,

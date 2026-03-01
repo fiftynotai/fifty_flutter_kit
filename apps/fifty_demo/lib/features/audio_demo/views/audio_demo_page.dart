@@ -31,7 +31,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               children: [
                 // Status Row
                 _buildStatusRow(viewModel),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Channel Mixer Section
                 const FiftySectionHeader(
@@ -39,7 +39,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   subtitle: 'Master volume and mute controls',
                 ),
                 _buildChannelMixer(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // BGM Section
                 const FiftySectionHeader(
@@ -47,7 +47,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   subtitle: 'Track selection and playback controls',
                 ),
                 _buildBgmSection(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // SFX Section
                 const FiftySectionHeader(
@@ -55,7 +55,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   subtitle: 'Trigger sound effects by category',
                 ),
                 _buildSfxSection(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Voice Section
                 const FiftySectionHeader(
@@ -63,7 +63,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   subtitle: 'Voice line playback',
                 ),
                 _buildVoiceSection(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Fade Demo Section
                 const FiftySectionHeader(
@@ -71,7 +71,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   subtitle: 'Demonstrate volume fade presets',
                 ),
                 _buildFadeSection(context, viewModel, actions),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Reset Button
                 Center(
@@ -82,7 +82,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     size: FiftyButtonSize.small,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
               ],
             ),
           ),
@@ -102,7 +102,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 label: 'BGM',
                 state: viewModel.bgmPlaying ? FiftyStatusState.ready : FiftyStatusState.idle,
               ),
-              const SizedBox(width: FiftySpacing.lg),
+              SizedBox(width: FiftySpacing.lg),
               FiftyStatusIndicator(
                 label: 'SFX',
                 state: viewModel.sfxMuted ? FiftyStatusState.idle : FiftyStatusState.ready,
@@ -118,7 +118,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 label: 'VOICE',
                 state: viewModel.voicePlaying ? FiftyStatusState.loading : FiftyStatusState.idle,
               ),
-              const SizedBox(width: FiftySpacing.lg),
+              SizedBox(width: FiftySpacing.lg),
               FiftyStatusIndicator(
                 label: 'MASTER',
                 state: viewModel.masterMuted ? FiftyStatusState.error : FiftyStatusState.ready,
@@ -138,7 +138,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         children: [
           // Master Volume
@@ -152,9 +152,9 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             onToggleMute: actions.onToggleMasterMute,
             color: colorScheme.primary,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(height: 1, color: colorScheme.outline),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // BGM Volume
           _buildVolumeRow(
@@ -167,7 +167,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             onToggleMute: actions.onToggleBgmMute,
             color: colorScheme.secondary,
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
 
           // SFX Volume
           _buildVolumeRow(
@@ -180,7 +180,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             onToggleMute: actions.onToggleSfxMute,
             color: colorScheme.tertiary,
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
 
           // Voice Volume
           _buildVolumeRow(
@@ -224,7 +224,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     ? colorScheme.onSurface.withValues(alpha: 0.3)
                     : color,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
               Expanded(
                 child: Text(
                   label,
@@ -262,7 +262,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             ),
           ),
         ),
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
         FiftyIconButton(
           icon: isMuted ? Icons.volume_off : Icons.volume_up,
           tooltip: isMuted ? 'Unmute' : 'Mute',
@@ -284,7 +284,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -298,7 +298,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
 
           // Track List (vertical scrollable)
           ListView.separated(
@@ -306,7 +306,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: viewModel.availableTracks.length,
             separatorBuilder: (context, index) =>
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
             itemBuilder: (context, index) {
               final track = viewModel.availableTracks[index];
               final isCurrentTrack = track == viewModel.currentTrack;
@@ -321,11 +321,11 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               );
             },
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Now Playing Progress
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: FiftyRadii.lgRadius,
@@ -349,7 +349,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     ),
                     if (viewModel.loopEnabled)
                       Padding(
-                        padding: const EdgeInsets.only(right: FiftySpacing.sm),
+                        padding: EdgeInsets.only(right: FiftySpacing.sm),
                         child: Icon(
                           Icons.repeat,
                           size: 14,
@@ -366,7 +366,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 // Progress bar
                 FiftySlider(
                   value: viewModel.bgmProgress,
@@ -375,7 +375,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Playback Controls
           Row(
@@ -391,7 +391,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     : FiftyIconButtonVariant.ghost,
                 size: FiftyIconButtonSize.small,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: Icons.skip_previous,
                 tooltip: 'Previous',
@@ -399,7 +399,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: FiftyIconButtonVariant.ghost,
                 size: FiftyIconButtonSize.medium,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: Icons.stop,
                 tooltip: 'Stop',
@@ -407,7 +407,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: FiftyIconButtonVariant.secondary,
                 size: FiftyIconButtonSize.medium,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: viewModel.bgmPlaying ? Icons.pause : Icons.play_arrow,
                 tooltip: viewModel.bgmPlaying ? 'Pause' : 'Play',
@@ -415,7 +415,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: FiftyIconButtonVariant.primary,
                 size: FiftyIconButtonSize.large,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: Icons.skip_next,
                 tooltip: 'Next',
@@ -423,7 +423,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 variant: FiftyIconButtonVariant.ghost,
                 size: FiftyIconButtonSize.medium,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               FiftyIconButton(
                 icon: viewModel.bgmMuted ? Icons.volume_off : Icons.volume_up,
                 tooltip: viewModel.bgmMuted ? 'Unmute' : 'Mute',
@@ -487,7 +487,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 color: highlightColor,
               ),
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
 
             // Track title
             Expanded(
@@ -527,7 +527,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -544,7 +544,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               );
             }).toList(),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Sound Effect Grid
           GridView.count(
@@ -559,7 +559,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               return GestureDetector(
                 onTap: () => actions.onPlaySfx(context, sfx),
                 child: Container(
-                  padding: const EdgeInsets.all(FiftySpacing.sm),
+                  padding: EdgeInsets.all(FiftySpacing.sm),
                   decoration: BoxDecoration(
                     color: isLastPlayed
                         ? colorScheme.primary.withValues(alpha: 0.2)
@@ -580,7 +580,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                             ? colorScheme.primary
                             : colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
-                      const SizedBox(width: FiftySpacing.sm),
+                      SizedBox(width: FiftySpacing.sm),
                       Expanded(
                         child: Text(
                           sfx.displayName,
@@ -603,9 +603,9 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
 
           // Last played indicator
           if (viewModel.lastPlayedSfx != null) ...[
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
             Container(
-              padding: const EdgeInsets.all(FiftySpacing.sm),
+              padding: EdgeInsets.all(FiftySpacing.sm),
               decoration: BoxDecoration(
                 color: colorScheme.primary.withValues(alpha: 0.1),
                 borderRadius: FiftyRadii.smRadius,
@@ -617,7 +617,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     size: 16,
                     color: colorScheme.primary,
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Text(
                     'Last played: ${viewModel.lastPlayedSfx!.displayName}',
                     style: TextStyle(
@@ -643,14 +643,14 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Current voice line display
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(FiftySpacing.lg),
+            padding: EdgeInsets.all(FiftySpacing.lg),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: FiftyRadii.lgRadius,
@@ -671,7 +671,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                       ? colorScheme.primary
                       : colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   viewModel.voicePlaying
                       ? '"${viewModel.currentVoiceLine}"'
@@ -691,7 +691,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Voice line buttons
           Text(
@@ -703,7 +703,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Wrap(
             spacing: FiftySpacing.sm,
             runSpacing: FiftySpacing.sm,
@@ -716,7 +716,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               );
             }).toList(),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Stop button
           if (viewModel.voicePlaying)
@@ -728,11 +728,11 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                 size: FiftyButtonSize.small,
               ),
             ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Voice Ducking Toggle
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.sm),
+            padding: EdgeInsets.all(FiftySpacing.sm),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: FiftyRadii.smRadius,
@@ -744,7 +744,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                   size: 16,
                   color: colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: Text(
                     'Auto-duck BGM',
@@ -783,13 +783,13 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     ];
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Info text
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: FiftyRadii.lgRadius,
@@ -803,7 +803,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                       ? colorScheme.primary
                       : colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: Text(
                     viewModel.isFading
@@ -821,7 +821,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Preset buttons
           Text(
@@ -833,7 +833,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -850,7 +850,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
                     ? null
                     : () => actions.onDemonstrateFade(context, name),
                 child: Container(
-                  padding: const EdgeInsets.all(FiftySpacing.sm),
+                  padding: EdgeInsets.all(FiftySpacing.sm),
                   decoration: BoxDecoration(
                     color: isActive
                         ? colorScheme.primary.withValues(alpha: 0.2)

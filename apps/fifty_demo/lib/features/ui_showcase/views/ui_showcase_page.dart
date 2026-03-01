@@ -40,7 +40,7 @@ class UiShowcasePage extends GetView<UiShowcaseViewModel> {
                   activeSection: viewModel.activeSection,
                   onSectionSelected: viewModel.setActiveSection,
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Active Section Content
                 _buildSectionContent(viewModel),

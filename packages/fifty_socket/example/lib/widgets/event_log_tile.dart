@@ -22,7 +22,7 @@ class EventLogTile extends StatelessWidget {
         '${_pad(time.hour)}:${_pad(time.minute)}:${_pad(time.second)}';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs / 2),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs / 2),
       child: Text.rich(
         TextSpan(
           children: [

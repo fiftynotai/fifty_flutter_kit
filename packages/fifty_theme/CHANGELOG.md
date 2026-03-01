@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-03-01
+
+### BREAKING CHANGES
+
+- `FiftyTheme.dark()` and `FiftyTheme.light()` now accept optional parameters: `colorScheme`, `primaryColor`, `secondaryColor`, `fontFamily`, `fontSource`, `extension`
+- `FiftyThemeExtension.dark()` and `.light()` accept optional color overrides
+- All component themes now consume `ColorScheme` parameter instead of hardcoded `FiftyColors.*`
+- Removed direct `google_fonts` import (now transitive via `fifty_tokens`)
+
+### Changed
+
+- 191 `FiftyColors.*` references replaced with `colorScheme.*` in component themes
+- 57 `GoogleFonts.manrope()` calls replaced with `FiftyFontResolver.resolve()`
+- Light theme consolidated (~280 lines of duplicated code eliminated)
+- Component themes use `FiftyComponentThemes.*()` static methods consistently
+
 ## [1.0.1] - 2026-02-22
 
 ### Changed

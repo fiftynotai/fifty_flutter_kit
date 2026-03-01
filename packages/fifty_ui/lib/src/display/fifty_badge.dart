@@ -161,7 +161,7 @@ class _FiftyBadgeState extends State<FiftyBadge>
       animation: _opacityAnimation,
       builder: (context, child) {
         return Container(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.sm,
             vertical: FiftySpacing.xs / 2,
           ),

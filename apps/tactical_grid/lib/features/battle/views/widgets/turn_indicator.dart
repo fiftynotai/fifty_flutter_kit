@@ -78,7 +78,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
           children: [
             // -- Top row: turn info + controls --
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.md,
                 vertical: FiftySpacing.sm,
               ),
@@ -95,7 +95,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
                     // -- Turn number --
                     _TurnBadge(turnNumber: turnNumber),
 
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
 
                     // -- Vertical divider --
                     Container(
@@ -104,7 +104,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
                       color: FiftyColors.slateGrey.withAlpha(80),
                     ),
 
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
 
                     // -- Player indicator or AI thinking label --
                     if (isAIExecuting)
@@ -120,7 +120,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
                     // -- Timer countdown text --
                     _TimerCountdown(timerService: timerService),
 
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
 
                     // -- Audio mute toggle --
                     Obx(() {
@@ -136,7 +136,7 @@ class TurnIndicator extends GetView<BattleViewModel> {
                       );
                     }),
 
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
 
                     // -- Exit button --
                     FiftyIconButton(
@@ -224,7 +224,7 @@ class _PlayerIndicator extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
 
         // Player label
         Text(
@@ -270,7 +270,7 @@ class _AIThinkingLabel extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
 
         // Thinking label
         Text(
@@ -325,7 +325,7 @@ class _TimerCountdown extends StatelessWidget {
             size: 14,
             color: color,
           ),
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
           Text(
             timeText,
             style: TextStyle(

@@ -97,7 +97,7 @@ class FiftyProgressBar extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
         ],
         Container(
           height: height,

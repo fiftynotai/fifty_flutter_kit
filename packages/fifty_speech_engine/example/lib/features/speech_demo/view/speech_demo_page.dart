@@ -71,7 +71,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
           CircularProgressIndicator(
             color: colorScheme.primary,
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           Text(
             'INITIALIZING SPEECH ENGINE...',
             style: TextStyle(
@@ -88,7 +88,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
 
   Widget _buildContent() {
     return ListView(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       children: [
         // TTS Panel
         TtsPanel(
@@ -101,7 +101,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
           onLanguageChanged: _actions.onLanguageChanged,
         ),
 
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // STT Panel
         SttPanel(
@@ -117,7 +117,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
           onContinuousToggle: _actions.onContinuousListeningToggled,
         ),
 
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Info card
         _buildInfoCard(),
@@ -129,7 +129,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.lgRadius,
@@ -145,7 +145,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
                 color: colorScheme.onSurface.withValues(alpha: 0.7),
                 size: 20,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Text(
                 'ABOUT THIS DEMO',
                 style: TextStyle(
@@ -158,7 +158,7 @@ class _SpeechDemoPageState extends State<SpeechDemoPage> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Text(
             'This demo showcases the fifty_speech_engine package capabilities:\n\n'
             '- Text-to-Speech (TTS): Convert text to natural speech\n'

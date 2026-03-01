@@ -29,7 +29,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
         title: const Text('Test Print'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Routing Mode Selection
           FiftyCard(
@@ -68,13 +68,13 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
                   },
                   expanded: true,
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 _buildModeDescription(),
               ],
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Role Mapping (if role-based mode)
           if (_currentMode == PrintingMode.roleBasedRouting)
@@ -97,7 +97,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
                   iconColor: colorScheme.tertiary,
                   onPressed: _printKitchenTicket,
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 _buildSampleTicketButton(
                   title: 'Receipt',
                   description: 'Print a sample receipt',
@@ -105,7 +105,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
                   iconColor: colorScheme.primary,
                   onPressed: _printReceiptTicket,
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 _buildSampleTicketButton(
                   title: 'Simple Test',
                   description: 'Print a simple "Hello World" ticket',
@@ -117,7 +117,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Last Print Result
           if (_lastResult != null)
@@ -154,7 +154,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
     }
 
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: FiftyRadii.lgRadius,
@@ -163,7 +163,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
       child: Row(
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Text(
               description,
@@ -184,7 +184,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
 
     return FiftyCard(
       scanlineOnHover: false,
-      margin: const EdgeInsets.only(bottom: FiftySpacing.lg),
+      margin: EdgeInsets.only(bottom: FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -196,14 +196,14 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
             final rolePrinters =
                 printers.where((p) => p.role == role).toList();
             return Padding(
-              padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+              padding: EdgeInsets.only(bottom: FiftySpacing.sm),
               child: Row(
                 children: [
                   FiftyBadge(
                     label: role.name,
                     variant: FiftyBadgeVariant.primary,
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
                       rolePrinters.isEmpty
@@ -223,9 +223,9 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
               ),
             );
           }),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Container(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
               color: colorScheme.tertiaryContainer,
               borderRadius: FiftyRadii.lgRadius,
@@ -234,7 +234,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
               children: [
                 Icon(Icons.info_outline,
                     color: colorScheme.onTertiaryContainer, size: 20),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Expanded(
                   child: Text(
                     'Assign roles to printers in the Printer Management screen',
@@ -270,7 +270,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
             backgroundColor: iconColor.withValues(alpha: 0.2),
             child: Icon(icon, color: iconColor),
           ),
-          const SizedBox(width: FiftySpacing.lg),
+          SizedBox(width: FiftySpacing.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +282,7 @@ class _TestPrintScreenState extends State<TestPrintScreen> {
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.xs),
+                SizedBox(height: FiftySpacing.xs),
                 Text(
                   description,
                   style: TextStyle(

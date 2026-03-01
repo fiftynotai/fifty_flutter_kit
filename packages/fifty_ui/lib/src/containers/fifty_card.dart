@@ -183,7 +183,7 @@ class _FiftyCardState extends State<FiftyCard>
     final effectiveBackgroundColor =
         widget.backgroundColor ?? colorScheme.surfaceContainerHighest;
     final effectivePadding = widget.padding ??
-        const EdgeInsets.all(FiftySpacing.lg);
+        EdgeInsets.all(FiftySpacing.lg);
 
     final borderColor = widget.selected || _showGlow
         ? colorScheme.primary

@@ -36,7 +36,7 @@ class ConnectionStatusCard extends StatelessWidget {
               size: 48,
               color: mapping.color,
             ),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
             Text(
               state.name.toUpperCase(),
               style: TextStyle(
@@ -47,14 +47,14 @@ class ConnectionStatusCard extends StatelessWidget {
                 letterSpacing: FiftyTypography.letterSpacingLabelMedium,
               ),
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             FiftyBadge(
               label: _badgeLabel(state, controller.reconnectAttempt.value),
               variant: mapping.badgeVariant,
               showGlow: state == SocketConnectionState.connected,
             ),
             if (state == SocketConnectionState.reconnecting) ...[
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Attempt ${controller.reconnectAttempt.value}',
                 style: TextStyle(

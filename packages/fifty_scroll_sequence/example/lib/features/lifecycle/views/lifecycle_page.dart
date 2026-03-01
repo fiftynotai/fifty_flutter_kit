@@ -68,7 +68,7 @@ class _LifecyclePageState extends State<LifecyclePage> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'LIFECYCLE',
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
@@ -93,7 +93,7 @@ class _LifecyclePageState extends State<LifecyclePage> {
 
                   // Instruction text.
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: FiftySpacing.xxl,
                       vertical: FiftySpacing.lg,
                     ),
@@ -142,7 +142,7 @@ class _LifecyclePageState extends State<LifecyclePage> {
                             top: FiftySpacing.md,
                             right: FiftySpacing.md,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: FiftySpacing.sm,
                                 vertical: FiftySpacing.xs,
                               ),
@@ -231,7 +231,7 @@ class _EventLogPanel extends StatelessWidget {
         children: [
           // Panel header.
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.lg,
               vertical: FiftySpacing.sm,
             ),
@@ -247,7 +247,7 @@ class _EventLogPanel extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 Text(
                   'EVENT LOG',
                   style: TextStyle(
@@ -289,7 +289,7 @@ class _EventLogPanel extends StatelessWidget {
                   )
                 : ListView.builder(
                     controller: scrollController,
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: FiftySpacing.lg,
                     ),
                     itemCount: events.length,
@@ -302,7 +302,7 @@ class _EventLogPanel extends StatelessWidget {
                           '${event.timestamp.millisecond.toString().padLeft(3, '0')}';
 
                       return Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           bottom: FiftySpacing.xs,
                         ),
                         child: Row(
@@ -310,7 +310,7 @@ class _EventLogPanel extends StatelessWidget {
                             // Colored event label.
                             Container(
                               width: 100,
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: FiftySpacing.sm,
                                 vertical: 2,
                               ),
@@ -330,7 +330,7 @@ class _EventLogPanel extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: FiftySpacing.md),
+                            SizedBox(width: FiftySpacing.md),
                             // Timestamp.
                             Text(
                               time,

@@ -85,7 +85,7 @@ class _MultiStepFormDemoState extends State<MultiStepFormDemo> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.xl),
+        padding: EdgeInsets.all(FiftySpacing.xl),
         child: FiftyMultiStepForm(
           controller: _controller,
           steps: [
@@ -128,7 +128,7 @@ class _MultiStepFormDemoState extends State<MultiStepFormDemo> {
       children: [
         // Step header
         _StepHeader(step: step),
-        const SizedBox(height: FiftySpacing.xxxl),
+        SizedBox(height: FiftySpacing.xxxl),
 
         // Step content based on index
         switch (stepIndex) {
@@ -161,7 +161,7 @@ class _StepHeader extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         if (step.description != null) ...[
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Text(
             step.description!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -171,9 +171,9 @@ class _StepHeader extends StatelessWidget {
           ),
         ],
         if (step.isOptional) ...[
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.md,
               vertical: FiftySpacing.xs,
             ),
@@ -220,7 +220,7 @@ class _AccountStep extends StatelessWidget {
           textInputAction: TextInputAction.next,
           prefix: const Icon(Icons.email_outlined, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.lg),
+        SizedBox(height: FiftySpacing.lg),
         FiftyTextFormField(
           name: 'password',
           controller: controller,
@@ -230,7 +230,7 @@ class _AccountStep extends StatelessWidget {
           textInputAction: TextInputAction.done,
           prefix: const Icon(Icons.lock_outlined, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.lg),
+        SizedBox(height: FiftySpacing.lg),
         _InfoCard(
           icon: Icons.security,
           title: 'SECURE CONNECTION',
@@ -260,7 +260,7 @@ class _ProfileStep extends StatelessWidget {
           textInputAction: TextInputAction.next,
           prefix: const Icon(Icons.badge_outlined, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.lg),
+        SizedBox(height: FiftySpacing.lg),
         FiftyTextFormField(
           name: 'bio',
           controller: controller,
@@ -270,7 +270,7 @@ class _ProfileStep extends StatelessWidget {
           minLines: 3,
           prefix: const Icon(Icons.description_outlined, size: 20),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         ListenableBuilder(
           listenable: controller,
           builder: (context, _) {
@@ -306,7 +306,7 @@ class _PreferencesStep extends StatelessWidget {
       children: [
         // Theme selection using dropdown
         _SectionTitle(title: 'THEME'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyDropdownFormField<String>(
           name: 'theme',
           controller: controller,
@@ -318,17 +318,17 @@ class _PreferencesStep extends StatelessWidget {
           ],
           initialValue: 'dark',
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Notifications
         _SectionTitle(title: 'NOTIFICATIONS'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftySwitchFormField(
           name: 'notifications',
           controller: controller,
           label: 'Enable notifications',
         ),
-        const SizedBox(height: FiftySpacing.xs),
+        SizedBox(height: FiftySpacing.xs),
         Text(
           'Receive updates and alerts',
           style: TextStyle(
@@ -337,7 +337,7 @@ class _PreferencesStep extends StatelessWidget {
             color: FiftyColors.slateGrey,
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         _InfoCard(
           icon: Icons.tune,
@@ -383,7 +383,7 @@ class _InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
         color: FiftyColors.darkBurgundy,
         borderRadius: FiftyRadii.lgRadius,
@@ -404,7 +404,7 @@ class _InfoCard extends StatelessWidget {
               size: 20,
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

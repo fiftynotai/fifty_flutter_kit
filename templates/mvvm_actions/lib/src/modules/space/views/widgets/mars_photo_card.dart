@@ -113,7 +113,7 @@ class MarsPhotoCard extends StatelessWidget {
 
           // Photo metadata
           Padding(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -125,7 +125,7 @@ class MarsPhotoCard extends StatelessWidget {
                       size: 14,
                       color: FiftyColors.crimsonPulse,
                     ),
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
                     Text(
                       roverName.toUpperCase(),
                       style: TextStyle(
@@ -147,7 +147,7 @@ class MarsPhotoCard extends StatelessWidget {
                       size: 14,
                       color: FiftyColors.hyperChrome,
                     ),
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
                     Text(
                       _formatDate(earthDate),
                       style: TextStyle(

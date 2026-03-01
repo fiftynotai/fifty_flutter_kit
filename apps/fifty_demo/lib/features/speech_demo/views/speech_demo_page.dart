@@ -35,7 +35,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                 children: [
                   // Status Row
                   _buildStatusRow(context, viewModel),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Error Message
                   _buildErrorCard(context, viewModel),
@@ -46,7 +46,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     subtitle: 'Convert text to spoken audio',
                   ),
                   _buildTtsSection(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Voice Settings Section
                   const FiftySectionHeader(
@@ -54,7 +54,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     subtitle: 'Adjust rate, pitch, and volume',
                   ),
                   _buildVoiceSettingsSection(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Preset Phrases Section
                   const FiftySectionHeader(
@@ -62,7 +62,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     subtitle: 'Tap to speak a preset phrase',
                   ),
                   _buildPresetPhrasesSection(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // STT Section
                   const FiftySectionHeader(
@@ -70,7 +70,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     subtitle: 'Convert spoken audio to text',
                   ),
                   _buildSttSection(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Recognition History Section
                   if (viewModel.recognitionHistory.isNotEmpty) ...[
@@ -90,7 +90,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                       ),
                     ),
                     _buildHistorySection(context, viewModel),
-                    const SizedBox(height: FiftySpacing.xl),
+                    SizedBox(height: FiftySpacing.xl),
                   ],
                 ],
               ),
@@ -111,7 +111,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                   ? FiftyStatusState.loading
                   : FiftyStatusState.ready,
         ),
-        const SizedBox(width: FiftySpacing.lg),
+        SizedBox(width: FiftySpacing.lg),
         FiftyStatusIndicator(
           label: 'STT',
           state: !viewModel.sttEnabled
@@ -132,9 +132,9 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
     if (viewModel.errorMessage.isEmpty) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+      padding: EdgeInsets.only(bottom: FiftySpacing.md),
       child: FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.md),
+        padding: EdgeInsets.all(FiftySpacing.md),
         child: Row(
           children: [
             Icon(
@@ -142,7 +142,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
               color: colorScheme.error,
               size: 20,
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
             Expanded(
               child: Text(
                 viewModel.errorMessage,
@@ -167,7 +167,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -184,7 +184,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                         : colorScheme.onSurface.withValues(alpha: 0.5),
                     size: 20,
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Text(
                     'ENABLE TTS',
                     style: TextStyle(
@@ -201,7 +201,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Text Input
           FiftyTextField(
@@ -210,7 +210,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
             maxLines: 3,
             enabled: viewModel.ttsEnabled,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Speak/Stop Buttons
           Row(
@@ -228,7 +228,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                 ),
               ),
               if (viewModel.isSpeaking) ...[
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
                 FiftyButton(
                   label: 'STOP',
                   variant: FiftyButtonVariant.secondary,
@@ -250,7 +250,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           // Speech Rate
@@ -264,9 +264,9 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
             displayValue: '${viewModel.speechRate.toStringAsFixed(2)}x',
             onChanged: viewModel.ttsEnabled ? actions.onSpeechRateChanged : null,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(height: 1, color: colorScheme.outline),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Pitch
           _buildSliderRow(
@@ -279,9 +279,9 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
             displayValue: viewModel.pitch.toStringAsFixed(2),
             onChanged: viewModel.ttsEnabled ? actions.onPitchChanged : null,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(height: 1, color: colorScheme.outline),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Volume
           _buildSliderRow(
@@ -294,7 +294,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
             displayValue: '${(viewModel.volume * 100).round()}%',
             onChanged: viewModel.ttsEnabled ? actions.onVolumeChanged : null,
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Reset Button
           SizedBox(
@@ -332,7 +332,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
               : colorScheme.onSurface.withValues(alpha: 0.3),
           size: 20,
         ),
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
         SizedBox(
           width: 60,
           child: Text(
@@ -381,9 +381,9 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
     return Column(
       children: viewModel.samplePhrases.map((phrase) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          padding: EdgeInsets.only(bottom: FiftySpacing.sm),
           child: FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             onTap: viewModel.ttsEnabled && !viewModel.isSpeaking
                 ? () => actions.onPresetPhraseTapped(context, phrase)
                 : null,
@@ -396,7 +396,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     color: colorScheme.primary,
                     size: 24,
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
                       phrase,
@@ -425,7 +425,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
     final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -442,7 +442,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                         : colorScheme.onSurface.withValues(alpha: 0.5),
                     size: 20,
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Text(
                     'ENABLE STT',
                     style: TextStyle(
@@ -459,7 +459,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Microphone Button and Status
           Center(
@@ -496,7 +496,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     ),
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.md),
+                SizedBox(height: FiftySpacing.md),
                 Text(
                   viewModel.isListening
                       ? 'LISTENING...'
@@ -518,10 +518,10 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
 
           // Real-time Transcription Display
           if (viewModel.recognizedText.isNotEmpty || viewModel.isListening) ...[
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
                 color: colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
@@ -538,7 +538,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                         Container(
                           width: 8,
                           height: 8,
-                          margin: const EdgeInsets.only(right: FiftySpacing.sm),
+                          margin: EdgeInsets.only(right: FiftySpacing.sm),
                           decoration: BoxDecoration(
                             color: fiftyTheme?.warning ?? colorScheme.error,
                             shape: BoxShape.circle,
@@ -554,7 +554,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: FiftySpacing.sm),
+                  SizedBox(height: FiftySpacing.sm),
                   Text(
                     viewModel.recognizedText.isNotEmpty
                         ? '"${viewModel.recognizedText}"'
@@ -588,9 +588,9 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
         final timeAgo = _formatTimeAgo(phrase.timestamp);
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          padding: EdgeInsets.only(bottom: FiftySpacing.sm),
           child: FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -603,7 +603,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -614,7 +614,7 @@ class SpeechDemoPage extends GetView<SpeechDemoViewModel> {
                           color: successColor,
                           size: 14,
                         ),
-                        const SizedBox(width: FiftySpacing.xs),
+                        SizedBox(width: FiftySpacing.xs),
                         Text(
                           '$confidencePercent% confidence',
                           style: TextStyle(

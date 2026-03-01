@@ -27,7 +27,7 @@ class AchievementPage extends StatelessWidget {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.lg,
                 vertical: FiftySpacing.md,
               ),
@@ -66,7 +66,7 @@ class AchievementPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(color: FiftyColors.slateGrey, height: 1),
+            Divider(color: FiftyColors.slateGrey, height: 1),
             // Achievement list
             Expanded(
               child: GetBuilder<AchievementViewModel>(
@@ -74,7 +74,7 @@ class AchievementPage extends StatelessWidget {
                   controller: vm.engine,
                   filter: AchievementFilter.all,
                   showProgress: true,
-                  padding: const EdgeInsets.all(FiftySpacing.lg),
+                  padding: EdgeInsets.all(FiftySpacing.lg),
                 ),
               ),
             ),

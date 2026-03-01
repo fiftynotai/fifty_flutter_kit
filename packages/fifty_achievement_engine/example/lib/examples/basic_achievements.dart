@@ -127,12 +127,12 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: FiftySpacing.xxl),
+        padding: EdgeInsets.only(bottom: FiftySpacing.xxl),
         child: Column(
           children: [
             // Summary at top
             Padding(
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               child: AchievementSummary(
                 controller: _controller,
                 showRarityBreakdown: true,
@@ -142,7 +142,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
 
             // Action buttons
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: FiftySpacing.md),
               child: Row(
                 children: [
                   Expanded(
@@ -153,7 +153,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                       color: colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: _buildActionButton(
                       context,
@@ -168,7 +168,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
 
             // Click counter
             Padding(
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               child: ListenableBuilder(
                 listenable: _controller,
                 builder: (context, _) {
@@ -212,7 +212,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        padding: const EdgeInsets.symmetric(vertical: FiftySpacing.md),
+        padding: EdgeInsets.symmetric(vertical: FiftySpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.xlRadius,
         ),
@@ -237,12 +237,12 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
     showModalBottomSheet(
       context: context,
       backgroundColor: colorScheme.surfaceContainerHighest,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(FiftyRadii.xxl)),
       ),
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +257,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                 ),
               ),
               if (achievement.description != null) ...[
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   achievement.description!,
                   style: TextStyle(
@@ -266,7 +266,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                   ),
                 ),
               ],
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -287,9 +287,9 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                   ),
                 ],
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               AchievementProgressBar(progress: progress.percentage),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -309,7 +309,7 @@ class _BasicAchievementsExampleState extends State<BasicAchievementsExample> {
                   ),
                 ],
               ),
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
             ],
           ),
         );

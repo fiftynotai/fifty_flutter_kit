@@ -39,13 +39,13 @@ class EcosystemStatus extends StatelessWidget {
         if (categoryPackages.isEmpty) return const SizedBox.shrink();
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.lg),
+          padding: EdgeInsets.only(bottom: FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Category header
               Padding(
-                padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+                padding: EdgeInsets.only(bottom: FiftySpacing.sm),
                 child: Text(
                   category.label.toUpperCase(),
                   style: TextStyle(
@@ -62,7 +62,7 @@ class EcosystemStatus extends StatelessWidget {
                 builder: (context, constraints) {
                   // Calculate columns based on available width
                   const cardMinWidth = 140.0;
-                  const spacing = FiftySpacing.sm;
+                  spacing = FiftySpacing.sm;
                   final columns =
                       ((constraints.maxWidth + spacing) / (cardMinWidth + spacing))
                           .floor()
@@ -105,7 +105,7 @@ class _PackageCard extends StatelessWidget {
     final warningColor = fiftyTheme?.warning ?? colorScheme.error;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.sm),
+      padding: EdgeInsets.all(FiftySpacing.sm),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -132,7 +132,7 @@ class _PackageCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           // Package name
           Text(
             package.name,

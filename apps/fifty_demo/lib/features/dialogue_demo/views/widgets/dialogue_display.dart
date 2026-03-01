@@ -31,7 +31,7 @@ class DialogueDisplay extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,7 +47,7 @@ class DialogueDisplay extends StatelessWidget {
                   letterSpacing: 2,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
             ],
             // Dialogue text
             SizedBox(
@@ -74,7 +74,7 @@ class DialogueDisplay extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             // Hint
             Text(
               isTyping ? 'TAP TO SKIP' : 'TAP TO CONTINUE',

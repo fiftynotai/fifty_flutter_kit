@@ -111,13 +111,13 @@ class FiftySettingsRow extends StatelessWidget {
         onTap: isEnabled ? () => onChanged?.call(!value) : null,
         behavior: HitTestBehavior.opaque,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: FiftySpacing.sm),
+          padding: EdgeInsets.symmetric(vertical: FiftySpacing.sm),
           child: Row(
             children: [
               // Leading icon
               if (icon != null) ...[
                 _buildIcon(colorScheme),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
               ],
               // Label and subtitle
               Expanded(
@@ -158,7 +158,7 @@ class FiftySettingsRow extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
               ],
               // Switch
               FiftySwitch(

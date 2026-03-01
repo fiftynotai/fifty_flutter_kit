@@ -1,6 +1,6 @@
 name: fifty_tokens
 description: Design tokens for the fifty.dev ecosystem - colors, typography, spacing, motion, and more.
-version: 1.0.3
+version: 2.0.0
 homepage: https://fifty.dev
 repository: https://github.com/fiftynotai/fifty_flutter_kit/tree/main/packages/fifty_tokens
 issue_tracker: https://github.com/fiftynotai/fifty_flutter_kit/issues

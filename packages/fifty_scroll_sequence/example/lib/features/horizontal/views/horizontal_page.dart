@@ -31,7 +31,7 @@ class HorizontalPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'HORIZONTAL',
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
@@ -47,7 +47,7 @@ class HorizontalPage extends StatelessWidget {
         children: [
           // Instruction text.
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.xxl,
               vertical: FiftySpacing.lg,
             ),
@@ -147,7 +147,7 @@ class _HorizontalFrameBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
@@ -170,7 +170,7 @@ class _HorizontalFrameBadge extends StatelessWidget {
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             '${(progress * 100).toStringAsFixed(1)}%',
             style: TextStyle(

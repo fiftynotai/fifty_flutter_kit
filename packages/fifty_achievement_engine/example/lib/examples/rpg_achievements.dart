@@ -235,13 +235,13 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
         title: const Text('RPG Achievements'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: FiftySpacing.xxl),
+        padding: EdgeInsets.only(bottom: FiftySpacing.xxl),
         child: Column(
           children: [
             // Player stats
             Container(
-              margin: const EdgeInsets.all(FiftySpacing.md),
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              margin: EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               decoration: BoxDecoration(
                 color: colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
@@ -269,7 +269,7 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
 
             // Action buttons
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: FiftySpacing.md),
               child: Wrap(
                 spacing: FiftySpacing.sm,
                 runSpacing: FiftySpacing.sm,
@@ -283,11 +283,11 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
               ),
             ),
 
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
 
             // Summary
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: FiftySpacing.md),
               child: AchievementSummary(
                 controller: _controller,
                 showCategoryBreakdown: true,
@@ -322,7 +322,7 @@ class _RpgAchievementsExampleState extends State<RpgAchievementsExample> {
             color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(height: FiftySpacing.xs),
+        SizedBox(height: FiftySpacing.xs),
         Text(
           value,
           style: TextStyle(

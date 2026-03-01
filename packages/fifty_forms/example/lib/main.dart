@@ -47,11 +47,11 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             Text(
               'CHOOSE AN EXAMPLE',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                   ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: FiftySpacing.xxxl),
+            SizedBox(height: FiftySpacing.xxxl),
             _ExampleCard(
               title: 'LOGIN FORM',
               description: 'Simple form with email and password validation',
@@ -71,7 +71,7 @@ class HomePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const LoginFormDemo()),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
               title: 'REGISTRATION FORM',
               description:
@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const RegistrationFormDemo()),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
               title: 'MULTI-STEP FORM',
               description: 'Wizard-style form with step navigation',
@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const MultiStepFormDemo()),
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _ExampleCard(
               title: 'DYNAMIC FORM',
               description: 'Form with dynamic array fields',
@@ -133,7 +133,7 @@ class _ExampleCard extends StatelessWidget {
       onTap: onTap,
       padding: EdgeInsets.zero,
       child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.xl),
+        padding: EdgeInsets.all(FiftySpacing.xl),
         child: Row(
           children: [
             Container(
@@ -153,7 +153,7 @@ class _ExampleCard extends StatelessWidget {
                 size: 28,
               ),
             ),
-            const SizedBox(width: FiftySpacing.lg),
+            SizedBox(width: FiftySpacing.lg),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +166,7 @@ class _ExampleCard extends StatelessWidget {
                           letterSpacing: 1,
                         ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(

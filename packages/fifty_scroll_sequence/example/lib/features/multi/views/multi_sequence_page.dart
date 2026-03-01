@@ -32,7 +32,7 @@ class MultiSequencePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'MULTI',
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
@@ -51,7 +51,7 @@ class MultiSequencePage extends StatelessWidget {
 
             // Label for sequence 1.
             _SequenceLabel(label: 'SEQUENCE 1', colorScheme: colorScheme),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
 
             // First pinned sequence (40 frames).
             ScrollSequence(
@@ -87,7 +87,7 @@ class MultiSequencePage extends StatelessWidget {
 
             // Label for sequence 2.
             _SequenceLabel(label: 'SEQUENCE 2', colorScheme: colorScheme),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
 
             // Second pinned sequence (60 frames).
             ScrollSequence(
@@ -141,7 +141,7 @@ class _SequenceLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.xxl),
+      padding: EdgeInsets.symmetric(horizontal: FiftySpacing.xxl),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
@@ -172,7 +172,7 @@ class _FrameBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),

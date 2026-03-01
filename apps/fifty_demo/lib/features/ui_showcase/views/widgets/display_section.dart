@@ -31,9 +31,9 @@ class DisplaySection extends StatelessWidget {
       children: [
         // Cards
         const SectionLabel(label: 'CARDS'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyCard(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -46,7 +46,7 @@ class DisplaySection extends StatelessWidget {
                   color: colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
               Text(
                 'Cards provide containment for content with consistent styling.',
                 style: TextStyle(
@@ -58,11 +58,11 @@ class DisplaySection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Data Slate
         const SectionLabel(label: 'DATA SLATE'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         const FiftyDataSlate(
           title: 'SYSTEM STATUS',
           data: {
@@ -72,11 +72,11 @@ class DisplaySection extends StatelessWidget {
             'Status': 'ONLINE',
           },
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Stat Cards
         const SectionLabel(label: 'STAT CARDS'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         const Row(
           children: [
             Expanded(
@@ -99,22 +99,22 @@ class DisplaySection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Progress Card
         const SectionLabel(label: 'PROGRESS CARD'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         const FiftyProgressCard(
           icon: Icons.trending_up,
           title: 'Weekly Goal',
           progress: 0.75,
           subtitle: '12 sales remaining to reach target',
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // List Tiles
         const SectionLabel(label: 'LIST TILES'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Builder(
           builder: (context) {
             final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
@@ -157,11 +157,11 @@ class DisplaySection extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Navigation Bar
         const SectionLabel(label: 'NAVIGATION BAR'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         FiftyNavBar(
           items: const [
             FiftyNavItem(label: 'HOME', icon: Icons.home),
@@ -172,11 +172,11 @@ class DisplaySection extends StatelessWidget {
           onItemSelected: viewModel.setTabIndex,
           style: FiftyNavBarStyle.pill,
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Color Palette
         const SectionLabel(label: 'COLOR PALETTE'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         const Wrap(
           spacing: FiftySpacing.sm,
           runSpacing: FiftySpacing.sm,
@@ -217,7 +217,7 @@ class _ColorSwatch extends StatelessWidget {
 
     return Container(
       width: _swatchWidth,
-      padding: const EdgeInsets.all(FiftySpacing.sm),
+      padding: EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
         border: Border.all(color: colorScheme.outline),
         borderRadius: FiftyRadii.lgRadius,
@@ -233,7 +233,7 @@ class _ColorSwatch extends StatelessWidget {
               border: Border.all(color: colorScheme.outline),
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             textAlign: TextAlign.center,

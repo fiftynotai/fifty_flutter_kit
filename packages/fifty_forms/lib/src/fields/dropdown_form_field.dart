@@ -128,7 +128,7 @@ class _FiftyDropdownFormFieldState<T> extends State<FiftyDropdownFormField<T>>
               enabled: widget.enabled,
             ),
             if (errorText != null) ...[
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Text(
                 errorText,
                 style: TextStyle(

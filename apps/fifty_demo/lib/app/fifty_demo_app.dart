@@ -228,7 +228,7 @@ class _DemoShellState extends State<_DemoShell> {
                                   color: colorScheme.onPrimary,
                                 ),
                               ),
-                              const SizedBox(height: FiftySpacing.xs),
+                              SizedBox(height: FiftySpacing.xs),
                               Text(
                                 'Design System v2.0',
                                 style: TextStyle(
@@ -247,9 +247,9 @@ class _DemoShellState extends State<_DemoShell> {
                           child: Row(
                             children: [
                               _buildDot(true, colorScheme, onPrimary: true),
-                              const SizedBox(width: FiftySpacing.xs),
+                              SizedBox(width: FiftySpacing.xs),
                               _buildDot(false, colorScheme, onPrimary: true),
-                              const SizedBox(width: FiftySpacing.xs),
+                              SizedBox(width: FiftySpacing.xs),
                               _buildDot(false, colorScheme, onPrimary: true),
                             ],
                           ),

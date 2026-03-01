@@ -93,7 +93,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
                   children: [
                     // Back button
                     _buildBackButton(context),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
 
                     // Status bar
                     StatusBar(
@@ -102,7 +102,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
                       hasError: viewModel.coordinator.mapService.hasError,
                       errorMessage: viewModel.coordinator.mapService.lastError,
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
 
                     // BGM button
                     _buildAudioButton(
@@ -120,7 +120,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
                         }
                       },
                     ),
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
 
                     // SFX button
                     _buildAudioButton(
@@ -245,7 +245,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
                   colorScheme.primary,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               Text(
                 'LOADING MAP...',
                 style: TextStyle(
@@ -273,7 +273,7 @@ class _MapDemoPageState extends State<MapDemoPage> {
                 size: 64,
                 color: colorScheme.onSurface.withValues(alpha: 0.7),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               Text(
                 'MAP NOT LOADED',
                 style: TextStyle(

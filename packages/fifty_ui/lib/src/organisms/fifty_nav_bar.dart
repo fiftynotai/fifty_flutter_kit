@@ -195,7 +195,7 @@ class _FiftyNavBarItemState extends State<_FiftyNavBarItem> {
         child: AnimatedContainer(
           duration: fifty.fast,
           curve: fifty.standardCurve,
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.sm,
             vertical: FiftySpacing.xs,
           ),

@@ -102,7 +102,7 @@ class _ActionCard extends StatelessWidget {
 
     return FiftyCard(
       onTap: onTap,
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -133,7 +133,7 @@ class _ActionCard extends StatelessWidget {
               letterSpacing: 1.0,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             description,
             style: TextStyle(

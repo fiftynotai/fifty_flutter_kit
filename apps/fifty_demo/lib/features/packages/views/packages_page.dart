@@ -32,12 +32,12 @@ class PackagesPage extends GetView<PackagesViewModel> {
               children: [
                 // Status summary
                 _buildStatusSummary(context, viewModel),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Package categories
                 for (final category in PackageCategory.values) ...[
                   _buildCategorySection(category, viewModel),
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
                 ],
               ],
             ),
@@ -52,7 +52,7 @@ class PackagesPage extends GetView<PackagesViewModel> {
     final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         children: [
           Container(
@@ -63,7 +63,7 @@ class PackagesPage extends GetView<PackagesViewModel> {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             '${viewModel.availableCount}/${viewModel.totalCount} DEMOS AVAILABLE',
             style: TextStyle(
@@ -93,7 +93,7 @@ class PackagesPage extends GetView<PackagesViewModel> {
         ),
         ...packages.map(
           (package) => Padding(
-            padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+            padding: EdgeInsets.only(bottom: FiftySpacing.sm),
             child: _PackageDemoCard(package: package),
           ),
         ),
@@ -116,7 +116,7 @@ class _PackageDemoCard extends StatelessWidget {
     return Opacity(
       opacity: package.isAvailable ? 1.0 : 0.5,
       child: FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.md),
+        padding: EdgeInsets.all(FiftySpacing.md),
         onTap: () => actions.onPackageTapped(context, package.id),
         child: Row(
           children: [
@@ -138,7 +138,7 @@ class _PackageDemoCard extends StatelessWidget {
                 size: 24,
               ),
             ),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
 
             // Info
             Expanded(
@@ -154,7 +154,7 @@ class _PackageDemoCard extends StatelessWidget {
                       color: colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     package.description,
                     style: TextStyle(

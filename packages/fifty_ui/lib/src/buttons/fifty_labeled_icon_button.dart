@@ -214,7 +214,7 @@ class FiftyLabeledIconButton extends StatelessWidget {
             ),
             // Label
             if (label != null) ...[
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Text(
                 label!,
                 style: TextStyle(

@@ -44,12 +44,12 @@ class _VoiceViewState extends State<VoiceView> {
       listenable: _viewModel,
       builder: (context, _) {
         return ListView(
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           children: [
             _buildVoiceLines(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildSettings(),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
             _buildVolumeControl(),
           ],
         );
@@ -100,7 +100,7 @@ class _VoiceViewState extends State<VoiceView> {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     _viewModel.duckingEnabled
                         ? 'BGM volume lowers during voice'
@@ -119,7 +119,7 @@ class _VoiceViewState extends State<VoiceView> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
           // Info display
           FiftyDataSlate(
             title: 'Ducking Info',
@@ -169,13 +169,13 @@ class _VoiceLineButton extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+      padding: EdgeInsets.only(bottom: FiftySpacing.md),
       child: KineticEffect(
         child: GestureDetector(
           onTap: onPressed,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             decoration: BoxDecoration(
               color: isPlaying
                   ? colorScheme.primary.withValues(alpha: 0.1)
@@ -212,7 +212,7 @@ class _VoiceLineButton extends StatelessWidget {
                     size: 20,
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

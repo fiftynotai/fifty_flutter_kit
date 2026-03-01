@@ -124,7 +124,7 @@ void main() {
 
     testWidgets('custom gradient works', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
-        const FiftyProgressCard(
+        FiftyProgressCard(
           title: 'Custom Gradient',
           progress: 0.5,
           progressGradient: LinearGradient(

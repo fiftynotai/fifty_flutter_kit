@@ -109,7 +109,7 @@ class ApodCard extends StatelessWidget {
 
           // Content section
           Padding(
-            padding: const EdgeInsets.all(FiftySpacing.lg),
+            padding: EdgeInsets.all(FiftySpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -130,7 +130,7 @@ class ApodCard extends StatelessWidget {
 
                 // VIEW HD button (if HD URL available)
                 if (hdUrl != null && hdUrl!.isNotEmpty) ...[
-                  const SizedBox(height: FiftySpacing.md),
+                  SizedBox(height: FiftySpacing.md),
                   FiftyButton(
                     label: 'VIEW HD',
                     icon: Icons.hd_outlined,

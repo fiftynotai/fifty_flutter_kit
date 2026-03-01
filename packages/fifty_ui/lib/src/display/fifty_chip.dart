@@ -108,7 +108,7 @@ class FiftyChip extends StatelessWidget {
             children: [
               if (avatar != null) ...[
                 avatar!,
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
               ],
               Text(
                 label.toUpperCase(),
@@ -121,7 +121,7 @@ class FiftyChip extends StatelessWidget {
                 ),
               ),
               if (onDeleted != null) ...[
-                const SizedBox(width: FiftySpacing.xs),
+                SizedBox(width: FiftySpacing.xs),
                 GestureDetector(
                   onTap: onDeleted,
                   child: Icon(

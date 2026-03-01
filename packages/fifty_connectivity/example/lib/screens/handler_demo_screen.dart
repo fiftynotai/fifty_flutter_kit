@@ -30,13 +30,13 @@ class HandlerDemoScreen extends StatelessWidget {
     final vm = Get.find<ConnectionViewModel>();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Connected status header
           FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.xxl),
+            padding: EdgeInsets.all(FiftySpacing.xxl),
             child: Column(
               children: [
                 Icon(
@@ -44,7 +44,7 @@ class HandlerDemoScreen extends StatelessWidget {
                   size: 64,
                   color: colorScheme.primary,
                 ),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
                 Text(
                   'UPLINK ACTIVE',
                   style: TextStyle(
@@ -55,7 +55,7 @@ class HandlerDemoScreen extends StatelessWidget {
                     letterSpacing: FiftyTypography.letterSpacingLabelMedium,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   'All systems operational',
                   style: TextStyle(
@@ -67,7 +67,7 @@ class HandlerDemoScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Live telemetry showing handler is passing data through
           Obx(
@@ -80,7 +80,7 @@ class HandlerDemoScreen extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Simulated data items to show content flows through handler
           ..._buildDataItems(colorScheme),
@@ -100,12 +100,12 @@ class HandlerDemoScreen extends StatelessWidget {
 
     return items.map((item) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+        padding: EdgeInsets.only(bottom: FiftySpacing.sm),
         child: FiftyCard(
           child: Row(
             children: [
               Icon(item.$3, size: 24, color: colorScheme.primary),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: Text(
                   item.$1,

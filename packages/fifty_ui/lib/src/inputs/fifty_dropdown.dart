@@ -220,7 +220,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                   letterSpacing: FiftyTypography.letterSpacingLabelMedium,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
             ],
             MouseRegion(
               onEnter: (_) => setState(() => _isHovered = true),
@@ -233,7 +233,7 @@ class _FiftyDropdownState<T> extends State<FiftyDropdown<T>>
                 child: AnimatedContainer(
                   duration: fifty?.fast ?? const Duration(milliseconds: 150),
                   height: 48,
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: FiftySpacing.lg,
                   ),
                   decoration: BoxDecoration(
@@ -324,7 +324,7 @@ class _DropdownMenu<T> extends StatelessWidget {
       child: ClipRRect(
         borderRadius: FiftyRadii.xlRadius,
         child: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+          padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
           shrinkWrap: true,
           itemCount: items.length,
           itemBuilder: (context, index) {
@@ -376,7 +376,7 @@ class _DropdownMenuItemState<T> extends State<_DropdownMenuItem<T>> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 100),
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
             vertical: FiftySpacing.md,
           ),
@@ -395,7 +395,7 @@ class _DropdownMenuItemState<T> extends State<_DropdownMenuItem<T>> {
                       ? colorScheme.primary
                       : iconColor,
                 ),
-                const SizedBox(width: FiftySpacing.sm),
+                SizedBox(width: FiftySpacing.sm),
               ],
               Expanded(
                 child: Text(

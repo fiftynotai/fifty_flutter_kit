@@ -75,8 +75,8 @@ class FiftyFormError extends StatelessWidget {
             child: showError
                 ? Container(
                     width: double.infinity,
-                    margin: const EdgeInsets.only(top: FiftySpacing.md),
-                    padding: const EdgeInsets.all(FiftySpacing.md),
+                    margin: EdgeInsets.only(top: FiftySpacing.md),
+                    padding: EdgeInsets.all(FiftySpacing.md),
                     decoration: BoxDecoration(
                       color: colorScheme.error.withValues(alpha: 0.1),
                       borderRadius: FiftyRadii.lgRadius,
@@ -92,7 +92,7 @@ class FiftyFormError extends StatelessWidget {
                           color: colorScheme.error,
                           size: FiftyTypography.titleSmall,
                         ),
-                        const SizedBox(width: FiftySpacing.sm),
+                        SizedBox(width: FiftySpacing.sm),
                         Expanded(
                           child: Text(
                             message!,

@@ -110,14 +110,14 @@ class _FiftyListTileState extends State<FiftyListTile> {
             child: AnimatedContainer(
               duration: fifty.fast,
               curve: fifty.standardCurve,
-              padding: const EdgeInsets.all(FiftySpacing.lg),
+              padding: EdgeInsets.all(FiftySpacing.lg),
               decoration: BoxDecoration(
                 color: _isHovered ? hoverColor : Colors.transparent,
               ),
               child: Row(
                 children: [
                   _buildLeading(colorScheme, fifty),
-                  const SizedBox(width: FiftySpacing.lg),
+                  SizedBox(width: FiftySpacing.lg),
                   _buildContent(colorScheme),
                   _buildTrailing(colorScheme),
                 ],

@@ -181,7 +181,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                 expanded: true,
               ),
 
-              const SizedBox(height: FiftySpacing.xxl),
+              SizedBox(height: FiftySpacing.xxl),
 
               // Printer Name
               FiftyTextField(
@@ -193,7 +193,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                 onChanged: (_) => setState(() => _nameError = null),
               ),
 
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Address (MAC or IP)
               FiftyTextField(
@@ -223,7 +223,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
 
               // Port (WiFi only)
               if (_selectedType == PrinterType.wifi) ...[
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
                 FiftyTextField(
                   controller: _portController,
                   label: 'Port',
@@ -235,7 +235,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                 ),
               ],
 
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Printer Role (optional)
               FiftyDropdown<PrinterRole>(
@@ -255,7 +255,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                 },
               ),
 
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Default Copies
               FiftyTextField(
@@ -268,11 +268,11 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                 onChanged: (_) => setState(() => _copiesError = null),
               ),
 
-              const SizedBox(height: FiftySpacing.lg),
+              SizedBox(height: FiftySpacing.lg),
 
               // Info card
               Container(
-                padding: const EdgeInsets.all(FiftySpacing.md),
+                padding: EdgeInsets.all(FiftySpacing.md),
                 decoration: BoxDecoration(
                   color: colorScheme.primaryContainer,
                   borderRadius: FiftyRadii.lgRadius,
@@ -284,7 +284,7 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
                       color: colorScheme.onPrimaryContainer,
                       size: 20,
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Expanded(
                       child: Text(
                         'Set default copies per printer. Can be overridden per print job.',

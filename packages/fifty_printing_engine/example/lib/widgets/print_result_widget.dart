@@ -40,7 +40,7 @@ class PrintResultWidget extends StatelessWidget {
                 color: statusColor,
                 size: 28,
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +51,7 @@ class PrintResultWidget extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     Text(
                       result.isSuccess
                           ? 'All printers succeeded'
@@ -69,7 +69,7 @@ class PrintResultWidget extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Summary Stats
           Row(
@@ -82,7 +82,7 @@ class PrintResultWidget extends StatelessWidget {
                   iconColor: colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: FiftyStatCard(
                   label: 'Success',
@@ -91,7 +91,7 @@ class PrintResultWidget extends StatelessWidget {
                   iconColor: fifty.success,
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: FiftyStatCard(
                   label: 'Failed',
@@ -103,7 +103,7 @@ class PrintResultWidget extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Per-Printer Details
           const FiftySectionHeader(
@@ -119,7 +119,7 @@ class PrintResultWidget extends StatelessWidget {
                 : FiftyBadgeVariant.error;
 
             return Padding(
-              padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+              padding: EdgeInsets.only(bottom: FiftySpacing.sm),
               child: FiftyListTile(
                 leadingIcon: printerResult.success
                     ? Icons.check_circle

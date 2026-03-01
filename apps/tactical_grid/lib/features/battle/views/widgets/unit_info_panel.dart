@@ -70,7 +70,7 @@ class UnitInfoPanel extends GetView<BattleViewModel> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.md,
       ),
@@ -155,7 +155,7 @@ class _SelectedUnitLayout extends StatelessWidget {
             // Unit avatar
             _UnitAvatar(unit: unit),
 
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
 
             // Name and stats
             Expanded(
@@ -174,7 +174,7 @@ class _SelectedUnitLayout extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
 
                   // Stats row
                   Row(
@@ -183,7 +183,7 @@ class _SelectedUnitLayout extends StatelessWidget {
                         label: 'ATK',
                         value: '${unit.attack}',
                       ),
-                      const SizedBox(width: FiftySpacing.md),
+                      SizedBox(width: FiftySpacing.md),
                       _StatLabel(
                         label: 'MOVE',
                         value: _movementDescription(unit.type),
@@ -191,13 +191,13 @@ class _SelectedUnitLayout extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
 
                   // Ability info
                   if (ability != null)
                     _AbilityStatusLabel(ability: ability),
 
-                  const SizedBox(height: FiftySpacing.sm),
+                  SizedBox(height: FiftySpacing.sm),
 
                   // HP bar
                   _HpBar(unit: unit),
@@ -207,7 +207,7 @@ class _SelectedUnitLayout extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
 
         // -- Bottom row: action buttons or AI turn label --
         if (isAIExecuting)
@@ -227,12 +227,12 @@ class _SelectedUnitLayout extends StatelessWidget {
                     : () => _onAttackPressed(context),
               ),
 
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
 
               // Ability button (only for active abilities).
               if (ability != null && !ability.isPassive)
                 Padding(
-                  padding: const EdgeInsets.only(right: FiftySpacing.sm),
+                  padding: EdgeInsets.only(right: FiftySpacing.sm),
                   child: FiftyButton(
                     label: _abilityButtonLabel(ability),
                     variant: FiftyButtonVariant.outline,
@@ -509,7 +509,7 @@ class _HpBar extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: FiftySpacing.xs),
+        SizedBox(height: FiftySpacing.xs),
 
         // Progress bar
         FiftyProgressBar(

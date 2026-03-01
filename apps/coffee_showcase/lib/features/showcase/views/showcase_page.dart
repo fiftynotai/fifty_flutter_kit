@@ -57,12 +57,12 @@ class _ShowcasePageState extends State<ShowcasePage> {
             // Hero title section.
             const _HeroTitle(),
 
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
 
             // Scroll hint.
             _ScrollHint(colorScheme: colorScheme),
 
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // Pinned scroll sequence.
             ScrollSequence(
@@ -93,12 +93,12 @@ class _ShowcasePageState extends State<ShowcasePage> {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(FiftySpacing.xxxl),
+        padding: EdgeInsets.all(FiftySpacing.xxxl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             FiftyProgressBar(value: progress),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
             Text(
               'LOADING ${(progress * 100).toInt()}%',
               style: TextStyle(
@@ -165,7 +165,7 @@ class _HeroTitle extends StatelessWidget {
             color: colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: FiftySpacing.xs),
+        SizedBox(height: FiftySpacing.xs),
         Text(
           'SHOWCASE',
           style: TextStyle(
@@ -217,7 +217,7 @@ class _FrameCounterBadge extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
@@ -240,7 +240,7 @@ class _FrameCounterBadge extends StatelessWidget {
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             '${(progress * 100).toStringAsFixed(1)}%',
             style: TextStyle(

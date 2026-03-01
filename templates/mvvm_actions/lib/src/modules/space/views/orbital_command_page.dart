@@ -64,7 +64,7 @@ class OrbitalCommandPage extends StatelessWidget {
               color: FiftyColors.crimsonPulse,
               size: 24,
             ),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
             Text(
               'ORBITAL COMMAND',
               style: TextStyle(
@@ -80,7 +80,7 @@ class OrbitalCommandPage extends StatelessWidget {
         actions: [
           // Status indicator
           Padding(
-            padding: const EdgeInsets.only(right: FiftySpacing.md),
+            padding: EdgeInsets.only(right: FiftySpacing.md),
             child: StatusIndicator(
               status: ApiConnectionStatus.connected,
               label: 'NASA',
@@ -97,13 +97,13 @@ class OrbitalCommandPage extends StatelessWidget {
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(FiftySpacing.lg),
+          padding: EdgeInsets.all(FiftySpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Section: APOD
               _buildSectionHeader('ASTRONOMY PICTURE OF THE DAY'),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
 
               // APOD Card (placeholder for ApiHandler integration)
               ApodCard(
@@ -119,11 +119,11 @@ class OrbitalCommandPage extends StatelessWidget {
                 },
               ),
 
-              const SizedBox(height: FiftySpacing.xl),
+              SizedBox(height: FiftySpacing.xl),
 
               // Section: Status Panel
               _buildSectionHeader('SYSTEM STATUS'),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
 
               StatusPanel(
                 connectionStatus: ApiConnectionStatus.connected,
@@ -131,19 +131,19 @@ class OrbitalCommandPage extends StatelessWidget {
                 objectsTracked: 14,
               ),
 
-              const SizedBox(height: FiftySpacing.xl),
+              SizedBox(height: FiftySpacing.xl),
 
               // Section: NEO Threat Summary
               _buildSectionHeader('THREAT SUMMARY'),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
 
               _buildThreatSummaryCards(),
 
-              const SizedBox(height: FiftySpacing.xl),
+              SizedBox(height: FiftySpacing.xl),
 
               // Section: Recent NEOs
               _buildSectionHeader('RECENT NEAR-EARTH OBJECTS'),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
 
               // NEO List (placeholder data)
               _buildNeoList(),
@@ -169,7 +169,7 @@ class OrbitalCommandPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(2),
           ),
         ),
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
         Text(
           title,
           style: TextStyle(
@@ -198,7 +198,7 @@ class OrbitalCommandPage extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
 
         // Hazardous Count
         Expanded(
@@ -211,7 +211,7 @@ class OrbitalCommandPage extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
 
         // Closest Approach
         Expanded(
@@ -273,7 +273,7 @@ class OrbitalCommandPage extends StatelessWidget {
       children: neos
           .map(
             (neo) => Padding(
-              padding: const EdgeInsets.only(bottom: FiftySpacing.md),
+              padding: EdgeInsets.only(bottom: FiftySpacing.md),
               child: NeoListTile(
                 name: neo.name,
                 diameterMin: neo.diameterMin,

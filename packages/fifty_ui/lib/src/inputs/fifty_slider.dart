@@ -161,7 +161,7 @@ class _FiftySliderState extends State<FiftySlider> {
                 letterSpacing: FiftyTypography.letterSpacingLabelMedium,
               ),
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
           ],
           LayoutBuilder(
             builder: (context, constraints) {
@@ -234,7 +234,7 @@ class _FiftySliderState extends State<FiftySlider> {
                                 // Shift left by 50% to center, up slightly for gap
                                 translation: const Offset(-0.5, -0.2),
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: FiftySpacing.sm,
                                     vertical: FiftySpacing.xs,
                                   ),

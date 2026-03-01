@@ -20,17 +20,17 @@ class OverlayDemoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('ConnectionOverlay')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Overlay status indicator
             FiftyCard(
-              padding: const EdgeInsets.all(FiftySpacing.xl),
+              padding: EdgeInsets.all(FiftySpacing.xl),
               child: Row(
                 children: [
                   FiftyBadge.status('OVERLAY ACTIVE'),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
                       'Wrapping the entire app',
@@ -44,7 +44,7 @@ class OverlayDemoScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Current overlay state
             Obx(
@@ -57,11 +57,11 @@ class OverlayDemoScreen extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // Overlay states with visual indicators
             const FiftySectionHeader(title: 'OVERLAY STATES'),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
             _buildStateRow(
               context,
               icon: Icons.check_circle,
@@ -69,7 +69,7 @@ class OverlayDemoScreen extends StatelessWidget {
               title: 'Connected',
               subtitle: 'No overlay shown',
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             _buildStateRow(
               context,
               icon: Icons.sync,
@@ -78,7 +78,7 @@ class OverlayDemoScreen extends StatelessWidget {
               title: 'Connecting',
               subtitle: 'UplinkStatusBar badge at top',
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             _buildStateRow(
               context,
               icon: Icons.wifi_off,
@@ -86,11 +86,11 @@ class OverlayDemoScreen extends StatelessWidget {
               title: 'Disconnected',
               subtitle: 'OfflineStatusCard full-screen modal',
             ),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // Toggle instruction
             FiftyCard(
-              padding: const EdgeInsets.all(FiftySpacing.xl),
+              padding: EdgeInsets.all(FiftySpacing.xl),
               child: Row(
                 children: [
                   Icon(
@@ -98,7 +98,7 @@ class OverlayDemoScreen extends StatelessWidget {
                     size: 32,
                     color: colorScheme.primary,
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
                       'Toggle airplane mode to see the overlay in action across all tabs',
@@ -151,7 +151,7 @@ class OverlayDemoScreen extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 28, color: iconColor),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -70,7 +70,7 @@ class FiftyDataSlate extends StatelessWidget {
     return AnimatedContainer(
       duration: fifty?.fast ?? const Duration(milliseconds: 150),
       curve: fifty?.standardCurve ?? Curves.easeInOut,
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.xxlRadius,
@@ -115,10 +115,10 @@ class FiftyDataSlate extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
           ],
           ...data.entries.map((entry) => Padding(
-                padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+                padding: EdgeInsets.only(bottom: FiftySpacing.sm),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     // Calculate key width but cap it at 40% of available space
@@ -144,7 +144,7 @@ class FiftyDataSlate extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: FiftySpacing.sm),
+                        SizedBox(width: FiftySpacing.sm),
                         Expanded(
                           child: Text(
                             entry.value,

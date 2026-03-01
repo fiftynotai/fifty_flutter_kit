@@ -218,13 +218,13 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
         title: const Text('Fitness Achievements'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: FiftySpacing.xxl),
+        padding: EdgeInsets.only(bottom: FiftySpacing.xxl),
         child: Column(
           children: [
             // Workout timer
             Container(
-              margin: const EdgeInsets.all(FiftySpacing.md),
-              padding: const EdgeInsets.all(FiftySpacing.lg),
+              margin: EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.lg),
               decoration: BoxDecoration(
                 color: _isWorkingOut
                     ? FiftyColors.hunterGreen.withValues(alpha: 0.2)
@@ -250,7 +250,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                           : colorScheme.onSurface,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.md),
+                  SizedBox(height: FiftySpacing.md),
                   ElevatedButton.icon(
                     onPressed: _toggleWorkout,
                     icon: Icon(_isWorkingOut ? Icons.stop : Icons.play_arrow),
@@ -259,7 +259,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                       backgroundColor:
                           _isWorkingOut ? colorScheme.primary : FiftyColors.hunterGreen,
                       foregroundColor: colorScheme.onPrimary,
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: FiftySpacing.xl,
                         vertical: FiftySpacing.md,
                       ),
@@ -271,7 +271,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
 
             // Exercise buttons
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: FiftySpacing.md),
               child: Row(
                 children: [
                   Expanded(
@@ -282,7 +282,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                       Icons.accessibility_new,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: _buildExerciseButton(
                       context,
@@ -291,7 +291,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                       Icons.directions_walk,
                     ),
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: _buildExerciseButton(
                       context,
@@ -306,7 +306,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
 
             // Hidden button
             Padding(
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               child: TextButton(
                 onPressed: _triggerEarlyBird,
                 child: Text(
@@ -321,7 +321,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
 
             // Stats row
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: FiftySpacing.md),
               child: ListenableBuilder(
                 listenable: _controller,
                 builder: (context, _) {
@@ -355,7 +355,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
               ),
             ),
 
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
 
             // Achievement list
             AchievementList<void>(
@@ -377,7 +377,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
       style: ElevatedButton.styleFrom(
         backgroundColor: colorScheme.outline,
         foregroundColor: colorScheme.onPrimary,
-        padding: const EdgeInsets.symmetric(vertical: FiftySpacing.md),
+        padding: EdgeInsets.symmetric(vertical: FiftySpacing.md),
         shape: RoundedRectangleBorder(
           borderRadius: FiftyRadii.mdRadius,
         ),
@@ -386,7 +386,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 24),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             label,
             style: TextStyle(

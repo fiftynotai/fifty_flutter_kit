@@ -75,7 +75,7 @@ class FiftySnackbar {
             color: accentColor,
             size: 20,
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Text(
               message,
@@ -157,7 +157,7 @@ class FiftySnackbar {
           child: Material(
             color: Colors.transparent,
             child: Container(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.lg,
                 vertical: FiftySpacing.md,
               ),
@@ -174,7 +174,7 @@ class FiftySnackbar {
                     color: accentColor,
                     size: 20,
                   ),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Expanded(
                     child: Text(
                       message,
@@ -187,7 +187,7 @@ class FiftySnackbar {
                     ),
                   ),
                   if (actionLabel != null && onAction != null) ...[
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
                     GestureDetector(
                       onTap: () {
                         onAction();

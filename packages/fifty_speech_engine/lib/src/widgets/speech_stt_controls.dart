@@ -195,7 +195,7 @@ class _SttHeader extends StatelessWidget {
                   : colorScheme.onSurface.withValues(alpha: 0.5),
               size: 20,
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
             Text(
               'SPEECH-TO-TEXT',
               style: TextStyle(
@@ -208,7 +208,7 @@ class _SttHeader extends StatelessWidget {
               ),
             ),
             if (isListening) ...[
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               _PulsingDot(),
             ],
           ],
@@ -408,7 +408,7 @@ class _RecognizedTextDisplay extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Text(
             '"$text"',
             style: TextStyle(
@@ -453,7 +453,7 @@ class _ErrorDisplay extends StatelessWidget {
             size: compact ? 16 : 18,
             color: colorScheme.error,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               message,
@@ -495,7 +495,7 @@ class _NotAvailableMessage extends StatelessWidget {
             size: compact ? 16 : 18,
             color: colorScheme.onSurface.withValues(alpha: 0.7),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               'Speech recognition not available on this device.',

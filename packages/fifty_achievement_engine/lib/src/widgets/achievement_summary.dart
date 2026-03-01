@@ -69,15 +69,15 @@ class AchievementSummary<T> extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildHeader(context),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               _buildProgressSection(context),
               if (showRarityBreakdown) ...[
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
                 _buildRarityBreakdown(context),
               ],
               if (showCategoryBreakdown &&
                   controller.categories.isNotEmpty) ...[
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
                 _buildCategoryBreakdown(context),
               ],
             ],
@@ -114,7 +114,7 @@ class AchievementSummary<T> extends StatelessWidget {
             color: colorScheme.onPrimary,
           ),
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +129,7 @@ class AchievementSummary<T> extends StatelessWidget {
                   color: colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
-              const SizedBox(height: FiftySpacing.xs / 2),
+              SizedBox(height: FiftySpacing.xs / 2),
               Text(
                 '$unlockedCount / $totalCount Unlocked',
                 style: TextStyle(
@@ -164,7 +164,7 @@ class AchievementSummary<T> extends StatelessWidget {
             color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(height: FiftySpacing.xs / 2),
+        SizedBox(height: FiftySpacing.xs / 2),
         Text(
           '${controller.earnedPoints}',
           style: TextStyle(
@@ -216,7 +216,7 @@ class AchievementSummary<T> extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         AchievementProgressBar(
           progress: controller.completionPercentage,
           height: 8,
@@ -240,7 +240,7 @@ class AchievementSummary<T> extends StatelessWidget {
             color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         ...AchievementRarity.values.map((rarity) {
           final total = controller.getByRarity(rarity).length;
           if (total == 0) return const SizedBox.shrink();
@@ -250,7 +250,7 @@ class AchievementSummary<T> extends StatelessWidget {
               .length;
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+            padding: EdgeInsets.only(bottom: FiftySpacing.sm),
             child: _buildBreakdownRow(
               context,
               label: rarity.displayName,
@@ -279,7 +279,7 @@ class AchievementSummary<T> extends StatelessWidget {
             color: colorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         ...controller.categories.map((category) {
           final achievements = controller.getByCategory(category);
           final unlocked = achievements
@@ -287,7 +287,7 @@ class AchievementSummary<T> extends StatelessWidget {
               .length;
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+            padding: EdgeInsets.only(bottom: FiftySpacing.sm),
             child: _buildBreakdownRow(
               context,
               label: category,
@@ -321,7 +321,7 @@ class AchievementSummary<T> extends StatelessWidget {
             borderRadius: FiftyRadii.smRadius,
           ),
         ),
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
         Expanded(
           flex: 2,
           child: Text(
@@ -341,7 +341,7 @@ class AchievementSummary<T> extends StatelessWidget {
             foregroundColor: color,
           ),
         ),
-        const SizedBox(width: FiftySpacing.sm),
+        SizedBox(width: FiftySpacing.sm),
         SizedBox(
           width: 40,
           child: Text(

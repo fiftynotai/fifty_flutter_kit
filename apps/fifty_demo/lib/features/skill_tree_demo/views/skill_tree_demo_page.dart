@@ -34,7 +34,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                 children: [
                   // Stats Row
                   _buildStatsRow(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Branch Tabs
                   const FiftySectionHeader(
@@ -42,7 +42,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                     subtitle: 'Select a branch to view skills',
                   ),
                   _buildBranchTabs(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Skill Tree View
                   FiftySectionHeader(
@@ -51,7 +51,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                         '${viewModel.currentBranchSkills.where((s) => s.isUnlocked).length}/${viewModel.currentBranchSkills.length} unlocked',
                   ),
                   _buildSkillTree(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Selected Skill Details
                   if (viewModel.selectedSkill != null) ...[
@@ -77,7 +77,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         children: [
           // Skill Points
@@ -93,7 +93,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                     color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.xs),
+                SizedBox(height: FiftySpacing.xs),
                 Row(
                   children: [
                     Icon(
@@ -101,7 +101,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                       color: colorScheme.primary,
                       size: 24,
                     ),
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
                     Text(
                       '${viewModel.skillPoints}',
                       style: TextStyle(
@@ -134,7 +134,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                         color: colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     Text(
                       '${viewModel.unlockedCount}/${viewModel.totalSkills}',
                       style: TextStyle(
@@ -173,7 +173,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
         final isSelected = viewModel.selectedBranch == branch;
         return Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.xs),
+            padding: EdgeInsets.symmetric(horizontal: FiftySpacing.xs),
             child: GestureDetector(
               onTap: () => actions.onBranchSelected(branch),
               child: Container(
@@ -201,7 +201,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                           : colorScheme.onSurface.withValues(alpha: 0.7),
                       size: 24,
                     ),
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     Text(
                       branch.label.toUpperCase(),
                       style: TextStyle(
@@ -235,7 +235,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
     final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           // Skill nodes in tree layout
@@ -269,7 +269,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   child: GestureDetector(
                     onTap: () => actions.onSkillTapped(skill),
                     child: Container(
-                      padding: const EdgeInsets.all(FiftySpacing.md),
+                      padding: EdgeInsets.all(FiftySpacing.md),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? skillColor.withValues(alpha: 0.3)
@@ -299,7 +299,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                               size: 24,
                             ),
                           ),
-                          const SizedBox(width: FiftySpacing.md),
+                          SizedBox(width: FiftySpacing.md),
 
                           // Skill info
                           Expanded(
@@ -315,7 +315,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                     color: colorScheme.onSurface,
                                   ),
                                 ),
-                                const SizedBox(height: FiftySpacing.xs),
+                                SizedBox(height: FiftySpacing.xs),
                                 Row(
                                   children: [
                                     Container(
@@ -338,7 +338,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                       ),
                                     ),
                                     if (!skill.isUnlocked) ...[
-                                      const SizedBox(width: FiftySpacing.sm),
+                                      SizedBox(width: FiftySpacing.sm),
                                       Icon(
                                         Icons.star,
                                         size: 12,
@@ -393,7 +393,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
     final skillColor = viewModel.getSkillColor(skill, colorScheme, fiftyTheme);
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -413,7 +413,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   size: 32,
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -445,7 +445,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
             ],
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Description
           Text(
@@ -457,7 +457,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
 
           // Cost info (burgundy used as primary accent here)
           if (!skill.isUnlocked) ...[
@@ -468,7 +468,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   color: colorScheme.primary,
                   size: 16,
                 ),
-                const SizedBox(width: FiftySpacing.xs),
+                SizedBox(width: FiftySpacing.xs),
                 Text(
                   'Cost: ${skill.cost} points',
                   style: TextStyle(
@@ -477,7 +477,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                     color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 if (!canUnlock && viewModel.skillPoints < skill.cost)
                   Text(
                     '(Need ${skill.cost - viewModel.skillPoints} more)',
@@ -489,7 +489,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                   ),
               ],
             ),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
           ],
 
           // Unlock button

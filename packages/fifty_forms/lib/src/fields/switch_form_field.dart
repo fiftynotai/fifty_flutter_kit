@@ -109,7 +109,7 @@ class _FiftySwitchFormFieldState extends State<FiftySwitchFormField>
               size: widget.size,
             ),
             if (errorText != null) ...[
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Padding(
                 padding: const EdgeInsets.only(left: 60), // Align with label
                 child: Text(

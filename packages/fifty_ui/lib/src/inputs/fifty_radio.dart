@@ -218,7 +218,7 @@ class _FiftyRadioState<T> extends State<FiftyRadio<T>>
                 },
               ),
               if (widget.label != null) ...[
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 Text(
                   widget.label!,
                   style: TextStyle(

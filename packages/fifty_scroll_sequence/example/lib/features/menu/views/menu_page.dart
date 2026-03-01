@@ -27,7 +27,7 @@ class MenuPage extends StatelessWidget {
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: FiftySpacing.xxl),
+          padding: EdgeInsets.symmetric(horizontal: FiftySpacing.xxl),
           child: Column(
             children: [
               const Spacer(),
@@ -55,7 +55,7 @@ class MenuPage extends StatelessWidget {
                   height: FiftyTypography.lineHeightDisplay,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
 
               // Subtitle.
               Text(
@@ -79,7 +79,7 @@ class MenuPage extends StatelessWidget {
                 variant: FiftyButtonVariant.primary,
                 expanded: true,
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftyButton(
                 label: 'PINNED DEMO',
                 onPressed: () =>
@@ -87,7 +87,7 @@ class MenuPage extends StatelessWidget {
                 variant: FiftyButtonVariant.outline,
                 expanded: true,
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftyButton(
                 label: 'MULTI DEMO',
                 onPressed: () =>
@@ -95,7 +95,7 @@ class MenuPage extends StatelessWidget {
                 variant: FiftyButtonVariant.outline,
                 expanded: true,
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftyButton(
                 label: 'SNAP DEMO',
                 onPressed: () =>
@@ -103,7 +103,7 @@ class MenuPage extends StatelessWidget {
                 variant: FiftyButtonVariant.outline,
                 expanded: true,
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftyButton(
                 label: 'LIFECYCLE DEMO',
                 onPressed: () =>
@@ -111,7 +111,7 @@ class MenuPage extends StatelessWidget {
                 variant: FiftyButtonVariant.outline,
                 expanded: true,
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
               FiftyButton(
                 label: 'HORIZONTAL DEMO',
                 onPressed: () =>
@@ -132,7 +132,7 @@ class MenuPage extends StatelessWidget {
                   color: colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
               ),
-              const SizedBox(height: FiftySpacing.md),
+              SizedBox(height: FiftySpacing.md),
             ],
           ),
         ),

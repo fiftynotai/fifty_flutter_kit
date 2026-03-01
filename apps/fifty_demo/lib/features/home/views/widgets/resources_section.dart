@@ -30,7 +30,7 @@ class ResourcesSection extends StatelessWidget {
               variant: FiftySnackbarVariant.info,
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           _ResourceCard(
             icon: Icons.menu_book,
             title: 'DOCS',
@@ -40,7 +40,7 @@ class ResourcesSection extends StatelessWidget {
               variant: FiftySnackbarVariant.info,
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           _ResourceCard(
             icon: Icons.folder_outlined,
             title: 'EXAMPLES',
@@ -83,7 +83,7 @@ class _ResourceCard extends StatelessWidget {
 
     return FiftyCard(
       onTap: onTap,
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: SizedBox(
         width: _cardWidth,
         child: Column(
@@ -102,7 +102,7 @@ class _ResourceCard extends StatelessWidget {
                 size: _iconSize,
               ),
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             Text(
               title,
               style: TextStyle(

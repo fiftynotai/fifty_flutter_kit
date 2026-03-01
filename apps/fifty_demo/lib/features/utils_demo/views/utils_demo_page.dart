@@ -39,7 +39,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                   subtitle: 'timeAgo(), format(), isToday, and more',
                 ),
                 _buildDateTimeSection(context, viewModel),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Color Extensions
                 const FiftySectionHeader(
@@ -47,7 +47,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                   subtitle: 'HexColor parsing and conversion',
                 ),
                 _buildColorSection(context, viewModel),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Responsive Utilities
                 const FiftySectionHeader(
@@ -55,7 +55,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                   subtitle: 'Device type detection and breakpoints',
                 ),
                 _buildResponsiveSection(context),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // ApiResponse State Machine
                 const FiftySectionHeader(
@@ -80,7 +80,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     UtilsDemoViewModel viewModel,
   ) {
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: List.generate(viewModel.sampleDates.length, (index) {
           final date = viewModel.sampleDates[index];
@@ -98,7 +98,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.sm),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.sm),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -112,7 +112,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           Row(
             children: [
               Expanded(
@@ -122,7 +122,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                   date.timeAgo(),
                 ),
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Expanded(
                 child: _buildDateChip(
                   context,
@@ -130,7 +130,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                   date.format(),
                 ),
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Expanded(
                 child: _buildDateChip(
                   context,
@@ -149,7 +149,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.sm),
+      padding: EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: FiftyRadii.smRadius,
@@ -191,7 +191,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     UtilsDemoViewModel viewModel,
   ) {
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           for (final hex in UtilsDemoViewModel.sampleHexColors)
@@ -211,7 +211,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     final roundTrip = viewModel.colorToHex(color);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         children: [
           Container(
@@ -225,7 +225,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
               ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,7 +268,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     final gridCols = ResponsiveUtils.gridColumns(context);
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Column(
         children: [
           // Device type badge
@@ -297,13 +297,13 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
               ),
             ),
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           _buildResponsiveRow(context, 'Screen Width', '${screenWidth.toStringAsFixed(0)}px'),
           _buildResponsiveRow(context, 'Screen Height', '${screenHeight.toStringAsFixed(0)}px'),
           _buildResponsiveRow(context, 'Orientation', isPortrait ? 'Portrait' : 'Landscape'),
           _buildResponsiveRow(context, 'Responsive Padding', '${responsivePadding.toStringAsFixed(0)}px'),
           _buildResponsiveRow(context, 'Grid Columns', '$gridCols'),
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           // Breakpoint thresholds
           Text(
             'BREAKPOINTS',
@@ -315,7 +315,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
               letterSpacing: 1,
             ),
           ),
-          const SizedBox(height: FiftySpacing.xs),
+          SizedBox(height: FiftySpacing.xs),
           _buildBreakpointRow(context, 'Mobile', '< 600px', ResponsiveUtils.isMobile(context)),
           _buildBreakpointRow(context, 'Tablet', '600 - 1024px', ResponsiveUtils.isTablet(context)),
           _buildBreakpointRow(context, 'Desktop', '1024 - 1440px', ResponsiveUtils.isDesktop(context)),
@@ -329,7 +329,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: FiftySpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: FiftySpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -377,7 +377,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Expanded(
             child: Text(
               label,
@@ -423,7 +423,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
           final state = viewModel.apiState.value;
 
           return FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -437,7 +437,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     Text(
                       viewModel.apiStatusLabel,
                       style: TextStyle(
@@ -450,7 +450,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 // State properties
                 _buildApiProperty(context, 'isLoading', '${state.isLoading}'),
                 _buildApiProperty(context, 'hasData', '${state.hasData}'),
@@ -458,10 +458,10 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                 _buildApiProperty(context, 'isIdle', '${state.isIdle}'),
                 _buildApiProperty(context, 'isSuccess', '${state.isSuccess}'),
                 if (state.hasData) ...[
-                  const SizedBox(height: FiftySpacing.sm),
+                  SizedBox(height: FiftySpacing.sm),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(FiftySpacing.sm),
+                    padding: EdgeInsets.all(FiftySpacing.sm),
                     decoration: BoxDecoration(
                       color: colorScheme.surfaceContainerHighest,
                       borderRadius: FiftyRadii.smRadius,
@@ -477,10 +477,10 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                   ),
                 ],
                 if (state.hasError) ...[
-                  const SizedBox(height: FiftySpacing.sm),
+                  SizedBox(height: FiftySpacing.sm),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(FiftySpacing.sm),
+                    padding: EdgeInsets.all(FiftySpacing.sm),
                     decoration: BoxDecoration(
                       color: colorScheme.error.withValues(alpha: 0.1),
                       borderRadius: FiftyRadii.smRadius,
@@ -499,7 +499,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
             ),
           );
         }),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
 
         // Action buttons
         Row(
@@ -511,7 +511,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
                 onPressed: () => actions.onCycleApiStatesTapped(context),
               ),
             ),
-            const SizedBox(width: FiftySpacing.md),
+            SizedBox(width: FiftySpacing.md),
             Expanded(
               child: FiftyButton(
                 label: 'RESET',

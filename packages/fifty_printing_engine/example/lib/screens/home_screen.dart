@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Printing Engine Example'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Header
           FiftyCard(
@@ -29,14 +29,14 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.sm),
+                SizedBox(height: FiftySpacing.sm),
                 Text(
                   'Production-grade Flutter package for multi-printer ESC/POS printing',
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
                 Text(
                   'Version: 1.0.0',
                   style: textTheme.bodySmall?.copyWith(
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.xxl),
+          SizedBox(height: FiftySpacing.xxl),
 
           // Features
           const FiftySectionHeader(
@@ -95,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                 'Per-printer success/failure details with error messages',
           ),
 
-          const SizedBox(height: FiftySpacing.xxl),
+          SizedBox(height: FiftySpacing.xxl),
 
           // Quick Start
           const FiftySectionHeader(
@@ -123,7 +123,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.xxl),
+          SizedBox(height: FiftySpacing.xxl),
 
           // Navigation Hint
           FiftyCard(
@@ -133,7 +133,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Icon(Icons.info_outline,
                     color: colorScheme.onPrimaryContainer),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 Expanded(
                   child: Text(
                     'Use the bottom navigation to explore different features',
@@ -170,7 +170,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: FiftySpacing.md),
+        SizedBox(width: FiftySpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: FiftySpacing.xs),
+              SizedBox(height: FiftySpacing.xs),
               Text(
                 description,
                 style: TextStyle(

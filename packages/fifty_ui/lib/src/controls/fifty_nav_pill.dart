@@ -98,7 +98,7 @@ class FiftyNavPill extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.sm,
         ),
@@ -118,7 +118,7 @@ class FiftyNavPill extends StatelessWidget {
                 size: 16,
                 color: isActive ? color : colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(width: FiftySpacing.xs),
+              SizedBox(width: FiftySpacing.xs),
             ],
             Text(
               label,
@@ -167,7 +167,7 @@ class FiftyNavPillBar extends StatelessWidget {
     required this.onSelected,
     super.key,
     this.activeColor,
-    this.spacing = FiftySpacing.sm,
+    this.spacing = 8,
     this.padding,
   });
 

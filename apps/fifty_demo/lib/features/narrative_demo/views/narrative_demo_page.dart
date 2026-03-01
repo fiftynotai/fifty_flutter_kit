@@ -40,7 +40,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                 children: [
                   // Status indicator
                   _buildStatusBar(context, viewModel),
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
 
                   // Mode Selection
                   const FiftySectionHeader(
@@ -48,12 +48,12 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                     subtitle: 'Select instruction type to demonstrate',
                   ),
                   _buildModeSelector(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.xl),
+                  SizedBox(height: FiftySpacing.xl),
 
                   // Phase indicator (for navigate mode)
                   if (viewModel.currentPhase.isNotEmpty) ...[
                     _buildPhaseIndicator(context, viewModel),
-                    const SizedBox(height: FiftySpacing.lg),
+                    SizedBox(height: FiftySpacing.lg),
                   ],
 
                   // Sentence Display
@@ -62,33 +62,33 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                     subtitle: _getModeSubtitle(viewModel.selectedMode),
                   ),
                   _buildDialogueDisplay(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
 
                   // Choice buttons (for ask mode)
                   if (viewModel.isShowingChoices) ...[
                     _buildChoiceButtons(context, viewModel, actions),
-                    const SizedBox(height: FiftySpacing.lg),
+                    SizedBox(height: FiftySpacing.lg),
                   ],
 
                   // Continue button (for wait mode)
                   if (viewModel.isWaitingForInput &&
                       !viewModel.isShowingChoices) ...[
                     _buildContinueButton(context, viewModel, actions),
-                    const SizedBox(height: FiftySpacing.lg),
+                    SizedBox(height: FiftySpacing.lg),
                   ],
 
                   // Progress Bar
                   _buildProgressBar(context, viewModel),
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
 
                   // Playback Controls
                   _buildPlaybackControls(context, viewModel, actions),
-                  const SizedBox(height: FiftySpacing.lg),
+                  SizedBox(height: FiftySpacing.lg),
 
                   // TTS Toggle (for read/combined modes)
                   if (_showTtsToggle(viewModel.selectedMode)) ...[
                     _buildTtsToggle(context, viewModel, actions),
-                    const SizedBox(height: FiftySpacing.lg),
+                    SizedBox(height: FiftySpacing.lg),
                   ],
 
                   // Queue Panel
@@ -155,7 +155,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      margin: const EdgeInsets.only(right: FiftySpacing.sm),
+      margin: EdgeInsets.only(right: FiftySpacing.sm),
       padding: const EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
@@ -173,7 +173,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
             size: 14,
             color: colorScheme.secondary,
           ),
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
           Text(
             'TTS',
             style: TextStyle(
@@ -212,7 +212,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
             size: 14,
             color: successColor,
           ),
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
           Text(
             'AUTO',
             style: TextStyle(
@@ -269,7 +269,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                       ? colorScheme.primary
                       : colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
-                const SizedBox(height: FiftySpacing.xs),
+                SizedBox(height: FiftySpacing.xs),
                 Text(
                   mode.displayName.toUpperCase(),
                   style: TextStyle(
@@ -311,7 +311,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     final accentColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         children: [
           Icon(
@@ -319,7 +319,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
             color: accentColor,
             size: 20,
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             'CURRENT PHASE:',
             style: TextStyle(
@@ -328,7 +328,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
               color: colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(width: FiftySpacing.sm),
+          SizedBox(width: FiftySpacing.sm),
           Text(
             viewModel.currentPhase.toUpperCase(),
             style: TextStyle(
@@ -364,9 +364,9 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
             letterSpacing: 2,
           ),
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         ...viewModel.currentChoices.map((choice) => Padding(
-          padding: const EdgeInsets.only(bottom: FiftySpacing.sm),
+          padding: EdgeInsets.only(bottom: FiftySpacing.sm),
           child: GestureDetector(
             onTap: () => actions.onChoiceSelected(context, choice),
             child: FiftyCard(
@@ -381,7 +381,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                     size: 14,
                     color: colorScheme.primary,
                   ),
-                  const SizedBox(width: FiftySpacing.sm),
+                  SizedBox(width: FiftySpacing.sm),
                   Expanded(
                     child: Text(
                       choice,
@@ -398,7 +398,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
           ),
         )),
         if (viewModel.lastSelectedChoice.isNotEmpty) ...[
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Text(
             'Last choice: "${viewModel.lastSelectedChoice}"',
             style: TextStyle(
@@ -440,7 +440,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                 color: colorScheme.onPrimary,
                 size: 20,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Text(
                 'TAP TO CONTINUE',
                 style: TextStyle(
@@ -466,7 +466,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -479,7 +479,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                     : colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 20,
               ),
-              const SizedBox(width: FiftySpacing.sm),
+              SizedBox(width: FiftySpacing.sm),
               Text(
                 'Text-to-Speech',
                 style: TextStyle(
@@ -512,7 +512,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     return GestureDetector(
       onTap: actions.onDialogueTapped,
       child: FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -540,7 +540,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
               ],
             ),
             if (sentence?.speaker != null || sentence != null)
-              const SizedBox(height: FiftySpacing.sm),
+              SizedBox(height: FiftySpacing.sm),
             // Dialogue text
             SizedBox(
               height: 80,
@@ -569,7 +569,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                 ],
               ),
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             // Hint
             Text(
               _getHintText(viewModel),
@@ -623,7 +623,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 12, color: badgeColor),
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
           Text(
             instruction.toUpperCase(),
             style: TextStyle(
@@ -705,7 +705,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         ClipRRect(
           borderRadius: BorderRadius.circular(FiftyRadii.sm),
           child: LinearProgressIndicator(
@@ -727,7 +727,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.md),
+      padding: EdgeInsets.all(FiftySpacing.md),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -782,7 +782,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
 
     if (viewModel.isEmpty) {
       return FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Center(
           child: Text(
             'No sentences in queue',
@@ -797,7 +797,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     }
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -825,9 +825,9 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(height: 1, color: colorScheme.outline),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           // Sentence list
           ...viewModel.sentences.asMap().entries.map((entry) {
             final index = entry.key;
@@ -842,7 +842,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                   vertical: FiftySpacing.sm,
                   horizontal: FiftySpacing.sm,
                 ),
-                margin: const EdgeInsets.only(bottom: FiftySpacing.xs),
+                margin: EdgeInsets.only(bottom: FiftySpacing.xs),
                 decoration: BoxDecoration(
                   color: isCurrent
                       ? colorScheme.primary.withValues(alpha: 0.1)
@@ -895,7 +895,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                               ),
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     // Instruction type badge
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -917,7 +917,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.xs),
+                    SizedBox(width: FiftySpacing.xs),
                     // Speaker badge
                     if (sentence.speaker != null) ...[
                       Container(
@@ -939,7 +939,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: FiftySpacing.xs),
+                      SizedBox(width: FiftySpacing.xs),
                     ],
                     // Sentence preview
                     Expanded(
@@ -1018,7 +1018,7 @@ class _ControlButton extends StatelessWidget {
                 size: isPrimary ? 28 : 22,
               ),
             ),
-            const SizedBox(height: FiftySpacing.xs),
+            SizedBox(height: FiftySpacing.xs),
             Text(
               label,
               style: TextStyle(

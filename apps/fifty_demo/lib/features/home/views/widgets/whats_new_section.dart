@@ -88,7 +88,7 @@ class _UpdateItemWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -112,7 +112,7 @@ class _UpdateItemWidget extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +127,7 @@ class _UpdateItemWidget extends StatelessWidget {
                     letterSpacing: 0.25,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.xs),
+                SizedBox(height: FiftySpacing.xs),
                 Text(
                   item.description,
                   style: TextStyle(

@@ -17,13 +17,13 @@ class SplashDemoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('ConnectivityCheckerSplash')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Splash visual preview
             FiftyCard(
-              padding: const EdgeInsets.all(FiftySpacing.xxl),
+              padding: EdgeInsets.all(FiftySpacing.xxl),
               child: SizedBox(
                 height: 280,
                 child: Center(
@@ -46,7 +46,7 @@ class SplashDemoScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: FiftySpacing.xl),
+                      SizedBox(height: FiftySpacing.xl),
 
                       // Loading indicator
                       const FiftyLoadingIndicator(
@@ -54,7 +54,7 @@ class SplashDemoScreen extends StatelessWidget {
                         style: FiftyLoadingStyle.dots,
                         size: FiftyLoadingSize.medium,
                       ),
-                      const SizedBox(height: FiftySpacing.lg),
+                      SizedBox(height: FiftySpacing.lg),
 
                       // Subtitle
                       Text(
@@ -70,7 +70,7 @@ class SplashDemoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: FiftySpacing.xl),
+            SizedBox(height: FiftySpacing.xl),
 
             // Splash configuration
             FiftyDataSlate(
@@ -86,25 +86,25 @@ class SplashDemoScreen extends StatelessWidget {
                     : 'Default placeholder',
               },
             ),
-            const SizedBox(height: FiftySpacing.lg),
+            SizedBox(height: FiftySpacing.lg),
 
             // Logo priority
             const FiftySectionHeader(title: 'LOGO PRIORITY'),
-            const SizedBox(height: FiftySpacing.md),
+            SizedBox(height: FiftySpacing.md),
             _buildPriorityItem(
               context,
               number: '1',
               title: 'Widget logoBuilder',
               active: false,
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             _buildPriorityItem(
               context,
               number: '2',
               title: 'ConnectivityConfig.logoBuilder',
               active: ConnectivityConfig.logoBuilder != null,
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             _buildPriorityItem(
               context,
               number: '3',
@@ -151,7 +151,7 @@ class SplashDemoScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: FiftySpacing.md),
+          SizedBox(width: FiftySpacing.md),
           Expanded(
             child: Text(
               title,

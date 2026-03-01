@@ -38,7 +38,7 @@ class FeatureNavCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: FiftyCard(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         child: Row(
           children: [
             // Icon
@@ -58,7 +58,7 @@ class FeatureNavCard extends StatelessWidget {
                 size: 24,
               ),
             ),
-            const SizedBox(width: FiftySpacing.lg),
+            SizedBox(width: FiftySpacing.lg),
             // Text content
             Expanded(
               child: Column(
@@ -74,7 +74,7 @@ class FeatureNavCard extends StatelessWidget {
                       letterSpacing: 1,
                     ),
                   ),
-                  const SizedBox(height: FiftySpacing.xs),
+                  SizedBox(height: FiftySpacing.xs),
                   Text(
                     subtitle,
                     style: TextStyle(

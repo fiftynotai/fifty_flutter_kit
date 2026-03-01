@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-03-01
+
+### BREAKING CHANGES
+
+- `const` keyword removed from all widget expressions using `FiftySpacing.*` (values are now getters, not compile-time constants)
+- Widgets now resolve colors from `Theme.of(context).colorScheme` and `FiftyThemeExtension` instead of direct `FiftyColors.*` / `FiftyShadows.*` access
+
+### Changed
+
+- `FiftyButton._getShadow()` uses `FiftyThemeExtension.shadowPrimary` instead of `FiftyShadows.primary`
+- `FiftyBadge` variant colors resolved from `colorScheme` (tertiary, onSurfaceVariant)
+- 8 shadow references migrated from `FiftyShadows.sm/md/lg` to `FiftyThemeExtension.shadowSm/Md/Lg`
+- `extension()!` force-unwrap converted to nullable fallback pattern
+
 ## [0.6.2] - 2026-02-22
 
 ### Fixed

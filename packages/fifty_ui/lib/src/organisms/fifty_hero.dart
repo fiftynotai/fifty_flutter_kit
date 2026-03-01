@@ -167,7 +167,7 @@ class FiftyHeroSection extends StatelessWidget {
     this.glitchOnMount = false,
     this.titleGradient,
     this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.spacing = FiftySpacing.lg,
+    this.spacing = 16,
   });
 
   /// The main headline text.

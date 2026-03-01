@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.lg,
@@ -175,7 +175,7 @@ class _ChannelManagementSection extends StatelessWidget {
           prefixStyle: FiftyPrefixStyle.chevron,
           onChanged: (value) => controller.channelTopic.value = value,
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         Obx(() {
           final connected = controller.isConnected.value;
           return Wrap(
@@ -209,7 +209,7 @@ class _ChannelManagementSection extends StatelessWidget {
             ],
           );
         }),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Obx(() {
           if (controller.joinedChannels.isEmpty) {
             return Text(
@@ -228,9 +228,9 @@ class _ChannelManagementSection extends StatelessWidget {
                 .map(
                   (topic) => Padding(
                     padding:
-                        const EdgeInsets.only(bottom: FiftySpacing.xs),
+                        EdgeInsets.only(bottom: FiftySpacing.xs),
                     child: FiftyCard(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: FiftySpacing.md,
                         vertical: FiftySpacing.sm,
                       ),
@@ -243,7 +243,7 @@ class _ChannelManagementSection extends StatelessWidget {
                             size: 16,
                             color: colorScheme.primary,
                           ),
-                          const SizedBox(width: FiftySpacing.sm),
+                          SizedBox(width: FiftySpacing.sm),
                           Expanded(
                             child: Text(
                               topic,
@@ -316,7 +316,7 @@ class _MessagingSection extends StatelessWidget {
             _sendMessage(controller, messageController);
           },
         ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         Obx(() {
           final hasChannels = controller.joinedChannels.isNotEmpty;
           final hasMessage = controller.messageInput.value.isNotEmpty;
@@ -331,7 +331,7 @@ class _MessagingSection extends StatelessWidget {
                 : null,
           );
         }),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Obx(() {
           if (controller.messages.isEmpty) {
             return Text(
@@ -345,7 +345,7 @@ class _MessagingSection extends StatelessWidget {
           }
 
           return FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             scanlineOnHover: false,
             hoverScale: 1.0,
             child: SizedBox(
@@ -359,7 +359,7 @@ class _MessagingSection extends StatelessWidget {
                       '${_pad(time.hour)}:${_pad(time.minute)}:${_pad(time.second)}';
 
                   return Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                         vertical: FiftySpacing.xs / 2),
                     child: Text.rich(
                       TextSpan(
@@ -457,7 +457,7 @@ class _ConfigurationSection extends StatelessWidget {
             'Max Backoff': '${reconnect.maxBackoffSeconds}s',
           },
         ),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         const FiftyDataSlate(
           title: 'Heartbeat Config',
           data: {
@@ -495,7 +495,7 @@ class _ControlsSection extends StatelessWidget {
             onChanged: (_) => controller.toggleAutoReconnect(),
           ),
         ),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Obx(
           () => FiftySegmentedControl<LogLevel>(
             segments: LogLevel.values
@@ -563,9 +563,9 @@ class _ErrorStreamSection extends StatelessWidget {
                 .map(
                   (error) => Padding(
                     padding:
-                        const EdgeInsets.only(bottom: FiftySpacing.sm),
+                        EdgeInsets.only(bottom: FiftySpacing.sm),
                     child: FiftyCard(
-                      padding: const EdgeInsets.all(FiftySpacing.md),
+                      padding: EdgeInsets.all(FiftySpacing.md),
                       size: FiftyCardSize.standard,
                       scanlineOnHover: false,
                       hoverScale: 1.0,
@@ -577,7 +577,7 @@ class _ErrorStreamSection extends StatelessWidget {
                             size: 16,
                             color: colorScheme.error,
                           ),
-                          const SizedBox(width: FiftySpacing.sm),
+                          SizedBox(width: FiftySpacing.sm),
                           Expanded(
                             child: Column(
                               crossAxisAlignment:
@@ -596,7 +596,7 @@ class _ErrorStreamSection extends StatelessWidget {
                                         .letterSpacingLabel,
                                   ),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                     height: FiftySpacing.xs / 2),
                                 Text(
                                   error.message,
@@ -665,7 +665,7 @@ class _EventLogSection extends StatelessWidget {
           }
 
           return FiftyCard(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             scanlineOnHover: false,
             hoverScale: 1.0,
             child: SizedBox(

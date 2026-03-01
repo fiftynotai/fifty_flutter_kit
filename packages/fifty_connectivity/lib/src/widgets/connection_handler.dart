@@ -110,10 +110,10 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
       color: colorScheme.surface,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(FiftySpacing.xxl),
+          padding: EdgeInsets.all(FiftySpacing.xxl),
           child: FiftyCard(
             onTap: tryAgainAction,
-            padding: const EdgeInsets.all(FiftySpacing.xxxl),
+            padding: EdgeInsets.all(FiftySpacing.xxxl),
             backgroundColor: colorScheme.surfaceContainerHighest,
             scanlineOnHover: true,
             child: Column(
@@ -125,7 +125,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                   size: MediaQuery.of(context).size.height / 6,
                   color: colorScheme.error,
                 ),
-                const SizedBox(height: FiftySpacing.xl),
+                SizedBox(height: FiftySpacing.xl),
 
                 // Title
                 Text(
@@ -138,7 +138,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                     letterSpacing: 4,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Subtitle
                 Text(
@@ -150,7 +150,7 @@ class ConnectionHandler extends GetWidget<ConnectionViewModel> {
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: FiftySpacing.xxl),
+                SizedBox(height: FiftySpacing.xxl),
 
                 // Retry button
                 FiftyButton(

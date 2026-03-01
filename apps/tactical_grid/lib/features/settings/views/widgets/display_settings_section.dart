@@ -52,7 +52,7 @@ class DisplaySettingsSection extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
 
           // Theme mode buttons
           Row(
@@ -65,7 +65,7 @@ class DisplaySettingsSection extends StatelessWidget {
                   onTap: () => actions.onThemeModeChanged(ThemeMode.dark),
                 ),
               ),
-              const SizedBox(width: FiftySpacing.md),
+              SizedBox(width: FiftySpacing.md),
               Expanded(
                 child: _ThemeModeCard(
                   label: 'LIGHT',
@@ -113,7 +113,7 @@ class _ThemeModeCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: FiftySpacing.lg,
           horizontal: FiftySpacing.md,
         ),
@@ -137,7 +137,7 @@ class _ThemeModeCard extends StatelessWidget {
               size: 28,
               color: isSelected ? colorScheme.primary : FiftyColors.slateGrey,
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
             Text(
               label,
               style: TextStyle(

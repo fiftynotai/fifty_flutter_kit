@@ -70,7 +70,7 @@ class FiftyTooltip extends StatelessWidget {
         fontWeight: FiftyTypography.regular,
         color: textColor,
       ),
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),

@@ -105,7 +105,7 @@ class FiftyStatCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: fifty?.fast ?? const Duration(milliseconds: 150),
         curve: fifty?.standardCurve ?? Curves.easeInOut,
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: FiftyRadii.xlRadius,
@@ -132,7 +132,7 @@ class FiftyStatCard extends StatelessWidget {
                 color: labelColor,
               ),
             ),
-            const SizedBox(height: FiftySpacing.xs),
+            SizedBox(height: FiftySpacing.xs),
             Text(
               value,
               style: TextStyle(
@@ -150,7 +150,7 @@ class FiftyStatCard extends StatelessWidget {
 
   Widget _buildIconContainer(Color bgColor, Color fgColor) {
     return Container(
-      padding: const EdgeInsets.all(FiftySpacing.sm),
+      padding: EdgeInsets.all(FiftySpacing.sm),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: FiftyRadii.lgRadius,
@@ -182,7 +182,7 @@ class FiftyStatCard extends StatelessWidget {
     };
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),

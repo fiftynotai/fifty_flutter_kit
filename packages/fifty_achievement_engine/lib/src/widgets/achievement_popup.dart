@@ -175,8 +175,8 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             child: GestureDetector(
               onTap: widget.onTap ?? _dismiss,
               child: Container(
-              margin: const EdgeInsets.all(FiftySpacing.md),
-              padding: const EdgeInsets.all(FiftySpacing.md),
+              margin: EdgeInsets.all(FiftySpacing.md),
+              padding: EdgeInsets.all(FiftySpacing.md),
               constraints: const BoxConstraints(maxWidth: 400),
               decoration: BoxDecoration(
                 color: widget.backgroundColor ??
@@ -200,7 +200,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildIcon(context, rarityColor),
-                  const SizedBox(width: FiftySpacing.md),
+                  SizedBox(width: FiftySpacing.md),
                   Flexible(child: _buildContent(context, rarityColor)),
                 ],
               ),
@@ -269,7 +269,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             color: rarityColor,
           ),
         ),
-        const SizedBox(height: FiftySpacing.xs),
+        SizedBox(height: FiftySpacing.xs),
         Text(
           widget.achievement.name,
           style: TextStyle(
@@ -280,7 +280,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
           ),
         ),
         if (widget.achievement.description != null) ...[
-          const SizedBox(height: FiftySpacing.xs / 2),
+          SizedBox(height: FiftySpacing.xs / 2),
           Text(
             widget.achievement.description!,
             style: TextStyle(
@@ -292,11 +292,11 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             overflow: TextOverflow.ellipsis,
           ),
         ],
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         Row(
           children: [
             _buildRarityBadge(rarityColor),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
             Text(
               '+${widget.achievement.points} pts',
               style: TextStyle(
@@ -314,7 +314,7 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
 
   Widget _buildRarityBadge(Color rarityColor) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs / 2,
       ),

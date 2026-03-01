@@ -10,7 +10,7 @@ void main() {
     test('creates painter with default values', () {
       const painter = HalftonePainter();
 
-      expect(painter.color, FiftyColors.cream);
+      expect(painter.color, const Color(0xFFFFF8F0));
       expect(painter.dotRadius, 1.0);
       expect(painter.spacing, 8.0);
       expect(painter.opacity, 0.05);

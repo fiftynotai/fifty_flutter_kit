@@ -29,7 +29,7 @@ class FeedbackSection extends StatelessWidget {
       children: [
         // Loading Indicators
         const SectionLabel(label: 'LOADING INDICATORS'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         const FiftyCard(
           padding: EdgeInsets.all(FiftySpacing.lg),
           child: Row(
@@ -46,17 +46,17 @@ class FeedbackSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Status Badges
         const SectionLabel(label: 'STATUS BADGES'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Builder(
           builder: (context) {
             final colorScheme = Theme.of(context).colorScheme;
             final fiftyTheme = Theme.of(context).extension<FiftyThemeExtension>();
             return FiftyCard(
-              padding: const EdgeInsets.all(FiftySpacing.lg),
+              padding: EdgeInsets.all(FiftySpacing.lg),
               child: Wrap(
                 spacing: FiftySpacing.md,
                 runSpacing: FiftySpacing.md,
@@ -79,11 +79,11 @@ class FeedbackSection extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Toast/Snackbar - Now triggers actual FiftySnackbar
         const SectionLabel(label: 'TOAST NOTIFICATION'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Wrap(
           spacing: FiftySpacing.sm,
           runSpacing: FiftySpacing.sm,
@@ -130,16 +130,16 @@ class FeedbackSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: FiftySpacing.xl),
+        SizedBox(height: FiftySpacing.xl),
 
         // Empty State
         const SectionLabel(label: 'EMPTY STATE'),
-        const SizedBox(height: FiftySpacing.md),
+        SizedBox(height: FiftySpacing.md),
         Builder(
           builder: (context) {
             final colorScheme = Theme.of(context).colorScheme;
             return FiftyCard(
-              padding: const EdgeInsets.all(FiftySpacing.xxl),
+              padding: EdgeInsets.all(FiftySpacing.xxl),
               child: Center(
                 child: Column(
                   children: [
@@ -148,7 +148,7 @@ class FeedbackSection extends StatelessWidget {
                       size: 48,
                       color: colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(height: FiftySpacing.md),
+                    SizedBox(height: FiftySpacing.md),
                     Text(
                       'NO DATA FOUND',
                       style: TextStyle(
@@ -157,7 +157,7 @@ class FeedbackSection extends StatelessWidget {
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: FiftySpacing.xs),
+                    SizedBox(height: FiftySpacing.xs),
                     Text(
                       'Check back later or try a different filter',
                       style: TextStyle(
@@ -221,7 +221,7 @@ class _LoadingIndicatorDemo extends StatelessWidget {
               valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
             ),
           ),
-        const SizedBox(height: FiftySpacing.sm),
+        SizedBox(height: FiftySpacing.sm),
         Text(
           label,
           style: TextStyle(
@@ -271,7 +271,7 @@ class _StatusBadge extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: FiftySpacing.xs),
+          SizedBox(width: FiftySpacing.xs),
           Text(
             label,
             style: TextStyle(

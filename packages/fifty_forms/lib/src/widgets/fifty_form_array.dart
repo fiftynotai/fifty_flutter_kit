@@ -112,7 +112,7 @@ class FiftyFormArray extends StatefulWidget {
     this.initialCount = 1,
     this.animate = true,
     this.animationDuration = const Duration(milliseconds: 300),
-    this.itemSpacing = FiftySpacing.lg,
+    this.itemSpacing = 16,
     this.addLabel,
   });
 
@@ -272,7 +272,7 @@ class _FiftyFormArrayState extends State<FiftyFormArray> {
                     ),
               ),
             ),
-            const SizedBox(height: FiftySpacing.sm),
+            SizedBox(height: FiftySpacing.sm),
           ],
           widget.addButtonBuilder?.call(_addItem) ??
               FiftyButton(
@@ -317,13 +317,13 @@ class _ArrayItemWrapper extends StatelessWidget {
         children: [
           // Header with index and remove button
           Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.md,
               vertical: FiftySpacing.sm,
             ),
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(FiftyRadii.lg - 1),
                 topRight: Radius.circular(FiftyRadii.lg - 1),
               ),
@@ -354,7 +354,7 @@ class _ArrayItemWrapper extends StatelessWidget {
           ),
           // Item content
           Padding(
-            padding: const EdgeInsets.all(FiftySpacing.md),
+            padding: EdgeInsets.all(FiftySpacing.md),
             child: child,
           ),
         ],

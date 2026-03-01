@@ -34,7 +34,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
         title: const Text('Ticket Builder'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(FiftySpacing.lg),
+        padding: EdgeInsets.all(FiftySpacing.lg),
         children: [
           // Instructions Card
           FiftyCard(
@@ -44,7 +44,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
               children: [
                 Icon(Icons.info_outline,
                     color: colorScheme.onPrimaryContainer),
-                const SizedBox(width: FiftySpacing.md),
+                SizedBox(width: FiftySpacing.md),
                 Expanded(
                   child: Text(
                     'Build a custom ticket with text formatting',
@@ -58,7 +58,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Text Input
           FiftyCard(
@@ -80,7 +80,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Formatting Options
           FiftyCard(
@@ -118,7 +118,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                   ],
                 ),
 
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Text Size
                 const FiftySectionHeader(
@@ -151,7 +151,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                   expanded: true,
                 ),
 
-                const SizedBox(height: FiftySpacing.lg),
+                SizedBox(height: FiftySpacing.lg),
 
                 // Alignment
                 const FiftySectionHeader(
@@ -190,7 +190,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             ),
           ),
 
-          const SizedBox(height: FiftySpacing.xxl),
+          SizedBox(height: FiftySpacing.xxl),
 
           // Print Button
           FiftyButton(
@@ -200,7 +200,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
             expanded: true,
           ),
 
-          const SizedBox(height: FiftySpacing.lg),
+          SizedBox(height: FiftySpacing.lg),
 
           // Preview Card
           FiftyCard(
@@ -214,7 +214,7 @@ class _TicketBuilderScreenState extends State<TicketBuilderScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(FiftySpacing.lg),
+                  padding: EdgeInsets.all(FiftySpacing.lg),
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHighest,
                     borderRadius: FiftyRadii.lgRadius,

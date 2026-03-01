@@ -71,7 +71,7 @@ void main() {
 
     testWidgets('applies custom trailing text color', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
-        const FiftyListTile(
+        FiftyListTile(
           title: 'Deposit',
           leadingIcon: Icons.attach_money,
           trailingText: '+\$850.00',

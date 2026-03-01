@@ -313,11 +313,11 @@ class _FiftyButtonState extends State<FiftyButton>
               size: fontSize + 4,
               color: _isDisabled ? foregroundColor.withValues(alpha: 0.5) : foregroundColor,
             ),
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
           ],
           textWidget,
           if (widget.trailingIcon != null) ...[
-            const SizedBox(width: FiftySpacing.sm),
+            SizedBox(width: FiftySpacing.sm),
             Icon(
               widget.trailingIcon,
               size: fontSize + 4,
@@ -345,11 +345,11 @@ class _FiftyButtonState extends State<FiftyButton>
   EdgeInsetsGeometry _getPadding() {
     switch (widget.size) {
       case FiftyButtonSize.small:
-        return const EdgeInsets.symmetric(horizontal: FiftySpacing.md);
+        return EdgeInsets.symmetric(horizontal: FiftySpacing.md);
       case FiftyButtonSize.medium:
-        return const EdgeInsets.symmetric(horizontal: FiftySpacing.lg);
+        return EdgeInsets.symmetric(horizontal: FiftySpacing.lg);
       case FiftyButtonSize.large:
-        return const EdgeInsets.symmetric(horizontal: FiftySpacing.xl);
+        return EdgeInsets.symmetric(horizontal: FiftySpacing.xl);
     }
   }
 

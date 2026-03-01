@@ -76,7 +76,7 @@ void main() {
 
     testWidgets('applies gradient when provided', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
-        const FiftyHero(
+        FiftyHero(
           text: 'Test',
           gradient: LinearGradient(
             colors: [FiftyColors.burgundy, FiftyColors.cream],
@@ -216,7 +216,7 @@ void main() {
 
     testWidgets('applies gradient to title', (tester) async {
       await tester.pumpWidget(wrapWithTheme(
-        const FiftyHeroSection(
+        FiftyHeroSection(
           title: 'Main Title',
           titleGradient: LinearGradient(
             colors: [FiftyColors.burgundy, FiftyColors.cream],

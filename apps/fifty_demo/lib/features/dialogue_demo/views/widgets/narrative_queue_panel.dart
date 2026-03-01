@@ -32,7 +32,7 @@ class NarrativeQueuePanel extends StatelessWidget {
     final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return FiftyCard(
-      padding: const EdgeInsets.all(FiftySpacing.lg),
+      padding: EdgeInsets.all(FiftySpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,9 +60,9 @@ class NarrativeQueuePanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           Container(height: 1, color: colorScheme.outline),
-          const SizedBox(height: FiftySpacing.md),
+          SizedBox(height: FiftySpacing.md),
           // Sentence list
           ...sentences.asMap().entries.map((entry) {
             final index = entry.key;
@@ -77,7 +77,7 @@ class NarrativeQueuePanel extends StatelessWidget {
                   vertical: FiftySpacing.sm,
                   horizontal: FiftySpacing.sm,
                 ),
-                margin: const EdgeInsets.only(bottom: FiftySpacing.xs),
+                margin: EdgeInsets.only(bottom: FiftySpacing.xs),
                 decoration: BoxDecoration(
                   color: isCurrent
                       ? colorScheme.primary.withValues(alpha: 0.1)
@@ -129,7 +129,7 @@ class NarrativeQueuePanel extends StatelessWidget {
                               ),
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.sm),
+                    SizedBox(width: FiftySpacing.sm),
                     // Sentence preview
                     Expanded(
                       child: Text(

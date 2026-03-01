@@ -103,7 +103,7 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
     final lineNumberWidth = '${lines.length}'.length * 10.0 + FiftySpacing.md;
 
     final effectivePadding = widget.padding ??
-        const EdgeInsets.all(FiftySpacing.md);
+        EdgeInsets.all(FiftySpacing.md);
     final effectiveBackgroundColor = widget.backgroundColor ??
         colorScheme.surfaceContainerHighest;
     final borderColor = colorScheme.outline;
@@ -148,12 +148,12 @@ class _FiftyCodeBlockState extends State<FiftyCodeBlock> {
                         }),
                       ),
                     ),
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
                     Container(
                       width: 1,
                       color: borderColor.withValues(alpha: 0.5),
                     ),
-                    const SizedBox(width: FiftySpacing.md),
+                    SizedBox(width: FiftySpacing.md),
                   ],
                   Expanded(
                     child: SelectableText.rich(
@@ -329,7 +329,7 @@ class _CopyButtonState extends State<_CopyButton> {
         onTap: widget.onPressed,
         child: AnimatedContainer(
           duration: widget.duration,
-          padding: const EdgeInsets.all(FiftySpacing.xs),
+          padding: EdgeInsets.all(FiftySpacing.xs),
           decoration: BoxDecoration(
             color: _isHovered ? hoverBackgroundColor : Colors.transparent,
             borderRadius: FiftyRadii.smRadius,

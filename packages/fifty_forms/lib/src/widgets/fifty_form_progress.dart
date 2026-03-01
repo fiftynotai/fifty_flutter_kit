@@ -92,7 +92,7 @@ class FiftyFormProgress extends StatelessWidget {
         ),
         // Labels
         if (showLabels) ...[
-          const SizedBox(height: FiftySpacing.sm),
+          SizedBox(height: FiftySpacing.sm),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(totalSteps, (index) {
@@ -217,7 +217,7 @@ class _ConnectingLine extends StatelessWidget {
       duration: animationDuration,
       curve: Curves.easeInOut,
       height: 2,
-      margin: const EdgeInsets.symmetric(horizontal: FiftySpacing.xs),
+      margin: EdgeInsets.symmetric(horizontal: FiftySpacing.xs),
       decoration: BoxDecoration(
         color: isCompleted ? colorScheme.primary : colorScheme.outline,
         borderRadius: FiftyRadii.fullRadius,
