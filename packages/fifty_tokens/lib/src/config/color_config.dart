@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'parse_helpers.dart';
+
 /// Configuration for color tokens.
 ///
 /// All fields are required. Use [FiftyPreset.fdlV2.colors] as a starting
@@ -32,23 +34,23 @@ class FiftyColorConfig {
     required FiftyColorConfig fallback,
   }) {
     return FiftyColorConfig(
-      primary: _parseColor(map['primary']) ?? fallback.primary,
-      primaryHover: _parseColor(map['primaryHover']) ?? fallback.primaryHover,
-      background: _parseColor(map['background']) ?? fallback.background,
+      primary: parseColor(map['primary']) ?? fallback.primary,
+      primaryHover: parseColor(map['primaryHover']) ?? fallback.primaryHover,
+      background: parseColor(map['background']) ?? fallback.background,
       backgroundDark:
-          _parseColor(map['backgroundDark']) ?? fallback.backgroundDark,
-      secondary: _parseColor(map['secondary']) ?? fallback.secondary,
+          parseColor(map['backgroundDark']) ?? fallback.backgroundDark,
+      secondary: parseColor(map['secondary']) ?? fallback.secondary,
       secondaryHover:
-          _parseColor(map['secondaryHover']) ?? fallback.secondaryHover,
-      success: _parseColor(map['success']) ?? fallback.success,
-      accent: _parseColor(map['accent']) ?? fallback.accent,
-      surface: _parseColor(map['surface']) ?? fallback.surface,
-      surfaceDark: _parseColor(map['surfaceDark']) ?? fallback.surfaceDark,
-      warning: _parseColor(map['warning']) ?? fallback.warning,
-      error: _parseColor(map['error']) ?? fallback.error,
-      onPrimary: _parseColor(map['onPrimary']) ?? fallback.onPrimary,
+          parseColor(map['secondaryHover']) ?? fallback.secondaryHover,
+      success: parseColor(map['success']) ?? fallback.success,
+      accent: parseColor(map['accent']) ?? fallback.accent,
+      surface: parseColor(map['surface']) ?? fallback.surface,
+      surfaceDark: parseColor(map['surfaceDark']) ?? fallback.surfaceDark,
+      warning: parseColor(map['warning']) ?? fallback.warning,
+      error: parseColor(map['error']) ?? fallback.error,
+      onPrimary: parseColor(map['onPrimary']) ?? fallback.onPrimary,
       onBackground:
-          _parseColor(map['onBackground']) ?? fallback.onBackground,
+          parseColor(map['onBackground']) ?? fallback.onBackground,
       borderOpacity:
           (map['borderOpacity'] as num?)?.toDouble() ?? fallback.borderOpacity,
       focusOpacity:
@@ -141,16 +143,5 @@ class FiftyColorConfig {
       borderOpacity: borderOpacity ?? this.borderOpacity,
       focusOpacity: focusOpacity ?? this.focusOpacity,
     );
-  }
-
-  static Color? _parseColor(dynamic value) {
-    if (value == null) return null;
-    if (value is int) return Color(value);
-    if (value is String) {
-      var hex = value.replaceFirst('#', '').replaceFirst('0x', '');
-      if (hex.length == 6) hex = 'FF$hex';
-      return Color(int.parse(hex, radix: 16));
-    }
-    return null;
   }
 }

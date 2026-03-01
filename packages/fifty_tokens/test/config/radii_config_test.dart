@@ -19,6 +19,66 @@ void main() {
       });
     });
 
+    group('fromMap()', () {
+      final fallback = FiftyPreset.fdlV2.radii;
+
+      test('full valid map overrides all fields', () {
+        final config = FiftyRadiiConfig.fromMap(
+          {
+            'none': 1,
+            'sm': 6,
+            'md': 10,
+            'lg': 14,
+            'xl': 20,
+            'xxl': 28,
+            'xxxl': 36,
+            'full': 999,
+          },
+          fallback: fallback,
+        );
+
+        expect(config.none, 1);
+        expect(config.sm, 6);
+        expect(config.md, 10);
+        expect(config.lg, 14);
+        expect(config.xl, 20);
+        expect(config.xxl, 28);
+        expect(config.xxxl, 36);
+        expect(config.full, 999);
+      });
+
+      test('empty map returns all fallback values', () {
+        final config = FiftyRadiiConfig.fromMap({}, fallback: fallback);
+
+        expect(config.none, fallback.none);
+        expect(config.sm, fallback.sm);
+        expect(config.md, fallback.md);
+        expect(config.full, fallback.full);
+      });
+
+      test('partial map uses fallback for missing keys', () {
+        final config = FiftyRadiiConfig.fromMap(
+          {'sm': 6, 'xl': 20},
+          fallback: fallback,
+        );
+
+        expect(config.sm, 6);
+        expect(config.xl, 20);
+        expect(config.md, fallback.md);
+        expect(config.full, fallback.full);
+      });
+
+      test('non-num value throws TypeError', () {
+        expect(
+          () => FiftyRadiiConfig.fromMap(
+            {'sm': 'abc'},
+            fallback: fallback,
+          ),
+          throwsA(isA<TypeError>()),
+        );
+      });
+    });
+
     group('override radius values', () {
       test('override sm', () {
         FiftyTokens.configure(

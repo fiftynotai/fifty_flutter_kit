@@ -119,6 +119,35 @@ void main() {
         expect(config.sm.first.color, const Color(0xFF00FF00));
       });
 
+      test('malformed hex in shadow color falls back to transparent', () {
+        final config = FiftyShadowsConfig.fromMap(
+          {
+            'sm': [
+              {'dx': 0, 'dy': 1, 'blurRadius': 2, 'color': 'ZZZZZZ'},
+            ],
+          },
+          fallback: defaultConfig,
+        );
+
+        expect(config.sm.first.color, const Color(0x00000000));
+      });
+
+      test('non-Map items in shadow list are skipped', () {
+        final config = FiftyShadowsConfig.fromMap(
+          {
+            'sm': [
+              42,
+              'invalid',
+              {'dx': 0, 'dy': 1, 'blurRadius': 2, 'color': 0xFFFF0000},
+            ],
+          },
+          fallback: defaultConfig,
+        );
+
+        expect(config.sm.length, 1);
+        expect(config.sm.first.color, const Color(0xFFFF0000));
+      });
+
       test('non-list shadow value returns empty list', () {
         final config = FiftyShadowsConfig.fromMap(
           {'sm': 'invalid'},

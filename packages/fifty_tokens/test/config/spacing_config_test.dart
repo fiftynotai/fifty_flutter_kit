@@ -31,6 +31,89 @@ void main() {
       });
     });
 
+    group('fromMap()', () {
+      final fallback = FiftyPreset.fdlV2.spacing;
+
+      test('full valid map overrides all fields', () {
+        final config = FiftySpacingConfig.fromMap(
+          {
+            'base': 8,
+            'tight': 16,
+            'standard': 24,
+            'xs': 8,
+            'sm': 16,
+            'md': 24,
+            'lg': 32,
+            'xl': 40,
+            'xxl': 48,
+            'xxxl': 64,
+            'huge': 80,
+            'massive': 96,
+            'gutterDesktop': 48,
+            'gutterTablet': 32,
+            'gutterMobile': 24,
+          },
+          fallback: fallback,
+        );
+
+        expect(config.base, 8);
+        expect(config.tight, 16);
+        expect(config.standard, 24);
+        expect(config.xs, 8);
+        expect(config.sm, 16);
+        expect(config.md, 24);
+        expect(config.lg, 32);
+        expect(config.xl, 40);
+        expect(config.xxl, 48);
+        expect(config.xxxl, 64);
+        expect(config.huge, 80);
+        expect(config.massive, 96);
+        expect(config.gutterDesktop, 48);
+        expect(config.gutterTablet, 32);
+        expect(config.gutterMobile, 24);
+      });
+
+      test('empty map returns all fallback values', () {
+        final config = FiftySpacingConfig.fromMap({}, fallback: fallback);
+
+        expect(config.base, fallback.base);
+        expect(config.tight, fallback.tight);
+        expect(config.lg, fallback.lg);
+        expect(config.gutterDesktop, fallback.gutterDesktop);
+      });
+
+      test('partial map uses fallback for missing keys', () {
+        final config = FiftySpacingConfig.fromMap(
+          {'base': 8, 'lg': 32},
+          fallback: fallback,
+        );
+
+        expect(config.base, 8);
+        expect(config.lg, 32);
+        expect(config.tight, fallback.tight);
+        expect(config.gutterDesktop, fallback.gutterDesktop);
+      });
+
+      test('non-num value throws TypeError', () {
+        expect(
+          () => FiftySpacingConfig.fromMap(
+            {'base': 'abc'},
+            fallback: fallback,
+          ),
+          throwsA(isA<TypeError>()),
+        );
+      });
+
+      test('int values coerce to double', () {
+        final config = FiftySpacingConfig.fromMap(
+          {'base': 10},
+          fallback: fallback,
+        );
+
+        expect(config.base, 10.0);
+      });
+    });
+
     group('override individual values', () {
       test('override base', () {
         FiftyTokens.configure(

@@ -137,6 +137,136 @@ void main() {
       });
     });
 
+    group('fromMap()', () {
+      final fallback = FiftyPreset.fdlV2.colors;
+
+      test('full valid map overrides all fields', () {
+        final config = FiftyColorConfig.fromMap(
+          {
+            'primary': 0xFF111111,
+            'primaryHover': 0xFF222222,
+            'background': 0xFF333333,
+            'backgroundDark': 0xFF444444,
+            'secondary': 0xFF555555,
+            'secondaryHover': 0xFF666666,
+            'success': 0xFF777777,
+            'accent': 0xFF888888,
+            'surface': 0xFF999999,
+            'surfaceDark': 0xFFAAAAAA,
+            'warning': 0xFFBBBBBB,
+            'error': 0xFFCCCCCC,
+            'onPrimary': 0xFFDDDDDD,
+            'onBackground': 0xFFEEEEEE,
+            'borderOpacity': 0.1,
+            'focusOpacity': 0.8,
+          },
+          fallback: fallback,
+        );
+
+        expect(config.primary, const Color(0xFF111111));
+        expect(config.primaryHover, const Color(0xFF222222));
+        expect(config.background, const Color(0xFF333333));
+        expect(config.backgroundDark, const Color(0xFF444444));
+        expect(config.secondary, const Color(0xFF555555));
+        expect(config.secondaryHover, const Color(0xFF666666));
+        expect(config.success, const Color(0xFF777777));
+        expect(config.accent, const Color(0xFF888888));
+        expect(config.surface, const Color(0xFF999999));
+        expect(config.surfaceDark, const Color(0xFFAAAAAA));
+        expect(config.warning, const Color(0xFFBBBBBB));
+        expect(config.error, const Color(0xFFCCCCCC));
+        expect(config.onPrimary, const Color(0xFFDDDDDD));
+        expect(config.onBackground, const Color(0xFFEEEEEE));
+        expect(config.borderOpacity, 0.1);
+        expect(config.focusOpacity, 0.8);
+      });
+
+      test('empty map returns all fallback values', () {
+        final config = FiftyColorConfig.fromMap({}, fallback: fallback);
+
+        expect(config.primary, fallback.primary);
+        expect(config.secondary, fallback.secondary);
+        expect(config.borderOpacity, fallback.borderOpacity);
+        expect(config.focusOpacity, fallback.focusOpacity);
+      });
+
+      test('partial map uses fallback for missing keys', () {
+        final config = FiftyColorConfig.fromMap(
+          {'primary': 0xFFFF0000},
+          fallback: fallback,
+        );
+
+        expect(config.primary, const Color(0xFFFF0000));
+        expect(config.secondary, fallback.secondary);
+        expect(config.background, fallback.background);
+      });
+
+      test('parses hex string colors (#RRGGBB format)', () {
+        final config = FiftyColorConfig.fromMap(
+          {'primary': '#FF0000'},
+          fallback: fallback,
+        );
+
+        expect(config.primary, const Color(0xFFFF0000));
+      });
+
+      test('parses 0x-prefixed hex strings', () {
+        final config = FiftyColorConfig.fromMap(
+          {'primary': '0xFFAABBCC'},
+          fallback: fallback,
+        );
+
+        expect(config.primary, const Color(0xFFAABBCC));
+      });
+
+      test('parses int color values', () {
+        final config = FiftyColorConfig.fromMap(
+          {'primary': 0xFF00FF00},
+          fallback: fallback,
+        );
+
+        expect(config.primary, const Color(0xFF00FF00));
+      });
+
+      test('malformed hex falls back gracefully', () {
+        final config = FiftyColorConfig.fromMap(
+          {'primary': 'not-a-color'},
+          fallback: fallback,
+        );
+
+        expect(config.primary, fallback.primary);
+      });
+
+      test('non-color value (boolean) falls back', () {
+        final config = FiftyColorConfig.fromMap(
+          {'primary': true},
+          fallback: fallback,
+        );
+
+        expect(config.primary, fallback.primary);
+      });
+
+      test('non-num borderOpacity throws TypeError', () {
+        expect(
+          () => FiftyColorConfig.fromMap(
+            {'borderOpacity': 'abc'},
+            fallback: fallback,
+          ),
+          throwsA(isA<TypeError>()),
+        );
+      });
+
+      test('non-num focusOpacity throws TypeError', () {
+        expect(
+          () => FiftyColorConfig.fromMap(
+            {'focusOpacity': true},
+            fallback: fallback,
+          ),
+          throwsA(isA<TypeError>()),
+        );
+      });
+    });
+
     group('mode helpers', () {
       test('borderLight still works', () {
         expect(FiftyColors.borderLight.a, closeTo(0.05, 0.01));

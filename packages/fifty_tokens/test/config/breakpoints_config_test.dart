@@ -13,6 +13,54 @@ void main() {
       });
     });
 
+    group('fromMap()', () {
+      final fallback = FiftyPreset.fdlV2.breakpoints;
+
+      test('full valid map overrides all fields', () {
+        final config = FiftyBreakpointsConfig.fromMap(
+          {
+            'mobile': 640,
+            'tablet': 960,
+            'desktop': 1280,
+          },
+          fallback: fallback,
+        );
+
+        expect(config.mobile, 640);
+        expect(config.tablet, 960);
+        expect(config.desktop, 1280);
+      });
+
+      test('empty map returns all fallback values', () {
+        final config = FiftyBreakpointsConfig.fromMap({}, fallback: fallback);
+
+        expect(config.mobile, fallback.mobile);
+        expect(config.tablet, fallback.tablet);
+        expect(config.desktop, fallback.desktop);
+      });
+
+      test('partial map uses fallback for missing keys', () {
+        final config = FiftyBreakpointsConfig.fromMap(
+          {'desktop': 1280},
+          fallback: fallback,
+        );
+
+        expect(config.desktop, 1280);
+        expect(config.mobile, fallback.mobile);
+        expect(config.tablet, fallback.tablet);
+      });
+
+      test('non-num value throws TypeError', () {
+        expect(
+          () => FiftyBreakpointsConfig.fromMap(
+            {'desktop': 'abc'},
+            fallback: fallback,
+          ),
+          throwsA(isA<TypeError>()),
+        );
+      });
+    });
+
     group('override breakpoints', () {
       test('override desktop', () {
         FiftyTokens.configure(

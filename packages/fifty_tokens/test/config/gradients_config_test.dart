@@ -51,14 +51,22 @@ void main() {
         expect(config.primaryEnd, const Color(0xFFAABBCC));
       });
 
-      test('throws on invalid color value', () {
-        expect(
-          () => FiftyGradientsConfig.fromMap(
-            {'primaryEnd': true},
-            fallback: defaultConfig,
-          ),
-          throwsA(isA<ArgumentError>()),
+      test('invalid color value falls back gracefully', () {
+        final config = FiftyGradientsConfig.fromMap(
+          {'primaryEnd': true},
+          fallback: defaultConfig,
         );
+
+        expect(config.primaryEnd, defaultConfig.primaryEnd);
+      });
+
+      test('malformed hex string falls back gracefully', () {
+        final config = FiftyGradientsConfig.fromMap(
+          {'primaryEnd': 'not-a-color'},
+          fallback: defaultConfig,
+        );
+
+        expect(config.primaryEnd, defaultConfig.primaryEnd);
       });
     });
 

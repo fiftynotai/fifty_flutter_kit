@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'parse_helpers.dart';
+
 /// Configuration for shadow tokens.
 ///
 /// All fields are required. Use [FiftyPreset.fdlV2.shadows] as a starting
@@ -72,7 +74,7 @@ class FiftyShadowsConfig {
 
   static List<BoxShadow> _parseBoxShadowList(dynamic value) {
     if (value is! List) return [];
-    return value.cast<Map<String, dynamic>>().map((m) {
+    return value.whereType<Map<String, dynamic>>().map((m) {
       return BoxShadow(
         offset: Offset(
           (m['dx'] as num?)?.toDouble() ?? 0,
@@ -80,19 +82,8 @@ class FiftyShadowsConfig {
         ),
         blurRadius: (m['blurRadius'] as num?)?.toDouble() ?? 0,
         spreadRadius: (m['spreadRadius'] as num?)?.toDouble() ?? 0,
-        color: _parseColor(m['color']) ?? const Color(0x00000000),
+        color: parseColor(m['color']) ?? const Color(0x00000000),
       );
     }).toList();
-  }
-
-  static Color? _parseColor(dynamic value) {
-    if (value == null) return null;
-    if (value is int) return Color(value);
-    if (value is String) {
-      var hex = value.replaceFirst('#', '').replaceFirst('0x', '');
-      if (hex.length == 6) hex = 'FF$hex';
-      return Color(int.parse(hex, radix: 16));
-    }
-    return null;
   }
 }

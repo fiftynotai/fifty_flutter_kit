@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'parse_helpers.dart';
+
 /// Configuration for gradient tokens.
 ///
 /// All fields are required. Use [FiftyPreset.fdlV2.gradients] as a starting
@@ -18,7 +20,7 @@ class FiftyGradientsConfig {
   }) {
     return FiftyGradientsConfig(
       primaryEnd: map.containsKey('primaryEnd')
-          ? _parseColor(map['primaryEnd'])
+          ? parseColor(map['primaryEnd']) ?? fallback.primaryEnd
           : fallback.primaryEnd,
     );
   }
@@ -33,15 +35,5 @@ class FiftyGradientsConfig {
     return FiftyGradientsConfig(
       primaryEnd: primaryEnd ?? this.primaryEnd,
     );
-  }
-
-  static Color _parseColor(dynamic value) {
-    if (value is int) return Color(value);
-    if (value is String) {
-      var hex = value.replaceFirst('#', '').replaceFirst('0x', '');
-      if (hex.length == 6) hex = 'FF$hex';
-      return Color(int.parse(hex, radix: 16));
-    }
-    throw ArgumentError('Cannot parse color from: $value');
   }
 }
