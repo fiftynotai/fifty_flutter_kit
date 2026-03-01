@@ -2,7 +2,7 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-03-01
-**Active Brief:** TD-010
+**Active Brief:** BR-131
 **Instance ID:** 3d050ef8-67fd-4a14-a2aa-972a3d776b95
 
 ---
@@ -43,7 +43,7 @@ Plus 1 unstaged file: `ai/briefs/TD-010-ac007-warden-minor-findings.md`
 
 ### Open Briefs
 
-- TD-010 (P3, Ready) — WARDEN minor findings from AC-007: DRY _parseColor, defensive fromMap parsing, missing fromMap unit tests
+- TD-010 (P3, Done) — WARDEN minor findings from AC-007: DRY _parseColor, defensive fromMap parsing, missing fromMap unit tests (commit: fe3ab16)
 
 ---
 
