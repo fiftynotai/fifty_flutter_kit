@@ -18,20 +18,20 @@ void main() {
       });
 
       group('Colors', () {
-        test('accent is FiftyColors.powderBlush in dark mode', () {
-          expect(extension.accent, FiftyColors.powderBlush);
+        test('accent is FiftyColors.accent in dark mode', () {
+          expect(extension.accent, FiftyColors.accent);
         });
 
-        test('success is FiftyColors.hunterGreen', () {
-          expect(extension.success, FiftyColors.hunterGreen);
+        test('success is FiftyColors.success', () {
+          expect(extension.success, FiftyColors.success);
         });
 
         test('warning is FiftyColors.warning', () {
           expect(extension.warning, FiftyColors.warning);
         });
 
-        test('info is FiftyColors.slateGrey', () {
-          expect(extension.info, FiftyColors.slateGrey);
+        test('info is FiftyColors.secondary', () {
+          expect(extension.info, FiftyColors.secondary);
         });
       });
 
@@ -154,8 +154,8 @@ void main() {
         extension = FiftyThemeExtension.light();
       });
 
-      test('accent is FiftyColors.burgundy in light mode', () {
-        expect(extension.accent, FiftyColors.burgundy);
+      test('accent is FiftyColors.primary in light mode', () {
+        expect(extension.accent, FiftyColors.primary);
       });
 
       test('shadowGlow is empty in light mode', () {
@@ -335,13 +335,13 @@ void main() {
       test('dark extension has correct accent color', () {
         // Test the extension factory directly (without FiftyTheme which uses GoogleFonts)
         final extension = FiftyThemeExtension.dark();
-        expect(extension.accent, FiftyColors.powderBlush);
+        expect(extension.accent, FiftyColors.accent);
       });
 
       test('light extension has correct accent color', () {
         // Test the extension factory directly (without FiftyTheme which uses GoogleFonts)
         final extension = FiftyThemeExtension.light();
-        expect(extension.accent, FiftyColors.burgundy);
+        expect(extension.accent, FiftyColors.primary);
       });
     });
   });

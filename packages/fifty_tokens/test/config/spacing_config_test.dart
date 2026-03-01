@@ -34,7 +34,7 @@ void main() {
     group('override individual values', () {
       test('override base', () {
         FiftyTokens.configure(
-          spacing: const FiftySpacingConfig(base: 8),
+          spacing: FiftyPreset.fdlV2.spacing.copyWith(base: 8),
         );
         expect(FiftySpacing.base, 8);
         // Others unchanged
@@ -44,7 +44,7 @@ void main() {
 
       test('override multiple values', () {
         FiftyTokens.configure(
-          spacing: const FiftySpacingConfig(
+          spacing: FiftyPreset.fdlV2.spacing.copyWith(
             tight: 4,
             standard: 8,
             gutterDesktop: 32,
@@ -62,7 +62,7 @@ void main() {
     group('reset', () {
       test('reset restores defaults', () {
         FiftyTokens.configure(
-          spacing: const FiftySpacingConfig(
+          spacing: FiftyPreset.fdlV2.spacing.copyWith(
             base: 8,
             tight: 4,
             gutterDesktop: 32,

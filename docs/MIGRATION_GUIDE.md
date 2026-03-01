@@ -1,6 +1,106 @@
-# Migration Guide: Theme Customization Pipeline (v2.0)
+# Migration Guide
 
-This guide covers all changes introduced by the AC-001 Theme Customization pipeline across `fifty_tokens`, `fifty_theme`, and `fifty_ui`.
+This guide covers migration between major versions of the Fifty Design Language packages.
+
+---
+
+## v2 → v3: Semantic Token Config & JSON-Driven Theming
+
+### Overview
+
+v3 introduces the `FiftyPreset` architecture — a unified data type for all design tokens with JSON parsing support. Color tokens are renamed from palette names to semantic names.
+
+**What changed:**
+
+1. `FiftyPreset` — single class holding all 8 token categories with `fromMap()` for JSON theming
+2. Color config fields renamed: palette names → semantic names
+3. All config fields now `required` (non-nullable) — use `copyWith()` for partial overrides
+4. Token classes are agnostic readers — no hardcoded defaults
+5. New config classes: `FiftyShadowsConfig`, `FiftyGradientsConfig`
+
+### Breaking: Color Name Migration
+
+| Old Name (v2) | New Name (v3) | Hex Value |
+|---------------|---------------|-----------|
+| `FiftyColors.burgundy` | `FiftyColors.primary` | #88292F |
+| `FiftyColors.burgundyHover` | `FiftyColors.primaryHover` | #6E2126 |
+| `FiftyColors.cream` | `FiftyColors.background` | #FEFEE3 |
+| `FiftyColors.darkBurgundy` | `FiftyColors.backgroundDark` | #1A0D0E |
+| `FiftyColors.slateGrey` | `FiftyColors.secondary` | #335C67 |
+| `FiftyColors.slateGreyHover` | `FiftyColors.secondaryHover` | #274750 |
+| `FiftyColors.hunterGreen` | `FiftyColors.success` | #4B644A |
+| `FiftyColors.powderBlush` | `FiftyColors.accent` | #FFC9B9 |
+| `FiftyColors.surfaceLight` | `FiftyColors.surface` | #FAF9DE |
+
+The old names are `@Deprecated` and still work but produce warnings. New names: `FiftyColors.onPrimary`, `FiftyColors.onBackground`.
+
+### Breaking: Config Constructor Change
+
+All config constructors now require ALL fields:
+
+```dart
+// v2 (partial, nullable)
+FiftyTokens.configure(
+  colors: FiftyColorConfig(primary: Color(0xFF0066FF)),
+);
+
+// v3 (required fields — use copyWith for partial overrides)
+FiftyTokens.configure(
+  colors: FiftyPreset.fdlV2.colors.copyWith(primary: Color(0xFF0066FF)),
+);
+```
+
+### New: FiftyPreset & JSON Theming
+
+```dart
+// Load a complete preset
+FiftyTokens.load(FiftyPreset.fromMap(jsonDecode(jsonString)));
+
+// Or use copyWith for partial preset changes
+final custom = FiftyPreset.fdlV2.copyWith(
+  colors: FiftyPreset.fdlV2.colors.copyWith(
+    primary: Color(0xFF0066FF),
+  ),
+);
+FiftyTokens.load(custom);
+
+// Check active preset
+final colors = FiftyTokens.active.colors;
+final spacing = FiftyTokens.active.spacing;
+```
+
+### New: Shadow & Gradient Configuration
+
+```dart
+FiftyTokens.configure(
+  shadows: FiftyPreset.fdlV2.shadows.copyWith(
+    primaryOpacity: 0.3,
+  ),
+  gradients: FiftyPreset.fdlV2.gradients.copyWith(
+    primaryEnd: Color(0xFF000033),
+  ),
+);
+```
+
+### Package Version Changes
+
+| Package | v2 | v3 |
+|---------|-----|-----|
+| `fifty_tokens` | 2.0.0 | 3.0.0 |
+| `fifty_theme` | 2.0.0 | 3.0.0 |
+
+### Quick Migration Checklist
+
+- [ ] Replace `FiftyColors.burgundy` → `FiftyColors.primary` (and other palette names)
+- [ ] Replace `FiftyColorConfig(field: value)` → `FiftyPreset.fdlV2.colors.copyWith(field: value)`
+- [ ] Replace `FiftySpacingConfig(field: value)` → `FiftyPreset.fdlV2.spacing.copyWith(field: value)` (etc. for all config classes)
+- [ ] Update pubspec: `fifty_tokens: ^3.0.0`, `fifty_theme: ^3.0.0`
+
+---
+
+## v1 → v2: Theme Customization Pipeline
+
+This section covers all changes introduced by the AC-001 Theme Customization pipeline across `fifty_tokens`, `fifty_theme`, and `fifty_ui`.
 
 ---
 

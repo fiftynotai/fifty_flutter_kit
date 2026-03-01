@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
+import 'config/fifty_tokens_config.dart';
 
-/// Fifty.dev gradient tokens v2.
+/// Fifty.dev gradient tokens -- reads from the active [FiftyPreset].
 ///
-/// Gradient definitions for the Sophisticated Warm design system.
-/// Gradients dynamically reference [FiftyColors] getters, so they
-/// respond to color configuration automatically.
+/// Gradient definitions for the design system. Gradients dynamically
+/// reference [FiftyColors] getters, so they respond to color
+/// configuration automatically.
 class FiftyGradients {
   FiftyGradients._();
-
-  /// Private gradient endpoint color not in the core palette.
-  static const Color _defaultPrimaryEnd = Color(0xFF5A1B1F);
 
   // ============================================================================
   // GRADIENT TOKENS (v2)
@@ -20,37 +18,28 @@ class FiftyGradients {
   /// Primary gradient - Hero sections.
   ///
   /// Use for: Hero backgrounds, featured cards.
-  /// Linear: burgundy -> darker burgundy (#5A1B1F)
+  /// Linear: primary -> primaryEnd
   static LinearGradient get primary => LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [
-          FiftyColors.burgundy,
-          _defaultPrimaryEnd,
-        ],
+        colors: [FiftyColors.primary, FiftyTokens.active.gradients.primaryEnd],
       );
 
   /// Progress gradient - Progress indicators.
   ///
   /// Use for: Progress bars, loading indicators.
-  /// Linear: powderBlush -> burgundy
+  /// Linear: accent -> primary
   static LinearGradient get progress => LinearGradient(
-        colors: [
-          FiftyColors.powderBlush,
-          FiftyColors.burgundy,
-        ],
+        colors: [FiftyColors.accent, FiftyColors.primary],
       );
 
   /// Surface gradient - Subtle depth (dark mode).
   ///
   /// Use for: Background depth, card overlays.
-  /// Linear: darkBurgundy -> surfaceDark
+  /// Linear: backgroundDark -> surfaceDark
   static LinearGradient get surface => LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [
-          FiftyColors.darkBurgundy,
-          FiftyColors.surfaceDark,
-        ],
+        colors: [FiftyColors.backgroundDark, FiftyColors.surfaceDark],
       );
 }

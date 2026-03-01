@@ -22,7 +22,7 @@ void main() {
     group('override radius values', () {
       test('override sm', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(sm: 6),
+          radii: FiftyPreset.fdlV2.radii.copyWith(sm: 6),
         );
         expect(FiftyRadii.sm, 6);
         // Others unchanged
@@ -32,7 +32,7 @@ void main() {
 
       test('override multiple values', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(
+          radii: FiftyPreset.fdlV2.radii.copyWith(
             sm: 6,
             md: 10,
             xl: 20,
@@ -47,28 +47,28 @@ void main() {
     group('BorderRadius getters recompute from overridden doubles', () {
       test('smRadius uses overridden sm value', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(sm: 6),
+          radii: FiftyPreset.fdlV2.radii.copyWith(sm: 6),
         );
         expect(FiftyRadii.smRadius, BorderRadius.circular(6));
       });
 
       test('xlRadius uses overridden xl value', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(xl: 20),
+          radii: FiftyPreset.fdlV2.radii.copyWith(xl: 20),
         );
         expect(FiftyRadii.xlRadius, BorderRadius.circular(20));
       });
 
       test('fullRadius uses overridden full value', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(full: 100),
+          radii: FiftyPreset.fdlV2.radii.copyWith(full: 100),
         );
         expect(FiftyRadii.fullRadius, BorderRadius.circular(100));
       });
 
       test('noneRadius uses overridden none value', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(none: 2),
+          radii: FiftyPreset.fdlV2.radii.copyWith(none: 2),
         );
         expect(FiftyRadii.noneRadius, BorderRadius.circular(2));
       });
@@ -77,7 +77,7 @@ void main() {
     group('reset', () {
       test('reset restores defaults', () {
         FiftyTokens.configure(
-          radii: const FiftyRadiiConfig(
+          radii: FiftyPreset.fdlV2.radii.copyWith(
             sm: 6,
             md: 10,
             full: 100,

@@ -1,8 +1,6 @@
-import 'package:meta/meta.dart';
+import 'config/fifty_tokens_config.dart';
 
-import 'config/breakpoints_config.dart';
-
-/// Fifty.dev breakpoint tokens - responsive design.
+/// Fifty.dev breakpoint tokens -- reads from the active [FiftyPreset].
 ///
 /// Defines breakpoint widths for responsive layouts following the
 /// Fifty Design Language (FDL).
@@ -12,23 +10,12 @@ import 'config/breakpoints_config.dart';
 ///
 /// **Gutter values** are defined in FiftySpacing (gutterMobile, gutterTablet,
 /// gutterDesktop) and should be used in conjunction with these breakpoints.
-///
-/// Override defaults via [FiftyTokens.configure()] with a [FiftyBreakpointsConfig].
 class FiftyBreakpoints {
   FiftyBreakpoints._(); // Private constructor - static class
-
-  /// Internal config -- set via [FiftyTokens.configure()].
-  /// Do not set directly.
-  @internal
-  static FiftyBreakpointsConfig? config;
 
   // ============================================================================
   // BREAKPOINT WIDTHS
   // ============================================================================
-
-  static const double _defaultMobile = 768;
-  static const double _defaultTablet = 768;
-  static const double _defaultDesktop = 1024;
 
   /// Mobile breakpoint (768px) - Small screen threshold.
   ///
@@ -40,7 +27,7 @@ class FiftyBreakpoints {
   /// - Compact UI
   /// - Single-column layouts
   /// - Maximum content density
-  static double get mobile => config?.mobile ?? _defaultMobile;
+  static double get mobile => FiftyTokens.active.breakpoints.mobile;
 
   /// Tablet breakpoint (768px) - Medium screen threshold.
   ///
@@ -52,7 +39,7 @@ class FiftyBreakpoints {
   /// - Two-column layouts
   /// - Medium-density UI
   /// - Balanced spacing
-  static double get tablet => config?.tablet ?? _defaultTablet;
+  static double get tablet => FiftyTokens.active.breakpoints.tablet;
 
   /// Desktop breakpoint (1024px) - Large screen threshold.
   ///
@@ -64,5 +51,5 @@ class FiftyBreakpoints {
   /// - Multi-column layouts
   /// - Generous spacing
   /// - Maximum readability
-  static double get desktop => config?.desktop ?? _defaultDesktop;
+  static double get desktop => FiftyTokens.active.breakpoints.desktop;
 }

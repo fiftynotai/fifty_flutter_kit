@@ -1,83 +1,156 @@
 import 'package:flutter/material.dart';
 
-/// Configuration for [FiftyColors] token overrides.
+/// Configuration for color tokens.
 ///
-/// All fields are optional. `null` means "use FDL default".
-/// Pass to [FiftyTokens.configure()] before `runApp()`.
+/// All fields are required. Use [FiftyPreset.fdlV2.colors] as a starting
+/// point and [copyWith] for partial overrides.
 class FiftyColorConfig {
-  /// Creates a [FiftyColorConfig] with optional overrides.
+  /// Creates a [FiftyColorConfig] with all required fields.
   const FiftyColorConfig({
-    this.burgundy,
-    this.burgundyHover,
-    this.cream,
-    this.darkBurgundy,
-    this.slateGrey,
-    this.slateGreyHover,
-    this.hunterGreen,
-    this.powderBlush,
-    this.surfaceLight,
-    this.surfaceDark,
-    this.primary,
-    this.primaryHover,
-    this.secondary,
-    this.secondaryHover,
-    this.success,
-    this.warning,
-    this.error,
-    this.focusLight,
+    required this.primary,
+    required this.primaryHover,
+    required this.background,
+    required this.backgroundDark,
+    required this.secondary,
+    required this.secondaryHover,
+    required this.success,
+    required this.accent,
+    required this.surface,
+    required this.surfaceDark,
+    required this.warning,
+    required this.error,
+    required this.onPrimary,
+    required this.onBackground,
+    required this.borderOpacity,
+    required this.focusOpacity,
   });
 
-  /// Override for [FiftyColors.burgundy]. Default: `Color(0xFF88292F)`.
-  final Color? burgundy;
+  /// Build a [FiftyColorConfig] from a [Map]. Missing keys fall back
+  /// to [fallback].
+  factory FiftyColorConfig.fromMap(
+    Map<String, dynamic> map, {
+    required FiftyColorConfig fallback,
+  }) {
+    return FiftyColorConfig(
+      primary: _parseColor(map['primary']) ?? fallback.primary,
+      primaryHover: _parseColor(map['primaryHover']) ?? fallback.primaryHover,
+      background: _parseColor(map['background']) ?? fallback.background,
+      backgroundDark:
+          _parseColor(map['backgroundDark']) ?? fallback.backgroundDark,
+      secondary: _parseColor(map['secondary']) ?? fallback.secondary,
+      secondaryHover:
+          _parseColor(map['secondaryHover']) ?? fallback.secondaryHover,
+      success: _parseColor(map['success']) ?? fallback.success,
+      accent: _parseColor(map['accent']) ?? fallback.accent,
+      surface: _parseColor(map['surface']) ?? fallback.surface,
+      surfaceDark: _parseColor(map['surfaceDark']) ?? fallback.surfaceDark,
+      warning: _parseColor(map['warning']) ?? fallback.warning,
+      error: _parseColor(map['error']) ?? fallback.error,
+      onPrimary: _parseColor(map['onPrimary']) ?? fallback.onPrimary,
+      onBackground:
+          _parseColor(map['onBackground']) ?? fallback.onBackground,
+      borderOpacity:
+          (map['borderOpacity'] as num?)?.toDouble() ?? fallback.borderOpacity,
+      focusOpacity:
+          (map['focusOpacity'] as num?)?.toDouble() ?? fallback.focusOpacity,
+    );
+  }
 
-  /// Override for [FiftyColors.burgundyHover]. Default: `Color(0xFF6E2126)`.
-  final Color? burgundyHover;
+  /// Primary brand color.
+  final Color primary;
 
-  /// Override for [FiftyColors.cream]. Default: `Color(0xFFFEFEE3)`.
-  final Color? cream;
+  /// Primary hover state.
+  final Color primaryHover;
 
-  /// Override for [FiftyColors.darkBurgundy]. Default: `Color(0xFF1A0D0E)`.
-  final Color? darkBurgundy;
+  /// Light background color.
+  final Color background;
 
-  /// Override for [FiftyColors.slateGrey]. Default: `Color(0xFF335C67)`.
-  final Color? slateGrey;
+  /// Dark background color.
+  final Color backgroundDark;
 
-  /// Override for [FiftyColors.slateGreyHover]. Default: `Color(0xFF274750)`.
-  final Color? slateGreyHover;
+  /// Secondary color.
+  final Color secondary;
 
-  /// Override for [FiftyColors.hunterGreen]. Default: `Color(0xFF4B644A)`.
-  final Color? hunterGreen;
+  /// Secondary hover state.
+  final Color secondaryHover;
 
-  /// Override for [FiftyColors.powderBlush]. Default: `Color(0xFFFFC9B9)`.
-  final Color? powderBlush;
+  /// Success / positive color.
+  final Color success;
 
-  /// Override for [FiftyColors.surfaceLight]. Default: `Color(0xFFFAF9DE)`.
-  final Color? surfaceLight;
+  /// Accent color (dark mode highlights, outline borders).
+  final Color accent;
 
-  /// Override for [FiftyColors.surfaceDark]. Default: `Color(0xFF2A1517)`.
-  final Color? surfaceDark;
+  /// Light mode card / surface color.
+  final Color surface;
 
-  /// Override for [FiftyColors.primary]. Default: falls back to [burgundy].
-  final Color? primary;
+  /// Dark mode card / surface color.
+  final Color surfaceDark;
 
-  /// Override for [FiftyColors.primaryHover]. Default: falls back to [burgundyHover].
-  final Color? primaryHover;
+  /// Warning color.
+  final Color warning;
 
-  /// Override for [FiftyColors.secondary]. Default: falls back to [slateGrey].
-  final Color? secondary;
+  /// Error color.
+  final Color error;
 
-  /// Override for [FiftyColors.secondaryHover]. Default: falls back to [slateGreyHover].
-  final Color? secondaryHover;
+  /// Color used on top of primary (e.g. button text).
+  final Color onPrimary;
 
-  /// Override for [FiftyColors.success]. Default: falls back to [hunterGreen].
-  final Color? success;
+  /// Color used on top of background.
+  final Color onBackground;
 
-  /// Override for [FiftyColors.warning]. Default: `Color(0xFFF7A100)`.
-  final Color? warning;
+  /// Opacity for light/dark border helpers. Default: `0.05`.
+  final double borderOpacity;
 
-  /// Override for [FiftyColors.error]. Default: falls back to [primary].
-  final Color? error;
+  /// Opacity for focus-dark helper. Default: `0.5`.
+  final double focusOpacity;
 
-  /// Override for [FiftyColors.focusLight]. Default: falls back to [primary].
-  final Color? focusLight;
+  /// Returns a copy with the given fields replaced.
+  FiftyColorConfig copyWith({
+    Color? primary,
+    Color? primaryHover,
+    Color? background,
+    Color? backgroundDark,
+    Color? secondary,
+    Color? secondaryHover,
+    Color? success,
+    Color? accent,
+    Color? surface,
+    Color? surfaceDark,
+    Color? warning,
+    Color? error,
+    Color? onPrimary,
+    Color? onBackground,
+    double? borderOpacity,
+    double? focusOpacity,
+  }) {
+    return FiftyColorConfig(
+      primary: primary ?? this.primary,
+      primaryHover: primaryHover ?? this.primaryHover,
+      background: background ?? this.background,
+      backgroundDark: backgroundDark ?? this.backgroundDark,
+      secondary: secondary ?? this.secondary,
+      secondaryHover: secondaryHover ?? this.secondaryHover,
+      success: success ?? this.success,
+      accent: accent ?? this.accent,
+      surface: surface ?? this.surface,
+      surfaceDark: surfaceDark ?? this.surfaceDark,
+      warning: warning ?? this.warning,
+      error: error ?? this.error,
+      onPrimary: onPrimary ?? this.onPrimary,
+      onBackground: onBackground ?? this.onBackground,
+      borderOpacity: borderOpacity ?? this.borderOpacity,
+      focusOpacity: focusOpacity ?? this.focusOpacity,
+    );
+  }
+
+  static Color? _parseColor(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return Color(value);
+    if (value is String) {
+      var hex = value.replaceFirst('#', '').replaceFirst('0x', '');
+      if (hex.length == 6) hex = 'FF$hex';
+      return Color(int.parse(hex, radix: 16));
+    }
+    return null;
+  }
 }

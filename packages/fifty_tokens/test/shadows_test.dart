@@ -25,25 +25,25 @@ void main() {
         expect(FiftyShadows.lg[0].blurRadius, 15);
       });
 
-      test('primary uses burgundy color', () {
+      test('primary uses primary color', () {
         final primary = FiftyShadows.primary;
         expect(primary.length, 1);
         expect(primary[0].blurRadius, 14);
-        // Check that color is based on burgundy
+        // Check that color is based on primary
         expect(
           primary[0].color.toARGB32() & 0x00FFFFFF,
-          FiftyColors.burgundy.toARGB32() & 0x00FFFFFF,
+          FiftyColors.primary.toARGB32() & 0x00FFFFFF,
         );
       });
 
-      test('glow uses cream color', () {
+      test('glow uses background color', () {
         final glow = FiftyShadows.glow;
         expect(glow.length, 1);
         expect(glow[0].blurRadius, 15);
-        // Check that color is based on cream
+        // Check that color is based on background
         expect(
           glow[0].color.toARGB32() & 0x00FFFFFF,
-          FiftyColors.cream.toARGB32() & 0x00FFFFFF,
+          FiftyColors.background.toARGB32() & 0x00FFFFFF,
         );
       });
 
@@ -73,7 +73,7 @@ void main() {
   group('FiftyElevation (deprecated)', () {
     test('focusGlow returns list with shadow', () {
       // ignore: deprecated_member_use_from_same_package
-      final glow = FiftyElevation.focusGlow(FiftyColors.burgundy);
+      final glow = FiftyElevation.focusGlow(FiftyColors.primary);
       expect(glow.length, 1);
       expect(glow[0].blurRadius, 8);
     });

@@ -1,179 +1,178 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
-import 'config/color_config.dart';
+import 'config/fifty_tokens_config.dart';
 
-/// Fifty.dev color tokens v2 - Sophisticated Warm design system.
+/// Fifty.dev color tokens -- reads from the active [FiftyPreset].
 ///
-/// All colors follow the Fifty Design Language (FDL) v2 specification.
-/// Supports both dark mode (primary) and light mode.
-///
-/// Override defaults via [FiftyTokens.configure()] with a [FiftyColorConfig].
+/// All getters read from [FiftyTokens.active.colors]. Token class has
+/// zero knowledge of FDL v2 or any preset -- it just reads.
 class FiftyColors {
   FiftyColors._();
 
-  /// Internal config -- set via [FiftyTokens.configure()].
-  /// Do not set directly.
-  @internal
-  static FiftyColorConfig? config;
-
   // ============================================================================
-  // CORE PALETTE (v2 - Sophisticated Warm)
+  // SEMANTIC COLORS (agnostic readers)
   // ============================================================================
 
-  static const Color _defaultBurgundy = Color(0xFF88292F);
-  static const Color _defaultBurgundyHover = Color(0xFF6E2126);
-  static const Color _defaultCream = Color(0xFFFEFEE3);
-  static const Color _defaultDarkBurgundy = Color(0xFF1A0D0E);
-  static const Color _defaultSlateGrey = Color(0xFF335C67);
-  static const Color _defaultSlateGreyHover = Color(0xFF274750);
-  static const Color _defaultHunterGreen = Color(0xFF4B644A);
-  static const Color _defaultPowderBlush = Color(0xFFFFC9B9);
-  static const Color _defaultSurfaceLight = Color(0xFFFAF9DE);
-  static const Color _defaultSurfaceDark = Color(0xFF2A1517);
-  static const Color _defaultWarning = Color(0xFFF7A100);
-
-  /// Burgundy (#88292F) - Primary brand color.
+  /// Primary brand color.
   ///
   /// Use for:
   /// - Primary buttons and CTAs
   /// - Brand accents and highlights
   /// - Active states
-  static Color get burgundy => config?.burgundy ?? _defaultBurgundy;
+  static Color get primary => FiftyTokens.active.colors.primary;
 
-  /// Burgundy Hover (#6E2126) - Primary hover state.
-  static Color get burgundyHover =>
-      config?.burgundyHover ?? _defaultBurgundyHover;
+  /// Primary hover state.
+  static Color get primaryHover => FiftyTokens.active.colors.primaryHover;
 
-  /// Cream (#FEFEE3) - Light background and dark mode text.
+  /// Light background color.
   ///
   /// Use for:
   /// - Light mode backgrounds
   /// - Dark mode primary text
   /// - Accent highlights
-  static Color get cream => config?.cream ?? _defaultCream;
+  static Color get background => FiftyTokens.active.colors.background;
 
-  /// Dark Burgundy (#1A0D0E) - Dark mode background.
+  /// Dark background color.
   ///
   /// Use for:
   /// - Dark mode backgrounds
   /// - Deep, immersive dark surfaces
-  static Color get darkBurgundy =>
-      config?.darkBurgundy ?? _defaultDarkBurgundy;
+  static Color get backgroundDark => FiftyTokens.active.colors.backgroundDark;
 
-  /// Slate Grey (#335C67) - Secondary color.
+  /// Secondary color.
   ///
   /// Use for:
   /// - Secondary buttons
   /// - Switch on-state (NOT primary!)
   /// - Segmented control active state (dark mode)
-  static Color get slateGrey => config?.slateGrey ?? _defaultSlateGrey;
+  static Color get secondary => FiftyTokens.active.colors.secondary;
 
-  /// Slate Grey Hover (#274750) - Secondary hover state.
-  static Color get slateGreyHover =>
-      config?.slateGreyHover ?? _defaultSlateGreyHover;
+  /// Secondary hover state.
+  static Color get secondaryHover => FiftyTokens.active.colors.secondaryHover;
 
-  /// Hunter Green (#4B644A) - Success/positive color.
+  /// Success / positive color.
   ///
   /// Use for:
   /// - Success messages
   /// - Positive indicators
   /// - Confirmation states
-  static Color get hunterGreen => config?.hunterGreen ?? _defaultHunterGreen;
+  static Color get success => FiftyTokens.active.colors.success;
 
-  /// Powder Blush (#FFC9B9) - Dark mode accent.
+  /// Accent color (dark mode highlights, outline borders).
   ///
   /// Use for:
   /// - Dark mode accent color
   /// - Outline button borders (dark mode)
   /// - Focus rings (dark mode)
-  static Color get powderBlush => config?.powderBlush ?? _defaultPowderBlush;
+  static Color get accent => FiftyTokens.active.colors.accent;
 
-  /// Surface Light (#FAF9DE) - Light mode card/surface color.
+  /// Light mode card / surface color.
   ///
-  /// Darker cream shade creates contrast against cream background,
+  /// Darker shade creates contrast against background,
   /// giving cards depth while staying in the warm palette.
-  static Color get surfaceLight =>
-      config?.surfaceLight ?? _defaultSurfaceLight;
+  static Color get surface => FiftyTokens.active.colors.surface;
 
-  /// Surface Dark (#2A1517) - Dark mode surfaces/cards.
-  static Color get surfaceDark => config?.surfaceDark ?? _defaultSurfaceDark;
+  /// Dark mode card / surface color.
+  static Color get surfaceDark => FiftyTokens.active.colors.surfaceDark;
 
-  // ============================================================================
-  // SEMANTIC COLORS
-  // ============================================================================
+  /// Warning color.
+  static Color get warning => FiftyTokens.active.colors.warning;
 
-  /// Primary - Alias for burgundy.
-  ///
-  /// Falls back to [burgundy] getter when not explicitly overridden,
-  /// so overriding burgundy also changes primary.
-  static Color get primary => config?.primary ?? burgundy;
+  /// Error color.
+  static Color get error => FiftyTokens.active.colors.error;
 
-  /// Primary Hover - Alias for burgundyHover.
-  static Color get primaryHover => config?.primaryHover ?? burgundyHover;
+  /// Color used on top of primary (e.g. button text).
+  static Color get onPrimary => FiftyTokens.active.colors.onPrimary;
 
-  /// Secondary - Alias for slateGrey.
-  static Color get secondary => config?.secondary ?? slateGrey;
-
-  /// Secondary Hover - Alias for slateGreyHover.
-  static Color get secondaryHover =>
-      config?.secondaryHover ?? slateGreyHover;
-
-  /// Success - Alias for hunterGreen.
-  static Color get success => config?.success ?? hunterGreen;
-
-  /// Warning (#F7A100) - Caution states.
-  static Color get warning => config?.warning ?? _defaultWarning;
-
-  /// Error - Uses primary for consistency.
-  ///
-  /// Falls back to [primary] getter when not explicitly overridden.
-  static Color get error => config?.error ?? primary;
+  /// Color used on top of background.
+  static Color get onBackground => FiftyTokens.active.colors.onBackground;
 
   // ============================================================================
-  // MODE-SPECIFIC HELPERS
+  // COMPUTED COLORS
   // ============================================================================
 
-  /// Border color for light mode (black at 5% opacity).
-  static Color get borderLight => Colors.black.withValues(alpha: 0.05);
+  /// Border color for light mode (black at configurable opacity).
+  static Color get borderLight =>
+      Colors.black.withValues(alpha: FiftyTokens.active.colors.borderOpacity);
 
-  /// Border color for dark mode (white at 5% opacity).
-  static Color get borderDark => Colors.white.withValues(alpha: 0.05);
+  /// Border color for dark mode (white at configurable opacity).
+  static Color get borderDark =>
+      Colors.white.withValues(alpha: FiftyTokens.active.colors.borderOpacity);
 
-  /// Focus border for light mode.
-  ///
-  /// Falls back to [primary] getter when not explicitly overridden.
-  static Color get focusLight => config?.focusLight ?? primary;
+  /// Focus border for light mode -- same as primary.
+  static Color get focusLight => primary;
 
-  /// Focus border for dark mode (powderBlush at 50% opacity).
-  static Color get focusDark => powderBlush.withValues(alpha: 0.5);
+  /// Focus border for dark mode (accent at configurable opacity).
+  static Color get focusDark =>
+      accent.withValues(alpha: FiftyTokens.active.colors.focusOpacity);
 
   // ============================================================================
-  // DEPRECATED (v1 compatibility - remove in v2.0.0)
+  // DEPRECATED v2 palette names (use semantic names above)
   // ============================================================================
 
-  /// @deprecated Use [darkBurgundy] or [cream] instead.
-  @Deprecated('Use darkBurgundy for dark backgrounds or cream for light backgrounds')
+  /// @deprecated Use [primary] instead.
+  @Deprecated('Use primary instead')
+  static Color get burgundy => primary;
+
+  /// @deprecated Use [primaryHover] instead.
+  @Deprecated('Use primaryHover instead')
+  static Color get burgundyHover => primaryHover;
+
+  /// @deprecated Use [background] instead.
+  @Deprecated('Use background instead')
+  static Color get cream => background;
+
+  /// @deprecated Use [backgroundDark] instead.
+  @Deprecated('Use backgroundDark instead')
+  static Color get darkBurgundy => backgroundDark;
+
+  /// @deprecated Use [secondary] instead.
+  @Deprecated('Use secondary instead')
+  static Color get slateGrey => secondary;
+
+  /// @deprecated Use [secondaryHover] instead.
+  @Deprecated('Use secondaryHover instead')
+  static Color get slateGreyHover => secondaryHover;
+
+  /// @deprecated Use [success] instead.
+  @Deprecated('Use success instead')
+  static Color get hunterGreen => success;
+
+  /// @deprecated Use [accent] instead.
+  @Deprecated('Use accent instead')
+  static Color get powderBlush => accent;
+
+  /// @deprecated Use [surface] instead.
+  @Deprecated('Use surface instead')
+  static Color get surfaceLight => surface;
+
+  // ============================================================================
+  // DEPRECATED v1 colors (backward compatibility -- remove in next major)
+  // ============================================================================
+
+  /// @deprecated Use [backgroundDark] for dark backgrounds or [background] for light backgrounds.
+  @Deprecated(
+      'Use backgroundDark for dark backgrounds or background for light backgrounds')
   static const Color voidBlack = Color(0xFF050505);
 
-  /// @deprecated Use [burgundy] instead.
-  @Deprecated('Use burgundy instead')
+  /// @deprecated Use [primary] instead.
+  @Deprecated('Use primary instead')
   static const Color crimsonPulse = Color(0xFF960E29);
 
   /// @deprecated Use [surfaceDark] instead.
   @Deprecated('Use surfaceDark instead')
   static const Color gunmetal = Color(0xFF1A1A1A);
 
-  /// @deprecated Use [cream] instead.
-  @Deprecated('Use cream instead')
+  /// @deprecated Use [background] instead.
+  @Deprecated('Use background instead')
   static const Color terminalWhite = Color(0xFFEAEAEA);
 
-  /// @deprecated Use [slateGrey] instead.
-  @Deprecated('Use slateGrey instead')
+  /// @deprecated Use [secondary] instead.
+  @Deprecated('Use secondary instead')
   static const Color hyperChrome = Color(0xFF888888);
 
-  /// @deprecated Use [hunterGreen] instead.
-  @Deprecated('Use hunterGreen instead')
+  /// @deprecated Use [success] instead.
+  @Deprecated('Use success instead')
   static const Color igrisGreen = Color(0xFF00FF41);
 
   /// @deprecated Use [borderLight] or [borderDark] instead.

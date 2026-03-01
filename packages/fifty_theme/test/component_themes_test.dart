@@ -553,7 +553,7 @@ void main() {
           // Build with a non-FDL color scheme to prove no hardcoding
           final theme = FiftyTheme.dark(colorScheme: customScheme);
 
-          // AppBar bg should be customScheme.surface, NOT FiftyColors.darkBurgundy
+          // AppBar bg should be customScheme.surface, NOT FiftyColors.backgroundDark
           expect(theme.appBarTheme.backgroundColor, customScheme.surface);
 
           // Card color should be customScheme.surfaceContainerHighest

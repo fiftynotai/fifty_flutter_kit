@@ -16,7 +16,7 @@ void main() {
     group('override breakpoints', () {
       test('override desktop', () {
         FiftyTokens.configure(
-          breakpoints: const FiftyBreakpointsConfig(desktop: 1280),
+          breakpoints: FiftyPreset.fdlV2.breakpoints.copyWith(desktop: 1280),
         );
         expect(FiftyBreakpoints.desktop, 1280);
         // Others unchanged
@@ -26,7 +26,7 @@ void main() {
 
       test('override all breakpoints', () {
         FiftyTokens.configure(
-          breakpoints: const FiftyBreakpointsConfig(
+          breakpoints: FiftyPreset.fdlV2.breakpoints.copyWith(
             mobile: 640,
             tablet: 960,
             desktop: 1280,
@@ -41,7 +41,7 @@ void main() {
     group('reset', () {
       test('reset restores defaults', () {
         FiftyTokens.configure(
-          breakpoints: const FiftyBreakpointsConfig(
+          breakpoints: FiftyPreset.fdlV2.breakpoints.copyWith(
             mobile: 640,
             tablet: 960,
             desktop: 1280,

@@ -16,10 +16,10 @@ class FiftyColorScheme {
   /// Creates a dark ColorScheme using Fifty v2 design tokens.
   ///
   /// Color mappings:
-  /// - `primary`: Burgundy (brand signature)
-  /// - `secondary`: Slate Grey (secondary actions)
-  /// - `surface`: Dark Burgundy (deep background)
-  /// - `tertiary`: Hunter Green (success)
+  /// - `primary`: Brand primary (brand signature)
+  /// - `secondary`: Secondary (secondary actions)
+  /// - `surface`: Background dark (deep background)
+  /// - `tertiary`: Success (success)
   ///
   /// Pass optional overrides to customize individual slots.
   static ColorScheme dark({
@@ -39,36 +39,36 @@ class FiftyColorScheme {
     return ColorScheme(
       brightness: Brightness.dark,
 
-      // Primary colors - Burgundy
+      // Primary colors
       primary: primary ?? FiftyColors.primary,
-      onPrimary: onPrimary ?? FiftyColors.cream,
+      onPrimary: onPrimary ?? FiftyColors.background,
       primaryContainer:
           (primary ?? FiftyColors.primary).withValues(alpha: 0.2),
-      onPrimaryContainer: onPrimary ?? FiftyColors.cream,
+      onPrimaryContainer: onPrimary ?? FiftyColors.background,
 
-      // Secondary colors - Slate Grey
+      // Secondary colors
       secondary: secondary ?? FiftyColors.secondary,
-      onSecondary: onSecondary ?? FiftyColors.cream,
+      onSecondary: onSecondary ?? FiftyColors.background,
       secondaryContainer:
           (secondary ?? FiftyColors.secondary).withValues(alpha: 0.2),
-      onSecondaryContainer: onSecondary ?? FiftyColors.cream,
+      onSecondaryContainer: onSecondary ?? FiftyColors.background,
 
-      // Tertiary colors - Hunter Green (success)
+      // Tertiary colors (success)
       tertiary: tertiary ?? FiftyColors.success,
-      onTertiary: onTertiary ?? FiftyColors.cream,
+      onTertiary: onTertiary ?? FiftyColors.background,
       tertiaryContainer:
           (tertiary ?? FiftyColors.success).withValues(alpha: 0.2),
       onTertiaryContainer: tertiary ?? FiftyColors.success,
 
       // Error colors
       error: error ?? FiftyColors.error,
-      onError: onError ?? FiftyColors.cream,
+      onError: onError ?? FiftyColors.background,
       errorContainer: (error ?? FiftyColors.error).withValues(alpha: 0.2),
-      onErrorContainer: onError ?? FiftyColors.cream,
+      onErrorContainer: onError ?? FiftyColors.background,
 
-      // Surface colors - Dark Burgundy base
-      surface: surface ?? FiftyColors.darkBurgundy,
-      onSurface: onSurface ?? FiftyColors.cream,
+      // Surface colors - dark background base
+      surface: surface ?? FiftyColors.backgroundDark,
+      onSurface: onSurface ?? FiftyColors.background,
       surfaceContainerHighest:
           surfaceContainerHighest ?? FiftyColors.surfaceDark,
       onSurfaceVariant: onSurfaceVariant ?? FiftyColors.secondary,
@@ -79,9 +79,9 @@ class FiftyColorScheme {
 
       // Other - NOW using shadows
       shadow: Colors.black.withValues(alpha: 0.1),
-      scrim: (surface ?? FiftyColors.darkBurgundy).withValues(alpha: 0.8),
-      inverseSurface: onSurface ?? FiftyColors.cream,
-      onInverseSurface: surface ?? FiftyColors.darkBurgundy,
+      scrim: (surface ?? FiftyColors.backgroundDark).withValues(alpha: 0.8),
+      inverseSurface: onSurface ?? FiftyColors.background,
+      onInverseSurface: surface ?? FiftyColors.backgroundDark,
       inversePrimary: primary ?? FiftyColors.primary,
     );
   }
@@ -106,38 +106,38 @@ class FiftyColorScheme {
     return ColorScheme(
       brightness: Brightness.light,
 
-      // Primary colors - Burgundy
+      // Primary colors
       primary: primary ?? FiftyColors.primary,
-      onPrimary: onPrimary ?? FiftyColors.cream,
+      onPrimary: onPrimary ?? FiftyColors.background,
       primaryContainer:
           (primary ?? FiftyColors.primary).withValues(alpha: 0.15),
       onPrimaryContainer: primary ?? FiftyColors.primary,
 
-      // Secondary colors - Slate Grey
+      // Secondary colors
       secondary: secondary ?? FiftyColors.secondary,
-      onSecondary: onSecondary ?? FiftyColors.cream,
+      onSecondary: onSecondary ?? FiftyColors.background,
       secondaryContainer:
           (secondary ?? FiftyColors.secondary).withValues(alpha: 0.2),
-      onSecondaryContainer: onSurface ?? FiftyColors.darkBurgundy,
+      onSecondaryContainer: onSurface ?? FiftyColors.backgroundDark,
 
-      // Tertiary colors - Hunter Green (success)
+      // Tertiary colors (success)
       tertiary: tertiary ?? FiftyColors.success,
-      onTertiary: onTertiary ?? FiftyColors.cream,
+      onTertiary: onTertiary ?? FiftyColors.background,
       tertiaryContainer:
           (tertiary ?? FiftyColors.success).withValues(alpha: 0.15),
-      onTertiaryContainer: onSurface ?? FiftyColors.darkBurgundy,
+      onTertiaryContainer: onSurface ?? FiftyColors.backgroundDark,
 
       // Error colors
       error: error ?? FiftyColors.error,
-      onError: onError ?? FiftyColors.cream,
+      onError: onError ?? FiftyColors.background,
       errorContainer: (error ?? FiftyColors.error).withValues(alpha: 0.15),
       onErrorContainer: error ?? FiftyColors.error,
 
-      // Surface colors - Warm cream base
-      surface: surface ?? FiftyColors.cream,
-      onSurface: onSurface ?? FiftyColors.darkBurgundy,
+      // Surface colors - light background base
+      surface: surface ?? FiftyColors.background,
+      onSurface: onSurface ?? FiftyColors.backgroundDark,
       surfaceContainerHighest:
-          surfaceContainerHighest ?? FiftyColors.surfaceLight,
+          surfaceContainerHighest ?? FiftyColors.surface,
       onSurfaceVariant: onSurfaceVariant ?? FiftyColors.secondary,
 
       // Outline colors - Black 5%
@@ -146,9 +146,9 @@ class FiftyColorScheme {
 
       // Other
       shadow: Colors.black.withValues(alpha: 0.05),
-      scrim: (onSurface ?? FiftyColors.darkBurgundy).withValues(alpha: 0.4),
-      inverseSurface: onSurface ?? FiftyColors.darkBurgundy,
-      onInverseSurface: surface ?? FiftyColors.cream,
+      scrim: (onSurface ?? FiftyColors.backgroundDark).withValues(alpha: 0.4),
+      inverseSurface: onSurface ?? FiftyColors.backgroundDark,
+      onInverseSurface: surface ?? FiftyColors.background,
       inversePrimary: primary ?? FiftyColors.primary,
     );
   }

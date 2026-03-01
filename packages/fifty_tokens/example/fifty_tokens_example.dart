@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
-import 'package:flutter/material.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   // ============================================================================
@@ -13,20 +13,19 @@ void main() {
   // COLORS (Sophisticated Warm palette)
   // ---------------------------------------------------------------------------
 
-  // Core palette
-  print('BURGUNDY (primary): ${FiftyColors.burgundy}'); // #88292F
-  print('BURGUNDY_HOVER: ${FiftyColors.burgundyHover}'); // #6E2126
-  print('CREAM: ${FiftyColors.cream}'); // #FEFEE3
-  print('DARK_BURGUNDY: ${FiftyColors.darkBurgundy}'); // #1A0D0E
-  print('SLATE_GREY (secondary): ${FiftyColors.slateGrey}'); // #335C67
-  print('HUNTER_GREEN (success): ${FiftyColors.hunterGreen}'); // #4B644A
-  print('POWDER_BLUSH: ${FiftyColors.powderBlush}'); // #FFC9B9
+  // Semantic colors
+  print('PRIMARY: ${FiftyColors.primary}'); // #88292F
+  print('PRIMARY_HOVER: ${FiftyColors.primaryHover}'); // #6E2126
+  print('BACKGROUND: ${FiftyColors.background}'); // #FEFEE3
+  print('BACKGROUND_DARK: ${FiftyColors.backgroundDark}'); // #1A0D0E
+  print('SECONDARY: ${FiftyColors.secondary}'); // #335C67
+  print('SUCCESS: ${FiftyColors.success}'); // #4B644A
+  print('ACCENT: ${FiftyColors.accent}'); // #FFC9B9
   print('SURFACE_DARK: ${FiftyColors.surfaceDark}'); // #2A1517
 
-  // Semantic aliases
-  print('Primary: ${FiftyColors.primary}');
-  print('Secondary: ${FiftyColors.secondary}');
-  print('Success: ${FiftyColors.success}');
+  // On-colors
+  print('ON_PRIMARY: ${FiftyColors.onPrimary}');
+  print('ON_BACKGROUND: ${FiftyColors.onBackground}');
 
   // ---------------------------------------------------------------------------
   // TYPOGRAPHY (Manrope unified font)
@@ -119,7 +118,7 @@ void main() {
   // ---------------------------------------------------------------------------
 
   final buttonDecoration = BoxDecoration(
-    color: FiftyColors.burgundy,
+    color: FiftyColors.primary,
     borderRadius: FiftyRadii.xlRadius,
     boxShadow: FiftyShadows.primary,
   );
@@ -134,7 +133,7 @@ void main() {
     fontFamily: FiftyTypography.fontFamily,
     fontSize: FiftyTypography.displayLarge,
     fontWeight: FiftyTypography.extraBold,
-    color: FiftyColors.cream,
+    color: FiftyColors.background,
     height: FiftyTypography.lineHeightDisplay,
     letterSpacing: FiftyTypography.letterSpacingDisplay,
   );
@@ -149,7 +148,7 @@ void main() {
     fontFamily: FiftyTypography.fontFamily,
     fontSize: FiftyTypography.bodyLarge,
     fontWeight: FiftyTypography.medium,
-    color: FiftyColors.cream,
+    color: FiftyColors.background,
     height: FiftyTypography.lineHeightBody,
     letterSpacing: FiftyTypography.letterSpacingBody,
   );

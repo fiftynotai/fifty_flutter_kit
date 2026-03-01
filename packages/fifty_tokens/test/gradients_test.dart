@@ -9,7 +9,7 @@ void main() {
     group('Primary Gradient', () {
       test('has correct colors', () {
         expect(FiftyGradients.primary.colors.length, 2);
-        expect(FiftyGradients.primary.colors[0], FiftyColors.burgundy);
+        expect(FiftyGradients.primary.colors[0], FiftyColors.primary);
         expect(FiftyGradients.primary.colors[1], Color(0xFF5A1B1F));
       });
 
@@ -22,8 +22,8 @@ void main() {
     group('Progress Gradient', () {
       test('has correct colors', () {
         expect(FiftyGradients.progress.colors.length, 2);
-        expect(FiftyGradients.progress.colors[0], FiftyColors.powderBlush);
-        expect(FiftyGradients.progress.colors[1], FiftyColors.burgundy);
+        expect(FiftyGradients.progress.colors[0], FiftyColors.accent);
+        expect(FiftyGradients.progress.colors[1], FiftyColors.primary);
       });
 
       test('has correct alignment', () {
@@ -35,7 +35,7 @@ void main() {
     group('Surface Gradient', () {
       test('has correct colors', () {
         expect(FiftyGradients.surface.colors.length, 2);
-        expect(FiftyGradients.surface.colors[0], FiftyColors.darkBurgundy);
+        expect(FiftyGradients.surface.colors[0], FiftyColors.backgroundDark);
         expect(FiftyGradients.surface.colors[1], FiftyColors.surfaceDark);
       });
 

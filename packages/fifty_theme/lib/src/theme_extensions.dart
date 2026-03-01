@@ -40,7 +40,7 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
     Color? info,
   }) {
     return FiftyThemeExtension(
-      accent: accent ?? FiftyColors.powderBlush,
+      accent: accent ?? FiftyColors.accent,
       shadowSm: FiftyShadows.sm,
       shadowMd: FiftyShadows.md,
       shadowLg: FiftyShadows.lg,
@@ -101,8 +101,8 @@ class FiftyThemeExtension extends ThemeExtension<FiftyThemeExtension> {
 
   /// Accent color (mode-aware).
   ///
-  /// - Dark mode: Powder Blush (#FFC9B9)
-  /// - Light mode: Burgundy (#88292F)
+  /// - Dark mode: accent (#FFC9B9)
+  /// - Light mode: primary (#88292F)
   final Color accent;
 
   /// Success color - Hunter Green (#4B644A).

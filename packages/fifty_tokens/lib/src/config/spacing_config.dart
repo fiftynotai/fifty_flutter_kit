@@ -1,69 +1,134 @@
-/// Configuration for [FiftySpacing] token overrides.
+/// Configuration for spacing tokens.
 ///
-/// All fields are optional. `null` means "use FDL default".
-/// Pass to [FiftyTokens.configure()] before `runApp()`.
+/// All fields are required. Use [FiftyPreset.fdlV2.spacing] as a starting
+/// point and [copyWith] for partial overrides.
 class FiftySpacingConfig {
-  /// Creates a [FiftySpacingConfig] with optional overrides.
+  /// Creates a [FiftySpacingConfig] with all required fields.
   const FiftySpacingConfig({
-    this.base,
-    this.tight,
-    this.standard,
-    this.xs,
-    this.sm,
-    this.md,
-    this.lg,
-    this.xl,
-    this.xxl,
-    this.xxxl,
-    this.huge,
-    this.massive,
-    this.gutterDesktop,
-    this.gutterTablet,
-    this.gutterMobile,
+    required this.base,
+    required this.tight,
+    required this.standard,
+    required this.xs,
+    required this.sm,
+    required this.md,
+    required this.lg,
+    required this.xl,
+    required this.xxl,
+    required this.xxxl,
+    required this.huge,
+    required this.massive,
+    required this.gutterDesktop,
+    required this.gutterTablet,
+    required this.gutterMobile,
   });
 
-  /// Override for [FiftySpacing.base]. Default: `4`.
-  final double? base;
+  /// Build a [FiftySpacingConfig] from a [Map]. Missing keys fall back
+  /// to [fallback].
+  factory FiftySpacingConfig.fromMap(
+    Map<String, dynamic> map, {
+    required FiftySpacingConfig fallback,
+  }) {
+    return FiftySpacingConfig(
+      base: (map['base'] as num?)?.toDouble() ?? fallback.base,
+      tight: (map['tight'] as num?)?.toDouble() ?? fallback.tight,
+      standard: (map['standard'] as num?)?.toDouble() ?? fallback.standard,
+      xs: (map['xs'] as num?)?.toDouble() ?? fallback.xs,
+      sm: (map['sm'] as num?)?.toDouble() ?? fallback.sm,
+      md: (map['md'] as num?)?.toDouble() ?? fallback.md,
+      lg: (map['lg'] as num?)?.toDouble() ?? fallback.lg,
+      xl: (map['xl'] as num?)?.toDouble() ?? fallback.xl,
+      xxl: (map['xxl'] as num?)?.toDouble() ?? fallback.xxl,
+      xxxl: (map['xxxl'] as num?)?.toDouble() ?? fallback.xxxl,
+      huge: (map['huge'] as num?)?.toDouble() ?? fallback.huge,
+      massive: (map['massive'] as num?)?.toDouble() ?? fallback.massive,
+      gutterDesktop:
+          (map['gutterDesktop'] as num?)?.toDouble() ?? fallback.gutterDesktop,
+      gutterTablet:
+          (map['gutterTablet'] as num?)?.toDouble() ?? fallback.gutterTablet,
+      gutterMobile:
+          (map['gutterMobile'] as num?)?.toDouble() ?? fallback.gutterMobile,
+    );
+  }
 
-  /// Override for [FiftySpacing.tight]. Default: `8`.
-  final double? tight;
+  /// Base spacing unit. Default: `4`.
+  final double base;
 
-  /// Override for [FiftySpacing.standard]. Default: `12`.
-  final double? standard;
+  /// Tight gap. Default: `8`.
+  final double tight;
 
-  /// Override for [FiftySpacing.xs]. Default: `4`.
-  final double? xs;
+  /// Standard gap. Default: `12`.
+  final double standard;
 
-  /// Override for [FiftySpacing.sm]. Default: `8`.
-  final double? sm;
+  /// Extra-small spacing. Default: `4`.
+  final double xs;
 
-  /// Override for [FiftySpacing.md]. Default: `12`.
-  final double? md;
+  /// Small spacing. Default: `8`.
+  final double sm;
 
-  /// Override for [FiftySpacing.lg]. Default: `16`.
-  final double? lg;
+  /// Medium spacing. Default: `12`.
+  final double md;
 
-  /// Override for [FiftySpacing.xl]. Default: `20`.
-  final double? xl;
+  /// Large spacing. Default: `16`.
+  final double lg;
 
-  /// Override for [FiftySpacing.xxl]. Default: `24`.
-  final double? xxl;
+  /// Extra-large spacing. Default: `20`.
+  final double xl;
 
-  /// Override for [FiftySpacing.xxxl]. Default: `32`.
-  final double? xxxl;
+  /// 2X large spacing. Default: `24`.
+  final double xxl;
 
-  /// Override for [FiftySpacing.huge]. Default: `40`.
-  final double? huge;
+  /// 3X large spacing. Default: `32`.
+  final double xxxl;
 
-  /// Override for [FiftySpacing.massive]. Default: `48`.
-  final double? massive;
+  /// Huge spacing. Default: `40`.
+  final double huge;
 
-  /// Override for [FiftySpacing.gutterDesktop]. Default: `24`.
-  final double? gutterDesktop;
+  /// Massive spacing. Default: `48`.
+  final double massive;
 
-  /// Override for [FiftySpacing.gutterTablet]. Default: `16`.
-  final double? gutterTablet;
+  /// Desktop gutter. Default: `24`.
+  final double gutterDesktop;
 
-  /// Override for [FiftySpacing.gutterMobile]. Default: `12`.
-  final double? gutterMobile;
+  /// Tablet gutter. Default: `16`.
+  final double gutterTablet;
+
+  /// Mobile gutter. Default: `12`.
+  final double gutterMobile;
+
+  /// Returns a copy with the given fields replaced.
+  FiftySpacingConfig copyWith({
+    double? base,
+    double? tight,
+    double? standard,
+    double? xs,
+    double? sm,
+    double? md,
+    double? lg,
+    double? xl,
+    double? xxl,
+    double? xxxl,
+    double? huge,
+    double? massive,
+    double? gutterDesktop,
+    double? gutterTablet,
+    double? gutterMobile,
+  }) {
+    return FiftySpacingConfig(
+      base: base ?? this.base,
+      tight: tight ?? this.tight,
+      standard: standard ?? this.standard,
+      xs: xs ?? this.xs,
+      sm: sm ?? this.sm,
+      md: md ?? this.md,
+      lg: lg ?? this.lg,
+      xl: xl ?? this.xl,
+      xxl: xxl ?? this.xxl,
+      xxxl: xxxl ?? this.xxxl,
+      huge: huge ?? this.huge,
+      massive: massive ?? this.massive,
+      gutterDesktop: gutterDesktop ?? this.gutterDesktop,
+      gutterTablet: gutterTablet ?? this.gutterTablet,
+      gutterMobile: gutterMobile ?? this.gutterMobile,
+    );
+  }
 }

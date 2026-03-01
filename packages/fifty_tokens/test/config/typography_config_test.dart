@@ -58,7 +58,9 @@ void main() {
     group('override fontFamily', () {
       test('custom fontFamily', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(fontFamily: 'Inter'),
+          typography: FiftyPreset.fdlV2.typography.copyWith(
+            fontFamily: 'Inter',
+          ),
         );
         expect(FiftyTypography.fontFamily, 'Inter');
       });
@@ -67,7 +69,7 @@ void main() {
     group('override fontSource', () {
       test('fontSource set to asset', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(
+          typography: FiftyPreset.fdlV2.typography.copyWith(
             fontSource: FontSource.asset,
           ),
         );
@@ -78,7 +80,9 @@ void main() {
     group('override individual sizes', () {
       test('only displayLarge overridden', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(displayLarge: 48),
+          typography: FiftyPreset.fdlV2.typography.copyWith(
+            displayLarge: 48,
+          ),
         );
         expect(FiftyTypography.displayLarge, 48);
         // Others unchanged
@@ -88,7 +92,7 @@ void main() {
 
       test('letter spacing override', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(
+          typography: FiftyPreset.fdlV2.typography.copyWith(
             letterSpacingDisplay: -1.0,
           ),
         );
@@ -99,7 +103,7 @@ void main() {
 
       test('line height override', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(
+          typography: FiftyPreset.fdlV2.typography.copyWith(
             lineHeightBody: 1.8,
           ),
         );
@@ -110,7 +114,7 @@ void main() {
 
       test('weight override', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(
+          typography: FiftyPreset.fdlV2.typography.copyWith(
             bold: FontWeight.w900,
           ),
         );
@@ -123,7 +127,7 @@ void main() {
     group('reset', () {
       test('reset restores all defaults', () {
         FiftyTokens.configure(
-          typography: const FiftyTypographyConfig(
+          typography: FiftyPreset.fdlV2.typography.copyWith(
             fontFamily: 'Inter',
             fontSource: FontSource.asset,
             displayLarge: 48,

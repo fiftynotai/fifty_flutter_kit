@@ -4,6 +4,48 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.0.0] - 2026-03-01
+
+### BREAKING CHANGES
+
+- `FiftyColorConfig` fields renamed from palette names to semantic names:
+  - `burgundy` → `primary`, `burgundyHover` → `primaryHover`
+  - `cream` → `background`, `darkBurgundy` → `backgroundDark`
+  - `slateGrey` → `secondary`, `slateGreyHover` → `secondaryHover`
+  - `hunterGreen` → `success`, `powderBlush` → `accent`
+  - `surfaceLight` → `surface`
+- All config class fields are now `required` and non-nullable (was optional nullable)
+- `FiftyTokens.configure()` no longer accepts partial config objects — use `FiftyPreset.fdlV2.colors.copyWith(...)` for partial overrides
+- Token classes no longer hold `@internal static config` fields
+
+### Added
+
+- `FiftyPreset` — unified data class for all design tokens with `fdlV2` built-in default
+- `FiftyPreset.fromMap()` — build presets from JSON/Map at runtime
+- `FiftyPreset.copyWith()` — partial preset overrides
+- `FiftyTokens.load(preset)` — load a complete preset
+- `FiftyTokens.active` — access the currently active preset
+- `FiftyTokens.isConfigured` — check if a custom preset has been loaded
+- `FiftyShadowsConfig` — shadow token configuration (sm, md, lg, primaryOpacity, glowOpacity)
+- `FiftyGradientsConfig` — gradient token configuration (primaryEnd)
+- `FiftyColors.onPrimary` — color for text on primary surfaces
+- `FiftyColors.onBackground` — color for text on background surfaces
+- `FiftyColors.accent` — dark mode accent color (was `powderBlush`)
+- `FiftyColors.background` — light background (was `cream`)
+- `FiftyColors.backgroundDark` — dark background (was `darkBurgundy`)
+- `FiftyColors.surface` — light mode surface (was `surfaceLight`)
+- `fromMap()` and `copyWith()` on all 8 config classes
+- Deprecated aliases for old palette names (`burgundy`, `cream`, `darkBurgundy`, etc.)
+
+### Changed
+
+- All token classes are now agnostic readers from `FiftyTokens.active.{category}.{field}`
+- Token classes no longer contain hardcoded FDL v2 defaults
+- `FiftyShadows.sm/md/lg` now read from `FiftyTokens.active.shadows`
+- `FiftyGradients.primaryEnd` now reads from `FiftyTokens.active.gradients`
+- `borderLight`/`borderDark` use configurable `borderOpacity` from color config
+- `focusDark` uses configurable `focusOpacity` from color config
+
 ## [2.0.0] - 2026-03-01
 
 ### BREAKING CHANGES
@@ -218,6 +260,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Zero external dependencies
 - 100% FDL specification fidelity
 
+[3.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v3.0.0
 [2.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v2.0.0
 [1.0.3]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.3
 [1.0.2]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.2

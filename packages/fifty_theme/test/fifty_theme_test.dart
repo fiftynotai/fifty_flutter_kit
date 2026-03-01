@@ -55,17 +55,17 @@ void main() {
         });
       });
 
-      test('scaffoldBackgroundColor is darkBurgundy', () {
+      test('scaffoldBackgroundColor is backgroundDark', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.dark();
-          expect(theme.scaffoldBackgroundColor, FiftyColors.darkBurgundy);
+          expect(theme.scaffoldBackgroundColor, FiftyColors.backgroundDark);
         });
       });
 
-      test('canvasColor is darkBurgundy', () {
+      test('canvasColor is backgroundDark', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.dark();
-          expect(theme.canvasColor, FiftyColors.darkBurgundy);
+          expect(theme.canvasColor, FiftyColors.backgroundDark);
         });
       });
 
@@ -114,10 +114,10 @@ void main() {
         });
       });
 
-      test('colorScheme primary is burgundy', () {
+      test('colorScheme primary is FDL primary', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.dark();
-          expect(theme.colorScheme.primary, FiftyColors.burgundy);
+          expect(theme.colorScheme.primary, FiftyColors.primary);
         });
       });
 
@@ -141,8 +141,8 @@ void main() {
       test('appBarTheme is configured', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.dark();
-          expect(theme.appBarTheme.backgroundColor, FiftyColors.darkBurgundy);
-          expect(theme.appBarTheme.foregroundColor, FiftyColors.cream);
+          expect(theme.appBarTheme.backgroundColor, FiftyColors.backgroundDark);
+          expect(theme.appBarTheme.foregroundColor, FiftyColors.background);
           expect(theme.appBarTheme.elevation, 0);
         });
       });
@@ -248,17 +248,17 @@ void main() {
         });
       });
 
-      test('scaffoldBackgroundColor is cream', () {
+      test('scaffoldBackgroundColor is background', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.light();
-          expect(theme.scaffoldBackgroundColor, FiftyColors.cream);
+          expect(theme.scaffoldBackgroundColor, FiftyColors.background);
         });
       });
 
-      test('canvasColor is cream', () {
+      test('canvasColor is background', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.light();
-          expect(theme.canvasColor, FiftyColors.cream);
+          expect(theme.canvasColor, FiftyColors.background);
         });
       });
 
@@ -286,10 +286,10 @@ void main() {
         });
       });
 
-      test('colorScheme primary is burgundy', () {
+      test('colorScheme primary is FDL primary', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.light();
-          expect(theme.colorScheme.primary, FiftyColors.burgundy);
+          expect(theme.colorScheme.primary, FiftyColors.primary);
         });
       });
 
@@ -302,11 +302,11 @@ void main() {
         });
       });
 
-      test('appBarTheme uses cream background', () {
+      test('appBarTheme uses background color', () {
         return _withSilencedFontErrors(() {
           final theme = FiftyTheme.light();
-          expect(theme.appBarTheme.backgroundColor, FiftyColors.cream);
-          expect(theme.appBarTheme.foregroundColor, FiftyColors.darkBurgundy);
+          expect(theme.appBarTheme.backgroundColor, FiftyColors.background);
+          expect(theme.appBarTheme.foregroundColor, FiftyColors.backgroundDark);
           expect(theme.appBarTheme.elevation, 0);
         });
       });

@@ -1,39 +1,87 @@
 import 'package:flutter/animation.dart';
 
-/// Configuration for [FiftyMotion] token overrides.
+/// Configuration for motion tokens.
 ///
-/// All fields are optional. `null` means "use FDL default".
-/// Pass to [FiftyTokens.configure()] before `runApp()`.
+/// All fields are required. Use [FiftyPreset.fdlV2.motion] as a starting
+/// point and [copyWith] for partial overrides.
 class FiftyMotionConfig {
-  /// Creates a [FiftyMotionConfig] with optional overrides.
+  /// Creates a [FiftyMotionConfig] with all required fields.
   const FiftyMotionConfig({
-    this.instant,
-    this.fast,
-    this.compiling,
-    this.systemLoad,
-    this.standard,
-    this.enter,
-    this.exit,
+    required this.instant,
+    required this.fast,
+    required this.compiling,
+    required this.systemLoad,
+    required this.standard,
+    required this.enter,
+    required this.exit,
   });
 
-  /// Override for [FiftyMotion.instant]. Default: `Duration.zero`.
-  final Duration? instant;
+  /// Build a [FiftyMotionConfig] from a [Map]. Missing keys fall back
+  /// to [fallback].
+  ///
+  /// Durations are parsed from int (milliseconds). Curves are NOT
+  /// parseable from JSON and always use [fallback] values.
+  factory FiftyMotionConfig.fromMap(
+    Map<String, dynamic> map, {
+    required FiftyMotionConfig fallback,
+  }) {
+    return FiftyMotionConfig(
+      instant: _parseDuration(map['instant']) ?? fallback.instant,
+      fast: _parseDuration(map['fast']) ?? fallback.fast,
+      compiling: _parseDuration(map['compiling']) ?? fallback.compiling,
+      systemLoad: _parseDuration(map['systemLoad']) ?? fallback.systemLoad,
+      // Curves are not JSON-serializable; always use fallback.
+      standard: fallback.standard,
+      enter: fallback.enter,
+      exit: fallback.exit,
+    );
+  }
 
-  /// Override for [FiftyMotion.fast]. Default: `Duration(milliseconds: 150)`.
-  final Duration? fast;
+  /// Instant duration. Default: `Duration.zero`.
+  final Duration instant;
 
-  /// Override for [FiftyMotion.compiling]. Default: `Duration(milliseconds: 300)`.
-  final Duration? compiling;
+  /// Fast duration. Default: `Duration(milliseconds: 150)`.
+  final Duration fast;
 
-  /// Override for [FiftyMotion.systemLoad]. Default: `Duration(milliseconds: 800)`.
-  final Duration? systemLoad;
+  /// Compiling duration. Default: `Duration(milliseconds: 300)`.
+  final Duration compiling;
 
-  /// Override for [FiftyMotion.standard]. Default: `Cubic(0.2, 0, 0, 1)`.
-  final Curve? standard;
+  /// System load duration. Default: `Duration(milliseconds: 800)`.
+  final Duration systemLoad;
 
-  /// Override for [FiftyMotion.enter]. Default: `Cubic(0.2, 0.8, 0.2, 1)`.
-  final Curve? enter;
+  /// Standard easing curve. Default: `Cubic(0.2, 0, 0, 1)`.
+  final Curve standard;
 
-  /// Override for [FiftyMotion.exit]. Default: `Cubic(0.4, 0, 1, 1)`.
-  final Curve? exit;
+  /// Enter easing curve. Default: `Cubic(0.2, 0.8, 0.2, 1)`.
+  final Curve enter;
+
+  /// Exit easing curve. Default: `Cubic(0.4, 0, 1, 1)`.
+  final Curve exit;
+
+  /// Returns a copy with the given fields replaced.
+  FiftyMotionConfig copyWith({
+    Duration? instant,
+    Duration? fast,
+    Duration? compiling,
+    Duration? systemLoad,
+    Curve? standard,
+    Curve? enter,
+    Curve? exit,
+  }) {
+    return FiftyMotionConfig(
+      instant: instant ?? this.instant,
+      fast: fast ?? this.fast,
+      compiling: compiling ?? this.compiling,
+      systemLoad: systemLoad ?? this.systemLoad,
+      standard: standard ?? this.standard,
+      enter: enter ?? this.enter,
+      exit: exit ?? this.exit,
+    );
+  }
+
+  static Duration? _parseDuration(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return Duration(milliseconds: value);
+    return null;
+  }
 }

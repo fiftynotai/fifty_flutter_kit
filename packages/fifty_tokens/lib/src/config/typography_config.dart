@@ -9,128 +9,285 @@ enum FontSource {
   asset,
 }
 
-/// Configuration for [FiftyTypography] token overrides.
+/// Configuration for typography tokens.
 ///
-/// All fields are optional. `null` means "use FDL default".
-/// Pass to [FiftyTokens.configure()] before `runApp()`.
+/// All fields are required. Use [FiftyPreset.fdlV2.typography] as a starting
+/// point and [copyWith] for partial overrides.
 class FiftyTypographyConfig {
-  /// Creates a [FiftyTypographyConfig] with optional overrides.
+  /// Creates a [FiftyTypographyConfig] with all required fields.
   const FiftyTypographyConfig({
-    this.fontFamily,
-    this.fontSource = FontSource.googleFonts,
-    this.regular,
-    this.medium,
-    this.semiBold,
-    this.bold,
-    this.extraBold,
-    this.displayLarge,
-    this.displayMedium,
-    this.titleLarge,
-    this.titleMedium,
-    this.titleSmall,
-    this.bodyLarge,
-    this.bodyMedium,
-    this.bodySmall,
-    this.labelLarge,
-    this.labelMedium,
-    this.labelSmall,
-    this.letterSpacingDisplay,
-    this.letterSpacingDisplayMedium,
-    this.letterSpacingBody,
-    this.letterSpacingBodyMedium,
-    this.letterSpacingBodySmall,
-    this.letterSpacingLabel,
-    this.letterSpacingLabelMedium,
-    this.lineHeightDisplay,
-    this.lineHeightTitle,
-    this.lineHeightBody,
-    this.lineHeightLabel,
+    required this.fontFamily,
+    required this.fontSource,
+    required this.regular,
+    required this.medium,
+    required this.semiBold,
+    required this.bold,
+    required this.extraBold,
+    required this.displayLarge,
+    required this.displayMedium,
+    required this.titleLarge,
+    required this.titleMedium,
+    required this.titleSmall,
+    required this.bodyLarge,
+    required this.bodyMedium,
+    required this.bodySmall,
+    required this.labelLarge,
+    required this.labelMedium,
+    required this.labelSmall,
+    required this.letterSpacingDisplay,
+    required this.letterSpacingDisplayMedium,
+    required this.letterSpacingBody,
+    required this.letterSpacingBodyMedium,
+    required this.letterSpacingBodySmall,
+    required this.letterSpacingLabel,
+    required this.letterSpacingLabelMedium,
+    required this.lineHeightDisplay,
+    required this.lineHeightTitle,
+    required this.lineHeightBody,
+    required this.lineHeightLabel,
   });
 
-  /// Override for [FiftyTypography.fontFamily]. Default: `'Manrope'`.
-  final String? fontFamily;
+  /// Build a [FiftyTypographyConfig] from a [Map]. Missing keys fall back
+  /// to [fallback].
+  factory FiftyTypographyConfig.fromMap(
+    Map<String, dynamic> map, {
+    required FiftyTypographyConfig fallback,
+  }) {
+    return FiftyTypographyConfig(
+      fontFamily: map['fontFamily'] as String? ?? fallback.fontFamily,
+      fontSource: _parseFontSource(map['fontSource'], fallback.fontSource),
+      regular: _parseFontWeight(map['regular']) ?? fallback.regular,
+      medium: _parseFontWeight(map['medium']) ?? fallback.medium,
+      semiBold: _parseFontWeight(map['semiBold']) ?? fallback.semiBold,
+      bold: _parseFontWeight(map['bold']) ?? fallback.bold,
+      extraBold: _parseFontWeight(map['extraBold']) ?? fallback.extraBold,
+      displayLarge:
+          (map['displayLarge'] as num?)?.toDouble() ?? fallback.displayLarge,
+      displayMedium:
+          (map['displayMedium'] as num?)?.toDouble() ?? fallback.displayMedium,
+      titleLarge:
+          (map['titleLarge'] as num?)?.toDouble() ?? fallback.titleLarge,
+      titleMedium:
+          (map['titleMedium'] as num?)?.toDouble() ?? fallback.titleMedium,
+      titleSmall:
+          (map['titleSmall'] as num?)?.toDouble() ?? fallback.titleSmall,
+      bodyLarge: (map['bodyLarge'] as num?)?.toDouble() ?? fallback.bodyLarge,
+      bodyMedium:
+          (map['bodyMedium'] as num?)?.toDouble() ?? fallback.bodyMedium,
+      bodySmall: (map['bodySmall'] as num?)?.toDouble() ?? fallback.bodySmall,
+      labelLarge:
+          (map['labelLarge'] as num?)?.toDouble() ?? fallback.labelLarge,
+      labelMedium:
+          (map['labelMedium'] as num?)?.toDouble() ?? fallback.labelMedium,
+      labelSmall:
+          (map['labelSmall'] as num?)?.toDouble() ?? fallback.labelSmall,
+      letterSpacingDisplay:
+          (map['letterSpacingDisplay'] as num?)?.toDouble() ??
+          fallback.letterSpacingDisplay,
+      letterSpacingDisplayMedium:
+          (map['letterSpacingDisplayMedium'] as num?)?.toDouble() ??
+          fallback.letterSpacingDisplayMedium,
+      letterSpacingBody:
+          (map['letterSpacingBody'] as num?)?.toDouble() ??
+          fallback.letterSpacingBody,
+      letterSpacingBodyMedium:
+          (map['letterSpacingBodyMedium'] as num?)?.toDouble() ??
+          fallback.letterSpacingBodyMedium,
+      letterSpacingBodySmall:
+          (map['letterSpacingBodySmall'] as num?)?.toDouble() ??
+          fallback.letterSpacingBodySmall,
+      letterSpacingLabel:
+          (map['letterSpacingLabel'] as num?)?.toDouble() ??
+          fallback.letterSpacingLabel,
+      letterSpacingLabelMedium:
+          (map['letterSpacingLabelMedium'] as num?)?.toDouble() ??
+          fallback.letterSpacingLabelMedium,
+      lineHeightDisplay:
+          (map['lineHeightDisplay'] as num?)?.toDouble() ??
+          fallback.lineHeightDisplay,
+      lineHeightTitle:
+          (map['lineHeightTitle'] as num?)?.toDouble() ??
+          fallback.lineHeightTitle,
+      lineHeightBody:
+          (map['lineHeightBody'] as num?)?.toDouble() ??
+          fallback.lineHeightBody,
+      lineHeightLabel:
+          (map['lineHeightLabel'] as num?)?.toDouble() ??
+          fallback.lineHeightLabel,
+    );
+  }
+
+  /// Font family name. Default: `'Manrope'`.
+  final String fontFamily;
 
   /// How the font family should be loaded. Default: [FontSource.googleFonts].
   final FontSource fontSource;
 
-  /// Override for [FiftyTypography.regular]. Default: `FontWeight.w400`.
-  final FontWeight? regular;
+  /// Regular weight. Default: `FontWeight.w400`.
+  final FontWeight regular;
 
-  /// Override for [FiftyTypography.medium]. Default: `FontWeight.w500`.
-  final FontWeight? medium;
+  /// Medium weight. Default: `FontWeight.w500`.
+  final FontWeight medium;
 
-  /// Override for [FiftyTypography.semiBold]. Default: `FontWeight.w600`.
-  final FontWeight? semiBold;
+  /// Semi-bold weight. Default: `FontWeight.w600`.
+  final FontWeight semiBold;
 
-  /// Override for [FiftyTypography.bold]. Default: `FontWeight.w700`.
-  final FontWeight? bold;
+  /// Bold weight. Default: `FontWeight.w700`.
+  final FontWeight bold;
 
-  /// Override for [FiftyTypography.extraBold]. Default: `FontWeight.w800`.
-  final FontWeight? extraBold;
+  /// Extra-bold weight. Default: `FontWeight.w800`.
+  final FontWeight extraBold;
 
-  /// Override for [FiftyTypography.displayLarge]. Default: `32`.
-  final double? displayLarge;
+  /// Display large size. Default: `32`.
+  final double displayLarge;
 
-  /// Override for [FiftyTypography.displayMedium]. Default: `24`.
-  final double? displayMedium;
+  /// Display medium size. Default: `24`.
+  final double displayMedium;
 
-  /// Override for [FiftyTypography.titleLarge]. Default: `20`.
-  final double? titleLarge;
+  /// Title large size. Default: `20`.
+  final double titleLarge;
 
-  /// Override for [FiftyTypography.titleMedium]. Default: `18`.
-  final double? titleMedium;
+  /// Title medium size. Default: `18`.
+  final double titleMedium;
 
-  /// Override for [FiftyTypography.titleSmall]. Default: `16`.
-  final double? titleSmall;
+  /// Title small size. Default: `16`.
+  final double titleSmall;
 
-  /// Override for [FiftyTypography.bodyLarge]. Default: `16`.
-  final double? bodyLarge;
+  /// Body large size. Default: `16`.
+  final double bodyLarge;
 
-  /// Override for [FiftyTypography.bodyMedium]. Default: `14`.
-  final double? bodyMedium;
+  /// Body medium size. Default: `14`.
+  final double bodyMedium;
 
-  /// Override for [FiftyTypography.bodySmall]. Default: `12`.
-  final double? bodySmall;
+  /// Body small size. Default: `12`.
+  final double bodySmall;
 
-  /// Override for [FiftyTypography.labelLarge]. Default: `14`.
-  final double? labelLarge;
+  /// Label large size. Default: `14`.
+  final double labelLarge;
 
-  /// Override for [FiftyTypography.labelMedium]. Default: `12`.
-  final double? labelMedium;
+  /// Label medium size. Default: `12`.
+  final double labelMedium;
 
-  /// Override for [FiftyTypography.labelSmall]. Default: `10`.
-  final double? labelSmall;
+  /// Label small size. Default: `10`.
+  final double labelSmall;
 
-  /// Override for [FiftyTypography.letterSpacingDisplay]. Default: `-0.5`.
-  final double? letterSpacingDisplay;
+  /// Display letter spacing. Default: `-0.5`.
+  final double letterSpacingDisplay;
 
-  /// Override for [FiftyTypography.letterSpacingDisplayMedium]. Default: `-0.25`.
-  final double? letterSpacingDisplayMedium;
+  /// Display medium letter spacing. Default: `-0.25`.
+  final double letterSpacingDisplayMedium;
 
-  /// Override for [FiftyTypography.letterSpacingBody]. Default: `0.5`.
-  final double? letterSpacingBody;
+  /// Body letter spacing. Default: `0.5`.
+  final double letterSpacingBody;
 
-  /// Override for [FiftyTypography.letterSpacingBodyMedium]. Default: `0.25`.
-  final double? letterSpacingBodyMedium;
+  /// Body medium letter spacing. Default: `0.25`.
+  final double letterSpacingBodyMedium;
 
-  /// Override for [FiftyTypography.letterSpacingBodySmall]. Default: `0.4`.
-  final double? letterSpacingBodySmall;
+  /// Body small letter spacing. Default: `0.4`.
+  final double letterSpacingBodySmall;
 
-  /// Override for [FiftyTypography.letterSpacingLabel]. Default: `0.5`.
-  final double? letterSpacingLabel;
+  /// Label letter spacing. Default: `0.5`.
+  final double letterSpacingLabel;
 
-  /// Override for [FiftyTypography.letterSpacingLabelMedium]. Default: `1.5`.
-  final double? letterSpacingLabelMedium;
+  /// Label medium letter spacing. Default: `1.5`.
+  final double letterSpacingLabelMedium;
 
-  /// Override for [FiftyTypography.lineHeightDisplay]. Default: `1.2`.
-  final double? lineHeightDisplay;
+  /// Display line height. Default: `1.2`.
+  final double lineHeightDisplay;
 
-  /// Override for [FiftyTypography.lineHeightTitle]. Default: `1.3`.
-  final double? lineHeightTitle;
+  /// Title line height. Default: `1.3`.
+  final double lineHeightTitle;
 
-  /// Override for [FiftyTypography.lineHeightBody]. Default: `1.5`.
-  final double? lineHeightBody;
+  /// Body line height. Default: `1.5`.
+  final double lineHeightBody;
 
-  /// Override for [FiftyTypography.lineHeightLabel]. Default: `1.2`.
-  final double? lineHeightLabel;
+  /// Label line height. Default: `1.2`.
+  final double lineHeightLabel;
+
+  /// Returns a copy with the given fields replaced.
+  FiftyTypographyConfig copyWith({
+    String? fontFamily,
+    FontSource? fontSource,
+    FontWeight? regular,
+    FontWeight? medium,
+    FontWeight? semiBold,
+    FontWeight? bold,
+    FontWeight? extraBold,
+    double? displayLarge,
+    double? displayMedium,
+    double? titleLarge,
+    double? titleMedium,
+    double? titleSmall,
+    double? bodyLarge,
+    double? bodyMedium,
+    double? bodySmall,
+    double? labelLarge,
+    double? labelMedium,
+    double? labelSmall,
+    double? letterSpacingDisplay,
+    double? letterSpacingDisplayMedium,
+    double? letterSpacingBody,
+    double? letterSpacingBodyMedium,
+    double? letterSpacingBodySmall,
+    double? letterSpacingLabel,
+    double? letterSpacingLabelMedium,
+    double? lineHeightDisplay,
+    double? lineHeightTitle,
+    double? lineHeightBody,
+    double? lineHeightLabel,
+  }) {
+    return FiftyTypographyConfig(
+      fontFamily: fontFamily ?? this.fontFamily,
+      fontSource: fontSource ?? this.fontSource,
+      regular: regular ?? this.regular,
+      medium: medium ?? this.medium,
+      semiBold: semiBold ?? this.semiBold,
+      bold: bold ?? this.bold,
+      extraBold: extraBold ?? this.extraBold,
+      displayLarge: displayLarge ?? this.displayLarge,
+      displayMedium: displayMedium ?? this.displayMedium,
+      titleLarge: titleLarge ?? this.titleLarge,
+      titleMedium: titleMedium ?? this.titleMedium,
+      titleSmall: titleSmall ?? this.titleSmall,
+      bodyLarge: bodyLarge ?? this.bodyLarge,
+      bodyMedium: bodyMedium ?? this.bodyMedium,
+      bodySmall: bodySmall ?? this.bodySmall,
+      labelLarge: labelLarge ?? this.labelLarge,
+      labelMedium: labelMedium ?? this.labelMedium,
+      labelSmall: labelSmall ?? this.labelSmall,
+      letterSpacingDisplay:
+          letterSpacingDisplay ?? this.letterSpacingDisplay,
+      letterSpacingDisplayMedium:
+          letterSpacingDisplayMedium ?? this.letterSpacingDisplayMedium,
+      letterSpacingBody: letterSpacingBody ?? this.letterSpacingBody,
+      letterSpacingBodyMedium:
+          letterSpacingBodyMedium ?? this.letterSpacingBodyMedium,
+      letterSpacingBodySmall:
+          letterSpacingBodySmall ?? this.letterSpacingBodySmall,
+      letterSpacingLabel: letterSpacingLabel ?? this.letterSpacingLabel,
+      letterSpacingLabelMedium:
+          letterSpacingLabelMedium ?? this.letterSpacingLabelMedium,
+      lineHeightDisplay: lineHeightDisplay ?? this.lineHeightDisplay,
+      lineHeightTitle: lineHeightTitle ?? this.lineHeightTitle,
+      lineHeightBody: lineHeightBody ?? this.lineHeightBody,
+      lineHeightLabel: lineHeightLabel ?? this.lineHeightLabel,
+    );
+  }
+
+  static FontWeight? _parseFontWeight(dynamic value) {
+    if (value == null) return null;
+    if (value is int) {
+      return FontWeight.values.firstWhere(
+        (w) => w.value == value,
+        orElse: () => FontWeight.w400,
+      );
+    }
+    return null;
+  }
+
+  static FontSource _parseFontSource(dynamic value, FontSource fallback) {
+    if (value == 'asset') return FontSource.asset;
+    if (value == 'googleFonts') return FontSource.googleFonts;
+    return fallback;
+  }
 }

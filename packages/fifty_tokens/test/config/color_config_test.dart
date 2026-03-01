@@ -7,31 +7,39 @@ void main() {
     setUp(() => FiftyTokens.reset());
 
     group('default values (FDL defaults when unconfigured)', () {
-      test('core palette defaults', () {
-        expect(FiftyColors.burgundy, Color(0xFF88292F));
-        expect(FiftyColors.burgundyHover, Color(0xFF6E2126));
-        expect(FiftyColors.cream, Color(0xFFFEFEE3));
-        expect(FiftyColors.darkBurgundy, Color(0xFF1A0D0E));
-        expect(FiftyColors.slateGrey, Color(0xFF335C67));
-        expect(FiftyColors.slateGreyHover, Color(0xFF274750));
-        expect(FiftyColors.hunterGreen, Color(0xFF4B644A));
-        expect(FiftyColors.powderBlush, Color(0xFFFFC9B9));
-        expect(FiftyColors.surfaceLight, Color(0xFFFAF9DE));
+      test('semantic color defaults', () {
+        expect(FiftyColors.primary, Color(0xFF88292F));
+        expect(FiftyColors.primaryHover, Color(0xFF6E2126));
+        expect(FiftyColors.background, Color(0xFFFEFEE3));
+        expect(FiftyColors.backgroundDark, Color(0xFF1A0D0E));
+        expect(FiftyColors.secondary, Color(0xFF335C67));
+        expect(FiftyColors.secondaryHover, Color(0xFF274750));
+        expect(FiftyColors.success, Color(0xFF4B644A));
+        expect(FiftyColors.accent, Color(0xFFFFC9B9));
+        expect(FiftyColors.surface, Color(0xFFFAF9DE));
         expect(FiftyColors.surfaceDark, Color(0xFF2A1517));
-      });
-
-      test('semantic defaults fall back to core palette', () {
-        expect(FiftyColors.primary, FiftyColors.burgundy);
-        expect(FiftyColors.primaryHover, FiftyColors.burgundyHover);
-        expect(FiftyColors.secondary, FiftyColors.slateGrey);
-        expect(FiftyColors.secondaryHover, FiftyColors.slateGreyHover);
-        expect(FiftyColors.success, FiftyColors.hunterGreen);
         expect(FiftyColors.warning, Color(0xFFF7A100));
-        expect(FiftyColors.error, FiftyColors.burgundy);
+        expect(FiftyColors.error, Color(0xFF88292F));
+        expect(FiftyColors.onPrimary, Color(0xFFFEFEE3));
+        expect(FiftyColors.onBackground, Color(0xFF1A0D0E));
       });
 
       test('focus helpers default correctly', () {
-        expect(FiftyColors.focusLight, FiftyColors.burgundy);
+        expect(FiftyColors.focusLight, FiftyColors.primary);
+      });
+
+      test('border opacity defaults to 0.05', () {
+        expect(
+          FiftyTokens.active.colors.borderOpacity,
+          closeTo(0.05, 0.001),
+        );
+      });
+
+      test('focus opacity defaults to 0.5', () {
+        expect(
+          FiftyTokens.active.colors.focusOpacity,
+          closeTo(0.5, 0.001),
+        );
       });
     });
 
@@ -40,148 +48,90 @@ void main() {
         const customColor = Color(0xFF111111);
         FiftyTokens.configure(
           colors: FiftyColorConfig(
-            burgundy: customColor,
-            burgundyHover: customColor,
-            cream: customColor,
-            darkBurgundy: customColor,
-            slateGrey: customColor,
-            slateGreyHover: customColor,
-            hunterGreen: customColor,
-            powderBlush: customColor,
-            surfaceLight: customColor,
-            surfaceDark: customColor,
             primary: customColor,
             primaryHover: customColor,
+            background: customColor,
+            backgroundDark: customColor,
             secondary: customColor,
             secondaryHover: customColor,
             success: customColor,
+            accent: customColor,
+            surface: customColor,
+            surfaceDark: customColor,
             warning: customColor,
             error: customColor,
-            focusLight: customColor,
+            onPrimary: customColor,
+            onBackground: customColor,
+            borderOpacity: 0.1,
+            focusOpacity: 0.8,
           ),
         );
 
-        expect(FiftyColors.burgundy, customColor);
-        expect(FiftyColors.burgundyHover, customColor);
-        expect(FiftyColors.cream, customColor);
-        expect(FiftyColors.darkBurgundy, customColor);
-        expect(FiftyColors.slateGrey, customColor);
-        expect(FiftyColors.slateGreyHover, customColor);
-        expect(FiftyColors.hunterGreen, customColor);
-        expect(FiftyColors.powderBlush, customColor);
-        expect(FiftyColors.surfaceLight, customColor);
-        expect(FiftyColors.surfaceDark, customColor);
         expect(FiftyColors.primary, customColor);
         expect(FiftyColors.primaryHover, customColor);
+        expect(FiftyColors.background, customColor);
+        expect(FiftyColors.backgroundDark, customColor);
         expect(FiftyColors.secondary, customColor);
         expect(FiftyColors.secondaryHover, customColor);
         expect(FiftyColors.success, customColor);
+        expect(FiftyColors.accent, customColor);
+        expect(FiftyColors.surface, customColor);
+        expect(FiftyColors.surfaceDark, customColor);
         expect(FiftyColors.warning, customColor);
         expect(FiftyColors.error, customColor);
-        expect(FiftyColors.focusLight, customColor);
+        expect(FiftyColors.onPrimary, customColor);
+        expect(FiftyColors.onBackground, customColor);
+        expect(FiftyColors.borderLight.a, closeTo(0.1, 0.01));
+        expect(FiftyColors.focusDark.a, closeTo(0.8, 0.01));
       });
     });
 
-    group('partial override', () {
+    group('partial override via copyWith', () {
       test('only primary overridden, others stay default', () {
         const customPrimary = Color(0xFF0000FF);
         FiftyTokens.configure(
-          colors: FiftyColorConfig(primary: customPrimary),
+          colors: FiftyPreset.fdlV2.colors.copyWith(primary: customPrimary),
         );
 
         expect(FiftyColors.primary, customPrimary);
-        // Core palette unchanged
-        expect(FiftyColors.burgundy, Color(0xFF88292F));
-        expect(FiftyColors.slateGrey, Color(0xFF335C67));
+        // Others unchanged
+        expect(FiftyColors.secondary, Color(0xFF335C67));
+        expect(FiftyColors.background, Color(0xFFFEFEE3));
       });
     });
 
-    group('semantic fallback chain', () {
-      test('override burgundy but not primary -> primary returns overridden burgundy', () {
-        const customBurgundy = Color(0xFF0000FF);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(burgundy: customBurgundy),
-        );
-
-        expect(FiftyColors.burgundy, customBurgundy);
-        expect(FiftyColors.primary, customBurgundy);
-      });
-
-      test('override burgundy but not error -> error follows primary which follows burgundy', () {
-        const customBurgundy = Color(0xFF0000FF);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(burgundy: customBurgundy),
-        );
-
-        expect(FiftyColors.error, customBurgundy);
-      });
-
-      test('override primary directly -> error follows primary', () {
+    group('copyWith', () {
+      test('overrides specific fields only', () {
         const customPrimary = Color(0xFFFF0000);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(primary: customPrimary),
-        );
+        final config =
+            FiftyPreset.fdlV2.colors.copyWith(primary: customPrimary);
 
-        expect(FiftyColors.primary, customPrimary);
-        expect(FiftyColors.error, customPrimary);
-        // burgundy unchanged
-        expect(FiftyColors.burgundy, Color(0xFF88292F));
+        expect(config.primary, customPrimary);
+        // Others unchanged
+        expect(config.secondary, FiftyPreset.fdlV2.colors.secondary);
+        expect(config.background, FiftyPreset.fdlV2.colors.background);
       });
 
-      test('override burgundy and primary independently', () {
-        const customBurgundy = Color(0xFF0000FF);
-        const customPrimary = Color(0xFFFF0000);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(
-            burgundy: customBurgundy,
-            primary: customPrimary,
-          ),
-        );
+      test('override error independently from primary', () {
+        const customError = Color(0xFFFF0000);
+        final config =
+            FiftyPreset.fdlV2.colors.copyWith(error: customError);
 
-        expect(FiftyColors.burgundy, customBurgundy);
-        expect(FiftyColors.primary, customPrimary);
-      });
-
-      test('focusLight follows primary getter', () {
-        const customPrimary = Color(0xFFFF0000);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(primary: customPrimary),
-        );
-
-        expect(FiftyColors.focusLight, customPrimary);
-      });
-
-      test('slateGrey override cascades to secondary', () {
-        const customSlateGrey = Color(0xFF0000FF);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(slateGrey: customSlateGrey),
-        );
-
-        expect(FiftyColors.secondary, customSlateGrey);
-      });
-
-      test('hunterGreen override cascades to success', () {
-        const customGreen = Color(0xFF00FF00);
-        FiftyTokens.configure(
-          colors: FiftyColorConfig(hunterGreen: customGreen),
-        );
-
-        expect(FiftyColors.success, customGreen);
+        expect(config.error, customError);
+        expect(config.primary, FiftyPreset.fdlV2.colors.primary);
       });
     });
 
     group('reset restores defaults', () {
       test('after reset all return FDL defaults', () {
         FiftyTokens.configure(
-          colors: FiftyColorConfig(
-            burgundy: Color(0xFF0000FF),
-            primary: Color(0xFFFF0000),
+          colors: FiftyPreset.fdlV2.colors.copyWith(
+            primary: Color(0xFF0000FF),
           ),
         );
 
         FiftyTokens.reset();
 
-        expect(FiftyColors.burgundy, Color(0xFF88292F));
         expect(FiftyColors.primary, Color(0xFF88292F));
         expect(FiftyColors.error, Color(0xFF88292F));
       });
@@ -196,18 +146,18 @@ void main() {
         expect(FiftyColors.borderDark.a, closeTo(0.05, 0.01));
       });
 
-      test('focusDark follows powderBlush getter', () {
-        const customPowderBlush = Color(0xFFAABBCC);
+      test('focusDark follows accent getter', () {
+        const customAccent = Color(0xFFAABBCC);
         FiftyTokens.configure(
-          colors: FiftyColorConfig(powderBlush: customPowderBlush),
+          colors: FiftyPreset.fdlV2.colors.copyWith(accent: customAccent),
         );
 
         final focusDark = FiftyColors.focusDark;
         expect(focusDark.a, closeTo(0.5, 0.01));
-        // RGB should match customPowderBlush
+        // RGB should match customAccent
         expect(
           focusDark.toARGB32() & 0x00FFFFFF,
-          customPowderBlush.toARGB32() & 0x00FFFFFF,
+          customAccent.toARGB32() & 0x00FFFFFF,
         );
       });
     });

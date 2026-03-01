@@ -25,7 +25,7 @@ Design tokens for Fifty Flutter Kit — the foundation layer of the Fifty Design
 
 ```yaml
 dependencies:
-  fifty_tokens: ^2.0.0
+  fifty_tokens: ^3.0.0
 ```
 
 ### For Contributors
@@ -61,7 +61,7 @@ Container(
       fontFamily: FiftyTypography.fontFamily,
       fontSize: FiftyTypography.titleLarge,
       fontWeight: FiftyTypography.bold,
-      color: FiftyColors.cream,
+      color: FiftyColors.background,
     ),
   ),
 )
@@ -84,15 +84,18 @@ fifty_tokens/
 │       ├── shadows.dart       # FiftyShadows
 │       ├── gradients.dart     # FiftyGradients
 │       ├── breakpoints.dart   # FiftyBreakpoints
-│       ├── fifty_tokens_config.dart  # FiftyTokens.configure() / reset()
-│       ├── font_resolver.dart        # FiftyFontResolver + FontSource
+│       ├── preset.dart        # FiftyPreset
 │       └── config/
-│           ├── color_config.dart       # FiftyColorConfig
-│           ├── typography_config.dart  # FiftyTypographyConfig
-│           ├── spacing_config.dart     # FiftySpacingConfig
-│           ├── radii_config.dart       # FiftyRadiiConfig
-│           ├── motion_config.dart      # FiftyMotionConfig
-│           └── breakpoints_config.dart # FiftyBreakpointsConfig
+│           ├── fifty_tokens_config.dart  # FiftyTokens (load/configure/reset)
+│           ├── font_resolver.dart        # FiftyFontResolver + FontSource
+│           ├── color_config.dart         # FiftyColorConfig
+│           ├── typography_config.dart    # FiftyTypographyConfig
+│           ├── spacing_config.dart       # FiftySpacingConfig
+│           ├── radii_config.dart         # FiftyRadiiConfig
+│           ├── motion_config.dart        # FiftyMotionConfig
+│           ├── breakpoints_config.dart   # FiftyBreakpointsConfig
+│           ├── shadows_config.dart       # FiftyShadowsConfig
+│           └── gradients_config.dart     # FiftyGradientsConfig
 └── test/
 ```
 
@@ -117,7 +120,7 @@ fifty_ui      (Component library)
 | `FiftySpacing` | 4px base grid, named scale (xs–massive), and responsive gutters |
 | `FiftyRadii` | Border radius values (none–full) and paired BorderRadius objects |
 | `FiftyMotion` | Duration constants (instant, fast, compiling, systemLoad) and Cubic easing curves |
-| `FiftyShadows` | Box shadow presets — sm, md, lg, primary (burgundy), and glow (cream) |
+| `FiftyShadows` | Box shadow presets — sm, md, lg, primary, and glow |
 | `FiftyGradients` | LinearGradient presets — primary, progress, and surface |
 | `FiftyBreakpoints` | Screen width thresholds: mobile (768px), tablet (768px), desktop (1024px) |
 
@@ -128,32 +131,36 @@ fifty_ui      (Component library)
 ### FiftyColors
 
 ```dart
-// Core palette (v2 — Sophisticated Warm)
-FiftyColors.burgundy        // #88292F — Primary brand, buttons, CTAs, active states
-FiftyColors.burgundyHover   // #6E2126 — Primary hover state
-FiftyColors.cream           // #FEFEE3 — Light backgrounds; dark mode primary text
-FiftyColors.darkBurgundy    // #1A0D0E — Dark mode backgrounds
-FiftyColors.slateGrey       // #335C67 — Secondary buttons, switch on-state
-FiftyColors.slateGreyHover  // #274750 — Secondary hover state
-FiftyColors.hunterGreen     // #4B644A — Success, positive indicators
-FiftyColors.powderBlush     // #FFC9B9 — Dark mode accent, outline borders, focus rings
-FiftyColors.surfaceLight    // #FAF9DE — Light mode cards and surfaces
+// Semantic colors (v3 — agnostic readers)
+FiftyColors.primary         // #88292F — Primary brand, buttons, CTAs, active states
+FiftyColors.primaryHover    // #6E2126 — Primary hover state
+FiftyColors.background      // #FEFEE3 — Light backgrounds; dark mode primary text
+FiftyColors.backgroundDark  // #1A0D0E — Dark mode backgrounds
+FiftyColors.secondary       // #335C67 — Secondary buttons, switch on-state
+FiftyColors.secondaryHover  // #274750 — Secondary hover state
+FiftyColors.success         // #4B644A — Success, positive indicators
+FiftyColors.accent          // #FFC9B9 — Dark mode accent, outline borders, focus rings
+FiftyColors.surface         // #FAF9DE — Light mode cards and surfaces
 FiftyColors.surfaceDark     // #2A1517 — Dark mode cards and surfaces
-
-// Semantic aliases
-FiftyColors.primary         // → burgundy
-FiftyColors.primaryHover    // → burgundyHover
-FiftyColors.secondary       // → slateGrey
-FiftyColors.secondaryHover  // → slateGreyHover
-FiftyColors.success         // → hunterGreen
 FiftyColors.warning         // #F7A100
-FiftyColors.error           // → burgundy
+FiftyColors.error           // #88292F
+FiftyColors.onPrimary       // #FEFEE3 — Text on primary surfaces
+FiftyColors.onBackground    // #1A0D0E — Text on background surfaces
 
-// Mode-specific helpers (getters, not const)
-FiftyColors.borderLight     // black @ 5% opacity
-FiftyColors.borderDark      // white @ 5% opacity
-FiftyColors.focusLight      // → burgundy
-FiftyColors.focusDark       // powderBlush @ 50% opacity
+// Mode-specific helpers (computed getters)
+FiftyColors.borderLight     // black @ borderOpacity (default 5%)
+FiftyColors.borderDark      // white @ borderOpacity (default 5%)
+FiftyColors.focusLight      // → primary
+FiftyColors.focusDark       // accent @ focusOpacity (default 50%)
+
+// Deprecated palette names (still work, produce deprecation warnings)
+FiftyColors.burgundy        // → primary
+FiftyColors.cream           // → background
+FiftyColors.darkBurgundy    // → backgroundDark
+FiftyColors.slateGrey       // → secondary
+FiftyColors.hunterGreen     // → success
+FiftyColors.powderBlush     // → accent
+FiftyColors.surfaceLight    // → surface
 ```
 
 ### FiftyTypography
@@ -299,54 +306,42 @@ Override any token category at app startup. If not called, all tokens use FDL v2
 ```dart
 import 'package:fifty_tokens/fifty_tokens.dart';
 
+// Option 1: Load a complete preset from JSON
+final preset = FiftyPreset.fromMap(jsonDecode(jsonString));
+FiftyTokens.load(preset);
+
+// Option 2: Configure individual categories (rest stays FDL v2)
 FiftyTokens.configure(
-  colors: FiftyColorConfig(
+  colors: FiftyPreset.fdlV2.colors.copyWith(
     primary: Color(0xFF1A73E8),
     secondary: Color(0xFF34A853),
-    cream: Color(0xFFF5F5DC),
   ),
-  typography: FiftyTypographyConfig(
+  typography: FiftyPreset.fdlV2.typography.copyWith(
     fontFamily: 'Inter',
     fontSource: FontSource.googleFonts,
-  ),
-  spacing: FiftySpacingConfig(
-    base: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-  ),
-  radii: FiftyRadiiConfig(
-    md: 12,
-    lg: 16,
-  ),
-  motion: FiftyMotionConfig(
-    fast: Duration(milliseconds: 200),
-  ),
-  breakpoints: FiftyBreakpointsConfig(
-    mobile: 600,
-    tablet: 900,
-    desktop: 1200,
   ),
 );
 ```
 
 ### Config Classes
 
-| Config Class | Overrides |
-|-------------|-----------|
-| `FiftyColorConfig` | `primary`, `primaryHover`, `secondary`, `secondaryHover`, `success`, `warning`, `error`, `cream`, `darkBurgundy`, `powderBlush`, `slateGrey`, `slateGreyHover`, `hunterGreen`, `surfaceLight`, `surfaceDark` |
-| `FiftyTypographyConfig` | `fontFamily`, `fontSource`, plus all type scale sizes, weights, letter spacing, and line heights |
-| `FiftySpacingConfig` | `base`, `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `huge`, `massive`, `gutterMobile`, `gutterTablet`, `gutterDesktop` |
-| `FiftyRadiiConfig` | `none`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `full` |
-| `FiftyMotionConfig` | `instant`, `fast`, `compiling`, `systemLoad`, `standard`, `enter`, `exit` |
+| Config Class | Fields |
+|-------------|---------|
+| `FiftyColorConfig` | `primary`, `primaryHover`, `background`, `backgroundDark`, `secondary`, `secondaryHover`, `success`, `accent`, `surface`, `surfaceDark`, `warning`, `error`, `onPrimary`, `onBackground`, `borderOpacity`, `focusOpacity` |
+| `FiftyTypographyConfig` | `fontFamily`, `fontSource`, weights, type scale sizes, letter spacing, line heights |
+| `FiftySpacingConfig` | `base`, `xs`–`massive`, `gutterMobile`–`gutterDesktop` |
+| `FiftyRadiiConfig` | `none`–`full` |
+| `FiftyMotionConfig` | `instant`–`systemLoad`, `standard`, `enter`, `exit` |
 | `FiftyBreakpointsConfig` | `mobile`, `tablet`, `desktop` |
+| `FiftyShadowsConfig` | `sm`, `md`, `lg`, `primaryOpacity`, `glowOpacity` |
+| `FiftyGradientsConfig` | `primaryEnd` |
 
 ### Font Configuration
 
 ```dart
 // Google Fonts (default) — downloads at runtime
 FiftyTokens.configure(
-  typography: FiftyTypographyConfig(
+  typography: FiftyPreset.fdlV2.typography.copyWith(
     fontFamily: 'Manrope',
     fontSource: FontSource.googleFonts,
   ),
@@ -354,7 +349,7 @@ FiftyTokens.configure(
 
 // Asset fonts — bundled in app, no network needed
 FiftyTokens.configure(
-  typography: FiftyTypographyConfig(
+  typography: FiftyPreset.fdlV2.typography.copyWith(
     fontFamily: 'Manrope',
     fontSource: FontSource.asset,
   ),
@@ -407,7 +402,7 @@ class FiftyCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(FiftySpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? FiftyColors.surfaceDark : FiftyColors.surfaceLight,
+        color: isDark ? FiftyColors.surfaceDark : FiftyColors.surface,
         borderRadius: FiftyRadii.xxlRadius,
         border: Border.all(
           color: isDark ? FiftyColors.borderDark : FiftyColors.borderLight,
@@ -423,7 +418,7 @@ class FiftyCard extends StatelessWidget {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.titleLarge,
               fontWeight: FiftyTypography.bold,
-              color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+              color: isDark ? FiftyColors.background : FiftyColors.backgroundDark,
               height: FiftyTypography.lineHeightTitle,
             ),
           ),
@@ -434,7 +429,7 @@ class FiftyCard extends StatelessWidget {
               fontFamily: FiftyTypography.fontFamily,
               fontSize: FiftyTypography.bodyMedium,
               fontWeight: FiftyTypography.regular,
-              color: isDark ? FiftyColors.cream : FiftyColors.darkBurgundy,
+              color: isDark ? FiftyColors.background : FiftyColors.backgroundDark,
               height: FiftyTypography.lineHeightBody,
             ),
           ),
@@ -523,7 +518,7 @@ Container(
       fontFamily: FiftyTypography.fontFamily,
       fontSize: FiftyTypography.displayLarge,
       fontWeight: FiftyTypography.extraBold,
-      color: FiftyColors.cream,
+      color: FiftyColors.background,
       letterSpacing: FiftyTypography.letterSpacingDisplay,
       height: FiftyTypography.lineHeightDisplay,
     ),
@@ -558,7 +553,7 @@ Text(
     fontFamily: FiftyTypography.fontFamily,
     fontSize: FiftyTypography.bodySmall,
     fontWeight: FiftyTypography.medium,
-    color: FiftyColors.powderBlush,
+    color: FiftyColors.accent,
     letterSpacing: FiftyTypography.letterSpacingLabel,
   ),
 )
@@ -615,7 +610,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 2.0.0
+**Current:** 3.0.0
 
 ---
 

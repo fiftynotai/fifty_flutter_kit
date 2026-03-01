@@ -21,32 +21,32 @@ void main() {
         expect(colorScheme.brightness, Brightness.dark);
       });
 
-      test('primary is burgundy', () {
-        expect(colorScheme.primary, FiftyColors.burgundy);
+      test('primary is FDL primary', () {
+        expect(colorScheme.primary, FiftyColors.primary);
       });
 
-      test('onPrimary is cream', () {
-        expect(colorScheme.onPrimary, FiftyColors.cream);
+      test('onPrimary is background', () {
+        expect(colorScheme.onPrimary, FiftyColors.background);
       });
 
-      test('surface is darkBurgundy', () {
-        expect(colorScheme.surface, FiftyColors.darkBurgundy);
+      test('surface is backgroundDark', () {
+        expect(colorScheme.surface, FiftyColors.backgroundDark);
       });
 
-      test('onSurface is cream', () {
-        expect(colorScheme.onSurface, FiftyColors.cream);
+      test('onSurface is background', () {
+        expect(colorScheme.onSurface, FiftyColors.background);
       });
 
-      test('secondary is slateGrey', () {
-        expect(colorScheme.secondary, FiftyColors.slateGrey);
+      test('secondary is FDL secondary', () {
+        expect(colorScheme.secondary, FiftyColors.secondary);
       });
 
-      test('tertiary is hunterGreen', () {
-        expect(colorScheme.tertiary, FiftyColors.hunterGreen);
+      test('tertiary is success', () {
+        expect(colorScheme.tertiary, FiftyColors.success);
       });
 
-      test('error is burgundy', () {
-        expect(colorScheme.error, FiftyColors.burgundy);
+      test('error is FDL error', () {
+        expect(colorScheme.error, FiftyColors.primary);
       });
 
       test('surfaceContainerHighest is surfaceDark', () {
@@ -61,16 +61,16 @@ void main() {
         expect(colorScheme.shadow, isNot(Colors.transparent));
       });
 
-      test('inverseSurface is cream', () {
-        expect(colorScheme.inverseSurface, FiftyColors.cream);
+      test('inverseSurface is background', () {
+        expect(colorScheme.inverseSurface, FiftyColors.background);
       });
 
-      test('onInverseSurface is darkBurgundy', () {
-        expect(colorScheme.onInverseSurface, FiftyColors.darkBurgundy);
+      test('onInverseSurface is backgroundDark', () {
+        expect(colorScheme.onInverseSurface, FiftyColors.backgroundDark);
       });
 
-      test('inversePrimary is burgundy', () {
-        expect(colorScheme.inversePrimary, FiftyColors.burgundy);
+      test('inversePrimary is primary', () {
+        expect(colorScheme.inversePrimary, FiftyColors.primary);
       });
 
       test('all ColorScheme properties are non-null', () {
@@ -143,7 +143,7 @@ void main() {
         // secondary should still be FDL default
         expect(cs.secondary, FiftyColors.secondary);
         // surface should still be FDL default
-        expect(cs.surface, FiftyColors.darkBurgundy);
+        expect(cs.surface, FiftyColors.backgroundDark);
       });
     });
 
@@ -159,28 +159,28 @@ void main() {
         expect(colorScheme.brightness, Brightness.light);
       });
 
-      test('primary is burgundy (brand maintained)', () {
-        expect(colorScheme.primary, FiftyColors.burgundy);
+      test('primary is FDL primary (brand maintained)', () {
+        expect(colorScheme.primary, FiftyColors.primary);
       });
 
-      test('surface is cream', () {
-        expect(colorScheme.surface, FiftyColors.cream);
+      test('surface is background', () {
+        expect(colorScheme.surface, FiftyColors.background);
       });
 
-      test('onSurface is darkBurgundy', () {
-        expect(colorScheme.onSurface, FiftyColors.darkBurgundy);
+      test('onSurface is backgroundDark', () {
+        expect(colorScheme.onSurface, FiftyColors.backgroundDark);
       });
 
       test('shadow is not transparent (shadows enabled in v2)', () {
         expect(colorScheme.shadow, isNot(Colors.transparent));
       });
 
-      test('inverseSurface is darkBurgundy', () {
-        expect(colorScheme.inverseSurface, FiftyColors.darkBurgundy);
+      test('inverseSurface is backgroundDark', () {
+        expect(colorScheme.inverseSurface, FiftyColors.backgroundDark);
       });
 
-      test('onInverseSurface is cream', () {
-        expect(colorScheme.onInverseSurface, FiftyColors.cream);
+      test('onInverseSurface is background', () {
+        expect(colorScheme.onInverseSurface, FiftyColors.background);
       });
 
       test('all ColorScheme properties are non-null', () {
@@ -217,7 +217,7 @@ void main() {
       test('non-overridden fields use FDL defaults', () {
         final cs = FiftyColorScheme.light(primary: Colors.blue);
         expect(cs.secondary, FiftyColors.secondary);
-        expect(cs.surface, FiftyColors.cream);
+        expect(cs.surface, FiftyColors.background);
       });
     });
 
@@ -227,7 +227,7 @@ void main() {
       test('configured primary token cascades to color scheme', () {
         const customPrimary = Color(0xFF0000FF);
         FiftyTokens.configure(
-          colors: const FiftyColorConfig(primary: customPrimary),
+          colors: FiftyPreset.fdlV2.colors.copyWith(primary: customPrimary),
         );
 
         final cs = FiftyColorScheme.dark();
@@ -239,7 +239,7 @@ void main() {
       test('configured secondary token cascades to color scheme', () {
         const customSecondary = Color(0xFF00FF00);
         FiftyTokens.configure(
-          colors: const FiftyColorConfig(secondary: customSecondary),
+          colors: FiftyPreset.fdlV2.colors.copyWith(secondary: customSecondary),
         );
 
         final cs = FiftyColorScheme.dark();
@@ -253,7 +253,7 @@ void main() {
         const configPrimary = Color(0xFF0000FF);
         const paramPrimary = Color(0xFFFF0000);
         FiftyTokens.configure(
-          colors: const FiftyColorConfig(primary: configPrimary),
+          colors: FiftyPreset.fdlV2.colors.copyWith(primary: configPrimary),
         );
 
         final cs = FiftyColorScheme.dark(primary: paramPrimary);

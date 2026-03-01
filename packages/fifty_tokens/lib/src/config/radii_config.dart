@@ -1,41 +1,82 @@
-/// Configuration for [FiftyRadii] token overrides.
+/// Configuration for border radius tokens.
 ///
-/// All fields are optional. `null` means "use FDL default".
-/// Pass to [FiftyTokens.configure()] before `runApp()`.
+/// All fields are required. Use [FiftyPreset.fdlV2.radii] as a starting
+/// point and [copyWith] for partial overrides.
 class FiftyRadiiConfig {
-  /// Creates a [FiftyRadiiConfig] with optional overrides.
+  /// Creates a [FiftyRadiiConfig] with all required fields.
   const FiftyRadiiConfig({
-    this.none,
-    this.sm,
-    this.md,
-    this.lg,
-    this.xl,
-    this.xxl,
-    this.xxxl,
-    this.full,
+    required this.none,
+    required this.sm,
+    required this.md,
+    required this.lg,
+    required this.xl,
+    required this.xxl,
+    required this.xxxl,
+    required this.full,
   });
 
-  /// Override for [FiftyRadii.none]. Default: `0`.
-  final double? none;
+  /// Build a [FiftyRadiiConfig] from a [Map]. Missing keys fall back
+  /// to [fallback].
+  factory FiftyRadiiConfig.fromMap(
+    Map<String, dynamic> map, {
+    required FiftyRadiiConfig fallback,
+  }) {
+    return FiftyRadiiConfig(
+      none: (map['none'] as num?)?.toDouble() ?? fallback.none,
+      sm: (map['sm'] as num?)?.toDouble() ?? fallback.sm,
+      md: (map['md'] as num?)?.toDouble() ?? fallback.md,
+      lg: (map['lg'] as num?)?.toDouble() ?? fallback.lg,
+      xl: (map['xl'] as num?)?.toDouble() ?? fallback.xl,
+      xxl: (map['xxl'] as num?)?.toDouble() ?? fallback.xxl,
+      xxxl: (map['xxxl'] as num?)?.toDouble() ?? fallback.xxxl,
+      full: (map['full'] as num?)?.toDouble() ?? fallback.full,
+    );
+  }
 
-  /// Override for [FiftyRadii.sm]. Default: `4`.
-  final double? sm;
+  /// No radius. Default: `0`.
+  final double none;
 
-  /// Override for [FiftyRadii.md]. Default: `8`.
-  final double? md;
+  /// Small radius. Default: `4`.
+  final double sm;
 
-  /// Override for [FiftyRadii.lg]. Default: `12`.
-  final double? lg;
+  /// Medium radius. Default: `8`.
+  final double md;
 
-  /// Override for [FiftyRadii.xl]. Default: `16`.
-  final double? xl;
+  /// Large radius. Default: `12`.
+  final double lg;
 
-  /// Override for [FiftyRadii.xxl]. Default: `24`.
-  final double? xxl;
+  /// Extra-large radius. Default: `16`.
+  final double xl;
 
-  /// Override for [FiftyRadii.xxxl]. Default: `32`.
-  final double? xxxl;
+  /// 2X large radius. Default: `24`.
+  final double xxl;
 
-  /// Override for [FiftyRadii.full]. Default: `9999`.
-  final double? full;
+  /// 3X large radius. Default: `32`.
+  final double xxxl;
+
+  /// Full (pill) radius. Default: `9999`.
+  final double full;
+
+  /// Returns a copy with the given fields replaced.
+  FiftyRadiiConfig copyWith({
+    double? none,
+    double? sm,
+    double? md,
+    double? lg,
+    double? xl,
+    double? xxl,
+    double? xxxl,
+    double? full,
+  }) {
+    return FiftyRadiiConfig(
+      none: none ?? this.none,
+      sm: sm ?? this.sm,
+      md: md ?? this.md,
+      lg: lg ?? this.lg,
+      xl: xl ?? this.xl,
+      xxl: xxl ?? this.xxl,
+      xxxl: xxxl ?? this.xxxl,
+      full: full ?? this.full,
+    );
+  }
 }

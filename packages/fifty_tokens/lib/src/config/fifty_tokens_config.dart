@@ -1,32 +1,39 @@
-import '../breakpoints.dart';
-import '../colors.dart';
-import '../motion.dart';
-import '../radii.dart';
-import '../spacing.dart';
-import '../typography.dart';
+import '../preset.dart';
 import 'breakpoints_config.dart';
 import 'color_config.dart';
+import 'gradients_config.dart';
 import 'motion_config.dart';
 import 'radii_config.dart';
+import 'shadows_config.dart';
 import 'spacing_config.dart';
 import 'typography_config.dart';
 
-/// Centralized configuration entry point for fifty_tokens.
+/// Central token manager for the fifty_tokens package.
 ///
-/// Call [configure] before `runApp()` to override FDL default values.
-/// All token classes will use configured values or fall back to FDL defaults.
+/// Manages the active [FiftyPreset]. Token classes read from [active].
 ///
 /// ```dart
-/// void main() {
-///   FiftyTokens.configure(
-///     colors: FiftyColorConfig(primary: Color(0xFF0000FF)),
-///     typography: FiftyTypographyConfig(fontFamily: 'Inter'),
-///   );
-///   runApp(MyApp());
-/// }
+/// // Load a complete preset
+/// FiftyTokens.load(FiftyPreset.fromMap(jsonDecode(json)));
+///
+/// // Or configure individual categories
+/// FiftyTokens.configure(colors: myColors);
+///
+/// // Reset to FDL v2 defaults
+/// FiftyTokens.reset();
 /// ```
 class FiftyTokens {
   FiftyTokens._();
+
+  static FiftyPreset _active = FiftyPreset.fdlV2;
+
+  /// The currently active preset.
+  static FiftyPreset get active => _active;
+
+  /// Load a complete preset.
+  static void load(FiftyPreset preset) {
+    _active = preset;
+  }
 
   /// Applies configuration overrides to token classes.
   ///
@@ -39,13 +46,19 @@ class FiftyTokens {
     FiftyRadiiConfig? radii,
     FiftyMotionConfig? motion,
     FiftyBreakpointsConfig? breakpoints,
+    FiftyShadowsConfig? shadows,
+    FiftyGradientsConfig? gradients,
   }) {
-    if (colors != null) FiftyColors.config = colors;
-    if (typography != null) FiftyTypography.config = typography;
-    if (spacing != null) FiftySpacing.config = spacing;
-    if (radii != null) FiftyRadii.config = radii;
-    if (motion != null) FiftyMotion.config = motion;
-    if (breakpoints != null) FiftyBreakpoints.config = breakpoints;
+    _active = FiftyPreset(
+      colors: colors ?? _active.colors,
+      typography: typography ?? _active.typography,
+      spacing: spacing ?? _active.spacing,
+      radii: radii ?? _active.radii,
+      motion: motion ?? _active.motion,
+      shadows: shadows ?? _active.shadows,
+      gradients: gradients ?? _active.gradients,
+      breakpoints: breakpoints ?? _active.breakpoints,
+    );
   }
 
   /// Resets all token configurations to FDL defaults.
@@ -53,23 +66,12 @@ class FiftyTokens {
   /// After calling [reset], all token getters return their original
   /// hardcoded FDL values.
   static void reset() {
-    FiftyColors.config = null;
-    FiftyTypography.config = null;
-    FiftySpacing.config = null;
-    FiftyRadii.config = null;
-    FiftyMotion.config = null;
-    FiftyBreakpoints.config = null;
+    _active = FiftyPreset.fdlV2;
   }
 
   /// Whether any configuration has been applied.
   ///
-  /// Returns `true` if [configure] has been called with at least one
-  /// non-null category and [reset] has not been called since.
-  static bool get isConfigured =>
-      FiftyColors.config != null ||
-      FiftyTypography.config != null ||
-      FiftySpacing.config != null ||
-      FiftyRadii.config != null ||
-      FiftyMotion.config != null ||
-      FiftyBreakpoints.config != null;
+  /// Returns `true` if [configure] or [load] has been called with custom
+  /// values and [reset] has not been called since.
+  static bool get isConfigured => !identical(_active, FiftyPreset.fdlV2);
 }

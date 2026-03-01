@@ -6,75 +6,61 @@ void main() {
   group('FiftyColors', () {
     setUp(() => FiftyTokens.reset());
 
-    group('Core Palette v2 (Sophisticated Warm)', () {
-      test('burgundy is #88292F', () {
-        expect(FiftyColors.burgundy, Color(0xFF88292F));
+    group('Semantic Colors (default FDL v2)', () {
+      test('primary is #88292F', () {
+        expect(FiftyColors.primary, Color(0xFF88292F));
       });
 
-      test('burgundyHover is #6E2126', () {
-        expect(FiftyColors.burgundyHover, Color(0xFF6E2126));
+      test('primaryHover is #6E2126', () {
+        expect(FiftyColors.primaryHover, Color(0xFF6E2126));
       });
 
-      test('cream is #FEFEE3', () {
-        expect(FiftyColors.cream, Color(0xFFFEFEE3));
+      test('background is #FEFEE3', () {
+        expect(FiftyColors.background, Color(0xFFFEFEE3));
       });
 
-      test('darkBurgundy is #1A0D0E', () {
-        expect(FiftyColors.darkBurgundy, Color(0xFF1A0D0E));
+      test('backgroundDark is #1A0D0E', () {
+        expect(FiftyColors.backgroundDark, Color(0xFF1A0D0E));
       });
 
-      test('slateGrey is #335C67', () {
-        expect(FiftyColors.slateGrey, Color(0xFF335C67));
+      test('secondary is #335C67', () {
+        expect(FiftyColors.secondary, Color(0xFF335C67));
       });
 
-      test('slateGreyHover is #274750', () {
-        expect(FiftyColors.slateGreyHover, Color(0xFF274750));
+      test('secondaryHover is #274750', () {
+        expect(FiftyColors.secondaryHover, Color(0xFF274750));
       });
 
-      test('hunterGreen is #4B644A', () {
-        expect(FiftyColors.hunterGreen, Color(0xFF4B644A));
+      test('success is #4B644A', () {
+        expect(FiftyColors.success, Color(0xFF4B644A));
       });
 
-      test('powderBlush is #FFC9B9', () {
-        expect(FiftyColors.powderBlush, Color(0xFFFFC9B9));
+      test('accent is #FFC9B9', () {
+        expect(FiftyColors.accent, Color(0xFFFFC9B9));
       });
 
-      test('surfaceLight is #FAF9DE', () {
-        expect(FiftyColors.surfaceLight, Color(0xFFFAF9DE));
+      test('surface is #FAF9DE', () {
+        expect(FiftyColors.surface, Color(0xFFFAF9DE));
       });
 
       test('surfaceDark is #2A1517', () {
         expect(FiftyColors.surfaceDark, Color(0xFF2A1517));
-      });
-    });
-
-    group('Semantic Colors', () {
-      test('primary is burgundy', () {
-        expect(FiftyColors.primary, FiftyColors.burgundy);
-      });
-
-      test('primaryHover is burgundyHover', () {
-        expect(FiftyColors.primaryHover, FiftyColors.burgundyHover);
-      });
-
-      test('secondary is slateGrey', () {
-        expect(FiftyColors.secondary, FiftyColors.slateGrey);
-      });
-
-      test('secondaryHover is slateGreyHover', () {
-        expect(FiftyColors.secondaryHover, FiftyColors.slateGreyHover);
-      });
-
-      test('success is hunterGreen', () {
-        expect(FiftyColors.success, FiftyColors.hunterGreen);
       });
 
       test('warning is #F7A100', () {
         expect(FiftyColors.warning, Color(0xFFF7A100));
       });
 
-      test('error is burgundy', () {
-        expect(FiftyColors.error, FiftyColors.burgundy);
+      test('error is #88292F', () {
+        expect(FiftyColors.error, Color(0xFF88292F));
+      });
+
+      test('onPrimary is #FEFEE3', () {
+        expect(FiftyColors.onPrimary, Color(0xFFFEFEE3));
+      });
+
+      test('onBackground is #1A0D0E', () {
+        expect(FiftyColors.onBackground, Color(0xFF1A0D0E));
       });
     });
 
@@ -87,12 +73,74 @@ void main() {
         expect(FiftyColors.borderDark.a, closeTo(0.05, 0.01));
       });
 
-      test('focusLight is burgundy', () {
-        expect(FiftyColors.focusLight, FiftyColors.burgundy);
+      test('focusLight is primary', () {
+        expect(FiftyColors.focusLight, FiftyColors.primary);
       });
 
-      test('focusDark is powderBlush at 50% opacity', () {
+      test('focusDark is accent at 50% opacity', () {
         expect(FiftyColors.focusDark.a, closeTo(0.5, 0.01));
+      });
+
+      test('configurable borderOpacity', () {
+        FiftyTokens.configure(
+          colors: FiftyPreset.fdlV2.colors.copyWith(borderOpacity: 0.1),
+        );
+        expect(FiftyColors.borderLight.a, closeTo(0.1, 0.01));
+        expect(FiftyColors.borderDark.a, closeTo(0.1, 0.01));
+      });
+
+      test('configurable focusOpacity', () {
+        FiftyTokens.configure(
+          colors: FiftyPreset.fdlV2.colors.copyWith(focusOpacity: 0.8),
+        );
+        expect(FiftyColors.focusDark.a, closeTo(0.8, 0.01));
+      });
+    });
+
+    group('Deprecated v2 palette aliases', () {
+      test('burgundy returns primary', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.burgundy, FiftyColors.primary);
+      });
+
+      test('burgundyHover returns primaryHover', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.burgundyHover, FiftyColors.primaryHover);
+      });
+
+      test('cream returns background', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.cream, FiftyColors.background);
+      });
+
+      test('darkBurgundy returns backgroundDark', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.darkBurgundy, FiftyColors.backgroundDark);
+      });
+
+      test('slateGrey returns secondary', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.slateGrey, FiftyColors.secondary);
+      });
+
+      test('slateGreyHover returns secondaryHover', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.slateGreyHover, FiftyColors.secondaryHover);
+      });
+
+      test('hunterGreen returns success', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.hunterGreen, FiftyColors.success);
+      });
+
+      test('powderBlush returns accent', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.powderBlush, FiftyColors.accent);
+      });
+
+      test('surfaceLight returns surface', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(FiftyColors.surfaceLight, FiftyColors.surface);
       });
     });
 
@@ -133,22 +181,21 @@ void main() {
       });
     });
 
-    test('all v2 colors are non-null', () {
-      expect(FiftyColors.burgundy, isNotNull);
-      expect(FiftyColors.burgundyHover, isNotNull);
-      expect(FiftyColors.cream, isNotNull);
-      expect(FiftyColors.darkBurgundy, isNotNull);
-      expect(FiftyColors.slateGrey, isNotNull);
-      expect(FiftyColors.slateGreyHover, isNotNull);
-      expect(FiftyColors.hunterGreen, isNotNull);
-      expect(FiftyColors.powderBlush, isNotNull);
-      expect(FiftyColors.surfaceLight, isNotNull);
-      expect(FiftyColors.surfaceDark, isNotNull);
+    test('all semantic colors are non-null', () {
       expect(FiftyColors.primary, isNotNull);
+      expect(FiftyColors.primaryHover, isNotNull);
+      expect(FiftyColors.background, isNotNull);
+      expect(FiftyColors.backgroundDark, isNotNull);
       expect(FiftyColors.secondary, isNotNull);
+      expect(FiftyColors.secondaryHover, isNotNull);
       expect(FiftyColors.success, isNotNull);
+      expect(FiftyColors.accent, isNotNull);
+      expect(FiftyColors.surface, isNotNull);
+      expect(FiftyColors.surfaceDark, isNotNull);
       expect(FiftyColors.warning, isNotNull);
       expect(FiftyColors.error, isNotNull);
+      expect(FiftyColors.onPrimary, isNotNull);
+      expect(FiftyColors.onBackground, isNotNull);
     });
   });
 }

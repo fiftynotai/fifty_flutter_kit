@@ -24,7 +24,7 @@ void main() {
     group('override durations', () {
       test('override fast', () {
         FiftyTokens.configure(
-          motion: const FiftyMotionConfig(
+          motion: FiftyPreset.fdlV2.motion.copyWith(
             fast: Duration(milliseconds: 200),
           ),
         );
@@ -35,7 +35,7 @@ void main() {
 
       test('override all durations', () {
         FiftyTokens.configure(
-          motion: const FiftyMotionConfig(
+          motion: FiftyPreset.fdlV2.motion.copyWith(
             instant: Duration(milliseconds: 50),
             fast: Duration(milliseconds: 100),
             compiling: Duration(milliseconds: 200),
@@ -52,7 +52,7 @@ void main() {
     group('override curves', () {
       test('override standard curve', () {
         FiftyTokens.configure(
-          motion: const FiftyMotionConfig(
+          motion: FiftyPreset.fdlV2.motion.copyWith(
             standard: Curves.easeInOut,
           ),
         );
@@ -63,7 +63,7 @@ void main() {
 
       test('override all curves', () {
         FiftyTokens.configure(
-          motion: const FiftyMotionConfig(
+          motion: FiftyPreset.fdlV2.motion.copyWith(
             standard: Curves.linear,
             enter: Curves.easeIn,
             exit: Curves.easeOut,
@@ -78,7 +78,7 @@ void main() {
     group('reset', () {
       test('reset restores defaults', () {
         FiftyTokens.configure(
-          motion: const FiftyMotionConfig(
+          motion: FiftyPreset.fdlV2.motion.copyWith(
             fast: Duration(milliseconds: 200),
             standard: Curves.linear,
           ),

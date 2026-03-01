@@ -6,9 +6,9 @@ void main() {
     setUp(() => FiftyTokens.reset());
 
     test('exports FiftyColors (v2)', () {
-      expect(FiftyColors.burgundy, isNotNull);
-      expect(FiftyColors.cream, isNotNull);
-      expect(FiftyColors.slateGrey, isNotNull);
+      expect(FiftyColors.primary, isNotNull);
+      expect(FiftyColors.background, isNotNull);
+      expect(FiftyColors.secondary, isNotNull);
     });
 
     test('exports FiftyTypography (v2)', () {
@@ -54,21 +54,21 @@ void main() {
       expect(FontSource.asset, isNotNull);
     });
 
-    test('exports config classes', () {
-      // Verify all config classes are accessible
-      const colorConfig = FiftyColorConfig();
-      const typographyConfig = FiftyTypographyConfig();
-      const spacingConfig = FiftySpacingConfig();
-      const radiiConfig = FiftyRadiiConfig();
-      const motionConfig = FiftyMotionConfig();
-      const breakpointsConfig = FiftyBreakpointsConfig();
+    test('exports config classes via FiftyPreset.fdlV2', () {
+      // Verify all config classes are accessible via the preset
+      final colors = FiftyPreset.fdlV2.colors;
+      final typography = FiftyPreset.fdlV2.typography;
+      final spacing = FiftyPreset.fdlV2.spacing;
+      final radii = FiftyPreset.fdlV2.radii;
+      final motion = FiftyPreset.fdlV2.motion;
+      final breakpoints = FiftyPreset.fdlV2.breakpoints;
 
-      expect(colorConfig, isNotNull);
-      expect(typographyConfig, isNotNull);
-      expect(spacingConfig, isNotNull);
-      expect(radiiConfig, isNotNull);
-      expect(motionConfig, isNotNull);
-      expect(breakpointsConfig, isNotNull);
+      expect(colors, isNotNull);
+      expect(typography, isNotNull);
+      expect(spacing, isNotNull);
+      expect(radii, isNotNull);
+      expect(motion, isNotNull);
+      expect(breakpoints, isNotNull);
     });
   });
 }

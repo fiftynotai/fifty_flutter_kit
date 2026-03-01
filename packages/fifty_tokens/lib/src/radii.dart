@@ -1,71 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
-import 'config/radii_config.dart';
+import 'config/fifty_tokens_config.dart';
 
-/// Fifty.dev border radius tokens v2 - Complete radius scale.
+/// Fifty.dev border radius tokens -- reads from the active [FiftyPreset].
 ///
 /// Expanded scale from none (0) to full (9999px).
-///
-/// Override defaults via [FiftyTokens.configure()] with a [FiftyRadiiConfig].
 class FiftyRadii {
   FiftyRadii._();
-
-  /// Internal config -- set via [FiftyTokens.configure()].
-  /// Do not set directly.
-  @internal
-  static FiftyRadiiConfig? config;
 
   // ============================================================================
   // RADIUS VALUES (v2)
   // ============================================================================
 
-  static const double _defaultNone = 0;
-  static const double _defaultSm = 4;
-  static const double _defaultMd = 8;
-  static const double _defaultLg = 12;
-  static const double _defaultXl = 16;
-  static const double _defaultXxl = 24;
-  static const double _defaultXxxl = 32;
-  static const double _defaultFull = 9999;
-
   /// None (0) - No radius.
-  static double get none => config?.none ?? _defaultNone;
+  static double get none => FiftyTokens.active.radii.none;
 
   /// Small (4px) - Subtle rounding.
   ///
   /// Use for: Checkboxes, small badges.
-  static double get sm => config?.sm ?? _defaultSm;
+  static double get sm => FiftyTokens.active.radii.sm;
 
   /// Medium (8px) - Default small elements.
   ///
   /// Use for: Chips, tags.
-  static double get md => config?.md ?? _defaultMd;
+  static double get md => FiftyTokens.active.radii.md;
 
   /// Large (12px) - Standard elements.
   ///
   /// Use for: Standard cards, inputs (legacy).
-  static double get lg => config?.lg ?? _defaultLg;
+  static double get lg => FiftyTokens.active.radii.lg;
 
   /// Extra Large (16px) - Buttons and inputs.
   ///
   /// Use for: Buttons, text fields, dropdowns.
-  static double get xl => config?.xl ?? _defaultXl;
+  static double get xl => FiftyTokens.active.radii.xl;
 
   /// 2X Large (24px) - Cards.
   ///
   /// Use for: Standard cards, containers.
-  static double get xxl => config?.xxl ?? _defaultXxl;
+  static double get xxl => FiftyTokens.active.radii.xxl;
 
   /// 3X Large (32px) - Hero cards.
   ///
   /// Use for: Hero cards, modals, dialogs.
-  static double get xxxl => config?.xxxl ?? _defaultXxxl;
+  static double get xxxl => FiftyTokens.active.radii.xxxl;
 
   /// Full (9999px) - Pills and circles.
   ///
   /// Use for: Pill buttons, avatars, badges.
-  static double get full => config?.full ?? _defaultFull;
+  static double get full => FiftyTokens.active.radii.full;
 
   // ============================================================================
   // BORDERRADIUS OBJECTS (Convenience)
