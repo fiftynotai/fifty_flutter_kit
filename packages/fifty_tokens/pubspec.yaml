@@ -18,7 +18,6 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^8.0.0
-  meta: ^1.11.0
 
 dev_dependencies:
   flutter_test:

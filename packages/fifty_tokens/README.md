@@ -569,7 +569,7 @@ Manrope is loaded via `google_fonts`. Add `google_fonts` to your app's `pubspec.
 
 ```yaml
 dependencies:
-  google_fonts: ^6.2.1
+  google_fonts: ^8.0.0
 ```
 
 Usage:

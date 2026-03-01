@@ -86,13 +86,13 @@
   },
   "shadows": {
     "sm": [
-      { "offsetX": 0, "offsetY": 1, "blurRadius": 2, "color": "0x0D000000" }
+      { "dx": 0, "dy": 1, "blurRadius": 2, "color": "0x0D000000" }
     ],
     "md": [
-      { "offsetX": 0, "offsetY": 4, "blurRadius": 6, "color": "0x12000000" }
+      { "dx": 0, "dy": 4, "blurRadius": 6, "color": "0x12000000" }
     ],
     "lg": [
-      { "offsetX": 0, "offsetY": 10, "blurRadius": 15, "color": "0x1A000000" }
+      { "dx": 0, "dy": 10, "blurRadius": 15, "color": "0x1A000000" }
     ],
     "primaryOpacity": 0.2,
     "glowOpacity": 0.1
