@@ -82,7 +82,7 @@ Container(
 
 If `FiftyTokens.configure()` is never called, all tokens use FDL v2 defaults. You can override as little or as much as you want.
 
-### Override Individual Categories
+### Override a Few Values
 
 Use `copyWith` on any config from `FiftyPreset.fdlV2` to change specific values while keeping the rest:
 
@@ -92,36 +92,49 @@ FiftyTokens.configure(
     primary: Color(0xFF1A73E8),
     secondary: Color(0xFF34A853),
   ),
-  spacing: FiftyPreset.fdlV2.spacing.copyWith(
-    base: 8,
-    sm: 16,
+);
+```
+
+### Build a Full Config from Scratch
+
+Pass config objects directly when you want full control over every value:
+
+```dart
+FiftyTokens.configure(
+  colors: FiftyColorConfig(
+    primary: Color(0xFF1A73E8),
+    primaryHover: Color(0xFF1557B0),
+    background: Color(0xFFFFFFFF),
+    backgroundDark: Color(0xFF121212),
+    secondary: Color(0xFF34A853),
+    secondaryHover: Color(0xFF2D8E47),
+    success: Color(0xFF34A853),
+    accent: Color(0xFFFBBC04),
+    surface: Color(0xFFF8F9FA),
+    surfaceDark: Color(0xFF1E1E1E),
+    warning: Color(0xFFFBBC04),
+    error: Color(0xFFEA4335),
+    onPrimary: Color(0xFFFFFFFF),
+    onBackground: Color(0xFF202124),
+    borderOpacity: 0.12,
+    focusOpacity: 0.4,
   ),
 );
 ```
 
 ### Load a Complete Preset from JSON
 
-Parse a JSON map into a full preset. Missing keys fall back to the provided `fallback` (defaults to FDL v2):
+Parse a JSON map into a full preset. Missing keys fall back to FDL v2 defaults:
 
 ```dart
 import 'dart:convert';
 
-final json = '''
-{
-  "colors": {
-    "primary": "0xFF1A73E8",
-    "secondary": "0xFF34A853"
-  },
-  "typography": {
-    "fontFamily": "Inter",
-    "fontSource": "googleFonts"
-  }
-}
-''';
-
+final json = await rootBundle.loadString('assets/brand_theme.json');
 final preset = FiftyPreset.fromMap(jsonDecode(json));
 FiftyTokens.load(preset);
 ```
+
+For the full JSON schema with all available keys and FDL v2 default values, see [`fdl_v2_preset.json`](fdl_v2_preset.json). Copy this file, change the values you need, and load it with `FiftyPreset.fromMap()`. Any keys you omit will fall back to FDL v2 defaults.
 
 ### Config Classes
 
