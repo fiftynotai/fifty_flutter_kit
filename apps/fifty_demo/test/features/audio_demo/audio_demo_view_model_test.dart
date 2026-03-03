@@ -29,23 +29,28 @@ void main() {
 
   group('AudioDemoViewModel', () {
     group('enums', () {
-      test('AudioTrack should have 3 tracks', () {
-        expect(AudioTrack.values.length, 3);
+      test('AudioTrack should have 4 tracks', () {
+        expect(AudioTrack.values.length, 4);
       });
 
-      test('AudioTrack exploration should have correct values', () {
-        expect(AudioTrack.exploration.displayName, 'Exploration');
-        expect(AudioTrack.exploration.assetPath, 'audio/bgm/exploration.mp3');
+      test('AudioTrack clockworkGrove should have correct values', () {
+        expect(AudioTrack.clockworkGrove.displayName, 'Clockwork Grove');
+        expect(AudioTrack.clockworkGrove.assetPath, 'audio/bgm/clockwork_grove.mp3');
       });
 
-      test('AudioTrack combat should have correct values', () {
-        expect(AudioTrack.combat.displayName, 'Combat');
-        expect(AudioTrack.combat.assetPath, 'audio/bgm/combat.mp3');
+      test('AudioTrack clockworkGroveAlt should have correct values', () {
+        expect(AudioTrack.clockworkGroveAlt.displayName, 'Clockwork Grove II');
+        expect(AudioTrack.clockworkGroveAlt.assetPath, 'audio/bgm/clockwork_grove_alt.mp3');
       });
 
-      test('AudioTrack peaceful should have correct values', () {
-        expect(AudioTrack.peaceful.displayName, 'Peaceful');
-        expect(AudioTrack.peaceful.assetPath, 'audio/bgm/peaceful.mp3');
+      test('AudioTrack pathOfFirstLight should have correct values', () {
+        expect(AudioTrack.pathOfFirstLight.displayName, 'Path of the First Light');
+        expect(AudioTrack.pathOfFirstLight.assetPath, 'audio/bgm/path_of_first_light.mp3');
+      });
+
+      test('AudioTrack pathOfFirstLightAlt should have correct values', () {
+        expect(AudioTrack.pathOfFirstLightAlt.displayName, 'Path of the First Light II');
+        expect(AudioTrack.pathOfFirstLightAlt.assetPath, 'audio/bgm/path_of_first_light_alt.mp3');
       });
 
       test('SfxCategory should have 4 categories', () {
@@ -101,8 +106,8 @@ void main() {
         expect(viewModel.masterVolume, 1.0);
       });
 
-      test('should have exploration as default track', () {
-        expect(viewModel.currentTrack, AudioTrack.exploration);
+      test('should have clockworkGrove as default track', () {
+        expect(viewModel.currentTrack, AudioTrack.clockworkGrove);
       });
 
       test('should have UI as default SFX category', () {
@@ -131,23 +136,23 @@ void main() {
 
     group('track selection', () {
       test('should select a new track', () {
-        // Given: Default track is exploration
-        expect(viewModel.currentTrack, AudioTrack.exploration);
+        // Given: Default track is clockworkGrove
+        expect(viewModel.currentTrack, AudioTrack.clockworkGrove);
 
-        // When: Selecting combat track
-        viewModel.selectTrack(AudioTrack.combat);
+        // When: Selecting pathOfFirstLight track
+        viewModel.selectTrack(AudioTrack.pathOfFirstLight);
 
-        // Then: Current track should be combat
-        expect(viewModel.currentTrack, AudioTrack.combat);
+        // Then: Current track should be pathOfFirstLight
+        expect(viewModel.currentTrack, AudioTrack.pathOfFirstLight);
       });
 
       test('should reset position when selecting track', () {
         // Given: ViewModel
         // When: Selecting a track
-        viewModel.selectTrack(AudioTrack.peaceful);
+        viewModel.selectTrack(AudioTrack.pathOfFirstLightAlt);
 
         // Then: Track should be updated (position is internal)
-        expect(viewModel.currentTrack, AudioTrack.peaceful);
+        expect(viewModel.currentTrack, AudioTrack.pathOfFirstLightAlt);
       });
     });
 
@@ -269,7 +274,7 @@ void main() {
     group('available tracks and lines', () {
       test('should return all audio tracks', () {
         expect(viewModel.availableTracks, AudioTrack.values);
-        expect(viewModel.availableTracks.length, 3);
+        expect(viewModel.availableTracks.length, 4);
       });
 
       test('should return all SFX categories', () {

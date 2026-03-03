@@ -183,7 +183,7 @@ packages:
       path: "../../packages/fifty_achievement_engine"
       relative: true
     source: path
-    version: "0.1.3"
+    version: "0.2.0"
   fifty_audio_engine:
     dependency: "direct main"
     description:
@@ -204,14 +204,14 @@ packages:
       path: "../../packages/fifty_connectivity"
       relative: true
     source: path
-    version: "0.1.3"
+    version: "0.2.0"
   fifty_forms:
     dependency: "direct main"
     description:
       path: "../../packages/fifty_forms"
       relative: true
     source: path
-    version: "0.1.2"
+    version: "0.2.0"
   fifty_narrative_engine:
     dependency: "direct main"
     description:
@@ -232,7 +232,7 @@ packages:
       path: "../../packages/fifty_skill_tree"
       relative: true
     source: path
-    version: "0.1.2"
+    version: "0.2.0"
   fifty_socket:
     dependency: "direct main"
     description:
@@ -246,7 +246,7 @@ packages:
       path: "../../packages/fifty_speech_engine"
       relative: true
     source: path
-    version: "0.1.2"
+    version: "0.2.0"
   fifty_storage:
     dependency: "direct main"
     description:
@@ -260,21 +260,21 @@ packages:
       path: "../../packages/fifty_theme"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "3.0.0"
   fifty_tokens:
     dependency: "direct main"
     description:
       path: "../../packages/fifty_tokens"
       relative: true
     source: path
-    version: "1.0.3"
+    version: "3.0.0"
   fifty_ui:
     dependency: "direct main"
     description:
       path: "../../packages/fifty_ui"
       relative: true
     source: path
-    version: "0.6.2"
+    version: "0.7.0"
   fifty_utils:
     dependency: "direct main"
     description:

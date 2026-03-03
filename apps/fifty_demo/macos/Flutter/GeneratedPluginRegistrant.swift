@@ -10,7 +10,7 @@ import connectivity_plus
 import fifty_audio_engine
 import fifty_narrative_engine
 import fifty_world_engine
-import flutter_secure_storage_macos
+import flutter_secure_storage_darwin
 import flutter_tts
 import path_provider_foundation
 import print_bluetooth_thermal
@@ -23,7 +23,7 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FiftyAudioEnginePlugin.register(with: registry.registrar(forPlugin: "FiftyAudioEnginePlugin"))
   FiftyNarrativeEnginePlugin.register(with: registry.registrar(forPlugin: "FiftyNarrativeEnginePlugin"))
   FiftyWorldEnginePlugin.register(with: registry.registrar(forPlugin: "FiftyWorldEnginePlugin"))
-  FlutterSecureStoragePlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStoragePlugin"))
+  FlutterSecureStorageDarwinPlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStorageDarwinPlugin"))
   FlutterTtsPlugin.register(with: registry.registrar(forPlugin: "FlutterTtsPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   PrintBluetoothThermalPlugin.register(with: registry.registrar(forPlugin: "PrintBluetoothThermalPlugin"))
