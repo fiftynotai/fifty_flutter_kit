@@ -136,3 +136,64 @@
 - fifty_theme: 24 palette refs in color_scheme.dart, 1 in theme_extensions.dart, ~38 in tests
 - Version bumps: fifty_tokens 2.0.0->3.0.0, fifty_theme 2.0.0->3.0.0
 - Plan file: ai/plans/AC-007-plan.md
+
+### FR-002 Plan Notes
+- Package: fifty_speech_engine (v0.2.0), 3 widget files, 1 method_channel test
+- Widgets are callback-based StatelessWidget (no controller/ChangeNotifier)
+- Builder pattern: data class per widget type (SpeechTtsState, SpeechSttState) -- too many params for positional typedef
+- Data class equality: value fields only, not callbacks (FR-001 pattern)
+- SpeechControlsPanel: separate ttsBuilder/sttBuilder params (not panelBuilder) -- consumers customize one or both
+- Builder replaces inner Column content; showCard/FiftyCard wrapping stays widget-owned
+- _PulsingDot is StatefulWidget with animation -- use pump() not pumpAndSettle() in STT tests with listening=true
+- 11 files total: 2 new source, 4 modified source, 5 new test files
+- ~30-32 new tests expected
+- Plan file: ai/plans/FR-002-plan.md
+
+### FR-003 Plan Notes
+- Package: fifty_forms (v0.2.0), 4 target widgets, NO existing tests
+- FiftyMultiStepForm already has stepBuilder (required) + progressBuilder (optional) -- brief's 2 builders already exist
+- Real gap: navigation buttons are hardcoded -> add navigationBuilder(isFirstStep, isLastStep, isSubmitting, onNext, onPrevious)
+- FiftyValidationSummary: contentBuilder replaces FiftyCard+error list; AnimatedSize/Opacity wrapper stays widget-owned
+- FiftyFormProgress: contentBuilder replaces Column (step circles + labels); asserts stay
+- FiftySubmitButton: buttonBuilder replaces FiftyButton; ListenableBuilder stays widget-owned
+- All builders have <=5 params -> positional typedefs, no data classes needed
+- No barrel export changes (typedefs live in same file as widget)
+- 4 modified source files, 4 new test files, ~26 new tests
+- Tests need FiftyFormController + validators (Required for sync validation in tests)
+- FiftyMultiStepForm uses CustomScrollView -> tests need SizedBox constraints
+- Plan file: ai/plans/FR-003-plan.md
+
+### TD-011 Plan Notes
+- 15 READMEs to rewrite (skip fifty_tokens and fifty_theme -- gold standards)
+- Gold standard pattern: badges -> tagline (bold 1-liner) -> Why section (benefit bullets) -> Quick Start -> Customization -> domain sections -> API Reference -> Usage Patterns -> Platform -> Version
+- Key rule: "Why" uses benefit-led bullets (practical value), not feature list bullets
+- Key rule: Customization section BEFORE API Reference
+- Effort groups: XS/S (cache, utils, socket, storage, audio, narrative, world, scroll -- add Why + minor), S-M (skill_tree, printing, ui -- restructure), M (connectivity, forms, achievement, speech -- add builders)
+- Builder-pattern packages: FORGER must read source before writing Customization sections (see verification checklist in plan)
+- fifty_speech_engine: Widgets section entirely absent (SpeechTtsControls, SpeechSttControls, SpeechControlsPanel) -- must be added
+- Plan file: ai/plans/TD-011-plan.md
+
+### FR-004 Plan Notes
+- Package: fifty_connectivity, only ConnectivityCheckerSplash needs builder (ConnectionHandler/ConnectionOverlay already composable)
+- New enum SplashConnectivityState (checking/connected/failed) maps from ConnectivityType (5 values -> 3 splash states)
+- 3 positional params (context, state, retryAction) -> no data class needed
+- Builder replaces ConnectionHandler entirely; Scaffold+Center stay widget-owned
+- Builder path uses Obx + Get.find<ConnectionViewModel>() directly (same as ConnectionHandler internally)
+- logoBuilder is ignored when contentBuilder is provided (document this)
+- Enum + typedef live in same file as widget (no new source files)
+- Only 1 existing test file (config/enum unit tests, no widget tests) -- nothing to break
+- 2 total files: 1 modified source, 1 new test file, ~10-12 new tests
+- Plan file: ai/plans/FR-004-plan.md
+
+### TD-013 Plan Notes
+- Package: fifty_world_engine (v0.1.2), README rewrite only
+- Entity layer (existing): FiftyWorldEntity, FiftyWorldController, FiftyEntitySpawner -- keep as-is
+- Tile layer (NEW): TileGrid/TileType/GridPosition/TileOverlay/HighlightStyle (exported), GridGraph/Pathfinder/MovementRange (exported), AnimationQueue/AnimationEntry/SpriteAnimationConfig (exported), InputManager (exported)
+- INTERNAL (do NOT document directly): CoordinateAdapter, TapResolver, TileGridComponent, TileComponent, TileOverlayComponent, OverlayManager, EntityDecorator subclasses, FloatingTextComponent
+- TileGrid: top-down coordinates (0,0 = top-left); FiftyWorldEntity.gridPosition: bottom-left (0,0 = bottom-left) -- TWO SEPARATE SYSTEMS, document both
+- controller.move() uses double x, double y (entity API) -- NOT GridPosition
+- SpriteAnimationConfig is data-only; engine does not auto-wire it -- document as config class, not wired workflow
+- FiftyTileTapCallback typedef lives in widget.dart, exported from barrel
+- Vector2 re-export in barrel is @Deprecated -- never use in new code snippets
+- 7 updated Why bullets (was 4)
+- Plan file: ai/plans/TD-013-plan.md

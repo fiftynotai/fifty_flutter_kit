@@ -392,3 +392,277 @@ FiftyTokens.load(
 - `/packages/fifty_tokens/lib/src/colors.dart` (149 lines, FiftyColors constants)
 
 **Total hardcoded color references: 100+ across all files**
+
+---
+
+## fifty_speech_engine Widget Analysis
+
+**Status:** Complete widget audit for builder pattern implementation
+
+### Widget #1: SpeechTtsControls
+
+**File:** `/packages/fifty_speech_engine/lib/src/widgets/speech_tts_controls.dart`
+
+**Type:** `StatelessWidget`
+
+**Constructor Parameters (10 total):**
+- `enabled: bool` (required)
+- `onEnabledChanged: ValueChanged<bool>` (required)
+- `rate: double = 1.0`
+- `onRateChanged: ValueChanged<double>?`
+- `pitch: double = 1.0`
+- `onPitchChanged: ValueChanged<double>?`
+- `volume: double = 1.0`
+- `onVolumeChanged: ValueChanged<double>?`
+- `isSpeaking: bool = false`
+- `compact: bool = false`
+- `showCard: bool = true` (wraps output in FiftyCard when true)
+
+**Default UI (build method, lines 104-181):**
+1. `_TtsHeader` — header row with:
+   - Icon (voice_over_off or record_voice_over based on isSpeaking)
+   - "TEXT-TO-SPEECH" label
+   - Pulsing dot indicator (when isSpeaking)
+   - FiftySwitch toggle (enabled/onEnabledChanged)
+2. Rate slider (if onRateChanged != null) — shows value as "1.0x"
+3. Pitch slider (if onPitchChanged != null) — shows value as "1.0x"
+4. Volume slider (if onVolumeChanged != null) — shows value as "100%"
+5. Wraps all in FiftyCard if showCard=true
+
+**Builder Pattern Access Points:**
+- `enabled` — whether TTS is turned on
+- `isSpeaking` — animated icon/dot state
+- `rate`, `pitch`, `volume` — slider current values (for range display, value formatting)
+- `compact` — spacing adjustments
+- `onEnabledChanged` — toggle callback
+- Conditional slider display via `onRateChanged`/`onPitchChanged`/`onVolumeChanged` nullability
+
+**Helper Components:**
+- `_TtsHeader` (lines 185-246) — internal, stateless
+- `_SliderRow` (lines 249-306) — internal, stateless, parameterized slider with icon/label
+
+---
+
+### Widget #2: SpeechSttControls
+
+**File:** `/packages/fifty_speech_engine/lib/src/widgets/speech_stt_controls.dart`
+
+**Type:** `StatelessWidget` (contains internal StatefulWidget `_PulsingDot`)
+
+**Constructor Parameters (10 total):**
+- `enabled: bool` (required)
+- `onEnabledChanged: ValueChanged<bool>` (required)
+- `isListening: bool` (required)
+- `onListenPressed: VoidCallback` (required)
+- `recognizedText: String = ''`
+- `isAvailable: bool = true`
+- `errorMessage: String?`
+- `onClear: VoidCallback?`
+- `compact: bool = false`
+- `showCard: bool = true`
+- `hintText: String?` (defaults to 'TAP TO SPEAK')
+
+**Default UI (build method, lines 100-164):**
+1. `_SttHeader` — header row with:
+   - Icon (mic or mic_none based on isListening)
+   - "SPEECH-TO-TEXT" label
+   - Pulsing dot (only when isListening)
+   - FiftySwitch toggle (enabled/onEnabledChanged, disabled if !isAvailable)
+2. If enabled:
+   - `_MicrophoneSection` — large circular mic button with animated state:
+     - Icon (mic or mic_none)
+     - Status text: "LISTENING..." or hintText
+     - GestureDetector with onTap: onListenPressed
+     - Button color/border changes when isListening
+   - `_ErrorDisplay` (if errorMessage is non-null/non-empty) — error container with icon
+   - `_RecognizedTextDisplay` (if recognizedText.isNotEmpty) — text box with clear button
+3. If !isAvailable:
+   - `_NotAvailableMessage` — info container
+
+**Builder Pattern Access Points:**
+- `enabled` — whether STT is active
+- `isListening` — animated icon state, button color, "LISTENING..." text
+- `isAvailable` — toggle enabled state, message conditional
+- `recognizedText` — conditional display, value in text box
+- `errorMessage` — conditional error display
+- `compact` — spacing/sizing adjustments
+- `hintText` — custom hint text for mic button
+- `onEnabledChanged`, `onListenPressed`, `onClear` — callbacks
+
+**Helper Components:**
+- `_SttHeader` (lines 168-225) — internal stateless
+- `_PulsingDot` (lines 228-279) — **internal STATEFUL**, 1000ms pulsing animation with AlphaAnimation
+- `_MicrophoneSection` (lines 282-358) — internal stateless, circular animated button
+- `_RecognizedTextDisplay` (lines 361-425) — internal stateless, text box with clear icon
+- `_ErrorDisplay` (lines 428-471) — internal stateless, error message container
+- `_NotAvailableMessage` (lines 474-513) — internal stateless, unavailable info
+
+---
+
+### Widget #3: SpeechControlsPanel
+
+**File:** `/packages/fifty_speech_engine/lib/src/widgets/speech_controls_panel.dart`
+
+**Type:** `StatelessWidget`
+
+**Constructor Parameters (16 total):**
+
+**TTS Properties:**
+- `ttsEnabled: bool` (required)
+- `onTtsEnabledChanged: ValueChanged<bool>` (required)
+- `rate: double = 1.0`
+- `onRateChanged: ValueChanged<double>?`
+- `pitch: double = 1.0`
+- `onPitchChanged: ValueChanged<double>?`
+- `volume: double = 1.0`
+- `onVolumeChanged: ValueChanged<double>?`
+- `isSpeaking: bool = false`
+
+**STT Properties:**
+- `sttEnabled: bool` (required)
+- `onSttEnabledChanged: ValueChanged<bool>` (required)
+- `isListening: bool` (required)
+- `onListenPressed: VoidCallback` (required)
+- `recognizedText: String = ''`
+- `isSttAvailable: bool = true`
+- `sttErrorMessage: String?`
+- `onClearRecognizedText: VoidCallback?`
+- `sttHintText: String?`
+
+**Panel Options:**
+- `showTts: bool = true`
+- `showStt: bool = true`
+- `compact: bool = false`
+- `title: String?`
+
+**Default UI (build method, lines 154-225):**
+1. Wraps all in FiftyCard
+2. If title:
+   - Title text (uppercase)
+   - Horizontal divider line
+3. If showTts:
+   - SpeechTtsControls (embedded, showCard=false)
+4. If showTts && showStt:
+   - Horizontal divider
+5. If showStt:
+   - SpeechSttControls (embedded, showCard=false)
+
+**Builder Pattern Access Points:**
+- All TTS state (enabled, rate, pitch, volume, isSpeaking)
+- All STT state (enabled, listening, recognized, available, error)
+- `showTts`/`showStt` — conditional rendering
+- `compact` — passed through to child controls
+- `title` — optional header
+
+**Helper Components:**
+- None (delegates to SpeechTtsControls + SpeechSttControls)
+
+---
+
+### State & Callback Requirements for Builders
+
+**TTS Builder Context:**
+```dart
+context.ttsEnabled          // bool
+context.isSpeaking          // bool (animated icon)
+context.rate                // double (current slider value)
+context.pitch               // double
+context.volume              // double
+context.onEnabledChanged    // ValueChanged<bool>
+context.onRateChanged       // ValueChanged<double>?
+context.onPitchChanged      // ValueChanged<double>?
+context.onVolumeChanged     // ValueChanged<double>?
+context.compact             // bool (spacing)
+```
+
+**STT Builder Context:**
+```dart
+context.sttEnabled          // bool
+context.isListening         // bool (animated state)
+context.recognizedText      // String
+context.errorMessage        // String?
+context.isAvailable         // bool (disable/availability)
+context.onEnabledChanged    // ValueChanged<bool>
+context.onListenPressed     // VoidCallback
+context.onClear             // VoidCallback?
+context.hintText            // String?
+context.compact             // bool (spacing)
+```
+
+**Panel Builder Context:**
+- All TTS + STT fields above PLUS:
+```dart
+context.showTts             // bool (conditional)
+context.showStt             // bool (conditional)
+context.title               // String? (optional header)
+```
+
+---
+
+### Barrel Export
+
+**File:** `/packages/fifty_speech_engine/lib/src/widgets/widgets.dart`
+
+```dart
+export 'speech_tts_controls.dart';
+export 'speech_stt_controls.dart';
+export 'speech_controls_panel.dart';
+```
+
+**Main export:** `/packages/fifty_speech_engine/lib/fifty_speech_engine.dart` (line 6)
+
+---
+
+### Example App Integration
+
+**Example Structure:** `/packages/fifty_speech_engine/example/lib/features/speech_demo/`
+
+**Custom Panels (NOT using builder patterns yet):**
+- `tts_panel.dart` — Custom TtsPanel widget wrapping SpeechTtsControls + text input + language selector
+  - Pulls state from SpeechDemoViewModel
+  - Shows: text input field, speak/stop buttons, language dropdown
+  - Does NOT use SpeechTtsControls widget directly for UI (custom implementation)
+- `stt_panel.dart` — Custom SttPanel widget wrapping SpeechSttControls
+  - Similar: pulls state, renders custom UI alongside/with SpeechSttControls
+
+**Why custom panels exist:**
+- Example needs EXTRA controls (language selector, text input, custom buttons)
+- Current SpeechTtsControls/SpeechSttControls only expose preset controls
+- **This is the pain point builders solve** — allow custom "wrapper" UI around the controls
+
+---
+
+### Key Insights for Builder Implementation
+
+1. **Builder opportunity:** Both SpeechTtsControls and SpeechSttControls render hardcoded headers + controls. Builder would replace header/layout without replacing callbacks/logic.
+
+2. **Internal stateful widget:** SpeechSttControls contains `_PulsingDot` (StatefulWidget with AnimationController). Builder must NOT replace this, only allow replacing container layout.
+
+3. **Conditional rendering patterns:** Both use `if (enabled)` and `if (onCallback != null)` to conditionally show sections. Builder must respect these.
+
+4. **Card wrapping:** Both have `showCard` param to optionally wrap in FiftyCard. Builder implementation should expose card wrapping to builder function.
+
+5. **Example app pain point:** TtsPanel in example manually reconstructs similar headers/status layout. Builder pattern would eliminate this duplication.
+
+---
+
+### Implementation Strategy Hints
+
+**For each widget:**
+
+1. **SpeechTtsControls**
+   - Extract `build()` layout into a `builder` param (default returns current UI)
+   - Builder receives: `enabled`, `isSpeaking`, `rate`, `pitch`, `volume`, `onEnabledChanged`, callbacks, `compact`, `showCard`
+   - Builder returns: Widget (the content, NOT wrapped in FiftyCard if showCard=false)
+
+2. **SpeechSttControls**
+   - Extract `build()` layout into a `builder` param (default returns current UI)
+   - Builder receives: all state fields + callbacks
+   - Builder must NOT include `_PulsingDot` logic (too complex) — instead expose `isListening` boolean to builder
+   - Builder handles header, mic button, text display; animation stays internal
+
+3. **SpeechControlsPanel**
+   - Add `ttsBuilder` and `sttBuilder` params (optional)
+   - Panel builds TtsBuilder(context) or SpeechTtsControls (default)
+   - Panel builds SttBuilder(context) or SpeechSttControls (default)
+   - Title/divider logic stays in panel

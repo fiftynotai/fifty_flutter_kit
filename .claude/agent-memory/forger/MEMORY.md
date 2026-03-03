@@ -39,3 +39,15 @@
 - Partial override: `FiftyPreset.fdlV2.colors.copyWith(primary: Color(...))`
 - Full config: must provide all required fields
 - GoogleFonts tests: `GoogleFonts.config.allowRuntimeFetching = false;`
+
+## Widget Testing Patterns
+
+### Theme requirement for fifty_ui widgets
+- `FiftySwitch`, `FiftySlider`, `FiftyCard` etc. require `FiftyThemeExtension` in the theme
+- Use `FiftyTheme.dark()` (from `package:fifty_theme/fifty_theme.dart`), NOT `ThemeData.dark()`
+- `ThemeData.dark()` causes null check error at `theme.extension<FiftyThemeExtension>()!`
+
+### PulsingDot animation (SpeechSttControls)
+- When `isListening: true`, `_PulsingDot` has repeating AnimationController
+- Do NOT use `pumpAndSettle()` -- it will timeout
+- Use `pump(Duration(milliseconds: 100))` instead

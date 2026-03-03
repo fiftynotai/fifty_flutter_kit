@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Fifty.ai
-**Status:** Ready
+**Status:** Done
 **Created:** 2026-03-03
-**Completed:**
+**Completed:** 2026-03-04
 
 ---
 
@@ -52,21 +52,21 @@ Poor README structure = lower adoption. Developers scanning pub.dev decide withi
 ## Tasks
 
 ### Pending
-- [ ] Task 1: Define standard README structure template
-- [ ] Task 2: Audit each package README (fifty_tokens, fifty_theme, fifty_ui, fifty_forms, fifty_connectivity, fifty_skill_tree, fifty_achievement_engine, fifty_speech_engine, fifty_audio_engine, fifty_narrative_engine, fifty_world_engine, fifty_printing_engine, fifty_storage, fifty_cache, fifty_utils, fifty_socket, fifty_scroll_sequence)
-- [ ] Task 3: Rewrite READMEs that don't conform
 
 ### In Progress
 
 ### Completed
+- [x] Task 1: Define standard README structure template (ai/plans/TD-011-plan.md)
+- [x] Task 2: Audit each package README (15 packages audited, 2 already gold standard)
+- [x] Task 3: Rewrite 15 READMEs across 3 commits (8 infra + 3 structural + 4 builder-pattern)
 
 ---
 
 ## Session State (Tactical - This Brief)
 
-**Current State:** Not started
-**Next Steps When Resuming:** Define standard README template first
-**Last Updated:** 2026-03-03
+**Current State:** Complete
+**Next Steps When Resuming:** N/A
+**Last Updated:** 2026-03-04
 **Blockers:** None
 
 ---
@@ -138,8 +138,21 @@ Poor README structure = lower adoption. Developers scanning pub.dev decide withi
 
 fifty_tokens (BR-131) and fifty_theme (BR-134) READMEs were already rewritten with selling-points-first approach. Use those as the gold standard for the remaining packages.
 
+### Builder Pattern Sprint (FR-001 through FR-004) — Selling Points to Surface
+
+The builder pattern sprint added optional builder callbacks across 4 packages (13 widgets, 141 tests). These are key selling points that should be prominently featured in each package's README under customization:
+
+| Package | Builders Added | Highlight for README |
+|---------|---------------|---------------------|
+| **fifty_achievement_engine** | `AchievementCard.contentBuilder`, `AchievementList.itemBuilder`, `AchievementSummary.contentBuilder`, `AchievementPopup.contentBuilder`, `AchievementProgressBar.barBuilder` | "Full UI customization — replace any widget's inner content via optional builders while keeping achievement logic intact" |
+| **fifty_speech_engine** | `SpeechTtsControls.contentBuilder`, `SpeechSttControls.contentBuilder`, `SpeechControlsPanel.ttsBuilder/sttBuilder` | "Customizable controls — swap TTS/STT UI via builders, immutable state data classes (SpeechTtsState, SpeechSttState) for type-safe builder params" |
+| **fifty_forms** | `FiftyMultiStepForm.navigationBuilder`, `FiftyValidationSummary.contentBuilder`, `FiftyFormProgress.contentBuilder`, `FiftySubmitButton.buttonBuilder` | "Fully customizable wizard UX — replace navigation buttons, progress indicators, error displays, and submit buttons while keeping validation pipeline intact" |
+| **fifty_connectivity** | `ConnectivityCheckerSplash.contentBuilder` | "Custom splash screens — replace splash content per connectivity state (checking/connected/failed) via SplashConnectivityState enum while keeping check pipeline intact" |
+
+**Key messaging:** All builders follow the same pattern: optional, null = default, builder replaces inner content only, widget owns outer container/logic. This is a consistent ecosystem-wide customization story.
+
 ---
 
 **Created:** 2026-03-03
-**Last Updated:** 2026-03-03
+**Last Updated:** 2026-03-04
 **Brief Owner:** Fifty.ai
