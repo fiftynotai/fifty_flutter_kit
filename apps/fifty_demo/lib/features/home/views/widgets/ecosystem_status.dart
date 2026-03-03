@@ -62,7 +62,7 @@ class EcosystemStatus extends StatelessWidget {
                 builder: (context, constraints) {
                   // Calculate columns based on available width
                   const cardMinWidth = 140.0;
-                  spacing = FiftySpacing.sm;
+                  final spacing = FiftySpacing.sm;
                   final columns =
                       ((constraints.maxWidth + spacing) / (cardMinWidth + spacing))
                           .floor()

@@ -37,7 +37,7 @@ class StatusBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FiftyCard(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.sm,
       ),
@@ -48,7 +48,7 @@ class StatusBar extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Package title
-          const Text(
+          Text(
             'FIFTY WORLD ENGINE',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
@@ -85,7 +85,7 @@ class StatusBar extends StatelessWidget {
           // Entity count
           Text(
             entityCount,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
               color: FiftyColors.cream,
               fontSize: FiftyTypography.bodySmall,
@@ -102,7 +102,7 @@ class StatusBar extends StatelessWidget {
               width: 200,
               child: Text(
                 errorMessage!,
-                style: const TextStyle(
+                style: TextStyle(
                   color: FiftyColors.error,
                   fontSize: 10,
                 ),

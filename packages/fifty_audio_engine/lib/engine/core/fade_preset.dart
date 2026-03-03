@@ -25,7 +25,7 @@ class FadePreset {
   /// Fast transitions (e.g., UI sounds)
   ///
   /// Uses [FiftyMotion.fast] (150ms) for quick audio feedback.
-  static const FadePreset fast = FadePreset(
+  static final FadePreset fast = FadePreset(
     duration: FiftyMotion.fast,
     curve: Curves.linear,
   );
@@ -33,7 +33,7 @@ class FadePreset {
   /// Standard scene transitions
   ///
   /// Uses [FiftyMotion.systemLoad] (800ms) for dramatic audio transitions.
-  static const FadePreset normal = FadePreset(
+  static final FadePreset normal = FadePreset(
     duration: FiftyMotion.systemLoad,
     curve: Curves.easeInOut,
   );
@@ -42,7 +42,7 @@ class FadePreset {
   ///
   /// Uses [FiftyMotion.compiling] (300ms) with [FiftyMotion.standard] curve
   /// for consistent UI audio feedback.
-  static const FadePreset panel = FadePreset(
+  static final FadePreset panel = FadePreset(
     duration: FiftyMotion.compiling,
     curve: FiftyMotion.standard,
   );

@@ -100,7 +100,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
             return GestureDetector(
               onTap: () => actions.onEndpointSelected(index),
               child: Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.md,
                   vertical: FiftySpacing.sm,
                 ),
@@ -162,7 +162,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.sm,
                   vertical: FiftySpacing.xs,
                 ),
@@ -256,7 +256,7 @@ class CacheDemoPage extends GetView<CacheDemoViewModel> {
               ),
               SizedBox(width: FiftySpacing.sm),
               Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.sm,
                   vertical: FiftySpacing.xs,
                 ),

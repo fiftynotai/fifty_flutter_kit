@@ -274,7 +274,7 @@ class UtilsDemoPage extends GetView<UtilsDemoViewModel> {
           // Device type badge
           Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.lg,
                 vertical: FiftySpacing.sm,
               ),

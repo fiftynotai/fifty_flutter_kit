@@ -73,7 +73,7 @@ class NarrativeQueuePanel extends StatelessWidget {
             return GestureDetector(
               onTap: onSentenceTap != null ? () => onSentenceTap!(index) : null,
               child: Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   vertical: FiftySpacing.sm,
                   horizontal: FiftySpacing.sm,
                 ),

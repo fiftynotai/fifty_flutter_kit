@@ -160,7 +160,7 @@ class _DemoShellState extends State<_DemoShell> {
                 // Note: Hero uses fixed brand colors (burgundy gradient) intentionally
                 if (_selectedIndex == 0)
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: FiftySpacing.lg,
                       vertical: FiftySpacing.lg,
                     ),
@@ -187,7 +187,7 @@ class _DemoShellState extends State<_DemoShell> {
                               top: FiftySpacing.md,
                               left: FiftySpacing.md,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: FiftySpacing.sm,
                                   vertical: FiftySpacing.xs,
                                 ),

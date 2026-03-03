@@ -156,7 +156,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
 
     return Container(
       margin: EdgeInsets.only(right: FiftySpacing.sm),
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),
@@ -195,7 +195,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     final successColor = fiftyTheme?.success ?? colorScheme.tertiary;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),
@@ -244,7 +244,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
         return GestureDetector(
           onTap: () => actions.onModeSelected(context, mode),
           child: Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.md,
               vertical: FiftySpacing.sm,
             ),
@@ -370,7 +370,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
           child: GestureDetector(
             onTap: () => actions.onChoiceSelected(context, choice),
             child: FiftyCard(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.md,
                 vertical: FiftySpacing.sm,
               ),
@@ -424,7 +424,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
       child: GestureDetector(
         onTap: actions.onContinueTapped,
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: FiftySpacing.xl,
             vertical: FiftySpacing.md,
           ),
@@ -610,7 +610,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.sm,
         vertical: FiftySpacing.xs,
       ),
@@ -838,7 +838,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
             return GestureDetector(
               onTap: () => actions.onSentenceTapped(index),
               child: Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   vertical: FiftySpacing.sm,
                   horizontal: FiftySpacing.sm,
                 ),
@@ -898,7 +898,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                     SizedBox(width: FiftySpacing.sm),
                     // Instruction type badge
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: FiftySpacing.xs,
                         vertical: 2,
                       ),
@@ -921,7 +921,7 @@ class NarrativeDemoPage extends GetView<NarrativeDemoViewModel> {
                     // Speaker badge
                     if (sentence.speaker != null) ...[
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: FiftySpacing.xs,
                           vertical: 2,
                         ),

@@ -156,8 +156,8 @@ abstract class BaseAudioChannel {
   ///
   /// > Only state changes initiated by the lifecycle are reversed on resume
   /// > (we won’t resume something your game paused intentionally).
-  void enableLifecycle([ChannelLifecycleConfig cfg = const ChannelLifecycleConfig()]) {
-    _lifecycleObserver ??= ChannelLifecycleObserver(this, cfg);
+  void enableLifecycle([ChannelLifecycleConfig? cfg]) {
+    _lifecycleObserver ??= ChannelLifecycleObserver(this, cfg ?? ChannelLifecycleConfig());
     WidgetsBinding.instance.addObserver(_lifecycleObserver!);
   }
 
@@ -419,12 +419,12 @@ abstract class BaseAudioChannel {
   /// **Tip:** Use this to mask track switches or abrupt UI sounds.
   Future<void> withFade(
       Future<void> Function() action, {
-        FadePreset fadeOut = FadePreset.fast,
-        FadePreset fadeIn = FadePreset.normal,
+        FadePreset? fadeOut,
+        FadePreset? fadeIn,
       }) async {
-    await fadeOutVolume(fadeOut);
+    await fadeOutVolume(fadeOut ?? FadePreset.fast);
     await action();
-    await fadeInVolume(fadeIn);
+    await fadeInVolume(fadeIn ?? FadePreset.normal);
   }
 
   /// **Helper: Fade Out via [FadePreset]**

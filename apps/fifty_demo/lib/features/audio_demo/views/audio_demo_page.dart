@@ -458,7 +458,7 @@ class AudioDemoPage extends GetView<AudioDemoViewModel> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: FiftySpacing.md,
           vertical: FiftySpacing.sm,
         ),

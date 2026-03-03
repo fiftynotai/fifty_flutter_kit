@@ -41,7 +41,7 @@ class DemoScaffold extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     final effectivePadding = padding ??
-        const EdgeInsets.symmetric(
+        EdgeInsets.symmetric(
           horizontal: FiftySpacing.lg,
           vertical: FiftySpacing.md,
         );
@@ -53,7 +53,7 @@ class DemoScaffold extends StatelessWidget {
               title: title != null
                   ? Text(
                       title!.toUpperCase(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: FiftyTypography.fontFamily,
                         fontSize: FiftyTypography.titleMedium,
                         fontWeight: FontWeight.bold,

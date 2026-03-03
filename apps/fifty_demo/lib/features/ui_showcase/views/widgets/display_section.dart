@@ -77,7 +77,7 @@ class DisplaySection extends StatelessWidget {
         // Stat Cards
         const SectionLabel(label: 'STAT CARDS'),
         SizedBox(height: FiftySpacing.md),
-        const Row(
+        Row(
           children: [
             Expanded(
               child: FiftyStatCard(
@@ -177,7 +177,7 @@ class DisplaySection extends StatelessWidget {
         // Color Palette
         const SectionLabel(label: 'COLOR PALETTE'),
         SizedBox(height: FiftySpacing.md),
-        const Wrap(
+        Wrap(
           spacing: FiftySpacing.sm,
           runSpacing: FiftySpacing.sm,
           children: [

@@ -11,10 +11,10 @@ import 'core/fade_preset.dart';
 /// ─────────────────────────────────────────────────────────────────────────────
 class GlobalFadePresets {
   /// Fast UI clicks or menu transitions
-  static const FadePreset uiClick = FadePreset.fast;
+  static final FadePreset uiClick = FadePreset.fast;
 
   /// Transitioning between scenes (e.g., loading screens)
-  static const FadePreset sceneChange = FadePreset.normal;
+  static final FadePreset sceneChange = FadePreset.normal;
 
   /// Ambience shift like day/night or mood swap
   static const FadePreset ambientShift = FadePreset.ambient;
@@ -29,9 +29,9 @@ class GlobalFadePresets {
   static const FadePreset cinematic = FadePreset.cinematic;
 
   /// Character voice-over fades (BGM ducking)
-  static const FadePreset voiceDuckingOut = FadePreset.fast;
-  static const FadePreset voiceDuckingIn = FadePreset.normal;
+  static final FadePreset voiceDuckingOut = FadePreset.fast;
+  static final FadePreset voiceDuckingIn = FadePreset.normal;
 
   /// Level transitions
-  static const FadePreset levelTransition = FadePreset.normal;
+  static final FadePreset levelTransition = FadePreset.normal;
 }

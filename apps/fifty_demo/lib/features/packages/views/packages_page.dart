@@ -170,7 +170,7 @@ class _PackageDemoCard extends StatelessWidget {
             // Status indicator
             if (!package.isAvailable)
               Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.sm,
                   vertical: FiftySpacing.xs,
                 ),

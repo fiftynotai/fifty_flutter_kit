@@ -93,7 +93,7 @@ class _UpdateItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.sm,
               vertical: FiftySpacing.xs,
             ),

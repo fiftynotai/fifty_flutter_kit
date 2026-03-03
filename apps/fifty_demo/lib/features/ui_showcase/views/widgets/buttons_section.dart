@@ -172,7 +172,7 @@ class ButtonsSection extends StatelessWidget {
         // Disabled State
         const SectionLabel(label: 'DISABLED STATE'),
         SizedBox(height: FiftySpacing.md),
-        const Wrap(
+        Wrap(
           spacing: FiftySpacing.md,
           runSpacing: FiftySpacing.md,
           children: [

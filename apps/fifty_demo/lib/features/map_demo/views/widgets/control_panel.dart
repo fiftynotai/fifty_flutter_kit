@@ -200,7 +200,7 @@ class ControlPanel extends StatelessWidget {
   Widget _buildSectionLabel(String label) {
     return Text(
       label,
-      style: const TextStyle(
+      style: TextStyle(
         fontFamily: FiftyTypography.fontFamily,
         fontSize: FiftyTypography.bodySmall,
         fontWeight: FiftyTypography.medium,

@@ -177,7 +177,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
             child: GestureDetector(
               onTap: () => actions.onBranchSelected(branch),
               child: Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   vertical: FiftySpacing.sm,
                   horizontal: FiftySpacing.md,
                 ),
@@ -319,7 +319,7 @@ class SkillTreeDemoPage extends GetView<SkillTreeDemoViewModel> {
                                 Row(
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.symmetric(
+                                      padding: EdgeInsets.symmetric(
                                         horizontal: FiftySpacing.sm,
                                         vertical: 2,
                                       ),

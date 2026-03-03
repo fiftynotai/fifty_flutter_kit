@@ -88,7 +88,7 @@ class DialogueDemoPage extends GetView<DialogueDemoViewModel> {
                         return GestureDetector(
                           onTap: () => viewModel.selectDialogue(name),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: FiftySpacing.md,
                               vertical: FiftySpacing.sm,
                             ),

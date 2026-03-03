@@ -68,7 +68,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.lg,
                   vertical: FiftySpacing.md,
                 ),
@@ -233,7 +233,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
         return GestureDetector(
           onTap: () => actions.onEventTapped(context, event, amount: amount),
           child: Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: FiftySpacing.md,
               vertical: FiftySpacing.sm,
             ),
@@ -364,7 +364,7 @@ class AchievementDemoPage extends GetView<AchievementDemoViewModel> {
 
                   // Rarity
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: FiftySpacing.md,
                       vertical: FiftySpacing.xs,
                     ),
@@ -471,7 +471,7 @@ class _AchievementCard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: FiftySpacing.sm,
                           vertical: 2,
                         ),

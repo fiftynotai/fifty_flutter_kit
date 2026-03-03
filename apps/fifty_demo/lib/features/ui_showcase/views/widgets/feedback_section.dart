@@ -30,7 +30,7 @@ class FeedbackSection extends StatelessWidget {
         // Loading Indicators
         const SectionLabel(label: 'LOADING INDICATORS'),
         SizedBox(height: FiftySpacing.md),
-        const FiftyCard(
+        FiftyCard(
           padding: EdgeInsets.all(FiftySpacing.lg),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -251,7 +251,7 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: FiftySpacing.md,
         vertical: FiftySpacing.xs,
       ),

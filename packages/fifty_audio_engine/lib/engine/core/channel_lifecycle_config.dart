@@ -44,16 +44,17 @@ class ChannelLifecycleConfig {
   /// Stop on detached (app is being destroyed).
   final bool stopOnDetached;
 
-  const ChannelLifecycleConfig({
+  ChannelLifecycleConfig({
     this.onBackground = ChannelBackgroundAction.pause,
     this.resumeOnForeground = true,
     this.unmuteOnForeground = true,
     this.fadeOnBackground = true,
     this.fadeOnForeground = true,
-    this.fadeOutPreset = FadePreset.fast,
-    this.fadeInPreset = FadePreset.normal,
+    FadePreset? fadeOutPreset,
+    FadePreset? fadeInPreset,
     this.stopOnDetached = false,
-  });
+  })  : fadeOutPreset = fadeOutPreset ?? FadePreset.fast,
+        fadeInPreset = fadeInPreset ?? FadePreset.normal;
 }
 
 class ChannelLifecycleObserver extends WidgetsBindingObserver {

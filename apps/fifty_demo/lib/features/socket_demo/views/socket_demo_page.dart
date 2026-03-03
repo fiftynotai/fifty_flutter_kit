@@ -376,7 +376,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
             GestureDetector(
               onTap: () => actions.onSendMessageTapped(topic),
               child: Container(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: FiftySpacing.sm,
                   vertical: FiftySpacing.xs,
                 ),
@@ -405,7 +405,7 @@ class SocketDemoPage extends GetView<SocketDemoViewModel> {
                     : actions.onJoinChannelTapped(context, topic)
                 : null,
             child: Container(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: FiftySpacing.sm,
                 vertical: FiftySpacing.xs,
               ),

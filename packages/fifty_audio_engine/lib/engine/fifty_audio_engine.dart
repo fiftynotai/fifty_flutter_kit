@@ -197,7 +197,8 @@ class FiftyAudioEngine {
   ///
   /// **Params:**
   /// - [preset]: Fade timing curve (default: [FadePreset.normal])
-  Future<void> fadeAllIn({FadePreset preset = FadePreset.normal}) async {
+  Future<void> fadeAllIn({FadePreset? preset}) async {
+    preset ??= FadePreset.normal;
     await Future.wait([
       bgm.fadeInVolume(preset),
       sfx.fadeInVolume(preset),
@@ -211,7 +212,8 @@ class FiftyAudioEngine {
   ///
   /// **Params:**
   /// - [preset]: Fade timing curve (default: [FadePreset.fast])
-  Future<void> fadeAllOut({FadePreset preset = FadePreset.fast}) async {
+  Future<void> fadeAllOut({FadePreset? preset}) async {
+    preset ??= FadePreset.fast;
     await Future.wait([
       bgm.fadeOutVolume(preset),
       sfx.fadeOutVolume(preset),
