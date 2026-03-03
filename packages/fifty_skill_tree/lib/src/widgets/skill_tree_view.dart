@@ -280,7 +280,11 @@ class _SkillTreeViewState<T> extends State<SkillTreeView<T>> {
       Widget nodeWidget;
 
       if (widget.nodeBuilder != null) {
-        nodeWidget = widget.nodeBuilder!(node, state);
+        nodeWidget = GestureDetector(
+          onTap: () => _handleNodeTap(node),
+          onLongPress: () => _handleNodeLongPress(node),
+          child: widget.nodeBuilder!(node, state),
+        );
       } else {
         nodeWidget = SkillNodeWidget<T>(
           node: node,
