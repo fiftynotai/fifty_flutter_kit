@@ -1,70 +1,59 @@
 # Current Session
 
-**Status:** HUNT MODE
-**Last Updated:** 2026-03-01
-**Active Brief:** BR-131
-**Instance ID:** 3d050ef8-67fd-4a14-a2aa-972a3d776b95
+**Status:** REST MODE
+**Last Updated:** 2026-03-02
+**Active Brief:** None
 
 ---
 
 ## Resume Point
 
-**Last Active:** AC-007 (Done)
+**Last Active:** TS-003 (visually confirmed, needs revert as part of BR-132)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-### Git Status
+### Git Status — UNCOMMITTED CHANGES
 
-3 commits ahead of origin/main (unpushed):
-- `4e9b6d2` chore(briefs): register AC-007
-- `0ebc2a8` fix(ecosystem): resolve WARDEN minor findings (TD-009)
-- `e91c042` refactor(tokens,theme): unified FiftyPreset architecture (AC-007)
+~30 modified files need to be committed. Group into logical commits:
 
-Plus 1 unstaged file: `ai/briefs/TD-010-ac007-warden-minor-findings.md`
+1. **const fix commit** — fifty_demo (17 files) + fifty_audio_engine (5 files): `const` → runtime getter migration for FiftySpacing/FiftyRadii/FiftyMotion tokens
+2. **TS-003 commit** — main.dart Baltic Blue config (needs revert as part of BR-132, or commit as-is then revert in BR-132)
+3. **Brief files** — TS-003, BR-132, updated BR-131/TD-010 status
+4. **Agent memory** — .claude/agent-memory/ files (seeker, architect, forger, sentinel, warden)
 
 ### Recommended Next Actions
 
-1. Push to remote: `git push`
-2. Implement TD-010 (WARDEN minor findings from AC-007): `/hunt TD-010`
-3. Archive completed briefs: `/archive AC-002` through `/archive AC-007`
-4. Review remaining briefs: `/scan`
+1. **Commit the uncommitted changes** — group into 2-3 logical commits
+2. **Hunt BR-132** — Runtime palette switcher (reverts TS-003 main.dart config, creates tokens demo page with toggle button)
+3. Archive completed briefs: `/archive TD-010`, `/archive BR-131`
 
-### AC-001 Theme Customization Pipeline — COMPLETE
+### Key Context for BR-132
 
-- [x] AC-002 — fifty_tokens configuration (Done, commit: 9bcd528)
-- [x] AC-003 — fifty_theme parameterization (Done, commit: 55c6d90)
-- [x] AC-004 — fifty_ui theme alignment (Done, commit: 517a195)
-- [x] AC-005 — engine packages theme alignment (Done, commit: 90b58c8)
-- [x] AC-006 — documentation + migration guide + const fix (Done, commit: 3e6f64b)
-- [x] AC-007 — semantic token config + JSON theming (Done, commit: e91c042)
-
-### Open Briefs
-
-- TD-010 (P3, Done) — WARDEN minor findings from AC-007: DRY _parseColor, defensive fromMap parsing, missing fromMap unit tests (commit: fe3ab16)
+- `FiftyTokens.configure()` is callable at runtime (not just app start)
+- ThemeData must be regenerated: `Get.changeTheme(FiftyTheme.light())` + `Get.forceAppUpdate()`
+- Baltic Blue palette colors are defined in BR-132 brief
+- TS-003 main.dart config should be reverted (step 1 of BR-132)
+- Demo page goes in `lib/features/tokens_demo/views/tokens_demo_page.dart`
 
 ---
 
 ## Last Session Summary
 
-**Date:** 2026-03-01
+**Date:** 2026-03-02
 **Completed:**
-- Executed `/hunt AC-007` — full autonomous pipeline (7 phases, L effort)
-  - Phase 1: Created FiftyShadowsConfig, FiftyGradientsConfig, added fromMap/copyWith to all configs
-  - Phase 2: Created FiftyPreset with fdlV2 built-in default, rewrote FiftyTokens manager
-  - Phase 3: Renamed FiftyColorConfig to semantic names, rewrote FiftyColors as agnostic reader
-  - Phase 4: Converted all 8 token classes to agnostic readers, removed all bridge code
-  - Phase 5: Updated fifty_theme source to semantic color names
-  - Phase 6: Updated fifty_theme tests to semantic names, fixed config constructors
-  - Phase 7: Version bumps (3.0.0), CHANGELOG, README, migration guide
-  - SENTINEL: 468 tests passing (263 tokens + 205 theme), zero analyzer errors
-  - WARDEN: APPROVE with 4 minor findings
-  - Commit: e91c042 (49 files, +3149 -1187)
-- Registered TD-010 for WARDEN minor findings
+- Published fifty_tokens v3.0.0 to pub.dev (WARDEN approved, SENTINEL 317/317 tests)
+- Fixed 3 pre-publish blockers: shadow JSON keys (offsetX/Y→dx/dy), unused meta dep, README google_fonts version. Commit: b6b1dca
+- Fixed narrative engine plugin filename (FiftySentencesEnginePlugin→FiftyNarrativeEnginePlugin). Commit: 949ac52
+- Fixed 57 const violations in fifty_demo (17 files) — tokens moved from const to runtime getters
+- Fixed FadePreset const→final migration in fifty_audio_engine (5 files) — FiftyMotion tokens incompatible with const
+- Hunted TS-003 — Baltic Blue palette configured in main.dart, visually confirmed on iOS simulator
+- Registered BR-132 — runtime palette switcher with toggle button
+- Confirmed fifty_theme fully compatible with fifty_tokens v3.0.0 (205 tests passing)
 
-**Summary:** AC-007 complete — FiftyPreset unified architecture, semantic color names, JSON-driven theming, agnostic token readers. Entire AC-001 pipeline (AC-002 through AC-007) is now DONE.
+**Summary:** Published fifty_tokens v3.0.0, fixed cascading const violations across fifty_demo and fifty_audio_engine, visually verified Baltic Blue palette on simulator, registered runtime switcher brief.
 
 ---
 
