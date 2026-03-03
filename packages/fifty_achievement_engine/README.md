@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_achievement_engine.svg)](https://pub.dev/packages/fifty_achievement_engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Achievement system for Flutter games with condition-based unlocks, progress tracking, and FDL-compliant UI. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Complete achievement pipeline for Flutter games -- condition engine, progress tracking, and builder-customizable UI.**
+
+Six composable condition types, prerequisite chains, rarity tiers, generic reward data, JSON serialization, and five FDL-styled widgets with optional builder callbacks that let you replace any widget's inner content while keeping all achievement logic intact. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Basic Achievements | Achievement Unlocked | RPG Achievements |
 |:----:|:------------------:|:-------------------:|:----------------:|
@@ -11,16 +13,12 @@ Achievement system for Flutter games with condition-based unlocks, progress trac
 
 ---
 
-## Features
+## Why fifty_achievement_engine
 
-- **Flexible Condition System** - 6 built-in condition types for any unlock criteria
-- **Progress Tracking** - Real-time progress calculation (0.0 to 1.0)
-- **Event & Stat Tracking** - Track game events and player statistics
-- **Prerequisite Support** - Chain achievements with dependencies
-- **Rarity Tiers** - Common, Uncommon, Rare, Epic, Legendary
-- **Hidden Achievements** - Spoiler-free surprises until unlocked
-- **Serialization** - JSON save/load for game persistence
-- **FDL-Compliant UI** - Styled widgets using Fifty Design Language
+- **Full achievement pipeline, any UI** -- `AchievementController` handles condition evaluation, progress tracking, prerequisite chains, and unlock callbacks; you provide the display.
+- **Replace any widget's inner content** -- `contentBuilder`, `itemBuilder`, and `barBuilder` callbacks let you swap out default FDL UI for your game's visual style while keeping all achievement logic intact.
+- **Six composable condition types** -- `EventCondition`, `CountCondition`, `ThresholdCondition`, `CompositeCondition` (AND/OR), `TimeCondition`, and `SequenceCondition` cover every unlock pattern without custom code.
+- **Generic data on every achievement** -- Attach any type `T` to `Achievement<T>` for reward data (gold, items, XP) and access it in the `onUnlock` callback.
 
 ---
 
@@ -28,7 +26,7 @@ Achievement system for Flutter games with condition-based unlocks, progress trac
 
 ```yaml
 dependencies:
-  fifty_achievement_engine: ^0.1.3
+  fifty_achievement_engine: ^0.2.0
 ```
 
 ### For Contributors
@@ -110,6 +108,144 @@ AchievementController<T>
 | `Achievement` | Data model with conditions, prerequisites, rarity, points |
 | `AchievementCondition` | Abstract base for condition types |
 | `AchievementSerializer` | JSON serialization for save/load and packs |
+
+---
+
+## Customization
+
+Every achievement widget accepts an optional builder callback. When provided, the builder replaces the default FDL rendering while the widget retains ownership of controller listening, animations, and state management.
+
+### Custom Card Content
+
+Replace the inner content of `AchievementCard` (icon, title, description, progress row). The outer container with gesture detection, opacity animation, and border decoration is preserved:
+
+```dart
+AchievementCard(
+  achievement: myAchievement,
+  progress: 0.75,
+  state: AchievementState.available,
+  contentBuilder: (achievement, progress, state, rarityColor) {
+    return Row(
+      children: [
+        Icon(Icons.star, color: rarityColor),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(achievement.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              LinearProgressIndicator(value: progress, color: rarityColor),
+            ],
+          ),
+        ),
+      ],
+    );
+  },
+)
+```
+
+### Custom List Items
+
+Replace the default `AchievementCard` for each item in `AchievementList`:
+
+```dart
+AchievementList(
+  controller: controller,
+  itemBuilder: (achievement, progress, state, index) {
+    return ListTile(
+      leading: Icon(achievement.icon ?? Icons.emoji_events),
+      title: Text(achievement.name),
+      subtitle: LinearProgressIndicator(value: progress),
+      trailing: Text('${(progress * 100).toInt()}%'),
+    );
+  },
+)
+```
+
+### Custom Summary Layout
+
+Replace the entire summary layout in `AchievementSummary`. Receives computed statistics via `AchievementSummaryData`:
+
+```dart
+AchievementSummary(
+  controller: controller,
+  contentBuilder: (data) {
+    return Text(
+      '${data.unlockedCount}/${data.totalCount} unlocked '
+      '(${data.earnedPoints}/${data.totalPoints} pts)',
+    );
+  },
+)
+```
+
+### Custom Popup Content
+
+Replace the default popup card in `AchievementPopup`. The animation controller is provided for synchronizing custom animations with the popup lifecycle:
+
+```dart
+AchievementPopup(
+  achievement: unlockedAchievement,
+  contentBuilder: (achievement, rarityColor, animationController) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: rarityColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: rarityColor),
+      ),
+      child: Text('Unlocked: ${achievement.name}!'),
+    );
+  },
+)
+```
+
+### Custom Progress Bar
+
+Replace the default progress bar rendering in `AchievementProgressBar`:
+
+```dart
+AchievementProgressBar(
+  progress: 0.75,
+  barBuilder: (progress, height, backgroundColor, foregroundColor, borderRadius) {
+    return LinearProgressIndicator(
+      value: progress,
+      backgroundColor: backgroundColor,
+      color: foregroundColor,
+      minHeight: height,
+      borderRadius: borderRadius,
+    );
+  },
+)
+```
+
+### Rarity Color Overrides
+
+Override default rarity colors on any widget that displays rarity:
+
+```dart
+AchievementCard(
+  achievement: myAchievement,
+  progress: 0.75,
+  rarityColors: {
+    AchievementRarity.common: Colors.grey,
+    AchievementRarity.legendary: Colors.amber,
+  },
+)
+```
+
+`rarityColors` is available on `AchievementCard`, `AchievementSummary`, and `AchievementPopup`. Unset rarities fall back to theme-derived defaults.
+
+### Builder Signatures
+
+| Widget | Builder parameter | Callback signature |
+|--------|------------------|--------------------|
+| `AchievementCard` | `contentBuilder` | `Widget Function(Achievement<T> achievement, double progress, AchievementState state, Color rarityColor)` |
+| `AchievementList` | `itemBuilder` | `Widget Function(Achievement<T> achievement, double progress, AchievementState state, int index)` |
+| `AchievementSummary` | `contentBuilder` | `Widget Function(AchievementSummaryData data)` |
+| `AchievementPopup` | `contentBuilder` | `Widget Function(Achievement<T> achievement, Color rarityColor, AnimationController animationController)` |
+| `AchievementProgressBar` | `barBuilder` | `Widget Function(double progress, double height, Color backgroundColor, Color foregroundColor, BorderRadius borderRadius)` |
+
+All builders are optional. Omit them to use the default FDL UI.
 
 ---
 
@@ -282,7 +418,7 @@ SequenceCondition(
 
 #### AchievementCard
 
-Display a single achievement with progress.
+Display a single achievement with progress. Optional `contentBuilder` and `rarityColors` for customization (see [Customization](#customization)).
 
 ```dart
 AchievementCard(
@@ -295,7 +431,7 @@ AchievementCard(
 
 #### AchievementList
 
-Scrollable list with filtering support.
+Scrollable list with filtering support. Optional `itemBuilder` replaces the default `AchievementCard` per item.
 
 ```dart
 AchievementList(
@@ -309,7 +445,7 @@ AchievementList(
 
 #### AchievementPopup
 
-Animated unlock notification.
+Animated unlock notification. Optional `contentBuilder` and `rarityColors` for customization.
 
 ```dart
 controller.onUnlock = (achievement) {
@@ -328,7 +464,7 @@ controller.onUnlock = (achievement) {
 
 #### AchievementSummary
 
-Overall progress statistics.
+Overall progress statistics. Optional `contentBuilder` receives `AchievementSummaryData` with computed breakdown maps.
 
 ```dart
 AchievementSummary(
@@ -340,7 +476,7 @@ AchievementSummary(
 
 #### AchievementProgressBar
 
-Standalone progress bar.
+Standalone progress bar. Optional `barBuilder` for fully custom visualization.
 
 ```dart
 AchievementProgressBar(
@@ -451,25 +587,14 @@ This package is part of Fifty Flutter Kit:
 
 - **Theme-aware widgets** - All widgets use `Theme.of(context).colorScheme` for colors (`onSurface` for text, `surfaceContainerHighest` for backgrounds, `primary` for accents, `outline` for borders)
 - **FDL token alignment** - Spacing from `FiftySpacing`, typography from `FiftyTypography`, radii from `FiftyRadii`, motion from `FiftyMotion`
-- **Rarity semantic colors** - Common, Uncommon, Rare, Epic, Legendary use intentional semantic colors
+- **Rarity semantic colors** - Common, Uncommon, Rare, Epic, Legendary use intentional semantic colors; override via `rarityColors` (see [Customization](#customization))
 - **Compatible packages** - Works with `fifty_tokens`, `fifty_theme`, `fifty_ui`
-
-Optional color overrides are provided as widget parameters:
-
-```dart
-AchievementCard(
-  achievement: myAchievement,
-  progress: 0.75,
-  backgroundColor: Theme.of(context).colorScheme.surface,
-  borderColor: Colors.amber,
-)
-```
 
 ---
 
 ## Version
 
-**Current:** 0.1.3
+**Current:** 0.2.0
 
 ---
 

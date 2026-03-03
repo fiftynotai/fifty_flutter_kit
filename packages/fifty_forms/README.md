@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_forms.svg)](https://pub.dev/packages/fifty_forms)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Production-ready form building with validation, multi-step wizards, and draft persistence. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Full validation pipeline for Flutter forms -- you provide the layout, we handle the state.**
+
+25 built-in validators, async debounce validation, multi-step wizards with custom navigation, draft persistence that survives app kills, and optional builder callbacks that let you replace the navigation buttons, progress indicator, error summary, and submit button individually. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Login Form | Registration | Multi-Step |
 |:----:|:----------:|:------------:|:----------:|
@@ -11,16 +13,12 @@ Production-ready form building with validation, multi-step wizards, and draft pe
 
 ---
 
-## Features
+## Why fifty_forms
 
-- **State Management** - `FiftyFormController` for centralized form state
-- **Immutable Field State** - `FieldState` tracks value, touched, dirty, error states
-- **25 Built-in Validators** - Required, Email, MinLength, Pattern, and more
-- **Async Validation** - Debounced async validators for server-side checks
-- **FDL Components** - Form field wrappers for fifty_ui components
-- **Multi-Step Forms** - Wizard-style forms with step validation
-- **Dynamic Arrays** - Add/remove repeating field groups
-- **Draft Persistence** - Auto-save and restore form data
+- **Full validation pipeline, you build the UI** -- `FiftyFormController` handles field registration, 25 built-in validators, async debounce validation, and draft persistence; you provide the layout.
+- **Wizard forms with custom everything** -- `FiftyMultiStepForm` comes with step validation, progress tracking, and navigation; replace the navigation buttons, progress display, error summary, and submit button individually via optional builders.
+- **Async validators with debounce** -- `AsyncCustom<String>` debounces server-side checks (username availability, email exists) so API calls fire only when the user pauses typing.
+- **Draft persistence that survives app kills** -- `DraftManager` auto-saves form state to GetStorage with configurable debounce; restore drafts on next open with a single `hasDraft()` check.
 
 ---
 
@@ -28,7 +26,7 @@ Production-ready form building with validation, multi-step wizards, and draft pe
 
 ```yaml
 dependencies:
-  fifty_forms: ^0.1.2
+  fifty_forms: ^0.2.0
 ```
 
 ### For Contributors
@@ -121,6 +119,108 @@ fifty_forms
 | `DraftManager` | Persists and restores form drafts via GetStorage |
 | `FiftyMultiStepForm` | Wizard-style multi-step form widget |
 | `FiftyFormArray` | Dynamic add/remove repeating field groups |
+
+---
+
+## Customization
+
+Every form UI widget accepts an optional builder callback. When provided, the builder replaces the default FDL rendering while the widget retains ownership of controller listening, state computation, and animations.
+
+### Custom Navigation Buttons
+
+Replace the default back/next/complete buttons on `FiftyMultiStepForm`:
+
+```dart
+FiftyMultiStepForm(
+  controller: controller,
+  steps: mySteps,
+  stepBuilder: (context, index, step) => buildStepContent(index),
+  onComplete: (values) => api.createUser(values),
+  navigationBuilder: (isFirstStep, isLastStep, isSubmitting, onNext, onPrevious) {
+    return Row(
+      children: [
+        if (!isFirstStep)
+          TextButton(onPressed: onPrevious, child: const Text('Back')),
+        const Spacer(),
+        ElevatedButton(
+          onPressed: isSubmitting ? null : onNext,
+          child: Text(isLastStep ? 'Submit' : 'Continue'),
+        ),
+      ],
+    );
+  },
+)
+```
+
+### Custom Submit Button
+
+Replace the default `FiftyButton` on `FiftySubmitButton`:
+
+```dart
+FiftySubmitButton(
+  controller: controller,
+  label: 'SAVE',
+  onPressed: () => controller.submit(save),
+  buttonBuilder: (isLoading, isDisabled, onPressed, label) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: isLoading
+            ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+            : Text(label),
+      ),
+    );
+  },
+)
+```
+
+### Custom Validation Summary
+
+Replace the default error card on `FiftyValidationSummary`:
+
+```dart
+FiftyValidationSummary(
+  controller: controller,
+  contentBuilder: (errors, onFieldTap) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: errors.entries.map((e) {
+        return GestureDetector(
+          onTap: onFieldTap != null ? () => onFieldTap(e.key) : null,
+          child: Text('${e.key}: ${e.value}', style: const TextStyle(color: Colors.red)),
+        );
+      }).toList(),
+    );
+  },
+)
+```
+
+### Custom Progress Indicator
+
+Replace the default step circles on `FiftyFormProgress`:
+
+```dart
+FiftyFormProgress(
+  currentStep: 2,
+  totalSteps: 4,
+  stepLabels: ['Account', 'Profile', 'Preferences', 'Review'],
+  contentBuilder: (currentStep, totalSteps, stepLabels) {
+    return LinearProgressIndicator(value: currentStep / totalSteps);
+  },
+)
+```
+
+### Builder Signatures
+
+| Widget | Builder parameter | Callback signature |
+|--------|------------------|--------------------|
+| `FiftyMultiStepForm` | `navigationBuilder` | `Widget Function(bool isFirstStep, bool isLastStep, bool isSubmitting, VoidCallback onNext, VoidCallback onPrevious)` |
+| `FiftySubmitButton` | `buttonBuilder` | `Widget Function(bool isLoading, bool isDisabled, VoidCallback? onPressed, String label)` |
+| `FiftyValidationSummary` | `contentBuilder` | `Widget Function(Map<String, String> errors, void Function(String fieldName)? onFieldTap)` |
+| `FiftyFormProgress` | `contentBuilder` | `Widget Function(int currentStep, int totalSteps, List<String>? stepLabels)` |
+
+All builders are optional. Omit them to use the default FDL UI.
 
 ---
 
@@ -289,13 +389,13 @@ Wrapper components for fifty_ui widgets that integrate with `FiftyFormController
 | Widget | Description |
 |--------|-------------|
 | `FiftyForm` | Form container with controller binding |
-| `FiftySubmitButton` | Submit button with loading state |
-| `FiftyFormProgress` | Step progress indicator |
-| `FiftyMultiStepForm` | Multi-step wizard container |
+| `FiftySubmitButton` | Submit button with loading state; optional `buttonBuilder` |
+| `FiftyFormProgress` | Step progress indicator; optional `contentBuilder` |
+| `FiftyMultiStepForm` | Multi-step wizard container; optional `navigationBuilder` |
 | `FiftyFormArray` | Dynamic repeating fields |
 | `FiftyFormError` | Form-level error display |
 | `FiftyFieldError` | Field-level error display |
-| `FiftyValidationSummary` | All errors summary |
+| `FiftyValidationSummary` | All errors summary; optional `contentBuilder` |
 | `FiftyFormField` | Generic field wrapper |
 
 ---
@@ -326,6 +426,7 @@ Wrapper components for fifty_ui widgets that integrate with `FiftyFormController
 | `nextLabel` | `String` | `'NEXT'` | Label for the next button |
 | `previousLabel` | `String` | `'BACK'` | Label for the previous button |
 | `completeLabel` | `String` | `'COMPLETE'` | Label for the final step button |
+| `navigationBuilder` | `MultiStepNavigationBuilder?` | `null` | Optional builder to replace the default back/next/complete buttons |
 
 ### FormStep
 
@@ -597,7 +698,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.2
+**Current:** 0.2.0
 
 ---
 

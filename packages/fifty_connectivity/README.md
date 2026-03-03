@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_connectivity.svg)](https://pub.dev/packages/fifty_connectivity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Network connectivity monitoring with intelligent reachability probing (DNS/HTTP). Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Reliable connectivity monitoring for Flutter -- DNS and HTTP health checks, not just network state.**
+
+Distinguishes true internet access from captive portals and offline routers. Ships three ready-to-use UX widgets (overlay banner, content handler, splash gate) and a `contentBuilder` API for fully custom splash screens. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Status | Handler | Overlay | Splash |
 |:---:|:---:|:---:|:---:|
@@ -11,18 +13,12 @@ Network connectivity monitoring with intelligent reachability probing (DNS/HTTP)
 
 ---
 
-## Features
+## Why fifty_connectivity
 
-- **Real-time Connectivity Monitoring** - Track network state changes instantly via `connectivity_plus` stream subscription
-- **Intelligent Reachability Probing** - DNS lookup and HTTP HEAD/GET health checks to detect captive portals and offline routers
-- **Granular Connection States** - Distinguishes transport-level disconnection from internet-level reachability failure
-- **Reactive State Management** - GetX-based reactive `connectionType` observable consumed across the widget tree
-- **Offline Duration Tracking** - Tracks and formats elapsed offline time as a reactive timer string
-- **Telemetry Callbacks** - `onWentOffline` and `onBackOnline` hooks for analytics integration
-- **App Lifecycle Awareness** - Re-checks connectivity automatically on app resume
-- **Ready-to-use UI Widgets** - Overlay, handler, and splash widgets for common connection UX patterns
-- **Highly Configurable** - Customizable labels, navigation callback, and splash screen builder
-- **FDL Styled** - Fifty Design Language v2 aesthetic in all UI widgets
+- **Reliable connectivity, not just network state** -- DNS and HTTP health checks distinguish captive portals and offline routers from true internet access; `ConnectivityType.noInternet` is separate from `ConnectivityType.disconnected`.
+- **Three ready-to-use UX patterns** -- `ConnectionOverlay` for status banners, `ConnectionHandler` for content swapping, `ConnectivityCheckerSplash` for app launch gating; use one or all three.
+- **Custom splash screens per state** -- `contentBuilder` on `ConnectivityCheckerSplash` gives you `(context, SplashConnectivityState, retryAction)` and replaces the entire splash content for checking/connected/failed states.
+- **Telemetry callbacks** -- `onWentOffline` and `onBackOnline` hooks with offline `Duration` for analytics; no subclassing needed.
 
 ---
 
@@ -30,7 +26,7 @@ Network connectivity monitoring with intelligent reachability probing (DNS/HTTP)
 
 ```yaml
 dependencies:
-  fifty_connectivity: ^0.1.3
+  fifty_connectivity: ^0.2.0
 ```
 
 ### For Contributors
@@ -107,7 +103,73 @@ void main() {
 | `ConnectivityConfig` | Static configuration class for labels, navigation callback, and splash settings |
 | `ConnectionOverlay` | Widget that renders an FDL-styled status overlay on connectivity change |
 | `ConnectionHandler` | Widget that swaps content based on current connection state |
-| `ConnectivityCheckerSplash` | Splash screen that probes connectivity before navigating to the next route |
+| `ConnectivityCheckerSplash` | Splash screen that probes connectivity before navigating; supports `contentBuilder` for fully custom UI per `SplashConnectivityState` |
+| `SplashConnectivityState` | Simplified enum (`checking`, `connected`, `failed`) used by `contentBuilder` |
+
+---
+
+## Customization
+
+### Custom Splash Content
+
+`ConnectivityCheckerSplash` accepts a `contentBuilder` that replaces the default splash content while preserving the `Scaffold` and connectivity check pipeline. The builder receives the current `SplashConnectivityState` and a retry callback:
+
+```dart
+ConnectivityCheckerSplash(
+  nextRouteName: '/home',
+  contentBuilder: (context, state, retry) {
+    return switch (state) {
+      SplashConnectivityState.checking => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset('assets/logo.png', height: 120),
+          const SizedBox(height: 24),
+          const CircularProgressIndicator(),
+        ],
+      ),
+      SplashConnectivityState.connected => const Icon(
+        Icons.check_circle,
+        size: 64,
+        color: Colors.green,
+      ),
+      SplashConnectivityState.failed => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.wifi_off, size: 64),
+          const SizedBox(height: 16),
+          const Text('No connection'),
+          const SizedBox(height: 16),
+          ElevatedButton(onPressed: retry, child: const Text('Retry')),
+        ],
+      ),
+    };
+  },
+)
+```
+
+#### SplashConnectivityState
+
+The builder receives one of three simplified states mapped from the internal `ConnectivityType`:
+
+| State | Maps from | Description |
+|-------|-----------|-------------|
+| `checking` | `connecting` | Connectivity check in progress |
+| `connected` | `wifi`, `mobileData` | Internet access confirmed |
+| `failed` | `disconnected`, `noInternet` | Check failed; show retry UI |
+
+**Note:** When `contentBuilder` is provided, `logoBuilder` is ignored since the builder controls all inner content. The `Scaffold` and `Center` wrapping remain widget-owned.
+
+### Custom Logo
+
+For simpler customization, provide a `logoBuilder` instead:
+
+```dart
+ConnectivityCheckerSplash(
+  logoBuilder: (context) => SvgPicture.asset('assets/logo.svg'),
+)
+```
+
+Or set it globally via `ConnectivityConfig.logoBuilder` for all splash instances.
 
 ---
 
@@ -306,14 +368,28 @@ ConnectionHandler(
 Splash screen that checks connectivity before navigating:
 
 ```dart
-// Basic
+// Basic -- uses default FDL UI
 ConnectivityCheckerSplash()
 
-// Custom configuration
+// Custom logo
 ConnectivityCheckerSplash(
   nextRouteName: '/home',
   delayInSeconds: 2,
   logoBuilder: (context) => SvgPicture.asset('assets/logo.svg'),
+)
+
+// Fully custom content per connectivity state
+ConnectivityCheckerSplash(
+  contentBuilder: (context, state, retry) {
+    return switch (state) {
+      SplashConnectivityState.checking => const CircularProgressIndicator(),
+      SplashConnectivityState.connected => const Icon(Icons.check_circle),
+      SplashConnectivityState.failed => ElevatedButton(
+        onPressed: retry,
+        child: const Text('Retry'),
+      ),
+    };
+  },
 )
 ```
 
@@ -406,7 +482,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.3
+**Current:** 0.2.0
 
 ---
 
