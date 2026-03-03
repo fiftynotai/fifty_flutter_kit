@@ -62,7 +62,7 @@ void main() {
 
         // The card renders without error, using the theme's onSurfaceVariant
         expect(find.text('Test Achievement'), findsOneWidget);
-        expect(find.text('Common'), findsOneWidget);
+        expect(find.text('COMMON'), findsOneWidget);
       });
 
       testWidgets('uncommon rarity uses colorScheme.tertiary',
@@ -74,7 +74,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('Test Achievement'), findsOneWidget);
-        expect(find.text('Uncommon'), findsOneWidget);
+        expect(find.text('UNCOMMON'), findsOneWidget);
       });
 
       testWidgets('rare rarity uses hardcoded domain color', (tester) async {
@@ -84,7 +84,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('Test Achievement'), findsOneWidget);
-        expect(find.text('Rare'), findsOneWidget);
+        expect(find.text('RARE'), findsOneWidget);
       });
 
       testWidgets('epic rarity uses hardcoded domain color', (tester) async {
@@ -94,7 +94,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('Test Achievement'), findsOneWidget);
-        expect(find.text('Epic'), findsOneWidget);
+        expect(find.text('EPIC'), findsOneWidget);
       });
 
       testWidgets('legendary rarity uses hardcoded domain color',
@@ -106,7 +106,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('Test Achievement'), findsOneWidget);
-        expect(find.text('Legendary'), findsOneWidget);
+        expect(find.text('LEGENDARY'), findsOneWidget);
       });
 
       testWidgets('custom rarityColors override defaults', (tester) async {
@@ -139,7 +139,125 @@ void main() {
 
         // Uncommon still renders correctly with default theme color
         expect(find.text('Test Achievement'), findsOneWidget);
-        expect(find.text('Uncommon'), findsOneWidget);
+        expect(find.text('UNCOMMON'), findsOneWidget);
+      });
+    });
+
+    group('contentBuilder', () {
+      testWidgets('renders builder widget when contentBuilder is provided',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: ThemeData(
+              colorScheme: const ColorScheme.dark(
+                primary: Color(0xFFFF0000),
+                tertiary: Color(0xFF00FF00),
+                onSurfaceVariant: Color(0xFFAAAAAA),
+                surfaceContainerHighest: Color(0xFF333333),
+              ),
+            ),
+            home: Scaffold(
+              body: AchievementCard<void>(
+                achievement: testAchievement,
+                progress: 0.5,
+                state: AchievementState.available,
+                contentBuilder: (achievement, progress, state, rarityColor) {
+                  return Text('Custom: ${achievement.name}');
+                },
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Custom: Test Achievement'), findsOneWidget);
+        // Default content should not be present
+        expect(find.text('Test Achievement'), findsNothing);
+      });
+
+      testWidgets('renders default content when contentBuilder is null',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget());
+        await tester.pumpAndSettle();
+
+        // Default content renders the achievement name directly
+        expect(find.text('Test Achievement'), findsOneWidget);
+      });
+
+      testWidgets('builder receives correct achievement, progress, state, rarityColor',
+          (tester) async {
+        Achievement<void>? receivedAchievement;
+        double? receivedProgress;
+        AchievementState? receivedState;
+        Color? receivedColor;
+
+        final achievement = makeAchievement(rarity: AchievementRarity.rare);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: ThemeData(
+              colorScheme: const ColorScheme.dark(
+                primary: Color(0xFFFF0000),
+                tertiary: Color(0xFF00FF00),
+                onSurfaceVariant: Color(0xFFAAAAAA),
+                surfaceContainerHighest: Color(0xFF333333),
+              ),
+            ),
+            home: Scaffold(
+              body: AchievementCard<void>(
+                achievement: achievement,
+                progress: 0.75,
+                state: AchievementState.unlocked,
+                contentBuilder: (a, p, s, c) {
+                  receivedAchievement = a;
+                  receivedProgress = p;
+                  receivedState = s;
+                  receivedColor = c;
+                  return const Text('builder');
+                },
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(receivedAchievement, equals(achievement));
+        expect(receivedProgress, 0.75);
+        expect(receivedState, AchievementState.unlocked);
+        // Rare rarity uses hardcoded color 0xFF5B8BD4
+        expect(receivedColor, const Color(0xFF5B8BD4));
+      });
+
+      testWidgets('onTap still works with contentBuilder', (tester) async {
+        var tapped = false;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: ThemeData(
+              colorScheme: const ColorScheme.dark(
+                primary: Color(0xFFFF0000),
+                tertiary: Color(0xFF00FF00),
+                onSurfaceVariant: Color(0xFFAAAAAA),
+                surfaceContainerHighest: Color(0xFF333333),
+              ),
+            ),
+            home: Scaffold(
+              body: AchievementCard<void>(
+                achievement: testAchievement,
+                progress: 0.5,
+                state: AchievementState.available,
+                onTap: () => tapped = true,
+                contentBuilder: (a, p, s, c) {
+                  return const Text('Custom content');
+                },
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Custom content'));
+        expect(tapped, isTrue);
       });
     });
 

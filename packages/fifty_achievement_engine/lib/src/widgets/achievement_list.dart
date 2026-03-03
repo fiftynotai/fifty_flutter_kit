@@ -5,6 +5,17 @@ import '../controllers/controllers.dart';
 import '../models/models.dart';
 import 'achievement_card.dart';
 
+/// Builder for custom achievement list items.
+///
+/// When provided, replaces the default [AchievementCard] for each item.
+/// Consumers are responsible for gesture handling when using this builder.
+typedef AchievementItemBuilder<T> = Widget Function(
+  Achievement<T> achievement,
+  double progress,
+  AchievementState state,
+  int index,
+);
+
 /// Filter options for the achievement list.
 enum AchievementFilter {
   /// Show all achievements.
@@ -50,6 +61,7 @@ class AchievementList<T> extends StatelessWidget {
     this.headerBuilder,
     this.physics,
     this.shrinkWrap = false,
+    this.itemBuilder,
   });
 
   /// The achievement controller.
@@ -93,6 +105,12 @@ class AchievementList<T> extends StatelessWidget {
 
   /// Whether the list should shrink wrap its contents.
   final bool shrinkWrap;
+
+  /// Optional builder for custom list items.
+  ///
+  /// When provided, replaces the default [AchievementCard] for each item.
+  /// Consumers are responsible for gesture handling when using this builder.
+  final AchievementItemBuilder<T>? itemBuilder;
 
   List<Achievement<T>> _filterAchievements() {
     var achievements = controller.achievements;
@@ -155,6 +173,10 @@ class AchievementList<T> extends StatelessWidget {
             final achievement = achievements[index];
             final state = controller.getState(achievement.id);
             final progress = controller.getProgress(achievement.id);
+
+            if (itemBuilder != null) {
+              return itemBuilder!(achievement, progress, state, index);
+            }
 
             return AchievementCard<T>(
               achievement: achievement,

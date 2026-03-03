@@ -4,6 +4,18 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 import 'achievement_progress_bar.dart';
 
+/// Builder for custom achievement card content.
+///
+/// When provided, replaces the default card content (icon, title,
+/// description, progress row). The outer container with gesture
+/// detection, opacity animation, and border decoration is preserved.
+typedef AchievementCardContentBuilder<T> = Widget Function(
+  Achievement<T> achievement,
+  double progress,
+  AchievementState state,
+  Color rarityColor,
+);
+
 /// A card widget for displaying a single achievement with progress.
 ///
 /// Consumes FDL tokens directly for consistent styling.
@@ -32,6 +44,7 @@ class AchievementCard<T> extends StatelessWidget {
     this.showProgress = true,
     this.compact = false,
     this.rarityColors,
+    this.contentBuilder,
   });
 
   /// The achievement to display.
@@ -67,6 +80,13 @@ class AchievementCard<T> extends StatelessWidget {
   /// over the default. Defaults use theme-derived colors for common
   /// and uncommon, and hardcoded domain colors for rare/epic/legendary.
   final Map<AchievementRarity, Color>? rarityColors;
+
+  /// Optional builder for custom card content.
+  ///
+  /// When provided, replaces the default card content (icon, title,
+  /// description, progress row). The outer container with gesture
+  /// detection, opacity animation, and border decoration is preserved.
+  final AchievementCardContentBuilder<T>? contentBuilder;
 
   /// Gets the rarity color based on achievement rarity.
   ///
@@ -133,9 +153,11 @@ class AchievementCard<T> extends StatelessWidget {
               width: state.isComplete ? 2 : 1,
             ),
           ),
-          child: _isHiddenAndLocked
-              ? _buildHiddenContent(context, rarityColor)
-              : _buildContent(context, rarityColor),
+          child: contentBuilder != null
+              ? contentBuilder!(achievement, progress, state, rarityColor)
+              : (_isHiddenAndLocked
+                  ? _buildHiddenContent(context, rarityColor)
+                  : _buildContent(context, rarityColor)),
         ),
       ),
     );

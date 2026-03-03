@@ -5,6 +5,14 @@ import '../controllers/controllers.dart';
 import '../models/models.dart';
 import 'achievement_progress_bar.dart';
 
+/// Builder for custom achievement summary content.
+///
+/// When provided, replaces the entire summary layout. Receives
+/// computed statistics via [AchievementSummaryData].
+typedef AchievementSummaryContentBuilder = Widget Function(
+  AchievementSummaryData data,
+);
+
 /// A summary widget showing overall achievement progress.
 ///
 /// Displays total points, completion percentage, and stats breakdown.
@@ -27,6 +35,7 @@ class AchievementSummary<T> extends StatelessWidget {
     this.showCategoryBreakdown = false,
     this.compact = false,
     this.rarityColors,
+    this.contentBuilder,
   });
 
   /// The achievement controller.
@@ -51,11 +60,23 @@ class AchievementSummary<T> extends StatelessWidget {
   /// and uncommon, and hardcoded domain colors for rare/epic/legendary.
   final Map<AchievementRarity, Color>? rarityColors;
 
+  /// Optional builder for custom summary content.
+  ///
+  /// When provided, replaces the entire summary layout. Receives
+  /// computed statistics via [AchievementSummaryData].
+  final AchievementSummaryContentBuilder? contentBuilder;
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
+        if (contentBuilder != null) {
+          return contentBuilder!(
+            AchievementSummaryData.fromController(controller),
+          );
+        }
+
         final colorScheme = Theme.of(context).colorScheme;
         return Container(
           padding: EdgeInsets.all(compact ? FiftySpacing.md : FiftySpacing.lg),

@@ -2,6 +2,7 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
 import 'examples/basic_achievements.dart';
+import 'examples/custom_builders.dart';
 import 'examples/rpg_achievements.dart';
 import 'examples/fitness_achievements.dart';
 
@@ -110,6 +111,14 @@ class ExampleLauncher extends StatelessWidget {
             subtitle: 'Workout tracking with time and stat conditions',
             icon: Icons.fitness_center,
             builder: (context) => const FitnessAchievementsExample(),
+          ),
+          SizedBox(height: FiftySpacing.md),
+          _buildExampleTile(
+            context,
+            title: 'Custom Builders',
+            subtitle: 'Custom itemBuilder, contentBuilder, and barBuilder',
+            icon: Icons.build,
+            builder: (context) => const CustomBuildersExample(),
           ),
         ],
       ),

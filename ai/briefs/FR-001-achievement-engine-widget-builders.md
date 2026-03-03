@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Fifty.ai
-**Status:** Ready
+**Status:** Done
 **Created:** 2026-03-03
-**Completed:**
+**Completed:** 2026-03-03
 
 ---
 
@@ -74,12 +74,12 @@ AchievementList<T>(
 
 ## Acceptance Criteria
 
-1. [ ] Each widget has an optional builder callback
-2. [ ] Null builder falls back to current default widget
-3. [ ] Existing API unchanged (backward compatible)
-4. [ ] Example app demonstrates custom builder usage
-5. [ ] All existing tests pass
-6. [ ] New tests for builder pattern
+1. [x] Each widget has an optional builder callback
+2. [x] Null builder falls back to current default widget
+3. [x] Existing API unchanged (backward compatible)
+4. [x] Example app demonstrates custom builder usage
+5. [x] All existing tests pass
+6. [x] New tests for builder pattern (41 new tests, 50 total)
 
 ---
 

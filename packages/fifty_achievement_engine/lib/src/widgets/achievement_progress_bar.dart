@@ -1,6 +1,15 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
+/// Builder for a custom progress bar visualization.
+typedef AchievementProgressBarBuilder = Widget Function(
+  double progress,
+  double height,
+  Color backgroundColor,
+  Color foregroundColor,
+  BorderRadius borderRadius,
+);
+
 /// A progress bar widget for displaying achievement completion progress.
 ///
 /// Consumes FDL tokens directly for consistent styling.
@@ -24,6 +33,7 @@ class AchievementProgressBar extends StatelessWidget {
     this.borderRadius,
     this.showLabel = false,
     this.labelStyle,
+    this.barBuilder,
   });
 
   /// Progress value from 0.0 to 1.0.
@@ -53,6 +63,12 @@ class AchievementProgressBar extends StatelessWidget {
   /// Style for the percentage label.
   final TextStyle? labelStyle;
 
+  /// Optional builder for a fully custom progress bar visualization.
+  ///
+  /// When provided, replaces the default progress bar rendering.
+  /// Receives resolved values for progress, height, colors, and radius.
+  final AchievementProgressBarBuilder? barBuilder;
+
   @override
   Widget build(BuildContext context) {
     final clampedProgress = progress.clamp(0.0, 1.0);
@@ -60,6 +76,10 @@ class AchievementProgressBar extends StatelessWidget {
     final bgColor =
         backgroundColor ?? Theme.of(context).colorScheme.surfaceContainerHighest;
     final fgColor = foregroundColor ?? Theme.of(context).colorScheme.primary;
+
+    if (barBuilder != null) {
+      return barBuilder!(clampedProgress, height, bgColor, fgColor, radius);
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,

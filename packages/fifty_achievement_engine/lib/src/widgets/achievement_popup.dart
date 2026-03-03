@@ -3,6 +3,17 @@ import 'package:flutter/material.dart';
 
 import '../models/models.dart';
 
+/// Builder for custom achievement popup content.
+///
+/// When provided, replaces the default popup card content.
+/// The animation controller is provided for synchronizing custom
+/// animations with the popup lifecycle. Do NOT dispose the controller.
+typedef AchievementPopupContentBuilder<T> = Widget Function(
+  Achievement<T> achievement,
+  Color rarityColor,
+  AnimationController animationController,
+);
+
 /// An animated popup notification for achievement unlocks.
 ///
 /// Consumes FDL tokens directly for consistent styling.
@@ -43,6 +54,7 @@ class AchievementPopup<T> extends StatefulWidget {
     this.backgroundColor,
     this.showAnimation = true,
     this.rarityColors,
+    this.contentBuilder,
   });
 
   /// The unlocked achievement to display.
@@ -69,6 +81,13 @@ class AchievementPopup<T> extends StatefulWidget {
   /// over the default. Defaults use theme-derived colors for common
   /// and uncommon, and hardcoded domain colors for rare/epic/legendary.
   final Map<AchievementRarity, Color>? rarityColors;
+
+  /// Optional builder for custom popup content.
+  ///
+  /// When provided, replaces the default popup card content.
+  /// The animation controller is provided for synchronizing custom
+  /// animations with the popup lifecycle. Do NOT dispose the controller.
+  final AchievementPopupContentBuilder<T>? contentBuilder;
 
   @override
   State<AchievementPopup<T>> createState() => _AchievementPopupState<T>();
@@ -174,37 +193,40 @@ class _AchievementPopupState<T> extends State<AchievementPopup<T>>
             type: MaterialType.transparency,
             child: GestureDetector(
               onTap: widget.onTap ?? _dismiss,
-              child: Container(
-              margin: EdgeInsets.all(FiftySpacing.md),
-              padding: EdgeInsets.all(FiftySpacing.md),
-              constraints: const BoxConstraints(maxWidth: 400),
-              decoration: BoxDecoration(
-                color: widget.backgroundColor ??
-                    colorScheme.surfaceContainerHighest,
-                borderRadius: FiftyRadii.lgRadius,
-                border: Border.all(color: rarityColor, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: rarityColor.withValues(alpha: 0.3),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.5),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildIcon(context, rarityColor),
-                  SizedBox(width: FiftySpacing.md),
-                  Flexible(child: _buildContent(context, rarityColor)),
-                ],
-              ),
-            ),
+              child: widget.contentBuilder != null
+                  ? widget.contentBuilder!(
+                      widget.achievement, rarityColor, _controller)
+                  : Container(
+                      margin: EdgeInsets.all(FiftySpacing.md),
+                      padding: EdgeInsets.all(FiftySpacing.md),
+                      constraints: const BoxConstraints(maxWidth: 400),
+                      decoration: BoxDecoration(
+                        color: widget.backgroundColor ??
+                            colorScheme.surfaceContainerHighest,
+                        borderRadius: FiftyRadii.lgRadius,
+                        border: Border.all(color: rarityColor, width: 2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: rarityColor.withValues(alpha: 0.3),
+                            blurRadius: 20,
+                            spreadRadius: 2,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.5),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildIcon(context, rarityColor),
+                          SizedBox(width: FiftySpacing.md),
+                          Flexible(child: _buildContent(context, rarityColor)),
+                        ],
+                      ),
+                    ),
           ),
           ),
         ),

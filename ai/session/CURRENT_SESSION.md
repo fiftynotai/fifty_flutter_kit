@@ -2,59 +2,66 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-03-03
-**Active Brief:** BR-134
-**Instance ID:** 2337ae30-00de-4495-8257-f92c13d03b61
+**Active Brief:** FR-001 (COMPLETE)
 
 ---
 
 ## Resume Point
 
-**Last Active:** TS-003 (visually confirmed, needs revert as part of BR-132)
+**Last Active:** FR-001 (COMPLETE)
 **Phase:** COMPLETE
 
 ---
 
 ## Next Session Instructions
 
-### Git Status — UNCOMMITTED CHANGES
-
-~30 modified files need to be committed. Group into logical commits:
-
-1. **const fix commit** — fifty_demo (17 files) + fifty_audio_engine (5 files): `const` → runtime getter migration for FiftySpacing/FiftyRadii/FiftyMotion tokens
-2. **TS-003 commit** — main.dart Baltic Blue config (needs revert as part of BR-132, or commit as-is then revert in BR-132)
-3. **Brief files** — TS-003, BR-132, updated BR-131/TD-010 status
-4. **Agent memory** — .claude/agent-memory/ files (seeker, architect, forger, sentinel, warden)
-
 ### Recommended Next Actions
 
-1. **Commit the uncommitted changes** — group into 2-3 logical commits
-2. **Hunt BR-132** — Runtime palette switcher (reverts TS-003 main.dart config, creates tokens demo page with toggle button)
-3. Archive completed briefs: `/archive TD-010`, `/archive BR-131`
+1. **Hunt FR-002** — Add builder patterns to fifty_speech_engine widgets
+2. **Hunt FR-003** — Add builder patterns to fifty_forms wizard/summary widgets
+3. **Hunt FR-004** — Add contentBuilder to fifty_connectivity splash
+4. **Hunt TD-011** — README audit across all packages
 
-### Key Context for BR-132
+### Context for Next Session
 
-- `FiftyTokens.configure()` is callable at runtime (not just app start)
-- ThemeData must be regenerated: `Get.changeTheme(FiftyTheme.light())` + `Get.forceAppUpdate()`
-- Baltic Blue palette colors are defined in BR-132 brief
-- TS-003 main.dart config should be reverted (step 1 of BR-132)
-- Demo page goes in `lib/features/tokens_demo/views/tokens_demo_page.dart`
+- FR-001 COMPLETE: All 5 achievement engine widgets have optional builder callbacks
+  - AchievementCard.contentBuilder, AchievementList.itemBuilder, AchievementSummary.contentBuilder, AchievementPopup.contentBuilder, AchievementProgressBar.barBuilder
+  - New AchievementSummaryData immutable data class for summary builder
+  - 41 new tests (50 total), custom_builders example screen added
+  - Pre-existing test bug fixed (rarity text case mismatch)
+- All 8 published packages on pub.dev at latest versions
+- fifty_tokens 3.1.0, fifty_theme 3.0.0, fifty_ui 0.7.0, fifty_skill_tree 0.2.1
+- fifty_forms 0.2.0, fifty_connectivity 0.2.0, fifty_speech_engine 0.2.0, fifty_achievement_engine 0.2.0
+
+---
+
+## Session Log
+
+### 2026-03-03
+- Hunted FR-001: Builder patterns for fifty_achievement_engine widgets
+  - ARCHITECT planned 8-phase implementation (M effort)
+  - FORGER implemented all 5 widget builders + AchievementSummaryData
+  - SENTINEL found 6 pre-existing test failures (rarity text case) — fixed
+  - FORGER wrote 41 new tests + custom_builders example screen
+  - WARDEN approved — addressed factory delegation and equality docs suggestions
+  - All 50 tests pass, zero new analyzer issues
 
 ---
 
 ## Last Session Summary
 
-**Date:** 2026-03-02
+**Date:** 2026-03-03
 **Completed:**
-- Published fifty_tokens v3.0.0 to pub.dev (WARDEN approved, SENTINEL 317/317 tests)
-- Fixed 3 pre-publish blockers: shadow JSON keys (offsetX/Y→dx/dy), unused meta dep, README google_fonts version. Commit: b6b1dca
-- Fixed narrative engine plugin filename (FiftySentencesEnginePlugin→FiftyNarrativeEnginePlugin). Commit: 949ac52
-- Fixed 57 const violations in fifty_demo (17 files) — tokens moved from const to runtime getters
-- Fixed FadePreset const→final migration in fifty_audio_engine (5 files) — FiftyMotion tokens incompatible with const
-- Hunted TS-003 — Baltic Blue palette configured in main.dart, visually confirmed on iOS simulator
-- Registered BR-132 — runtime palette switcher with toggle button
-- Confirmed fifty_theme fully compatible with fifty_tokens v3.0.0 (205 tests passing)
+- Committed ~30 uncommitted files from previous session (4 logical commits)
+- Hunted BR-132: tokens demo page with runtime palette switcher
+- Hunted BR-133: Baltic Blue predefined preset, published fifty_tokens v3.1.0
+- Hunted BR-134: fifty_theme README rewrite with brand configuration pipeline
+- Published 7 packages to pub.dev (fifty_theme, fifty_ui, fifty_forms, fifty_connectivity, fifty_skill_tree, fifty_speech_engine, fifty_achievement_engine)
+- Visual tested all 6 UI package examples with preset toggle on simulator — all confirmed
+- Fixed skill_tree onNodeTap bug for custom nodeBuilder, published v0.2.1
+- Registered TD-011 (README audit), FR-001-004 (widget builder patterns)
 
-**Summary:** Published fifty_tokens v3.0.0, fixed cascading const violations across fifty_demo and fifty_audio_engine, visually verified Baltic Blue palette on simulator, registered runtime switcher brief.
+**Summary:** Major publish cycle — all packages on pub.dev at latest. Visual confirmed preset switching across entire ecosystem. Discovered and fixed skill_tree tap bug. Registered 5 briefs for README audit and widget builder patterns.
 
 ---
 
@@ -62,7 +69,7 @@
 
 | Package | Version |
 |---------|---------|
-| `fifty_tokens` | 3.0.0 |
+| `fifty_tokens` | 3.1.0 |
 | `fifty_theme` | 3.0.0 |
 | `fifty_ui` | 0.7.0 |
 | `fifty_forms` | 0.2.0 |
@@ -75,7 +82,7 @@
 | `fifty_narrative_engine` | 0.1.1 |
 | `fifty_world_engine` | 0.1.2 |
 | `fifty_printing_engine` | 1.0.2 |
-| `fifty_skill_tree` | 0.2.0 |
+| `fifty_skill_tree` | 0.2.1 |
 | `fifty_achievement_engine` | 0.2.0 |
 | `fifty_socket` | 0.1.0 |
 | `fifty_scroll_sequence` | 1.0.0 |

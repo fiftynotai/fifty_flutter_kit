@@ -10,3 +10,4 @@ export 'achievement.dart';
 export 'achievement_progress.dart';
 export 'achievement_rarity.dart';
 export 'achievement_state.dart';
+export 'achievement_summary_data.dart';
