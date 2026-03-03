@@ -10,8 +10,28 @@ void main() {
 }
 
 /// Example app demonstrating fifty_achievement_engine features.
-class AchievementEngineExampleApp extends StatelessWidget {
+class AchievementEngineExampleApp extends StatefulWidget {
   const AchievementEngineExampleApp({super.key});
+
+  @override
+  State<AchievementEngineExampleApp> createState() =>
+      _AchievementEngineExampleAppState();
+}
+
+class _AchievementEngineExampleAppState
+    extends State<AchievementEngineExampleApp> {
+  bool _isBalticBlue = false;
+
+  void _togglePreset() {
+    setState(() {
+      _isBalticBlue = !_isBalticBlue;
+      if (_isBalticBlue) {
+        FiftyTokens.load(FiftyPreset.balticBlue);
+      } else {
+        FiftyTokens.load(FiftyPreset.fdlV2);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +53,37 @@ class AchievementEngineExampleApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: const ExampleLauncher(),
+      home: ExampleLauncher(
+        isBalticBlue: _isBalticBlue,
+        onTogglePreset: _togglePreset,
+      ),
     );
   }
 }
 
 /// Launcher screen for selecting different examples.
 class ExampleLauncher extends StatelessWidget {
-  const ExampleLauncher({super.key});
+  const ExampleLauncher({
+    super.key,
+    required this.isBalticBlue,
+    required this.onTogglePreset,
+  });
+
+  final bool isBalticBlue;
+  final VoidCallback onTogglePreset;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Achievement Engine Examples'),
+        title: Text(isBalticBlue
+            ? 'Achievements — BALTIC BLUE'
+            : 'Achievement Engine Examples'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: onTogglePreset,
+        icon: Icon(isBalticBlue ? Icons.restore : Icons.palette),
+        label: Text(isBalticBlue ? 'RESET FDL v2' : 'BALTIC BLUE'),
       ),
       body: ListView(
         padding: EdgeInsets.all(FiftySpacing.md),

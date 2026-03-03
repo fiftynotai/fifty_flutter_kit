@@ -13,8 +13,26 @@ void main() {
 }
 
 /// Example app demonstrating the fifty_skill_tree package.
-class SkillTreeExampleApp extends StatelessWidget {
+class SkillTreeExampleApp extends StatefulWidget {
   const SkillTreeExampleApp({super.key});
+
+  @override
+  State<SkillTreeExampleApp> createState() => _SkillTreeExampleAppState();
+}
+
+class _SkillTreeExampleAppState extends State<SkillTreeExampleApp> {
+  bool _isBalticBlue = false;
+
+  void _togglePreset() {
+    setState(() {
+      _isBalticBlue = !_isBalticBlue;
+      if (_isBalticBlue) {
+        FiftyTokens.load(FiftyPreset.balticBlue);
+      } else {
+        FiftyTokens.load(FiftyPreset.fdlV2);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +42,36 @@ class SkillTreeExampleApp extends StatelessWidget {
       theme: FiftyTheme.dark(),
       darkTheme: FiftyTheme.dark(),
       themeMode: ThemeMode.dark,
-      home: const ExampleHomePage(),
+      home: ExampleHomePage(
+        isBalticBlue: _isBalticBlue,
+        onTogglePreset: _togglePreset,
+      ),
     );
   }
 }
 
 /// Home page with navigation to different examples.
 class ExampleHomePage extends StatelessWidget {
-  const ExampleHomePage({super.key});
+  const ExampleHomePage({
+    super.key,
+    required this.isBalticBlue,
+    required this.onTogglePreset,
+  });
+
+  final bool isBalticBlue;
+  final VoidCallback onTogglePreset;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SKILL TREE EXAMPLES'),
+        title: Text(isBalticBlue ? 'SKILL TREE — BALTIC BLUE' : 'SKILL TREE EXAMPLES'),
         centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: onTogglePreset,
+        icon: Icon(isBalticBlue ? Icons.restore : Icons.palette),
+        label: Text(isBalticBlue ? 'RESET FDL v2' : 'BALTIC BLUE'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(FiftySpacing.lg),

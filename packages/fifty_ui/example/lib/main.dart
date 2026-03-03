@@ -8,8 +8,26 @@ void main() {
 }
 
 /// Example gallery app demonstrating all fifty_ui components.
-class FiftyUIExampleApp extends StatelessWidget {
+class FiftyUIExampleApp extends StatefulWidget {
   const FiftyUIExampleApp({super.key});
+
+  @override
+  State<FiftyUIExampleApp> createState() => _FiftyUIExampleAppState();
+}
+
+class _FiftyUIExampleAppState extends State<FiftyUIExampleApp> {
+  bool _isBalticBlue = false;
+
+  void _togglePreset() {
+    setState(() {
+      _isBalticBlue = !_isBalticBlue;
+      if (_isBalticBlue) {
+        FiftyTokens.load(FiftyPreset.balticBlue);
+      } else {
+        FiftyTokens.load(FiftyPreset.fdlV2);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +35,34 @@ class FiftyUIExampleApp extends StatelessWidget {
       title: 'Fifty UI Gallery',
       theme: FiftyTheme.dark(),
       debugShowCheckedModeBanner: false,
-      home: const GalleryHome(),
+      home: GalleryHome(
+        isBalticBlue: _isBalticBlue,
+        onTogglePreset: _togglePreset,
+      ),
     );
   }
 }
 
 class GalleryHome extends StatelessWidget {
-  const GalleryHome({super.key});
+  const GalleryHome({
+    super.key,
+    required this.isBalticBlue,
+    required this.onTogglePreset,
+  });
+
+  final bool isBalticBlue;
+  final VoidCallback onTogglePreset;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FIFTY UI GALLERY'),
+        title: Text(isBalticBlue ? 'FIFTY UI — BALTIC BLUE' : 'FIFTY UI GALLERY'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: onTogglePreset,
+        label: Text(isBalticBlue ? 'RESET FDL v2' : 'BALTIC BLUE'),
+        icon: Icon(isBalticBlue ? Icons.refresh : Icons.palette),
       ),
       body: ListView(
         padding: EdgeInsets.all(FiftySpacing.lg),

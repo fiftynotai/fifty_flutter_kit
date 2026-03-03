@@ -19,8 +19,26 @@ void main() async {
 }
 
 /// Example app demonstrating the fifty_forms package.
-class FiftyFormsExampleApp extends StatelessWidget {
+class FiftyFormsExampleApp extends StatefulWidget {
   const FiftyFormsExampleApp({super.key});
+
+  @override
+  State<FiftyFormsExampleApp> createState() => _FiftyFormsExampleAppState();
+}
+
+class _FiftyFormsExampleAppState extends State<FiftyFormsExampleApp> {
+  bool _isBalticBlue = false;
+
+  void _togglePreset() {
+    setState(() {
+      _isBalticBlue = !_isBalticBlue;
+      if (_isBalticBlue) {
+        FiftyTokens.load(FiftyPreset.balticBlue);
+      } else {
+        FiftyTokens.load(FiftyPreset.fdlV2);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +48,36 @@ class FiftyFormsExampleApp extends StatelessWidget {
       theme: FiftyTheme.dark(),
       darkTheme: FiftyTheme.dark(),
       themeMode: ThemeMode.dark,
-      home: const HomePage(),
+      home: HomePage(
+        isBalticBlue: _isBalticBlue,
+        onTogglePreset: _togglePreset,
+      ),
     );
   }
 }
 
 /// Home page with navigation to different form examples.
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+    required this.isBalticBlue,
+    required this.onTogglePreset,
+  });
+
+  final bool isBalticBlue;
+  final VoidCallback onTogglePreset;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FIFTY FORMS DEMO'),
+        title: Text(isBalticBlue ? 'FIFTY FORMS — BALTIC BLUE' : 'FIFTY FORMS DEMO'),
         centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: onTogglePreset,
+        icon: Icon(isBalticBlue ? Icons.restore : Icons.palette),
+        label: Text(isBalticBlue ? 'RESET FDL v2' : 'BALTIC BLUE'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(FiftySpacing.lg),
