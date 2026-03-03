@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_world_engine.svg)](https://pub.dev/packages/fifty_world_engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Game-ready grid maps without custom renderers -- sprite tiles, entity hierarchy, pan/zoom, and tap callbacks built on Flame.**
+
+A Flame-based interactive grid map system for dungeon crawlers, strategy games, and tactical RPGs. Define maps as JSON, register assets, spawn entities with parent-child hierarchy, animate movement, and handle tap events. Extend with custom entity types in one call. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | FDL Tactical Grid Demo |
 |:----------------------:|
@@ -11,17 +13,12 @@ Flame-based interactive grid map rendering for Flutter games. Part of [Fifty Flu
 
 ---
 
-## Features
+## Why fifty_world_engine
 
-- **Tile Rendering** - Grid-based map with sprites for dungeon crawlers and strategy games
-- **Camera Controls** - Smooth pan and pinch-to-zoom for map exploration
-- **Entity Management** - Spawn, update, remove lifecycle for characters, rooms, monsters
-- **Movement Animation** - Animated transitions for movable entities
-- **Event Markers** - Overlay icons with customizable alignment
-- **Asset Loading** - Registration-based asset loading and caching
-- **JSON Serialization** - Map serialization/deserialization for level design
-- **Custom Entity Types** - Register custom spawners for game-specific entities
-- **Multi-Platform** - Full support for Android, iOS, macOS, Linux, Windows, and Web
+- **Game-ready grid maps without custom renderers** -- Sprite tiles, entity hierarchy, pan/zoom, and tap callbacks built on Flame; no raw canvas work needed.
+- **Design data, not code** -- Define maps as JSON and load them with FiftyWorldLoader; level designers work in data, not Dart.
+- **Extend entity types in one call** -- FiftyEntitySpawner.register() adds any custom game entity type without modifying engine source.
+- **Safe controller pattern** -- FiftyWorldController is a no-op until bound; call any method before the game loads without null guards.
 
 ---
 
@@ -136,6 +133,64 @@ FiftyWorldWidget (Flutter Widget)
 - **Grid coordinates**: Tile-based `(x, y)` where `(0, 0)` is bottom-left
 - **Pixel coordinates**: `gridPosition * FiftyWorldConfig.blockSize`
 - **Flame rendering**: Y-axis is flipped internally for correct display
+
+---
+
+## Customization
+
+### Custom Entity Types
+
+Register custom entity types with the spawner to add game-specific components without modifying engine source:
+
+```dart
+class TrapComponent extends FiftyBaseComponent {
+  TrapComponent({required super.model});
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    // Custom trap initialization
+  }
+
+  void trigger() {
+    // Trap activation logic
+  }
+}
+
+// Register before game starts
+FiftyEntitySpawner.register(
+  'trap',
+  (model) => TrapComponent(model: model),
+);
+
+// Use in entity definitions
+final trap = FiftyWorldEntity(
+  id: 'trap1',
+  type: 'trap',  // Uses registered spawner
+  asset: 'traps/spike.png',
+  gridPosition: Vector2(3, 2),
+  blockSize: FiftyBlockSize(1, 1),
+);
+```
+
+### JSON Map Loading
+
+Design levels in JSON and load them at runtime without recompiling:
+
+```dart
+// Load from asset bundle
+final entities = await FiftyWorldLoader.loadFromAssets('assets/maps/dungeon.json');
+
+// Load from JSON string (e.g. from a server)
+final entities = FiftyWorldLoader.loadFromJsonString(jsonString);
+
+// Clear and load a new level
+controller.clear();
+controller.addEntities(entities);
+controller.centerMap();
+```
+
+See the [Map JSON Format](#map-json-format) section for the full schema.
 
 ---
 
@@ -632,41 +687,6 @@ await Future.delayed(Duration(milliseconds: 500));
 await controller.centerOnEntity(treasure, duration: Duration(seconds: 2));
 await Future.delayed(Duration(milliseconds: 500));
 await controller.centerOnEntity(exit, duration: Duration(seconds: 1));
-```
-
-### Custom Entity Types
-
-Register custom entity types with the spawner:
-
-```dart
-class TrapComponent extends FiftyBaseComponent {
-  TrapComponent({required super.model});
-
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-    // Custom trap logic
-  }
-
-  void trigger() {
-    // Trap activation logic
-  }
-}
-
-// Register before game starts
-FiftyEntitySpawner.register(
-  'trap',
-  (model) => TrapComponent(model: model),
-);
-
-// Use in entity definitions
-final trap = FiftyWorldEntity(
-  id: 'trap1',
-  type: 'trap',  // Uses registered spawner
-  asset: 'traps/spike.png',
-  gridPosition: Vector2(3, 2),
-  blockSize: FiftyBlockSize(1, 1),
-);
 ```
 
 ### Best Practices

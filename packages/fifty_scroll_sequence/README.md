@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_scroll_sequence.svg)](https://pub.dev/packages/fifty_scroll_sequence)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Scroll-driven image sequences for Flutter. Apple-style frame scrubbing mapped to scroll position. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Apple-quality frame scrubbing in ten lines -- scroll position drives cinematic image sequences with automatic pinning, LRU GPU cache, and smooth interpolation.**
+
+A scroll-driven image sequence widget for Flutter. Supports pinned (sticky) and non-pinned modes, three frame sources (assets, network with disk cache, sprite sheets), three preload strategies, snap-to-keyframe, lifecycle callbacks, horizontal scrolling, and a reactive builder overlay. Zero dependencies beyond Flutter SDK. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Menu | Pinned Demo | Snap Demo | Lifecycle Demo |
 |:----:|:-----------:|:---------:|:--------------:|
@@ -11,23 +13,12 @@ Scroll-driven image sequences for Flutter. Apple-style frame scrubbing mapped to
 
 ---
 
-## Features
+## Why fifty_scroll_sequence
 
-- **Scroll-driven image sequences** - Frames change as the user scrolls, creating cinematic scrubbing effects
-- **Pinned (sticky) mode** - Widget pins to viewport top while scroll runway is consumed
-- **Non-pinned mode** - Standard viewport-relative frame mapping
-- **Sliver support** - `SliverScrollSequence` for use inside `CustomScrollView`
-- **Snap-to-keyframe** - `SnapConfig` with explicit points, everyNFrames, or scene boundaries
-- **Lifecycle callbacks** - `onEnter`, `onLeave`, `onEnterBack`, `onLeaveBack` via viewport observer state machine
-- **Horizontal scrolling** - `scrollDirection: Axis.horizontal` for left-to-right sequences
-- **Programmatic control** - `ScrollSequenceController` for jump-to-frame, preload, and cache management
-- **3 preload strategies** - Eager (all frames), chunked (sliding window), progressive (keyframes first)
-- **Network loading** - `ScrollSequence.network()` with HTTP fetching and disk caching
-- **Sprite sheet support** - `ScrollSequence.spriteSheet()` with multi-sheet grid extraction
-- **LRU cache** - GPU texture caching with deduplication, automatic eviction, and proper disposal
-- **Smooth interpolation** - Ticker-based frame lerping with configurable factor and curve
-- **Builder overlay** - Reactive overlay widgets that respond to frame index and progress
-- **Loading feedback** - `loadingBuilder` with normalized 0.0-1.0 progress reporting
+- **Apple-quality frame scrubbing in ten lines** -- Scroll position drives cinematic image sequences with automatic pinning, LRU GPU cache, and smooth lerp interpolation.
+- **Three frame sources** -- Assets, network (with disk cache), and sprite sheets; switch constructors without changing the widget API.
+- **Customizable at every layer** -- Builder overlay for reactive text/UI, custom FrameLoader for procedural frames, SnapConfig for keyframe settling.
+- **Zero dependencies** -- Flutter SDK only; no additional packages required.
 
 ---
 
@@ -228,6 +219,94 @@ ScrollSequence / SliverScrollSequence (Widget)
 | `SnapController` | Velocity-based snap-to-keyframe controller |
 | `ViewportObserver` | State machine for lifecycle callbacks |
 | `PinnedScrollSection` | Scroll runway that pins child to viewport |
+
+---
+
+## Customization
+
+### Builder Overlay
+
+Add reactive UI that responds to frame index and progress. The builder wraps the frame display, giving you full control over overlays:
+
+```dart
+ScrollSequence(
+  frameCount: 120,
+  framePath: 'assets/hero/frame_{index}.webp',
+  scrollExtent: 3000,
+  builder: (context, frameIndex, progress, child) {
+    return Stack(
+      children: [
+        child,
+        Positioned(
+          bottom: 16,
+          left: 16,
+          child: Text('Frame $frameIndex / ${(progress * 100).toInt()}%'),
+        ),
+      ],
+    );
+  },
+)
+```
+
+### Custom FrameLoader
+
+Implement `FrameLoader` for procedural frames, custom caching, or any source not covered by the built-in loaders:
+
+```dart
+class ProceduralLoader implements FrameLoader {
+  @override
+  Future<ui.Image> loadFrame(int index) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder, Rect.fromLTWH(0, 0, 320, 180));
+    // Draw frame content procedurally
+    final picture = recorder.endRecording();
+    return picture.toImage(320, 180);
+  }
+
+  @override
+  String resolveFramePath(int index) => 'procedural_$index';
+
+  @override
+  void dispose() {}
+}
+
+ScrollSequence(
+  frameCount: 60,
+  framePath: 'unused',
+  loader: ProceduralLoader(),
+  scrollExtent: 2000,
+)
+```
+
+### Preload Strategy Selection
+
+Choose the strategy that fits your use case:
+
+```dart
+// All frames upfront -- best for small sequences (<50 frames)
+ScrollSequence(strategy: const PreloadStrategy.eager(), ...)
+
+// Sliding window -- best for large sequences or network loading
+ScrollSequence(strategy: const PreloadStrategy.chunked(chunkSize: 40), ...)
+
+// Keyframes first, then fill gaps -- best for preview + progressive detail
+ScrollSequence(strategy: const PreloadStrategy.progressive(keyframeCount: 20), ...)
+```
+
+### Snap-to-Keyframe
+
+Auto-settle to the nearest keyframe when the user stops scrolling:
+
+```dart
+ScrollSequence(
+  frameCount: 150,
+  framePath: 'assets/hero/frame_{index}.webp',
+  scrollExtent: 3000,
+  snapConfig: SnapConfig.everyNFrames(n: 50, frameCount: 150),
+)
+```
+
+Three constructors: `SnapConfig(snapPoints: [...])` for explicit values, `SnapConfig.everyNFrames()` for regular intervals, and `SnapConfig.scenes()` for scene boundaries.
 
 ---
 
@@ -522,53 +601,11 @@ flutter:
 
 ## Usage Patterns
 
-### Custom FrameLoader
-
-Implement `FrameLoader` for custom frame sources:
-
-```dart
-class MyCustomLoader implements FrameLoader {
-  @override
-  Future<ui.Image> loadFrame(int index) async {
-    final recorder = ui.PictureRecorder();
-    final canvas = Canvas(recorder, Rect.fromLTWH(0, 0, 320, 180));
-    // ... draw frame content ...
-    final picture = recorder.endRecording();
-    return picture.toImage(320, 180);
-  }
-
-  @override
-  String resolveFramePath(int index) => 'custom_frame_$index';
-
-  @override
-  void dispose() {
-    // Clean up resources
-  }
-}
-
-ScrollSequence(
-  frameCount: 60,
-  framePath: 'unused',
-  loader: MyCustomLoader(),
-  scrollExtent: 2000,
-)
-```
-
 ### Horizontal Scrolling
 
 Set `scrollDirection: Axis.horizontal` on both the scrollable ancestor and the `ScrollSequence`. In horizontal mode, pinned sequences pin at the left edge and use width-based layout. Non-pinned sequences use the widget's left offset for progress calculation.
 
 All features (snap, lifecycle callbacks, builder, strategies) work identically in horizontal mode.
-
-### Strategy Selection Guide
-
-| Scenario | Recommended Strategy |
-|----------|---------------------|
-| Product showcase (<50 frames, local assets) | `PreloadStrategy.eager()` |
-| Long cinematic scroll (100+ frames, local) | `PreloadStrategy.chunked()` |
-| Network-loaded sequence | `PreloadStrategy.chunked()` |
-| Quick preview with progressive detail | `PreloadStrategy.progressive()` |
-| Sprite sheet extraction | `PreloadStrategy.chunked()` |
 
 ### Multiple Sequences on One Page
 

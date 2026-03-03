@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_narrative_engine.svg)](https://pub.dev/packages/fifty_narrative_engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A sentence processing engine for Flutter games and interactive applications. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Sequential sentence execution for narrative games -- you write the handlers, the engine manages the flow.**
+
+A complete sentence processing pipeline for visual novels, interactive fiction, and narrative games. NarrativeQueue handles ordering, NarrativeEngine drives the state machine, and NarrativeInterpreter delegates each instruction (read/write/ask/wait/navigate) to your callbacks. Pure Dart with no state management dependency. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Sentence Queue | Dialogue Choices | Narration |
 |:--------------:|:----------------:|:---------:|
@@ -11,14 +13,12 @@ A sentence processing engine for Flutter games and interactive applications. Par
 
 ---
 
-## Features
+## Why fifty_narrative_engine
 
-- **NarrativeEngine** - Core processor for in-game sentence execution
-- **NarrativeInterpreter** - Instruction parsing and handler delegation
-- **NarrativeQueue** - Optimized queue with order-based sorting
-- **SafeNarrativeWriter** - Deduplication for idempotent sentence rendering
-- **BaseNarrativeModel** - Abstract interface for custom sentence models
-- **Complete sentence processing system** - Enables narration, player interaction, and navigation control in visual novels, interactive fiction, and narrative games
+- **Sequential execution, not manual state** -- NarrativeQueue handles sentence ordering and NarrativeEngine controls the processing state machine; you write handlers, not flow logic.
+- **Pluggable instruction set** -- NarrativeInterpreter delegates read/write/ask/wait/navigate to your callbacks; add TTS, custom dialogs, or screen transitions in a few lines.
+- **Idempotent rendering** -- SafeNarrativeWriter deduplicates sentences so re-processing a queue never shows the same sentence twice.
+- **Drop into any architecture** -- No GetX, no Flutter widgets required; pure Dart callbacks work with any state management system.
 
 ---
 
@@ -179,6 +179,87 @@ NarrativeEngine
 | `NarrativeQueue` | Optimized queue with order-based sorting |
 | `SafeNarrativeWriter` | Deduplication for idempotent sentence rendering |
 | `BaseNarrativeModel` | Abstract interface for custom sentence models |
+
+---
+
+## Customization
+
+All behavior is controlled through NarrativeInterpreter callbacks. Each instruction type maps to a handler you provide -- add TTS, custom dialogs, audio cues, or screen transitions without modifying the engine.
+
+### Interpreter Callbacks
+
+```dart
+final interpreter = NarrativeInterpreter(
+  engine: engine,
+
+  // read: Text-to-speech or audio playback
+  onRead: (text) async {
+    await ttsService.speak(text);
+  },
+
+  // write: Display text on screen
+  onWrite: (sentence) async {
+    engine.addSentenceToWritten(sentence);
+  },
+
+  // ask: Show choices, wait for player selection
+  onAsk: (sentence) async {
+    engine.pause();
+    final choice = await showChoiceDialog(sentence.choices);
+    handleChoice(choice);
+    engine.resume();
+  },
+
+  // wait: Pause until player taps to continue
+  onWait: (sentence) async {
+    await engine.pauseUntilUserContinues();
+  },
+
+  // navigate: Transition to a new phase or screen
+  onNavigate: (sentence) async {
+    await Navigator.pushNamed(context, '/game/${sentence.phase}');
+  },
+
+  // Catch-all for unrecognized instructions
+  onUnhandled: (sentence) async {
+    debugPrint('Unknown instruction: ${sentence.instruction}');
+  },
+);
+
+engine.registerInterpreter(interpreter);
+```
+
+Instructions can be combined (e.g. `read + write`) and the interpreter handles both in sequence.
+
+### Custom Sentence Models
+
+Implement `BaseNarrativeModel` to attach domain-specific data to your sentences:
+
+```dart
+class GameSentence implements BaseNarrativeModel {
+  @override final int? order;
+  @override final String text;
+  @override final String instruction;
+  @override final bool waitForUserInput;
+  @override final String? phase;
+  @override final List<dynamic> choices;
+
+  // Add your own fields
+  final String? speakerName;
+  final String? portraitAsset;
+
+  GameSentence({
+    this.order,
+    required this.text,
+    this.instruction = 'write',
+    this.waitForUserInput = false,
+    this.phase,
+    this.choices = const [],
+    this.speakerName,
+    this.portraitAsset,
+  });
+}
+```
 
 ---
 

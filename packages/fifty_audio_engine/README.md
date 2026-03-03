@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_audio_engine.svg)](https://pub.dev/packages/fifty_audio_engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A modular, reactive audio system for Flutter games and applications. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Three purpose-built audio channels for Flutter games -- BGM with crossfading playlists, SFX with pooled low-latency playback, and Voice with automatic BGM ducking.**
+
+A modular, reactive audio system with persistent volume settings, FiftyMotion-aligned fades, lifecycle-aware pause/resume, and source swapping at runtime. One engine, three audio roles. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | BGM Player | SFX Player | Voice Player | Global Controls |
 |:----------:|:----------:|:------------:|:---------------:|
@@ -11,16 +13,12 @@ A modular, reactive audio system for Flutter games and applications. Part of [Fi
 
 ---
 
-## Features
+## Why fifty_audio_engine
 
-- **Three-Channel Architecture** - BGM (crossfade, playlist, loop), SFX (low-latency pooling), Voice (BGM ducking)
-- **Persistent State** - Volume and state persisted via GetStorage
-- **FiftyMotion Integration** - Fade presets aligned with motion tokens
-- **Platform Audio Contexts** - Per-channel audio context configuration
-- **Lifecycle Awareness** - Automatic pause/resume with app lifecycle
-- **Reactive Streams** - Real-time playback state via streams
-- **Sound Groups** - Register and play random variations with throttling
-- **Crossfade** - Automatic BGM crossfade 3 seconds before track end
+- **Three purpose-built channels** -- BGM for crossfading playlists, SFX for pooled low-latency playback, Voice for BGM-ducking narration. One engine, three audio roles.
+- **Persistent by default** -- Volume settings and playlist position survive app restarts via GetStorage; no manual serialization needed.
+- **FiftyMotion-aligned fades** -- FadePreset durations map directly to FDL motion tokens (fast/panel/normal/cinematic); audio transitions feel in sync with UI animations.
+- **No boilerplate lifecycle** -- ChannelLifecycleConfig auto-pauses BGM on app background and resumes on foreground with the right fade curve.
 
 ---
 
@@ -95,6 +93,51 @@ FiftyAudioEngine (Singleton)
 | `VoiceActingChannel` | VO playback with ducking callbacks |
 | `FadePreset` | Duration + curve combinations |
 | `AudioStorage` | GetStorage wrapper for persistence |
+
+---
+
+## Customization
+
+### Source Swapping
+
+Change how audio paths are resolved at runtime -- switch between assets, device files, and URLs without changing your play() calls:
+
+```dart
+// Default: assets
+sfx.play('assets/sfx/click.wav');
+
+// Switch to device files
+sfx.changeSource((path) => DeviceFileSource(path));
+sfx.play('/storage/emulated/0/sounds/click.wav');
+
+// Switch to URLs
+sfx.changeSource((path) => UrlSource(path));
+sfx.play('https://cdn.example.com/sfx/click.wav');
+```
+
+### Fade Presets
+
+Wrap any playback action in a fade-out/fade-in pair using semantic presets:
+
+```dart
+await bgm.withFade(
+  () async => bgm.playAtIndex(3),
+  fadeOut: FadePreset.fast,
+  fadeIn: FadePreset.normal,
+);
+```
+
+### Lifecycle Configuration
+
+Control automatic pause/resume behavior when the app enters or leaves the foreground:
+
+```dart
+bgm.enableLifecycle(ChannelLifecycleConfig(
+  pauseOnBackground: true,
+  fadeOnPause: FadePreset.fast,
+  fadeOnResume: FadePreset.normal,
+));
+```
 
 ---
 
@@ -420,23 +463,6 @@ All channel states are persisted via `GetStorage`:
 ---
 
 ## Usage Patterns
-
-### Source Swapping
-
-Change how paths are resolved at runtime:
-
-```dart
-// Default: assets
-sfx.play('assets/sfx/click.wav');
-
-// Switch to device files
-sfx.changeSource((path) => DeviceFileSource(path));
-sfx.play('/storage/emulated/0/sounds/click.wav');
-
-// Switch to URLs
-sfx.changeSource((path) => UrlSource(path));
-sfx.play('https://cdn.example.com/sfx/click.wav');
-```
 
 ### Waiting for Playback
 

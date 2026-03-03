@@ -3,18 +3,18 @@
 [![pub package](https://img.shields.io/pub/v/fifty_cache.svg)](https://pub.dev/packages/fifty_cache)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-TTL-based HTTP response caching with pluggable stores and policies. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**TTL-based HTTP response caching with pluggable stores and policies -- swap backends without changing a line of calling code.**
+
+A contract-driven caching layer with configurable stores, policies, and key strategies. Ships with in-memory and GetStorage backends, a fixed-TTL policy, and locale/auth-aware key generation. Works with any HTTP client. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
 
-## Features
+## Why fifty_cache
 
-- **Contract-based design** - Swap implementations without changing client code
-- **TTL-aware caching** - Entries automatically expire after configurable time-to-live
-- **Pluggable stores** - In-memory for testing, GetStorage for persistence
-- **Flexible policies** - Control what gets cached and for how long
-- **Deterministic keys** - Stable cache keys from request parameters and headers
-- **Header-aware keys** - Different cache entries for different locales and auth states
+- **Drop-in anywhere** -- No HTTP client dependency; works with Dio, GetConnect, or plain dart:http.
+- **Swap implementations without touching call sites** -- CacheStore, CachePolicy, and CacheKeyStrategy are interfaces; mock in tests, swap for Redis in production.
+- **Survive hot restarts** -- GetStorageCacheStore persists cache across app restarts; MemoryCacheStore clears on restart for clean development.
+- **Locale and auth aware** -- DefaultCacheKeyStrategy encodes Accept-Language and Authorization presence into keys so different users and locales get distinct cache entries.
 
 ---
 

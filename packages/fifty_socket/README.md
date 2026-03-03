@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_socket.svg)](https://pub.dev/packages/fifty_socket)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Phoenix WebSocket infrastructure with auto-reconnect, heartbeat monitoring, and channel management. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Phoenix WebSocket infrastructure that handles reconnection, heartbeats, and channel management -- extend one class and you are done.**
+
+An abstract base class providing auto-reconnect with exponential backoff, a ping/pong heartbeat watchdog, channel auto-restoration, typed error streams, and subscription guards. Override `getWebSocketUrl()` and get production-grade WebSocket infrastructure for free. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Connected | Disconnected | Channel Joined | Event Log |
 |:---------:|:------------:|:--------------:|:---------:|
@@ -11,16 +13,12 @@ Phoenix WebSocket infrastructure with auto-reconnect, heartbeat monitoring, and 
 
 ---
 
-## Features
+## Why fifty_socket
 
-- **Abstract base class** -- Extend `SocketService` for any Phoenix WebSocket use case
-- **Auto-reconnect** -- Configurable retry strategy with exponential backoff
-- **Heartbeat monitoring** -- Ping/pong watchdog detects silent disconnects
-- **Channel management** -- Join, leave, and auto-restore channels on reconnect
-- **Typed errors** -- Categorized error stream (`SocketErrorType`) for granular handling
-- **Connection state** -- Observable state stream with reconnect attempt tracking
-- **Subscription guards** -- Prevent duplicate channel joins per connection session
-- **Configurable logging** -- Four log levels (none, error, info, debug)
+- **Everything handled for you** -- Auto-reconnect with exponential backoff, heartbeat watchdog for silent disconnects, and channel auto-restoration on reconnect, all in the base class.
+- **Extend once, cover all cases** -- Override getWebSocketUrl() and you get all reconnect, heartbeat, and channel management infrastructure for free.
+- **Typed error stream** -- SocketErrorType enum (connection/auth/channel/message/timeout) lets you handle each failure mode with a switch instead of string parsing.
+- **Safe by default** -- Subscription guards prevent duplicate channel joins when Phoenix emits multiple connected events.
 
 ---
 

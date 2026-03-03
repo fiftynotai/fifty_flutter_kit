@@ -3,17 +3,18 @@
 [![pub package](https://img.shields.io/pub/v/fifty_utils.svg)](https://pub.dev/packages/fifty_utils)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Pure Dart/Flutter utilities — DateTime, Duration, Color extensions, responsive breakpoints, and async state containers. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Pure Dart/Flutter utilities -- DateTime, Duration, Color extensions, responsive breakpoints, and type-safe async state in one import.**
+
+Common helpers extracted from production apps so you never rewrite relative time, hex color parsing, responsive breakpoints, or async loading state again. Pure Dart with no platform code. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
 
-## Features
+## Why fifty_utils
 
-- **DateTime Extensions** - Date comparison, formatting, and relative time
-- **Duration Extensions** - Duration formatting (HH:mm:ss and compact)
-- **Color Extensions** - Hex color string conversion
-- **Responsive Utils** - Device type detection and responsive values
-- **API Response** - Immutable async state containers
+- **No boilerplate for common tasks** -- DateTime relative time, Duration formatting, Color hex parsing, and responsive breakpoints in one import.
+- **Type-safe async state** -- ApiResponse\<E\> and apiFetch stream loading/success/error states without mutable booleans or nullable fields.
+- **Responsive layouts in one line** -- ResponsiveUtils.valueByDevice() returns the right value for mobile, tablet, desktop, or wide without if-else chains.
+- **Pure Dart, no platform code** -- Works on every Flutter target including web and desktop.
 
 ---
 

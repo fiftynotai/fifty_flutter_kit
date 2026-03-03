@@ -3,18 +3,18 @@
 [![pub package](https://img.shields.io/pub/v/fifty_storage.svg)](https://pub.dev/packages/fifty_storage)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Secure token storage and preferences management for Flutter apps. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Secure token storage and app preferences behind a single initialize() call -- platform-native security, synchronous reads, zero config.**
+
+A unified storage facade combining platform-native secure credential storage (Android Keystore, iOS Keychain, Windows Credentials) with lightweight key-value preferences. Tokens are cached in-memory after initialization for synchronous reads in hot paths. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
 
-## Features
+## Why fifty_storage
 
-- **TokenStorage contract** - Abstract interface for secure credential storage, enabling custom backends and easy testing
-- **SecureTokenStorage** - Platform-native secure storage implementation backed by `flutter_secure_storage`
-- **PreferencesStorage** - Lightweight key-value storage for app settings backed by `get_storage`
-- **AppStorageService** - Unified facade combining both storage types behind a single entry point
-- **Configurable container** - Per-app container names prevent conflicts between multiple apps using the package
-- **Synchronous reads** - In-memory caching after initialization enables fast, synchronous token access in hot paths
+- **Platform-native security, zero config** -- Tokens go to Android Keystore, iOS Keychain, or Windows Credentials automatically; you call setAccessToken(), the OS handles the rest.
+- **Synchronous reads in hot paths** -- Tokens are cached in-memory after initialize(); your HTTP interceptor can call accessToken synchronously without blocking.
+- **Contract-based for testing** -- TokenStorage is an interface; inject a mock in tests without touching platform secure storage.
+- **Single initialize() call** -- AppStorageService handles both preferences and secure tokens from one entry point before runApp().
 
 ---
 
