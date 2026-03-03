@@ -4,6 +4,22 @@ import 'package:flutter/material.dart';
 import '../core/form_controller.dart';
 import '../core/form_status.dart';
 
+/// Builder for a custom submit button.
+///
+/// Replaces the default [FiftyButton] while the widget retains ownership
+/// of [ListenableBuilder] controller listening and state computation.
+///
+/// - [isLoading] whether the form is currently submitting.
+/// - [isDisabled] whether the button should be inactive.
+/// - [onPressed] the submit action (null when disabled).
+/// - [label] the resolved label text (respects [loadingText] during submission).
+typedef SubmitButtonBuilder = Widget Function(
+  bool isLoading,
+  bool isDisabled,
+  VoidCallback? onPressed,
+  String label,
+);
+
 /// Submit button that integrates with [FiftyFormController].
 ///
 /// Features:
@@ -79,6 +95,13 @@ class FiftySubmitButton extends StatelessWidget {
   /// Defaults to false.
   final bool isGlitch;
 
+  /// Optional builder to replace the default [FiftyButton].
+  ///
+  /// When null, the default [FiftyButton] is rendered with all configured
+  /// properties. The [ListenableBuilder] wrapper and state computation
+  /// are retained by the widget regardless of this builder.
+  final SubmitButtonBuilder? buttonBuilder;
+
   /// Creates a form submit button.
   const FiftySubmitButton({
     super.key,
@@ -92,6 +115,7 @@ class FiftySubmitButton extends StatelessWidget {
     this.size = FiftyButtonSize.medium,
     this.expanded = false,
     this.isGlitch = false,
+    this.buttonBuilder,
   });
 
   @override
@@ -109,6 +133,16 @@ class FiftySubmitButton extends StatelessWidget {
           isDisabled = isLoading || isValidating || isFormInvalid;
         } else {
           isDisabled = isLoading || isValidating;
+        }
+
+        if (buttonBuilder != null) {
+          final resolvedLabel = isLoading ? (loadingText ?? label) : label;
+          return buttonBuilder!(
+            isLoading,
+            isDisabled,
+            isDisabled ? null : onPressed,
+            resolvedLabel,
+          );
         }
 
         return FiftyButton(

@@ -1,6 +1,20 @@
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
 
+/// Builder for custom form progress indicator content.
+///
+/// Replaces the default step circles and labels while the widget
+/// retains ownership of constructor assertions.
+///
+/// - [currentStep] is the current step (1-indexed).
+/// - [totalSteps] is the total number of steps.
+/// - [stepLabels] is the optional list of step labels.
+typedef FormProgressContentBuilder = Widget Function(
+  int currentStep,
+  int totalSteps,
+  List<String>? stepLabels,
+);
+
 /// Progress indicator for multi-step forms.
 ///
 /// Shows current step, total steps, and completion status.
@@ -47,6 +61,13 @@ class FiftyFormProgress extends StatelessWidget {
   /// Defaults to 200 milliseconds.
   final Duration animationDuration;
 
+  /// Optional builder to replace the default step circles and labels.
+  ///
+  /// When null, the default step circle indicators with connecting lines
+  /// are rendered. Constructor assertions on [currentStep] and [totalSteps]
+  /// still apply regardless of this builder.
+  final FormProgressContentBuilder? contentBuilder;
+
   /// Creates a form progress indicator.
   const FiftyFormProgress({
     super.key,
@@ -55,11 +76,16 @@ class FiftyFormProgress extends StatelessWidget {
     this.stepLabels,
     this.showLabels = true,
     this.animationDuration = const Duration(milliseconds: 200),
+    this.contentBuilder,
   })  : assert(currentStep >= 1 && currentStep <= totalSteps),
         assert(stepLabels == null || stepLabels.length == totalSteps);
 
   @override
   Widget build(BuildContext context) {
+    if (contentBuilder != null) {
+      return contentBuilder!(currentStep, totalSteps, stepLabels);
+    }
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 

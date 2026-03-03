@@ -4,6 +4,18 @@ import 'package:flutter/material.dart';
 
 import '../core/form_controller.dart';
 
+/// Builder for custom validation summary content.
+///
+/// Replaces the default [FiftyCard] error list while the widget
+/// retains ownership of animation and controller listening.
+///
+/// - [errors] is the current field-name-to-error-message map.
+/// - [onFieldTap] is the optional callback for tapping a field error.
+typedef ValidationSummaryContentBuilder = Widget Function(
+  Map<String, String> errors,
+  void Function(String fieldName)? onFieldTap,
+);
+
 /// Displays a summary of all form validation errors.
 ///
 /// Useful for showing all errors in one place, typically at the top or bottom
@@ -47,6 +59,13 @@ class FiftyValidationSummary extends StatelessWidget {
   /// Defaults to 200 milliseconds.
   final Duration animationDuration;
 
+  /// Optional builder to replace the default error card content.
+  ///
+  /// When null, the default [FiftyCard] with error list is rendered.
+  /// The [AnimatedSize] and [AnimatedOpacity] animation wrappers are
+  /// retained by the widget regardless of this builder.
+  final ValidationSummaryContentBuilder? contentBuilder;
+
   /// Creates a validation summary widget.
   const FiftyValidationSummary({
     super.key,
@@ -54,6 +73,7 @@ class FiftyValidationSummary extends StatelessWidget {
     this.onFieldTap,
     this.title,
     this.animationDuration = const Duration(milliseconds: 200),
+    this.contentBuilder,
   });
 
   @override
@@ -75,7 +95,9 @@ class FiftyValidationSummary extends StatelessWidget {
             duration: animationDuration,
             opacity: hasErrors ? 1.0 : 0.0,
             child: hasErrors
-                ? FiftyCard(
+                ? (contentBuilder != null
+                    ? contentBuilder!(errors, onFieldTap)
+                    : FiftyCard(
                     scanlineOnHover: false,
                     backgroundColor:
                         colorScheme.error.withValues(alpha: 0.08),
@@ -119,7 +141,7 @@ class FiftyValidationSummary extends StatelessWidget {
                         }),
                       ],
                     ),
-                  )
+                  ))
                 : const SizedBox.shrink(),
           ),
         );

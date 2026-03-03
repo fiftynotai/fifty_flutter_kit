@@ -6,6 +6,24 @@ import '../core/form_controller.dart';
 import '../models/form_step.dart';
 import 'fifty_form_progress.dart';
 
+/// Builder for custom navigation buttons in a multi-step form.
+///
+/// Receives navigation state so consumers can render their own
+/// back/next/complete controls while the widget manages step logic.
+///
+/// - [isFirstStep] whether the form is on the first step (hide back button).
+/// - [isLastStep] whether the form is on the last step (show complete action).
+/// - [isSubmitting] whether the form is currently submitting.
+/// - [onNext] callback to advance to the next step or complete the form.
+/// - [onPrevious] callback to go back to the previous step.
+typedef MultiStepNavigationBuilder = Widget Function(
+  bool isFirstStep,
+  bool isLastStep,
+  bool isSubmitting,
+  VoidCallback onNext,
+  VoidCallback onPrevious,
+);
+
 /// Multi-step wizard form with step navigation and validation.
 ///
 /// Validates current step before allowing navigation to next step.
@@ -92,6 +110,13 @@ class FiftyMultiStepForm extends StatefulWidget {
   /// Defaults to false.
   final bool expandedButtons;
 
+  /// Optional builder to replace the default navigation buttons.
+  ///
+  /// When null, the default back/next/complete buttons are rendered.
+  /// The builder receives navigation state so consumers can render
+  /// custom controls while the widget manages step validation and logic.
+  final MultiStepNavigationBuilder? navigationBuilder;
+
   /// Creates a multi-step wizard form.
   const FiftyMultiStepForm({
     super.key,
@@ -108,6 +133,7 @@ class FiftyMultiStepForm extends StatefulWidget {
     this.completeLabel = 'COMPLETE',
     this.padding,
     this.expandedButtons = false,
+    this.navigationBuilder,
   });
 
   @override
@@ -281,7 +307,15 @@ class _FiftyMultiStepFormState extends State<FiftyMultiStepForm> {
 
         // Navigation buttons
         SliverToBoxAdapter(
-          child: _buildNavigationButtons(),
+          child: widget.navigationBuilder != null
+              ? widget.navigationBuilder!(
+                  isFirstStep,
+                  isLastStep,
+                  _isSubmitting,
+                  nextStep,
+                  previousStep,
+                )
+              : _buildNavigationButtons(),
         ),
 
         // Bottom padding
