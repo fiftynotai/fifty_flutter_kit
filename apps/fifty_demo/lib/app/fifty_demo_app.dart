@@ -28,6 +28,7 @@ import '../features/settings/views/settings_page.dart';
 import '../features/skill_tree_demo/skill_tree_demo_bindings.dart';
 import '../features/socket_demo/socket_demo_bindings.dart';
 import '../features/speech_demo/speech_demo_bindings.dart';
+import '../features/tokens_demo/tokens_demo_bindings.dart';
 import '../features/ui_showcase/ui_showcase_bindings.dart';
 import '../features/ui_showcase/views/ui_showcase_page.dart';
 import '../features/utils_demo/utils_demo_bindings.dart';
@@ -125,6 +126,7 @@ class _DemoShellState extends State<_DemoShell> {
     CacheDemoBindings().dependencies();
     UtilsDemoBindings().dependencies();
     SocketDemoBindings().dependencies();
+    TokensDemoBindings().dependencies();
 
     setState(() {
       _bindingsInitialized = true;

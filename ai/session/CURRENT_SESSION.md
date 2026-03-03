@@ -1,8 +1,9 @@
 # Current Session
 
-**Status:** REST MODE
-**Last Updated:** 2026-03-02
-**Active Brief:** None
+**Status:** HUNT MODE
+**Last Updated:** 2026-03-03
+**Active Brief:** BR-132
+**Instance ID:** 2337ae30-00de-4495-8257-f92c13d03b61
 
 ---
 

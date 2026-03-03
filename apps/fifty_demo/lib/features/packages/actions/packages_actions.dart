@@ -17,6 +17,7 @@ import '../../printing_demo/views/printing_demo_page.dart';
 import '../../skill_tree_demo/views/skill_tree_demo_page.dart';
 import '../../socket_demo/views/socket_demo_page.dart';
 import '../../speech_demo/views/speech_demo_page.dart';
+import '../../tokens_demo/views/tokens_demo_page.dart';
 import '../../utils_demo/views/utils_demo_page.dart';
 import '../controllers/packages_view_model.dart';
 
@@ -95,8 +96,10 @@ class PackagesActions {
       case 'fifty_socket':
         Get.to<void>(() => const SocketDemoPage());
         break;
-      case 'fifty_ui':
       case 'fifty_tokens':
+        Get.to<void>(() => const TokensDemoPage());
+        break;
+      case 'fifty_ui':
       case 'fifty_theme':
         _presenter.showSuccessSnackBar(
           context,
