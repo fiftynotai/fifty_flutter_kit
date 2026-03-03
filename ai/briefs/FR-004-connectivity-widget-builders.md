@@ -5,7 +5,7 @@
 **Effort:** S-Small (< 4h)
 **Assignee:** Igris AI
 **Commanded By:** Fifty.ai
-**Status:** Ready
+**Status:** In Progress
 **Created:** 2026-03-03
 **Completed:**
 
