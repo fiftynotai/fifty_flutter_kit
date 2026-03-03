@@ -264,6 +264,123 @@ FiftyThemeExtension copyWith({
 
 ---
 
+## FiftyPreset Structure & Factories
+
+**File Location:** `/packages/fifty_tokens/lib/src/preset.dart`
+
+### Class Structure
+
+```dart
+class FiftyPreset {
+  const FiftyPreset({
+    required this.colors,
+    required this.typography,
+    required this.spacing,
+    required this.radii,
+    required this.motion,
+    required this.shadows,
+    required this.gradients,
+    required this.breakpoints,
+  });
+}
+```
+
+**8 required fields** — each is a Config class:
+- `FiftyColorConfig` — 16 Color + 2 double (borderOpacity, focusOpacity)
+- `FiftyTypographyConfig` — 22 fields (fontFamily, fontSource, 5 weights, 13 sizes, 7 spacing values, 4 line heights)
+- `FiftySpacingConfig` — 15 double values (base, xs/sm/md/lg/xl/xxl/xxxl/huge/massive, gutterMobile/Tablet/Desktop)
+- `FiftyRadiiConfig` — 8 double values (none/sm/md/lg/xl/xxl/xxxl/full) → computed into BorderRadius convenience objects
+- `FiftyMotionConfig` — 7 fields (instant, fast, compiling, systemLoad as Duration; standard, enter, exit as Cubic)
+- `FiftyShadowsConfig` — 5 fields (sm, md, lg as List<BoxShadow>; primaryOpacity, glowOpacity as double)
+- `FiftyGradientsConfig` — 1 field (primaryEnd as Color)
+- `FiftyBreakpointsConfig` — 3 double values (mobile, tablet, desktop)
+
+### Factory Methods
+
+1. **`FiftyPreset.fdlV2` (const static)**
+   - Built-in default preset
+   - All 8 categories pre-populated with FDL v2 "Sophisticated Warm" values
+   - Used as fallback in `fromMap()`
+
+2. **`FiftyPreset.fromMap(Map<String, dynamic>, {fallback})`**
+   - Parses a JSON map into a preset
+   - Each category's `fromMap()` method handles JSON parsing
+   - Missing keys fall back to provided fallback (default: `fdlV2`)
+   - Used for runtime theming from JSON
+
+### Instance Methods
+
+**`copyWith({...})`** — Returns new FiftyPreset with specified fields replaced
+- 8 optional parameters (one per config category)
+- Non-null values replace, null values keep original
+
+### FiftyColorConfig.fromMap() Parsing
+
+**Supported color formats:**
+- `int` → direct ARGB value
+- `String` → hex in `#RRGGBB`, `0xAARRGGBB`, `AARRGGBB`, or `RRGGBB` format
+- 6-digit strings auto-prefixed with `FF` (opaque)
+- Parser: `/packages/fifty_tokens/lib/src/config/parse_helpers.dart`
+
+**Example JSON:**
+```json
+{
+  "colors": {
+    "primary": "0xFF88292F",
+    "primaryHover": "0xFF6E2126",
+    "borderOpacity": 0.05,
+    "focusOpacity": 0.5,
+    ...
+  }
+}
+```
+
+### Export Path
+
+**Barrel file:** `/packages/fifty_tokens/lib/fifty_tokens.dart`
+```dart
+export 'src/preset.dart';  // FiftyPreset
+```
+
+**Public API for consumers:**
+```dart
+import 'package:fifty_tokens/fifty_tokens.dart';
+
+// Use built-in default
+FiftyTokens.load(FiftyPreset.fdlV2);
+
+// Parse from JSON
+final preset = FiftyPreset.fromMap(jsonDecode(myJson));
+FiftyTokens.load(preset);
+
+// Override specific categories
+FiftyTokens.load(
+  FiftyPreset.fdlV2.copyWith(
+    colors: FiftyPreset.fdlV2.colors.copyWith(
+      primary: Color(0xFFFF0000),
+    ),
+  ),
+);
+```
+
+### Key Design Notes
+
+1. **All-or-nothing per category** — Can't override individual spacing values without creating full FiftySpacingConfig
+   - Exception: `copyWith()` on each config allows partial overrides
+   - Pattern: `FiftyPreset.fdlV2.spacing.copyWith(md: 20)`
+
+2. **JSON is the extensibility point** — Consumers define custom presets as JSON files, parse with `fromMap()`
+   - Bundled JSON files: `/packages/fifty_tokens/fdl_v2_preset.json`
+   - Custom presets: Consumer apps create `assets/brand_theme.json`, load at runtime
+
+3. **Runtime-safe** — No const contexts needed; `FiftyPreset` is mutable data structure, safe to instantiate anywhere
+
+4. **No preset registry** — Presets are just values, not named global singletons
+   - Consumers manage their own preset loading lifecycle
+   - `FiftyTokens.load()` / `FiftyTokens.configure()` manage active state
+
+---
+
 ## Key Files Analyzed
 
 - `/packages/fifty_theme/lib/fifty_theme.dart` (50 lines, entry point)
