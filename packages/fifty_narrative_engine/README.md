@@ -594,7 +594,7 @@ If migrating from the original package:
 
 ## Version
 
-**Current:** 0.1.1
+**Current:** 0.1.2
 
 ---
 

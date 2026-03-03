@@ -26,7 +26,7 @@
 
 ```yaml
 dependencies:
-  fifty_forms: ^0.2.0
+  fifty_forms: ^0.2.1
 ```
 
 ### For Contributors
@@ -698,7 +698,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.2.0
+**Current:** 0.2.1
 
 ---
 

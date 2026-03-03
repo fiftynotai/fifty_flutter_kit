@@ -26,7 +26,7 @@ Distinguishes true internet access from captive portals and offline routers. Shi
 
 ```yaml
 dependencies:
-  fifty_connectivity: ^0.2.0
+  fifty_connectivity: ^0.2.1
 ```
 
 ### For Contributors
@@ -482,7 +482,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.2.0
+**Current:** 0.2.1
 
 ---
 

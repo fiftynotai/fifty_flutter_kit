@@ -26,7 +26,7 @@ A complete Flutter component library -- buttons, inputs, cards, navigation, feed
 
 ```yaml
 dependencies:
-  fifty_ui: ^0.7.0
+  fifty_ui: ^0.7.1
 ```
 
 ### For Contributors
@@ -730,7 +730,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.7.0
+**Current:** 0.7.1
 
 ---
 

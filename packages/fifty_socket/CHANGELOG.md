@@ -1,3 +1,8 @@
+## [0.1.1] - 2026-03-04
+
+### Documentation
+- Rewrite README with selling-points-first structure and customization section
+
 ## 0.1.0
 
 - Initial release

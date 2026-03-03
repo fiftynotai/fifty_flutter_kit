@@ -26,7 +26,7 @@ Unifies `flutter_tts` and `speech_to_text` behind a single `initialize()`/`speak
 
 ```yaml
 dependencies:
-  fifty_speech_engine: ^0.2.0
+  fifty_speech_engine: ^0.2.1
 ```
 
 ### For Contributors
@@ -603,7 +603,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.2.0
+**Current:** 0.2.1
 
 ---
 

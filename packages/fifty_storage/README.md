@@ -294,7 +294,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.1
+**Current:** 0.1.2
 
 ---
 

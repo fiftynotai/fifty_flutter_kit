@@ -689,7 +689,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 1.0.0
+**Current:** 1.0.1
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

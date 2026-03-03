@@ -26,7 +26,7 @@ A complete skill tree system -- layout algorithms, prerequisite chains, point ma
 
 ```yaml
 dependencies:
-  fifty_skill_tree: ^0.2.1
+  fifty_skill_tree: ^0.2.2
 ```
 
 ### For Contributors
@@ -628,7 +628,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.2.1
+**Current:** 0.2.2
 
 ---
 

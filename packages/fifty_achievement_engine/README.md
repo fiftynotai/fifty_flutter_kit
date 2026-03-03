@@ -26,7 +26,7 @@ Six composable condition types, prerequisite chains, rarity tiers, generic rewar
 
 ```yaml
 dependencies:
-  fifty_achievement_engine: ^0.2.0
+  fifty_achievement_engine: ^0.2.1
 ```
 
 ### For Contributors
@@ -594,7 +594,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.2.0
+**Current:** 0.2.1
 
 ---
 

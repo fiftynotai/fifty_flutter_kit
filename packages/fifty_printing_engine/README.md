@@ -26,7 +26,7 @@ A production-grade ESC/POS printing engine -- register Bluetooth and WiFi printe
 
 ```yaml
 dependencies:
-  fifty_printing_engine: ^1.0.2
+  fifty_printing_engine: ^1.0.3
 ```
 
 ### For Contributors
@@ -914,7 +914,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 1.0.2
+**Current:** 1.0.3
 
 ---
 
