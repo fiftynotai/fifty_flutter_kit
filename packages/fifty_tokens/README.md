@@ -647,7 +647,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 3.0.0
+**Current:** 3.1.0
 
 ---
 

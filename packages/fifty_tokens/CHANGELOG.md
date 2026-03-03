@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.1.0] - 2026-03-03
+
+### Added
+
+- `FiftyPreset.balticBlue` — second built-in preset with a cool blue-grey palette
+- `baltic_blue_preset.json` — JSON reference file for the Baltic Blue preset
+- Multi-preset theming section in README with runtime switching examples
+
+### Changed
+
+- Extracted shared non-color token categories (`_sharedTypography`, `_sharedSpacing`, etc.) into file-level constants for DRY reuse across presets
+
 ## [3.0.0] - 2026-03-01
 
 ### BREAKING CHANGES
@@ -260,6 +272,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Zero external dependencies
 - 100% FDL specification fidelity
 
+[3.1.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v3.1.0
 [3.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v3.0.0
 [2.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v2.0.0
 [1.0.3]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v1.0.3
