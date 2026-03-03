@@ -1,0 +1,108 @@
+{
+  "colors": {
+    "primary": "0xFF586994",
+    "primaryHover": "0xFF47567A",
+    "background": "0xFFe5e8b6",
+    "backgroundDark": "0xFF1A1D2B",
+    "secondary": "0xFF7d869c",
+    "secondaryHover": "0xFF656D80",
+    "success": "0xFFb4c4ae",
+    "accent": "0xFFa2abab",
+    "surface": "0xFFD5D8A8",
+    "surfaceDark": "0xFF2A2D3B",
+    "warning": "0xFFF7A100",
+    "error": "0xFF88292F",
+    "onPrimary": "0xFFe5e8b6",
+    "onBackground": "0xFF1A1D2B",
+    "borderOpacity": 0.05,
+    "focusOpacity": 0.5
+  },
+  "typography": {
+    "fontFamily": "Manrope",
+    "fontSource": "googleFonts",
+    "regular": 400,
+    "medium": 500,
+    "semiBold": 600,
+    "bold": 700,
+    "extraBold": 800,
+    "displayLarge": 32,
+    "displayMedium": 24,
+    "titleLarge": 20,
+    "titleMedium": 18,
+    "titleSmall": 16,
+    "bodyLarge": 16,
+    "bodyMedium": 14,
+    "bodySmall": 12,
+    "labelLarge": 14,
+    "labelMedium": 12,
+    "labelSmall": 10,
+    "letterSpacingDisplay": -0.5,
+    "letterSpacingDisplayMedium": -0.25,
+    "letterSpacingBody": 0.5,
+    "letterSpacingBodyMedium": 0.25,
+    "letterSpacingBodySmall": 0.4,
+    "letterSpacingLabel": 0.5,
+    "letterSpacingLabelMedium": 1.5,
+    "lineHeightDisplay": 1.2,
+    "lineHeightTitle": 1.3,
+    "lineHeightBody": 1.5,
+    "lineHeightLabel": 1.2
+  },
+  "spacing": {
+    "base": 4,
+    "tight": 8,
+    "standard": 12,
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 20,
+    "xxl": 24,
+    "xxxl": 32,
+    "huge": 40,
+    "massive": 48,
+    "gutterMobile": 12,
+    "gutterTablet": 16,
+    "gutterDesktop": 24
+  },
+  "radii": {
+    "none": 0,
+    "sm": 4,
+    "md": 8,
+    "lg": 12,
+    "xl": 16,
+    "xxl": 24,
+    "xxxl": 32,
+    "full": 9999
+  },
+  "motion": {
+    "instant": 0,
+    "fast": 150,
+    "compiling": 300,
+    "systemLoad": 800,
+    "standard": [0.2, 0, 0, 1],
+    "enter": [0.2, 0.8, 0.2, 1],
+    "exit": [0.4, 0, 1, 1]
+  },
+  "shadows": {
+    "sm": [
+      { "dx": 0, "dy": 1, "blurRadius": 2, "color": "0x0D000000" }
+    ],
+    "md": [
+      { "dx": 0, "dy": 4, "blurRadius": 6, "color": "0x12000000" }
+    ],
+    "lg": [
+      { "dx": 0, "dy": 10, "blurRadius": 15, "color": "0x1A000000" }
+    ],
+    "primaryOpacity": 0.2,
+    "glowOpacity": 0.1
+  },
+  "gradients": {
+    "primaryEnd": "0xFF5A1B1F"
+  },
+  "breakpoints": {
+    "mobile": 768,
+    "tablet": 768,
+    "desktop": 1024
+  }
+}

@@ -102,7 +102,7 @@ class TokensDemoPage extends GetView<TokensDemoViewModel> {
                 SizedBox(height: FiftySpacing.xs),
                 Text(
                   viewModel.isBalticBlue
-                      ? 'Custom palette via FiftyTokens.configure()'
+                      ? 'Baltic Blue preset via FiftyTokens.load()'
                       : 'Default design tokens (FiftyPreset.fdlV2)',
                   style: TextStyle(
                     fontFamily: FiftyTypography.fontFamily,
@@ -287,7 +287,7 @@ class TokensDemoPage extends GetView<TokensDemoViewModel> {
           SizedBox(height: FiftySpacing.sm),
           _buildInfoItem(
             context,
-            'FiftyTokens.configure(colors: ...) sets the active color preset',
+            'FiftyTokens.load(preset) swaps the entire active preset',
           ),
           _buildInfoItem(
             context,

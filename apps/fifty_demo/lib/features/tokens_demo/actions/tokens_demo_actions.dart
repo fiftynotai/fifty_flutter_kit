@@ -23,29 +23,13 @@ class TokensDemoActions {
   /// Static accessor for convenient access.
   static TokensDemoActions get instance => Get.find<TokensDemoActions>();
 
-  /// The Baltic Blue color configuration.
-  static final _balticBlueColors = FiftyPreset.fdlV2.colors.copyWith(
-    primary: const Color(0xFF586994),
-    primaryHover: const Color(0xFF47567A),
-    secondary: const Color(0xFF7d869c),
-    secondaryHover: const Color(0xFF656D80),
-    success: const Color(0xFFb4c4ae),
-    accent: const Color(0xFFa2abab),
-    background: const Color(0xFFe5e8b6),
-    backgroundDark: const Color(0xFF1A1D2B),
-    surface: const Color(0xFFD5D8A8),
-    surfaceDark: const Color(0xFF2A2D3B),
-    onPrimary: const Color(0xFFe5e8b6),
-    onBackground: const Color(0xFF1A1D2B),
-  );
-
   // ---------------------------------------------------------------------------
   // Palette Actions
   // ---------------------------------------------------------------------------
 
-  /// Applies the Baltic Blue palette and rebuilds the theme.
+  /// Applies the Baltic Blue preset and rebuilds the theme.
   void onApplyBalticBlue(BuildContext context) {
-    FiftyTokens.configure(colors: _balticBlueColors);
+    FiftyTokens.load(FiftyPreset.balticBlue);
     _viewModel.setBalticBlue(active: true);
     Get.forceAppUpdate();
 
@@ -58,9 +42,9 @@ class TokensDemoActions {
     }
   }
 
-  /// Resets to the default FDL v2 palette and rebuilds the theme.
+  /// Resets to the default FDL v2 preset and rebuilds the theme.
   void onResetToFdl(BuildContext context) {
-    FiftyTokens.reset();
+    FiftyTokens.load(FiftyPreset.fdlV2);
     _viewModel.setBalticBlue(active: false);
     Get.forceAppUpdate();
 

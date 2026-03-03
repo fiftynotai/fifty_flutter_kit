@@ -5,13 +5,14 @@
 
 **Configurable design tokens for Flutter. Ship your brand, not ours.**
 
-A complete design token system -- colors, typography, spacing, radii, motion, shadows, gradients, and breakpoints -- that you can override in code or load from JSON at runtime. Defaults to FDL v2 "Sophisticated Warm" out of the box. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+A complete design token system -- colors, typography, spacing, radii, motion, shadows, gradients, and breakpoints -- with multiple built-in presets you can swap at runtime or override from JSON. Defaults to FDL v2 "Sophisticated Warm" out of the box. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 ---
 
 ## Why fifty_tokens
 
 - **Fully configurable** -- Override any token category with `FiftyTokens.configure()`, or load an entire theme from a JSON map with `FiftyPreset.fromMap()`. No forking, no rebuilding.
+- **Multiple built-in presets** -- Ship multiple themes with zero boilerplate. Swap between `FiftyPreset.fdlV2` and `FiftyPreset.balticBlue` at runtime with a single call.
 - **Complete token system** -- 8 categories (colors, typography, spacing, radii, motion, shadows, gradients, breakpoints) covering every design decision your app needs.
 - **Zero widgets, pure tokens** -- No UI opinions, no state management. Just design values consumable by any Flutter package or widget tree.
 - **Works with any Flutter app** -- Pure Dart with no platform channels. Runs on Android, iOS, macOS, Linux, Windows, and Web.
@@ -75,6 +76,53 @@ Container(
   ),
 )
 ```
+
+---
+
+## Built-in Presets
+
+Ship multiple themes with zero boilerplate. Every preset is a complete, const-constructible `FiftyPreset` -- swap the entire look of your app in one line.
+
+| Preset | Style | Call |
+|--------|-------|------|
+| `FiftyPreset.fdlV2` | Sophisticated Warm -- burgundy and cream | `FiftyTokens.load(FiftyPreset.fdlV2)` |
+| `FiftyPreset.balticBlue` | Cool Coastal -- steel-blue and muted earth tones | `FiftyTokens.load(FiftyPreset.balticBlue)` |
+
+### Runtime Theme Switching
+
+```dart
+// Switch to Baltic Blue -- every FiftyColors.*, FiftyShadows.*, etc.
+// reflects the new palette immediately.
+FiftyTokens.load(FiftyPreset.balticBlue);
+
+// Back to the default
+FiftyTokens.load(FiftyPreset.fdlV2);
+// -- or --
+FiftyTokens.reset();
+```
+
+### Create Your Own Preset
+
+Start from an existing preset and override only what you need:
+
+```dart
+final myPreset = FiftyPreset.fdlV2.copyWith(
+  colors: FiftyPreset.fdlV2.colors.copyWith(
+    primary: Color(0xFF1A73E8),
+    onPrimary: Color(0xFFFFFFFF),
+  ),
+);
+FiftyTokens.load(myPreset);
+```
+
+Or load a complete preset from JSON (missing keys fall back to FDL v2):
+
+```dart
+final preset = FiftyPreset.fromMap(jsonDecode(jsonString));
+FiftyTokens.load(preset);
+```
+
+See [`fdl_v2_preset.json`](fdl_v2_preset.json) and [`baltic_blue_preset.json`](baltic_blue_preset.json) for full JSON reference files.
 
 ---
 
@@ -516,7 +564,7 @@ Every other Fifty Flutter Kit package imports `fifty_tokens` as its single sourc
 | `FiftyGradients` | LinearGradient presets -- primary, progress, and surface |
 | `FiftyBreakpoints` | Screen width thresholds: mobile (768px), tablet (768px), desktop (1024px) |
 | `FiftyTokens` | Central manager -- `configure()`, `load()`, `reset()`, `isConfigured` |
-| `FiftyPreset` | Complete token set -- `fromMap()` for JSON, `fdlV2` for defaults, `copyWith()` for overrides |
+| `FiftyPreset` | Complete token set -- `fdlV2` (default), `balticBlue`, `fromMap()` for JSON, `copyWith()` for overrides |
 
 ### Source Layout
 

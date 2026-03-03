@@ -6,7 +6,6 @@ library;
 
 import 'package:fifty_demo/features/tokens_demo/controllers/tokens_demo_view_model.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
@@ -39,12 +38,8 @@ void main() {
       });
 
       test('should sync with FiftyTokens.isConfigured on init', () {
-        // Given: tokens are configured
-        FiftyTokens.configure(
-          colors: FiftyPreset.fdlV2.colors.copyWith(
-            primary: const Color(0xFF586994),
-          ),
-        );
+        // Given: Baltic Blue preset is loaded
+        FiftyTokens.load(FiftyPreset.balticBlue);
 
         // When: ViewModel initializes
         viewModel.onInit();
