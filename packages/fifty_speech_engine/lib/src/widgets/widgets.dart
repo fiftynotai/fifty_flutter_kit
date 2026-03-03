@@ -25,5 +25,7 @@
 library;
 
 export 'speech_tts_controls.dart';
+export 'speech_tts_state.dart';
 export 'speech_stt_controls.dart';
+export 'speech_stt_state.dart';
 export 'speech_controls_panel.dart';

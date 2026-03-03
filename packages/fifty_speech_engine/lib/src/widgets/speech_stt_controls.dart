@@ -8,6 +8,15 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
+import 'speech_stt_state.dart';
+
+/// Builder for custom STT controls content.
+///
+/// When provided, replaces the default STT controls layout.
+/// The [SpeechSttState] contains all state values and callbacks
+/// needed to build a custom STT interface.
+typedef SpeechSttContentBuilder = Widget Function(SpeechSttState state);
+
 /// **SpeechSttControls**
 ///
 /// A callback-based widget for controlling speech-to-text functionality.
@@ -54,6 +63,7 @@ class SpeechSttControls extends StatelessWidget {
     this.compact = false,
     this.showCard = true,
     this.hintText,
+    this.contentBuilder,
     super.key,
   });
 
@@ -96,8 +106,36 @@ class SpeechSttControls extends StatelessWidget {
   /// Defaults to 'TAP TO SPEAK'.
   final String? hintText;
 
+  /// Optional builder for custom STT controls content.
+  ///
+  /// When provided, replaces the default STT controls layout.
+  /// The [SpeechSttState] contains all state values and callbacks
+  /// needed to build a custom STT interface.
+  final SpeechSttContentBuilder? contentBuilder;
+
   @override
   Widget build(BuildContext context) {
+    if (contentBuilder != null) {
+      final customContent = contentBuilder!(SpeechSttState(
+        enabled: enabled,
+        onEnabledChanged: onEnabledChanged,
+        isListening: isListening,
+        onListenPressed: onListenPressed,
+        recognizedText: recognizedText,
+        isAvailable: isAvailable,
+        errorMessage: errorMessage,
+        onClear: onClear,
+        compact: compact,
+        hintText: hintText,
+      ));
+      if (!showCard) return customContent;
+      return FiftyCard(
+        padding: EdgeInsets.all(compact ? FiftySpacing.md : FiftySpacing.lg),
+        scanlineOnHover: false,
+        child: customContent,
+      );
+    }
+
     final colorScheme = Theme.of(context).colorScheme;
 
     final content = Column(

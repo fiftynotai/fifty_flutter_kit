@@ -8,6 +8,15 @@ import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:fifty_ui/fifty_ui.dart';
 import 'package:flutter/material.dart';
 
+import 'speech_tts_state.dart';
+
+/// Builder for custom TTS controls content.
+///
+/// When provided, replaces the default TTS controls layout.
+/// The [SpeechTtsState] contains all state values and callbacks
+/// needed to build a custom TTS interface.
+typedef SpeechTtsContentBuilder = Widget Function(SpeechTtsState state);
+
 /// **SpeechTtsControls**
 ///
 /// A callback-based widget for controlling text-to-speech settings.
@@ -56,6 +65,7 @@ class SpeechTtsControls extends StatelessWidget {
     this.isSpeaking = false,
     this.compact = false,
     this.showCard = true,
+    this.contentBuilder,
     super.key,
   });
 
@@ -100,8 +110,36 @@ class SpeechTtsControls extends StatelessWidget {
   /// Set to false when embedding in another card.
   final bool showCard;
 
+  /// Optional builder for custom TTS controls content.
+  ///
+  /// When provided, replaces the default TTS controls layout.
+  /// The [SpeechTtsState] contains all state values and callbacks
+  /// needed to build a custom TTS interface.
+  final SpeechTtsContentBuilder? contentBuilder;
+
   @override
   Widget build(BuildContext context) {
+    if (contentBuilder != null) {
+      final customContent = contentBuilder!(SpeechTtsState(
+        enabled: enabled,
+        onEnabledChanged: onEnabledChanged,
+        rate: rate,
+        onRateChanged: onRateChanged,
+        pitch: pitch,
+        onPitchChanged: onPitchChanged,
+        volume: volume,
+        onVolumeChanged: onVolumeChanged,
+        isSpeaking: isSpeaking,
+        compact: compact,
+      ));
+      if (!showCard) return customContent;
+      return FiftyCard(
+        padding: EdgeInsets.all(compact ? FiftySpacing.md : FiftySpacing.lg),
+        scanlineOnHover: false,
+        child: customContent,
+      );
+    }
+
     final colorScheme = Theme.of(context).colorScheme;
     final hasSliders =
         onRateChanged != null || onPitchChanged != null || onVolumeChanged != null;

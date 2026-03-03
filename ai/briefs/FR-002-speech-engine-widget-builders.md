@@ -5,9 +5,9 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Fifty.ai
-**Status:** Ready
+**Status:** Done
 **Created:** 2026-03-03
-**Completed:**
+**Completed:** 2026-03-04
 
 ---
 
@@ -72,12 +72,12 @@ SpeechTtsControls(
 
 ## Acceptance Criteria
 
-1. [ ] Each widget has an optional builder callback
-2. [ ] Null builder falls back to current default widget
-3. [ ] Existing API unchanged (backward compatible)
-4. [ ] TTS/STT state and callbacks cleanly exposed to builders
-5. [ ] All existing tests pass
-6. [ ] New tests for builder pattern
+1. [x] Each widget has an optional builder callback
+2. [x] Null builder falls back to current default widget
+3. [x] Existing API unchanged (backward compatible)
+4. [x] TTS/STT state and callbacks cleanly exposed to builders (SpeechTtsState, SpeechSttState)
+5. [x] All existing tests pass
+6. [x] New tests for builder pattern (53 new tests, 54 total)
 
 ---
 

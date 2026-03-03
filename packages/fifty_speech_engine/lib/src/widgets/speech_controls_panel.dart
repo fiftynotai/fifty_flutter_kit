@@ -75,6 +75,8 @@ class SpeechControlsPanel extends StatelessWidget {
     this.showStt = true,
     this.compact = false,
     this.title,
+    this.ttsBuilder,
+    this.sttBuilder,
     super.key,
   });
 
@@ -150,6 +152,16 @@ class SpeechControlsPanel extends StatelessWidget {
   /// Optional title for the panel.
   final String? title;
 
+  /// Optional builder for custom TTS controls content.
+  ///
+  /// When provided, forwarded to the internal [SpeechTtsControls.contentBuilder].
+  final SpeechTtsContentBuilder? ttsBuilder;
+
+  /// Optional builder for custom STT controls content.
+  ///
+  /// When provided, forwarded to the internal [SpeechSttControls.contentBuilder].
+  final SpeechSttContentBuilder? sttBuilder;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -192,6 +204,7 @@ class SpeechControlsPanel extends StatelessWidget {
               isSpeaking: isSpeaking,
               compact: compact,
               showCard: false,
+              contentBuilder: ttsBuilder,
             ),
 
           // Divider between TTS and STT
@@ -218,6 +231,7 @@ class SpeechControlsPanel extends StatelessWidget {
               compact: compact,
               showCard: false,
               hintText: sttHintText,
+              contentBuilder: sttBuilder,
             ),
         ],
       ),

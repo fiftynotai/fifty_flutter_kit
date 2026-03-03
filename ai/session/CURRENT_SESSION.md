@@ -2,13 +2,13 @@
 
 **Status:** HUNT MODE
 **Last Updated:** 2026-03-03
-**Active Brief:** FR-001 (COMPLETE)
+**Active Brief:** FR-002 (COMPLETE)
 
 ---
 
 ## Resume Point
 
-**Last Active:** FR-001 (COMPLETE)
+**Last Active:** FR-002 (COMPLETE)
 **Phase:** COMPLETE
 
 ---
@@ -17,10 +17,9 @@
 
 ### Recommended Next Actions
 
-1. **Hunt FR-002** — Add builder patterns to fifty_speech_engine widgets
-2. **Hunt FR-003** — Add builder patterns to fifty_forms wizard/summary widgets
-3. **Hunt FR-004** — Add contentBuilder to fifty_connectivity splash
-4. **Hunt TD-011** — README audit across all packages
+1. **Hunt FR-003** — Add builder patterns to fifty_forms wizard/summary widgets
+2. **Hunt FR-004** — Add contentBuilder to fifty_connectivity splash
+3. **Hunt TD-011** — README audit across all packages
 
 ### Context for Next Session
 
@@ -36,6 +35,13 @@
 ---
 
 ## Session Log
+
+### 2026-03-04
+- Hunted FR-002: Builder patterns for fifty_speech_engine widgets
+  - ARCHITECT planned 8-phase implementation (S effort)
+  - FORGER implemented 3 widget builders + SpeechTtsState/SpeechSttState data classes
+  - FORGER wrote 53 new tests (data class + widget + panel)
+  - All 54 tests pass, zero new analyzer issues
 
 ### 2026-03-03
 - Hunted FR-001: Builder patterns for fifty_achievement_engine widgets
