@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_ui.svg)](https://pub.dev/packages/fifty_ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-FDL-styled Flutter component library implementing the Fifty Design Language v2. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**38 FDL-styled widgets ready to drop in. Dark-first, adaptive, accessible.**
+
+A complete Flutter component library -- buttons, inputs, cards, navigation, feedback, and composable effects -- all themed consistently with Fifty Design Language v2. Every widget reads from your `colorScheme` and `FiftyThemeExtension`, so changing your brand in `fifty_tokens` updates every component automatically. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Gallery | Buttons | Inputs | Display |
 |:-------:|:-------:|:------:|:-------:|
@@ -11,18 +13,12 @@ FDL-styled Flutter component library implementing the Fifty Design Language v2. 
 
 ---
 
-## Features
+## Why fifty_ui
 
-- **Buttons** - Primary, secondary, outline, ghost, and danger variants with glitch and loading states
-- **Inputs** - Text fields, sliders, switches, dropdowns, checkboxes, and radio controls with FDL terminal styling
-- **Controls** - Segmented control and nav pill for selection and filtering patterns
-- **Display** - Stat cards, list tiles, badges, chips, avatars, progress bars, data slates, and loading indicators
-- **Feedback** - Snackbar toasts, modal dialogs, and hover tooltips with kinetic animations
-- **Layout** - Card containers with halftone texture, scanline effects, and bento-style hover states
-- **Navigation** - Floating glassmorphism nav bar with Dynamic Island pill style
-- **Effects** - KineticEffect, GlitchEffect, GlowContainer, and HalftoneOverlay as composable primitives
-- **Dark-first** - Optimized for OLED displays with voidBlack backgrounds and crimson glow focus states
-- **WCAG 2.1 AA** - Accessible contrast ratios, reduced motion support, required tooltips on icon buttons
+- **38 FDL-styled widgets ready to drop in** -- Buttons, inputs, cards, navigation, feedback, and effects all themed consistently with Fifty Design Language v2.
+- **Dark-first, adaptive by design** -- All widgets read from Theme.of(context).colorScheme and FiftyThemeExtension; pass a custom colorScheme to FiftyTheme.dark() and every widget adapts.
+- **Composable effects** -- KineticEffect, GlitchEffect, GlowContainer, and HalftoneOverlay are standalone wrappers; combine with any widget, not just fifty_ui components.
+- **WCAG 2.1 AA** -- Accessible contrast ratios, reduced motion support, and required tooltips on all icon buttons baked in.
 
 ---
 
@@ -137,6 +133,65 @@ fifty_ui
 | `FiftyNavBar` | Navigation | Floating glassmorphism navigation bar |
 | `FiftySnackbar` | Feedback | Toast notification with semantic variants |
 | `FiftyDialog` | Feedback | Modal dialog with border glow animation |
+
+---
+
+## Customization
+
+All widgets resolve colors from `Theme.of(context).colorScheme` and `FiftyThemeExtension` -- not directly from `FiftyColors.*` or `FiftyShadows.*`. This means widgets automatically adapt when you pass a custom `colorScheme` to `FiftyTheme.dark(colorScheme: ...)`.
+
+Structural tokens (`FiftySpacing`, `FiftyRadii`, `FiftyTypography`) are accessed directly since they are not color-dependent.
+
+### Brand-Level Customization
+
+Change your brand in `fifty_tokens` and every fifty_ui widget follows:
+
+```dart
+FiftyTokens.configure(
+  colors: FiftyPreset.fdlV2.colors.copyWith(
+    primary: Color(0xFF586994),
+    onPrimary: Color(0xFFFFFFFF),
+  ),
+);
+
+// Every FiftyButton, FiftyCard, FiftyNavBar, etc. now uses your brand color
+GetMaterialApp(
+  theme: FiftyTheme.dark(),
+  darkTheme: FiftyTheme.dark(),
+  home: MyApp(),
+);
+```
+
+### ColorScheme-Level Customization
+
+Pass a full `ColorScheme` to override Material roles directly:
+
+```dart
+FiftyTheme.dark(
+  colorScheme: ColorScheme.dark(
+    primary: Color(0xFF1A73E8),
+    secondary: Color(0xFF34A853),
+  ),
+);
+```
+
+### Theme Access Pattern
+
+All components access theme via `FiftyThemeExtension`:
+
+```dart
+final theme = Theme.of(context);
+final fifty = theme.extension<FiftyThemeExtension>()!;
+
+// Access FDL tokens
+fifty.focusGlow      // Crimson box shadow
+fifty.fast           // 150ms duration
+fifty.compiling      // 300ms duration
+fifty.standardCurve  // easeOutExpo
+fifty.success        // Success green
+```
+
+**Note:** Token values are now getters, not compile-time constants. Expressions using `FiftySpacing.*` cannot appear inside `const` constructors. Use `SizedBox(height: FiftySpacing.sm)` instead of `const SizedBox(height: FiftySpacing.sm)`.
 
 ---
 
@@ -642,31 +697,6 @@ GlitchEffect(
   offset: 3.0,
   child: Text('GLITCH'),
 )
-```
-
-### Theming
-
-All widgets resolve colors from `Theme.of(context).colorScheme` and `FiftyThemeExtension` -- not directly from `FiftyColors.*` or `FiftyShadows.*`. This means widgets automatically adapt when you pass a custom `colorScheme` to `FiftyTheme.dark(colorScheme: ...)`.
-
-Structural tokens (`FiftySpacing`, `FiftyRadii`, `FiftyTypography`) are accessed directly since they are not color-dependent.
-
-**Note:** Token values are now getters, not compile-time constants. Expressions using `FiftySpacing.*` cannot appear inside `const` constructors. Use `SizedBox(height: FiftySpacing.sm)` instead of `const SizedBox(height: FiftySpacing.sm)`.
-
-### Theme Access Pattern
-
-All components access theme via `FiftyThemeExtension`:
-
-```dart
-final theme = Theme.of(context);
-final fifty = theme.extension<FiftyThemeExtension>()!;
-
-// Access FDL tokens
-fifty.focusGlow      // Crimson box shadow
-fifty.fast           // 150ms duration
-fifty.compiling      // 300ms duration
-fifty.standardCurve  // easeOutExpo
-fifty.success        // Success green
-fifty.igrisGreen     // AI indicator green
 ```
 
 ---

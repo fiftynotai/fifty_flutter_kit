@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_printing_engine.svg)](https://pub.dev/packages/fifty_printing_engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Manage a fleet of thermal printers with automatic routing, reconnection, and paper size conversion.**
+
+A production-grade ESC/POS printing engine -- register Bluetooth and WiFi printers, route jobs by role or user selection, auto-reconnect silently, and convert tickets across paper sizes -- all through a single `engine.print()` call. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Printer Management | Test Print | Ticket Builder |
 |:----:|:------------------:|:----------:|:--------------:|
@@ -11,19 +13,12 @@ Production-grade multi-printer ESC/POS printing with Bluetooth and WiFi support.
 
 ---
 
-## Features
+## Why fifty_printing_engine
 
-- **Multi-printer management** - Register and manage multiple printers simultaneously
-- **Flexible routing strategies** - Print to all, select per print, or role-based routing
-- **Bluetooth and WiFi support** - Works with thermal printers over Bluetooth and network printers over WiFi
-- **Auto-connect** - Automatically reconnects disconnected printers during print operations
-- **Status monitoring** - Real-time printer status updates via stream
-- **Health checks** - Periodic and manual health monitoring
-- **Result tracking** - Per-printer success/failure details with error messages
-- **Copy control** - Per-printer default copies with per-job override
-- **Paper size conversion** - Automatic ticket regeneration for different paper widths
-- **Persistence ready** - Export/import configuration for storage-agnostic persistence
-- **Simple API** - Uses familiar escpos Ticket API for ticket creation
+- **Manage a whole printer fleet** -- Register Bluetooth and WiFi printers, configure routing strategies (print-to-all, role-based, select-per-print), and fire print jobs without managing connections manually.
+- **Auto-reconnects silently** -- Disconnected printers are reconnected automatically during print; your code just calls engine.print() and inspects the PrintResult.
+- **Role-based routing for kitchens** -- Assign printers a role (kitchen/receipt/both) and target print jobs by role; the routing strategy handles which printers fire.
+- **Paper size conversion built in** -- Provide a regenerator callback and the engine regenerates the ticket for each printer's paper size automatically.
 
 ---
 
@@ -113,6 +108,96 @@ PrintingEngine (Singleton)
 | `PrintTicket` | ESC/POS ticket wrapper with paper size tracking |
 | `PrintingStrategy` | Abstract routing strategy (print-to-all, role-based, select-per-print) |
 | `PrintResult` | Aggregated result with per-printer success/failure details |
+
+---
+
+## Customization
+
+### Routing Strategies
+
+The engine ships with three strategies for deciding which printers receive a job. Switch between them at any time.
+
+**Print to all** -- every registered printer receives every ticket:
+
+```dart
+engine.setPrintingMode(PrintingMode.printToAll);
+await engine.print(ticket: ticket);
+```
+
+**Role-based routing** -- target printers by role (kitchen, receipt, both):
+
+```dart
+engine.setPrintingMode(PrintingMode.roleBasedRouting);
+
+await engine.print(
+  ticket: kitchenTicket,
+  targetRole: PrinterRole.kitchen,
+);
+```
+
+**Select per print** -- prompt the operator to choose printers for each job:
+
+```dart
+engine.setPrintingMode(PrintingMode.selectPerPrint);
+
+engine.setPrinterSelectionCallback((printers, suggestedRole) async {
+  final selected = await showPrinterSelectionDialog(
+    printers: printers,
+    preselectedRole: suggestedRole,
+  );
+  return selected?.map((p) => p.id).toList();
+});
+
+await engine.print(
+  ticket: ticket,
+  targetRole: PrinterRole.kitchen, // Hint for dialog pre-selection
+);
+```
+
+### Paper Size Regenerator
+
+When a ticket's paper size differs from a printer's paper size, provide a regenerator callback. The engine calls it once per mismatched printer and prints the regenerated ticket.
+
+```dart
+await engine.print(
+  ticket: ticket, // Created for mm80
+  regenerator: (paperSize) async {
+    // Regenerate ticket layout for the printer's paper width
+    return generateTicket(order, paperSize);
+  },
+);
+```
+
+### Copy Control
+
+Set default copies per printer at registration time, then override per job:
+
+```dart
+// Kitchen always prints 2 copies by default
+final printer = BluetoothPrinterDevice(
+  id: 'kitchen-1',
+  name: 'Kitchen',
+  macAddress: '00:11:22:33:44:55',
+  defaultCopies: 2,
+);
+
+// Override: print 1 copy for this job only
+await engine.print(ticket: ticket, copies: 1);
+```
+
+### Persistence
+
+The engine is in-memory only. Export and import configuration with your preferred storage:
+
+```dart
+// Save (on app pause/exit)
+final config = engine.exportConfiguration();
+await storage.save('printer_config', jsonEncode(config));
+
+// Restore (on app start)
+final json = await storage.load('printer_config');
+if (json != null) engine.importConfiguration(jsonDecode(json));
+```
 
 ---
 

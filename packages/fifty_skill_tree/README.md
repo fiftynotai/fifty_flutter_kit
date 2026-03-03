@@ -3,7 +3,9 @@
 [![pub package](https://img.shields.io/pub/v/fifty_skill_tree.svg)](https://pub.dev/packages/fifty_skill_tree)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Interactive skill tree widget for Flutter games -- customizable, animated, and game-ready. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
+**Interactive skill trees for Flutter games. Five layouts, full node control, save/load in two lines.**
+
+A complete skill tree system -- layout algorithms, prerequisite chains, point management, unlock animations, and JSON persistence -- with full visual control via nodeBuilder and SkillTreeTheme. Part of [Fifty Flutter Kit](https://github.com/fiftynotai/fifty_flutter_kit).
 
 | Home | Basic Tree | Node Unlock | RPG Skill Tree |
 |:----:|:----------:|:-----------:|:--------------:|
@@ -11,17 +13,12 @@ Interactive skill tree widget for Flutter games -- customizable, animated, and g
 
 ---
 
-## Features
+## Why fifty_skill_tree
 
-- **Multiple Layout Algorithms** - Vertical, horizontal, radial, grid, and custom positioning
-- **Skill States** - Locked, available, unlocked, and maxed states with visual feedback
-- **Point/Currency System** - Built-in point management for unlocking skills
-- **Prerequisites & Dependencies** - Automatic prerequisite checking and dependency visualization
-- **Unlock Animations** - Smooth animations for unlocking, pulsing, and highlighting
-- **Save/Load Progress** - JSON serialization for game save files
-- **Mobile-Friendly** - Touch interactions with pan and pinch-to-zoom support
-- **Fully Customizable Theming** - Dark/light preset themes, FDL integration, and full customization support
-- **Generic Data Support** - Attach any custom data to skill nodes
+- **Five layout algorithms out of the box** -- Vertical, horizontal, radial, grid, and custom positioning; switch layouts with a single line.
+- **Full UI control via nodeBuilder** -- Provide a nodeBuilder callback on SkillTreeView to render any widget for any node state; the engine handles unlock logic, prerequisites, and animations.
+- **Generic data on every node** -- Attach any custom type T to SkillNode<T> for rewards, ability stats, or metadata; access via node.data at unlock time.
+- **Save/load in two lines** -- controller.exportProgress() and controller.importProgress() handle game persistence; pair with any storage solution.
 
 ---
 
@@ -29,7 +26,7 @@ Interactive skill tree widget for Flutter games -- customizable, animated, and g
 
 ```yaml
 dependencies:
-  fifty_skill_tree: ^0.1.2
+  fifty_skill_tree: ^0.2.1
 ```
 
 ### For Contributors
@@ -161,6 +158,93 @@ SkillTreeView<T> (Widget)
 
 ---
 
+## Customization
+
+### Custom Node Rendering
+
+Provide a `nodeBuilder` to replace the default node widget with any widget you want. The engine handles layout, connections, unlock logic, and animations; your builder controls only the visual per node.
+
+```dart
+SkillTreeView<void>(
+  controller: controller,
+  layout: const VerticalTreeLayout(),
+  nodeBuilder: (node, state) {
+    return Container(
+      width: 60,
+      height: 60,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: _getColorForState(state),
+        border: Border.all(color: Colors.white, width: 2),
+      ),
+      child: Center(
+        child: Icon(
+          node.icon ?? Icons.star,
+          color: Colors.white,
+        ),
+      ),
+    );
+  },
+  onNodeTap: (node) => controller.unlock(node.id),
+)
+```
+
+The `nodeBuilder` signature is `Widget Function(SkillNode<T> node, SkillState state)`. The `state` parameter is one of `SkillState.locked`, `available`, `unlocked`, or `maxed`, so you can style each state differently. When `nodeBuilder` is null, the default `SkillNodeWidget` renders using the current `SkillTreeTheme`.
+
+### Theme Customization
+
+**Built-in themes:**
+
+```dart
+final controller = SkillTreeController(
+  tree: tree,
+  theme: SkillTreeTheme.dark(),  // or SkillTreeTheme.light()
+);
+```
+
+**From BuildContext (reads your app's ColorScheme):**
+
+```dart
+// Automatically resolves from Theme.of(context).colorScheme
+// Used internally when no explicit theme is set on the controller
+final theme = SkillTreeTheme.fromContext(context);
+```
+
+**Full custom theme:**
+
+```dart
+final customTheme = SkillTreeTheme(
+  // Node colors by state
+  lockedNodeColor: Colors.grey[800]!,
+  lockedNodeBorderColor: Colors.grey[600]!,
+  availableNodeColor: Colors.blue[900]!,
+  availableNodeBorderColor: Colors.blue[400]!,
+  unlockedNodeColor: Colors.green[900]!,
+  unlockedNodeBorderColor: Colors.green[400]!,
+  maxedNodeColor: Colors.amber[900]!,
+  maxedNodeBorderColor: Colors.amber[400]!,
+
+  // Connection colors
+  connectionLockedColor: Colors.grey[600]!,
+  connectionUnlockedColor: Colors.green[400]!,
+
+  // Sizes
+  nodeRadius: 28.0,
+  nodeBorderWidth: 2.0,
+  connectionWidth: 2.0,
+);
+
+// Apply at creation or swap at runtime
+controller.setTheme(customTheme);
+
+// Revert to FDL defaults
+controller.setTheme(null);
+```
+
+When no theme is provided and no explicit `SkillTreeTheme` is set, the widget calls `SkillTreeTheme.fromContext(context)` and resolves colors from your app's `ColorScheme`.
+
+---
+
 ## API Reference
 
 ### SkillTree
@@ -264,61 +348,6 @@ SkillTreeView<void>(
     showSkillDetails(context, node);
   },
 )
-```
-
-### SkillTreeTheme
-
-**Built-in Themes:**
-
-```dart
-// Dark theme (default)
-final theme = SkillTreeTheme.dark();
-
-// Light theme
-final theme = SkillTreeTheme.light();
-```
-
-When no theme is provided, the widgets use **FDL (Fifty Design Language)** defaults automatically.
-
-**Custom Theme:**
-
-```dart
-final customTheme = SkillTreeTheme(
-  // Node colors by state
-  lockedNodeColor: Colors.grey[800]!,
-  lockedNodeBorderColor: Colors.grey[600]!,
-  availableNodeColor: Colors.blue[900]!,
-  availableNodeBorderColor: Colors.blue[400]!,
-  unlockedNodeColor: Colors.green[900]!,
-  unlockedNodeBorderColor: Colors.green[400]!,
-  maxedNodeColor: Colors.amber[900]!,
-  maxedNodeBorderColor: Colors.amber[400]!,
-
-  // Connection colors
-  connectionLockedColor: Colors.grey[600]!,
-  connectionUnlockedColor: Colors.green[400]!,
-
-  // Sizes
-  nodeRadius: 28.0,
-  nodeBorderWidth: 2.0,
-  connectionWidth: 2.0,
-);
-```
-
-**Apply Theme:**
-
-```dart
-// At creation
-final controller = SkillTreeController(
-  tree: tree,
-  theme: customTheme,
-);
-
-// Or update later
-controller.setTheme(SkillTreeTheme.light());
-
-// Or revert to FDL defaults
-controller.setTheme(null);
 ```
 
 ### Layouts
@@ -536,31 +565,6 @@ controller.reset();
 controller.resetNode('fireball');
 ```
 
-### Custom Node Widget
-
-```dart
-SkillTreeView(
-  controller: controller,
-  nodeBuilder: (node, state) {
-    return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: _getColorForState(state),
-        border: Border.all(color: Colors.white, width: 2),
-      ),
-      child: Center(
-        child: Icon(
-          node.icon ?? Icons.star,
-          color: Colors.white,
-        ),
-      ),
-    );
-  },
-)
-```
-
 ### Multi-Level Nodes
 
 ```dart
@@ -624,7 +628,7 @@ This package is part of Fifty Flutter Kit:
 
 ## Version
 
-**Current:** 0.1.2
+**Current:** 0.2.1
 
 ---
 
