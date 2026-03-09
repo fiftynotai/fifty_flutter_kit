@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.0] - 2025-12-27
 
 ### Added
-- Initial release as part of the Fifty Design Language ecosystem
+- Initial release as part of Fifty Flutter Kit
 - Rebranded from arkada_sound_engine to fifty_audio_engine
 - Integration with fifty_tokens motion system
 - New `FadePreset.panel` preset using FiftyMotion.compiling (300ms)

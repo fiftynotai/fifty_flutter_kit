@@ -26,7 +26,7 @@ A modular, reactive audio system with persistent volume settings, FiftyMotion-al
 
 ```yaml
 dependencies:
-  fifty_audio_engine: ^0.7.2
+  fifty_audio_engine: ^0.7.3
 ```
 
 ### For Contributors
