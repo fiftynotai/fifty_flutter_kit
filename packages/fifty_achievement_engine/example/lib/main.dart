@@ -41,16 +41,16 @@ class _AchievementEngineExampleAppState
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.dark(
-          primary: FiftyColors.burgundy,
-          surface: FiftyColors.darkBurgundy,
-          onSurface: FiftyColors.cream,
+          primary: FiftyColors.primary,
+          surface: FiftyColors.backgroundDark,
+          onSurface: FiftyColors.background,
           outline: FiftyColors.borderDark,
           surfaceContainerHighest: FiftyColors.surfaceDark,
         ),
-        scaffoldBackgroundColor: FiftyColors.darkBurgundy,
+        scaffoldBackgroundColor: FiftyColors.backgroundDark,
         appBarTheme: AppBarTheme(
           backgroundColor: FiftyColors.surfaceDark,
-          foregroundColor: FiftyColors.cream,
+          foregroundColor: FiftyColors.background,
           elevation: 0,
         ),
       ),

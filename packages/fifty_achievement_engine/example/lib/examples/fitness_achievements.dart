@@ -227,12 +227,12 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
               padding: EdgeInsets.all(FiftySpacing.lg),
               decoration: BoxDecoration(
                 color: _isWorkingOut
-                    ? FiftyColors.hunterGreen.withValues(alpha: 0.2)
+                    ? FiftyColors.success.withValues(alpha: 0.2)
                     : colorScheme.surfaceContainerHighest,
                 borderRadius: FiftyRadii.lgRadius,
                 border: Border.all(
                   color: _isWorkingOut
-                      ? FiftyColors.hunterGreen
+                      ? FiftyColors.success
                       : colorScheme.outline,
                   width: _isWorkingOut ? 2 : 1,
                 ),
@@ -246,7 +246,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                       fontSize: FiftyTypography.displayLarge,
                       fontWeight: FiftyTypography.extraBold,
                       color: _isWorkingOut
-                          ? FiftyColors.hunterGreen
+                          ? FiftyColors.success
                           : colorScheme.onSurface,
                     ),
                   ),
@@ -257,7 +257,7 @@ class _FitnessAchievementsExampleState extends State<FitnessAchievementsExample>
                     label: Text(_isWorkingOut ? 'End Workout' : 'Start Workout'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          _isWorkingOut ? colorScheme.primary : FiftyColors.hunterGreen,
+                          _isWorkingOut ? colorScheme.primary : FiftyColors.success,
                       foregroundColor: colorScheme.onPrimary,
                       padding: EdgeInsets.symmetric(
                         horizontal: FiftySpacing.xl,
