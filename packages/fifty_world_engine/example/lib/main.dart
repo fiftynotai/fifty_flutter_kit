@@ -237,10 +237,10 @@ class _DemoPageState extends State<DemoPage> {
     _decoratorsApplied = true;
 
     for (final unit in _units) {
-      // Team border: blue = slateGrey, red = burgundy.
+      // Team border: blue = secondary, red = primary.
       _controller.setTeamColor(
         unit.id,
-        unit.isBlue ? FiftyColors.slateGrey : FiftyColors.burgundy,
+        unit.isBlue ? FiftyColors.secondary : FiftyColors.primary,
       );
       // HP bar at full health.
       _controller.updateHP(unit.id, 1.0);
