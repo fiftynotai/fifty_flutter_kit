@@ -4,7 +4,7 @@
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
   [![Publisher](https://img.shields.io/pub/publisher/fifty.dev)](https://pub.dev/publishers/fifty.dev/packages)
-  [![Packages](https://img.shields.io/badge/packages-16-blue)](packages/)
+  [![Packages](https://img.shields.io/badge/packages-17-blue)](packages/)
   [![Dart 3](https://img.shields.io/badge/Dart-3-0175C2.svg?logo=dart)](https://dart.dev)
   [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B.svg?logo=flutter)](https://flutter.dev)
 
@@ -12,7 +12,7 @@
 
 # Fifty Flutter Kit
 
-**A comprehensive Flutter/Dart toolkit: design tokens, theming, UI components, forms, caching, storage, connectivity, real-time sockets, printing, audio, speech, narrative, world rendering, skill trees, and achievements.**
+**A comprehensive Flutter/Dart toolkit: design tokens, theming, UI components, forms, caching, storage, connectivity, real-time sockets, printing, scroll-driven animations, audio, speech, narrative, world rendering, skill trees, and achievements.**
 
 This toolkit is born from close to a decade of building Flutter and Dart applications professionally. It is a curated collection of the packages and patterns I reach for most often -- not everything I know, but the essentials, battle-tested across real projects and refined over the years. Rather than keeping these as scattered internal utilities and tribal knowledge, I wrote them down as properly published, reusable packages and open-sourced them for the Flutter community.
 
@@ -35,6 +35,9 @@ This toolkit is born from close to a decade of building Flutter and Dart applica
 <td align="center"><img src="packages/fifty_achievement_engine/screenshots/achievement_unlocked_light.png" width="180"><br><sub>Achievements</sub></td>
 <td align="center"><img src="packages/fifty_printing_engine/screenshots/ticket_builder_dark.png" width="180"><br><sub>Printing</sub></td>
 <td align="center"><img src="packages/fifty_connectivity/screenshots/overlay.png" width="180"><br><sub>Connectivity</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="packages/fifty_scroll_sequence/screenshots/pinned_demo.png" width="180"><br><sub>Scroll Sequence</sub></td>
 </tr>
 </table>
 </div>
@@ -68,6 +71,7 @@ Production infrastructure for Flutter applications.
 | [fifty_connectivity](packages/fifty_connectivity/) | [![pub](https://img.shields.io/pub/v/fifty_connectivity.svg)](https://pub.dev/packages/fifty_connectivity) | Network monitoring with reachability probing |
 | [fifty_socket](packages/fifty_socket/) | [![pub](https://img.shields.io/pub/v/fifty_socket.svg)](https://pub.dev/packages/fifty_socket) | Phoenix WebSocket with auto-reconnect |
 | [fifty_printing_engine](packages/fifty_printing_engine/) | [![pub](https://img.shields.io/pub/v/fifty_printing_engine.svg)](https://pub.dev/packages/fifty_printing_engine) | Multi-printer ESC/POS with Bluetooth and WiFi |
+| [fifty_scroll_sequence](packages/fifty_scroll_sequence/) | [![pub](https://img.shields.io/pub/v/fifty_scroll_sequence.svg)](https://pub.dev/packages/fifty_scroll_sequence) | Scroll-driven image sequences with pinning and GPU cache |
 
 ### Game Development
 
@@ -148,6 +152,7 @@ graph LR
         connectivity[fifty_connectivity]
         socket[fifty_socket]
         printing[fifty_printing_engine]
+        scroll[fifty_scroll_sequence]
     end
     subgraph GameDev[Game Development]
         audio[fifty_audio_engine]
@@ -183,7 +188,7 @@ Templates use the ecosystem packages as dependencies. Fork as a starting point -
 |-----|-------------|
 | [fifty_demo](apps/fifty_demo/) | Interactive demo showcasing all packages |
 | [tactical_grid](apps/tactical_grid/) | Tactical skirmish game -- world engine, audio, achievements |
-| [sneaker_drops](apps/sneaker_drops/) | Sneaker marketplace -- UI components, forms, theming |
+| [coffee_showcase](apps/coffee_showcase/) | Coffee shop showcase -- scroll sequences, theming |
 
 ---
 
@@ -197,9 +202,9 @@ Or add to `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  fifty_tokens: ^1.0.3
-  fifty_theme: ^1.0.1
-  fifty_ui: ^0.6.2
+  fifty_tokens: ^3.1.0
+  fifty_theme: ^3.0.0
+  fifty_ui: ^0.7.1
 ```
 
 <details>
@@ -242,7 +247,7 @@ Contributions welcome! See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for setup, co
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License -- see [LICENSE](LICENSE) for details.
 
 ---
 
