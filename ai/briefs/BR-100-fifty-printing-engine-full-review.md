@@ -5,7 +5,7 @@
 **Effort:** M-Medium (1-2d)
 **Assignee:** Igris AI
 **Commanded By:** Monarch
-**Status:** Ready
+**Status:** In Progress
 **Created:** 2026-02-17
 
 ---
