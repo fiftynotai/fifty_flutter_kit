@@ -153,6 +153,177 @@ void main() {
       engine.dispose();
     });
 
+    test('pauseUntilUserContinues blocks and continueAfterUserInput resumes',
+        () async {
+      final writtenTexts = <String>[];
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {
+          writtenTexts.add(sentence.text);
+        },
+        onWait: (sentence) async {
+          // The interpreter calls pauseUntilUserContinues for waitForUserInput
+          // when there is no navigation. We simulate the blocking flow manually.
+          await engine.pauseUntilUserContinues();
+        },
+      );
+
+      engine.registerInterpreter(interpreter);
+
+      engine.enqueue([
+        TestSentence(text: 'Before pause', waitForUserInput: true),
+        TestSentence(text: 'After pause'),
+      ]);
+
+      // Start processing in background
+      final processing = engine.process();
+
+      // Wait for the first sentence to be processed and engine to pause
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      expect(writtenTexts, contains('Before pause'));
+      expect(engine.status, ProcessingStatus.paused);
+
+      // The second sentence should NOT have been processed yet
+      expect(writtenTexts, isNot(contains('After pause')));
+
+      // Resume via user input
+      engine.continueAfterUserInput();
+
+      await processing;
+
+      expect(writtenTexts, contains('After pause'));
+
+      engine.dispose();
+    });
+
+    test('dispose closes the status stream', () async {
+      final engine = NarrativeEngine();
+
+      engine.dispose();
+
+      // After dispose, listening to the stream should eventually get a done event
+      var streamDone = false;
+      engine.onStatusChanged.listen(
+        (_) {},
+        onDone: () => streamDone = true,
+      );
+
+      // Allow microtasks to complete
+      await Future.delayed(const Duration(milliseconds: 10));
+
+      expect(streamDone, true);
+    });
+
+    test('reset clears queue and resets index to idle', () async {
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {
+          engine.addSentenceToWritten(sentence);
+        },
+      );
+
+      engine.registerInterpreter(interpreter);
+
+      engine.enqueue([
+        TestSentence(text: 'Hello'),
+      ]);
+
+      await engine.process();
+
+      // After processing, reset is called internally by _finish,
+      // but let's verify explicit reset works from a fresh state.
+      engine.enqueue([
+        TestSentence(text: 'Queued'),
+      ]);
+
+      engine.reset();
+
+      expect(engine.processingIndex, 0);
+      expect(engine.status, ProcessingStatus.idle);
+
+      engine.dispose();
+    });
+
+    test('clearProcessedSentences clears the written list', () async {
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {
+          engine.addSentenceToWritten(sentence);
+        },
+      );
+
+      engine.registerInterpreter(interpreter);
+
+      engine.enqueue([
+        TestSentence(text: 'First'),
+        TestSentence(text: 'Second'),
+      ]);
+
+      await engine.process();
+
+      expect(engine.sentences.length, 2);
+
+      engine.clearProcessedSentences();
+
+      expect(engine.sentences, isEmpty);
+
+      engine.dispose();
+    });
+
+    test('process with no interpreter still completes', () async {
+      final engine = NarrativeEngine();
+
+      engine.enqueue([
+        TestSentence(text: 'Uninterpreted'),
+      ]);
+
+      var completed = false;
+      await engine.process(onComplete: () => completed = true);
+
+      expect(completed, true);
+      expect(engine.status, ProcessingStatus.idle);
+
+      engine.dispose();
+    });
+
+    test('double process call is guarded', () async {
+      var writeCount = 0;
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {
+          writeCount++;
+          // Small delay to allow the second process() call to attempt
+          await Future.delayed(const Duration(milliseconds: 20));
+        },
+      );
+
+      engine.registerInterpreter(interpreter);
+
+      engine.enqueue([
+        TestSentence(text: 'Only once'),
+      ]);
+
+      // Call process twice concurrently
+      final first = engine.process();
+      final second = engine.process();
+
+      await Future.wait([first, second]);
+
+      // The second call should return immediately (re-entrant guard)
+      expect(writeCount, 1);
+
+      engine.dispose();
+    });
+
     test('status stream emits changes', () async {
       final engine = NarrativeEngine();
       final statuses = <ProcessingStatus>[];
@@ -231,6 +402,112 @@ void main() {
 
       expect(queue.peek().text, 'Test');
       expect(queue.length, 1);
+    });
+
+    test('pushBackAll adds multiple items to end', () {
+      final queue = NarrativeQueue();
+
+      queue.pushBack(TestSentence(text: 'First'));
+      queue.pushBackAll([
+        TestSentence(text: 'Second'),
+        TestSentence(text: 'Third'),
+      ]);
+
+      expect(queue.length, 3);
+      expect(queue.pop().text, 'First');
+      expect(queue.pop().text, 'Second');
+      expect(queue.pop().text, 'Third');
+    });
+
+    test('pushFrontAll adds multiple items to front in order', () {
+      final queue = NarrativeQueue();
+
+      queue.pushBack(TestSentence(text: 'Last'));
+      queue.pushFrontAll([
+        TestSentence(text: 'First'),
+        TestSentence(text: 'Second'),
+      ]);
+
+      expect(queue.length, 3);
+      expect(queue.pop().text, 'First');
+      expect(queue.pop().text, 'Second');
+      expect(queue.pop().text, 'Last');
+    });
+
+    test('pushOrderedAll sorts multiple items by order', () {
+      final queue = NarrativeQueue();
+
+      queue.pushOrderedAll([
+        TestSentence(text: 'C', order: 3),
+        TestSentence(text: 'A', order: 1),
+        TestSentence(text: 'B', order: 2),
+      ]);
+
+      expect(queue.length, 3);
+      expect(queue.pop().text, 'A');
+      expect(queue.pop().text, 'B');
+      expect(queue.pop().text, 'C');
+    });
+
+    test('pop on empty queue throws StateError', () {
+      final queue = NarrativeQueue();
+
+      expect(() => queue.pop(), throwsStateError);
+    });
+
+    test('peek on empty queue throws StateError', () {
+      final queue = NarrativeQueue();
+
+      expect(() => queue.peek(), throwsStateError);
+    });
+
+    test('toList returns items in queue order', () {
+      final queue = NarrativeQueue();
+
+      queue.pushOrdered(TestSentence(text: 'B', order: 2));
+      queue.pushOrdered(TestSentence(text: 'A', order: 1));
+
+      final list = queue.toList();
+
+      expect(list.length, 2);
+      expect(list[0].text, 'A');
+      expect(list[1].text, 'B');
+    });
+
+    test('contains finds existing item', () {
+      final queue = NarrativeQueue();
+      final sentence = TestSentence(text: 'Target');
+
+      queue.pushBack(sentence);
+
+      expect(queue.contains(sentence), true);
+      expect(queue.contains(TestSentence(text: 'Other')), false);
+    });
+
+    test('remove removes specific item', () {
+      final queue = NarrativeQueue();
+      final target = TestSentence(text: 'Remove me');
+
+      queue.pushBack(TestSentence(text: 'Keep'));
+      queue.pushBack(target);
+
+      queue.remove(target);
+
+      expect(queue.length, 1);
+      expect(queue.pop().text, 'Keep');
+    });
+
+    test('removeWhere removes matching items', () {
+      final queue = NarrativeQueue();
+
+      queue.pushBack(TestSentence(text: 'Keep', order: 1));
+      queue.pushBack(TestSentence(text: 'Remove', order: 2));
+      queue.pushBack(TestSentence(text: 'Also remove', order: 3));
+
+      queue.removeWhere((item) => (item.order ?? 0) > 1);
+
+      expect(queue.length, 1);
+      expect(queue.pop().text, 'Keep');
     });
   });
 
@@ -314,6 +591,138 @@ void main() {
       ));
 
       expect(unhandledCalled, true);
+
+      engine.dispose();
+    });
+
+    test('invokes onAsk when sentence has choices', () async {
+      BaseNarrativeModel? askedSentence;
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {},
+        onAsk: (sentence) async {
+          askedSentence = sentence;
+        },
+      );
+
+      await interpreter.interpret(TestSentence(
+        text: 'What do you choose?',
+        instruction: 'write',
+        choices: ['Option A', 'Option B'],
+      ));
+
+      expect(askedSentence, isNotNull);
+      expect(askedSentence!.text, 'What do you choose?');
+      expect(askedSentence!.choices, ['Option A', 'Option B']);
+
+      engine.dispose();
+    });
+
+    test('does not invoke onAsk when choices is empty', () async {
+      var askCalled = false;
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {},
+        onAsk: (sentence) async {
+          askCalled = true;
+        },
+      );
+
+      await interpreter.interpret(TestSentence(
+        text: 'No choices here',
+        instruction: 'write',
+      ));
+
+      expect(askCalled, false);
+
+      engine.dispose();
+    });
+
+    test('invokes onWait when waitForUserInput is true', () async {
+      BaseNarrativeModel? waitedSentence;
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {},
+        onWait: (sentence) async {
+          waitedSentence = sentence;
+        },
+      );
+
+      await interpreter.interpret(TestSentence(
+        text: 'Tap to continue',
+        instruction: 'write',
+        waitForUserInput: true,
+      ));
+
+      expect(waitedSentence, isNotNull);
+      expect(waitedSentence!.text, 'Tap to continue');
+
+      engine.dispose();
+    });
+
+    test('invokes onNavigate when phase changes', () async {
+      BaseNarrativeModel? navigatedSentence;
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {},
+        onNavigate: (sentence) async {
+          navigatedSentence = sentence;
+        },
+      );
+
+      await interpreter.interpret(TestSentence(
+        text: 'Moving to chapter 2',
+        instruction: 'write',
+        phase: 'chapter_2',
+      ));
+
+      expect(navigatedSentence, isNotNull);
+      expect(navigatedSentence!.text, 'Moving to chapter 2');
+      expect(interpreter.currentPhase, 'chapter_2');
+
+      engine.dispose();
+    });
+
+    test('does not invoke onNavigate when phase is same', () async {
+      var navigateCalled = false;
+      final engine = NarrativeEngine();
+
+      final interpreter = NarrativeInterpreter(
+        engine: engine,
+        onWrite: (sentence) async {},
+        onNavigate: (sentence) async {
+          navigateCalled = true;
+        },
+      );
+
+      // First interpret sets the phase
+      await interpreter.interpret(TestSentence(
+        text: 'First',
+        instruction: 'write',
+        phase: 'chapter_1',
+      ));
+
+      expect(navigateCalled, true);
+
+      // Reset flag
+      navigateCalled = false;
+
+      // Same phase — should NOT navigate
+      await interpreter.interpret(TestSentence(
+        text: 'Second',
+        instruction: 'write',
+        phase: 'chapter_1',
+      ));
+
+      expect(navigateCalled, false);
 
       engine.dispose();
     });
