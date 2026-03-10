@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-03-10
+
+### Fixed
+- Level badge now uses theme color instead of hardcoded black
+- Replaced 62+ deprecated `FiftyColors` references in example app (burgundy→primary, slateGrey→secondary, cream→background, etc.)
+
+### Testing
+- Added 66 new tests (214→271 total) covering horizontal/grid layouts, UnlockResult model, and expanded theme tests
+
 ## [0.2.2] - 2026-03-04
 
 ### Documentation
