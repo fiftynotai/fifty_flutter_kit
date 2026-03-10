@@ -384,6 +384,193 @@ void main() {
         expect(modified.availableNodeColor, original.availableNodeColor);
         expect(modified.connectionWidth, original.connectionWidth);
       });
+
+      test('returns identical theme when no overrides given', () {
+        final original = SkillTreeTheme.dark();
+        final copy = original.copyWith();
+
+        expect(copy, equals(original));
+      });
+
+      test('overrides all node state colors', () {
+        final original = SkillTreeTheme.dark();
+        const override = Color(0xFFABCDEF);
+
+        final modified = original.copyWith(
+          lockedNodeColor: override,
+          lockedNodeBorderColor: override,
+          availableNodeColor: override,
+          availableNodeBorderColor: override,
+          unlockedNodeColor: override,
+          unlockedNodeBorderColor: override,
+          maxedNodeColor: override,
+          maxedNodeBorderColor: override,
+        );
+
+        expect(modified.lockedNodeColor, equals(override));
+        expect(modified.lockedNodeBorderColor, equals(override));
+        expect(modified.availableNodeColor, equals(override));
+        expect(modified.availableNodeBorderColor, equals(override));
+        expect(modified.unlockedNodeColor, equals(override));
+        expect(modified.unlockedNodeBorderColor, equals(override));
+        expect(modified.maxedNodeColor, equals(override));
+        expect(modified.maxedNodeBorderColor, equals(override));
+      });
+
+      test('overrides node type colors', () {
+        final original = SkillTreeTheme.dark();
+        const override = Color(0xFFABCDEF);
+
+        final modified = original.copyWith(
+          passiveColor: override,
+          activeColor: override,
+          ultimateColor: override,
+          keystoneColor: override,
+        );
+
+        expect(modified.passiveColor, equals(override));
+        expect(modified.activeColor, equals(override));
+        expect(modified.ultimateColor, equals(override));
+        expect(modified.keystoneColor, equals(override));
+      });
+
+      test('overrides connection colors', () {
+        final original = SkillTreeTheme.dark();
+        const override = Color(0xFFABCDEF);
+
+        final modified = original.copyWith(
+          connectionLockedColor: override,
+          connectionUnlockedColor: override,
+          connectionHighlightColor: override,
+        );
+
+        expect(modified.connectionLockedColor, equals(override));
+        expect(modified.connectionUnlockedColor, equals(override));
+        expect(modified.connectionHighlightColor, equals(override));
+      });
+
+      test('overrides size values', () {
+        final original = SkillTreeTheme.dark();
+
+        final modified = original.copyWith(
+          nodeRadius: 40.0,
+          nodeBorderWidth: 4.0,
+          connectionWidth: 3.0,
+        );
+
+        expect(modified.nodeRadius, equals(40.0));
+        expect(modified.nodeBorderWidth, equals(4.0));
+        expect(modified.connectionWidth, equals(3.0));
+      });
+
+      test('overrides text styles', () {
+        final original = SkillTreeTheme.dark();
+        const style = TextStyle(color: Color(0xFFABCDEF), fontSize: 20);
+
+        final modified = original.copyWith(
+          nodeNameStyle: style,
+          nodeLevelStyle: style,
+          nodeCostStyle: style,
+          tooltipTitleStyle: style,
+          tooltipDescriptionStyle: style,
+        );
+
+        expect(modified.nodeNameStyle, equals(style));
+        expect(modified.nodeLevelStyle, equals(style));
+        expect(modified.nodeCostStyle, equals(style));
+        expect(modified.tooltipTitleStyle, equals(style));
+        expect(modified.tooltipDescriptionStyle, equals(style));
+      });
+
+      test('overrides tooltip colors', () {
+        final original = SkillTreeTheme.dark();
+        const override = Color(0xFFABCDEF);
+
+        final modified = original.copyWith(
+          tooltipBackground: override,
+          tooltipBorder: override,
+        );
+
+        expect(modified.tooltipBackground, equals(override));
+        expect(modified.tooltipBorder, equals(override));
+      });
+    });
+
+    group('dark factory defaults', () {
+      test('has specific dark theme colors', () {
+        final theme = SkillTreeTheme.dark();
+
+        expect(theme.lockedNodeColor, equals(const Color(0xFF2A2A2A)));
+        expect(theme.lockedNodeBorderColor, equals(const Color(0xFF444444)));
+        expect(theme.availableNodeColor, equals(const Color(0xFF1A3A5C)));
+        expect(
+          theme.availableNodeBorderColor,
+          equals(const Color(0xFF3A7CA5)),
+        );
+        expect(theme.unlockedNodeColor, equals(const Color(0xFF1A4D1A)));
+        expect(
+          theme.unlockedNodeBorderColor,
+          equals(const Color(0xFF4CAF50)),
+        );
+        expect(theme.maxedNodeColor, equals(const Color(0xFF4A3A1A)));
+        expect(theme.maxedNodeBorderColor, equals(const Color(0xFFFFD700)));
+      });
+
+      test('has text styles', () {
+        final theme = SkillTreeTheme.dark();
+
+        expect(theme.nodeNameStyle, isNotNull);
+        expect(theme.nodeNameStyle!.fontWeight, equals(FontWeight.bold));
+        expect(theme.nodeNameStyle!.fontSize, equals(14));
+
+        expect(theme.nodeLevelStyle, isNotNull);
+        expect(theme.nodeLevelStyle!.fontSize, equals(10));
+
+        expect(theme.nodeCostStyle, isNotNull);
+        expect(theme.nodeCostStyle!.color, equals(const Color(0xFFFFD700)));
+      });
+
+      test('has tooltip properties', () {
+        final theme = SkillTreeTheme.dark();
+
+        expect(theme.tooltipBackground, isNotNull);
+        expect(theme.tooltipBorder, isNotNull);
+        expect(theme.tooltipTitleStyle, isNotNull);
+        expect(theme.tooltipDescriptionStyle, isNotNull);
+      });
+
+      test('has connection highlight color', () {
+        final theme = SkillTreeTheme.dark();
+
+        expect(
+          theme.connectionHighlightColor,
+          equals(const Color(0xFF64B5F6)),
+        );
+      });
+    });
+
+    group('light factory defaults', () {
+      test('has specific light theme colors', () {
+        final theme = SkillTreeTheme.light();
+
+        expect(theme.lockedNodeColor, equals(const Color(0xFFE0E0E0)));
+        expect(theme.lockedNodeBorderColor, equals(const Color(0xFFBDBDBD)));
+        expect(theme.availableNodeColor, equals(const Color(0xFFBBDEFB)));
+        expect(
+          theme.availableNodeBorderColor,
+          equals(const Color(0xFF2196F3)),
+        );
+      });
+
+      test('has text styles with dark colors', () {
+        final theme = SkillTreeTheme.light();
+
+        expect(theme.nodeNameStyle, isNotNull);
+        expect(
+          theme.nodeNameStyle!.color,
+          equals(const Color(0xFF212121)),
+        );
+      });
     });
 
     group('equality', () {
@@ -400,6 +587,36 @@ void main() {
         final light = SkillTreeTheme.light();
 
         expect(dark, isNot(equals(light)));
+      });
+
+      test('identical instance equals itself', () {
+        final theme = SkillTreeTheme.dark();
+
+        expect(theme == theme, isTrue);
+      });
+
+      test('is not equal to non-SkillTreeTheme', () {
+        final theme = SkillTreeTheme.dark();
+
+        // ignore: unrelated_type_equality_checks
+        expect(theme == 42, isFalse);
+      });
+
+      test('copyWith with change produces different theme', () {
+        final original = SkillTreeTheme.dark();
+        final modified = original.copyWith(
+          lockedNodeColor: const Color(0xFF000000),
+        );
+
+        expect(original, isNot(equals(modified)));
+      });
+
+      test('copyWith without change produces equal theme', () {
+        final original = SkillTreeTheme.dark();
+        final copy = original.copyWith();
+
+        expect(original, equals(copy));
+        expect(original.hashCode, equals(copy.hashCode));
       });
     });
   });

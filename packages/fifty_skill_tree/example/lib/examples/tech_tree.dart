@@ -121,34 +121,34 @@ class _TechTreeExampleState extends State<TechTreeExample> {
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'military':
-        return FiftyColors.burgundy;
+        return FiftyColors.primary;
       case 'economy':
         return FiftyColors.warning;
       case 'technology':
         return _techCyan;
       default:
-        return FiftyColors.slateGrey;
+        return FiftyColors.secondary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiftyColors.darkBurgundy,
+      backgroundColor: FiftyColors.backgroundDark,
       appBar: AppBar(
         backgroundColor: FiftyColors.surfaceDark,
         title: Text(
           'TECH TREE',
           style: TextStyle(
-            color: FiftyColors.cream,
+            color: FiftyColors.background,
             letterSpacing: 1.5,
             fontWeight: FontWeight.bold,
           ),
         ),
-        iconTheme: IconThemeData(color: FiftyColors.cream),
+        iconTheme: IconThemeData(color: FiftyColors.background),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh, color: FiftyColors.cream),
+            icon: Icon(Icons.refresh, color: FiftyColors.background),
             onPressed: () {
               _controller.reset();
               setState(() {
@@ -258,7 +258,7 @@ class _ResourceDisplay extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: FiftyColors.slateGrey,
+            color: FiftyColors.secondary,
             letterSpacing: 0.5,
             fontSize: 10,
           ),
@@ -300,18 +300,18 @@ class _TechNode extends StatelessWidget {
             : FiftyColors.surfaceDark,
         border: Border.all(
           color: isSelected
-              ? FiftyColors.cream
+              ? FiftyColors.background
               : isUnlocked
                   ? branchColor
                   : isAvailable
                       ? branchColor.withValues(alpha: 0.6)
-                      : FiftyColors.slateGrey.withValues(alpha: 0.3),
+                      : FiftyColors.secondary.withValues(alpha: 0.3),
           width: isSelected ? 3 : 2,
         ),
         boxShadow: isSelected || isUnlocked
             ? [
                 BoxShadow(
-                  color: (isSelected ? FiftyColors.cream : branchColor)
+                  color: (isSelected ? FiftyColors.background : branchColor)
                       .withValues(alpha: 0.3),
                   blurRadius: 8,
                   spreadRadius: 1,
@@ -327,8 +327,8 @@ class _TechNode extends StatelessWidget {
             color: isUnlocked
                 ? branchColor
                 : isAvailable
-                    ? FiftyColors.cream.withValues(alpha: 0.7)
-                    : FiftyColors.slateGrey,
+                    ? FiftyColors.background.withValues(alpha: 0.7)
+                    : FiftyColors.secondary,
             size: 28,
           ),
           const SizedBox(height: 2),
@@ -336,7 +336,7 @@ class _TechNode extends StatelessWidget {
             Text(
               'T${node.tier}',
               style: TextStyle(
-                color: FiftyColors.slateGrey,
+                color: FiftyColors.secondary,
                 fontSize: 10,
               ),
             ),
@@ -384,7 +384,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               height: 4,
               margin: EdgeInsets.only(bottom: FiftySpacing.lg),
               decoration: BoxDecoration(
-                color: FiftyColors.slateGrey,
+                color: FiftyColors.secondary,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -418,7 +418,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               Text(
                 'TIER ${node.tier}',
                 style: TextStyle(
-                  color: FiftyColors.slateGrey,
+                  color: FiftyColors.secondary,
                   fontSize: 12,
                   letterSpacing: 0.5,
                 ),
@@ -433,7 +433,7 @@ class _NodeDetailsSheet extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: FiftyColors.cream,
+              color: FiftyColors.background,
               letterSpacing: 1,
             ),
           ),
@@ -443,7 +443,7 @@ class _NodeDetailsSheet extends StatelessWidget {
           Text(
             node.description ?? 'No description available.',
             style: TextStyle(
-              color: FiftyColors.cream.withValues(alpha: 0.7),
+              color: FiftyColors.background.withValues(alpha: 0.7),
             ),
           ),
           SizedBox(height: FiftySpacing.lg),
@@ -453,7 +453,7 @@ class _NodeDetailsSheet extends StatelessWidget {
             Text(
               'REQUIREMENTS:',
               style: TextStyle(
-                color: FiftyColors.slateGrey,
+                color: FiftyColors.secondary,
                 fontSize: 12,
                 letterSpacing: 0.5,
               ),
@@ -463,7 +463,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               (prereq) => Text(
                 '  - $prereq',
                 style: TextStyle(
-                  color: FiftyColors.slateGrey.withValues(alpha: 0.8),
+                  color: FiftyColors.secondary.withValues(alpha: 0.8),
                   fontSize: 12,
                 ),
               ),
@@ -479,7 +479,7 @@ class _NodeDetailsSheet extends StatelessWidget {
               Text(
                 'COST: ${node.nextCost} POINTS',
                 style: TextStyle(
-                  color: canAfford ? branchColor : FiftyColors.burgundy,
+                  color: canAfford ? branchColor : FiftyColors.primary,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -488,7 +488,7 @@ class _NodeDetailsSheet extends StatelessWidget {
                 Text(
                   '(Need ${node.nextCost - availablePoints} more)',
                   style: TextStyle(
-                    color: FiftyColors.burgundy,
+                    color: FiftyColors.primary,
                     fontSize: 12,
                   ),
                 ),

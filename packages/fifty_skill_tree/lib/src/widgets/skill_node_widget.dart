@@ -275,7 +275,7 @@ class SkillNodeWidget<T> extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
         decoration: BoxDecoration(
-          color: const Color(0xFF000000).withAlpha(179),
+          color: resolvedTheme.lockedNodeColor.withAlpha(179),
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             color: _getBorderColor(resolvedTheme),

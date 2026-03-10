@@ -90,7 +90,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
         SnackBar(
           content: Text(message),
           duration: const Duration(seconds: 1),
-          backgroundColor: FiftyColors.burgundy,
+          backgroundColor: FiftyColors.primary,
         ),
       );
     }
@@ -141,7 +141,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                   'POINTS: ${_controller.availablePoints}',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: FiftyColors.cream,
+                        color: FiftyColors.background,
                         letterSpacing: 1.2,
                       ),
                 ),
@@ -149,7 +149,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
                 Text(
                   'SPENT: ${_controller.spentPoints}',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: FiftyColors.slateGrey,
+                        color: FiftyColors.secondary,
                       ),
                 ),
               ],
@@ -179,7 +179,7 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
             child: Text(
               'Tap a skill to unlock it. Long press for details.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: FiftyColors.slateGrey,
+                    color: FiftyColors.secondary,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -203,26 +203,26 @@ class _BasicTreeExampleState extends State<BasicTreeExample> {
             if (node.description != null) ...[
               Text(
                 node.description!,
-                style: TextStyle(color: FiftyColors.cream),
+                style: TextStyle(color: FiftyColors.background),
               ),
               SizedBox(height: FiftySpacing.lg),
             ],
             Text(
               'Level: ${node.currentLevel}/${node.maxLevel}',
-              style: TextStyle(color: FiftyColors.slateGrey),
+              style: TextStyle(color: FiftyColors.secondary),
             ),
             Text(
               'Cost: ${node.nextCost} points',
-              style: TextStyle(color: FiftyColors.slateGrey),
+              style: TextStyle(color: FiftyColors.secondary),
             ),
             Text(
               'State: ${state.name.toUpperCase()}',
-              style: TextStyle(color: FiftyColors.slateGrey),
+              style: TextStyle(color: FiftyColors.secondary),
             ),
             if (node.prerequisites.isNotEmpty)
               Text(
                 'Requires: ${node.prerequisites.join(", ")}',
-                style: TextStyle(color: FiftyColors.slateGrey),
+                style: TextStyle(color: FiftyColors.secondary),
               ),
           ],
         ),

@@ -83,13 +83,13 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
   Color _getBranchColor(String? branch) {
     switch (branch) {
       case 'offense':
-        return FiftyColors.burgundy;
+        return FiftyColors.primary;
       case 'defense':
         return _defenseBlue;
       case 'utility':
         return FiftyColors.warning;
       default:
-        return FiftyColors.slateGrey;
+        return FiftyColors.secondary;
     }
   }
 
@@ -144,7 +144,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
                 _PointsDisplay(
                   label: 'SPENT',
                   value: _controller.spentPoints,
-                  color: FiftyColors.slateGrey,
+                  color: FiftyColors.secondary,
                 ),
               ],
             ),
@@ -153,13 +153,13 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
           // Branch headers
           Container(
             padding: EdgeInsets.symmetric(vertical: FiftySpacing.md),
-            color: FiftyColors.darkBurgundy,
+            color: FiftyColors.backgroundDark,
             child: Row(
               children: [
                 _BranchHeader(
                   label: 'OFFENSE',
                   icon: Icons.flash_on,
-                  color: FiftyColors.burgundy,
+                  color: FiftyColors.primary,
                   points: _getBranchPoints('offense'),
                 ),
                 _BranchHeader(
@@ -187,7 +187,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
                 Expanded(
                   child: _TalentPath(
                     branch: 'offense',
-                    color: FiftyColors.burgundy,
+                    color: FiftyColors.primary,
                     controller: _controller,
                     onNodeTap: _handleNodeTap,
                   ),
@@ -223,7 +223,7 @@ class _TalentTreeExampleState extends State<TalentTreeExample> {
             child: Text(
               'Tap a talent to invest a point',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: FiftyColors.slateGrey,
+                    color: FiftyColors.secondary,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -263,7 +263,7 @@ class _PointsDisplay extends StatelessWidget {
           label,
           style: TextStyle(
             fontFamily: FiftyTypography.fontFamily,
-            color: FiftyColors.slateGrey,
+            color: FiftyColors.secondary,
             fontSize: FiftyTypography.bodySmall,
             letterSpacing: FiftyTypography.lineHeightTitle,
           ),
@@ -306,7 +306,7 @@ class _BranchHeader extends StatelessWidget {
             '$points PTS',
             style: TextStyle(
               fontFamily: FiftyTypography.fontFamily,
-              color: FiftyColors.slateGrey,
+              color: FiftyColors.secondary,
               fontSize: FiftyTypography.bodySmall,
             ),
           ),
@@ -438,7 +438,7 @@ class _TalentNode extends StatelessWidget {
           children: [
             Icon(
               node.icon ?? Icons.star,
-              color: isUnlocked ? color : FiftyColors.slateGrey,
+              color: isUnlocked ? color : FiftyColors.secondary,
               size: isKeystone ? _NodeSizes.keystoneIconSize : _NodeSizes.iconSize,
             ),
             SizedBox(height: FiftySpacing.xs),
@@ -448,7 +448,7 @@ class _TalentNode extends StatelessWidget {
               style: TextStyle(
                 fontFamily: FiftyTypography.fontFamily,
                 fontSize: _NodeSizes.labelFontSize,
-                color: isUnlocked ? FiftyColors.cream : FiftyColors.slateGrey,
+                color: isUnlocked ? FiftyColors.background : FiftyColors.secondary,
                 fontWeight: isKeystone ? FiftyTypography.medium : FiftyTypography.regular,
                 letterSpacing: FiftyTypography.lineHeightTitle,
               ),
@@ -473,7 +473,7 @@ class _TalentNode extends StatelessWidget {
                     border: Border.all(
                       color: index < node.currentLevel
                           ? color
-                          : FiftyColors.slateGrey.withValues(alpha: 0.6),
+                          : FiftyColors.secondary.withValues(alpha: 0.6),
                       width: 1,
                     ),
                   ),
