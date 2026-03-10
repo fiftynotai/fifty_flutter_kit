@@ -167,5 +167,110 @@ void main() {
         expect(find.text('Custom TTS'), findsOneWidget);
       });
     });
+
+    group('speaking indicator', () {
+      testWidgets('shows speaking dot when isSpeaking is true',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(isSpeaking: true));
+
+        // The speaking indicator is an 8x8 Container with circle shape
+        final dots = find.byWidgetPredicate(
+          (w) =>
+              w is Container &&
+              w.decoration is BoxDecoration &&
+              (w.decoration! as BoxDecoration).shape == BoxShape.circle &&
+              w.constraints?.maxWidth == 8,
+        );
+        expect(dots, findsOneWidget);
+      });
+
+      testWidgets('shows record_voice_over icon when speaking',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(isSpeaking: true));
+
+        expect(find.byIcon(Icons.record_voice_over), findsOneWidget);
+      });
+
+      testWidgets('shows voice_over_off icon when not speaking',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(isSpeaking: false));
+
+        expect(find.byIcon(Icons.voice_over_off), findsOneWidget);
+      });
+    });
+
+    group('showCard with default content', () {
+      testWidgets('showCard=true wraps default content in FiftyCard',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(showCard: true));
+
+        expect(find.byType(FiftyCard), findsOneWidget);
+        expect(find.text('TEXT-TO-SPEECH'), findsOneWidget);
+      });
+
+      testWidgets('showCard=false renders default content without card',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(showCard: false));
+
+        expect(find.byType(FiftyCard), findsNothing);
+        expect(find.text('TEXT-TO-SPEECH'), findsOneWidget);
+      });
+    });
+
+    group('slider visibility', () {
+      testWidgets('shows only rate slider when only onRateChanged provided',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(
+          enabled: true,
+          onRateChanged: (_) {},
+        ));
+
+        expect(find.text('RATE'), findsOneWidget);
+        expect(find.text('PITCH'), findsNothing);
+        expect(find.text('VOLUME'), findsNothing);
+      });
+
+      testWidgets('shows only pitch slider when only onPitchChanged provided',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(
+          enabled: true,
+          onPitchChanged: (_) {},
+        ));
+
+        expect(find.text('RATE'), findsNothing);
+        expect(find.text('PITCH'), findsOneWidget);
+        expect(find.text('VOLUME'), findsNothing);
+      });
+
+      testWidgets(
+          'shows only volume slider when only onVolumeChanged provided',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(
+          enabled: true,
+          onVolumeChanged: (_) {},
+        ));
+
+        expect(find.text('RATE'), findsNothing);
+        expect(find.text('PITCH'), findsNothing);
+        expect(find.text('VOLUME'), findsOneWidget);
+      });
+
+      testWidgets('hides all sliders when no callbacks provided',
+          (tester) async {
+        await tester.pumpWidget(buildTestWidget(enabled: true));
+
+        expect(find.text('RATE'), findsNothing);
+        expect(find.text('PITCH'), findsNothing);
+        expect(find.text('VOLUME'), findsNothing);
+      });
+    });
+
+    group('switch toggle', () {
+      testWidgets('renders FiftySwitch', (tester) async {
+        await tester.pumpWidget(buildTestWidget());
+
+        expect(find.byType(FiftySwitch), findsOneWidget);
+      });
+    });
   });
 }
