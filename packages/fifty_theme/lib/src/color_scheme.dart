@@ -1,5 +1,63 @@
+import 'dart:math';
+
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
+
+/// Computes WCAG 2.x relative luminance of [color].
+double _relativeLuminance(Color color) {
+  double linearize(double c) {
+    return c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4).toDouble();
+  }
+
+  final r = linearize(color.r);
+  final g = linearize(color.g);
+  final b = linearize(color.b);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/// Returns WCAG contrast ratio between two colors (>=1.0).
+double _contrastRatio(Color a, Color b) {
+  final la = _relativeLuminance(a);
+  final lb = _relativeLuminance(b);
+  final lighter = max(la, lb);
+  final darker = min(la, lb);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/// Derives an `onSurfaceVariant` color from [source] that has >=4.5:1
+/// contrast against [surface], staying in the hue family of [source].
+Color _deriveOnSurfaceVariant(
+  Color source,
+  Color surface,
+  Brightness brightness,
+) {
+  final hsl = HSLColor.fromColor(source);
+  final reducedSat = hsl.saturation * 0.6;
+  var targetLightness = brightness == Brightness.dark ? 0.75 : 0.35;
+
+  var candidate =
+      HSLColor.fromAHSL(1.0, hsl.hue, reducedSat, targetLightness).toColor();
+
+  // Nudge lightness until contrast is met
+  final step = brightness == Brightness.dark ? 0.05 : -0.05;
+  final cap = brightness == Brightness.dark ? 0.95 : 0.10;
+
+  while (_contrastRatio(candidate, surface) < 4.5) {
+    targetLightness += step;
+    if ((brightness == Brightness.dark && targetLightness >= cap) ||
+        (brightness == Brightness.light && targetLightness <= cap)) {
+      targetLightness = cap;
+      candidate =
+          HSLColor.fromAHSL(1.0, hsl.hue, reducedSat, targetLightness)
+              .toColor();
+      break;
+    }
+    candidate =
+        HSLColor.fromAHSL(1.0, hsl.hue, reducedSat, targetLightness).toColor();
+  }
+
+  return candidate;
+}
 
 /// Fifty.dev color scheme builder v2 - Sophisticated Warm.
 ///
@@ -71,7 +129,12 @@ class FiftyColorScheme {
       onSurface: onSurface ?? FiftyColors.background,
       surfaceContainerHighest:
           surfaceContainerHighest ?? FiftyColors.surfaceDark,
-      onSurfaceVariant: onSurfaceVariant ?? FiftyColors.secondary,
+      onSurfaceVariant: onSurfaceVariant ??
+          _deriveOnSurfaceVariant(
+            secondary ?? FiftyColors.secondary,
+            surface ?? FiftyColors.backgroundDark,
+            Brightness.dark,
+          ),
 
       // Outline colors - White 5%
       outline: FiftyColors.borderDark,
@@ -138,7 +201,12 @@ class FiftyColorScheme {
       onSurface: onSurface ?? FiftyColors.backgroundDark,
       surfaceContainerHighest:
           surfaceContainerHighest ?? FiftyColors.surface,
-      onSurfaceVariant: onSurfaceVariant ?? FiftyColors.secondary,
+      onSurfaceVariant: onSurfaceVariant ??
+          _deriveOnSurfaceVariant(
+            secondary ?? FiftyColors.secondary,
+            surface ?? FiftyColors.background,
+            Brightness.light,
+          ),
 
       // Outline colors - Black 5%
       outline: FiftyColors.borderLight,

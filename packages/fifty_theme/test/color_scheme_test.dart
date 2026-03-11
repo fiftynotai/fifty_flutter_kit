@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fifty_theme/fifty_theme.dart';
 import 'package:fifty_tokens/fifty_tokens.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +87,30 @@ void main() {
         expect(colorScheme.surface, isNotNull);
         expect(colorScheme.onSurface, isNotNull);
       });
+
+      test('onSurfaceVariant has >=4.5:1 contrast against surface', () {
+        final onSV = colorScheme.onSurfaceVariant;
+        final surface = colorScheme.surface;
+        double linearize(double c) =>
+            c <= 0.04045
+                ? c / 12.92
+                : pow((c + 0.055) / 1.055, 2.4).toDouble();
+        double lum(Color color) =>
+            0.2126 * linearize(color.r) +
+            0.7152 * linearize(color.g) +
+            0.0722 * linearize(color.b);
+        final la = lum(onSV);
+        final lb = lum(surface);
+        final ratio = (max(la, lb) + 0.05) / (min(la, lb) + 0.05);
+        expect(ratio, greaterThanOrEqualTo(4.5));
+      });
+
+      test('onSurfaceVariant preserves secondary hue family', () {
+        final derivedHue =
+            HSLColor.fromColor(colorScheme.onSurfaceVariant).hue;
+        final secondaryHue = HSLColor.fromColor(FiftyColors.secondary).hue;
+        expect(derivedHue, closeTo(secondaryHue, 2.0));
+      });
     });
 
     group('dark() parameterized overrides', () {
@@ -136,6 +162,12 @@ void main() {
         const custom = Color(0xFF333333);
         final cs = FiftyColorScheme.dark(surfaceContainerHighest: custom);
         expect(cs.surfaceContainerHighest, custom);
+      });
+
+      test('onSurfaceVariant override is applied', () {
+        const custom = Color(0xFFAAAAAA);
+        final cs = FiftyColorScheme.dark(onSurfaceVariant: custom);
+        expect(cs.onSurfaceVariant, custom);
       });
 
       test('non-overridden fields use FDL defaults', () {
@@ -193,6 +225,30 @@ void main() {
         expect(colorScheme.surface, isNotNull);
         expect(colorScheme.onSurface, isNotNull);
       });
+
+      test('onSurfaceVariant has >=4.5:1 contrast against surface', () {
+        final onSV = colorScheme.onSurfaceVariant;
+        final surface = colorScheme.surface;
+        double linearize(double c) =>
+            c <= 0.04045
+                ? c / 12.92
+                : pow((c + 0.055) / 1.055, 2.4).toDouble();
+        double lum(Color color) =>
+            0.2126 * linearize(color.r) +
+            0.7152 * linearize(color.g) +
+            0.0722 * linearize(color.b);
+        final la = lum(onSV);
+        final lb = lum(surface);
+        final ratio = (max(la, lb) + 0.05) / (min(la, lb) + 0.05);
+        expect(ratio, greaterThanOrEqualTo(4.5));
+      });
+
+      test('onSurfaceVariant preserves secondary hue family', () {
+        final derivedHue =
+            HSLColor.fromColor(colorScheme.onSurfaceVariant).hue;
+        final secondaryHue = HSLColor.fromColor(FiftyColors.secondary).hue;
+        expect(derivedHue, closeTo(secondaryHue, 2.0));
+      });
     });
 
     group('light() parameterized overrides', () {
@@ -212,6 +268,12 @@ void main() {
         final cs = FiftyColorScheme.light(surface: custom);
         expect(cs.surface, custom);
         expect(cs.onInverseSurface, custom);
+      });
+
+      test('onSurfaceVariant override is applied', () {
+        const custom = Color(0xFF555555);
+        final cs = FiftyColorScheme.light(onSurfaceVariant: custom);
+        expect(cs.onSurfaceVariant, custom);
       });
 
       test('non-overridden fields use FDL defaults', () {
@@ -244,7 +306,10 @@ void main() {
 
         final cs = FiftyColorScheme.dark();
         expect(cs.secondary, customSecondary);
-        expect(cs.onSurfaceVariant, customSecondary);
+        // onSurfaceVariant is derived from secondary (same hue family, adjusted for contrast)
+        final derivedHue = HSLColor.fromColor(cs.onSurfaceVariant).hue;
+        final sourceHue = HSLColor.fromColor(customSecondary).hue;
+        expect(derivedHue, closeTo(sourceHue, 2.0));
 
         FiftyTokens.reset();
       });
@@ -260,6 +325,47 @@ void main() {
         expect(cs.primary, paramPrimary);
 
         FiftyTokens.reset();
+      });
+    });
+
+    group('Kalvad palette (secondary == backgroundDark)', () {
+      setUp(() {
+        FiftyTokens.configure(
+          colors: FiftyPreset.fdlV2.colors.copyWith(
+            secondary: const Color(0xFF2A242C),
+            backgroundDark: const Color(0xFF2A242C),
+          ),
+        );
+      });
+
+      tearDown(() => FiftyTokens.reset());
+
+      test('dark mode onSurfaceVariant has readable contrast', () {
+        final cs = FiftyColorScheme.dark();
+        double linearize(double c) =>
+            c <= 0.04045
+                ? c / 12.92
+                : pow((c + 0.055) / 1.055, 2.4).toDouble();
+        double lum(Color color) =>
+            0.2126 * linearize(color.r) +
+            0.7152 * linearize(color.g) +
+            0.0722 * linearize(color.b);
+        final la = lum(cs.onSurfaceVariant);
+        final lb = lum(cs.surface);
+        final ratio = (max(la, lb) + 0.05) / (min(la, lb) + 0.05);
+        expect(
+          ratio,
+          greaterThanOrEqualTo(4.5),
+          reason:
+              'onSurfaceVariant must be readable on surface even when secondary==backgroundDark',
+        );
+      });
+
+      test('derived color stays in hue family', () {
+        final cs = FiftyColorScheme.dark();
+        final derivedHue = HSLColor.fromColor(cs.onSurfaceVariant).hue;
+        final sourceHue = HSLColor.fromColor(const Color(0xFF2A242C)).hue;
+        expect(derivedHue, closeTo(sourceHue, 2.0));
       });
     });
   });
