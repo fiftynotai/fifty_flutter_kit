@@ -13,6 +13,7 @@ void main() {
       });
 
       test('spacing scale defaults', () {
+        expect(FiftySpacing.xxs, 2);
         expect(FiftySpacing.xs, 4);
         expect(FiftySpacing.sm, 8);
         expect(FiftySpacing.md, 12);
@@ -40,6 +41,7 @@ void main() {
             'base': 8,
             'tight': 16,
             'standard': 24,
+            'xxs': 4,
             'xs': 8,
             'sm': 16,
             'md': 24,
@@ -59,6 +61,7 @@ void main() {
         expect(config.base, 8);
         expect(config.tight, 16);
         expect(config.standard, 24);
+        expect(config.xxs, 4);
         expect(config.xs, 8);
         expect(config.sm, 16);
         expect(config.md, 24);

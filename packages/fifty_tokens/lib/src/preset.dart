@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'config/breakpoints_config.dart';
 import 'config/color_config.dart';
 import 'config/gradients_config.dart';
+import 'config/icon_sizes_config.dart';
 import 'config/motion_config.dart';
 import 'config/radii_config.dart';
 import 'config/shadows_config.dart';
@@ -50,6 +51,7 @@ const _sharedSpacing = FiftySpacingConfig(
   base: 4,
   tight: 8,
   standard: 12,
+  xxs: 2,
   xs: 4,
   sm: 8,
   md: 12,
@@ -121,6 +123,15 @@ const _sharedBreakpoints = FiftyBreakpointsConfig(
   desktop: 1024,
 );
 
+const _sharedIconSizes = FiftyIconSizesConfig(
+  sm: 16,
+  md: 20,
+  lg: 24,
+  xl: 36,
+  xxl: 44,
+  hero: 48,
+);
+
 /// A complete set of design token values.
 ///
 /// The single data type for all theming. Whether built-in (FDL v2),
@@ -144,6 +155,7 @@ class FiftyPreset {
     required this.shadows,
     required this.gradients,
     required this.breakpoints,
+    this.iconSizes = _sharedIconSizes,
   });
 
   /// Build a preset from a [Map]. Missing keys fall back to [fallback].
@@ -200,6 +212,12 @@ class FiftyPreset {
               fallback: fallback.breakpoints,
             )
           : fallback.breakpoints,
+      iconSizes: map.containsKey('iconSizes')
+          ? FiftyIconSizesConfig.fromMap(
+              map['iconSizes'] as Map<String, dynamic>,
+              fallback: fallback.iconSizes,
+            )
+          : fallback.iconSizes,
     );
   }
 
@@ -226,6 +244,9 @@ class FiftyPreset {
 
   /// Responsive breakpoint configuration.
   final FiftyBreakpointsConfig breakpoints;
+
+  /// Icon size token configuration.
+  final FiftyIconSizesConfig iconSizes;
 
   /// FDL v2 -- Sophisticated Warm. The built-in default preset.
   static const fdlV2 = FiftyPreset(
@@ -254,6 +275,7 @@ class FiftyPreset {
     shadows: _sharedShadows,
     gradients: _sharedGradients,
     breakpoints: _sharedBreakpoints,
+    iconSizes: _sharedIconSizes,
   );
 
   /// Baltic Blue -- Cool Coastal. A steel-blue palette with muted earth tones.
@@ -286,6 +308,7 @@ class FiftyPreset {
     shadows: _sharedShadows,
     gradients: _sharedGradients,
     breakpoints: _sharedBreakpoints,
+    iconSizes: _sharedIconSizes,
   );
 
   /// Returns a copy with the given categories replaced.
@@ -298,6 +321,7 @@ class FiftyPreset {
     FiftyShadowsConfig? shadows,
     FiftyGradientsConfig? gradients,
     FiftyBreakpointsConfig? breakpoints,
+    FiftyIconSizesConfig? iconSizes,
   }) {
     return FiftyPreset(
       colors: colors ?? this.colors,
@@ -308,6 +332,7 @@ class FiftyPreset {
       shadows: shadows ?? this.shadows,
       gradients: gradients ?? this.gradients,
       breakpoints: breakpoints ?? this.breakpoints,
+      iconSizes: iconSizes ?? this.iconSizes,
     );
   }
 }

@@ -22,6 +22,11 @@ void main() {
     });
 
     group('Spacing Scale (multiples of base)', () {
+      test('xxs is 0.5x base (2px)', () {
+        expect(FiftySpacing.xxs, 2);
+        expect(FiftySpacing.xxs, FiftySpacing.base * 0.5);
+      });
+
       test('xs is 1x base (4px)', () {
         expect(FiftySpacing.xs, FiftySpacing.base * 1);
       });

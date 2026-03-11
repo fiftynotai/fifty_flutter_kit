@@ -21,6 +21,7 @@ void main() {
             fast: Duration(milliseconds: 200),
           ),
           breakpoints: FiftyPreset.fdlV2.breakpoints.copyWith(desktop: 1280),
+          iconSizes: FiftyPreset.fdlV2.iconSizes.copyWith(sm: 12),
         );
 
         expect(FiftyColors.primary, Color(0xFF0000FF));
@@ -29,6 +30,7 @@ void main() {
         expect(FiftyRadii.sm, 6);
         expect(FiftyMotion.fast, const Duration(milliseconds: 200));
         expect(FiftyBreakpoints.desktop, 1280);
+        expect(FiftyIconSizes.sm, 12);
       });
 
       test('applies partial categories', () {
@@ -45,6 +47,7 @@ void main() {
         expect(FiftyRadii.sm, 4);
         expect(FiftyMotion.fast, const Duration(milliseconds: 150));
         expect(FiftyBreakpoints.desktop, 1024);
+        expect(FiftyIconSizes.sm, 16);
       });
 
       test('multiple calls replace previous config per category', () {
@@ -98,6 +101,7 @@ void main() {
             fast: Duration(milliseconds: 200),
           ),
           breakpoints: FiftyPreset.fdlV2.breakpoints.copyWith(desktop: 1280),
+          iconSizes: FiftyPreset.fdlV2.iconSizes.copyWith(sm: 12),
         );
 
         FiftyTokens.reset();
@@ -108,6 +112,7 @@ void main() {
         expect(FiftyRadii.sm, 4);
         expect(FiftyMotion.fast, const Duration(milliseconds: 150));
         expect(FiftyBreakpoints.desktop, 1024);
+        expect(FiftyIconSizes.sm, 16);
       });
     });
 
@@ -143,12 +148,14 @@ void main() {
             primary: Color(0xFF0000FF),
           ),
           spacing: FiftyPreset.fdlV2.spacing.copyWith(base: 8),
+          iconSizes: FiftyPreset.fdlV2.iconSizes.copyWith(hero: 64),
         );
 
         FiftyTokens.load(preset);
 
         expect(FiftyColors.primary, const Color(0xFF0000FF));
         expect(FiftySpacing.base, 8);
+        expect(FiftyIconSizes.hero, 64);
         // Other categories from fdlV2
         expect(FiftyTypography.fontFamily, 'Manrope');
       });

@@ -68,6 +68,51 @@ void main() {
         expect(alpha, closeTo(26, 1)); // 10% of 255 = ~26
       });
     });
+
+    group('tinted()', () {
+      test('default params produce expected BoxShadow', () {
+        const testColor = Color(0xFF00FF00);
+        final shadows = FiftyShadows.tinted(testColor);
+
+        expect(shadows.length, 1);
+        expect(shadows[0].blurRadius, 16);
+        expect(shadows[0].offset, const Offset(0, 6));
+        // Alpha should be 0.3
+        expect(shadows[0].color.a, closeTo(0.3, 0.01));
+        // RGB should match input color
+        expect(
+          shadows[0].color.toARGB32() & 0x00FFFFFF,
+          testColor.toARGB32() & 0x00FFFFFF,
+        );
+      });
+
+      test('custom params override blur, offset, and alpha', () {
+        const testColor = Color(0xFFFF0000);
+        final shadows = FiftyShadows.tinted(
+          testColor,
+          blur: 12,
+          offset: const Offset(2, 4),
+          alpha: 0.5,
+        );
+
+        expect(shadows.length, 1);
+        expect(shadows[0].blurRadius, 12);
+        expect(shadows[0].offset, const Offset(2, 4));
+        expect(shadows[0].color.a, closeTo(0.5, 0.01));
+      });
+
+      test('color alpha is applied via withValues', () {
+        const testColor = Color(0xFF0000FF);
+        final shadows = FiftyShadows.tinted(testColor, alpha: 0.8);
+
+        expect(shadows[0].color.a, closeTo(0.8, 0.01));
+        // RGB channels remain
+        expect(
+          shadows[0].color.toARGB32() & 0x00FFFFFF,
+          testColor.toARGB32() & 0x00FFFFFF,
+        );
+      });
+    });
   });
 
   group('FiftyElevation (deprecated)', () {

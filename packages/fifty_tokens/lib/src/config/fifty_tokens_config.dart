@@ -2,6 +2,7 @@ import '../preset.dart';
 import 'breakpoints_config.dart';
 import 'color_config.dart';
 import 'gradients_config.dart';
+import 'icon_sizes_config.dart';
 import 'motion_config.dart';
 import 'radii_config.dart';
 import 'shadows_config.dart';
@@ -48,6 +49,7 @@ class FiftyTokens {
     FiftyBreakpointsConfig? breakpoints,
     FiftyShadowsConfig? shadows,
     FiftyGradientsConfig? gradients,
+    FiftyIconSizesConfig? iconSizes,
   }) {
     _active = FiftyPreset(
       colors: colors ?? _active.colors,
@@ -58,6 +60,7 @@ class FiftyTokens {
       shadows: shadows ?? _active.shadows,
       gradients: gradients ?? _active.gradients,
       breakpoints: breakpoints ?? _active.breakpoints,
+      iconSizes: iconSizes ?? _active.iconSizes,
     );
   }
 

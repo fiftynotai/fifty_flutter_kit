@@ -58,6 +58,31 @@ class FiftyShadows {
         ),
       ];
 
+  /// Tinted shadow -- ColorScheme-aware colored depth.
+  ///
+  /// Unlike [primary] which always uses the primary brand color, this
+  /// accepts any [Color] for flexible tinting. Use with
+  /// `colorScheme.primary` for branded elevation or `colorScheme.error`
+  /// for destructive actions.
+  ///
+  /// ```dart
+  /// FiftyShadows.tinted(colorScheme.primary)
+  /// FiftyShadows.tinted(colorScheme.error, blur: 12, alpha: 0.4)
+  /// ```
+  static List<BoxShadow> tinted(
+    Color color, {
+    double blur = 16,
+    Offset offset = const Offset(0, 6),
+    double alpha = 0.3,
+  }) =>
+      [
+        BoxShadow(
+          color: color.withValues(alpha: alpha),
+          blurRadius: blur,
+          offset: offset,
+        ),
+      ];
+
   /// No shadow - Explicit none.
   static const List<BoxShadow> none = [];
 }

@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.2.0] - 2026-03-11
+
+### Added
+
+- `FiftyIconSizes` — new token category for standardized icon sizes (sm/md/lg/xl/xxl/hero)
+- `FiftyIconSizesConfig` — configuration class for icon size tokens with `copyWith` and `fromMap`
+- `FiftySpacing.xxs` (2px) — extra-extra-small spacing for micro gaps
+- `FiftyShadows.tinted()` — static factory for ColorScheme-aware tinted shadows
+
 ## [3.1.0] - 2026-03-03
 
 ### Added
@@ -272,6 +281,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Zero external dependencies
 - 100% FDL specification fidelity
 
+[3.2.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v3.2.0
 [3.1.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v3.1.0
 [3.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v3.0.0
 [2.0.0]: https://github.com/fiftynotai/fifty_flutter_kit/releases/tag/fifty_tokens-v2.0.0

@@ -40,6 +40,13 @@ class FiftySpacing {
   // SPACING SCALE (multiples of base unit)
   // ============================================================================
 
+  /// 0.5x base (2px) - Micro spacing.
+  ///
+  /// Use for:
+  /// - Sub-base gaps between text lines
+  /// - Minimal visual separation
+  static double get xxs => FiftyTokens.active.spacing.xxs;
+
   /// 1x base (4px) - Minimal spacing.
   static double get xs => FiftyTokens.active.spacing.xs;
 

@@ -63,6 +63,7 @@ void main() {
         expect(spacing.base, 4);
         expect(spacing.tight, 8);
         expect(spacing.standard, 12);
+        expect(spacing.xxs, 2);
         expect(spacing.xs, 4);
         expect(spacing.sm, 8);
         expect(spacing.md, 12);
@@ -124,6 +125,16 @@ void main() {
         expect(breakpoints.tablet, 768);
         expect(breakpoints.desktop, 1024);
       });
+
+      test('iconSizes has correct FDL values', () {
+        final iconSizes = FiftyPreset.fdlV2.iconSizes;
+        expect(iconSizes.sm, 16);
+        expect(iconSizes.md, 20);
+        expect(iconSizes.lg, 24);
+        expect(iconSizes.xl, 36);
+        expect(iconSizes.xxl, 44);
+        expect(iconSizes.hero, 48);
+      });
     });
 
     group('fromMap()', () {
@@ -150,6 +161,10 @@ void main() {
           preset.breakpoints.desktop,
           FiftyPreset.fdlV2.breakpoints.desktop,
         );
+        expect(
+          preset.iconSizes.sm,
+          FiftyPreset.fdlV2.iconSizes.sm,
+        );
       });
 
       test('partial data uses fallback for missing categories', () {
@@ -167,6 +182,7 @@ void main() {
         );
         expect(preset.radii.sm, FiftyPreset.fdlV2.radii.sm);
         expect(preset.motion.fast, FiftyPreset.fdlV2.motion.fast);
+        expect(preset.iconSizes.sm, FiftyPreset.fdlV2.iconSizes.sm);
       });
 
       test('partial color data uses fallback for missing fields', () {
@@ -209,6 +225,7 @@ void main() {
             primaryEnd: Color(0xFF112233),
           ),
           breakpoints: FiftyPreset.fdlV2.breakpoints.copyWith(desktop: 1280),
+          iconSizes: FiftyPreset.fdlV2.iconSizes.copyWith(sm: 12),
         );
 
         final preset = FiftyPreset.fromMap({}, fallback: customFallback);
@@ -221,6 +238,18 @@ void main() {
         expect(preset.shadows.primaryOpacity, 0.5);
         expect(preset.gradients.primaryEnd, const Color(0xFF112233));
         expect(preset.breakpoints.desktop, 1280);
+        expect(preset.iconSizes.sm, 12);
+      });
+
+      test('iconSizes data in map is parsed', () {
+        final preset = FiftyPreset.fromMap({
+          'iconSizes': {'sm': 10, 'hero': 64},
+        });
+
+        expect(preset.iconSizes.sm, 10);
+        expect(preset.iconSizes.hero, 64);
+        // Fallback for unset fields
+        expect(preset.iconSizes.md, FiftyPreset.fdlV2.iconSizes.md);
       });
     });
 
@@ -251,6 +280,17 @@ void main() {
         expect(custom.typography.fontFamily, 'Manrope');
       });
 
+      test('replaces iconSizes category', () {
+        final custom = FiftyPreset.fdlV2.copyWith(
+          iconSizes: FiftyPreset.fdlV2.iconSizes.copyWith(sm: 12),
+        );
+
+        expect(custom.iconSizes.sm, 12);
+        expect(custom.iconSizes.md, FiftyPreset.fdlV2.iconSizes.md);
+        // Other categories unchanged
+        expect(custom.colors.primary, FiftyPreset.fdlV2.colors.primary);
+      });
+
       test('no arguments returns equivalent preset', () {
         final copy = FiftyPreset.fdlV2.copyWith();
 
@@ -273,6 +313,10 @@ void main() {
         expect(
           copy.breakpoints.desktop,
           FiftyPreset.fdlV2.breakpoints.desktop,
+        );
+        expect(
+          copy.iconSizes.sm,
+          FiftyPreset.fdlV2.iconSizes.sm,
         );
       });
     });

@@ -8,6 +8,7 @@ class FiftySpacingConfig {
     required this.base,
     required this.tight,
     required this.standard,
+    required this.xxs,
     required this.xs,
     required this.sm,
     required this.md,
@@ -32,6 +33,7 @@ class FiftySpacingConfig {
       base: (map['base'] as num?)?.toDouble() ?? fallback.base,
       tight: (map['tight'] as num?)?.toDouble() ?? fallback.tight,
       standard: (map['standard'] as num?)?.toDouble() ?? fallback.standard,
+      xxs: (map['xxs'] as num?)?.toDouble() ?? fallback.xxs,
       xs: (map['xs'] as num?)?.toDouble() ?? fallback.xs,
       sm: (map['sm'] as num?)?.toDouble() ?? fallback.sm,
       md: (map['md'] as num?)?.toDouble() ?? fallback.md,
@@ -58,6 +60,9 @@ class FiftySpacingConfig {
 
   /// Standard gap. Default: `12`.
   final double standard;
+
+  /// Extra-extra-small spacing. Default: `2`.
+  final double xxs;
 
   /// Extra-small spacing. Default: `4`.
   final double xs;
@@ -100,6 +105,7 @@ class FiftySpacingConfig {
     double? base,
     double? tight,
     double? standard,
+    double? xxs,
     double? xs,
     double? sm,
     double? md,
@@ -117,6 +123,7 @@ class FiftySpacingConfig {
       base: base ?? this.base,
       tight: tight ?? this.tight,
       standard: standard ?? this.standard,
+      xxs: xxs ?? this.xxs,
       xs: xs ?? this.xs,
       sm: sm ?? this.sm,
       md: md ?? this.md,
