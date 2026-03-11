@@ -52,6 +52,7 @@
     "base": 4,
     "tight": 8,
     "standard": 12,
+    "xxs": 2,
     "xs": 4,
     "sm": 8,
     "md": 12,
@@ -99,6 +100,14 @@
   },
   "gradients": {
     "primaryEnd": "0xFF5A1B1F"
+  },
+  "iconSizes": {
+    "sm": 16,
+    "md": 20,
+    "lg": 24,
+    "xl": 36,
+    "xxl": 44,
+    "hero": 48
   },
   "breakpoints": {
     "mobile": 768,

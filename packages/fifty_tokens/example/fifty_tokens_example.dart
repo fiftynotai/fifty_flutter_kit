@@ -54,6 +54,7 @@ void main() {
   // ---------------------------------------------------------------------------
 
   print('Base unit: ${FiftySpacing.base}px'); // 4px
+  print('XXS: ${FiftySpacing.xxs}px'); // 2px (micro gaps)
   print('Tight gap: ${FiftySpacing.tight}px'); // 8px
   print('Standard gap: ${FiftySpacing.standard}px'); // 12px
 
@@ -80,6 +81,17 @@ void main() {
   print('System Load: ${FiftyMotion.systemLoad}'); // 800ms
 
   // ---------------------------------------------------------------------------
+  // ICON SIZES (standardized scale)
+  // ---------------------------------------------------------------------------
+
+  print('Icon SM: ${FiftyIconSizes.sm}px'); // 16px (badges)
+  print('Icon MD: ${FiftyIconSizes.md}px'); // 20px (buttons)
+  print('Icon LG: ${FiftyIconSizes.lg}px'); // 24px (nav bar)
+  print('Icon XL: ${FiftyIconSizes.xl}px'); // 36px (branding)
+  print('Icon XXL: ${FiftyIconSizes.xxl}px'); // 44px (hero icons)
+  print('Icon Hero: ${FiftyIconSizes.hero}px'); // 48px (hero actions)
+
+  // ---------------------------------------------------------------------------
   // SHADOWS (v2 - Soft, sophisticated)
   // ---------------------------------------------------------------------------
 
@@ -88,6 +100,7 @@ void main() {
   print('Shadow LG: ${FiftyShadows.lg}');
   print('Shadow Primary: ${FiftyShadows.primary}');
   print('Shadow Glow: ${FiftyShadows.glow}');
+  print('Shadow Tinted: ${FiftyShadows.tinted(FiftyColors.primary)}');
 
   // ---------------------------------------------------------------------------
   // GRADIENTS (v2 - New)
